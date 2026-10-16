@@ -47,20 +47,19 @@ protected partial async Task<State<RetomarPublicacaoYouTubeOutputCommand>> Custo
     if (publication == null || publication.deleted || publication.tenantid != owner.TenantId || publication.userid != owner.UserId)
         return ValidationError("Publicacao nao encontrada.", new RetomarPublicacaoYouTubeOutputCommand());
     var connectionId = publication.conexaoyoutubeid;
-    if (string.IsNullOrWhiteSpace(connectionId)) connectionId = comand.ConexaoYouTubeId;
-    else if (!string.IsNullOrEmpty(comand.ConexaoYouTubeId) && comand.ConexaoYouTubeId != connectionId)
+    if (!string.IsNullOrEmpty(comand.ConexaoYouTubeId) && comand.ConexaoYouTubeId != connectionId)
         return ValidationError("O canal de uma publicacao solicitada nao pode ser trocado.", new RetomarPublicacaoYouTubeOutputCommand());
-    if (string.IsNullOrWhiteSpace(connectionId))
-        return ValidationError("Selecione o canal para esta publicacao antiga.", new RetomarPublicacaoYouTubeOutputCommand());
-    var status = await _connections.StatusAsync(owner, connectionId, cancellationToken);
-    if (!status.Conectado)
-        return ValidationError("Conecte seu canal YouTube antes de retomar o envio.", new RetomarPublicacaoYouTubeOutputCommand());
+    if (string.IsNullOrWhiteSpace(connectionId) || publication.youtubecredentialtenantid <= 0)
+        return ValidationError("Publicacao sem destino valido. Solicite uma nova publicacao.", new RetomarPublicacaoYouTubeOutputCommand());
+    var status = await _connections.StatusAsync(new YouTubeOwner(publication.youtubecredentialtenantid, owner.UserId), connectionId, cancellationToken);
+    if (!status.Conectado || status.CanalId != publication.canalyoutubeid)
+        return ValidationError("O canal desta publicacao precisa ser reconectado pelo responsavel. O destino nao sera trocado.", new RetomarPublicacaoYouTubeOutputCommand());
     _unitOfWork.BeginTran();
     try
     {
         var scheduled = _publications.ScheduleYouTubeResume(comand.PublicacaoAlbumId,
             owner.TenantId, owner.UserId, _executionContext.ProcessingScope, DateTime.UtcNow,
-            status.ConexaoId, status.CanalId, owner.UserId);
+            status.ConexaoId, status.CanalId, publication.youtubecredentialtenantid);
         _unitOfWork.Commit();
         return scheduled
             ? Accepted("Envio agendado para o Worker.", new RetomarPublicacaoYouTubeOutputCommand { Agendada = true })

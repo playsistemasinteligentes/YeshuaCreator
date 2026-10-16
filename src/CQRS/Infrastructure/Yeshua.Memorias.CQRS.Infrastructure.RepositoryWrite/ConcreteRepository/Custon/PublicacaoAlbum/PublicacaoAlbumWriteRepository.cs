@@ -32,7 +32,7 @@ public partial class PublicacaoAlbumWriteRepository
     }
 
     public bool ScheduleYouTubeResume(int publicationId, int tenantId, int userId, string processingScope, DateTime now,
-        string connectionId, string channelId, int credentialUserId)
+        string connectionId, string channelId, int credentialTenantId)
     {
         const string sql = """
             DECLARE @SagaId int;
@@ -43,9 +43,8 @@ public partial class PublicacaoAlbumWriteRepository
                AND s.EntityType = 'PublicacaoAlbumEntity'
              WHERE p.Id = @PublicationId AND p.TenantID = @TenantId AND p.UserId = @UserId
                AND p.Deleted = 0 AND p.Status = 45
-               AND (NULLIF(p.ConexaoYouTubeId, '') IS NULL
-                    OR (p.ConexaoYouTubeId = @ConnectionId AND p.CanalYouTubeId = @ChannelId
-                        AND p.YouTubeCredentialUserId = @CredentialUserId))
+               AND p.ConexaoYouTubeId = @ConnectionId AND p.CanalYouTubeId = @ChannelId
+               AND p.YouTubeCredentialTenantId = @CredentialTenantId
                AND NULLIF(p.VideoStorageKey, '') IS NOT NULL
                AND NULLIF(p.YouTubeVideoId, '') IS NULL
                AND s.Type = 'PublicarAlbumYouTubeSaga' AND s.Deleted = 0
@@ -64,9 +63,7 @@ public partial class PublicacaoAlbumWriteRepository
             UPDATE ySaga SET Status = 1, KeyCurrentStep = 'EnviarVideoParaYouTube',
                    CompletedAt = NULL, NextExecutionAt = @Now, LockedBy = NULL, LockedAt = NULL, Changed = @Now
              WHERE Id = @SagaId;
-            UPDATE PublicacaoAlbum SET Status = 40, Mensagem = 'Envio ao YouTube agendado.', Changed = @Now,
-                   ConexaoYouTubeId = @ConnectionId, CanalYouTubeId = @ChannelId,
-                   YouTubeCredentialUserId = @CredentialUserId
+            UPDATE PublicacaoAlbum SET Status = 40, Mensagem = 'Envio ao YouTube agendado.', Changed = @Now
              WHERE Id = @PublicationId AND TenantID = @TenantId AND UserId = @UserId;
             SELECT 1;
             """;
@@ -74,7 +71,7 @@ public partial class PublicacaoAlbumWriteRepository
         {
             PublicationId = publicationId, TenantId = tenantId, UserId = userId,
             ProcessingScope = processingScope, Now = now,
-            ConnectionId = connectionId, ChannelId = channelId, CredentialUserId = credentialUserId
+            ConnectionId = connectionId, ChannelId = channelId, CredentialTenantId = credentialTenantId
         }) == 1;
     }
 }

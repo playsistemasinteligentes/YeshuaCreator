@@ -1,5 +1,6 @@
 namespace Memorias.YouTube;
 
+// TenantId identifica o cofre; UserId identifica o ator, nao a particao das credenciais.
 public readonly record struct YouTubeOwner(int TenantId, int UserId)
 {
     public void Validate()
@@ -58,7 +59,7 @@ public sealed record YouTubeAccount(
 
 public sealed record YouTubeAuthorization(
     string State, string CodeVerifier, string RedirectUri, DateTime ExpiresAtUtc, string ClientId,
-    string ConnectionId, string ExpectedChannelId);
+    string ConnectionId, string ExpectedChannelId, int InitiatingUserId = 0);
 
 public interface IYouTubeAccountRepository
 {

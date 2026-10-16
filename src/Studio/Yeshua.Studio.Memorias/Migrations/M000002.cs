@@ -8,11 +8,6 @@ public class M000002 : MigrationBase
 {
     public override void Up()
     {
-        AlterEntity("PublicacaoAlbum")
-            .AddColumn("ConexaoYouTubeId", "Conexao YouTube").Varchar(32).Immutable().EditFront(false).VisivelFront(false).Group("YouTube")
-            .AddColumn("CanalYouTubeId", "Canal de Destino").Varchar(100).Immutable().EditFront(false).Group("YouTube")
-            .AddColumn("YouTubeCredentialUserId", "Responsavel pela Conexao").Int().Immutable().EditFront(false).VisivelFront(false).Group("YouTube");
-
         var commands = AddUsecaseGroup("Memorias").AddUseCaseSubGrup("YouTube");
         commands.AddCommand("IniciarConexaoYouTube", new YouTubeInput(), new YouTubeConnectionOutput())
             .Authorization(Authorization.User).AddScope("memorias.youtube.conectar");
@@ -40,6 +35,7 @@ public sealed record RetomarPublicacaoYouTubeOutput(bool Agendada = false);
 public sealed class YouTubeConnectionsOutput
 {
     public bool Configurado { get; set; }
+    public bool PublicacaoAutomaticaDisponivel { get; set; }
     public List<YouTubeConnectionInfo> Conexoes { get; set; } = [];
 }
 

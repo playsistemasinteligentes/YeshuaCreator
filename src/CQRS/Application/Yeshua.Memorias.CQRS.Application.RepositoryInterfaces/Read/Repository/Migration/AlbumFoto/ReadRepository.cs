@@ -31,34 +31,34 @@ namespace IRepository.Read
         public bool ExistsByFotoId(int value );
         public bool ExistsByOrdem(int value );
         public bool ExistsByLegenda(string value );
+        public bool ExistsByRotacao(int value );
         public bool ExistsByTenantID(int value );
         public bool ExistsByDeleted(bool value );
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
-        public bool ExistsByRotacao(int value );
         public AlbumFotoDTO FirstById(int value );
         public AlbumFotoDTO FirstByAlbumId(int value );
         public AlbumFotoDTO FirstByFotoId(int value );
         public AlbumFotoDTO FirstByOrdem(int value );
         public AlbumFotoDTO FirstByLegenda(string value );
+        public AlbumFotoDTO FirstByRotacao(int value );
         public AlbumFotoDTO FirstByTenantID(int value );
         public AlbumFotoDTO FirstByDeleted(bool value );
         public AlbumFotoDTO FirstByChanged(DateTime value );
         public AlbumFotoDTO FirstByUserId(int value );
         public AlbumFotoDTO FirstByOperationalEntityId(string value );
-        public AlbumFotoDTO FirstByRotacao(int value );
         public IEnumerable<AlbumFotoDTO> GetAllById(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByAlbumId(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByFotoId(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByOrdem(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByLegenda(string value );
+        public IEnumerable<AlbumFotoDTO> GetAllByRotacao(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByTenantID(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByDeleted(bool value );
         public IEnumerable<AlbumFotoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<AlbumFotoDTO> GetAllByUserId(int value );
         public IEnumerable<AlbumFotoDTO> GetAllByOperationalEntityId(string value );
-        public IEnumerable<AlbumFotoDTO> GetAllByRotacao(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -22,7 +22,7 @@ public sealed class EncryptedYouTubeAccountRepository(YouTubeOptions options) : 
             throw new YouTubeConnectionException("Conexao YouTube nao configurada no servidor.");
 
         var scope = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(options.ProcessingScope)));
-        var directory = Path.Combine(options.CredentialsDirectory, scope, owner.TenantId.ToString(), owner.UserId.ToString());
+        var directory = Path.Combine(options.CredentialsDirectory, scope, "tenants", owner.TenantId.ToString());
         Directory.CreateDirectory(directory);
         if (!OperatingSystem.IsWindows())
             File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
@@ -103,7 +103,7 @@ public sealed class EncryptedYouTubeAccountRepository(YouTubeOptions options) : 
         }
 
         private byte[] AssociatedData(string purpose) => Encoding.UTF8.GetBytes(
-            $"Memorias.YouTube.v1:{options.ProcessingScope}:{owner.TenantId}:{owner.UserId}:{purpose}");
+            $"Memorias.YouTube.v2:{options.ProcessingScope}:{owner.TenantId}:{purpose}");
 
         private T? Read<T>(string purpose, JsonTypeInfo<T> typeInfo) where T : class
         {

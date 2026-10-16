@@ -20,6 +20,15 @@ namespace Command.Read
         public string? VideoStorageKey { get; set; }
         public string? YouTubeVideoId { get; set; }
         public string? YouTubeUrl { get; set; }
+        public string? ConexaoYouTubeId { get; set; }
+        public string? CanalYouTubeId { get; set; }
+        public int? YouTubeCredentialTenantId { get; set; }
+        public int? CanalStandardId { get; set; }
+        public int? PrivacidadeYouTube { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
         public string? Mensagem { get; set; }
         public DateTime? SolicitadaEmUtc { get; set; }
         public DateTime? PublicadaEmUtc { get; set; }
@@ -29,13 +38,6 @@ namespace Command.Read
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string? OperationalEntityId { get; set; }
-        public string? ConexaoYouTubeId { get; set; }
-        public string? CanalYouTubeId { get; set; }
-        public int? YouTubeCredentialUserId { get; set; }
-        public int? QualidadeVideo { get; set; }
-        public int? ModeloVideo { get; set; }
-        public int? MusicaId { get; set; }
-        public int? VolumeMusica { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "PublicacaoAlbum";
  public string? OperationalRecordId => OperationalEntityId;

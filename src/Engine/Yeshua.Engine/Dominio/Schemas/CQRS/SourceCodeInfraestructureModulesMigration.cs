@@ -214,7 +214,7 @@ namespace Dominio.Schemas.CQRS
                     customPage.Scope));
             }
 
-            foreach (var entity in mol.Entities)
+            foreach (var entity in mol.Entities.Where(e => !e.IsInternal))
             {
                 menuDefinitions.Add(new GeneratedMenuDefinition(
                     entity.EntityName,

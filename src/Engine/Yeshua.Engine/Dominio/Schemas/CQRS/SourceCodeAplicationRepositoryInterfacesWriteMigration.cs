@@ -18,6 +18,9 @@ namespace Dominio.Schemas.CQRS
 
         protected override StringBuilder GenerateCode()
         {
+            if (_entity.IsInternal)
+                return new StringBuilder($"namespace {CQRSParam.I.NameSpaceIRepositoryWrite};\npublic partial interface I{_entity.EntityName}WriteRepository {{ }}\n");
+
             StringBuilder sb = new StringBuilder();
 
             // Adiciona os usings

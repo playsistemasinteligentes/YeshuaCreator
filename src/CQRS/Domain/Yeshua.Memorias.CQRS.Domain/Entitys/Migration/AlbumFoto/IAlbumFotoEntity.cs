@@ -25,12 +25,12 @@
     int FotoId { get; set; }
     int Ordem { get; set; }
     string? Legenda { get; set; }
+    int? Rotacao { get; }
     int? TenantID { get; set; }
     bool? Deleted { get; set; }
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
-    int? Rotacao { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

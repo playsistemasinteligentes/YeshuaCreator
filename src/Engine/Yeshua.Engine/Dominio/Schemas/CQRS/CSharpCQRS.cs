@@ -50,7 +50,7 @@ namespace Dominio.Schemas.CQRS
 
             #region Migrations 
             // crud 
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 var filePath = Path.Combine(GetPathAppAplicationCommandCommandsCrud("Migration"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsCrud("Custon"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
@@ -58,7 +58,7 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
             // Read form sorche
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 var filePath = Path.Combine(GetPathAppAplicationCommandCommandsRead("Migration"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationCommandCommandsRead("Custon"), $"{entity.EntityName}\\{entity.EntityName}Commands.cs");
@@ -66,7 +66,7 @@ namespace Dominio.Schemas.CQRS
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
             }
             // Read FKs
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 foreach (var colunm in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
@@ -77,7 +77,7 @@ namespace Dominio.Schemas.CQRS
                 }
             }
 
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 foreach (var colunm in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
@@ -89,7 +89,7 @@ namespace Dominio.Schemas.CQRS
             }
 
 
-            foreach (var _entity in migration.Entitys)
+            foreach (var _entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 foreach (var query in _entity.Queries.OfType<IQueryWithMeta>())
                 {
@@ -223,7 +223,7 @@ namespace Dominio.Schemas.CQRS
 
         public void AppAplicationGenerateCommandReceivers(Migration.MigrationBase migration)
         {
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 SourceCodeAplicationCommandReceiversMigration sourceCodeMigration;
                 string filePath;
@@ -1125,7 +1125,7 @@ namespace Dominio.Schemas.CQRS
 
         private static bool ShouldGenerateApiSmokeCrud(Entity entity)
         {
-            return !entity.IsFromView &&
+            return !entity.IsInternal && !entity.IsFromView &&
                 !string.Equals(entity.EntityName, "yTenant", StringComparison.OrdinalIgnoreCase);
         }
 
@@ -1750,7 +1750,7 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateReadConcreteQuerys(Migration.MigrationBase migration)
         {
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 var filePath = Path.Combine(GetPathAppInfraestructureReadConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}ReadQuerys.cs");
                 var filePathCuston = Path.Combine(GetPathAppInfraestructureReadConcreteQuerys(), $"Custon\\{entity.EntityName}\\{entity.EntityName}ReadQuerys.cs");
@@ -1805,7 +1805,7 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateWriteConcreteQuerys(Migration.MigrationBase migration)
         {
-            foreach (var entity in migration.Entitys)
+            foreach (var entity in migration.Entitys.Where(e => !e.IsInternal))
             {
                 var filePath = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteQuerys.cs");
                 var filePathCuston = Path.Combine(GetPathAppInfraestructureWriteConcreteQuerys(), $"Migration\\{entity.EntityName}\\{entity.EntityName}WriteQuerys.cs");

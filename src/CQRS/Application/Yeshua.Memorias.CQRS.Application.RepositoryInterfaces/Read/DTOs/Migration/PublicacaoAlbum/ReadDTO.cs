@@ -25,6 +25,15 @@ namespace Repositorio.Outputs
     public string videostoragekey { get; set; } = string.Empty;
     public string youtubevideoid { get; set; } = string.Empty;
     public string youtubeurl { get; set; } = string.Empty;
+    public string conexaoyoutubeid { get; set; } = string.Empty;
+    public string canalyoutubeid { get; set; } = string.Empty;
+    public int youtubecredentialtenantid { get; set; }
+    public int canalstandardid { get; set; }
+    public int privacidadeyoutube { get; set; }
+    public int qualidadevideo { get; set; }
+    public int modelovideo { get; set; }
+    public int musicaid { get; set; }
+    public int volumemusica { get; set; }
     public string mensagem { get; set; } = string.Empty;
     public DateTime solicitadaemutc { get; set; }
     public DateTime publicadaemutc { get; set; }
@@ -34,13 +43,6 @@ namespace Repositorio.Outputs
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
-    public string conexaoyoutubeid { get; set; } = string.Empty;
-    public string canalyoutubeid { get; set; } = string.Empty;
-    public int youtubecredentialuserid { get; set; }
-    public int qualidadevideo { get; set; }
-    public int modelovideo { get; set; }
-    public int musicaid { get; set; }
-    public int volumemusica { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

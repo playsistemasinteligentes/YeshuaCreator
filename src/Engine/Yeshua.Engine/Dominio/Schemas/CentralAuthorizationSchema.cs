@@ -162,7 +162,7 @@ namespace Dominio.Schemas
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var command in subGroup.UseCaseCommand)
+                    foreach (var command in subGroup.UseCaseCommand.Where(c => !c.IsInternal))
                     {
                         var description = string.Join(
                             " / ",

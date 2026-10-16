@@ -24,6 +24,25 @@ namespace Dominio.Schemas.CQRS
 
         protected override StringBuilder GenerateCode()
         {
+            if (_entity.IsInternal)
+            {
+                return new StringBuilder($$"""
+                    using {{CQRSParam.I.NameSpaceUnitOfWork}};
+                    using {{CQRSParam.I.NameSpaceIterfaceAplicationServices}};
+                    using {{CQRSParam.I.NameSpaceIRepositoryRead}};
+                    namespace {{CQRSParam.I.NameSpaceReadRepository}};
+                    public partial class {{_entity.EntityName}}ReadRepository : I{{_entity.EntityName}}ReadRepository
+                    {
+                        protected readonly IUnitOfWork _unitOfWork;
+                        protected readonly IExecutionContext _executionContext;
+                        public {{_entity.EntityName}}ReadRepository(IUnitOfWork unitOfWork, IExecutionContext executionContext)
+                        {
+                            _unitOfWork = unitOfWork;
+                            _executionContext = executionContext;
+                        }
+                    }
+                    """);
+            }
 
             var sb = new StringBuilder();
             var itens = _entity.AddColumns.Where(x => x.WhereCanTakeOff).Select(colun => $"bool TakeOff{colun.Name} = false");

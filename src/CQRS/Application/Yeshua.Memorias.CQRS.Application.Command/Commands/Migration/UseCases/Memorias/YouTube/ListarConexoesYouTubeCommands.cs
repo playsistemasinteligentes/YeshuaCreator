@@ -23,6 +23,7 @@ public partial record ListarConexoesYouTubeInputCommand : ICommand
 public partial record ListarConexoesYouTubeOutputCommand : ICommand
 {
     public bool Configurado { get; set; }
+    public bool PublicacaoAutomaticaDisponivel { get; set; }
     public List<YouTubeConnectionInfo> Conexoes { get; set; } = default!;
 }
 

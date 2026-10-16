@@ -371,6 +371,12 @@ Command
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().Authorization = autorization;
             return this;
         }
+
+        public UseCaseGroup Internal()
+        {
+            UseCaseSubGroup.Last().UseCaseCommand.Last().IsInternal = true;
+            return this;
+        }
         public UseCaseGroup AddScope(string scope)
         {
             this.UseCaseSubGroup.Last().UseCaseCommand.Last().AddScope(scope);

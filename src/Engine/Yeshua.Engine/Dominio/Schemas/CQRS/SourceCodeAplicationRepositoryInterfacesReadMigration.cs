@@ -18,6 +18,9 @@ namespace Dominio.Schemas.CQRS
 
         protected override StringBuilder GenerateCode()
         {
+            if (_entity.IsInternal)
+                return new StringBuilder($"namespace {CQRSParam.I.NameSpaceIRepositoryRead};\npublic partial interface I{_entity.EntityName}ReadRepository {{ }}\n");
+
             StringBuilder sb = new StringBuilder();
             var itens = _entity.AddColumns.Where(x => x.WhereCanTakeOff).Select(colun => $"bool TakeOff{colun.Name} = false");
             string takeOff = itens.Any() ? ", " + string.Join(", ", itens) : string.Empty;

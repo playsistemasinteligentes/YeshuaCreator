@@ -36,7 +36,7 @@ async function main() {
             const channels = [structuredClone(channelA),structuredClone(channelB)];
             let configuration = {podeConfigurar:true,configurado:false,clientId:'',redirectUri:'https://playsis.com.br/spa/youtube-callback.html',segredoSalvo:false};
             const testSecret = 'GOCSPX-test-secret-only';
-            let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false, failRotation = false, photoPng;
+            let sessions = 0, sends = 0, failSecond = true, acceptDialogs = true, applicationConfigured = false, automaticAvailable = false, failRotation = false, photoPng;
             page.on('pageerror', error => errors.push(error.message));
             page.on('dialog',dialog => { dialogs.push(dialog.message());return acceptDialogs ? dialog.accept() : dialog.dismiss(); });
             await page.clock.install();
@@ -100,19 +100,24 @@ async function main() {
                     const id=photos.length+1;photos.push({id,albumid:9,fotoid:id+100,ordem:id,legenda:'',rotacao:rotation});return respond({success:true,isFinalized:true});
                 }
                 if (endpoint.endsWith('/ReadPublicacaoAlbum')) { assert.equal(body.userId,1);return read(publications); }
-                if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:applicationConfigured,conexoes:applicationConfigured?channels:[]});
+                if (endpoint.includes('YouTubeListarConexoes')) return respond({configurado:applicationConfigured,conexoes:applicationConfigured?channels:[],publicacaoAutomaticaDisponivel:applicationConfigured&&!channels.length&&automaticAvailable});
                 if (endpoint.includes('YouTubeIniciarConexao')) return respond({authorizationUrl:'https://evil.example/oauth'});
                 if (endpoint.includes('YouTubeConcluirConexao')) return respond({...channels[1],configurado:true});
                 if (endpoint.includes('YouTubeDesconectar')) { channels.find(item=>item.conexaoId===body.conexaoId).conectado=false;return respond({conectado:false}); }
                 if (endpoint.includes('AlbunsSolicitarPublicacao')) {
-                    const destination=publications.length ? channelA : channelB;
-                    assert.equal(body.conexaoYouTubeId,destination.conexaoId);
+                    const destination=channels.length ? publications.length ? channelA : channelB : {conexaoId:'33333333333333333333333333333333',canalId:'managed-channel'};
+                    assert.equal(body.conexaoYouTubeId,channels.length ? destination.conexaoId : '');
                     const id=publications.length ? Math.max(...publications.map(item=>item.id))+1 : 11;
                     const requestedAt=await page.evaluate(()=>new Date().toISOString());
-                    publications.push({id,albumid:9,userid:1,status:30,solicitadaemutc:id===11 ? requestedAt.replace(/Z$/,'') : requestedAt,mensagem:'Renderizando fotos.',correlationid:`corr-${id}`,conexaoyoutubeid:destination.conexaoId,canalyoutubeid:destination.canalId,youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
+                    publications.push({id,albumid:9,userid:1,status:30,solicitadaemutc:id===11 ? requestedAt.replace(/Z$/,'') : requestedAt,mensagem:'Renderizando fotos.',correlationid:`corr-${id}`,conexaoyoutubeid:destination.conexaoId,canalyoutubeid:destination.canalId,canalstandardid:channels.length?0:12,youtubevideoid:'',qualidadevideo:albums[0].qualidadevideo,modelovideo:albums[0].modelovideo,musicaid:albums[0].musicaid,volumemusica:albums[0].volumemusica});
                     return respond({publicacaoAlbumId:id,status:'Solicitada'});
                 }
-                if (endpoint.includes('YouTubeRetomarPublicacao')) { assert.equal(body.conexaoYouTubeId,publications[0].conexaoyoutubeid || channelA.conexaoId);publications[0].conexaoyoutubeid=body.conexaoYouTubeId;publications[0].status=40;return respond({agendada:true}); }
+                if (endpoint.includes('YouTubeRetomarPublicacao')) {
+                    assert.deepEqual(body,{publicacaoAlbumId:publications[0].id});
+                    if (!channels.some(c=>c.conexaoId===publications[0].conexaoyoutubeid&&c.conectado))
+                        return route.fulfill({status:400,json:{message:'O canal desta publicacao precisa ser reconectado.'}});
+                    publications[0].status=40;return respond({agendada:true});
+                }
                 if (endpoint.endsWith('/ReadySaga')) return read([{id:55,status:publications[0]?.status===60?2:1}]);
                 if (endpoint.endsWith('/ReadySagaStep')) {
                     const status=publications[0]?.status;
@@ -123,6 +128,7 @@ async function main() {
             });
             await page.goto(base);await page.waitForFunction(()=>window.ready);
             assert.equal(await page.locator('#mem-sharing').isHidden(),true,'Album sem publicacao nao possui link para compartilhar.');
+            assert.equal(await page.locator('#mem-youtube-studio').isHidden(),true,'Album sem video nao oferece gerenciamento no YouTube Studio.');
             assert.equal(await page.getByLabel('Modelo',{exact:true}).inputValue(),'1');
             assert.equal(await page.getByLabel('Musica',{exact:true}).inputValue(),'0');
             await page.getByLabel('Modelo',{exact:true}).selectOption('2');
@@ -143,7 +149,9 @@ async function main() {
             assert.equal(await page.getByLabel('Selecionar fotos',{exact:true}).isDisabled(),true,'O seletor nativo permanece invisivel quando desabilitado.');
             assert.equal(await page.getByRole('button',{name:'Enviar fotos',exact:true}).isDisabled(),true);
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isDisabled(),true);
-            assert.equal(await page.getByRole('button',{name:'Conectar canal',exact:true}).isDisabled(),true);
+            assert.equal(await page.getByRole('button',{name:'Adicionar canal proprio',exact:true}).isDisabled(),true);
+            assert.equal(await page.locator('#mem-channel-label').isHidden(),true);
+            assert.equal(await page.locator('#mem-privacy').inputValue(),'2','Novos albuns iniciam Nao listado.');
             const initial=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,initial,'Sem consultas passivas.');
             await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).click();
             const dialog=page.getByRole('dialog',{name:'Configuracao YouTube',exact:true});
@@ -170,7 +178,7 @@ async function main() {
             assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelA.conexaoId,'Novo login usa o unico canal conectado salvo no servidor.');
             assert.equal(await page.locator('#mem-channel-status').innerText(),'Canal conectado: Canal pessoal');
             assert.equal(await page.getByRole('button',{name:'Reconectar',exact:true}).count(),0);
-            assert.equal(await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).isEnabled(),true);
+            assert.equal(await page.getByRole('button',{name:'Adicionar outro canal proprio',exact:true}).isEnabled(),true);
             assert.equal(calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length,0,'Login e consulta nao iniciam OAuth.');
             await page.screenshot({path:path.join(__dirname,`artifacts/canal-salvo-${viewport.width}.png`),fullPage:true});
             await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).click();
@@ -192,9 +200,10 @@ async function main() {
             await page.getByLabel('Modelo',{exact:true}).selectOption('2');
             await page.locator('#mem-volume').fill('0');
             await page.getByLabel('Segundos por foto',{exact:true}).fill('2');
+            await page.getByLabel('Visibilidade no YouTube',{exact:true}).selectOption('1');
             const beforeCancel=calls.length;
             acceptDialogs=false;
-            await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).click();
+            await page.getByRole('button',{name:'Adicionar outro canal proprio',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-connect').disabled);
             acceptDialogs=true;
             assert.equal(calls.length,beforeCancel,'Cancelar saida nao cria autorizacao pendente.');
@@ -281,7 +290,7 @@ async function main() {
             assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isEnabled(),true);
             await page.getByRole('button',{name:'Publicar album',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
-            assert.equal(await page.getByLabel('Canal YouTube de destino').isDisabled(),true);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').isEnabled(),true,'A escolha para a proxima publicacao e independente do destino ja capturado.');
             assert.equal(await page.getByLabel('Titulo',{exact:true}).isDisabled(),true,'Album solicitado nao muda durante a renderizacao.');
             assert.equal(await page.getByLabel('Qualidade do video',{exact:true}).isDisabled(),true);
             assert.equal(publications[0].qualidadevideo,3);
@@ -295,16 +304,18 @@ async function main() {
             const unavailable=channels.pop();
             await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
-            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),'','Destino fixado indisponivel nao e substituido pelo outro canal conectado.');
-            assert.equal(await page.locator('#mem-channel-status').innerText(),'Canal desta publicacao indisponivel.');
-            assert.equal(await page.getByRole('button',{name:'Retomar envio',exact:true}).isDisabled(),true);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelA.conexaoId);
+            await page.getByRole('button',{name:'Retomar envio',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'O canal desta publicacao precisa ser reconectado.'}).waitFor();
+            assert.equal(publications[0].conexaoyoutubeid,channelB.conexaoId,'Retomar nao substitui o destino pelo canal selecionado na tela.');
             unavailable.conectado=false;channels.push(unavailable);
             await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            await page.getByLabel('Canal YouTube de destino').selectOption(channelB.conexaoId);
             assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelB.conexaoId);
             assert.equal(await page.locator('#mem-channel-status').innerText(),`Canal desconectado: ${channelB.canalTitulo}`);
             assert.equal(await page.getByRole('button',{name:'Reconectar',exact:true}).isEnabled(),true);
-            assert.equal(await page.getByRole('button',{name:'Retomar envio',exact:true}).isDisabled(),true);
+            assert.equal(await page.getByRole('button',{name:'Retomar envio',exact:true}).isEnabled(),true);
             unavailable.conectado=true;
             await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
@@ -315,6 +326,16 @@ async function main() {
             publications[0].status=60;publications[0].mensagem='Publicacao finalizada.';publications[0].youtubevideoid='a1B2c3D4e5F';publications[0].youtubeurl='javascript:alert(1)';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.getByRole('link',{name:'Abrir video',exact:true}).waitFor();
+            assert.equal(await page.getByRole('link',{name:'Gerenciar no YouTube Studio',exact:true}).isVisible(),true,'Video de canal proprio conserva o atalho de gerenciamento.');
+            publications[0].canalstandardid=12;
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            assert.equal(await page.locator('#mem-youtube-studio').isHidden(),true,'Um video standard oculta o gerenciamento mesmo com um canal proprio selecionado.');
+            assert.equal(await page.locator('#mem-sharing').isVisible(),true,'Ocultar o gerenciamento preserva o compartilhamento do video standard.');
+            publications[0].canalstandardid=0;
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            assert.equal(await page.locator('#mem-youtube-studio').isVisible(),true,'O atalho reaparece para um video de canal proprio.');
             assert.equal(await page.getByRole('link',{name:'Abrir video',exact:true}).getAttribute('href'),'https://www.youtube.com/watch?v=a1B2c3D4e5F');
             const videoUrl='https://www.youtube.com/watch?v=a1B2c3D4e5F';
             assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),videoUrl);
@@ -378,7 +399,7 @@ async function main() {
             await page.screenshot({path:path.join(__dirname,`artifacts/compartilhar-${viewport.width}.png`),fullPage:true});
             await page.waitForFunction(()=>!document.getElementById('mem-channel').disabled);
             await page.getByLabel('Canal YouTube de destino').selectOption(channelA.conexaoId);
-            await page.getByRole('button',{name:'Adicionar outro canal',exact:true}).click();
+            await page.getByRole('button',{name:'Adicionar outro canal proprio',exact:true}).click();
             await page.getByRole('status').filter({hasText:'Endereco de autorizacao invalido.'}).waitFor();
             const last=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,last,'Status somente por botao.');
             await page.getByLabel('Titulo',{exact:true}).fill('Memorias de familia');
@@ -420,9 +441,7 @@ async function main() {
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-channel').disabled);
             await page.getByLabel('Canal YouTube de destino').selectOption(channelA.conexaoId);
-            await page.getByRole('button',{name:'Retomar envio',exact:true}).click();
-            await page.getByRole('status').filter({hasText:'Envio agendado para o Worker.'}).waitFor();
-            assert.equal(calls.findLast(call=>call.endpoint.includes('YouTubeRetomarPublicacao')).body.conexaoYouTubeId,channelA.conexaoId);
+            assert.equal(await page.getByRole('button',{name:'Retomar envio',exact:true}).isDisabled(),true,'Publicacao sem destino nao pode receber um novo canal na retomada.');
             publications[0].status=90;publications[0].mensagem='Falha temporaria. A saga controla a retomada.';
             await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
             await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
@@ -452,6 +471,55 @@ async function main() {
             await page.reload();await page.waitForFunction(()=>window.ready);
             assert.equal(await page.getByRole('button',{name:'Configuracao YouTube',exact:true}).count(),0,'Usuario comum nao ve configuracao global.');
             assert.equal(await page.getByLabel('Canal YouTube de destino').locator('option').count(),3,'Usuario comum ainda pode usar suas conexoes salvas.');
+            channels.splice(0); automaticAvailable=true; publications.splice(0); albums[0].privacidade=2;
+            await page.reload();await page.waitForFunction(()=>window.ready);
+            assert.equal(await page.locator('#mem-channel-label').isHidden(),true,'Tenant sem canais proprios nao recebe seletor.');
+            assert.equal(await page.locator('#mem-channel-status').innerText(),'Publicacao automatica disponivel.');
+            assert.equal(await page.getByRole('button',{name:'Adicionar canal proprio',exact:true}).isEnabled(),true);
+            assert.equal(await page.locator('#mem-privacy option[value="1"]').evaluate(option=>option.disabled),true);
+            assert.equal(await page.getByRole('button',{name:'Publicar album',exact:true}).isEnabled(),true);
+            await page.screenshot({path:path.join(__dirname,`artifacts/canais-standard-${viewport.width}.png`),fullPage:true});
+            const oauthBefore=calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length;
+            await page.getByRole('button',{name:'Publicar album',exact:true}).click();
+            await page.getByRole('status').filter({hasText:'Publicacao solicitada.'}).waitFor();
+            assert.deepEqual(calls.findLast(call=>call.endpoint.includes('AlbunsSolicitarPublicacao')).body,{albumId:9,conexaoYouTubeId:''});
+            assert.equal(calls.filter(call=>call.endpoint.includes('YouTubeIniciarConexao')).length,oauthBefore,'Modo automatico nao pede login Google.');
+            assert.equal(await page.locator('#mem-publication-destination').innerText(),'Destino automatico');
+            publications[0].status=60;publications[0].youtubevideoid='s1T2a3N4d5R';
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            assert.equal(await page.locator('#mem-sharing').isVisible(),true,'Video standard continua disponivel para compartilhar.');
+            assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),'https://www.youtube.com/watch?v=s1T2a3N4d5R');
+            assert.equal(await page.locator('#mem-youtube-studio').isHidden(),true,'Video standard nao oferece acesso ao gerenciamento do canal da plataforma.');
+            await page.locator('#mem-sharing').screenshot({path:path.join(__dirname,`artifacts/compartilhar-standard-${viewport.width}.png`)});
+            automaticAvailable=false;
+            await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            assert.equal(await page.locator('#mem-channel-status').innerText(),'Publicacao automatica indisponivel no momento.');
+            channels.push(structuredClone(channelA));
+            await page.getByRole('button',{name:'Atualizar canais',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-channels').disabled);
+            assert.equal(await page.locator('#mem-channel-label').isVisible(),true);
+            assert.equal(await page.getByLabel('Canal YouTube de destino').inputValue(),channelA.conexaoId);
+            assert.equal(publications[0].conexaoyoutubeid,'33333333333333333333333333333333','Adicionar canal proprio nao troca a publicacao standard ja solicitada.');
+            assert.equal(await page.locator('#mem-privacy option[value="1"]').evaluate(option=>option.disabled),false);
+            assert.equal(await page.locator('#mem-youtube-studio').isHidden(),true,'Selecionar um canal proprio nao libera gerenciamento de um video standard.');
+            const ownPublication={...publications[0],id:publications[0].id+1,status:30,canalstandardid:0,
+                conexaoyoutubeid:channelA.conexaoId,canalyoutubeid:channelA.canalId,youtubevideoid:''};
+            publications.push(ownPublication);
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            await page.getByLabel('Historico de publicacoes',{exact:true}).selectOption(String(ownPublication.id));
+            await page.waitForFunction(()=>!document.getElementById('mem-history').disabled);
+            assert.equal(await page.locator('#mem-youtube-studio').isHidden(),true,'Publicacao propria pendente nao muda o gerenciamento do video standard compartilhado.');
+            ownPublication.status=60;ownPublication.youtubevideoid='o1W2n3V4i5D';
+            await page.getByRole('button',{name:'Atualizar status',exact:true}).click();
+            await page.waitForFunction(()=>!document.getElementById('mem-refresh-status').disabled);
+            await page.getByLabel('Historico de publicacoes',{exact:true}).selectOption(String(publications[0].id));
+            await page.waitForFunction(()=>!document.getElementById('mem-history').disabled);
+            assert.equal(await page.getByLabel('Link do album',{exact:true}).inputValue(),'https://www.youtube.com/watch?v=o1W2n3V4i5D');
+            assert.equal(await page.locator('#mem-youtube-studio').isVisible(),true,'O atalho acompanha o video proprio compartilhado, nao a publicacao standard selecionada no historico.');
+            const passive=calls.length;await page.waitForTimeout(1100);assert.equal(calls.length,passive,'Disponibilidade automatica tambem e atualizada somente por botao.');
             await page.evaluate(()=>document.getElementById('custom-page-container').replaceChildren());
             await page.waitForTimeout(50);assert.deepEqual(errors,[],'Desmontar a tela remove os controles e o dialogo sem erro.');
             await context.close();console.log(`Estudio Memorias passou: ${viewport.width}x${viewport.height}`);

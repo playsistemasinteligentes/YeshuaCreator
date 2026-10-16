@@ -102,8 +102,12 @@ public class YouTubePublicationTests
     {
         var context = DomainOperationContext.Create(operation, DomainEntryPoint.Crud, "Crud", 7, 9);
         var entity = new PublicacaoAlbumFactory(TestProxy.For<ILogger>()).Create(
-            context, 3, 5, Guid.NewGuid().ToString(), null, null, null, null, null,
-            DateTime.UtcNow, null, 45, Guid.NewGuid().ToString("N"), "channel-a", 9, 2, null, null, null);
+            context: context, id: 3, albumid: 5, correlationid: Guid.NewGuid().ToString(),
+            manifeststoragekey: null, videostoragekey: null, youtubevideoid: null, youtubeurl: null,
+            mensagem: null, solicitadaemutc: DateTime.UtcNow, publicadaemutc: null, status: 45,
+            conexaoyoutubeid: Guid.NewGuid().ToString("N"), canalyoutubeid: "channel-a", youtubecredentialtenantid: 7,
+            canalstandardid: 0, privacidadeyoutube: 1,
+            qualidadevideo: 2, modelovideo: null, musicaid: null, volumemusica: null);
         var result = PublicacaoAlbumDomainBehavior.Apply(entity, context);
         Assert.Contains(result.Errors, error => error.Contains("comandos de solicitar e retomar"));
     }
@@ -121,7 +125,9 @@ public class YouTubePublicationTests
         Assert.Equal(200, result.StatusCode);
         Assert.Equal(first.ConexaoId, rig.Created!.ConexaoYouTubeId);
         Assert.Equal("channel-a", rig.Created.CanalYouTubeId);
-        Assert.Equal(9, rig.Created.YouTubeCredentialUserId);
+        Assert.Equal(7, rig.Created.YouTubeCredentialTenantId);
+        Assert.Equal(0, rig.Created.CanalStandardId);
+        Assert.Equal(1, rig.Created.PrivacidadeYouTube);
         Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "Insert", "SaveSaga", "Commit" }, rig.Events);
         Assert.Equal(rig.Created.SolicitadaEmUtc.AddMinutes(-5), rig.LastRequestCutoff);
     }
@@ -229,6 +235,7 @@ public class YouTubePublicationTests
     {
         using var rig = new RequestRig();
         var destination = await rig.Connections.Connect("channel-a");
+        if (scenario == "missing-channel") await rig.Connections.Connect("channel-b");
         if (scenario == "other-album-user") rig.Album.userid = 99;
         if (scenario == "other-album-tenant") rig.Album.tenantid = 99;
         var id = scenario == "missing-channel" ? "" : scenario == "unknown-connection" ? Guid.NewGuid().ToString("N") : destination.ConexaoId;
@@ -309,7 +316,7 @@ public class YouTubePublicationTests
         var publication = new PublicacaoAlbumDTO
         {
             id = 3, tenantid = 7, userid = 9, status = 45,
-            conexaoyoutubeid = first.ConexaoId, canalyoutubeid = "channel-a", youtubecredentialuserid = 9
+            conexaoyoutubeid = first.ConexaoId, canalyoutubeid = "channel-a", youtubecredentialtenantid = 7
         };
         var writes = 0;
         var handler = new RetomarPublicacaoYouTubeHandler(rig.Logger, rig.Context, rig.Connections.Service,
@@ -323,26 +330,206 @@ public class YouTubePublicationTests
         Assert.Equal(0, writes);
     }
 
+    [Fact]
+    public async Task TenantWithoutOwnChannelUsesStandardDestinationInPublicationTransaction()
+    {
+        using var rig = new RequestRig();
+        rig.Album.privacidade = 2;
+        var channel = await AddStandard(rig);
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5 });
+        Assert.Equal(200, result.StatusCode);
+        Assert.Equal(channel.conexaoyoutubeid, rig.Created!.ConexaoYouTubeId);
+        Assert.Equal(90, rig.Created.YouTubeCredentialTenantId);
+        Assert.Equal(12, rig.Created.CanalStandardId);
+        Assert.Equal(2, rig.Created.PrivacidadeYouTube);
+        Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "ReserveChannel", "Insert", "SaveSaga", "Commit" }, rig.Events);
+    }
+
+    [Fact]
+    public async Task OwnChannelIsSharedWithOtherUserOfSameTenantWithoutUsingPool()
+    {
+        using var rig = new RequestRig();
+        var channel = await rig.Connections.Connect("channel-a");
+        rig.UserId = 99; rig.Album.userid = 99;
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.ConexaoId });
+        Assert.Equal(200, result.StatusCode);
+        Assert.Equal(7, rig.Created!.YouTubeCredentialTenantId);
+        Assert.Equal(0, rig.Reserves);
+    }
+
+    [Theory]
+    [InlineData("disconnected")]
+    [InlineData("wrong-channel")]
+    [InlineData("wrong-tenant")]
+    [InlineData("unregistered")]
+    public async Task UnavailableStandardDestinationDoesNotCreatePublication(string scenario)
+    {
+        using var rig = new RequestRig();
+        rig.Album.privacidade = 2;
+        var channel = await AddStandard(rig);
+        if (scenario == "disconnected") await rig.Connections.Service.DisconnectAsync(new(90, 9), channel.conexaoyoutubeid, default);
+        if (scenario == "wrong-channel") channel.canalid = "other-channel";
+        if (scenario == "wrong-tenant") channel.credencialtenantid = 91;
+        if (scenario == "unregistered") rig.Pool.Clear();
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5 });
+        Assert.Equal(400, result.StatusCode);
+        Assert.Null(rig.Created);
+        Assert.Equal(0, rig.Reserves);
+        Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "Rollback" }, rig.Events);
+    }
+
+    [Fact]
+    public async Task BrowserCannotSelectAStandardCredentialAsIfItWereOwn()
+    {
+        using var rig = new RequestRig();
+        rig.Album.privacidade = 2;
+        var channel = await AddStandard(rig);
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5, ConexaoYouTubeId = channel.conexaoyoutubeid });
+        Assert.Equal(400, result.StatusCode);
+        Assert.Empty(rig.Events);
+    }
+
+    [Fact]
+    public async Task StandardModeNeverSilentlyChangesPrivateAlbumToUnlisted()
+    {
+        using var rig = new RequestRig();
+        await AddStandard(rig);
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5 });
+        Assert.Equal(400, result.StatusCode);
+        Assert.Equal(1, rig.Album.privacidade);
+        Assert.Empty(rig.Events);
+    }
+
+    [Fact]
+    public async Task CooldownDoesNotReserveASecondChannel()
+    {
+        using var rig = new RequestRig();
+        rig.Album.privacidade = 2;
+        await AddStandard(rig);
+        var command = new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5 };
+        Assert.Equal(200, (await rig.Handler.ExecuteAsync(command)).StatusCode);
+        Assert.Equal(400, (await rig.Handler.ExecuteAsync(command)).StatusCode);
+        Assert.Equal(1, rig.Reserves);
+        Assert.Single(rig.Requests);
+    }
+
+    [Fact]
+    public async Task SagaSaveFailureRollsBackTheTransactionContainingStandardReservation()
+    {
+        using var rig = new RequestRig();
+        rig.Album.privacidade = 2; rig.FailSave = true;
+        await AddStandard(rig);
+        var result = await rig.Handler.ExecuteAsync(new SolicitarPublicacaoAlbumInputCommand { AlbumId = 5 });
+        Assert.Equal(500, result.StatusCode);
+        Assert.Equal(new[] { "BeginTran", "CheckRequestWindow", "ReserveChannel", "Insert", "SaveSaga", "Rollback" }, rig.Events);
+    }
+
+    [Fact]
+    public async Task PublicChannelListOnlyReportsStandardAvailabilityWithoutReservingOrExposingPool()
+    {
+        using var rig = new RequestRig();
+        var channel = await AddStandard(rig);
+        var handler = new ListarConexoesYouTubeHandler(rig.Logger, rig.Context, rig.Connections.Service, rig.Standard);
+        var result = await handler.ExecuteAsync(new ListarConexoesYouTubeInputCommand());
+        Assert.True(result.Data.PublicacaoAutomaticaDisponivel);
+        Assert.Empty(result.Data.Conexoes);
+        Assert.Equal(0, rig.Reserves);
+        var json = JsonSerializer.Serialize(result.Data);
+        Assert.DoesNotContain(channel.conexaoyoutubeid, json);
+        Assert.DoesNotContain("CredencialTenantId", json);
+    }
+
+    [Fact]
+    public async Task WorkerUsesPinnedStandardTenantAndVisibilityInsteadOfAlbumValues()
+    {
+        using var rig = new RenderedRig();
+        var channel = await rig.Connections.Connect("channel-a", new(90, 9));
+        rig.Publication.conexaoyoutubeid = channel.ConexaoId;
+        rig.Publication.youtubecredentialtenantid = 90;
+        rig.Publication.canalstandardid = 12;
+        rig.Publication.privacidadeyoutube = 2;
+        rig.Handler.Execute(rig.Saga, rig.Step);
+        Assert.Equal(2, rig.Upload.Requests);
+        Assert.Equal("unlisted", rig.Upload.Privacy);
+        Assert.Equal("access-channel-a", rig.Upload.Token);
+    }
+
+    [Fact]
+    public async Task ResumeOfStandardPublicationDoesNotConsultOrReserveThePool()
+    {
+        using var rig = new RequestRig();
+        var channel = await AddStandard(rig);
+        var publication = new PublicacaoAlbumDTO { id = 3, tenantid = 7, userid = 9, status = 45,
+            conexaoyoutubeid = channel.conexaoyoutubeid, canalyoutubeid = channel.canalid, youtubecredentialtenantid = 90, canalstandardid = 12 };
+        var handler = new RetomarPublicacaoYouTubeHandler(rig.Logger, rig.Context, rig.Connections.Service,
+            TestProxy.For<IPublicacaoAlbumWriteRepository>((method, args) =>
+            {
+                Assert.Equal("ScheduleYouTubeResume", method);
+                Assert.Equal(90, args[7]);
+                return true;
+            }), TestProxy.For<IPublicacaoAlbumReadRepository>((_, _) => publication), TestProxy.For<IUnitOfWork>());
+        var result = await handler.ExecuteAsync(new RetomarPublicacaoYouTubeInputCommand { PublicacaoAlbumId = 3 });
+        Assert.Equal(202, result.StatusCode);
+        Assert.Equal(0, rig.Reserves);
+    }
+
+    private static async Task<CanalStandardDTO> AddStandard(RequestRig rig)
+    {
+        var connection = await rig.Connections.Connect("channel-a", new(90, 9));
+        var channel = new CanalStandardDTO { id = 12, canalid = "channel-a", conexaoyoutubeid = connection.ConexaoId, credencialtenantid = 90 };
+        rig.Pool.Add(channel);
+        return channel;
+    }
+
+    [Fact]
+    public async Task MissingStandardAuthorizationWaitsForPlatformWithoutUsingAuthorsOwnAccount()
+    {
+        using var rig = new RenderedRig();
+        var own = await rig.Connections.Connect("channel-a");
+        rig.Publication.conexaoyoutubeid = own.ConexaoId;
+        rig.Publication.youtubecredentialtenantid = 90;
+        rig.Publication.canalstandardid = 12;
+        rig.Publication.privacidadeyoutube = 2;
+        rig.Handler.Execute(rig.Saga, rig.Step);
+        Assert.Equal(0, rig.Upload.Requests);
+        Assert.Equal(45, rig.Publication.status);
+        Assert.Equal(SagaStepStatus.WaitingResponse, rig.Step.Status);
+        Assert.Contains("plataforma", rig.Publication.mensagem);
+    }
+
     private sealed class RequestRig : IDisposable
     {
         public YouTubeConnectionTests.Rig Connections { get; } = new();
-        public AlbumDTO Album { get; } = new() { id = 5, tenantid = 7, userid = 9, titulo = "Album" };
+        public AlbumDTO Album { get; } = new() { id = 5, tenantid = 7, userid = 9, titulo = "Album", privacidade = 1 };
+        public List<CanalStandardDTO> Pool { get; } = [];
+        public int Reserves;
+        public bool FailSave;
+        public ReservarCanalStandardHandler Standard { get; }
+        public int UserId = 9;
         public IPublicacaoAlbumEntity? Created;
         public List<IPublicacaoAlbumEntity> Requests { get; } = [];
         public DateTime LastRequestCutoff;
         public List<string> Events { get; } = [];
         public ILogger Logger { get; } = TestProxy.For<ILogger>();
-        public IExecutionContext Context { get; } = TestProxy.For<IExecutionContext>((name, _) => name switch
-        {
-            "get_TenantID" => 7, "get_UserId" => 9, "get_ProcessingScope" => "tests", "get_TraceId" => "trace",
-            _ => null
-        });
+        public IExecutionContext Context { get; }
         public SolicitarPublicacaoAlbumHandler Handler { get; }
         public bool MusicAvailable = true;
 
         public RequestRig()
         {
-            Handler = new(TestProxy.For<IUnitOfWork>((method, _) => { Events.Add(method); return null; }),
+            Context = TestProxy.For<IExecutionContext>((name, _) => name switch
+            {
+                "get_TenantID" => 7, "get_UserId" => UserId, "get_ProcessingScope" => "tests", "get_TraceId" => "trace", _ => null
+            });
+            var unitOfWork = TestProxy.For<IUnitOfWork>((method, _) => { Events.Add(method); return null; });
+            Standard = new(unitOfWork, Logger, Context, TestProxy.For<IDomainTrackingPolicy>(),
+                TestProxy.For<ICanalStandardReadRepository>((_, _) => Pool),
+                TestProxy.For<ICanalStandardWriteRepository>((_, args) =>
+                {
+                    Events.Add("ReserveChannel"); Reserves++;
+                    return Pool.FirstOrDefault(c => ((int[])args[0]!).Contains(c.id));
+                }), Connections.Service);
+            Handler = new(unitOfWork,
                 Logger, Context, TestProxy.For<IDomainTrackingPolicy>(),
                 TestProxy.For<IAlbumReadRepository>((_, _) => Album), TestProxy.For<IAlbumWriteRepository>(),
                 TestProxy.For<IPublicacaoAlbumWriteRepository>((method, args) =>
@@ -350,7 +537,7 @@ public class YouTubePublicationTests
                     if (method == "CanRequestPublication")
                     {
                         Events.Add("CheckRequestWindow");
-                        Assert.Equal(5, args[0]); Assert.Equal(7, args[1]); Assert.Equal(9, args[2]);
+                        Assert.Equal(5, args[0]); Assert.Equal(7, args[1]); Assert.Equal(UserId, args[2]);
                         LastRequestCutoff = (DateTime)args[3]!;
                         return !Requests.Any(item => item.SolicitadaEmUtc > LastRequestCutoff);
                     }
@@ -358,8 +545,8 @@ public class YouTubePublicationTests
                     Events.Add("Insert"); Created = (IPublicacaoAlbumEntity)args[0]!;
                     Created.Id = Requests.Count + 3; Requests.Add(Created); return null;
                 }),
-                TestProxy.For<IySagaWriteRepository>((_, _) => { Events.Add("SaveSaga"); return null; }), Connections.Service,
-                TestProxy.For<IFileStorage>((_, _) => Task.FromResult(MusicAvailable)));
+                TestProxy.For<IySagaWriteRepository>((_, _) => { Events.Add("SaveSaga"); if (FailSave) throw new IOException("Save failed"); return null; }), Connections.Service,
+                TestProxy.For<IFileStorage>((_, _) => Task.FromResult(MusicAvailable)), Standard);
         }
         public void Dispose() => Connections.Dispose();
     }
@@ -369,7 +556,7 @@ public class YouTubePublicationTests
         public YouTubeConnectionTests.Rig Connections { get; } = new();
         public PublicacaoAlbumDTO Publication { get; } = new()
         {
-            id = 3, albumid = 5, tenantid = 7, userid = 9, youtubecredentialuserid = 9,
+            id = 3, albumid = 5, tenantid = 7, userid = 9, youtubecredentialtenantid = 7, privacidadeyoutube = 1,
             videostoragekey = "persistent/memorias/publicacoes/3/video.mp4", canalyoutubeid = "channel-a"
         };
         public PublicarAlbumYouTubeSaga Saga { get; } = new();

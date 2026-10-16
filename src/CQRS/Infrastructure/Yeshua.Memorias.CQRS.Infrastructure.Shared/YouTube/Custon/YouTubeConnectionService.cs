@@ -17,13 +17,13 @@ public sealed class YouTubeConnectionService(
         using var lease = await repository.AcquireAsync(owner, cancellationToken);
         var existing = string.IsNullOrEmpty(connectionId) ? null : lease.ReadAccount(connectionId);
         if (!string.IsNullOrEmpty(connectionId) && existing == null)
-            throw new YouTubeConnectionException("Conexao nao encontrada para este usuario.");
+            throw new YouTubeConnectionException("Conexao nao encontrada para este tenant.");
         connectionId = existing?.ConnectionId ?? Guid.NewGuid().ToString("N");
         var state = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
         var request = client.CreateAuthorization(state);
         lease.RemoveExpiredAuthorizations(Now);
         lease.SaveAuthorization(new(state, request.CodeVerifier, options.RedirectUri,
-            Now.AddMinutes(10), options.ClientId, connectionId, existing?.ChannelId ?? ""));
+            Now.AddMinutes(10), options.ClientId, connectionId, existing?.ChannelId ?? "", owner.UserId));
         return new(true, false, AuthorizationUrl: request.Url, Mensagem: "Autorizacao iniciada.", ConexaoId: connectionId);
     }
 
@@ -35,7 +35,7 @@ public sealed class YouTubeConnectionService(
             throw new YouTubeConnectionException("Retorno de autorizacao invalido.");
         using var lease = await repository.AcquireAsync(owner, cancellationToken);
         var pending = lease.ReadAuthorization(state);
-        if (pending == null || pending.ExpiresAtUtc <= Now || pending.ClientId != options.ClientId
+        if (pending == null || pending.InitiatingUserId != owner.UserId || pending.ExpiresAtUtc <= Now || pending.ClientId != options.ClientId
             || pending.RedirectUri != options.RedirectUri
             || !CryptographicOperations.FixedTimeEquals(Encoding.UTF8.GetBytes(pending.State), Encoding.UTF8.GetBytes(state)))
             throw new YouTubeConnectionException("Autorizacao invalida ou expirada. Conecte novamente.");

@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { createPaginationState, buildPaginationRequest, readPaginatedResult, applyPaginationResult } from '/spa/scripts/components/pagination.js?v=20261005-contingencia02';
 
 const assets = '/Custon/Apps/Memorias/pages';
-const version = '20261015-publication-cooldown01';
+const version = '20261016-channel-routing02';
 const publicationRequestInterval = 5 * 60 * 1000;
 const qualityNames = {1:'Economica (HD 720p)',2:'Padrao (Full HD 1080p)',3:'Alta (4K 2160p)'};
 const stepNames = [
@@ -56,6 +56,7 @@ class Studio {
     constructor(host) {
         this.host = host; this.controller = new AbortController(); this.busy = false; this.disposed = false;
         this.albums = []; this.album = null; this.dirty = false; this.queue = []; this.channels = [];
+        this.channelsLoaded = false; this.automaticAvailable = false;
         this.photos = []; this.photoEdits = new Set(); this.publications = []; this.publication = null; this.steps = [];
         this.photosLoaded = false; this.publicationsLoaded = false;
         this.photoPreview = null;
@@ -183,7 +184,7 @@ class Studio {
             if (completed) {
                 sessionStorage.removeItem('memorias.youtube.result');
                 const connection = JSON.parse(completed);
-                if (!this.publication?.conexaoyoutubeid) this.el('channel').value = connection.conexaoId || '';
+                this.el('channel').value = connection.conexaoId || '';
                 this.feedback(`Canal conectado: ${connection.canalTitulo || connection.canalId || ''}`);
             }
         });
@@ -432,26 +433,31 @@ class Studio {
         const result = await this.command('YouTubeListarConexoesYouTube');
         this.googleConfigured = result.configurado;
         this.channels = result.conexoes || [];
+        this.channelsLoaded = true; this.automaticAvailable = Boolean(result.publicacaoAutomaticaDisponivel);
         const previous = this.el('channel').value;
         this.el('channel').replaceChildren(new Option('Selecione um canal', ''));
         for (const channel of this.channels) this.el('channel').append(new Option(`${channel.canalTitulo || channel.canalId}${channel.conectado ? '' : ' (desconectado)'}`, channel.conexaoId));
-        const fixed = this.destinationLocked() && this.publication?.conexaoyoutubeid;
         const connected = this.channels.filter(channel => channel.conectado);
-        this.el('channel').value = fixed || (this.channels.some(channel => channel.conexaoId === previous) ? previous
-            : connected.length === 1 ? connected[0].conexaoId : '');
+        this.el('channel').value = this.channels.some(channel => channel.conexaoId === previous) ? previous
+            : connected.length === 1 ? connected[0].conexaoId : '';
         this.renderChannelStatus();
     }
     renderChannelStatus() {
         const selected = this.selectedChannel();
+        this.el('channel-label').hidden = !this.channels.length;
+        this.el('privacy').querySelector('option[value="1"]').disabled = this.channelsLoaded && !this.channels.length;
         let state = 'waiting', message = 'Canal de destino nao selecionado.';
         if (this.googleConfigured === false) message = 'YouTube ainda nao configurado no servidor.';
         else if (selected) {
             state = selected.conectado ? 'connected' : 'disconnected';
             message = `Canal ${selected.conectado ? 'conectado' : 'desconectado'}: ${selected.canalTitulo || selected.canalId}`;
-        } else if (this.destinationLocked()) message = 'Canal desta publicacao indisponivel.';
+        } else if (this.channelsLoaded && !this.channels.length) {
+            state = this.automaticAvailable ? 'connected' : 'waiting';
+            message = this.automaticAvailable ? 'Publicacao automatica disponivel.' : 'Publicacao automatica indisponivel no momento.';
+        }
         else if (!this.channels.some(channel => channel.conectado)) message = 'Nenhum canal conectado.';
         this.text('channel-status', message); this.el('channel-status').dataset.state = state;
-        this.text('connect-label', this.channels.length ? 'Adicionar outro canal' : 'Conectar canal');
+        this.text('connect-label', this.channels.length ? 'Adicionar outro canal proprio' : 'Adicionar canal proprio');
     }
     async loadConfiguration() {
         this.configuration = await this.command('YouTubeConsultarConfiguracaoYouTube');
@@ -475,7 +481,6 @@ class Studio {
         } finally { const secret = this.el('config-secret'); if (secret) secret.value = ''; }
     }
     selectedChannel() { return this.channels.find(channel => channel.conexaoId === this.el('channel').value); }
-    destinationLocked() { return Boolean(this.publication?.conexaoyoutubeid) && [10,20,30,40,45,50].includes(Number(this.publication?.status)); }
     async authorize(connectionId) {
         if (!this.canLeave()) return;
         const result = await this.command('YouTubeIniciarConexaoYouTube', {conexaoId:connectionId || ''});
@@ -540,18 +545,17 @@ class Studio {
         const publication = this.publication;
         this.text('publication-state', publication ? `#${publication.id} - ${publicationNames[publication.status] || 'Em processamento'}` : 'Ainda nao solicitada');
         this.text('publication-message', publication?.mensagem || '');
-        this.text('publication-destination', publication?.canalyoutubeid ? `Canal desta publicacao: ${publication.canalyoutubeid}` : '');
+        this.text('publication-destination', publication?.canalstandardid > 0 ? 'Destino automatico' : publication?.canalyoutubeid ? `Canal desta publicacao: ${publication.canalyoutubeid}` : '');
         this.text('publication-quality', publication ? `Qualidade: ${qualityNames[publication.qualidadevideo || 2] || 'Indisponivel'}` : '');
         const model = this.models.find(item => item.id === (publication?.modelovideo || 1));
         const track = this.music.find(item => item.id === publication?.musicaid);
         this.text('publication-model', publication ? `${model?.nome || 'Classico'} / ${track?.titulo || 'Sem musica'}` : '');
-        if (publication?.conexaoyoutubeid && this.destinationLocked()) {
-            this.el('channel').value = publication.conexaoyoutubeid;
-        }
+        const publishedVideo = this.publishedAlbumVideo();
         const url = this.videoUrl();
         this.el('sharing').hidden = !url;
         this.el('published-link').value = url;
-        this.text('sharing-publication', url ? `#${this.publishedAlbumVideo().id}` : '');
+        this.text('sharing-publication', publishedVideo ? `#${publishedVideo.id}` : '');
+        this.el('youtube-studio').hidden = !publishedVideo || publishedVideo.canalstandardid > 0;
         this.el('share-link').hidden = !window.isSecureContext || typeof navigator.share !== 'function';
         for (const [id, target] of [['video-link', url], ['share-whatsapp', url ? `https://wa.me/?text=${encodeURIComponent(url)}` : ''], ['share-email', url ? `mailto:?body=${encodeURIComponent(url)}` : '']]) {
             if (target) this.el(id).href = target; else this.el(id).removeAttribute('href');
@@ -616,20 +620,22 @@ class Studio {
         if (!this.photos.length) return 'Adicione fotos ao album.';
         const next = this.nextPublicationAt();
         if (next > Date.now()) return `Novo envio deste album disponivel as ${new Date(next).toLocaleTimeString('pt-BR')}.`;
-        if (!this.selectedChannel()?.conectado) return 'Selecione um canal conectado.';
+        if (!this.channelsLoaded) return 'Consulte os canais antes de publicar.';
+        if (this.channels.length && !this.selectedChannel()?.conectado) return 'Selecione um canal proprio conectado.';
+        if (!this.channels.length && !this.automaticAvailable) return 'Publicacao automatica indisponivel no momento.';
+        if (!this.channels.length && Number(this.el('privacy').value) === 1) return 'Escolha Nao listado ou Publico. Privado exige um canal proprio.';
         return '';
     }
     async publish() {
         const reason = this.publishReason(); if (reason) throw new Error(reason);
         if (this.publicationInProgress() && !window.confirm('A publicacao anterior ainda pode estar em processamento. Enviar novamente pode gerar outro video. Deseja continuar?')) return;
         if (this.el('privacy').value === '3' && !window.confirm('Publicar este album como publico no YouTube?')) return;
-        const result = await this.command('AlbunsSolicitarPublicacaoAlbum', {albumId:this.album.id,conexaoYouTubeId:this.selectedChannel().conexaoId});
+        const result = await this.command('AlbunsSolicitarPublicacaoAlbum', {albumId:this.album.id,conexaoYouTubeId:this.selectedChannel()?.conexaoId || ''});
         this.publication = {id:result.publicacaoAlbumId};
         await this.refreshPublication(); this.feedback('Publicacao solicitada.');
     }
     async resume() {
-        const connection = this.publication?.conexaoyoutubeid || this.selectedChannel()?.conexaoId;
-        await this.command('YouTubeRetomarPublicacaoYouTube', {publicacaoAlbumId:this.publication.id,conexaoYouTubeId:connection});
+        await this.command('YouTubeRetomarPublicacaoYouTube', {publicacaoAlbumId:this.publication.id});
         await this.refreshPublication(); this.feedback('Envio agendado para o Worker.');
     }
     updateControls() {
@@ -658,12 +664,13 @@ class Studio {
         this.el('refresh-photos').disabled = this.busy || !this.album?.id;
         this.el('refresh-status').disabled = this.busy || !this.album?.id;
         this.el('more-photos').disabled = this.busy || !this.album?.id || this.photoEdits.size > 0;
-        this.el('channel').disabled = this.busy || this.destinationLocked();
+        this.el('channel').disabled = this.busy || !this.channels.length;
         this.el('connect').disabled = this.busy || !this.googleConfigured;
         this.el('reconnect').hidden = !this.selectedChannel() || Boolean(this.selectedChannel().conectado);
         this.el('reconnect').disabled = this.busy || !this.selectedChannel() || Boolean(this.selectedChannel().conectado);
         this.el('disconnect').disabled = this.busy || !this.selectedChannel()?.conectado;
-        this.el('resume').disabled = this.busy || !this.selectedChannel()?.conectado;
+        this.el('disconnect').hidden = !this.selectedChannel();
+        this.el('resume').disabled = this.busy || !this.publication?.conexaoyoutubeid;
         const reason = this.publishReason(); this.text('publish-reason', reason);
         this.el('publish').disabled = this.busy || Boolean(reason);
         this.text('unsaved', this.dirty ? 'Alteracoes nao salvas' : '');

@@ -15,7 +15,7 @@ public partial interface IPublicacaoAlbumWriteRepository
     bool CanRequestPublication(int albumId, int tenantId, int userId, DateTime requestedAfterUtc);
 
     bool ScheduleYouTubeResume(int publicationId, int tenantId, int userId, string processingScope, DateTime now,
-        string connectionId, string channelId, int credentialUserId);
+        string connectionId, string channelId, int credentialTenantId);
 }
 
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

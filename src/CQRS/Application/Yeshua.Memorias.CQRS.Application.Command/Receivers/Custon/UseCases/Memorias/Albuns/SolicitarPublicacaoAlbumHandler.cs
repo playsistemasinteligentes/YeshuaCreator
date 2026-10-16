@@ -37,8 +37,9 @@ namespace Command.Receivers.UseCase
         private readonly IPublicacaoAlbumWriteRepository _repWritePublicacaoAlbum = default!;
         private readonly IySagaWriteRepository _sagaWriteRepository = default!;
         private readonly IYouTubeConnectionService _connections;
+        private readonly ReservarCanalStandardHandler _standard;
         private readonly IFileStorage _music;
-        public SolicitarPublicacaoAlbumHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IAlbumReadRepository repReadAlbum, IAlbumWriteRepository repWriteAlbum, IPublicacaoAlbumWriteRepository repWritePublicacaoAlbum, IySagaWriteRepository sagaWriteRepository, IYouTubeConnectionService connections, IFileStorage music)
+        public SolicitarPublicacaoAlbumHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IAlbumReadRepository repReadAlbum, IAlbumWriteRepository repWriteAlbum, IPublicacaoAlbumWriteRepository repWritePublicacaoAlbum, IySagaWriteRepository sagaWriteRepository, IYouTubeConnectionService connections, IFileStorage music, ReservarCanalStandardHandler standard)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -50,6 +51,7 @@ namespace Command.Receivers.UseCase
             _repWritePublicacaoAlbum = repWritePublicacaoAlbum;
             _sagaWriteRepository = sagaWriteRepository;
             _connections = connections;
+            _standard = standard;
             _music = music;
         }
 protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> CustomActionHookAsync(State<SolicitarPublicacaoAlbumOutputCommand> state, SolicitarPublicacaoAlbumInputCommand comand, CancellationToken cancellationToken)
@@ -60,6 +62,8 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
     var album = _repReadAlbum.FirstById(comand.AlbumId);
     if (album == null || album.deleted || album.tenantid != _executionContext.TenantID || album.userid != _executionContext.UserId)
         return ValidationError("Album nao encontrado.", new SolicitarPublicacaoAlbumOutputCommand());
+    if (album.privacidade is < 1 or > 3)
+        return ValidationError("Selecione uma visibilidade valida para o video.", new SolicitarPublicacaoAlbumOutputCommand());
 
     if (!VideoQualityProfiles.TryResolve(album.qualidadevideo, out var quality))
         return ValidationError("Selecione uma qualidade de video valida.", new SolicitarPublicacaoAlbumOutputCommand());
@@ -69,15 +73,27 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
     if (track != null && !await _music.ExistsAsync(new StoragePath(track.StorageKey), cancellationToken))
         return ValidationError("A musica selecionada nao esta disponivel no servidor.", new SolicitarPublicacaoAlbumOutputCommand());
 
-    YouTubeConnectionStatus destination;
+    YouTubeConnectionStatus? destination = null;
+    var credentialTenantId = _executionContext.TenantID;
+    var standardId = 0;
     try
     {
-        if (string.IsNullOrWhiteSpace(comand.ConexaoYouTubeId))
-            return ValidationError("Selecione o canal de destino.", new SolicitarPublicacaoAlbumOutputCommand());
-        destination = await _connections.StatusAsync(
-            new YouTubeOwner(_executionContext.TenantID, _executionContext.UserId), comand.ConexaoYouTubeId, cancellationToken);
-        if (!destination.Conectado)
-            return ValidationError("Conecte o canal de destino antes de publicar.", new SolicitarPublicacaoAlbumOutputCommand());
+        var own = await _connections.ListAsync(new YouTubeOwner(_executionContext.TenantID, _executionContext.UserId), cancellationToken);
+        if (own.Conexoes.Count > 0)
+        {
+            destination = own.Conexoes.FirstOrDefault(c => c.ConexaoId == comand.ConexaoYouTubeId);
+            if (destination is null && string.IsNullOrWhiteSpace(comand.ConexaoYouTubeId) && own.Conexoes.Count == 1)
+                destination = own.Conexoes[0];
+            if (destination?.Conectado != true)
+                return ValidationError("Selecione um canal proprio conectado deste tenant.", new SolicitarPublicacaoAlbumOutputCommand());
+        }
+        else
+        {
+            if (!string.IsNullOrWhiteSpace(comand.ConexaoYouTubeId))
+                return ValidationError("Canal nao encontrado neste tenant.", new SolicitarPublicacaoAlbumOutputCommand());
+            if (album.privacidade == 1)
+                return ValidationError("Para publicacao automatica, escolha Nao listado ou Publico. Privado exige um canal proprio.", new SolicitarPublicacaoAlbumOutputCommand());
+        }
     }
     catch (YouTubeConnectionException exception)
     {
@@ -89,24 +105,7 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
     var domainContext = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.UseCase,
         "SolicitarPublicacaoAlbum", _executionContext.TenantID, _executionContext.UserId,
         traceId: _executionContext.TraceId);
-    var publicacao = new PublicacaoAlbumFactory(_logger, _domainTrackingPolicy).Create(
-        domainContext,
-        null,
-        comand.AlbumId,
-        correlationId,
-        null,
-        null,
-        null,
-        null,
-        "Publicacao solicitada.",
-        requestedAtUtc,
-        null,
-        MemoriasPublicationStatus.Solicitada,
-        destination.ConexaoId, destination.CanalId, _executionContext.UserId, (int)quality.Quality,
-        model.Id, album.musicaid, album.volumemusica);
-    var validation = PublicacaoAlbumDomainBehavior.Apply(publicacao, domainContext);
-    if (!validation.IsValid)
-        return ValidationError(validation.Errors, new SolicitarPublicacaoAlbumOutputCommand());
+    IPublicacaoAlbumEntity publicacao;
 
     var saga = new PublicarAlbumYouTubeSaga();
     saga.CreatedAt = DateTime.UtcNow;
@@ -136,6 +135,28 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
             return ValidationError("Aguarde cinco minutos entre pedidos de publicacao deste album.",
                 new SolicitarPublicacaoAlbumOutputCommand());
         }
+
+        if (destination is null)
+        {
+            var reservation = await _standard.ExecuteAsync(new ReservarCanalStandardInputCommand(), cancellationToken);
+            if (reservation.StatusCode != 200 || !reservation.Data.Disponivel)
+                return ValidationError("Nenhum canal disponivel para publicacao automatica. Tente novamente mais tarde.", new SolicitarPublicacaoAlbumOutputCommand());
+            var channel = reservation.Data;
+            standardId = channel.CanalStandardId;
+            credentialTenantId = channel.CredencialTenantId;
+            destination = new YouTubeConnectionStatus(true, true, channel.CanalId, ConexaoId: channel.ConexaoYouTubeId);
+        }
+        publicacao = new PublicacaoAlbumFactory(_logger, _domainTrackingPolicy).Create(
+            context: domainContext, id: null, albumid: comand.AlbumId, correlationid: correlationId,
+            manifeststoragekey: null, videostoragekey: null, youtubevideoid: null, youtubeurl: null,
+            mensagem: "Publicacao solicitada.", solicitadaemutc: requestedAtUtc, publicadaemutc: null,
+            status: MemoriasPublicationStatus.Solicitada, conexaoyoutubeid: destination.ConexaoId,
+            canalyoutubeid: destination.CanalId, youtubecredentialtenantid: credentialTenantId,
+            canalstandardid: standardId, privacidadeyoutube: album.privacidade,
+            qualidadevideo: (int)quality.Quality, modelovideo: model.Id, musicaid: album.musicaid, volumemusica: album.volumemusica);
+        var validation = PublicacaoAlbumDomainBehavior.Apply(publicacao, domainContext);
+        if (!validation.IsValid)
+            return ValidationError(validation.Errors, new SolicitarPublicacaoAlbumOutputCommand());
 
         _repWritePublicacaoAlbum.Insert(publicacao);
         saga.Start(publicacao.Id.GetValueOrDefault().ToString(), nameof(PublicacaoAlbumEntity));

@@ -62,17 +62,19 @@ public partial class PublicacaoAlbumCrudApiSeedTests : ApiIntegrationTestBase
             ["VideoStorageKey"] = ApiTestData.Text("PublicacaoAlbum VideoStorageKey", 80),
             ["YouTubeVideoId"] = ApiTestData.Text("PublicacaoAlbum YouTubeVideoId", 80),
             ["YouTubeUrl"] = ApiTestData.Text("PublicacaoAlbum YouTubeUrl", 80),
-            ["Mensagem"] = ApiTestData.Text("PublicacaoAlbum Mensagem", 80),
-            ["SolicitadaEmUtc"] = DateTime.UtcNow,
-            ["PublicadaEmUtc"] = DateTime.UtcNow,
-            ["Status"] = 1,
             ["ConexaoYouTubeId"] = ApiTestData.Text("PublicacaoAlbum ConexaoYouTubeId", 32),
             ["CanalYouTubeId"] = ApiTestData.Text("PublicacaoAlbum CanalYouTubeId", 80),
-            ["YouTubeCredentialUserId"] = 1,
+            ["YouTubeCredentialTenantId"] = 1,
+            ["CanalStandardId"] = 1,
+            ["PrivacidadeYouTube"] = 1,
             ["QualidadeVideo"] = 1,
             ["ModeloVideo"] = 1,
             ["MusicaId"] = 0,
             ["VolumeMusica"] = 1,
+            ["Mensagem"] = ApiTestData.Text("PublicacaoAlbum Mensagem", 80),
+            ["SolicitadaEmUtc"] = DateTime.UtcNow,
+            ["PublicadaEmUtc"] = DateTime.UtcNow,
+            ["Status"] = 1,
         };
     }
 
@@ -95,17 +97,19 @@ public partial class PublicacaoAlbumCrudApiSeedTests : ApiIntegrationTestBase
         payload["VideoStorageKey"] = ApiTestData.Text("PublicacaoAlbum VideoStorageKey Update", 80);
         payload["YouTubeVideoId"] = ApiTestData.Text("PublicacaoAlbum YouTubeVideoId Update", 80);
         payload["YouTubeUrl"] = ApiTestData.Text("PublicacaoAlbum YouTubeUrl Update", 80);
-        payload["Mensagem"] = ApiTestData.Text("PublicacaoAlbum Mensagem Update", 80);
-        payload["SolicitadaEmUtc"] = DateTime.UtcNow.AddMinutes(1);
-        payload["PublicadaEmUtc"] = DateTime.UtcNow.AddMinutes(1);
-        payload["Status"] = 1;
         payload["ConexaoYouTubeId"] = ApiTestData.Text("PublicacaoAlbum ConexaoYouTubeId Update", 32);
         payload["CanalYouTubeId"] = ApiTestData.Text("PublicacaoAlbum CanalYouTubeId Update", 80);
-        payload["YouTubeCredentialUserId"] = 2;
+        payload["YouTubeCredentialTenantId"] = 2;
+        payload["CanalStandardId"] = 2;
+        payload["PrivacidadeYouTube"] = 2;
         payload["QualidadeVideo"] = 1;
         payload["ModeloVideo"] = 1;
         payload["MusicaId"] = 0;
         payload["VolumeMusica"] = 2;
+        payload["Mensagem"] = ApiTestData.Text("PublicacaoAlbum Mensagem Update", 80);
+        payload["SolicitadaEmUtc"] = DateTime.UtcNow.AddMinutes(1);
+        payload["PublicadaEmUtc"] = DateTime.UtcNow.AddMinutes(1);
+        payload["Status"] = 1;
         return payload;
     }
 

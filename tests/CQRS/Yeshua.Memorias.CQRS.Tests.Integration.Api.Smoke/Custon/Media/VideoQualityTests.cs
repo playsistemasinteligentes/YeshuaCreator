@@ -37,7 +37,9 @@ public class VideoQualityTests
     [InlineData(3, 3)]
     public void AlbumDomainNormalizesLegacyAndAcceptsAllClasses(int? selected, int expected)
     {
-        var album = new AlbumFactory(TestProxy.For<Dominio.Interfaces.ILogger>()).Create(1, "Album", "", 1, 4, 1, selected, null, null, null);
+        var album = new AlbumFactory(TestProxy.For<Dominio.Interfaces.ILogger>()).Create(
+            id: 1, titulo: "Album", descricao: "", privacidade: 1, segundosporfoto: 4,
+            status: 1, qualidadevideo: selected, modelovideo: null, musicaid: null, volumemusica: null);
         var result = AlbumDomainBehavior.Apply(album, DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "PostAlbum", 7, 9));
         Assert.True(result.IsValid, string.Join("; ", result.Errors));
         Assert.Equal(expected, album.QualidadeVideo);
@@ -50,7 +52,9 @@ public class VideoQualityTests
     public void InvalidQualityIsNotSilentlyReplaced(int quality)
     {
         Assert.False(VideoQualityProfiles.TryResolve(quality, out _));
-        var album = new AlbumFactory(TestProxy.For<Dominio.Interfaces.ILogger>()).Create(1, "Album", "", 1, 4, 1, quality, null, null, null);
+        var album = new AlbumFactory(TestProxy.For<Dominio.Interfaces.ILogger>()).Create(
+            id: 1, titulo: "Album", descricao: "", privacidade: 1, segundosporfoto: 4,
+            status: 1, qualidadevideo: quality, modelovideo: null, musicaid: null, volumemusica: null);
         var result = AlbumDomainBehavior.Apply(album, DomainOperationContext.Create(DomainOperation.Alteracao, DomainEntryPoint.Crud, "PutAlbum", 7, 9));
         Assert.Contains(result.Errors, error => error.Contains("qualidade de video valida"));
     }

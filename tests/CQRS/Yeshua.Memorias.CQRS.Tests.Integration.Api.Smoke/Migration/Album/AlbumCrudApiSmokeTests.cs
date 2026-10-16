@@ -82,11 +82,11 @@ public partial class AlbumCrudApiSmokeTests : ApiIntegrationTestBase
             ["Descricao"] = ApiTestData.Text("Album Descricao", 80),
             ["Privacidade"] = 1,
             ["SegundosPorFoto"] = 1,
-            ["Status"] = 1,
             ["QualidadeVideo"] = 1,
             ["ModeloVideo"] = 1,
             ["MusicaId"] = 0,
             ["VolumeMusica"] = 1,
+            ["Status"] = 1,
         };
     }
 
@@ -107,11 +107,11 @@ public partial class AlbumCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Descricao"] = ApiTestData.Text("Album Descricao Update", 80);
         payload["Privacidade"] = 1;
         payload["SegundosPorFoto"] = 2;
-        payload["Status"] = 1;
         payload["QualidadeVideo"] = 1;
         payload["ModeloVideo"] = 1;
         payload["MusicaId"] = 0;
         payload["VolumeMusica"] = 2;
+        payload["Status"] = 1;
         return payload;
     }
 

@@ -28,6 +28,15 @@ namespace IRepository.Write
         void UpdateVideoStorageKey(int id, string value);
         void UpdateYouTubeVideoId(int id, string value);
         void UpdateYouTubeUrl(int id, string value);
+        void UpdateConexaoYouTubeId(int id, string value);
+        void UpdateCanalYouTubeId(int id, string value);
+        void UpdateYouTubeCredentialTenantId(int id, int value);
+        void UpdateCanalStandardId(int id, int value);
+        void UpdatePrivacidadeYouTube(int id, int value);
+        void UpdateQualidadeVideo(int id, int value);
+        void UpdateModeloVideo(int id, int value);
+        void UpdateMusicaId(int id, int value);
+        void UpdateVolumeMusica(int id, int value);
         void UpdateMensagem(int id, string value);
         void UpdateSolicitadaEmUtc(int id, DateTime value);
         void UpdatePublicadaEmUtc(int id, DateTime value);
@@ -37,13 +46,6 @@ namespace IRepository.Write
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
         void UpdateOperationalEntityId(int id, string value);
-        void UpdateConexaoYouTubeId(int id, string value);
-        void UpdateCanalYouTubeId(int id, string value);
-        void UpdateYouTubeCredentialUserId(int id, int value);
-        void UpdateQualidadeVideo(int id, int value);
-        void UpdateModeloVideo(int id, int value);
-        void UpdateMusicaId(int id, int value);
-        void UpdateVolumeMusica(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

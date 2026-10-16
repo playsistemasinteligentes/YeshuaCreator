@@ -330,6 +330,7 @@ private OperationalLoggingDecision Evaluate(
                         "Album" => GetAlbumMask(policy, operation, recordId),
                         "AlbumFoto" => GetAlbumFotoMask(policy, operation, recordId),
                         "PublicacaoAlbum" => GetPublicacaoAlbumMask(policy, operation, recordId),
+                        "CanalStandard" => GetCanalStandardMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -405,6 +406,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AlbumTrackingFields.Privacidade;
                     if (DomainFieldTracked(policy, "Album", operation, recordId, "SegundosPorFoto"))
                         mask |= AlbumTrackingFields.SegundosPorFoto;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "QualidadeVideo"))
+                        mask |= AlbumTrackingFields.QualidadeVideo;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "ModeloVideo"))
+                        mask |= AlbumTrackingFields.ModeloVideo;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "MusicaId"))
+                        mask |= AlbumTrackingFields.MusicaId;
+                    if (DomainFieldTracked(policy, "Album", operation, recordId, "VolumeMusica"))
+                        mask |= AlbumTrackingFields.VolumeMusica;
                     if (DomainFieldTracked(policy, "Album", operation, recordId, "Status"))
                         mask |= AlbumTrackingFields.Status;
                     if (DomainFieldTracked(policy, "Album", operation, recordId, "TenantID"))
@@ -417,14 +426,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AlbumTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "Album", operation, recordId, "OperationalEntityId"))
                         mask |= AlbumTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "Album", operation, recordId, "QualidadeVideo"))
-                        mask |= AlbumTrackingFields.QualidadeVideo;
-                    if (DomainFieldTracked(policy, "Album", operation, recordId, "ModeloVideo"))
-                        mask |= AlbumTrackingFields.ModeloVideo;
-                    if (DomainFieldTracked(policy, "Album", operation, recordId, "MusicaId"))
-                        mask |= AlbumTrackingFields.MusicaId;
-                    if (DomainFieldTracked(policy, "Album", operation, recordId, "VolumeMusica"))
-                        mask |= AlbumTrackingFields.VolumeMusica;
                     return mask;
                 }
 
@@ -444,6 +445,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AlbumFotoTrackingFields.Ordem;
                     if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "Legenda"))
                         mask |= AlbumFotoTrackingFields.Legenda;
+                    if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "Rotacao"))
+                        mask |= AlbumFotoTrackingFields.Rotacao;
                     if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "TenantID"))
                         mask |= AlbumFotoTrackingFields.TenantID;
                     if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "Deleted"))
@@ -454,8 +457,6 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AlbumFotoTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "OperationalEntityId"))
                         mask |= AlbumFotoTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "AlbumFoto", operation, recordId, "Rotacao"))
-                        mask |= AlbumFotoTrackingFields.Rotacao;
                     return mask;
                 }
 
@@ -479,6 +480,24 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PublicacaoAlbumTrackingFields.YouTubeVideoId;
                     if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "YouTubeUrl"))
                         mask |= PublicacaoAlbumTrackingFields.YouTubeUrl;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "ConexaoYouTubeId"))
+                        mask |= PublicacaoAlbumTrackingFields.ConexaoYouTubeId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "CanalYouTubeId"))
+                        mask |= PublicacaoAlbumTrackingFields.CanalYouTubeId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "YouTubeCredentialTenantId"))
+                        mask |= PublicacaoAlbumTrackingFields.YouTubeCredentialTenantId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "CanalStandardId"))
+                        mask |= PublicacaoAlbumTrackingFields.CanalStandardId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "PrivacidadeYouTube"))
+                        mask |= PublicacaoAlbumTrackingFields.PrivacidadeYouTube;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "QualidadeVideo"))
+                        mask |= PublicacaoAlbumTrackingFields.QualidadeVideo;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "ModeloVideo"))
+                        mask |= PublicacaoAlbumTrackingFields.ModeloVideo;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "MusicaId"))
+                        mask |= PublicacaoAlbumTrackingFields.MusicaId;
+                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "VolumeMusica"))
+                        mask |= PublicacaoAlbumTrackingFields.VolumeMusica;
                     if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "Mensagem"))
                         mask |= PublicacaoAlbumTrackingFields.Mensagem;
                     if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "SolicitadaEmUtc"))
@@ -497,20 +516,37 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PublicacaoAlbumTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "OperationalEntityId"))
                         mask |= PublicacaoAlbumTrackingFields.OperationalEntityId;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "ConexaoYouTubeId"))
-                        mask |= PublicacaoAlbumTrackingFields.ConexaoYouTubeId;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "CanalYouTubeId"))
-                        mask |= PublicacaoAlbumTrackingFields.CanalYouTubeId;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "YouTubeCredentialUserId"))
-                        mask |= PublicacaoAlbumTrackingFields.YouTubeCredentialUserId;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "QualidadeVideo"))
-                        mask |= PublicacaoAlbumTrackingFields.QualidadeVideo;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "ModeloVideo"))
-                        mask |= PublicacaoAlbumTrackingFields.ModeloVideo;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "MusicaId"))
-                        mask |= PublicacaoAlbumTrackingFields.MusicaId;
-                    if (DomainFieldTracked(policy, "PublicacaoAlbum", operation, recordId, "VolumeMusica"))
-                        mask |= PublicacaoAlbumTrackingFields.VolumeMusica;
+                    return mask;
+                }
+
+                private ulong GetCanalStandardMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "Id"))
+                        mask |= CanalStandardTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "CanalId"))
+                        mask |= CanalStandardTrackingFields.CanalId;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "ConexaoYouTubeId"))
+                        mask |= CanalStandardTrackingFields.ConexaoYouTubeId;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "CredencialTenantId"))
+                        mask |= CanalStandardTrackingFields.CredencialTenantId;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "Ativo"))
+                        mask |= CanalStandardTrackingFields.Ativo;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "TotalReservas"))
+                        mask |= CanalStandardTrackingFields.TotalReservas;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "UltimaReservaEmUtc"))
+                        mask |= CanalStandardTrackingFields.UltimaReservaEmUtc;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "Deleted"))
+                        mask |= CanalStandardTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "Changed"))
+                        mask |= CanalStandardTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "UserId"))
+                        mask |= CanalStandardTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "CanalStandard", operation, recordId, "OperationalEntityId"))
+                        mask |= CanalStandardTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

@@ -57,16 +57,18 @@ namespace Command.Receivers
             {
                 using var videoStream = _fileStorage.OpenRead(new StoragePath(publicacao.videostoragekey));
                 videoId = _uploader.UploadAsync(new YouTubeVideoUpload(
-                    new YouTubeOwner(publicacao.tenantid, publicacao.youtubecredentialuserid),
+                    new YouTubeOwner(publicacao.youtubecredentialtenantid, publicacao.userid),
                     publicacaoId, publicacao.conexaoyoutubeid, publicacao.canalyoutubeid, publicacao.videostoragekey,
                     string.IsNullOrWhiteSpace(album.titulo) ? $"Album {album.id}" : album.titulo,
-                    BuildDescription(album.descricao, publicacao.musicaid), ResolvePrivacyStatus(album.privacidade)),
+                    BuildDescription(album.descricao, publicacao.musicaid), ResolvePrivacyStatus(publicacao.privacidadeyoutube, publicacao.canalstandardid > 0)),
                     videoStream, CancellationToken.None).GetAwaiter().GetResult();
             }
             catch (Exception exception) when (exception is YouTubeConnectionException or YouTubeUploadReviewException)
             {
                 _publicacaoWriteRepository.UpdateStatus(publicacaoId, MemoriasPublicationStatus.YouTubePendenteConfiguracao);
-                _publicacaoWriteRepository.UpdateMensagem(publicacaoId, exception.Message);
+                _publicacaoWriteRepository.UpdateMensagem(publicacaoId, publicacao.canalstandardid > 0
+                    ? "O envio automatico precisa de revisao pela plataforma. O destino desta publicacao foi preservado."
+                    : exception.Message);
                 step.SetPayload(JsonSerializer.Serialize(new { youtube = "pending-oauth", publicacaoId }));
                 step.SetWaiting();
                 return;
@@ -99,8 +101,10 @@ namespace Command.Receivers
             return track == null ? description ?? string.Empty : $"{description}\n\n{track.Credits}".Trim();
         }
 
-        private static string ResolvePrivacyStatus(int privacidade)
+        private static string ResolvePrivacyStatus(int privacidade, bool automatic)
         {
+            if (privacidade is < 1 or > 3 || automatic && privacidade == 1)
+                throw new SagaStepExecutionException("Visibilidade da publicacao incompativel com o canal de destino.", retryable: false);
             return privacidade switch
             {
                 3 => "public",

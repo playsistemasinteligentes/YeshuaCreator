@@ -34,6 +34,8 @@ Regra de trabalho:
 | `SqlServerSchema` | Schema que aplica a estrutura declarada ao SQL Server. |
 | `Module` | Agrupa entidades e funcionalidades em um modulo logico da aplicacao. |
 | `Entity` | Representa uma entidade de dominio, tabela ou visao de leitura. E a raiz principal da geracao. |
+| `Global` | Declara entidade sem TenantID e sem filtro por tenant, exclusiva do banco/aplicativo que a declara. Nao concede acesso publico. |
+| `InternalToUseCase` | Restringe a entidade a um unico Command proprietario interno, identificado por grupo, subgrupo e nome. Gera dominio e repositories, mas nao CRUD de Commands/Receivers, endpoints, menus, lookups nem metadata publica. |
 | `AlterEntity` | Reabre uma entidade existente para evolucao incremental. |
 | `Column` | Representa um campo da entidade. Alimenta dominio, banco, comandos, DTOs, UI, filtros e queries. |
 | `AlterColumn` | Reabre uma coluna existente para ajuste incremental. |
@@ -75,6 +77,7 @@ Regra de trabalho:
 | `UseCaseGroup` | Agrupa casos de uso relacionados. |
 | `UseCaseSubGroup` | Subdivide um grupo de casos de uso. |
 | `Command` | Representa uma intencao executavel. E a base comportamental da arquitetura. |
+| `Internal` em Command | Preserva Command, Receiver e DI para chamadas internas, sem endpoint HTTP nem exposicao como acao de tela. Nao significa Authorization.Free. |
 | `Authorization` | Define exigencia de autorizacao para o command. |
 | `Scope` | Associa escopo/permissao ao command. |
 | `AddEntity` em use case | Relaciona um command a entidades envolvidas. |
@@ -106,6 +109,30 @@ Regra de trabalho:
 | `ConnectorOperation` | Declara servico, operacao e rota exposta por um conector. |
 | `StoreRawPayload` | Indica que o payload bruto do conector deve ser preservado. |
 | `DeferredProcessing` | Indica que o processamento pode ser feito posteriormente. |
+
+## Entidades Globais Internas
+
+`Global()` e `InternalToUseCase(grupo, subgrupo, command)` sao metadata
+independente de escopo e acesso. Nesta primeira versao uma entidade global
+deve possuir proprietario interno explicito. O proprietario deve existir no
+mesmo aplicativo e declarar `Internal()`; a consolidacao associa a entidade
+ao Command para gerar suas dependencias de repository, sem repetir AddEntity.
+Referencias por outros Commands, menus, acoes, abas e consultas publicas devem
+ser rejeitadas antes de aplicar schema ou gerar codigo. FKs de entidades
+publicas para entidades internas tambem sao rejeitadas nesta primeira versao,
+evitando lookups e joins publicos implicitos.
+
+O contexto de execucao continua carregando usuario e tenant do chamador. Global
+nao usa tenant zero, nao remove autenticacao de outras bordas e nao compartilha
+tabelas entre aplicativos. Ownership e uma restricao estatica da DSL/geracao;
+nao e isolamento de SQL contra codigo customizado deliberadamente fora dos
+repositories, nem contra administradores do banco. Regras e SQL continuam nos
+miolos do aplicativo e nos repositories existentes, respectivamente.
+
+Repositories internos possuem contratos partial e injecao de UnitOfWork, sem
+CRUD generico. Seus metodos especificos sao escritos em Custon. Cached,
+FromView e AddQuery em entidades internas ficam fora desta primeira versao,
+com erro explicito de validacao em vez de geracao parcial silenciosa.
 
 ## Modelo Conceitual Desejado Para Saga
 

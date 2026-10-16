@@ -110,6 +110,18 @@ namespace Dominio.Migration
             return this;
         }
 
+        public MigrationBase Global()
+        {
+            _entity.Global();
+            return this;
+        }
+
+        public MigrationBase InternalToUseCase(string group, string subGroup, string command)
+        {
+            _entity.InternalToUseCase(group, subGroup, command);
+            return this;
+        }
+
         public EntityCustomTab CustomTab(string name, string title = "")
         {
             return _entity.CustomTab(name, title);

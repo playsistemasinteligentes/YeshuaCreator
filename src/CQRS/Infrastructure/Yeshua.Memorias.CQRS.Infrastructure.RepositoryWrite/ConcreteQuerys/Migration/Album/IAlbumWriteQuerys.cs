@@ -21,16 +21,16 @@ namespace IQuery.Write
         QueryModel UpdateDescricao(int id, string value);
         QueryModel UpdatePrivacidade(int id, int value);
         QueryModel UpdateSegundosPorFoto(int id, int value);
+        QueryModel UpdateQualidadeVideo(int id, int value);
+        QueryModel UpdateModeloVideo(int id, int value);
+        QueryModel UpdateMusicaId(int id, int value);
+        QueryModel UpdateVolumeMusica(int id, int value);
         QueryModel UpdateStatus(int id, int value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
-        QueryModel UpdateQualidadeVideo(int id, int value);
-        QueryModel UpdateModeloVideo(int id, int value);
-        QueryModel UpdateMusicaId(int id, int value);
-        QueryModel UpdateVolumeMusica(int id, int value);
         public QueryModel DeleteAlbumQuery(IAlbumEntity Album);
     }
 }

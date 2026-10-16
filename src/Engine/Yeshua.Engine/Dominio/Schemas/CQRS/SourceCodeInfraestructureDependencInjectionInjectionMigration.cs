@@ -135,6 +135,13 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine("");
 
+                if (entity.IsInternal)
+                {
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryWrite}.I{entity.EntityName}WriteRepository, Input.Repository.{entity.EntityName}.{entity.EntityName}WriteRepository>();");
+                    sb.AppendLine($"builder.Services.AddTransient<{CQRSParam.I.NameSpaceIRepositoryRead}.I{entity.EntityName}ReadRepository, {CQRSParam.I.NameSpaceReadRepository}.{entity.EntityName}ReadRepository>();");
+                    continue;
+                }
+
                 if (entity.CachedTable)
                 {
                     // assim é generico    builder.Services.AddSingleton(typeof(ICacheService<>), typeof(MemoryCacheService<>));

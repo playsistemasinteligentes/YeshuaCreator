@@ -18,7 +18,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Dominio.Migration
 {
-    public class MigrationBuilder
+    public partial class MigrationBuilder
     {
         private List<ISchema> _schemas;
         private IEnumerable<MigrationBase> _migrations = new List<MigrationBase>();
@@ -47,8 +47,32 @@ namespace Dominio.Migration
             foreach (var item in migration)
                 item.Up();
 
+            ValidateInternalEntities(migration);
 
-            // aplay standard fiels 
+            ApplyStandardFields(migration);
+
+            ValidateCompositeKeysAreNotImplemented(migration.SelectMany(m => m.Entitys));
+
+            foreach (var schema in _schemas.OfType<ISchemaDataBase>())
+            {
+                var (maxID, minID) = GetLastVersion(schema._unitOfWork);
+                foreach (var item in migration.Where(x => x.ID < minID).OrderByDescending(x => x.ID))
+                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
+                foreach (var item in migration.Where(x => x.ID > maxID).OrderBy(x => x.ID))
+                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
+            }
+
+            foreach (var schema in _schemas.OfType<IMigrationProjectionSchema>())
+                schema.ApplyMigrations(migration);
+
+            PreparMigrationsToCodeGenerete(migration);
+
+            foreach (var schema in _schemas.OfType<ISchemaCodeGeneration>())
+                schema.CodeGenaration(_migrationConcriteBase);
+        }
+
+        public static void ApplyStandardFields(IEnumerable<MigrationBase> migration)
+        {
             List<Column> columns = migration
                             .SelectMany(m => m.Entitys)
                             .SelectMany(e => e.AddColumns)
@@ -67,6 +91,9 @@ namespace Dominio.Migration
                 {
                     foreach (var col in columns)
                     {
+                        if (entity.IsGlobal && col.Name.Equals("TenantID", StringComparison.OrdinalIgnoreCase))
+                            continue;
+
                         if (col.NotAplicableStandardFieldToEntity.Where(x => x == entity.EntityName).Any())
                             continue;
 
@@ -88,24 +115,6 @@ namespace Dominio.Migration
             foreach (var m in migration)
                 m.Entitys.RemoveAll(x => x.EntityName == "yStandardFields");
 
-            ValidateCompositeKeysAreNotImplemented(migration.SelectMany(m => m.Entitys));
-
-            foreach (var schema in _schemas.OfType<ISchemaDataBase>())
-            {
-                var (maxID, minID) = GetLastVersion(schema._unitOfWork);
-                foreach (var item in migration.Where(x => x.ID < minID).OrderByDescending(x => x.ID))
-                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
-                foreach (var item in migration.Where(x => x.ID > maxID).OrderBy(x => x.ID))
-                    AplyQuerys(schema.ApplyMigration(item), schema._unitOfWork, item);
-            }
-
-            foreach (var schema in _schemas.OfType<IMigrationProjectionSchema>())
-                schema.ApplyMigrations(migration);
-
-            PreparMigrationsToCodeGenerete(migration);
-
-            foreach (var schema in _schemas.OfType<ISchemaCodeGeneration>())
-                schema.CodeGenaration(_migrationConcriteBase);
         }
         private void PreparMigrationsToCodeGenerete(IEnumerable<MigrationBase> migrations)
         {

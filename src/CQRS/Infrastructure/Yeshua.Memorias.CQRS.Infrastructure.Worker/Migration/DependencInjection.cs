@@ -125,6 +125,9 @@ builder.Services.AddTransient<Command.Receivers.Read.PublicacaoAlbumReadFKAlbumI
 builder.Services.AddTransient<Command.Receivers.Read.PublicacaoAlbumReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.PublicacaoAlbumReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.ICanalStandardWriteRepository, Input.Repository.CanalStandard.CanalStandardWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.ICanalStandardReadRepository, Read.Repository.CanalStandardReadRepository>();
+
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
@@ -391,6 +394,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.SalvarConfiguracaoYouTub
 builder.Services.AddTransient<Command.Receivers.UseCase.GirarFotoHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarModelosVideoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ReservarCanalStandardHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

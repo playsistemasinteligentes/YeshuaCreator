@@ -18,7 +18,7 @@
           <fieldset id="mem-album-fields" class="mem-fields">
             <label class="mem-wide">Titulo<input id="mem-title" required maxlength="200" placeholder="Nome do album"></label>
             <label class="mem-wide">Descricao<textarea id="mem-description" maxlength="2000" rows="2"></textarea></label>
-            <label>Visibilidade no YouTube<select id="mem-privacy"><option value="1">Privado</option><option value="2">Nao listado</option><option value="3">Publico</option></select></label>
+            <label>Visibilidade no YouTube<select id="mem-privacy" aria-label="Visibilidade no YouTube"><option value="1">Privado</option><option value="2" selected>Nao listado</option><option value="3">Publico</option></select></label>
             <label>Segundos por foto<input id="mem-duration" type="number" min="1" max="60" step="1" value="4" required></label>
             <label class="mem-wide">Qualidade do video<select id="mem-quality" aria-label="Qualidade do video" required><option value="1">Economica (HD 720p)</option><option value="2" selected>Padrao (Full HD 1080p)</option><option value="3">Alta (4K 2160p)</option></select></label>
             <label>Modelo<select id="mem-model" aria-label="Modelo" required><option value="1">Classico</option><option value="2">Romantico</option><option value="3">Aventura</option><option value="4">Celebracao</option></select></label>
@@ -42,9 +42,9 @@
       <div class="mem-publishing">
       <section class="mem-section" aria-labelledby="mem-youtube-title">
         <div class="mem-section-heading"><h2 id="mem-youtube-title"><i class="fa-brands fa-youtube" aria-hidden="true"></i> Canal YouTube</h2><div class="mem-tools"><button id="mem-configure" class="mem-icon" title="Configuracao YouTube" aria-label="Configuracao YouTube" hidden><i class="fa-solid fa-gear" aria-hidden="true"></i></button><button id="mem-refresh-channels" class="mem-icon" title="Atualizar canais" aria-label="Atualizar canais"><i class="fa-solid fa-rotate" aria-hidden="true"></i></button></div></div>
-        <label class="mem-channel-label">Canal de destino<select id="mem-channel" aria-label="Canal YouTube de destino"><option value="">Selecione um canal</option></select></label>
+        <label id="mem-channel-label" class="mem-channel-label" hidden>Canal de destino<select id="mem-channel" aria-label="Canal YouTube de destino"><option value="">Selecione um canal</option></select></label>
         <p id="mem-channel-status" class="mem-connection-status" role="status" aria-live="polite"></p>
-        <div class="mem-actions"><button id="mem-connect" class="mem-button"><i class="fa-solid fa-plus" aria-hidden="true"></i><span id="mem-connect-label">Conectar canal</span></button><button id="mem-reconnect" class="mem-button" hidden><i class="fa-solid fa-link" aria-hidden="true"></i> Reconectar</button><button id="mem-disconnect" class="mem-icon" title="Desconectar canal" aria-label="Desconectar canal"><i class="fa-solid fa-link-slash" aria-hidden="true"></i></button></div>
+        <div class="mem-actions"><button id="mem-connect" class="mem-button"><i class="fa-solid fa-plus" aria-hidden="true"></i><span id="mem-connect-label">Adicionar canal proprio</span></button><button id="mem-reconnect" class="mem-button" hidden><i class="fa-solid fa-link" aria-hidden="true"></i> Reconectar</button><button id="mem-disconnect" class="mem-icon" title="Desconectar canal" aria-label="Desconectar canal" hidden><i class="fa-solid fa-link-slash" aria-hidden="true"></i></button></div>
       </section>
       <section class="mem-section mem-publication" aria-labelledby="mem-publication-title">
         <div class="mem-section-heading"><h2 id="mem-publication-title">Publicacao</h2><button id="mem-refresh-status" class="mem-button"><i class="fa-solid fa-rotate" aria-hidden="true"></i> Atualizar status</button></div>
@@ -64,7 +64,7 @@
             <a id="mem-share-email" class="mem-icon" title="Compartilhar por email" aria-label="Compartilhar por email"><i class="fa-solid fa-envelope" aria-hidden="true"></i></a>
           </div>
           <p class="mem-muted">O link nao muda a visibilidade no YouTube. Um video privado exige a conta Google do canal ou um convite; nao listado permite acesso a quem tiver o link.</p>
-          <a id="mem-youtube-studio" class="mem-muted" href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer">Gerenciar no YouTube Studio</a>
+          <a id="mem-youtube-studio" class="mem-muted" href="https://studio.youtube.com/" target="_blank" rel="noopener noreferrer" hidden>Gerenciar no YouTube Studio</a>
         </div>
       </section>
       </div>

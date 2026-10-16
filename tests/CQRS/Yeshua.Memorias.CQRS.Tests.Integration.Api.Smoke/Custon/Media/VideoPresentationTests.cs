@@ -24,7 +24,9 @@ public class VideoPresentationTests
     [InlineData(2, 1, 101, false)]
     public void ValidateSelectionsAndKeepZeroVolume(int? model, int? music, int? volume, bool valid)
     {
-        var album = new AlbumFactory(TestProxy.For<Dominio.Interfaces.ILogger>()).Create(1, "Album", "", 1, 4, 1, 2, model, music, volume);
+        var album = new AlbumFactory(TestProxy.For<Dominio.Interfaces.ILogger>()).Create(
+            id: 1, titulo: "Album", descricao: "", privacidade: 1, segundosporfoto: 4,
+            status: 1, qualidadevideo: 2, modelovideo: model, musicaid: music, volumemusica: volume);
         var result = AlbumDomainBehavior.Apply(album, DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "PostAlbum", 7, 9));
         Assert.Equal(valid, result.IsValid);
         Assert.Equal(volume ?? 35, album.VolumeMusica);

@@ -15,11 +15,11 @@ public class YouTubeConnectionTests
     private static readonly YouTubeOwner Owner = new(7, 9);
 
     [Fact]
-    public async Task OneUserCanConnectMultipleChannelsAndListOnlySafeMetadata()
+    public async Task TenantUsersShareMultipleChannelsAndListOnlySafeMetadata()
     {
         using var rig = new Rig();
         var first = await rig.Connect("channel-a");
-        var second = await rig.Connect("channel-b");
+        var second = await rig.Connect("channel-b", new(7, 99));
         var list = await rig.Service.ListAsync(Owner, default);
         Assert.Equal(2, list.Conexoes.Count);
         Assert.NotEqual(first.ConexaoId, second.ConexaoId);
@@ -32,9 +32,8 @@ public class YouTubeConnectionTests
     }
 
     [Theory]
-    [InlineData(7, 99)]
     [InlineData(99, 9)]
-    public async Task AnotherUserOrTenantCannotUseConnectionOrCallback(int tenantId, int userId)
+    public async Task AnotherTenantCannotUseConnectionOrCallback(int tenantId, int userId)
     {
         using var rig = new Rig();
         var connection = await rig.Connect("channel-a");
@@ -44,6 +43,22 @@ public class YouTubeConnectionTests
         await Assert.ThrowsAsync<YouTubeConnectionException>(() => rig.Service.BeginAsync(other, connection.ConexaoId, default));
         await rig.Service.BeginAsync(Owner, "", default);
         await Assert.ThrowsAsync<YouTubeConnectionException>(() => rig.Service.CompleteAsync(other, "code", rig.Google.LastState, default));
+    }
+
+    [Fact]
+    public async Task SameTenantUserCanPublishButCannotCompleteAnotherUsersOAuth()
+    {
+        using var rig = new Rig();
+        var connection = await rig.Connect("channel-a");
+        var colleague = new YouTubeOwner(7, 99);
+        Assert.Single((await rig.Service.ListAsync(colleague, default)).Conexoes);
+        Assert.Equal("access-channel-a", await rig.Service.GetAccessTokenAsync(colleague, connection.ConexaoId, "channel-a", default));
+        await rig.Service.BeginAsync(Owner, "", default);
+        var state = rig.Google.LastState;
+        var exchanges = rig.Google.Exchanges;
+        await Assert.ThrowsAsync<YouTubeConnectionException>(() => rig.Service.CompleteAsync(colleague, "code", state, default));
+        Assert.Equal(exchanges, rig.Google.Exchanges);
+        Assert.True((await rig.Service.CompleteAsync(Owner, "code", state, default)).Conectado);
     }
 
     [Fact]
@@ -125,7 +140,7 @@ public class YouTubeConnectionTests
         rig.Clock.Advance(TimeSpan.FromHours(2));
         var tokens = await Task.WhenAll(
             rig.Service.GetAccessTokenAsync(Owner, connection.ConexaoId, "channel-a", default),
-            rig.Service.GetAccessTokenAsync(Owner, connection.ConexaoId, "channel-a", default));
+            rig.Service.GetAccessTokenAsync(new(7, 99), connection.ConexaoId, "channel-a", default));
         Assert.All(tokens, token => Assert.Equal("renewed-access", token));
         Assert.Equal(1, rig.Google.Refreshes);
         using var lease = await rig.Repository.AcquireAsync(Owner, default);
@@ -148,13 +163,13 @@ public class YouTubeConnectionTests
     }
 
     [Fact]
-    public async Task TokensAreEncryptedAndCannotBeMovedToAnotherOwner()
+    public async Task TokensAreEncryptedAndCannotBeMovedToAnotherTenant()
     {
         using var rig = new Rig();
         var connection = await rig.Connect("channel-a");
         var source = Directory.GetFiles(rig.Root, "connection-*.bin", SearchOption.AllDirectories).Single();
         Assert.DoesNotContain("access-channel-a", Encoding.UTF8.GetString(File.ReadAllBytes(source)));
-        var other = new YouTubeOwner(7, 99);
+        var other = new YouTubeOwner(99, 9);
         using (await rig.Repository.AcquireAsync(other, default)) { }
         var target = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(source))!, "99", Path.GetFileName(source));
         File.Copy(source, target);
@@ -238,11 +253,11 @@ public class YouTubeConnectionTests
             Service = new(Options, Repository, Google, Clock);
         }
 
-        public async Task<YouTubeConnectionStatus> Connect(string channel)
+        public async Task<YouTubeConnectionStatus> Connect(string channel, YouTubeOwner? owner = null)
         {
             Google.NextChannel = channel;
-            await Service.BeginAsync(Owner, "", default);
-            return await Service.CompleteAsync(Owner, "code", Google.LastState, default);
+            await Service.BeginAsync(owner ?? Owner, "", default);
+            return await Service.CompleteAsync(owner ?? Owner, "code", Google.LastState, default);
         }
 
         public void Dispose()

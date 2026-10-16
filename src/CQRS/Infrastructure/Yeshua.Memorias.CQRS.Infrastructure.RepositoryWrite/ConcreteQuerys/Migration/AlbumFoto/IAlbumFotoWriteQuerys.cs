@@ -21,12 +21,12 @@ namespace IQuery.Write
         QueryModel UpdateFotoId(int id, int value);
         QueryModel UpdateOrdem(int id, int value);
         QueryModel UpdateLegenda(int id, string value);
+        QueryModel UpdateRotacao(int id, int value);
         QueryModel UpdateTenantID(int id, int value);
         QueryModel UpdateDeleted(int id, bool value);
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
-        QueryModel UpdateRotacao(int id, int value);
         public QueryModel DeleteAlbumFotoQuery(IAlbumFotoEntity AlbumFoto);
     }
 }

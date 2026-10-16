@@ -8,10 +8,6 @@ public sealed class M000005 : MigrationBase
 {
     public override void Up()
     {
-        AlterEntity("AlbumFoto")
-            .AddColumn("Rotacao", "Rotacao da Foto").Int()
-            .Immutable().EditFront(false).Group("Apresentacao");
-
         AddUsecaseGroup("Memorias").AddUseCaseSubGrup("Fotos")
             .AddCommand("GirarFoto", new GirarFotoInput(), new GirarFotoOutput())
             .Authorization(Authorization.User).AddScope("memorias.foto.editar");

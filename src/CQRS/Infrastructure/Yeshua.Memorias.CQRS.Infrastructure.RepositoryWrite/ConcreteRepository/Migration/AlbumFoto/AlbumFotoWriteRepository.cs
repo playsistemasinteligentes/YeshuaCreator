@@ -71,6 +71,11 @@ namespace Input.Repository.AlbumFoto
             var query = _query.UpdateLegenda(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateRotacao(int id, int value)
+        {
+            var query = _query.UpdateRotacao(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateTenantID(int id, int value)
         {
             var query = _query.UpdateTenantID(id, value);
@@ -94,11 +99,6 @@ namespace Input.Repository.AlbumFoto
         public void UpdateOperationalEntityId(int id, string value)
         {
             var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateRotacao(int id, int value)
-        {
-            var query = _query.UpdateRotacao(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

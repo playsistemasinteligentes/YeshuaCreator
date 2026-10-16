@@ -27,22 +27,24 @@
             public const ulong VideoStorageKey = 1UL << 4;
             public const ulong YouTubeVideoId = 1UL << 5;
             public const ulong YouTubeUrl = 1UL << 6;
-            public const ulong Mensagem = 1UL << 7;
-            public const ulong SolicitadaEmUtc = 1UL << 8;
-            public const ulong PublicadaEmUtc = 1UL << 9;
-            public const ulong Status = 1UL << 10;
-            public const ulong TenantID = 1UL << 11;
-            public const ulong Deleted = 1UL << 12;
-            public const ulong Changed = 1UL << 13;
-            public const ulong UserId = 1UL << 14;
-            public const ulong OperationalEntityId = 1UL << 15;
-            public const ulong ConexaoYouTubeId = 1UL << 16;
-            public const ulong CanalYouTubeId = 1UL << 17;
-            public const ulong YouTubeCredentialUserId = 1UL << 18;
-            public const ulong QualidadeVideo = 1UL << 19;
-            public const ulong ModeloVideo = 1UL << 20;
-            public const ulong MusicaId = 1UL << 21;
-            public const ulong VolumeMusica = 1UL << 22;
+            public const ulong ConexaoYouTubeId = 1UL << 7;
+            public const ulong CanalYouTubeId = 1UL << 8;
+            public const ulong YouTubeCredentialTenantId = 1UL << 9;
+            public const ulong CanalStandardId = 1UL << 10;
+            public const ulong PrivacidadeYouTube = 1UL << 11;
+            public const ulong QualidadeVideo = 1UL << 12;
+            public const ulong ModeloVideo = 1UL << 13;
+            public const ulong MusicaId = 1UL << 14;
+            public const ulong VolumeMusica = 1UL << 15;
+            public const ulong Mensagem = 1UL << 16;
+            public const ulong SolicitadaEmUtc = 1UL << 17;
+            public const ulong PublicadaEmUtc = 1UL << 18;
+            public const ulong Status = 1UL << 19;
+            public const ulong TenantID = 1UL << 20;
+            public const ulong Deleted = 1UL << 21;
+            public const ulong Changed = 1UL << 22;
+            public const ulong UserId = 1UL << 23;
+            public const ulong OperationalEntityId = 1UL << 24;
         }
 
         public static class PublicacaoAlbumOperationalFields
@@ -54,6 +56,15 @@
             public const Dominio.Operational.OperationalDataClassification VideoStorageKey = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification YouTubeVideoId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification YouTubeUrl = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ConexaoYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanalYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification YouTubeCredentialTenantId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CanalStandardId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification PrivacidadeYouTube = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification QualidadeVideo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ModeloVideo = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification MusicaId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VolumeMusica = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification Mensagem = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification SolicitadaEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification PublicadaEmUtc = Dominio.Operational.OperationalDataClassification.Internal;
@@ -63,13 +74,6 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification ConexaoYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification CanalYouTubeId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification YouTubeCredentialUserId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification QualidadeVideo = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification ModeloVideo = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification MusicaId = Dominio.Operational.OperationalDataClassification.Internal;
-            public const Dominio.Operational.OperationalDataClassification VolumeMusica = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class PublicacaoAlbumDecorator : IPublicacaoAlbumEntity
@@ -204,6 +208,15 @@
                                             }
                                         }
                                     }
+    public string? ConexaoYouTubeId => _inner.ConexaoYouTubeId;
+    public string? CanalYouTubeId => _inner.CanalYouTubeId;
+    public int? YouTubeCredentialTenantId => _inner.YouTubeCredentialTenantId;
+    public int? CanalStandardId => _inner.CanalStandardId;
+    public int? PrivacidadeYouTube => _inner.PrivacidadeYouTube;
+    public int? QualidadeVideo => _inner.QualidadeVideo;
+    public int? ModeloVideo => _inner.ModeloVideo;
+    public int? MusicaId => _inner.MusicaId;
+    public int? VolumeMusica => _inner.VolumeMusica;
 
                                     public string? Mensagem
                                     {
@@ -317,13 +330,6 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
-    public string? ConexaoYouTubeId => _inner.ConexaoYouTubeId;
-    public string? CanalYouTubeId => _inner.CanalYouTubeId;
-    public int? YouTubeCredentialUserId => _inner.YouTubeCredentialUserId;
-    public int? QualidadeVideo => _inner.QualidadeVideo;
-    public int? ModeloVideo => _inner.ModeloVideo;
-    public int? MusicaId => _inner.MusicaId;
-    public int? VolumeMusica => _inner.VolumeMusica;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

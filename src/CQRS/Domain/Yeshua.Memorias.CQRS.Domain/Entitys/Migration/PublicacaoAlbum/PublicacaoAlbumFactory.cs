@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPublicacaoAlbumEntity Create(int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status, string? conexaoyoutubeid, string? canalyoutubeid, int? youtubecredentialuserid, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica )
+                                    } public IPublicacaoAlbumEntity Create(int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? conexaoyoutubeid, string? canalyoutubeid, int? youtubecredentialtenantid, int? canalstandardid, int? privacidadeyoutube, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status )
                             {
-                                return Create(null, id, albumid, correlationid, manifeststoragekey, videostoragekey, youtubevideoid, youtubeurl, mensagem, solicitadaemutc, publicadaemutc, status, conexaoyoutubeid, canalyoutubeid, youtubecredentialuserid, qualidadevideo, modelovideo, musicaid, volumemusica);
+                                return Create(null, id, albumid, correlationid, manifeststoragekey, videostoragekey, youtubevideoid, youtubeurl, conexaoyoutubeid, canalyoutubeid, youtubecredentialtenantid, canalstandardid, privacidadeyoutube, qualidadevideo, modelovideo, musicaid, volumemusica, mensagem, solicitadaemutc, publicadaemutc, status);
                             }
 
                             public IPublicacaoAlbumEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status, string? conexaoyoutubeid, string? canalyoutubeid, int? youtubecredentialuserid, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int albumid, string correlationid, string? manifeststoragekey, string? videostoragekey, string? youtubevideoid, string? youtubeurl, string? conexaoyoutubeid, string? canalyoutubeid, int? youtubecredentialtenantid, int? canalstandardid, int? privacidadeyoutube, int? qualidadevideo, int? modelovideo, int? musicaid, int? volumemusica, string? mensagem, DateTime solicitadaemutc, DateTime? publicadaemutc, int status, ulong? trackingMask = null )
                             {
-                            var entity = new PublicacaoAlbumEntity(id, albumid, correlationid, manifeststoragekey, videostoragekey, youtubevideoid, youtubeurl, mensagem, solicitadaemutc, publicadaemutc, status, conexaoyoutubeid, canalyoutubeid, youtubecredentialuserid, qualidadevideo, modelovideo, musicaid, volumemusica );
+                            var entity = new PublicacaoAlbumEntity(id, albumid, correlationid, manifeststoragekey, videostoragekey, youtubevideoid, youtubeurl, conexaoyoutubeid, canalyoutubeid, youtubecredentialtenantid, canalstandardid, privacidadeyoutube, qualidadevideo, modelovideo, musicaid, volumemusica, mensagem, solicitadaemutc, publicadaemutc, status );
 
 
                             var effectiveTrackingMask = trackingMask ??

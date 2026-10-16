@@ -32,6 +32,15 @@ namespace IRepository.Read
         public bool ExistsByVideoStorageKey(string value );
         public bool ExistsByYouTubeVideoId(string value );
         public bool ExistsByYouTubeUrl(string value );
+        public bool ExistsByConexaoYouTubeId(string value );
+        public bool ExistsByCanalYouTubeId(string value );
+        public bool ExistsByYouTubeCredentialTenantId(int value );
+        public bool ExistsByCanalStandardId(int value );
+        public bool ExistsByPrivacidadeYouTube(int value );
+        public bool ExistsByQualidadeVideo(int value );
+        public bool ExistsByModeloVideo(int value );
+        public bool ExistsByMusicaId(int value );
+        public bool ExistsByVolumeMusica(int value );
         public bool ExistsByMensagem(string value );
         public bool ExistsBySolicitadaEmUtc(DateTime value );
         public bool ExistsByPublicadaEmUtc(DateTime value );
@@ -41,13 +50,6 @@ namespace IRepository.Read
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
-        public bool ExistsByConexaoYouTubeId(string value );
-        public bool ExistsByCanalYouTubeId(string value );
-        public bool ExistsByYouTubeCredentialUserId(int value );
-        public bool ExistsByQualidadeVideo(int value );
-        public bool ExistsByModeloVideo(int value );
-        public bool ExistsByMusicaId(int value );
-        public bool ExistsByVolumeMusica(int value );
         public PublicacaoAlbumDTO FirstById(int value );
         public PublicacaoAlbumDTO FirstByAlbumId(int value );
         public PublicacaoAlbumDTO FirstByCorrelationId(string value );
@@ -55,6 +57,15 @@ namespace IRepository.Read
         public PublicacaoAlbumDTO FirstByVideoStorageKey(string value );
         public PublicacaoAlbumDTO FirstByYouTubeVideoId(string value );
         public PublicacaoAlbumDTO FirstByYouTubeUrl(string value );
+        public PublicacaoAlbumDTO FirstByConexaoYouTubeId(string value );
+        public PublicacaoAlbumDTO FirstByCanalYouTubeId(string value );
+        public PublicacaoAlbumDTO FirstByYouTubeCredentialTenantId(int value );
+        public PublicacaoAlbumDTO FirstByCanalStandardId(int value );
+        public PublicacaoAlbumDTO FirstByPrivacidadeYouTube(int value );
+        public PublicacaoAlbumDTO FirstByQualidadeVideo(int value );
+        public PublicacaoAlbumDTO FirstByModeloVideo(int value );
+        public PublicacaoAlbumDTO FirstByMusicaId(int value );
+        public PublicacaoAlbumDTO FirstByVolumeMusica(int value );
         public PublicacaoAlbumDTO FirstByMensagem(string value );
         public PublicacaoAlbumDTO FirstBySolicitadaEmUtc(DateTime value );
         public PublicacaoAlbumDTO FirstByPublicadaEmUtc(DateTime value );
@@ -64,13 +75,6 @@ namespace IRepository.Read
         public PublicacaoAlbumDTO FirstByChanged(DateTime value );
         public PublicacaoAlbumDTO FirstByUserId(int value );
         public PublicacaoAlbumDTO FirstByOperationalEntityId(string value );
-        public PublicacaoAlbumDTO FirstByConexaoYouTubeId(string value );
-        public PublicacaoAlbumDTO FirstByCanalYouTubeId(string value );
-        public PublicacaoAlbumDTO FirstByYouTubeCredentialUserId(int value );
-        public PublicacaoAlbumDTO FirstByQualidadeVideo(int value );
-        public PublicacaoAlbumDTO FirstByModeloVideo(int value );
-        public PublicacaoAlbumDTO FirstByMusicaId(int value );
-        public PublicacaoAlbumDTO FirstByVolumeMusica(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllById(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByAlbumId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByCorrelationId(string value );
@@ -78,6 +82,15 @@ namespace IRepository.Read
         public IEnumerable<PublicacaoAlbumDTO> GetAllByVideoStorageKey(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeVideoId(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeUrl(string value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByConexaoYouTubeId(string value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByCanalYouTubeId(string value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeCredentialTenantId(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByCanalStandardId(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByPrivacidadeYouTube(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByQualidadeVideo(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByModeloVideo(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByMusicaId(int value );
+        public IEnumerable<PublicacaoAlbumDTO> GetAllByVolumeMusica(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByMensagem(string value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllBySolicitadaEmUtc(DateTime value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByPublicadaEmUtc(DateTime value );
@@ -87,13 +100,6 @@ namespace IRepository.Read
         public IEnumerable<PublicacaoAlbumDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByUserId(int value );
         public IEnumerable<PublicacaoAlbumDTO> GetAllByOperationalEntityId(string value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByConexaoYouTubeId(string value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByCanalYouTubeId(string value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByYouTubeCredentialUserId(int value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByQualidadeVideo(int value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByModeloVideo(int value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByMusicaId(int value );
-        public IEnumerable<PublicacaoAlbumDTO> GetAllByVolumeMusica(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

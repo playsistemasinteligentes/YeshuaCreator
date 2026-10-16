@@ -23,23 +23,23 @@ namespace IQuery.Read
         public QueryModel ExistsByFotoIdQuery(int value );
         public QueryModel ExistsByOrdemQuery(int value );
         public QueryModel ExistsByLegendaQuery(string value );
+        public QueryModel ExistsByRotacaoQuery(int value );
         public QueryModel ExistsByTenantIDQuery(int value );
         public QueryModel ExistsByDeletedQuery(bool value );
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel ExistsByOperationalEntityIdQuery(string value );
-        public QueryModel ExistsByRotacaoQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByAlbumIdQuery(int value );
         public QueryModel FirstByFotoIdQuery(int value );
         public QueryModel FirstByOrdemQuery(int value );
         public QueryModel FirstByLegendaQuery(string value );
+        public QueryModel FirstByRotacaoQuery(int value );
         public QueryModel FirstByTenantIDQuery(int value );
         public QueryModel FirstByDeletedQuery(bool value );
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
-        public QueryModel FirstByRotacaoQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

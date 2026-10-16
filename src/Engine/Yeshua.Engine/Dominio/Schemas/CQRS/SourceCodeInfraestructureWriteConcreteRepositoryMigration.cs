@@ -20,6 +20,23 @@ namespace Dominio.Schemas.CQRS
 
         protected override StringBuilder GenerateCode()
         {
+            if (_entity.IsInternal)
+            {
+                return new StringBuilder($$"""
+                    using {{CQRSParam.I.NameSpaceUnitOfWork}};
+                    using {{CQRSParam.I.NameSpaceIRepositoryWrite}};
+                    namespace Input.Repository.{{_entity.EntityName}};
+                    public partial class {{_entity.EntityName}}WriteRepository : I{{_entity.EntityName}}WriteRepository
+                    {
+                        private readonly IUnitOfWork _UnitOfWork;
+                        public {{_entity.EntityName}}WriteRepository(IUnitOfWork unitOfWork)
+                        {
+                            _UnitOfWork = unitOfWork;
+                        }
+                    }
+                    """);
+            }
+
             var sb = new StringBuilder();
 
             sb.AppendLine("using Dapper;");

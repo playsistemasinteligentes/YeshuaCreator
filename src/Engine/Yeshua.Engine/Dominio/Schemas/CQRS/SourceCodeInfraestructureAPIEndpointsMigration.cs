@@ -112,7 +112,7 @@ namespace Dominio.Schemas.CQRS
             AppendYeshuaModuleIngressEndpoint(sb);
 
             #region Insert 
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Post{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Insert}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -129,7 +129,7 @@ namespace Dominio.Schemas.CQRS
             #endregion
 
             // update 
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 sb.AppendLine($"app.MapPut(\"{getPrefixo()}/{entity.EntityName}/Put{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Update}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -145,7 +145,7 @@ namespace Dominio.Schemas.CQRS
             }
 
             // Delete
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 sb.AppendLine($"app.MapDelete(\"{getPrefixo()}/{entity.EntityName}/Delete{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversWrite}.{CommandType.Delete}{entity.EntityName}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandWrite}.{entity.EntityName}CrudCommand command) =>");
                 sb.AppendLine("{");
@@ -302,7 +302,7 @@ namespace Dominio.Schemas.CQRS
 
 
             #region Read  
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 sb.AppendLine($"app.MapPost(\"{getPrefixo()}/{entity.EntityName}/Read{entity.EntityName}\", async ([FromServices] {CQRSParam.I.NameSpaceCommandReceiversRead}.{entity.EntityName}{CommandType.Read}Receiver receiver, [FromBody] {CQRSParam.I.NameSpaceCommandRead}.{entity.EntityName}{CommandType.Read}Command command) =>");
                 sb.AppendLine("{");
@@ -321,7 +321,7 @@ namespace Dominio.Schemas.CQRS
 
             #region ReadQuery  
 
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 foreach (var query in entity.Queries.OfType<IQueryWithMeta>())
                 {
@@ -362,7 +362,7 @@ namespace Dominio.Schemas.CQRS
 
 
             #region FKs  
-            foreach (var entity in _migration.Entitys)
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 foreach (var column in entity.AddColumns.Where(x => x.IsFK && !x.IsBackEndField))
                 {
@@ -381,7 +381,7 @@ namespace Dominio.Schemas.CQRS
             // get meta data
 
             // get meta data
-            foreach (var entidade in _migration.Entitys)
+            foreach (var entidade in _migration.Entitys.Where(e => !e.IsInternal))
             {
                 sb.AppendLine($"app.MapGet(\"{getPrefixo()}/getMetaData{entidade.EntityName}\", (HttpContext context) =>");
                 sb.AppendLine("{");
@@ -533,7 +533,7 @@ namespace Dominio.Schemas.CQRS
             {
                 foreach (var subGroup in group.UseCaseSubGroup)
                 {
-                    foreach (var useCase in subGroup.UseCaseCommand)
+                    foreach (var useCase in subGroup.UseCaseCommand.Where(c => !c.IsInternal))
                     {
                         var inputCommandType = $"{CQRSParam.I.NameSpaceCommandCommandsUseCases}.{useCase.Name.SourceType()}InputCommand";
                         var hasFormFileInput = useCase.Inputs
@@ -1098,7 +1098,7 @@ namespace Dominio.Schemas.CQRS
 
         private void AppendRelationTabsMeta(StringBuilder sb, Entity entidade)
         {
-            var relationTabs = _migration.Entitys
+            var relationTabs = _migration.Entitys.Where(e => !e.IsInternal)
                 .SelectMany(childEntity => childEntity.AddColumns
                     .Where(column =>
                         column.IsFK &&
@@ -1157,7 +1157,7 @@ namespace Dominio.Schemas.CQRS
         {
             var actions = _migration.UseCaseGroup
                 .SelectMany(group => group.UseCaseSubGroup
-                    .SelectMany(subGroup => subGroup.UseCaseCommand
+                    .SelectMany(subGroup => subGroup.UseCaseCommand.Where(c => !c.IsInternal)
                         .SelectMany(useCase => useCase.EntityActions
                             .Where(action => string.Equals(action.EntityName, entidade.EntityName, StringComparison.OrdinalIgnoreCase))
                             .Select(action => new { Group = group, SubGroup = subGroup, UseCase = useCase, Action = action }))))
@@ -1221,7 +1221,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        entities = new object[]");
             sb.AppendLine("        {");
 
-            foreach (var entity in _migration.Entitys.OrderBy(entity => entity.EntityName))
+            foreach (var entity in _migration.Entitys.Where(e => !e.IsInternal).OrderBy(entity => entity.EntityName))
             {
                 var entityTitle = string.IsNullOrWhiteSpace(entity.EntityDescription)
                     ? entity.EntityName

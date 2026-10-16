@@ -27,6 +27,15 @@
     string? VideoStorageKey { get; set; }
     string? YouTubeVideoId { get; set; }
     string? YouTubeUrl { get; set; }
+    string? ConexaoYouTubeId { get; }
+    string? CanalYouTubeId { get; }
+    int? YouTubeCredentialTenantId { get; }
+    int? CanalStandardId { get; }
+    int? PrivacidadeYouTube { get; }
+    int? QualidadeVideo { get; }
+    int? ModeloVideo { get; }
+    int? MusicaId { get; }
+    int? VolumeMusica { get; }
     string? Mensagem { get; set; }
     DateTime SolicitadaEmUtc { get; set; }
     DateTime? PublicadaEmUtc { get; set; }
@@ -36,13 +45,6 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
-    string? ConexaoYouTubeId { get; }
-    string? CanalYouTubeId { get; }
-    int? YouTubeCredentialUserId { get; }
-    int? QualidadeVideo { get; }
-    int? ModeloVideo { get; }
-    int? MusicaId { get; }
-    int? VolumeMusica { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

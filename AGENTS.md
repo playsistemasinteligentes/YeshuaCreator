@@ -402,6 +402,14 @@ Miolos que IA/dev devem preencher:
 
 ## Codigo Gerado E Codigo Customizado
 
+- Entidades `Global()` nao possuem TenantID nem filtro contextual de tenant,
+  mas continuam exclusivas do aplicativo. Nesta primeira versao exigem
+  `InternalToUseCase(grupo, subgrupo, command)` com um unico proprietario
+  `Internal()`. A Engine associa os repositories ao proprietario e nao gera
+  CRUD executavel, endpoints, menu, lookup ou metadata publica da entidade.
+  Commands internos continuam Command + Receiver, sem endpoint HTTP.
+  Ownership e validado estaticamente na DSL, nao por reflection ou ACL nova.
+
 O projeto ja usa a ideia de separar codigo gerado e codigo customizado.
 Preservar e fortalecer essa divisao.
 
@@ -478,6 +486,33 @@ Regra resumida:
   API operacional central, banco adicional nem Front central.
 
 ## Memorias E Processamento De Midia
+
+- As colunas atuais de Album, AlbumFoto e PublicacaoAlbum foram consolidadas
+  em M000001 para recriacao da base de testes do Memorias. Nao aplicar essa
+  reorganizacao como upgrade de uma base antiga: ela exige recriacao explicita
+  do catalogo Memorias. Os Commands/scopes continuam nas migrations originais
+  para preservar as assinaturas da projecao de autorizacao da Central.
+- CanalStandard e o primeiro cadastro Global/InternalToUseCase do Memorias.
+  ReservarCanalStandard e interno, usa repository com selecao/reserva atomica
+  e nao guarda tokens ou secrets na tabela. O cadastro nao e preenchido
+  automaticamente. Sem canal proprio cadastrado no tenant, a publicacao usa
+  o pool standard; com canais proprios, exige um destino conectado desse tenant.
+  O use case interno filtra conexoes autorizadas e reserva atomicamente entre
+  as elegiveis, na mesma transacao da publicacao e saga. Consultar disponibilidade
+  nao reserva nem incrementa contadores. Uma linha no banco nao autoriza um canal
+  no Google. O cadastro do pool continua manual na base, sem CRUD publico.
+- Credenciais YouTube agora pertencem ao tenant, em cofre criptografado v2;
+  UserId identifica somente o ator e vincula o state OAuth a quem iniciou a
+  autorizacao. Nao ha migracao automatica dos cofres antigos por usuario:
+  esta versao descartavel requer reconectar os canais. Nenhum arquivo antigo
+  deve ser apagado automaticamente. N aplicativos Google continuam pendentes.
+- PublicacaoAlbum captura ConexaoYouTubeId, CanalYouTubeId,
+  YouTubeCredentialTenantId, CanalStandardId e PrivacidadeYouTube. Upload e
+  retomada usam exclusivamente esse destino, sem novo balanceamento nem troca
+  de canal. Albuns e publicacoes continuam pertencendo ao usuario original.
+- Canais standard nao aceitam Privado, pois o autor do album nao e dono do
+  canal. Novos albuns da tela iniciam Nao listado; escolhas privadas existentes
+  nao sao convertidas silenciosamente. Publico exige confirmacao da tela.
 
 - A qualidade de video e classificacao tecnica do Memorias, separada de
   preco, plano e pagamento. IDs estaveis iniciais: 1 Economica (1280x720,
@@ -643,14 +678,43 @@ Regra resumida:
   conexao identifica um canal autorizado e possui ID estavel; ela nao e apenas
   um email Google nem um token global do servidor. Reconectar o mesmo canal
   preserva o ID, enquanto conectar outro canal cria outra conexao.
+- Canais proprios pertencem ao tenant, nao exclusivamente ao usuario que
+  autorizou o OAuth. Albuns e publicacoes continuam isolados por usuario.
+  A gestao usa os Commands autenticados existentes; uma permissao administrativa
+  especifica do tenant continua pendente de definicao, sem inventar roles locais.
+- Canais standard pertencem a plataforma e atendem tenants sem canais proprios.
+  O servidor seleciona e reserva um destino elegivel com protecao contra
+  concorrencia; o navegador nao escolhe o titular da credencial de servico.
+  A selecao fica fixa na publicacao. Perda de autorizacao de canal proprio nao
+  autoriza fallback silencioso para outro canal ou para a plataforma.
+- Preparacao futura para N aplicativos Google: distinguir projeto/aplicativo
+  OAuth, conexao autorizada e canal. Cada conexao deve ficar vinculada ao
+  aplicativo que a autorizou; cada publicacao deve preservar esse vinculo e a
+  identidade do tenant responsavel pela credencial em todas as retomadas.
+  A integracao atual permanece o aplicativo inicial, sem trocar seu Client ID.
+  A transicao descartavel para o cofre v2 exige reconectar canais. Cadastros/runtime para N
+  aplicativos, projetos e dominios ainda sao pendencia, nao capacidade entregue.
+- Dominios e callbacks pertencem a configuracao da implantacao/integracao;
+  adicionar um dominio ou uma conta Google nao cria cota adicional de API.
+  Aplicativos adicionais atendem usos legitimamente distintos, sem sharding
+  de projetos ou troca automatica de contas/aplicativos para evadir cotas,
+  bloqueios ou restricoes do YouTube. Esgotamento da cota do projeto exige
+  espera ou ampliacao oficial, nao failover para outra credencial.
+- A tela permanece unica: sem canais proprios do tenant, ocultar o seletor e
+  usar o destino gerenciado; com canais proprios, mostrar o seletor. A gestao
+  opcional fica na configuracao existente. Selecao de fotos deve iniciar o
+  upload sem exigir outro clique. Varias publicacoes do mesmo album permanecem
+  registros separados, com seus respectivos destinos e links. O seletor
+  condicional e o balanceamento estao implementados; o upload automatico ao
+  selecionar fotos continua pendente.
 - A publicacao captura `ConexaoYouTubeId`, `CanalYouTubeId` e
-  `YouTubeCredentialUserId` quando e solicitada. O Worker usa esse destino,
+  `YouTubeCredentialTenantId` quando e solicitada. O Worker usa esse destino,
   nunca a ultima conta conectada ou um canal padrao implicito. Desconexao ou
   perda de autorizacao deixa a publicacao pendente para retomada manual, sem
   trocar de canal. O CRUD de publicacao nao altera esses vinculos: a entidade
   e controlada pelos comandos de solicitar/retomar e pela saga.
 - No prototipo, os tokens de N conexoes sao cifrados com AES-256-GCM em um
-  repository privado do aplicativo, por escopo/tenant/usuario/conexao. O volume
+  repository privado do aplicativo, por escopo/tenant/conexao. O volume
   `/root/YeshuaMemoriasSecrets` pertence somente a API e Worker .NET; nao e
   storage de midia e nao e montado no renderer Python ou no gateway. A chave
   e o Client Secret permanecem fora do repositorio, na configuracao protegida
@@ -663,8 +727,8 @@ Regra resumida:
   responsavel pela credencial sao papeis distintos; a autorizacao para usar
   conexao de servico deve vir de politica confiavel do tenant, nunca de um
   UserId/tenant/canal enviado livremente pelo navegador.
-- `pendencia`: entrada simplificada, perfil limitado, conexao gerenciada por
-  tenant, confirmacao idempotente de pagamento e entrega do link ao cliente.
+- `pendencia`: entrada simplificada, perfil limitado, confirmacao idempotente
+  de pagamento e entrega do link ao cliente.
   Pagamento precisa ser confirmado no servidor antes de liberar a publicacao;
   nao criar endpoints abertos de upload/publicacao nem inferir pagamento por
   retorno de tela. Esta modalidade nao foi implementada no primeiro ciclo OAuth.

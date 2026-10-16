@@ -23,16 +23,16 @@ namespace Repositorio.Outputs
     public string descricao { get; set; } = string.Empty;
     public int privacidade { get; set; }
     public int segundosporfoto { get; set; }
+    public int qualidadevideo { get; set; }
+    public int modelovideo { get; set; }
+    public int musicaid { get; set; }
+    public int volumemusica { get; set; }
     public int status { get; set; }
     public int tenantid { get; set; }
     public bool deleted { get; set; }
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
-    public int qualidadevideo { get; set; }
-    public int modelovideo { get; set; }
-    public int musicaid { get; set; }
-    public int volumemusica { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

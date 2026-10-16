@@ -81,6 +81,51 @@ namespace Input.Repository.PublicacaoAlbum
             var query = _query.UpdateYouTubeUrl(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateConexaoYouTubeId(int id, string value)
+        {
+            var query = _query.UpdateConexaoYouTubeId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCanalYouTubeId(int id, string value)
+        {
+            var query = _query.UpdateCanalYouTubeId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateYouTubeCredentialTenantId(int id, int value)
+        {
+            var query = _query.UpdateYouTubeCredentialTenantId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateCanalStandardId(int id, int value)
+        {
+            var query = _query.UpdateCanalStandardId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdatePrivacidadeYouTube(int id, int value)
+        {
+            var query = _query.UpdatePrivacidadeYouTube(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateQualidadeVideo(int id, int value)
+        {
+            var query = _query.UpdateQualidadeVideo(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateModeloVideo(int id, int value)
+        {
+            var query = _query.UpdateModeloVideo(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateMusicaId(int id, int value)
+        {
+            var query = _query.UpdateMusicaId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateVolumeMusica(int id, int value)
+        {
+            var query = _query.UpdateVolumeMusica(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
         public void UpdateMensagem(int id, string value)
         {
             var query = _query.UpdateMensagem(id, value);
@@ -124,41 +169,6 @@ namespace Input.Repository.PublicacaoAlbum
         public void UpdateOperationalEntityId(int id, string value)
         {
             var query = _query.UpdateOperationalEntityId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateConexaoYouTubeId(int id, string value)
-        {
-            var query = _query.UpdateConexaoYouTubeId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateCanalYouTubeId(int id, string value)
-        {
-            var query = _query.UpdateCanalYouTubeId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateYouTubeCredentialUserId(int id, int value)
-        {
-            var query = _query.UpdateYouTubeCredentialUserId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateQualidadeVideo(int id, int value)
-        {
-            var query = _query.UpdateQualidadeVideo(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateModeloVideo(int id, int value)
-        {
-            var query = _query.UpdateModeloVideo(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateMusicaId(int id, int value)
-        {
-            var query = _query.UpdateMusicaId(id, value);
-             _UnitOfWork.Execute(query.Query, query.Parameters);
-        }
-        public void UpdateVolumeMusica(int id, int value)
-        {
-            var query = _query.UpdateVolumeMusica(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
     }

@@ -18,16 +18,16 @@ namespace Command.Write
         public string? Descricao { get; set; }
         public int Privacidade { get; set; }
         public int SegundosPorFoto { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string OperationalEntityId { get; set; }
-        public int? QualidadeVideo { get; set; }
-        public int? ModeloVideo { get; set; }
-        public int? MusicaId { get; set; }
-        public int? VolumeMusica { get; set; }
  public string OperationalEntity => "Album";
  public string? OperationalRecordId => OperationalEntityId;
     }

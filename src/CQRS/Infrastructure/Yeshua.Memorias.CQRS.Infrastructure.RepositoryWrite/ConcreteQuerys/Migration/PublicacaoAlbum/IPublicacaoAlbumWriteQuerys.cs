@@ -23,6 +23,15 @@ namespace IQuery.Write
         QueryModel UpdateVideoStorageKey(int id, string value);
         QueryModel UpdateYouTubeVideoId(int id, string value);
         QueryModel UpdateYouTubeUrl(int id, string value);
+        QueryModel UpdateConexaoYouTubeId(int id, string value);
+        QueryModel UpdateCanalYouTubeId(int id, string value);
+        QueryModel UpdateYouTubeCredentialTenantId(int id, int value);
+        QueryModel UpdateCanalStandardId(int id, int value);
+        QueryModel UpdatePrivacidadeYouTube(int id, int value);
+        QueryModel UpdateQualidadeVideo(int id, int value);
+        QueryModel UpdateModeloVideo(int id, int value);
+        QueryModel UpdateMusicaId(int id, int value);
+        QueryModel UpdateVolumeMusica(int id, int value);
         QueryModel UpdateMensagem(int id, string value);
         QueryModel UpdateSolicitadaEmUtc(int id, DateTime value);
         QueryModel UpdatePublicadaEmUtc(int id, DateTime value);
@@ -32,13 +41,6 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
-        QueryModel UpdateConexaoYouTubeId(int id, string value);
-        QueryModel UpdateCanalYouTubeId(int id, string value);
-        QueryModel UpdateYouTubeCredentialUserId(int id, int value);
-        QueryModel UpdateQualidadeVideo(int id, int value);
-        QueryModel UpdateModeloVideo(int id, int value);
-        QueryModel UpdateMusicaId(int id, int value);
-        QueryModel UpdateVolumeMusica(int id, int value);
         public QueryModel DeletePublicacaoAlbumQuery(IPublicacaoAlbumEntity PublicacaoAlbum);
     }
 }

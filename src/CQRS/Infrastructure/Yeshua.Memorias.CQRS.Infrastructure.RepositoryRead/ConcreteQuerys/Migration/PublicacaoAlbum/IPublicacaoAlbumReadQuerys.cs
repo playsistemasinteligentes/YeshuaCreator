@@ -24,6 +24,15 @@ namespace IQuery.Read
         public QueryModel ExistsByVideoStorageKeyQuery(string value );
         public QueryModel ExistsByYouTubeVideoIdQuery(string value );
         public QueryModel ExistsByYouTubeUrlQuery(string value );
+        public QueryModel ExistsByConexaoYouTubeIdQuery(string value );
+        public QueryModel ExistsByCanalYouTubeIdQuery(string value );
+        public QueryModel ExistsByYouTubeCredentialTenantIdQuery(int value );
+        public QueryModel ExistsByCanalStandardIdQuery(int value );
+        public QueryModel ExistsByPrivacidadeYouTubeQuery(int value );
+        public QueryModel ExistsByQualidadeVideoQuery(int value );
+        public QueryModel ExistsByModeloVideoQuery(int value );
+        public QueryModel ExistsByMusicaIdQuery(int value );
+        public QueryModel ExistsByVolumeMusicaQuery(int value );
         public QueryModel ExistsByMensagemQuery(string value );
         public QueryModel ExistsBySolicitadaEmUtcQuery(DateTime value );
         public QueryModel ExistsByPublicadaEmUtcQuery(DateTime value );
@@ -33,13 +42,6 @@ namespace IQuery.Read
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel ExistsByOperationalEntityIdQuery(string value );
-        public QueryModel ExistsByConexaoYouTubeIdQuery(string value );
-        public QueryModel ExistsByCanalYouTubeIdQuery(string value );
-        public QueryModel ExistsByYouTubeCredentialUserIdQuery(int value );
-        public QueryModel ExistsByQualidadeVideoQuery(int value );
-        public QueryModel ExistsByModeloVideoQuery(int value );
-        public QueryModel ExistsByMusicaIdQuery(int value );
-        public QueryModel ExistsByVolumeMusicaQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByAlbumIdQuery(int value );
         public QueryModel FirstByCorrelationIdQuery(string value );
@@ -47,6 +49,15 @@ namespace IQuery.Read
         public QueryModel FirstByVideoStorageKeyQuery(string value );
         public QueryModel FirstByYouTubeVideoIdQuery(string value );
         public QueryModel FirstByYouTubeUrlQuery(string value );
+        public QueryModel FirstByConexaoYouTubeIdQuery(string value );
+        public QueryModel FirstByCanalYouTubeIdQuery(string value );
+        public QueryModel FirstByYouTubeCredentialTenantIdQuery(int value );
+        public QueryModel FirstByCanalStandardIdQuery(int value );
+        public QueryModel FirstByPrivacidadeYouTubeQuery(int value );
+        public QueryModel FirstByQualidadeVideoQuery(int value );
+        public QueryModel FirstByModeloVideoQuery(int value );
+        public QueryModel FirstByMusicaIdQuery(int value );
+        public QueryModel FirstByVolumeMusicaQuery(int value );
         public QueryModel FirstByMensagemQuery(string value );
         public QueryModel FirstBySolicitadaEmUtcQuery(DateTime value );
         public QueryModel FirstByPublicadaEmUtcQuery(DateTime value );
@@ -56,13 +67,6 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
-        public QueryModel FirstByConexaoYouTubeIdQuery(string value );
-        public QueryModel FirstByCanalYouTubeIdQuery(string value );
-        public QueryModel FirstByYouTubeCredentialUserIdQuery(int value );
-        public QueryModel FirstByQualidadeVideoQuery(int value );
-        public QueryModel FirstByModeloVideoQuery(int value );
-        public QueryModel FirstByMusicaIdQuery(int value );
-        public QueryModel FirstByVolumeMusicaQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

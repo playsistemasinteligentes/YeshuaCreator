@@ -22,6 +22,9 @@ namespace Dominio
         public bool HasLegacySource => !string.IsNullOrWhiteSpace(LegacySourceName);
         public string ViewSourceName { get; private set; } = string.Empty;
         public bool IsFromView => !string.IsNullOrWhiteSpace(ViewSourceName);
+        public bool IsGlobal { get; private set; }
+        public EntityUseCaseOwner? InternalOwner { get; private set; }
+        public bool IsInternal => InternalOwner is not null;
         public bool CanCreate => true;
         public bool CanUpdate => true;
         public bool CanDelete => true;
@@ -81,6 +84,11 @@ namespace Dominio
 
         internal void CopyMetadataFrom(Entity entity)
         {
+            if (entity.IsGlobal)
+                Global();
+            if (entity.InternalOwner is { } owner)
+                InternalToUseCase(owner.Group, owner.SubGroup, owner.Command);
+
             if (entity.HasLegacySource)
                 LegacySource(entity.LegacySourceName);
 
@@ -100,6 +108,24 @@ namespace Dominio
             var tab = new EntityCustomTab(this, name, title);
             CustomTabs.Add(tab);
             return tab;
+        }
+
+        public Entity Global()
+        {
+            IsGlobal = true;
+            return this;
+        }
+
+        public Entity InternalToUseCase(string group, string subGroup, string command)
+        {
+            if (string.IsNullOrWhiteSpace(group) || string.IsNullOrWhiteSpace(subGroup) || string.IsNullOrWhiteSpace(command))
+                throw new ArgumentException("InternalToUseCase exige grupo, subgrupo e Command.");
+
+            var owner = new EntityUseCaseOwner(group, subGroup, command);
+            if (InternalOwner is not null && InternalOwner != owner)
+                throw new InvalidOperationException($"Entidade '{EntityName}' ja possui proprietario interno.");
+            InternalOwner = owner;
+            return this;
         }
 
         public Entity AddColumn(string columnName, string description)
