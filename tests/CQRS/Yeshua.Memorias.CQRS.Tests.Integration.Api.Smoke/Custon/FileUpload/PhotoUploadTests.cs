@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using Memorias.Media;
 
 namespace Yeshua.Memorias.Tests;
 
@@ -80,6 +81,23 @@ public class PhotoUploadTests
         Assert.Equal(4, rig.Link.Ordem);
         Assert.Equal(Png.Length, rig.CompletedSize);
         Assert.False(rig.DeletedFile);
+    }
+
+    [Fact]
+    public async Task NewlyUploadedPhotoCanBeReadWhenSessionIdDiffersFromUserId()
+    {
+        var rig = new UploadRig();
+        Assert.Equal(200,(await rig.Handler.ExecuteAsync(CreateCommand())).StatusCode);
+        var photo = rig.Photo!;
+        var reader = new PhotoFileReader(TestProxy.For<IFotoReadRepository>((_,_)=>new FotoDTO
+        {
+            id=42,tenantid=7,userid=8,contenttype=photo.ContentType,storagekey=photo.StorageKey
+        }),TestProxy.For<IyFileUploadReadRepository>((_,args)=>{Assert.Equal(10,args[0]);return rig.Session;}),
+            TestProxy.For<IFileStorage>((method,_)=>method=="OpenRead"?new MemoryStream(Png):throw new InvalidOperationException(method)),
+            TestProxy.For<IExecutionContext>((method,_)=>method switch{"get_TenantID"=>7,"get_UserId"=>8,_=>null}));
+        var result = reader.Open(42);
+        Assert.NotNull(result);
+        using(result.Stream)Assert.Equal(Png,((MemoryStream)result.Stream).ToArray());
     }
 
     [Theory]
@@ -295,6 +313,7 @@ public class PhotoUploadTests
                     Assert.Equal("TryCompletePhotoUpload", method);
                     Events.Add("CompleteSession");
                     CompletedSize = (long)args[5]!;
+                    if(ClaimAccepted){Session.filepath=(string)args[4]!;Session.filesize=CompletedSize;Session.status=1;}
                     return ClaimAccepted;
                 }),
                 TestProxy.For<IFileStorage>((method, _) => method switch

@@ -640,6 +640,10 @@ Regra resumida:
   no maior lado e liberando o original temporario. Essas miniaturas ficam
   somente na memoria da tela e sao liberadas ao trocar album ou sair.
   A previa ampliada continua sendo carregada apenas ao clicar na foto.
+  A chave de foto usa `photos/{TenantID}/{yFileUpload.Id}/{arquivo}`, nao UserId
+  no segundo segmento. A leitura confirma tambem a sessao concluida, dono,
+  tenant, caminho exato e tamanho pelo repository de upload antes de abrir o
+  arquivo. Nao renomear arquivos nem afrouxar a verificacao de propriedade.
 - O Estudio agrupa miniatura, legenda, ordem, rotacao, salvar e excluir no
   mesmo item da foto. Previa de envio sai quando a lista persistida confirma
   o lote, sem duplicar a foto em duas listas. Upload automatico, paginacao,

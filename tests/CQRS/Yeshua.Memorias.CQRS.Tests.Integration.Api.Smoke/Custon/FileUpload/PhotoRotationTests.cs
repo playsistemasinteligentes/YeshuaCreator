@@ -112,15 +112,16 @@ public class PhotoRotationTests
     [InlineData("missing")]
     public void PrivatePreviewRejectsUnavailablePhotoBeforeOpeningStorage(string scenario)
     {
-        var photo = new FotoDTO { id = 1, tenantid = 7, userid = 9, contenttype = "image/png", storagekey = "persistent/memorias/photos/7/9/photo.png" };
+        var photo = new FotoDTO { id = 1, tenantid = 7, userid = 9, contenttype = "image/png", storagekey = "persistent/memorias/photos/7/10/photo.png" };
         if (scenario == "other-tenant") photo.tenantid = 8;
         if (scenario == "other-user") photo.userid = 8;
         if (scenario == "deleted") photo.deleted = true;
         if (scenario == "mime") photo.contenttype = "text/html";
         if (scenario == "traversal") photo.storagekey = "persistent/memorias/photos/7/9/../8/photo.png";
-        if (scenario == "prefix") photo.storagekey = "persistent/memorias/photos/7/8/photo.png";
+        if (scenario == "prefix") photo.storagekey = "persistent/memorias/photos/8/10/photo.png";
         if (scenario == "empty-key") photo.storagekey = "";
         var reader = new PhotoFileReader(TestProxy.For<IFotoReadRepository>((_, _) => scenario == "missing" ? null : photo),
+            TestProxy.For<IyFileUploadReadRepository>((_, _) => throw new InvalidOperationException("Upload should not be read")),
             TestProxy.For<IFileStorage>((_, _) => throw new InvalidOperationException("Storage should not be opened")), Context());
         Assert.Null(reader.Open(1));
     }
@@ -128,20 +129,68 @@ public class PhotoRotationTests
     [Fact]
     public void PrivatePreviewStreamsOnlyOwnedOriginalAndHandlesMissingFile()
     {
-        var photo = new FotoDTO { id = 1, tenantid = 7, userid = 9, contenttype = "image/png", storagekey = "persistent/memorias/photos/7/9/photo.png" };
+        var photo = new FotoDTO { id = 1, tenantid = 7, userid = 9, contenttype = "image/png", storagekey = "persistent/memorias/photos/7/10/photo.png" };
         var original = new byte[] { 1, 2, 3 };
         var repository = TestProxy.For<IFotoReadRepository>((_, _) => photo);
-        var reader = new PhotoFileReader(repository, TestProxy.For<IFileStorage>((_, _) => new MemoryStream(original)), Context());
+        var uploads = TestProxy.For<IyFileUploadReadRepository>((method, args) =>
+        {
+            Assert.Equal("FirstById",method); Assert.Equal(10,args[0]); Assert.Equal(false,args[1]);
+            return new yFileUploadDTO { id=10,tenantid=7,userid=9,status=1,type="memorias.photo",entitytype="Album",filepath=photo.storagekey,filesize=original.Length };
+        });
+        var reader = new PhotoFileReader(repository, uploads, TestProxy.For<IFileStorage>((_, _) => new MemoryStream(original)), Context());
         var result = reader.Open(1)!;
         using (result.Stream)
         {
             Assert.Equal("image/png", result.ContentType);
             Assert.Equal(original, ((MemoryStream)result.Stream).ToArray());
         }
-        Assert.Null(new PhotoFileReader(repository, TestProxy.For<IFileStorage>((_, _) => throw new FileNotFoundException()), Context()).Open(1));
+        Assert.Null(new PhotoFileReader(repository, uploads, TestProxy.For<IFileStorage>((_, _) => throw new FileNotFoundException()), Context()).Open(1));
         using var oversized = new MemoryStream(new byte[25 * 1024 * 1024 + 1]);
-        Assert.Null(new PhotoFileReader(repository, TestProxy.For<IFileStorage>((_, _) => oversized), Context()).Open(1));
+        Assert.Null(new PhotoFileReader(repository, uploads, TestProxy.For<IFileStorage>((_, _) => oversized), Context()).Open(1));
         Assert.False(oversized.CanRead);
+    }
+
+    [Theory]
+    [InlineData("missing")]
+    [InlineData("other-tenant")]
+    [InlineData("other-user")]
+    [InlineData("deleted")]
+    [InlineData("pending")]
+    [InlineData("type")]
+    [InlineData("entity")]
+    [InlineData("path")]
+    [InlineData("empty-path")]
+    public void PrivatePreviewRequiresCompletedUploadOfSameOwnerAndExactStorageKey(string scenario)
+    {
+        var photo = new FotoDTO { id=1,tenantid=7,userid=9,contenttype="image/png",storagekey="persistent/memorias/photos/7/10/photo.png" };
+        var upload = new yFileUploadDTO { id=10,tenantid=7,userid=9,status=1,type="memorias.photo",entitytype="Album",filepath=photo.storagekey,filesize=3 };
+        if(scenario=="other-tenant")upload.tenantid=8;
+        if(scenario=="other-user")upload.userid=8;
+        if(scenario=="deleted")upload.deleted=true;
+        if(scenario=="pending")upload.status=0;
+        if(scenario=="type")upload.type="other";
+        if(scenario=="entity")upload.entitytype="other";
+        if(scenario=="path")upload.filepath="persistent/memorias/photos/7/10/other.png";
+        if(scenario=="empty-path")upload.filepath="";
+        var reader = new PhotoFileReader(TestProxy.For<IFotoReadRepository>((_,_)=>photo),
+            TestProxy.For<IyFileUploadReadRepository>((_,_)=>scenario=="missing"?null:upload),
+            TestProxy.For<IFileStorage>((_,_)=>throw new InvalidOperationException("Storage should not be opened")),Context());
+        Assert.Null(reader.Open(1));
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(2)]
+    [InlineData(4)]
+    public void PrivatePreviewRejectsFileWhoseSizeDiffersFromCompletedUpload(long expectedSize)
+    {
+        var photo = new FotoDTO { id=1,tenantid=7,userid=9,contenttype="image/png",storagekey="persistent/memorias/photos/7/10/photo.png" };
+        var upload = new yFileUploadDTO { id=10,tenantid=7,userid=9,status=1,type="memorias.photo",entitytype="Album",filepath=photo.storagekey,filesize=expectedSize };
+        using var stream = new MemoryStream(new byte[]{1,2,3});
+        var reader = new PhotoFileReader(TestProxy.For<IFotoReadRepository>((_,_)=>photo),
+            TestProxy.For<IyFileUploadReadRepository>((_,_)=>upload),TestProxy.For<IFileStorage>((_,_)=>stream),Context());
+        Assert.Null(reader.Open(1));
+        Assert.False(stream.CanRead);
     }
 
     [Fact]
