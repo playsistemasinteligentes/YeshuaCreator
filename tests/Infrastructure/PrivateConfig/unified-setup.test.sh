@@ -70,4 +70,11 @@ for scenario in fresh restored; do
   [[ "${calls[-1]}" == deploy ]]
 done
 
-echo 'PASS: one setup path, validation before services, existing directories unchanged.'
+fixture_backup_python() { printf '%s\n' "$*" >> "$log"; }
+PYTHON=fixture_backup_python
+: > "$log"
+prepare_backup
+grep -F -- '-B' "$log" >/dev/null
+grep -F -- '/infra/backups/install.py --initialize-online' "$log" >/dev/null
+
+echo 'PASS: one setup path, configuration before services, backup installer shared, existing directories unchanged.'

@@ -14,7 +14,7 @@ public sealed class PhotoFileReader(IFotoReadRepository photos, IyFileUploadRead
             || photo.contenttype is not ("image/jpeg" or "image/png" or "image/webp")
             || string.IsNullOrWhiteSpace(photo.storagekey)) return null;
         var key = photo.storagekey.Replace('\\', '/');
-        var prefix = $"persistent/memorias/photos/{context.TenantID}/";
+        var prefix = StorageLocation.Volatile.For("memorias", "photos").Path.Replace('\\', '/') + $"/{context.TenantID}/";
         var parts = key.Split('/');
         if (!key.StartsWith(prefix, StringComparison.Ordinal) || parts.Length != 6
             || parts.Any(part => part is ".." or "." or "")

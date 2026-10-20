@@ -138,13 +138,11 @@ namespace Command.Receivers.UseCase
                     ? originalName
                     : originalName[..300];
 
-                storagePath = new StoragePath(Path.Combine(
-                    "persistent",
-                    "memorias",
-                    "photos",
+                storagePath = StoragePathBuilder.Build(
+                    Command.Media.MemoriasStorage.Photos,
                     _executionContext.TenantID.ToString(System.Globalization.CultureInfo.InvariantCulture),
                     upload.id.ToString(System.Globalization.CultureInfo.InvariantCulture),
-                    $"{Guid.NewGuid():N}{photoFormat.Extension}"));
+                    $"{Guid.NewGuid():N}{photoFormat.Extension}");
 
                 fileSaved = true;
                 await _fileStorage.SaveAsync(

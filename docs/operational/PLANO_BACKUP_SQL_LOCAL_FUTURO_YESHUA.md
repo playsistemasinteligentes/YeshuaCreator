@@ -1,12 +1,26 @@
 # Plano Futuro: Backup SQL Local E Prova De Recuperacao
 
-Data: 2026-10-19.
+Data: 2026-10-19. Referencia HISTORICA anterior ao roteiro operacional v6.
 
-Status: planejamento posterior, adiado ate o aceite da
-[centralizacao de credenciais](PLANO_ETAPA_1_CENTRALIZACAO_CREDENCIAIS_YESHUA.md).
-Este documento nao e o primeiro passo. Verificacao estatica do repositorio;
-nenhuma conexao com o SQL publicado, backup real, restore, instalacao, alteracao de credencial,
-parada ou agendamento foi executado. Scripts desta etapa ainda nao existem.
+Decisao vigente de 2026-10-20: o ensaio sera recuperacao completa no servidor
+novo, sem laboratorio SQL preliminar. Implementacao em infra/backups e roteiro
+em [RECOVERY.md](../../infra/backups/RECOVERY.md). As etapas de laboratorio
+abaixo sao historico tecnico, nao bloqueios atuais.
+
+Status atualizado em 2026-10-20: full, diferencial e logs nativos ja executados
+na VPS, com VERIFYONLY/CHECKSUM e copia Restic local. Nao houve restore nem
+parada de aplicativo. O [plano vigente](PLANO_BACKUP_RESTAURACAO_YESHUA.md) e o
+README de infra/backups substituem as restricoes antigas de nao instalar ou
+agendar descritas abaixo. Destino externo e ensaio integral continuam pendentes.
+
+Contexto anterior ao inicio da implementacao: a
+[centralizacao de credenciais](../../infra/private/README.md) passou pelo aceite
+tecnico de producao/redeploy. As dez conexoes locais dos cinco aplicativos
+abriram e executaram SELECT, sem gravacao; isso nao verifica permissao de
+backup, recovery models, tamanho ou capacidade de restore. Nenhum backup real,
+restore, instalacao, parada ou agendamento foi executado por este planejamento.
+O inventario real e os scripts/testes locais ja existem. A captura real e o
+restore no servidor novo ainda nao foram executados.
 
 ## 1. Entrega Delimitada
 
@@ -45,14 +59,14 @@ sem dispensar inventario e controle de acesso. O
 | Bancos do deploy.env | Seis nomes definidos, relacionados abaixo | Existencia, estado, tamanho e recovery model dos bancos reais |
 | Rotina de backup na infra atual | Nao localizada rotina SQL/Restic em infra pelos comandos de backup/restore pesquisados | Pode haver rotina fora do repositorio no servidor; inventariar antes de criar outra |
 | Lock do deploy | /var/lock/yeshua-deploy.lock com flock | Ausencia de outros escritores/mantenedores que ignorem esse lock |
-| Loader do deploy | Pode gerar chave de modulos se ela estiver ausente | Nao pode ser reutilizado como mero leitor pela rotina de backup |
+| Loader do deploy | Le/valida credentials.json e exporta configuracao; nao gera chaves nem grava arquivos | Backup usa o leitor privado existente sem executar/sourcing do deploy nem carregar todas as credenciais no ambiente |
 | Bootstrap | Atualiza pacotes e termina disparando deploy | Nao e comando de preparacao do backup ou laboratorio de restore |
-| Credenciais | Ainda ha valores fixos nos Compose e arquivos privados usados para outros segredos | Credencial apropriada para backup/validacao ainda precisa ser provisionada |
+| Credenciais | Centralizadas fora do Git e adotadas pelos containers; cofre YouTube preservado | Permissoes apropriadas para backup/validacao ainda precisam ser confirmadas; SELECT nao as comprova |
 | Ferramentas nesta sessao Windows | sqlcmd localizado; docker e restic nao encontrados no PATH | Disponibilidade das ferramentas Linux na VPS e no laboratorio |
 
-Essa verificacao e de fonte/configuracao, nao de producao. Nao foram lidos
-valores de arquivos privados do servidor nem testadas credenciais contra ele.
-Ausencia de uma ferramenta no PATH local nao comprova sua ausencia na VPS.
+O aceite de credenciais e conectividade nao substitui o inventario especifico
+de backup da VPS. Ausencia de uma ferramenta no PATH local nao comprova sua
+ausencia no servidor.
 
 Catalogos esperados, usando os valores atuais de `infra/docker/deploy.env`:
 
@@ -90,9 +104,10 @@ restore seguem procedimento proprio, fora do piloto de banco de aplicativo.
 7. Separar o ambiente de restore. Preferir outra maquina/ambiente isolado;
    nao subir outro SQL na VPS publicada sem avaliar memoria e disco antes.
 
-Nao carregar `load-deploy-env.sh` para descobrir configuracao: ele tem efeitos
-de escrita. Ler somente as configuracoes necessarias ao backup, sem executar
-bootstrap/deploy e sem criar chaves ou arquivos de aplicativos implicitamente.
+Nao carregar o deploy ou seu ambiente inteiro para descobrir configuracao.
+O loader atual nao grava arquivos, mas inclui configuracoes desnecessarias a
+esse caso. Reutilizar a leitura/validacao privada existente, selecionando apenas
+os campos necessarios, sem bootstrap, geracao de chaves ou nova fonte de senha.
 
 Se houver banco em FULL sem manutencao de log, registrar e tratar essa lacuna
 antes do agendamento. Full/COPY_ONLY nao substitui backup de log nem autoriza
@@ -249,3 +264,12 @@ Nenhum desses scripts, pastas de servidor ou testes de producao foi criado
 ou executado por este documento. A verificacao atual nao e autorizacao para
 um script futuro fazer deploy, reiniciar SQL, alterar senhas ou restaurar por
 cima de bancos existentes.
+## Atualizacao De Execucao Em 2026-10-20
+
+O usuario decidiu comprovar o conjunto no servidor novo ao final da
+implementacao. Nao montar laboratorio SQL preliminar nem outro SQL na VPS
+publicada. Este documento permanece referencia tecnica, nao bloqueio para
+implementar captura/envio. O roteiro vigente e
+[infra/backups/RECOVERY.md](../../infra/backups/RECOVERY.md), com SQL nativo,
+checksum, recusas de sobrescrita e CHECKDB no servidor novo. A prova real de
+recuperacao completa ainda nao aconteceu.

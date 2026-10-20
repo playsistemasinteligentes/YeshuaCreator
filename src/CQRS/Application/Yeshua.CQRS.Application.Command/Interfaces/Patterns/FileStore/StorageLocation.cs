@@ -13,6 +13,7 @@ namespace Command.Interfaces.Patterns.FileStore
 		// ===== VOLATILE =====
 		public static class Volatile
 		{
+			public static StorageLocation For(string application, string area) => Create("volatile", application, area);
 			public static StorageLocation TranscriptionsInput => new("volatile/ia/transcriptions/input");
 			public static StorageLocation TranscriptionsOutput => new("volatile/ia/transcriptions/output");
 
@@ -23,8 +24,20 @@ namespace Command.Interfaces.Patterns.FileStore
 		// ===== PERSISTENT =====
 		public static class Persistent
 		{
+			public static StorageLocation For(string application, string area) => Create("persistent", application, area);
 			public static StorageLocation DocsInput => new("persistent/docs/input");
 			public static StorageLocation DocsOutput => new("persistent/docs/output");
+		}
+
+		private static StorageLocation Create(string category, string application, string area)
+		{
+			if (string.IsNullOrWhiteSpace(application) || application.IndexOfAny(new[] { '/', '\\' }) >= 0)
+				throw new ArgumentException("Application must be a single storage segment.", nameof(application));
+			if (string.IsNullOrWhiteSpace(area))
+				throw new ArgumentException("Storage area is required.", nameof(area));
+			StoragePath.ValidateRelative(application);
+			StoragePath.ValidateRelative(area);
+			return new StorageLocation($"{category}/{application}/{area}");
 		}
 	}
 }

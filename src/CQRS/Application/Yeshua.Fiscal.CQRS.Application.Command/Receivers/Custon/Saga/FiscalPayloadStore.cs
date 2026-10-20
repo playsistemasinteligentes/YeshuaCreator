@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Command.Interfaces.Patterns.FileStore;
 
 namespace Command.Receivers
 {
@@ -13,11 +14,10 @@ namespace Command.Receivers
                 throw new InvalidOperationException("O plano de emissao fiscal nao pode ser vazio.");
 
             var hash = Hash(json);
-            var directory = Path.Combine(StorageRoot(), "fiscal", "planos-emissao");
-            Directory.CreateDirectory(directory);
-
             var fileName = $"{SafeFileName(cargaId)}-{hash}.json";
-            var path = Path.Combine(directory, fileName);
+            var path = StoragePathBuilder.Build(StorageLocation.Volatile.For("fiscal", "planos-emissao"), fileName)
+                .ResolveUnder(Path.GetFullPath(StorageRoot()));
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             if (!File.Exists(path))
                 File.WriteAllText(path, json, new UTF8Encoding(false));
 
@@ -65,20 +65,14 @@ namespace Command.Receivers
             if (root.Length == 0 || string.Equals(root, volumeRoot, comparison) || string.Equals(root, publicRoot, comparison)
                 || root.StartsWith(publicRoot + Path.DirectorySeparatorChar, comparison))
                 throw new InvalidOperationException("Certificados nao podem ser gravados no storage publico.");
-            var directory = Path.Combine(
-                privateRoot,
-                "tenants",
-                tenantId.ToString(),
-                "titulares",
-                SafeFileName(documentoTitular),
-                "certificados",
-                SafeFileName(thumbprint));
+            var certificateLocation = StorageLocation.Persistent.For("fiscal", "certificados");
+            var ownerPath = $"{tenantId}/titulares/{documentoTitular}/{thumbprint}";
+            var certificatePath = StoragePathBuilder.Build(certificateLocation, ownerPath + "/certificado.pfx").ResolveUnder(root);
+            var passwordPath = StoragePathBuilder.Build(certificateLocation, ownerPath + "/senha.secret").ResolveUnder(root);
+            var directory = Path.GetDirectoryName(certificatePath)!;
             Directory.CreateDirectory(directory);
             if (!OperatingSystem.IsWindows())
                 File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
-
-            var certificatePath = Path.Combine(directory, "certificado.pfx");
-            var passwordPath = Path.Combine(directory, "senha.secret");
 
             await File.WriteAllBytesAsync(certificatePath, pfx, cancellationToken).ConfigureAwait(false);
             await File.WriteAllTextAsync(passwordPath, senha, new UTF8Encoding(false), cancellationToken).ConfigureAwait(false);

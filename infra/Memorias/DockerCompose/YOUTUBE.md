@@ -165,8 +165,8 @@ nao uma listagem automatica da Biblioteca de Audio do YouTube; licenca nao e
 garantia contra reivindicacoes de terceiros. O usuario pode escolher Sem musica.
 
 O deploy padrao instala as trilhas versionadas em
-`/root/YeshuaStorage/persistent/memorias/music`, verificando os hashes e sem
+`/root/YeshuaStorage/volatile/memorias/music`, verificando os hashes e sem
 sobrescrever arquivos divergentes. API, Worker e renderer compartilham esse
 storage. Para desenvolvimento local, copiar os mesmos arquivos para
-`storage/persistent/memorias/music` do host; sem eles a tela indica indisponivel.
+`storage/volatile/memorias/music` do host; sem eles a tela indica indisponivel.
 Nao precisa configurar credenciais Google para ouvir o catalogo.

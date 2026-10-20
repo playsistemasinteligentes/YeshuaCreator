@@ -20,6 +20,14 @@ namespace Command.Interfaces.Patterns.FileStore
             if (string.IsNullOrWhiteSpace(fileName))
                 throw new ArgumentException("FileName is required.", nameof(fileName));
 
+            ArgumentNullException.ThrowIfNull(location);
+            StoragePath.ValidateRelative(tenant);
+            if (tenant.IndexOfAny(new[] { '/', '\\' }) >= 0 || fileName.IndexOfAny(new[] { '/', '\\' }) >= 0)
+                throw new ArgumentException("Tenant and file name must be single storage segments.");
+            StoragePath.ValidateRelative(fileName);
+            if (!string.IsNullOrWhiteSpace(idEntity))
+                StoragePath.ValidateRelative(idEntity);
+
             var parts = new List<string>();
 
             parts.AddRange(SplitPath(location.Path));
@@ -33,6 +41,8 @@ namespace Command.Interfaces.Patterns.FileStore
             if (useShard)
             {
                 var seed = shardSeed ?? Guid.NewGuid().ToString("N");
+                if (seed.Length < 4)
+                    throw new ArgumentException("Shard seed requires at least four characters.", nameof(shardSeed));
                 var shard1 = seed.Substring(0, 2);
                 var shard2 = seed.Substring(2, 2);
                 parts.Add(shard1);
@@ -66,7 +76,9 @@ namespace Command.Interfaces.Patterns.FileStore
                 .Replace('/', Path.DirectorySeparatorChar)
                 .Replace('\\', Path.DirectorySeparatorChar);
 
-            if (!normalizedFullPath.StartsWith(normalizedBasePath, StringComparison.OrdinalIgnoreCase))
+            var comparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            if (!string.Equals(normalizedFullPath, normalizedBasePath, comparison)
+                && !normalizedFullPath.StartsWith(normalizedBasePath + Path.DirectorySeparatorChar, comparison))
                 throw new InvalidOperationException("The provided path does not belong to the specified StorageLocation.");
 
             return new StoragePath(normalizedFullPath);
@@ -80,7 +92,7 @@ namespace Command.Interfaces.Patterns.FileStore
                 throw new ArgumentException(nameof(relativePath));
 
 
-            relativePath = relativePath.TrimStart('/', '\\');
+            StoragePath.ValidateRelative(relativePath);
 
             var combined = Path.Combine(location.Path, relativePath);
 

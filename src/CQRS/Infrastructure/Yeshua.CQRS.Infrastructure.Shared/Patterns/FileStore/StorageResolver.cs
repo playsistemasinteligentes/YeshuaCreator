@@ -28,7 +28,8 @@ namespace Shered.Patterns.FileStore
 
             var location = _settings.Locations
                 .OrderByDescending(l => l.Key.Length)
-                .FirstOrDefault(l => normalizedPath.StartsWith(l.Key, StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(l => normalizedPath.Equals(l.Key.Replace('\\', '/').TrimEnd('/'), StringComparison.Ordinal)
+                    || normalizedPath.StartsWith(l.Key.Replace('\\', '/').TrimEnd('/') + "/", StringComparison.Ordinal));
 
             if (location.Key == null)
                 throw new Exception($"No storage location configured for path: {path.Value}");

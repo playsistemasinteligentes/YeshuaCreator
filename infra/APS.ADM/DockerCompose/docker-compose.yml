@@ -25,6 +25,10 @@ services:
       RabbitMq__UserName: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
       RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
+      Storage__Providers__Disk__Root: "/storage"
+      Storage__Locations__volatile/aps-adm/uploads: "Disk"
+    volumes:
+      - /root/YeshuaStorage:/storage
     expose:
       - "7214"
     restart: unless-stopped

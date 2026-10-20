@@ -279,6 +279,21 @@ Generated_Code/
 # because we have git ;-)
 _UpgradeReport_Files/
 Backup*/
+# Keep backup tooling, never runtime copies or inventory reports.
+!/infra/backups/
+/infra/backups/*
+!/infra/backups/sql.py
+!/infra/backups/README.md
+!/infra/backups/backup.py
+!/infra/backups/policy.json
+!/infra/backups/RECOVERY.md
+!/infra/backups/routine.py
+!/infra/backups/install.py
+!/infra/backups/yeshua-backup@.service
+!/infra/backups/yeshua-backup-*.timer
+!/tests/Infrastructure/Backup/
+/tests/Infrastructure/Backup/*
+!/tests/Infrastructure/Backup/test_*.py
 UpgradeLog*.XML
 UpgradeLog*.htm
 ServiceFabricBackup/

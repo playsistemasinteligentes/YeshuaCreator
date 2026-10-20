@@ -654,6 +654,17 @@ Regra resumida:
   intactos. Nao alterar a orientacao somente na tela ou regravar o original.
 - O aplicativo Memorias reutiliza o caminho assincrono padrao do Yeshua:
   Saga -> Outbox -> RabbitMQ/Celery -> Worker Python -> RabbitMQ -> Inbox -> Saga.
+- Ponto de atencao para externalizar servicos de midia: ManifestPath e uma
+  chave relativa, nao URL HTTP nem caminho absoluto da VPS. O renderer atual
+  depende de acesso ao storage compartilhado para manifesto, fotos, musicas e
+  video de saida. A fila remota nao entrega esses arquivos por si so. Antes de
+  separar hosts, planejar acesso/transferencia e retorno com autenticacao,
+  isolamento de tenant e ciclo de vida dos volateis, sem escolher transporte
+  novo agora nem dar ao Python acesso direto ao banco do aplicativo.
+  Antes de propor mecanismo novo, verificar o suporte HTTP nas abstracoes e
+  providers de storage existentes (IFileStorage/GetBaseUrl) e reutilizar esse
+  caminho se atender ao acesso remoto e sua autorizacao. Gerar URL nao comprova
+  por si so leitura remota funcional; essa verificacao ficou para etapa futura.
 - O renderer Memorias confirma a tarefa Celery antes da execucao
   (`task_acks_late=False`), sem retry automatico de renderizacao. A demora do
   FFmpeg nao mantem a entrega ativa sem ACK. Queda apos o aceite pode deixar a
@@ -1257,8 +1268,10 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   Reutilizar o loader em todos os deploys; cada container recebe somente suas
   configuracoes, nao o arquivo inteiro. Deploy normal deve apenas ler/validar,
   sem gerar chaves ou trocar senhas existentes. Comprovar restricao, subida e
-  redeploy antes de passar ao backup. Implementado no repositorio; aceite de
-  producao pendente. Importacao/provisionamento sao operacoes explicitas.
+  redeploy antes de passar ao backup. Aceite tecnico na VPS concluido em
+  2026-10-20 na revisao de runtime `5a356472e`: configuracao, permissoes,
+  subida dos cinco apps/API operacional e redeploy Central sem trocar containers
+  nem chaves. Importacao/provisionamento sao operacoes explicitas.
 - Setup unico para servidor novo ou reconstruido, sem flag de restauracao.
   Arquivo privado existente e valido e reutilizado; ausente gera somente exemplo
   vazio e bloqueia a subida ate preenchimento. Criar apenas diretorios ausentes,
@@ -1267,8 +1280,13 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   o setup nao escolhe backups nem infere intencao de restaurar pela falta de dados.
   Apps.Memorias.PrivateRoot explicito deve existir e o bind YouTube nao cria
   pasta no host automaticamente. Raiz vazia nao comprova cofre restaurado.
-  Nesta transicao o usuario exige preservar YouTube, nao migrar certificados
-  fiscais antigos. Nao apagar dados existentes implicitamente.
+  Decisao posterior do usuario: esta transicao pode recriar o ambiente Yeshua
+  do zero, descartando seus bancos/dados e conexoes YouTube atuais. Nao exige
+  migrar cofres, tokens, fotos ou certificados antigos. Isso e uma autorizacao
+  operacional pontual, nao muda a classificacao persistente nem torna futuros
+  deploys destrutivos. Preservar fontes/infra e limitar a limpeza aos recursos
+  Yeshua inventariados; sistema operacional, acessos administrativos e recursos
+  de terceiros nao fazem parte. Nao apagar canais/videos publicados no Google.
 - A revisao do plano de credenciais inventaria tambem HMAC de upload Clinica,
   SQL operacional/MCP, broker Python, OAuth/cofres, certificados e entradas
   auxiliares como setup-cert. Studios Central/APS.ADM/Fiscal aplicam
@@ -1313,7 +1331,151 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   arquivos de negocio e chaves/cofres correspondentes; imagens Docker e snapshot
   integral da VPS ficam para depois da estabilizacao. Comprovar restore isolado
   antes de considerar a rotina entregue.
+- Revisao consolidada de backup em 2026-10-20: uma politica essencial de copia
+  externa cifrada, com SQL nativo e arquivos persistentes/privados no mesmo
+  conjunto. Perfis do mapa distinguem captura/permissoes, nao jobs por app.
+  Restic no host e systemd nao foram instalados/ativados na VPS por esta etapa.
+  SetId nao garante consistencia; SQL online isolado nao certifica bancos,
+  arquivos e efeitos externos juntos. Limpeza de temporarios, descarte de
+  staging SQL e retencao do repositorio sao acoes distintas, inicialmente em
+  simulacao; nome volatile ou idade nao provam descartabilidade. Nao adicionar
+  essas acoes ao deploy cotidiano. Logs FULL/BULK_LOGGED existentes precisam
+  de manutencao desde a adocao. Por decisao posterior do usuario, a prova final
+  sera restaurar em servidor novo, sem laboratorio SQL preliminar. A revisao
+  nao executa backup, restore ou exclusao de dados.
+- `infra/backups` implementa o operador de captura e recuperacao: SQL nativo,
+  arquivos/cofres/volumes coordenados e Restic externo no mesmo conjunto. O
+  padrao e plan, sem escrita; captura exige janela e isolamento de escritores
+  externos declarados pelo operador. Nada e chamado pelo deploy cotidiano.
+  O inventario real validou seis modelos Compose e 20 containers sem alteracao.
+  Recovery usa os Compose existentes congelados em area privada, preserva duas
+  replicas do Front Central e hostname/volume do RabbitMQ, sem criar outro
+  mecanismo de publicacao. Imagens exatas sao opcionais para o ensaio; nunca
+  substituir por rebuild/pull latest silencioso. Preparar a maquina nova nao
+  liga workers, nao roda migrations e nao aceita sobrescrever bancos/destinos.
+  Shared.Backup reutiliza o JSON privado existente. O kit de acesso ao backup
+  fica fora da VPS e nao exige conhecer a senha SQL antes de recuperar esse JSON.
+  COPY_ONLY inicial nao implementa PITR nem manutencao da cadeia de logs. Estado
+  administrativo SQL e reconciliacao SEFAZ/YouTube continuam gates assistidos.
+  Ferramenta/teste aprovado nao equivale a backup ativo ou restore comprovado.
+- Fase local de backup aprovada pelo usuario em 2026-10-20: repositorio Restic
+  /root/YeshuaBackup/repository, sem esperar escolha de destino externo. Vazio
+  em Shared.Backup.Repository significa somente esse destino local aprovado;
+  recibos devem indicar offsite=false e pendencia de protecao contra perda da
+  VPS. A senha de backup pertence ao mesmo credentials.json, sem exportacao aos
+  apps nem rotacao das chaves existentes. Instalacao operacional separada em
+  /opt/yeshua-backup, fora de git clean e sem participar do deploy dos apps.
+  Rotina ONLINE comum: full SQL semanal, diferencial diario, log a cada 15min,
+  arquivos Restic incrementais e verificacoes. GUID/base/fork/LSN e checksum
+  compoem catalogo, inclusive recuperacao de recibos interrompidos apos BACKUP
+  LOG. Nenhum MDF/LDF e copiado e nenhum recovery model e trocado. Rotinas online
+  nao param servicos e nao garantem atomicidade entre bancos/arquivos: volumes
+  quentes, uploads sem bind e integracoes exigem captura coordenada/ensaio depois.
+  Nao apagar chains nem agendar prune/retencao antes do aceite de restore.
+- Execucao da fase local em 2026-10-20 substitui o status antigo de somente
+  planejamento: Restic instalado sem upgrade/restart de aplicativos, repositorio
+  cifrado inicializado e backups reais full/diferencial/logs verificados. O kit
+  de acesso tem copia restrita fora da VPS. Arquivos e leitura integral foram
+  concluidos; seis agendas online ativadas depois dessas provas. Restore real e captura coordenada
+  continuam pendentes; nao afirmar recuperacao integral por esses recibos.
+  O destino externo pode ser escolhido depois, preservando o historico local;
+  nao bloquear a protecao online esperando provedor nem chamar local de offsite.
+- Reforma local de classificacao em 2026-10-20: o backup seleciona somente
+  /root/YeshuaStorage/persistent inteiro, sem excecoes por conteudo. volatile
+  nao e origem da copia. Foram retirados fontes/bundles Git, copia do toolkit
+  e exportacao de imagens das novas capturas; source.json registra a revisao.
+  A versao da rotina instalada na VPS ainda e anterior a esta reforma local.
+  Nao apagar origens/snapshots nem executar prune por causa dessa mudanca.
+  Demais classificacoes continuam em revisao, sem inferencia por aplicativo.
 - A geracao da aplicacao e a construcao da infraestrutura sao processos separados.
+- Contrato de backup confirmado com o usuario em 2026-10-20: somente persistente
+  e volatil. Tudo em persistente entra no backup, sem excecao de conteudo;
+  volatil nao entra. Privacidade e metodo de captura nao criam outras categorias.
+  100% dos bancos dos aplicativos definidos nos Studios sao persistentes,
+  incluindo todas as tabelas e novos bancos; SQL usa backup nativo, nunca MDF/LDF
+  ativos. Bancos de sistema/legados nao identificados continuam em revisao.
+  Recriaveis com fonte disponivel (copias de fontes, bundles Git, imagens,
+  builds e caches) ficam fora de persistente/backup. Nao otimizar restauracao
+  rapida nesta fase. StorageLocation devera ser o caminho obrigatorio de arquivos
+  da aplicacao, sem strings independentes nem flag de backup por arquivo/tenant.
+  StorageLocation possui For(aplicativo, area) em ambas as categorias; paths
+  relativos recusam outras categorias, caminhos absolutos e travessia por '..'.
+  Setup/backup pertencem a infra, nao a Engine. Implantacao, caminhos antigos
+  e investigacoes continuam na secao 0 do mapa operacional de dados/backup.
+- Fotos originais do Memorias: VOLATEIS por padrao, confirmado pelo usuario
+  em 2026-10-20. Novos uploads usam volatile/memorias/photos via StorageLocation
+  volatil, sem excecao de conteudo no backup de persistente. Registros SQL de
+  fotos/albuns continuam persistentes. Pendencia a planejar na sequencia:
+  contratacao paga por tenant inteiro ou por usuario dentro do tenant torna
+  as fotos cobertas persistentes, usando o mesmo backup. O usuario deseja
+  preservar seu proprio tenant, ainda sem ID/ativacao definidos. Escopos,
+  elegibilidade financeira, transicao e cancelamento exigem planejamento;
+  nao implementar cobranca, ACL ou troca de arquivos por inferencia.
+- Videos MP4 locais gerados pelo Memorias sao SEMPRE VOLATEIS, inclusive para
+  pagantes; nao estender preservacao paga de fotos aos videos. Todo dado volatil
+  exige tratamento especifico da aplicacao para ciclo de vida, arquivo ausente,
+  reenvio/regeneracao quando aplicavel e liberacao para limpeza. Task pendente:
+  limpeza por tempo e/ou tamanho atingido, com limites ainda a planejar e
+  protecao de arquivos em uso. Nao ativar exclusao ou agendamento por inferencia.
+  Manifestos manifest.json de renderizacao do Memorias tambem foram confirmados
+  como VOLATEIS; direcionar via StorageLocation e tratar ausencia na aplicacao.
+- Trilhas padrao versionadas do Memorias tambem sao VOLATEIS, confirmado pelo
+  usuario. Direcionar via StorageLocation volatil e garantir reposicao a partir
+  dos arquivos do Git/deploy com verificacao de hash; nao incluir no backup.
+  Eventuais musicas adicionais nao versionadas exigem classificacao propria.
+- Audios originais da Clinica sao VOLATEIS, confirmados pelo usuario. Ja usam
+  StorageLocation.Volatile.TranscriptionsInput; conferir tratamento de ausencia,
+  necessidade de reenvio e limpeza sem apagar uploads/transcricoes em andamento.
+- Upload direto de audio das APIs da Clinica e do APS (/upload -> uploads
+  relativo ao processo) e VOLATIL, confirmado pelo usuario para ambos os apps.
+  Investigar uso das rotas;
+  adequar a StorageLocation volatil se usada, ou remover se comprovadamente
+  obsoleta. Nao remover rota ou arquivos durante a revisao de classificacao.
+- Arquivos auxiliares/de saida da transcricao da Clinica sao VOLATEIS,
+  confirmados pelo usuario. O texto salvo no banco continua persistente.
+  O worker consultado retorna texto pela fila, sem gravacao identificada em
+  TranscriptionsOutput; alinhar seus arquivos temporarios de audio/WAV ao
+  contrato de storage/limpeza e conferir a necessidade dessa localizacao.
+- Relatorios da Clinica em volatile/reports/input permanecem VOLATEIS por
+  confirmacao do usuario; a mesma regra vale para volatile/reports/output.
+  O usuario orientou manter como volatil o que ja esta nessa area. A geracao
+  desses relatorios a partir da base e hipotese, nao uso comprovado nesta
+  conferencia. Nao mudar classificacao ou ativar limpeza por suposicao.
+- Arquivos do Fiscal, confirmado pelo usuario: certificado digital e senha sao
+  PERSISTENTES; planos, XMLs assinados, retornos SEFAZ e demais artefatos de
+  processamento sao VOLATEIS por padrao. Banco Fiscal segue 100% persistente.
+  Guarda persistente paga de XML e futura; implementar destinos via StorageLocation,
+  nao filtro financeiro no backup. Consulta desejada: conteudo completo no banco,
+  quando existir, depois SEFAZ; validar recuperacao real por documento/servico,
+  tratar indisponibilidade e nao confundir status/protocolo ou caminho/hash com
+  XML completo. Essa consulta/guarda paga ainda nao esta implementada; nao apagar
+  arquivos nem mudar a VPS por causa da decisao de classificacao.
+  Requisito: chave de acesso fiscal deve ficar no banco, independente do XML
+  volatil. ChaveAcesso (44) ja existe na DSL e prepared.Chave e gravada pelos
+  handlers de preparacao CT-e/MDF-e; DocumentoFiscal tambem recebe a chave.
+  Conferir os demais fluxos e prover gravacao onde faltar, sem coluna duplicada.
+  Nao exigir protocolo/XML de autorizacao local como pre-condicao da consulta
+  remota, mas nao remover autorizacao da API nem regras de certificado/vinculo
+  do servico SEFAZ. Consultar situacao/protocolo nao equivale a baixar XML completo;
+  a chave nao e garantia universal de recuperacao externa.
+- DocsInput da Clinica (persistent/docs/input) ficou PENDENTE DE INVESTIGACAO,
+  por decisao do usuario, antes de classificar persistente/volatil. Usuario nao
+  recorda a finalidade; a conferencia encontrou declaracao/configuracao, sem
+  fluxo de uso identificado. Confirmar finalidade, conteudo e referencias e
+  conferir docs/Docs no Linux. Nao mover, excluir ou alterar selecao por suposicao;
+  DocsOutput (persistent/docs/output) tambem foi colocado pelo usuario como
+  PENDENTE DE INVESTIGACAO em confirmacao posterior. Confirmar finalidade,
+  uso e conteudo antes de classificar; nenhuma alteracao autorizada por suposicao.
+  A pasta legada persistent/Docs (D maiusculo) tambem foi confirmada como pendente
+  da mesma investigacao; nao unificar caminhos nem deduzir classificacao no Linux.
+- Setup de servidor e backup pertencem a infraestrutura, nunca a execucao da
+  Engine. Engine pode gerar template inicial, sem acessar VPS, instalar pacotes
+  ou criar agendas. setup.sh prepara a rotina comum depois do deploy inicial;
+  --initialize-online completa provas ausentes sem trocar chave/historico.
+  Novos bancos recebem baseline full no proximo ciclo; subpastas nas raizes
+  Storage/privado herdam a copia. Projetos Compose playsis-* sob infra sao
+  descobertos pelos metadados existentes. Bind fora das areas conhecidas e
+  pendencia explicita; volumes quentes nao viram copia online por conveniencia.
 - Projetos de Studio nao declaram workloads, hosts, portas, volumes ou providers.
 - O `MigrationBuilder` dos aplicativos executa apenas geracao de codigo e migrations de dados.
 - Cada schema pode oferecer templates iniciais de infraestrutura para tecnologias diferentes.
@@ -1367,7 +1529,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Arquivo privado/permissoes da VPS conferidos em 2026-10-19, sem deploy ou
   mudanca dos cofres. Em 2026-10-20 foram completados, com autorizacao, somente
   campos vazios do JSON local para debug; sem copia do cofre YouTube.
-- `pendencia`: concluir adocao pelos containers e aceite funcional apos deploy.
+- Adocao pelos containers e checagens tecnicas da VPS concluidas em 2026-10-20.
+  Front Central com duas replicas; dez rotas publicas de saude na revisao
+  `5a356472e`. JSON privado, HTTPS e chaves YouTube preservados. SQL, Redis,
+  RabbitMQ, telemetria e agente nao foram reiniciados. Nginx somente validado
+  e recarregado. Os limites de build usados nessa publicacao foram pontuais,
+  nao passaram a ser limites padrao dos scripts versionados.
+- `pendencia`: conferir login com conta real e fluxos de negocio autenticados;
+  emissao fiscal e publicacao YouTube nao foram exercitadas no aceite tecnico.
   Migracao do acervo antigo de certificados fiscais foi retirada desta entrega. Rotacao e separada,
   sem alterar chaves existentes automaticamente nem apagar cofres.
 

@@ -7,11 +7,56 @@ Clinica ausente nas variaveis foi preservada do codigo da revisao instalada
 `a4ccdbc3a`; nenhuma chave nova foi gerada. A referencia e os arquivos do cofre
 YouTube permaneceram inalterados.
 
-Nao foi executado deploy, pull, build, migration, parada ou reinicio de container
-nessa preparacao. O repositorio remoto instalado continua em `a4ccdbc3a`, ainda
-sem o leitor novo. A adocao pelos containers e o aceite funcional apos deploy
-continuam pendentes. Deploy exige configuracao valida; setup pode criar o exemplo
-privado vazio e parar para preenchimento, sem subir os servicos da aplicacao.
+A preparacao de 2026-10-19 nao executou deploy nem reiniciou servicos. Em
+2026-10-20 foi concluida a publicacao controlada da revisao `5a356472e`:
+Central, Clinica, APS.ADM, Fiscal e Memorias, suas APIs/Workers, o renderer do
+Memorias e a API de inteligencia operacional. As dez rotas publicas de saude
+responderam com a revisao esperada; o Front manteve duas replicas iguais e o
+`index.html` entregue correspondeu ao fonte. A inicializacao SQL da API operacional
+e as migrations normais dos aplicativos terminaram sem erro.
+
+O redeploy da Central com a mesma configuracao passou em cerca de 30 segundos,
+reutilizando os quatro containers existentes. O JSON privado e o HTTPS ficaram
+inalterados. Os dois arquivos de chave/configuracao YouTube comparados antes e
+depois do deploy permaneceram identicos. SQL, Redis, RabbitMQ, telemetria,
+agente e container Nginx nao foram reiniciados; Nginx recebeu somente validacao
+e reload para atualizar os enderecos dos aplicativos.
+
+As compilacoes dessa operacao foram limitadas a 1 CPU/1536 MiB por etapa antes
+do deploy existente, reutilizando o cache do builder. Foi um procedimento
+operacional pontual, nao uma alteracao dos limites padrao dos scripts de deploy.
+Registros privados de aceite/retorno ficam em
+`/root/YeshuaPrivate/production/operations/credentials-5a356472e/`; nao sao uma
+segunda fonte de configuracao nem implementam uma rotina de backup.
+
+Aceite tecnico de configuracao/permissoes/subida/redeploy concluido. Login com
+conta real e fluxos de negocio, como emissao SEFAZ e upload YouTube, nao foram
+executados nessa operacao e ainda exigem conferencia funcional. Deploy exige
+configuracao valida; setup pode criar o exemplo privado vazio e parar para
+preenchimento, sem subir os servicos da aplicacao.
+
+### Testes Complementares Em 2026-10-20
+
+- 39 verificacoes de producao passaram, incluindo revisao dos hosts, 52
+  mapeamentos de credenciais entre Compose e containers, permissoes privadas,
+  rejeicao de acesso ao getMenu sem token/com token invalido nos cinco apps,
+  nove arquivos publicos iguais ao fonte, RabbitMQ autenticado e sem alarmes,
+  Redis, ping do renderer Celery, Nginx e rota publica de saude do Grafana.
+- Dez conexoes SQL locais, de leitura e de escrita dos cinco apps, abriram e
+  executaram somente SELECT para conferir conectividade e existencia de yTenant.
+  Isso nao testa permissoes de escrita nem altera registros. JSON local e da
+  VPS permaneceram inalterados; as permissoes locais continuaram restritas.
+- 25 testes Python, quatro testes .NET de configuracao privada, um teste de
+  geracao da Engine e o teste Bash do leitor comum passaram. Usam dados ficticios.
+- Navegacao publica entre login, cadastro e recuperacao conferida no navegador,
+  incluindo larguras 375 e 320 sem rolagem horizontal. Entrada direta
+  /memorias/login chegou a /spa/?app=Memorias#login. Cadastro e recuperacao nao
+  foram enviados.
+- Defeito reproduzido no front ja existente: login inexistente recebe HTTP 401
+  sem corpo, mas router.js tenta res.json() antes de tratar o status e mostra
+  "Erro de conexao". A API negou o acesso corretamente. Nao houve correcao nem
+  redeploy do front nesta bateria; login positivo e fluxos autenticados seguem
+  pendentes de teste com conta real. Nenhum documento fiscal ou video foi emitido.
 
 ## Estrutura
 
@@ -164,7 +209,9 @@ configuracao Google do aplicativo nao equivale a restaurar todas as contas.
   montada somente na API/Worker Fiscal. PFX e senha sao arquivos separados;
   o banco continua guardando referencias. Por decisao do usuario, nao faremos
   migracao do acervo antigo nesta entrega; isso nao bloqueia a implantacao.
-  Nenhum arquivo antigo foi movido ou apagado. Backup nao foi implementado.
+  Nenhum arquivo antigo foi movido ou apagado. A area privada atual participa
+  da rotina de arquivos em infra/backups; acervo legado fora dela continua
+  dependendo do inventario/captura coordenada, nao de migracao silenciosa.
 - Os paths internos do cofre Memorias e os formatos dos certificados nao foram
   redesenhados; hierarquia logica nao autoriza migracao silenciosa de dados.
 
@@ -272,3 +319,28 @@ Nao imprimir a acao `export`: sua saida base64 e transporte interno, **nao
 criptografia**. Evitar `set -x`, env/inspect completos, dumps de configuracao e
 `docker compose config` sem redacao. Segredos antigos continuam no historico
 Git/imagens: retirar do fonte atual nao os revoga. Rotacao sera etapa separada.
+## Acesso Ao Repositorio De Backup
+
+O operador em infra/backups reutiliza o mesmo JSON privado, sem outro .env ou
+servico de segredos. Shared.Backup contem Repository, Password e Environment;
+o modelo publico tem apenas campos vazios. Leitura/validacao normal do deploy
+nao exige esse bloco nem o exporta aos aplicativos. Memorias continua dono das
+integracoes YouTube e de seu cofre; nada foi transferido para a Central.
+
+A senha Restic e o acesso ao backend precisam de copia segura fora da VPS.
+O bootstrap de restore exige somente SchemaVersion e Shared.Backup: a senha
+SQL e as demais chaves vem do proprio arquivo privado restaurado. O bootstrap
+fica em diretorio restrito diferente do destino de restauracao, evitando
+sobrescrever a configuracao que esta sendo usada para baixar os dados.
+
+Em 2026-10-20 foi inicializado o repositorio cifrado LOCAL em
+/root/YeshuaBackup/repository. Somente Shared.Backup foi acrescentado; os
+segredos existentes dos aplicativos nao foram trocados. O kit contendo APENAS
+SchemaVersion/Shared.Backup tem copia com ACL restrita em
+%USERPROFILE%/.yeshua/private/recovery, fora do Git. Nao inclui senha SSH,
+SQL ou cofre YouTube. O destino externo continua pendente; a chave fora da VPS
+nao substitui uma copia externa dos dados.
+
+O [roteiro de recuperacao](../backups/RECOVERY.md) separa preparacao, SQL,
+reconciliacao e liberacao dos servicos. Nenhuma credencial real foi colocada
+no repositorio. Backup local executado nao e prova de restore integral.

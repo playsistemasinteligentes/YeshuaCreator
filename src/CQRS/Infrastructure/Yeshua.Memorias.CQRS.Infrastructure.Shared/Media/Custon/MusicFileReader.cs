@@ -12,7 +12,7 @@ public sealed class MusicFileReader(IFileStorage storage)
         Stream? stream = null;
         try
         {
-            stream = storage.OpenRead(new StoragePath(track.StorageKey));
+            stream = storage.OpenRead(StoragePathBuilder.Build(StorageLocation.Volatile.For("memorias", "music"), track.FileName));
             if (stream.CanSeek && stream.Length is > 0 and <= 25 * 1024 * 1024) return stream;
             stream.Dispose(); return null;
         }

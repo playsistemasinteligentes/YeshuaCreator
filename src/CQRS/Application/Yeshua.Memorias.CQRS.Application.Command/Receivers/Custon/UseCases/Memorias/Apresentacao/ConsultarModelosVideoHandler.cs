@@ -40,7 +40,7 @@ protected partial async Task<State<ConsultarModelosVideoOutputCommand>> CustomAc
         {
             Id = track.Id, Titulo = track.Title, Autor = track.Artist, Categoria = track.Category,
             Licenca = track.License, UrlFonte = track.SourceUrl, UrlLicenca = track.LicenseUrl,
-            Creditos = track.Credits, Disponivel = await _music.ExistsAsync(new StoragePath(track.StorageKey), cancellationToken)
+            Creditos = track.Credits, Disponivel = await _music.ExistsAsync(Command.Media.MemoriasStorage.MusicPath(track), cancellationToken)
         });
     return Success("OK", output);
 }

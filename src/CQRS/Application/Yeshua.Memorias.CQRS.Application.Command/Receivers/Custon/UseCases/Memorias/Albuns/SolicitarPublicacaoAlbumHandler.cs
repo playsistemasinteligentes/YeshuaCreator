@@ -70,7 +70,7 @@ protected partial async Task<State<SolicitarPublicacaoAlbumOutputCommand>> Custo
     if (!VideoPresentation.TryModel(album.modelovideo, out var model) || !VideoPresentation.ValidMusic(album.musicaid) || !VideoPresentation.ValidVolume(album.volumemusica))
         return ValidationError("Selecione um modelo, musica e volume validos.", new SolicitarPublicacaoAlbumOutputCommand());
     var track = VideoPresentation.FindMusic(album.musicaid);
-    if (track != null && !await _music.ExistsAsync(new StoragePath(track.StorageKey), cancellationToken))
+    if (track != null && !await _music.ExistsAsync(Command.Media.MemoriasStorage.MusicPath(track), cancellationToken))
         return ValidationError("A musica selecionada nao esta disponivel no servidor.", new SolicitarPublicacaoAlbumOutputCommand());
 
     YouTubeConnectionStatus? destination = null;

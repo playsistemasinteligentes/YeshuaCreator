@@ -1,0 +1,10 @@
+[Unit]
+Description=Yeshua SQL transaction log backup every 15 minutes
+[Timer]
+OnCalendar=*-*-* *:05/15:00 America/Sao_Paulo
+RandomizedDelaySec=30s
+AccuracySec=30s
+Persistent=false
+Unit=yeshua-backup@logs.service
+[Install]
+WantedBy=timers.target

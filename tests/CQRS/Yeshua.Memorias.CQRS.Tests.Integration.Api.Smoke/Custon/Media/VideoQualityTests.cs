@@ -80,8 +80,9 @@ public class VideoQualityTests
         Assert.Equal(30, root.GetProperty("fps").GetInt32());
         Assert.Equal(180, root.GetProperty("photos")[0].GetProperty("rotationDegrees").GetInt32());
         Assert.Equal("pan", root.GetProperty("motion").GetString());
-        Assert.Equal("persistent/memorias/music/adventure-meme-v1.mp3", root.GetProperty("audioStorageKey").GetString());
+        Assert.Equal("volatile/memorias/music/adventure-meme-v1.mp3", root.GetProperty("audioStorageKey").GetString());
         Assert.Equal(0, root.GetProperty("audioVolume").GetDouble());
+        Assert.Equal("volatile/memorias/publicacoes/3/video.mp4", root.GetProperty("outputStorageKey").GetString());
     }
 
     [Fact]
@@ -95,11 +96,37 @@ public class VideoQualityTests
         Assert.Equal(0, stream.Length);
     }
 
-    private static PrepararManifestoAlbumHandler ManifestHandler(int quality, Stream output) => new(
+    [Fact]
+    public void MissingVolatilePhotoRequiresResendAndDoesNotRetryOrWriteManifest()
+    {
+        using var stream = new MemoryStream();
+        var saga = new PublicarAlbumYouTubeSaga();
+        saga.Start("3", "PublicacaoAlbumEntity");
+        var error = Assert.Throws<SagaStepExecutionException>(() => ManifestHandler(2, stream, false).Execute(saga, saga.Steps.First()));
+        Assert.False(error.Retryable);
+        Assert.Contains("Reenvie", error.Message);
+        Assert.Equal(0, stream.Length);
+    }
+
+    [Fact]
+    public void MissingManifestDoesNotPublishRenderingWork()
+    {
+        var saga = new PublicarAlbumYouTubeSaga();
+        saga.Start("3", "PublicacaoAlbumEntity");
+        var handler = new RenderizarVideoAlbumHandler(
+            TestProxy.For<IPublicacaoAlbumReadRepository>((_, _) => new PublicacaoAlbumDTO { manifeststoragekey = "volatile/memorias/publicacoes/3/manifest.json" }),
+            TestProxy.For<IPublicacaoAlbumWriteRepository>(), null!,
+            TestProxy.For<IFileStorage>((_, _) => Task.FromResult(false)));
+        var error = Assert.Throws<SagaStepExecutionException>(() => handler.Execute(saga, saga.Steps.First()));
+        Assert.False(error.Retryable);
+        Assert.Contains("nova publicacao", error.Message);
+    }
+
+    private static PrepararManifestoAlbumHandler ManifestHandler(int quality, Stream output, bool photosExist = true) => new(
         TestProxy.For<IPublicacaoAlbumReadRepository>((_, _) => new PublicacaoAlbumDTO { id = 3, albumid = 5, qualidadevideo = quality, modelovideo = 3, musicaid = 2, volumemusica = 0 }),
         TestProxy.For<IPublicacaoAlbumWriteRepository>(),
         TestProxy.For<IAlbumReadRepository>((_, _) => new AlbumDTO { id = 5, segundosporfoto = 4, qualidadevideo = 99 }),
         TestProxy.For<IAlbumFotoReadRepository>((_, _) => new[] { new AlbumFotoDTO { fotoid = 1, rotacao = 180 } }),
-        TestProxy.For<IFotoReadRepository>((_, _) => new FotoDTO { storagekey = "persistent/memorias/photos/7/9/1.png" }),
-        TestProxy.For<IFileStorage>((_, _) => output));
+        TestProxy.For<IFotoReadRepository>((_, _) => new FotoDTO { storagekey = "volatile/memorias/photos/7/9/1.png" }),
+        TestProxy.For<IFileStorage>((method, _) => method == "ExistsAsync" ? Task.FromResult(photosExist) : output));
 }

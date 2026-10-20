@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "scope": "yeshua-production",
+  "staging": "/root/YeshuaBackup",
+  "sql_data": "/root/YeshuaDB/persistent/sql",
+  "sql_mode": "COPY_ONLY",
+  "minimum_free_bytes": 8589934592,
+  "minimum_available_memory_mb": 1024,
+  "stop_timeout_seconds": 120,
+  "command_timeout_seconds": 3600,
+  "storage_excludes": [],
+  "areas": [
+    {"id": "storage", "path": "/root/YeshuaStorage/persistent", "required": true},
+    {"id": "telemetry", "path": "/root/YeshuaDB/persistent/telemetry", "required": true},
+    {"id": "https", "path": "/etc/letsencrypt", "required": false}
+  ],
+  "container_files": [],
+  "keep_daily": 7,
+  "keep_weekly": 4,
+  "keep_monthly": 3
+}

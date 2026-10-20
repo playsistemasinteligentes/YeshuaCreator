@@ -11,14 +11,21 @@ from app.messaging import publish_message
 
 def download_file(url: str) -> str:
     """Baixa o arquivo da URL mantendo a extensão original."""
-    response = requests.get(url, stream=True, timeout=30)
-    response.raise_for_status()
     ext = os.path.splitext(url)[1] or ".webm"
-    with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
-        for chunk in response.iter_content(chunk_size=8192):
-            if chunk:
-                tmp.write(chunk)
-        return tmp.name
+    path = None
+    try:
+        with requests.get(url, stream=True, timeout=30) as response:
+            response.raise_for_status()
+            with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
+                path = tmp.name
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        tmp.write(chunk)
+        return path
+    except Exception:
+        if path and os.path.exists(path):
+            os.remove(path)
+        raise
 
 def is_wav_compatible(file_path: str) -> bool:
     """Verifica se o WAV já está em mono e 16kHz."""
@@ -32,14 +39,20 @@ def convert_to_wav(input_path: str) -> str:
     """Converte qualquer áudio para WAV mono 16kHz compatível com Whisper."""
     if input_path.lower().endswith(".wav") and is_wav_compatible(input_path):
         return input_path
-    output_path = tempfile.mktemp(suffix=".wav")
-    subprocess.run([
-        "ffmpeg", "-y", "-i", input_path,
-        "-ar", "16000", "-ac", "1",
-        "-c:a", "pcm_s16le",
-        output_path
-    ], check=True)
-    return output_path
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as output:
+        output_path = output.name
+    try:
+        subprocess.run([
+            "ffmpeg", "-y", "-i", input_path,
+            "-ar", "16000", "-ac", "1",
+            "-c:a", "pcm_s16le",
+            output_path
+        ], check=True)
+        return output_path
+    except Exception:
+        if os.path.exists(output_path):
+            os.remove(output_path)
+        raise
 
 @celery_app.task(
     name="app.tasks.transcribe_audio",

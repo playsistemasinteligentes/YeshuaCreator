@@ -28,6 +28,11 @@ ensure_directory() {
   chmod -- "$mode" "$directory"
 }
 
+prepare_backup() {
+  YESHUA_APP_DIR="$APP_DIR" YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" \
+    "$PYTHON" -B "$APP_DIR/infra/backups/install.py" --initialize-online
+}
+
 main() {
   require_root || return 1
   if [[ "$-" == *x* ]]; then
@@ -75,6 +80,7 @@ main() {
     openssh-server \
     python3 \
     python3-pip \
+    restic \
     ufw \
     util-linux \
     vim \
@@ -100,6 +106,9 @@ main() {
   ensure_directory /root/YeshuaStorage 0:0 750
   local directory
   for directory in \
+    persistent volatile volatile/memorias/photos volatile/memorias/music \
+    volatile/memorias/publicacoes volatile/fiscal/planos-emissao volatile/fiscal/sefaz \
+    volatile/clinica/uploads volatile/aps-adm/uploads \
     volatile/ia/transcriptions/input volatile/ia/transcriptions/output \
     volatile/reports/input volatile/reports/output \
     persistent/Docs/input persistent/Docs/output; do
@@ -108,6 +117,9 @@ main() {
 
   echo "==== Executando o deploy do servidor ===="
   YESHUA_SKIP_UPDATE=1 bash "$DEPLOY_SCRIPT" all
+
+  echo "==== Preparando backup online e agendas ===="
+  prepare_backup
 
   if [[ ! -e /root/.bash_aliases && ! -L /root/.bash_aliases ]]; then
     cat <<'EOF' > /root/.bash_aliases

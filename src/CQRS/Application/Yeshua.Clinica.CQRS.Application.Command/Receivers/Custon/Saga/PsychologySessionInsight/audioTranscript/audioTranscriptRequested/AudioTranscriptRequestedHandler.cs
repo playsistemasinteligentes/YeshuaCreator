@@ -49,6 +49,8 @@ namespace Command.Receivers
                 // =========================================================
                 var uploadId = int.Parse(saga.EntityId);
                 yFileUploadDTO upload = _repReadyUpload.FirstById(uploadId, true);
+                if (upload == null || string.IsNullOrWhiteSpace(upload.filepath))
+                    throw new SagaStepExecutionException("Audio nao encontrado. Reenvie o arquivo para transcricao.", retryable: false);
 
                 // =========================================================
                 // 2. MONTA PATHS
@@ -67,13 +69,13 @@ namespace Command.Receivers
                 // =========================================================
                 // 3. SE NÃO EXISTE FINAL → JUNTA CHUNKS
                 // =========================================================
-                if (!_fileStorage.HasFilesInDirectoryAsync(finalPath, CancellationToken.None)
+                if (!_fileStorage.ExistsAsync(finalPath, CancellationToken.None)
                         .GetAwaiter().GetResult())
                 {
                     var merged = MergeChunksFromStorage(pendingMergePath, finalPath);
 
                     if (!merged)
-                        throw new Exception("Falha ao reconstruir arquivo a partir dos chunks.");
+                        throw new SagaStepExecutionException("Audio volatil indisponivel e sem partes para reconstruir. Reenvie o arquivo para transcricao.", retryable: false);
                 }
 
                 // =========================================================

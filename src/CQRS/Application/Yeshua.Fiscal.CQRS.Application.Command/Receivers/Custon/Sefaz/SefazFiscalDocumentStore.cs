@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
+using Command.Interfaces.Patterns.FileStore;
 
 namespace Command.Receivers
 {
@@ -129,12 +130,12 @@ namespace Command.Receivers
                 raiz = Path.Combine(AppContext.BaseDirectory, "storage");
             }
 
-            var diretorio = Path.Combine(raiz, "sefaz", tipoDocumento.ToLowerInvariant(), servico.ToLowerInvariant());
-            Directory.CreateDirectory(diretorio);
-
             var safeKey = OnlySafeFileName(string.IsNullOrWhiteSpace(chave) ? "sem-chave" : chave);
             var fileName = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff") + "-" + safeKey + ".xml";
-            var path = Path.Combine(diretorio, fileName);
+            var location = StorageLocation.Volatile.For("fiscal", "sefaz");
+            var path = StoragePathBuilder.Build(location, $"{tipoDocumento.ToLowerInvariant()}/{servico.ToLowerInvariant()}/{fileName}")
+                .ResolveUnder(Path.GetFullPath(raiz));
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
             File.WriteAllText(path, xml, Encoding.UTF8);
 

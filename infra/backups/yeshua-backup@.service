@@ -1,0 +1,21 @@
+[Unit]
+Description=Yeshua online backup (%i)
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+Nice=19
+IOSchedulingClass=idle
+CPUQuota=25%
+MemoryMax=768M
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=YESHUA_APP_DIR=/root/YeshuaCreator
+Environment=GOMEMLIMIT=384MiB
+WorkingDirectory=/root/YeshuaCreator
+ExecStart=/usr/bin/python3 -B /opt/yeshua-backup/current/infra/backups/backup.py scheduled --kind %i
+TimeoutStartSec=4h
+KillMode=control-group

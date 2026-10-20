@@ -1,0 +1,9 @@
+[Unit]
+Description=Yeshua weekly full SQL backup (Sao Paulo)
+[Timer]
+OnCalendar=Sun *-*-* 03:00:00 America/Sao_Paulo
+RandomizedDelaySec=30s
+Persistent=false
+Unit=yeshua-backup@full.service
+[Install]
+WantedBy=timers.target

@@ -1,7 +1,7 @@
 namespace Dominio.Media;
 
 public sealed record VideoModel(int Id, string Name, string Motion, string Transition, double TransitionSeconds, double Zoom, int SuggestedMusicId);
-public sealed record MusicTrack(int Id, string Title, string Category, string StorageKey)
+public sealed record MusicTrack(int Id, string Title, string Category, string FileName)
 {
     public string Artist => "Kevin MacLeod";
     public string License => "CC BY 4.0";
@@ -23,9 +23,9 @@ public static class VideoPresentation
     });
     public static IReadOnlyList<MusicTrack> Music { get; } = Array.AsReadOnly(new[]
     {
-        new MusicTrack(1, "Air Prelude", "Romantico", "persistent/memorias/music/air-prelude-v1.mp3"),
-        new MusicTrack(2, "Adventure Meme", "Aventura", "persistent/memorias/music/adventure-meme-v1.mp3"),
-        new MusicTrack(3, "Carefree", "Celebracao", "persistent/memorias/music/carefree-v1.mp3")
+        new MusicTrack(1, "Air Prelude", "Romantico", "air-prelude-v1.mp3"),
+        new MusicTrack(2, "Adventure Meme", "Aventura", "adventure-meme-v1.mp3"),
+        new MusicTrack(3, "Carefree", "Celebracao", "carefree-v1.mp3")
     });
 
     public static bool TryModel(int? id, out VideoModel model)

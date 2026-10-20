@@ -26,7 +26,7 @@ if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
 fi
 
 mkdir -p /root/YeshuaStorage
-MUSIC_DIR="/root/YeshuaStorage/persistent/memorias/music"
+MUSIC_DIR="/root/YeshuaStorage/volatile/memorias/music"
 mkdir -p "$MUSIC_DIR"
 (
   cd "$COMPOSE_DIR/music"

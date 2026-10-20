@@ -10,18 +10,18 @@
   "transition": "fade",
   "transitionSeconds": 0.7,
   "zoom": 1.06,
-  "audioStorageKey": "persistent/memorias/music/air-prelude-v1.mp3",
+  "audioStorageKey": "volatile/memorias/music/air-prelude-v1.mp3",
   "audioVolume": 0.35,
   "secondsPerPhoto": 4,
   "photos": [
     {
-      "storageKey": "persistent/memorias/photos/foto-001.jpg",
+      "storageKey": "volatile/memorias/photos/foto-001.jpg",
       "durationSeconds": 4,
       "caption": "",
       "rotationDegrees": 0
     },
     {
-      "storageKey": "persistent/memorias/photos/foto-002.jpg",
+      "storageKey": "volatile/memorias/photos/foto-002.jpg",
       "durationSeconds": 5,
       "caption": "",
       "rotationDegrees": 180

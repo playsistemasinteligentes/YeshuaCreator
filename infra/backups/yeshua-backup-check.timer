@@ -1,0 +1,9 @@
+[Unit]
+Description=Yeshua daily repository metadata check (Sao Paulo)
+[Timer]
+OnCalendar=*-*-* 05:30:00 America/Sao_Paulo
+RandomizedDelaySec=60s
+Persistent=false
+Unit=yeshua-backup@check.service
+[Install]
+WantedBy=timers.target

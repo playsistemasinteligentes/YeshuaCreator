@@ -115,7 +115,10 @@ namespace Command.Receivers.UseCase
 
             foreach (var fonte in fontes)
             {
-                var xml = File.ReadAllText(fonte, Encoding.UTF8);
+                string xml;
+                try { xml = File.ReadAllText(fonte, Encoding.UTF8); }
+                catch (FileNotFoundException) { continue; }
+                catch (DirectoryNotFoundException) { continue; }
                 var raiz = ParseXml(xml);
                 var processado = LocalizarElemento(raiz, elementoProcessado);
                 if (processado != null)
@@ -129,7 +132,7 @@ namespace Command.Receivers.UseCase
             }
 
             if (documento == null)
-                throw new InvalidOperationException($"XML assinado do {elementoDocumento} {chaveAcesso} nao foi encontrado no storage.");
+                throw new InvalidOperationException($"XML do {elementoDocumento} {chaveAcesso} indisponivel no armazenamento volatil. A chave permanece no banco; recuperacao externa deve ser solicitada ao servico fiscal disponivel.");
 
             if (protocolo == null)
                 throw new InvalidOperationException($"Protocolo de autorizacao do {elementoDocumento} {chaveAcesso} nao foi encontrado no storage.");

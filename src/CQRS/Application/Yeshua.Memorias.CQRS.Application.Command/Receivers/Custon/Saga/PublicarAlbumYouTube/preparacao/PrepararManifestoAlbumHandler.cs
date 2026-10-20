@@ -66,6 +66,9 @@ namespace Command.Receivers
                         ?? throw new SagaStepExecutionException($"Foto {albumFoto.fotoid} nao encontrada.", retryable: false);
                     if (foto.deleted || string.IsNullOrWhiteSpace(foto.storagekey))
                         throw new SagaStepExecutionException($"Foto {albumFoto.fotoid} invalida para renderizacao.", retryable: false);
+                    var photoPath = StoragePathBuilder.BuildFromFullPath(Command.Media.MemoriasStorage.Photos, foto.storagekey);
+                    if (!_fileStorage.ExistsAsync(photoPath, CancellationToken.None).GetAwaiter().GetResult())
+                        throw new SagaStepExecutionException($"Foto {albumFoto.fotoid} indisponivel no armazenamento volatil. Reenvie a foto e solicite uma nova publicacao.", retryable: false);
                     if (albumFoto.rotacao is not (0 or 90 or 180 or 270))
                         throw new SagaStepExecutionException("Rotacao da foto invalida para renderizacao.", retryable: false);
 
@@ -80,9 +83,10 @@ namespace Command.Receivers
             if (fotos.Length == 0)
                 throw new SagaStepExecutionException("O album nao possui fotos para publicacao.", retryable: false);
 
-            var baseKey = $"persistent/memorias/publicacoes/{publicacaoId}";
-            var manifestStorageKey = $"{baseKey}/manifest.json";
-            var outputStorageKey = $"{baseKey}/video.mp4";
+            var manifestPath = Command.Media.MemoriasStorage.PublicationPath(publicacaoId, "manifest.json");
+            var manifestStorageKey = manifestPath.Value.Replace('\\', '/');
+            var outputStorageKey = Command.Media.MemoriasStorage.PublicationPath(publicacaoId, "video.mp4").Value.Replace('\\', '/');
+            var music = VideoPresentation.FindMusic(publicacao.musicaid);
             var manifest = new AlbumRenderManifest(
                 1,
                 outputStorageKey,
@@ -94,10 +98,10 @@ namespace Command.Receivers
                 (int)quality.Quality,
                 quality.Crf,
                 model.Motion, model.Transition, model.TransitionSeconds, model.Zoom,
-                VideoPresentation.FindMusic(publicacao.musicaid)?.StorageKey,
+                music == null ? null : Command.Media.MemoriasStorage.MusicPath(music).Value.Replace('\\', '/'),
                 publicacao.volumemusica / 100d);
 
-            using (var stream = _fileStorage.OpenWrite(new StoragePath(manifestStorageKey)))
+            using (var stream = _fileStorage.OpenWrite(manifestPath))
             {
                 JsonSerializer.Serialize(stream, manifest, new JsonSerializerOptions
                 {

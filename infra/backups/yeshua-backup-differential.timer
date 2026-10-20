@@ -1,0 +1,9 @@
+[Unit]
+Description=Yeshua daily differential SQL backup (Sao Paulo)
+[Timer]
+OnCalendar=Mon..Sat *-*-* 03:00:00 America/Sao_Paulo
+RandomizedDelaySec=30s
+Persistent=false
+Unit=yeshua-backup@differential.service
+[Install]
+WantedBy=timers.target

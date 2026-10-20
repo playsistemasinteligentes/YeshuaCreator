@@ -76,7 +76,9 @@ public static class EndpointsCuston
             return result.StatusCode == 200 ? Results.Ok(result.Data) : Results.BadRequest(result);
         }).RequireAuthorization();
 
-        app.MapPost("/upload", async (HttpContext context) =>
+        app.MapPost("/upload", async (HttpContext context,
+            Command.Interfaces.Patterns.FileStore.IFileStorage storage,
+            Aplication.Interfaces.Services.IExecutionContext actor) =>
         {
             if (!context.Request.HasFormContentType)
                 return Results.BadRequest("Requisicao invalida. Esperado form-data.");
@@ -86,14 +88,12 @@ public static class EndpointsCuston
             if (file is null || file.Length == 0)
                 return Results.BadRequest("Nenhum arquivo foi enviado.");
 
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-            Directory.CreateDirectory(uploadsFolder);
-            var safeFileName = Path.GetFileName(file.FileName);
-            var filePath = Path.Combine(uploadsFolder, safeFileName);
-
-            await using var stream = new FileStream(filePath, FileMode.Create);
-            await file.CopyToAsync(stream);
-            return Results.Ok(new { message = "Arquivo recebido com sucesso!", filePath });
-        });
+            if (actor.TenantID <= 0 || actor.UserId <= 0) return Results.Unauthorized();
+            var location = Command.Interfaces.Patterns.FileStore.StorageLocation.Volatile.For("clinica", "uploads");
+            var path = Command.Interfaces.Patterns.FileStore.StoragePathBuilder.Build(location,
+                actor.TenantID.ToString(), actor.UserId.ToString(), Guid.NewGuid().ToString("N"));
+            await storage.SaveAsync(file, path, context.RequestAborted);
+            return Results.Ok(new { message = "Arquivo recebido com sucesso!", filePath = path.Value.Replace('\\', '/') });
+        }).RequireAuthorization();
     }
 }

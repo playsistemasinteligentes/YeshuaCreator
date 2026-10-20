@@ -55,7 +55,10 @@ namespace Command.Receivers
             string videoId;
             try
             {
-                using var videoStream = _fileStorage.OpenRead(new StoragePath(publicacao.videostoragekey));
+                var videoPath = StoragePathBuilder.BuildFromFullPath(Command.Media.MemoriasStorage.Publications, publicacao.videostoragekey);
+                if (!_fileStorage.ExistsAsync(videoPath, CancellationToken.None).GetAwaiter().GetResult())
+                    throw new SagaStepExecutionException("Video volatil indisponivel. Solicite uma nova publicacao; reenvie fotos ausentes.", retryable: false);
+                using var videoStream = _fileStorage.OpenRead(videoPath);
                 videoId = _uploader.UploadAsync(new YouTubeVideoUpload(
                     new YouTubeOwner(publicacao.youtubecredentialtenantid, publicacao.userid),
                     publicacaoId, publicacao.conexaoyoutubeid, publicacao.canalyoutubeid, publicacao.videostoragekey,
@@ -80,6 +83,13 @@ namespace Command.Receivers
                     ? "Falha temporaria no envio. A saga controla a retomada da mesma sessao."
                     : exception.Message);
                 throw;
+            }
+            catch (Exception exception) when (exception is FileNotFoundException or DirectoryNotFoundException)
+            {
+                const string message = "Video volatil indisponivel. Solicite uma nova publicacao; reenvie fotos ausentes.";
+                _publicacaoWriteRepository.UpdateStatus(publicacaoId, MemoriasPublicationStatus.Falhou);
+                _publicacaoWriteRepository.UpdateMensagem(publicacaoId, message);
+                throw new SagaStepExecutionException(message, retryable: false);
             }
 
             var url = $"https://www.youtube.com/watch?v={videoId}";

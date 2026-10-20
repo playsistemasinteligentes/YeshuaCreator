@@ -74,7 +74,7 @@ public class PhotoUploadTests
         Assert.Equal(new[] { "BeginTran", "CompleteSession", "InsertPhoto", "InsertLink", "Commit" }, rig.Events);
         Assert.Equal("image/png", rig.Photo!.ContentType);
         Assert.Equal(Convert.ToHexString(System.Security.Cryptography.SHA256.HashData(Png)), rig.Photo.HashArquivo);
-        Assert.StartsWith("persistent/memorias/photos/7/10/", rig.Photo.StorageKey);
+        Assert.StartsWith("volatile/memorias/photos/7/10/", rig.Photo.StorageKey);
         Assert.EndsWith(".png", rig.Photo.StorageKey);
         Assert.Equal(5, rig.Link!.AlbumId);
         Assert.Equal(42, rig.Link.FotoId);

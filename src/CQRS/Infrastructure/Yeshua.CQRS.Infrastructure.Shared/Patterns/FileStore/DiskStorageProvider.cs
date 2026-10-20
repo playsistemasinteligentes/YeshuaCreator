@@ -21,11 +21,7 @@ namespace Shered.Patterns.FileStore
 
         private string GetFullPath(StoragePath path)
         {
-            var normalized = path.Value
-                .Replace('/', Path.DirectorySeparatorChar)
-                .Replace('\\', Path.DirectorySeparatorChar);
-
-            return Path.Combine(_settings.Root!, normalized);
+            return path.ResolveUnder(Path.GetFullPath(_settings.Root!));
         }
 
         public async Task<FileStorageResult> SaveAsync(

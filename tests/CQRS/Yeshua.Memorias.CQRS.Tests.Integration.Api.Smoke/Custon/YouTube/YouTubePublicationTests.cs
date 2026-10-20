@@ -557,7 +557,7 @@ public class YouTubePublicationTests
         public PublicacaoAlbumDTO Publication { get; } = new()
         {
             id = 3, albumid = 5, tenantid = 7, userid = 9, youtubecredentialtenantid = 7, privacidadeyoutube = 1,
-            videostoragekey = "persistent/memorias/publicacoes/3/video.mp4", canalyoutubeid = "channel-a"
+            videostoragekey = "volatile/memorias/publicacoes/3/video.mp4", canalyoutubeid = "channel-a"
         };
         public PublicarAlbumYouTubeSaga Saga { get; } = new();
         public SagaStepBase Step => Saga.Steps.Single(step => step.Key == PublicarAlbumYouTubeSaga.STEP_3);
@@ -575,7 +575,7 @@ public class YouTubePublicationTests
                     if (method == "UpdateMensagem") Publication.mensagem = (string)args[1]!;
                     return null;
                 }), TestProxy.For<IAlbumReadRepository>((_, _) => new AlbumDTO { id = 5, titulo = "Album", privacidade = 1 }),
-                TestProxy.For<IFileStorage>((_, _) => new MemoryStream([1, 2, 3])),
+                TestProxy.For<IFileStorage>((method, _) => method == "ExistsAsync" ? Task.FromResult(true) : new MemoryStream([1, 2, 3])),
                 new ResumableYouTubeVideoUploader(Connections.Repository, Connections.Service, Upload));
         }
         public void Dispose() => Connections.Dispose();

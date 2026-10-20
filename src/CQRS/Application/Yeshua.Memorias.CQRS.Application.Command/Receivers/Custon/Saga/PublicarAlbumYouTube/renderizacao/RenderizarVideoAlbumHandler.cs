@@ -10,6 +10,7 @@
 
 using System.Text.Json;
 using Command.Patterns.OutBox;
+using Command.Interfaces.Patterns.FileStore;
 using Dominio.Patterns.Saga;
 using IRepository.Read;
 using IRepository.Write;
@@ -25,15 +26,18 @@ namespace Command.Receivers
         private readonly IPublicacaoAlbumReadRepository _publicacaoReadRepository;
         private readonly IPublicacaoAlbumWriteRepository _publicacaoWriteRepository;
         private readonly OutboxService _outboxService;
+        private readonly IFileStorage _fileStorage;
 
         public RenderizarVideoAlbumHandler(
             IPublicacaoAlbumReadRepository publicacaoReadRepository,
             IPublicacaoAlbumWriteRepository publicacaoWriteRepository,
-            OutboxService outboxService)
+            OutboxService outboxService,
+            IFileStorage fileStorage)
         {
             _publicacaoReadRepository = publicacaoReadRepository;
             _publicacaoWriteRepository = publicacaoWriteRepository;
             _outboxService = outboxService;
+            _fileStorage = fileStorage;
         }
 
         partial void CustomExecute(SagaBase saga, SagaStepBase step)
@@ -44,6 +48,10 @@ namespace Command.Receivers
 
             if (string.IsNullOrWhiteSpace(publicacao.manifeststoragekey))
                 throw new SagaStepExecutionException("Manifesto da publicacao ainda nao foi preparado.", retryable: true);
+
+            var manifestPath = StoragePathBuilder.BuildFromFullPath(Command.Media.MemoriasStorage.Publications, publicacao.manifeststoragekey);
+            if (!_fileStorage.ExistsAsync(manifestPath, CancellationToken.None).GetAwaiter().GetResult())
+                throw new SagaStepExecutionException("Manifesto volatil indisponivel. Solicite uma nova publicacao; reenvie fotos ausentes.", retryable: false);
 
             var payload = new
             {
@@ -93,7 +101,10 @@ namespace Command.Receivers
                 throw new SagaStepExecutionException("Retorno da renderizacao nao confirmou video gerado.", retryable: false);
             }
 
-            _publicacaoWriteRepository.UpdateVideoStorageKey(publicacaoId, message.Result.OutputStorageKey.Replace('\\', '/'));
+            var expectedOutput = Command.Media.MemoriasStorage.PublicationPath(publicacaoId, "video.mp4").Value.Replace('\\', '/');
+            if (!string.Equals(expectedOutput, message.Result.OutputStorageKey.Replace('\\', '/'), StringComparison.Ordinal))
+                throw new SagaStepExecutionException("O video retornado nao pertence a esta publicacao.", retryable: false);
+            _publicacaoWriteRepository.UpdateVideoStorageKey(publicacaoId, expectedOutput);
             _publicacaoWriteRepository.UpdateStatus(publicacaoId, MemoriasPublicationStatus.VideoRenderizado);
             _publicacaoWriteRepository.UpdateMensagem(publicacaoId, "Video renderizado pelo worker de midia.");
             step.SetPayload(payload);
