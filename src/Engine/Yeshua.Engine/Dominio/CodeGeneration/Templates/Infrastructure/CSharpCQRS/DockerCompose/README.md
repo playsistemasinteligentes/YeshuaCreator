@@ -13,9 +13,6 @@ Tokens esperados durante a inicializacao:
 - `{{APPLICATION_SLUG}}`: prefixo dos servicos do aplicativo.
 - `{{COMPOSE_PROJECT_NAME}}`: nome isolado do projeto Compose.
 - `{{DATABASE_NAME}}`: catalogo SQL do aplicativo.
-- `{{SA_PASSWORD}}`: senha inicial do SQL Server.
-- `{{RABBITMQ_USER}}`: usuario inicial do RabbitMQ.
-- `{{RABBITMQ_PASSWORD}}`: senha inicial do RabbitMQ.
 - `{{API_PROJECT_PATH}}`: caminho do projeto da API.
 - `{{API_ASSEMBLY}}`: assembly executavel da API.
 - `{{FRONT_PROJECT_PATH}}`: caminho do projeto do Front.
@@ -30,3 +27,9 @@ RabbitMQ, nginx, certificados e a rede pertencem ao Shared do servidor.
 
 Particularidades como workers externos, imagens de IA, rotas, credenciais e
 recursos exclusivos devem ser editadas diretamente na copia do aplicativo.
+
+Senhas nao sao tokens de substituicao nem valores para copiar ao template.
+Conexoes, JWT e RabbitMQ sao referencias obrigatorias de ambiente. Ao adotar
+este template para um app novo, registrar explicitamente seu target/mapeamento
+no leitor `infra/private/credentials.py` e configurar Apps.<App> no JSON privado.
+Nao executar o template com placeholders nem adicionar fallback secreto.

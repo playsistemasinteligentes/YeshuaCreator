@@ -21,9 +21,9 @@ services:
       MemoriasYouTube__ConfigurationAdminUserId: "${YESHUA_MEMORIAS_CONFIG_ADMIN_USER_ID:-0}"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
-      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_MEMORIAS_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_MEMORIAS_WRITE:?Configure credentials.json}"
       YESHUA_MEMORIAS_STORAGE_ROOT: "/storage"
       STORAGE_ROOT: "/storage"
       Storage__Providers__Disk__Root: "/storage"
@@ -33,14 +33,18 @@ services:
       Storage__Locations__persistent/memorias/publicacoes: "Disk"
       RabbitMq__HostName: "rabbitmq"
       RabbitMq__Port: "5672"
-      RabbitMq__Username: "yeshua"
-      RabbitMq__Password: "yeshua123"
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
     expose:
       - "7214"
     volumes:
       - /root/YeshuaStorage:/storage
-      - /root/YeshuaMemoriasSecrets:/memorias-secrets
+      - type: bind
+        source: ${YESHUA_MEMORIAS_PRIVATE_ROOT:?Configure credentials.json}
+        target: /memorias-secrets
+        bind:
+          create_host_path: false
     restart: unless-stopped
     networks:
       - yeshua-net
@@ -63,8 +67,8 @@ services:
       MemoriasYouTube__CredentialsDirectory: "/memorias-secrets/accounts"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_MEMORIAS_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_MEMORIAS_WRITE:?Configure credentials.json}"
       YESHUA_MEMORIAS_STORAGE_ROOT: "/storage"
       STORAGE_ROOT: "/storage"
       Storage__Providers__Disk__Root: "/storage"
@@ -74,8 +78,8 @@ services:
       Storage__Locations__persistent/memorias/publicacoes: "Disk"
       RabbitMq__HostName: "rabbitmq"
       RabbitMq__Port: "5672"
-      RabbitMq__Username: "yeshua"
-      RabbitMq__Password: "yeshua123"
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
       WorkerExecutionContext__TenantID: "1"
       WorkerExecutionContext__UserId: "1"
@@ -86,7 +90,11 @@ services:
       - "7215"
     volumes:
       - /root/YeshuaStorage:/storage
-      - /root/YeshuaMemoriasSecrets:/memorias-secrets
+      - type: bind
+        source: ${YESHUA_MEMORIAS_PRIVATE_ROOT:?Configure credentials.json}
+        target: /memorias-secrets
+        bind:
+          create_host_path: false
     restart: unless-stopped
     networks:
       - yeshua-net
@@ -99,9 +107,9 @@ services:
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_MEMORIAS_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_MEMORIAS_WRITE:?Configure credentials.json}"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
     restart: "no"
     networks:
       - yeshua-net
@@ -111,7 +119,7 @@ services:
       context: ./media-renderer
       dockerfile: Dockerfile
     environment:
-      CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+      CELERY_BROKER_URL: "${YESHUA_CELERY_BROKER_URL:?Configure credentials.json}"
       STORAGE_ROOT: "/storage"
       FFMPEG_PRESET: "medium"
       FFMPEG_CRF: "18"

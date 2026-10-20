@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.6.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.0.4" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.0.4" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="../../../src/CQRS/Application/Yeshua.Clinica.CQRS.Application.Command/Receivers/Custon/UseCases/FileUpload/Infra/UploadTokenHelper.cs" Link="UploadTokenHelper.cs" />
+    <Compile Include="../../../src/CQRS/Application/Yeshua.Fiscal.CQRS.Application.Command/Receivers/Custon/Saga/FiscalPayloadStore.cs" Link="FiscalPayloadStore.cs" />
+    <Compile Include="../../../src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/ConcretInterfaces/Queue/RabbitMQ/RabbitMqOptions.cs" Link="RabbitMqOptions.cs" />
+    <Compile Include="../../../src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/Patterns/JWT/JwtSettings.cs" Link="JwtSettings.cs" />
+  </ItemGroup>
+</Project>

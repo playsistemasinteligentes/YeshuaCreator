@@ -39,6 +39,9 @@ if (!args.Contains("--codegen-only", StringComparer.OrdinalIgnoreCase))
         ? GS.I.MYC.WriteConectionString
         : GS.I.MYC.ReadConectionString;
 
+    if (databaseOnly && string.IsNullOrWhiteSpace(connectionString))
+        throw new InvalidOperationException("Configure a conexao SQL da Central antes de executar --database-only.");
+
     if (!string.IsNullOrWhiteSpace(connectionString))
     {
         using IDbConnection connection = new SqlFactory(EnumSqlConections.SqlServer, connectionString).SqlConnection();

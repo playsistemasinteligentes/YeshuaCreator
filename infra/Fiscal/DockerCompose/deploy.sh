@@ -17,7 +17,7 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" pull origin main
 fi
 
-source "$APP_DIR/infra/docker/load-deploy-env.sh"
+source "$APP_DIR/infra/docker/load-deploy-env.sh" fiscal
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 

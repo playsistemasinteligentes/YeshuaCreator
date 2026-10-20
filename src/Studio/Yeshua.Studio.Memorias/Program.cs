@@ -51,6 +51,8 @@ if (string.IsNullOrWhiteSpace(connectionString))
 
 if (string.IsNullOrWhiteSpace(connectionString))
 {
+    if (databaseOnly)
+        throw new InvalidOperationException("Configure a conexao SQL do Memorias antes de executar --database-only.");
     Console.WriteLine("No database connection configured. Running code generation only.");
     migration.Build().Run();
     return;

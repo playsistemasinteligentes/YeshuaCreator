@@ -21,10 +21,10 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
       Redis__Host: redis
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
+      MYCONFIG__READCONECTIONSTRING: "${MYCONFIG__READCONECTIONSTRING:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${MYCONFIG__WRITECONECTIONSTRING:?Configure credentials.json}"
     expose:
       - "7214"
     restart: unless-stopped
@@ -38,14 +38,13 @@ services:
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
       Redis__Host: redis
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${MYCONFIG__READCONECTIONSTRING:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${MYCONFIG__WRITECONECTIONSTRING:?Configure credentials.json}"
       RabbitMq__HostName: rabbitmq
       RabbitMq__Port: 5672
-      RabbitMq__Username: "{{RABBITMQ_USER}}"
-      RabbitMq__Password: "{{RABBITMQ_PASSWORD}}"
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: /
     expose:
       - "7215"
@@ -58,9 +57,9 @@ services:
       context: ../../..
       dockerfile: infra/{{APPLICATION_NAME}}/DockerCompose/migration/Dockerfile
     environment:
-      ConnectionStrings__Default: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database={{DATABASE_NAME}};User Id=sa;Password={{SA_PASSWORD}};TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${MYCONFIG__READCONECTIONSTRING:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${MYCONFIG__WRITECONECTIONSTRING:?Configure credentials.json}"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
     restart: "no"
     networks:
       - yeshua-net

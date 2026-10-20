@@ -20,7 +20,10 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" pull origin main
 fi
 
-source "$APP_DIR/infra/docker/load-deploy-env.sh"
+case "${TARGET,,}" in
+  aps|aps_adm) TARGET="aps-adm" ;;
+esac
+source "$APP_DIR/infra/docker/load-deploy-env.sh" "${TARGET,,}"
 
 chmod +x \
   "$SHARED_DIR"/*.sh \

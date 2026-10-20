@@ -2,13 +2,10 @@
 set -euo pipefail
 
 COMPOSE_DIR="/root/YeshuaCreator/infra/Shared/DockerCompose"
+APP_DIR="/root/YeshuaCreator"
 DEPLOY_ENV="/root/YeshuaCreator/infra/docker/deploy.env"
 
-if [[ -f "$DEPLOY_ENV" ]]; then
-  set -a
-  source "$DEPLOY_ENV"
-  set +a
-fi
+source "$APP_DIR/infra/docker/load-deploy-env.sh" shared
 
 cd "$COMPOSE_DIR"
 mkdir -p /root/YeshuaDB/persistent/telemetry

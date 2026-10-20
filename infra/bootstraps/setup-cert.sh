@@ -12,6 +12,9 @@ if [[ "$EUID" -ne 0 ]]; then
   exit 1
 fi
 
+# Validate before certbot or stopping a healthy gateway.
+source "$APP_DIR/infra/docker/load-deploy-env.sh" gateway
+
 apt update
 DEBIAN_FRONTEND=noninteractive apt install -y certbot
 

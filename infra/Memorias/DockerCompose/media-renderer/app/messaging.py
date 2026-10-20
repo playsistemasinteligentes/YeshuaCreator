@@ -47,10 +47,9 @@ def _connection_parameters() -> pika.ConnectionParameters:
     )
     parsed = urlparse(broker_url.replace("pyamqp://", "amqp://", 1))
 
-    credentials = pika.PlainCredentials(
-        unquote(parsed.username or "guest"),
-        unquote(parsed.password or "guest"),
-    )
+    if parsed.username is None or parsed.password is None:
+        raise ValueError("Configure a autenticacao em CELERY_BROKER_URL.")
+    credentials = pika.PlainCredentials(unquote(parsed.username), unquote(parsed.password))
     virtual_host = unquote(parsed.path.lstrip("/")) or "/"
 
     return pika.ConnectionParameters(

@@ -14,23 +14,25 @@ services:
       YeshuaProcessing__Scope: "production"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
-      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
-      YeshuaModules__Authentication__SharedKey: "${YESHUA_MODULE_SHARED_KEY:?YESHUA_MODULE_SHARED_KEY must be configured}"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
+      YeshuaModules__Authentication__SharedKey: "${YESHUA_MODULE_SHARED_KEY:?Configure credentials.json}"
       YeshuaModules__Authentication__MaxClockSkewSeconds: "300"
       YeshuaModules__Authentication__TechnicalUserId: "1"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_FISCAL_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_FISCAL_WRITE:?Configure credentials.json}"
       YESHUA_FISCAL_STORAGE_ROOT: "/storage"
+      YESHUA_FISCAL_PRIVATE_ROOT: "/fiscal-private"
       STORAGE_ROOT: "/storage"
       RabbitMq__HostName: "rabbitmq"
       RabbitMq__Port: "5672"
-      RabbitMq__Username: "yeshua"
-      RabbitMq__Password: "yeshua123"
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
     expose:
       - "7214"
     volumes:
       - /root/YeshuaStorage:/storage
+      - ${YESHUA_FISCAL_PRIVATE_ROOT:?Configure credentials.json}:/fiscal-private
     restart: unless-stopped
     networks:
       - yeshua-net
@@ -48,18 +50,19 @@ services:
       YeshuaProcessing__Scope: "production"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_FISCAL_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_FISCAL_WRITE:?Configure credentials.json}"
       YESHUA_FISCAL_STORAGE_ROOT: "/storage"
+      YESHUA_FISCAL_PRIVATE_ROOT: "/fiscal-private"
       STORAGE_ROOT: "/storage"
       RabbitMq__HostName: "rabbitmq"
       RabbitMq__Port: "5672"
-      RabbitMq__Username: "yeshua"
-      RabbitMq__Password: "yeshua123"
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
       YeshuaModules__APSADM__BaseUrl: "http://aps-adm-api:7214"
       YeshuaModules__Authentication__SourceModule: "Fiscal"
-      YeshuaModules__Authentication__SharedKey: "${YESHUA_MODULE_SHARED_KEY:?YESHUA_MODULE_SHARED_KEY must be configured}"
+      YeshuaModules__Authentication__SharedKey: "${YESHUA_MODULE_SHARED_KEY:?Configure credentials.json}"
       YeshuaModules__Authentication__MaxClockSkewSeconds: "300"
       WorkerExecutionContext__TenantID: "1"
       WorkerExecutionContext__UserId: "1"
@@ -70,6 +73,7 @@ services:
       - "7215"
     volumes:
       - /root/YeshuaStorage:/storage
+      - ${YESHUA_FISCAL_PRIVATE_ROOT:?Configure credentials.json}:/fiscal-private
     restart: unless-stopped
     networks:
       - yeshua-net
@@ -82,9 +86,9 @@ services:
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_FISCAL:-YESHUA_FISCAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_FISCAL_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_FISCAL_WRITE:?Configure credentials.json}"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
     restart: "no"
     networks:
       - yeshua-net

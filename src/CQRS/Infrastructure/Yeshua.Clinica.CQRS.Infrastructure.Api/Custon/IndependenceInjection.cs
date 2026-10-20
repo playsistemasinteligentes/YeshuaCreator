@@ -15,6 +15,8 @@ public static class DependenceInjectionCuston
     public static void MapDependenceInjection(WebApplicationBuilder builder)
     {
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddSingleton(new Command.Receivers.Custon.UseCases.FileUpload.Infra.UploadTokenHelper(
+            builder.Configuration["UploadTokens:SigningKey"] ?? string.Empty));
         builder.Services.AddScoped<IExecutionContext, executionContextHttp>();
 
         builder.Services.Configure<RabbitMqOptions>(builder.Configuration.GetSection("RabbitMq"));

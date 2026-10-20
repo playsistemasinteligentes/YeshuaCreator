@@ -23,6 +23,7 @@ namespace Command.Receivers.UseCase
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly IFileStorage _fileStorage;
+        private readonly UploadTokenHelper _uploadTokens;
         private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
         private readonly IySagaWriteRepository _ySagaWriteRepository;
         private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
@@ -35,6 +36,7 @@ namespace Command.Receivers.UseCase
             IyFileUploadReadRepository repReadyFileUpload,
             IyFileUploadWriteRepository repWriteyFileUpload,
             IFileStorage fileStorage,
+            UploadTokenHelper uploadTokens,
             IyOutboxWriteRepository yOutboxWriteRepository,
             IySagaWriteRepository ySagaWriteRepository,
             PsychologySessionInsightSaga psychologySessionInsightSaga,
@@ -47,6 +49,7 @@ namespace Command.Receivers.UseCase
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
             _fileStorage = fileStorage;
+            _uploadTokens = uploadTokens;
             _yOutboxWriteRepository = yOutboxWriteRepository;
             _ySagaWriteRepository = ySagaWriteRepository;
             _psychologySessionInsightSaga = psychologySessionInsightSaga;
@@ -71,7 +74,7 @@ namespace Command.Receivers.UseCase
                         Error("Token é obrigatório.", default));
 
                 // 🔐 valida token
-                var tokenData = UploadTokenHelper.ValidateAndExtract(comand.token);
+                var tokenData = _uploadTokens.ValidateAndExtract(comand.token);
 
                 var uploadId = tokenData.uploadId;
                 var userId = tokenData.userId;

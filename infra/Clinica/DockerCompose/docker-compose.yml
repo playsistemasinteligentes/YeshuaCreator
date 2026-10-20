@@ -14,9 +14,10 @@ services:
       YeshuaProcessing__Scope: "production"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
-      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
+      UploadTokens__SigningKey: "${YESHUA_CLINICA_UPLOAD_SIGNING_KEY:?Configure credentials.json}"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CLINICA_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CLINICA_WRITE:?Configure credentials.json}"
       Storage__Providers__Disk__Root: "/storage"
       Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
       Storage__Locations__volatile/ia/transcriptions/input: "Disk"
@@ -49,8 +50,8 @@ services:
       OperationalControl__Enabled: "true"
       OperationalControl__ApplicationApiBaseUrl: "http://clinica-api:7214"
       OperationalControl__RefreshSeconds: "5"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CLINICA_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CLINICA_WRITE:?Configure credentials.json}"
       Storage__Providers__Disk__Root: "/storage"
       Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
       Storage__Locations__volatile/ia/transcriptions/input: "Disk"
@@ -61,8 +62,8 @@ services:
       Storage__Locations__persistent/docs/output: "Disk"
       RabbitMq__HostName: rabbitmq
       RabbitMq__Port: 5672
-      RabbitMq__Username: yeshua
-      RabbitMq__Password: yeshua123
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: /
     expose:
       - "7215"
@@ -80,9 +81,9 @@ services:
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CLINICA:-YESHUA_CLINICA};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CLINICA_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CLINICA_WRITE:?Configure credentials.json}"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
     restart: "no"
     networks:
       - yeshua-net
@@ -93,12 +94,12 @@ services:
   #     context: ./ai-worker
   #     dockerfile: Dockerfile
   #   environment:
-  #     CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+  #     CELERY_BROKER_URL: "${YESHUA_CELERY_BROKER_URL:?Configure credentials.json}"
   #     STORAGE_ROOT: "/storage"
   #     RabbitMq__HostName: rabbitmq
   #     RabbitMq__Port: 5672
-  #     RabbitMq__Username: yeshua
-  #     RabbitMq__Password: yeshua123
+  #     RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+  #     RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
   #     RabbitMq__VirtualHost: /
   #     RabbitMq__Exchange: kiwi.exchange
   #     RabbitMq__Queue: kiwi.queue
@@ -114,7 +115,7 @@ services:
   #     context: ./ai-summarizer
   #     dockerfile: Dockerfile
   #   environment:
-  #     CELERY_BROKER_URL: "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
+  #     CELERY_BROKER_URL: "${YESHUA_CELERY_BROKER_URL:?Configure credentials.json}"
   #     SUMMARIZER_MODEL: "Qwen/Qwen2.5-0.5B-Instruct"
   #     SUMMARIZER_DEVICE: "cpu"
   #   restart: unless-stopped

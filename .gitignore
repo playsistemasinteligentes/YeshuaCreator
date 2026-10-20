@@ -5,6 +5,13 @@
 
 # dotenv files
 .env
+credentials.json
+bootstrap.json
+providers.json
+key.bin
+oauth.bin
+*.secret
+*.p12
 infra/legacy/
 tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings.Local.json
 tests/CQRS/Yeshua.CQRS.Tests.Integration.Api/appsettings.*.Local.json

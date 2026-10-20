@@ -1,6 +1,14 @@
 **/.classpath
 **/.dockerignore
 **/.env
+**/credentials.json
+**/bootstrap.json
+**/providers.json
+**/*.pfx
+**/*.p12
+**/*.secret
+**/key.bin
+**/oauth.bin
 **/.git
 **/.gitignore
 **/.project
@@ -13,6 +21,7 @@
 **/*.jfm
 **/azds.yaml
 **/bin
+**/artifacts
 **/charts
 **/docker-compose*
 **/Dockerfile*

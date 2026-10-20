@@ -30,6 +30,8 @@ public sealed class GS
 
             MYC.Source = ResolveDefault(MYC.Source, FindSolutionRoot());
             MYC.Project = ResolveDefault(MYC.Project, "Fiscal");
+            OverrideIfExists("MYCONFIG__READCONECTIONSTRING", value => MYC.ReadConectionString = value);
+            OverrideIfExists("MYCONFIG__WRITECONECTIONSTRING", value => MYC.WriteConectionString = value);
             OverrideIfExists("MYCONFIG__SOURCE", value => MYC.Source = value);
             OverrideIfExists(
                 "MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING",

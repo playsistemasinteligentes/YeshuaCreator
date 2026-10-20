@@ -50,22 +50,43 @@ namespace Command.Receivers
             string senha,
             CancellationToken cancellationToken)
         {
+            var privateRoot = Environment.GetEnvironmentVariable("YESHUA_FISCAL_PRIVATE_ROOT");
+            if (string.IsNullOrWhiteSpace(privateRoot) || !Path.IsPathFullyQualified(privateRoot))
+                throw new InvalidOperationException("Configure YESHUA_FISCAL_PRIVATE_ROOT fora do storage publico.");
+            if (tenantId <= 0)
+                throw new ArgumentOutOfRangeException(nameof(tenantId));
+            if (string.IsNullOrWhiteSpace(documentoTitular) || !documentoTitular.All(char.IsAsciiDigit)
+                || string.IsNullOrWhiteSpace(thumbprint) || !thumbprint.All(char.IsAsciiHexDigit))
+                throw new ArgumentException("Documento e thumbprint devem ser identificadores normalizados.");
+            var root = Path.GetFullPath(privateRoot).TrimEnd(Path.DirectorySeparatorChar);
+            var publicRoot = Path.GetFullPath(StorageRoot()).TrimEnd(Path.DirectorySeparatorChar);
+            var comparison = OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
+            var volumeRoot = Path.GetPathRoot(Path.GetFullPath(privateRoot))!.TrimEnd(Path.DirectorySeparatorChar);
+            if (root.Length == 0 || string.Equals(root, volumeRoot, comparison) || string.Equals(root, publicRoot, comparison)
+                || root.StartsWith(publicRoot + Path.DirectorySeparatorChar, comparison))
+                throw new InvalidOperationException("Certificados nao podem ser gravados no storage publico.");
             var directory = Path.Combine(
-                StorageRoot(),
-                "fiscal",
-                "certificados",
+                privateRoot,
+                "tenants",
                 tenantId.ToString(),
+                "titulares",
                 SafeFileName(documentoTitular),
+                "certificados",
                 SafeFileName(thumbprint));
             Directory.CreateDirectory(directory);
+            if (!OperatingSystem.IsWindows())
+                File.SetUnixFileMode(directory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
 
             var certificatePath = Path.Combine(directory, "certificado.pfx");
             var passwordPath = Path.Combine(directory, "senha.secret");
 
-            // PENDENCIA: substituir o segredo em arquivo por cofre/API local de certificados.
-            // O banco e os payloads devem continuar armazenando apenas referencias.
             await File.WriteAllBytesAsync(certificatePath, pfx, cancellationToken).ConfigureAwait(false);
             await File.WriteAllTextAsync(passwordPath, senha, new UTF8Encoding(false), cancellationToken).ConfigureAwait(false);
+            if (!OperatingSystem.IsWindows())
+            {
+                File.SetUnixFileMode(certificatePath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+                File.SetUnixFileMode(passwordPath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+            }
 
             return new FiscalCertificateStorageResult(certificatePath, passwordPath);
         }

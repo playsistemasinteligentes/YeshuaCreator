@@ -51,6 +51,9 @@ var connectionString = GS.I.MYC.ReadConectionString;
 if (string.IsNullOrWhiteSpace(connectionString))
     connectionString = GS.I.MYC.WriteConectionString;
 
+if (databaseOnly && string.IsNullOrWhiteSpace(connectionString))
+    throw new InvalidOperationException("Configure a conexao SQL do Fiscal antes de executar --database-only.");
+
 if (!string.IsNullOrWhiteSpace(connectionString))
 {
     Console.WriteLine("Try Connection");

@@ -2,9 +2,7 @@
 import os
 from kombu import Queue
 
-broker = os.environ.get(
-    "CELERY_BROKER_URL", "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
-)
+broker = os.environ["CELERY_BROKER_URL"]
 
 celery_app = Celery("ai-worker", broker=broker)
 

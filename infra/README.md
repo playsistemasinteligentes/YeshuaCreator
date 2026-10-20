@@ -10,11 +10,20 @@ O servidor atual hospeda N aplicativos por meio dos projetos Compose ativos:
 - `infra/Clinica/DockerCompose`: API, Worker e Migration da Clinica.
 - `infra/APS.ADM/DockerCompose`: API, Worker e Migration do APS.ADM.
 - `infra/Fiscal/DockerCompose`: API, Worker e Migration do Fiscal.
+- `infra/Memorias/DockerCompose`: API, Worker, Migration e renderer do Memorias.
 
 Os aplicativos possuem nomes Compose diferentes e compartilham apenas a rede
 externa `yeshua-net`. Nenhum deploy de aplicativo executa `docker compose down`.
 
 ## Primeiro Ciclo
+
+### 0. Configuracao Privada
+
+Antes de setup/deploy, seguir [o roteiro de configuracao privada](private/README.md).
+Deploy exige `/root/YeshuaPrivate/production/credentials.json` valido e restrito.
+Setup cria um exemplo vazio se o arquivo nao existir e para para preenchimento,
+sem gerar senhas/chaves nem subir apps. Na VPS atual, a captura com os containers
+antigos ativos continua sendo uma operacao unica antes desta transicao.
 
 ### 1. Setup
 
@@ -26,6 +35,11 @@ sudo curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/Yeshu
 O setup prepara o servidor, sobe o Shared, executa as migrations, sobe os
 aplicativos ativos e inicia o nginx por HTTP. Cada Migration cria seu proprio banco
 quando ele ainda nao existe.
+
+O mesmo setup atende servidor novo ou reconstruido: repor os arquivos privados
+preservados antes de executa-lo quando quiser reutiliza-los. Nao existe modo de
+restauracao nem restauracao automatica de bancos. Diretorios existentes nao
+recebem chown/chmod recursivo; somente os ausentes sao preparados.
 
 ### 2. Certificado
 
@@ -67,14 +81,43 @@ repositorio uma vez e recarrega o nginx graciosamente ao final.
 
 ## Persistencia
 
+O planejamento de backups seletivos, checagens e restauracao esta em
+[PLANO_BACKUP_RESTAURACAO_YESHUA.md](../docs/operational/PLANO_BACKUP_RESTAURACAO_YESHUA.md).
+E uma proposta; as rotinas ainda nao foram implantadas.
+
+O [mapa de dados, areas e politicas](../docs/operational/MAPA_DADOS_AREAS_E_BACKUP_YESHUA.md)
+classifica as origens atuais e propoe como novos recursos herdariam protecao
+pela area/banco escolhido, sem rotina de backup especifica por funcionalidade.
+A revisao 3 do plano organiza a implantacao por politica, area, adesao e prova;
+o inventario serve de mapa de cobertura, nao de lista de jobs por aplicativo.
+O padrao privado usa diretorios e acessos restritos, sem cifra local adicional
+obrigatoria; backup cifrado e protecoes existentes do Memorias sao preservados.
+
+O [primeiro passo](../docs/operational/PLANO_ETAPA_1_CENTRALIZACAO_CREDENCIAIS_YESHUA.md)
+e centralizar credenciais de implantacao fora do repositorio, com acesso
+restrito e loader comum a todos os deploys. Cada servico recebe apenas as
+variaveis necessarias, nao o arquivo inteiro. Subida/redeploy e permissoes
+devem ser comprovados antes de iniciar rotinas de backup. O
+[piloto SQL local](../docs/operational/PLANO_BACKUP_SQL_LOCAL_FUTURO_YESHUA.md)
+fica adiado. Foram incluidos testes locais; o aceite na VPS ainda esta pendente.
+
+Configuracao do ambiente e diferente de integracao externa. Memorias/YouTube
+nao e excecao: Client ID/Secret, chave de protecao e tokens pertencem ao aplicativo.
+O JSON de ambiente usa secoes Shared/Apps e a raiz privada possui subdiretorios
+por app/tenant/titular/conexao. Preservar os cofres existentes e suas chaves.
+Novos certificados fiscais usam a area privada. Migracao do acervo antigo foi
+retirada do escopo pelo usuario; a preservacao exigida nesta transicao e YouTube.
+
 - SQL Server: `/root/YeshuaDB/persistent/sql`.
 - Storage: `/root/YeshuaStorage`.
-- Bancos separados na mesma instancia: `CENTRAL_`, `CLINICA`, `APS_ADM_03` e `FISCAL_`.
+- Bancos separados na mesma instancia; conexoes efetivas no JSON privado.
+  `infra/docker/deploy.env` documenta a nomenclatura publica, nao contem senhas.
 
 ## Seguranca
 
-As credenciais diretas foram mantidas por enquanto. Sua externalizacao e
-rotacao serao tratadas posteriormente.
+Compose e appsettings ativos usam referencias ou campos vazios. Essa limpeza
+nao remove valores do historico Git nem de imagens antigas. Rotacao e separada,
+sem troca implicita das senhas/chaves atuais. Nao imprimir env/inspect completos.
 
 O backup da infraestrutura anterior permanece em
 `infra/legacy/pre-deployment-v1-2026-08-09`.

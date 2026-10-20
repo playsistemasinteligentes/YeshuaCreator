@@ -5,6 +5,8 @@ APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/{{APPLICATION_NAME}}/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
 
+source "$APP_DIR/infra/docker/load-deploy-env.sh" "{{APPLICATION_SLUG}}"
+
 bash "$SHARED_DIR/deploy.sh"
 
 cd "$COMPOSE_DIR"

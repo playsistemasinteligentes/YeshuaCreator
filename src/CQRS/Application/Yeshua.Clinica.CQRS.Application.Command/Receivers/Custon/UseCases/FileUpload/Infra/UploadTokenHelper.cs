@@ -3,17 +3,24 @@ using System.Text;
 
 namespace Command.Receivers.Custon.UseCases.FileUpload.Infra
 {
-    public static class UploadTokenHelper
+    public sealed class UploadTokenHelper
     {
-        private const string Secret = "SUPER_SECRET_UPLOAD_KEY_CHANGE_THIS";
+        private readonly byte[] _key;
 
-        public static string Generate(int uploadId, int userId, int tenantId)
+        public UploadTokenHelper(string signingKey)
+        {
+            if (string.IsNullOrWhiteSpace(signingKey) || Encoding.UTF8.GetByteCount(signingKey) < 32)
+                throw new InvalidOperationException("Configure UploadTokens:SigningKey com pelo menos 32 bytes.");
+            _key = Encoding.UTF8.GetBytes(signingKey);
+        }
+
+        public string Generate(int uploadId, int userId, int tenantId)
         {
             var expires = DateTimeOffset.UtcNow.AddHours(2).ToUnixTimeSeconds();
 
             var payload = $"{uploadId}:{userId}:{tenantId}:{expires}";
 
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(Secret));
+            using var hmac = new HMACSHA256(_key);
 
             var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
 
@@ -24,7 +31,7 @@ namespace Command.Receivers.Custon.UseCases.FileUpload.Infra
             return Convert.ToBase64String(Encoding.UTF8.GetBytes(token));
         }
 
-        public static (int uploadId, int userId, int tenantId) ValidateAndExtract(string token)
+        public (int uploadId, int userId, int tenantId) ValidateAndExtract(string token)
         {
             var decoded = Encoding.UTF8.GetString(Convert.FromBase64String(token));
 
@@ -41,13 +48,14 @@ namespace Command.Receivers.Custon.UseCases.FileUpload.Infra
 
             var payload = $"{uploadId}:{userId}:{tenantId}:{expires}";
 
-            using var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(Secret));
+            using var hmac = new HMACSHA256(_key);
 
             var computedHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(payload));
 
             var computedSignature = Convert.ToBase64String(computedHash);
 
-            if (signature != computedSignature)
+            if (!CryptographicOperations.FixedTimeEquals(
+                Encoding.UTF8.GetBytes(signature), Encoding.UTF8.GetBytes(computedSignature)))
                 throw new Exception("Assinatura inválida");
 
             if (DateTimeOffset.UtcNow.ToUnixTimeSeconds() > expires)

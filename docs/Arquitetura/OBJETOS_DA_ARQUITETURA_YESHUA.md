@@ -590,6 +590,55 @@ aplicativo, mas nao representam regra de negocio especifica.
 | `GENERATED_REGENERABLE` | Fonte gerado pela Engine e seguro para regeneracao. |
 | `DSL_SEEDED_CUSTOM_OWNED_BY_DEV` | Fonte criado uma vez pela Engine, mas mantido por IA/dev. |
 
+## Areas De Persistencia E Protecao
+
+Direcao proposta, ainda sem nova API de DSL ou implementacao de backup:
+
+- Uma area logica associa uma finalidade de persistencia do aplicativo a um
+  destino configurado por ambiente. Reutilizar `StorageLocation`, os binds de
+  storage e os recursos de infraestrutura existentes antes de criar abstracao.
+- Politica de protecao pertence a infraestrutura: identifica captura,
+  verificacao, retencao e recuperacao. Novos arquivos herdam a politica da area;
+  novas tabelas herdam a do banco inteiro, sem backup por entidade ou tenant.
+- Conjunto de restauracao registra dados, arquivos, configuracoes e chaves que
+  precisam voltar coerentes. Nao cria dependencia de runtime entre aplicativos.
+- Se a DSL precisar desse vinculo, ela declara somente a referencia logica do
+  recurso. Paths da VPS, providers, agendas, senhas e jobs continuam na
+  configuracao de aplicativo/ambiente e na operacao da infraestrutura.
+- A Engine pode futuramente validar/gerar referencias estaticas, mas nao deve
+  executar backups nem consultar cobertura no caminho quente. Nenhum metodo
+  novo de DSL foi criado por essa definicao.
+- Privacidade, persistencia e copia comprovada sao propriedades diferentes.
+  Area configurada nao significa backup ativo; exigir evidencia de restore.
+- Reutilizar uma area nao exige job, cadastro ou restore por novo arquivo ou
+  tabela. O proximo ciclo da politica cobre novos dados dentro do RPO combinado;
+  area nova exige adesao comprovada e pode ser ensaiada com dados sinteticos.
+- Cadastro e politica de backup sao configuracoes versionadas da infraestrutura,
+  conferidas contra os binds efetivos, nao outra fonte de paths de runtime.
+  Conjuntos guardam a revisao correspondente para restaurar dados antigos.
+- Persistente privado adota inicialmente arquivos fora do Git/imagens/rotas
+  publicas, com permissoes e mounts restritos, sem camada obrigatoria de cifra
+  local para credenciais tecnicas. Backup continua cifrado. Preservar formatos
+  cifrados e chaves ja usados pelo Memorias; nao gerar outra abstracao nem
+  remover protecao existente para padronizar.
+- Antes das rotinas de backup, centralizar credenciais de implantacao em um
+  arquivo privado por ambiente, lido pelo loader de deploy existente. Entregar
+  apenas variaveis necessarias por container, nao o arquivo completo. Nao criar
+  outro servico nem DSL de secrets; preservar cofres/tokens dinamicos de tenants.
+  A entrega exige evidencia de restricao de acesso e deploy/redeploy funcionais.
+- Configuracao de ambiente e configuracao de integracao externa sao categorias
+  diferentes, nao excecoes por aplicativo. YouTube pertence ao Memorias;
+  preservar Client ID/Secret, chave de protecao, tokens, tela e cofre do aplicativo.
+- Usar uma raiz privada por ambiente: arquivo JSON administrativo hierarquico
+  Shared/Apps e subdiretorios privados por aplicativo/servico, tenant e titular/
+  conexao quando aplicavel. Usar IDs estaveis e identidade logica do app/Studio,
+  sem atrelar dados persistentes ao namespace ou arvore completa de fontes.
+  Definir binds/permissoes por consumidor; nao migrar paths/chaves/cofres apenas
+  por renomear a estrutura. Formato e paths de runtime ainda nao implementados.
+
+Inventario, politicas candidatas, lacunas e regras de adocao estao em
+`docs/operational/MAPA_DADOS_AREAS_E_BACKUP_YESHUA.md`.
+
 ## Regras Para Novos Conceitos
 
 Antes de aceitar um novo conceito arquitetural, responder:

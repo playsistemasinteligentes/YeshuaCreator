@@ -1572,8 +1572,9 @@ namespace Dominio.Schemas.CQRS
                 return null;
 
             var hostMyConfig = new JsonObject();
-            CopyJsonProperty(myConfig, hostMyConfig, "ReadConectionString");
-            CopyJsonProperty(myConfig, hostMyConfig, "WriteConectionString");
+            // Runtime credentials must never become generated source or image content.
+            hostMyConfig["ReadConectionString"] = string.Empty;
+            hostMyConfig["WriteConectionString"] = string.Empty;
 
             return hostMyConfig.Count == 0 ? null : hostMyConfig;
         }
@@ -2628,7 +2629,7 @@ public static class EndpointsCuston
     ""Origins"": []
   },
   ""JwtSettings"": {
-    ""SecretKey"": ""configure-using-user-secrets-or-environment-variables"",
+    ""SecretKey"": """",
     ""ExpirationMinutes"": 60
   },
   ""RabbitMq"": {},

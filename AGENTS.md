@@ -686,6 +686,13 @@ Regra resumida:
 - OAuth, tokens e envio ao YouTube pertencem ao miolo customizado .NET do
   aplicativo Memorias, usando a API oficial. A Engine gera somente as bordas,
   a saga e os pontos de extensao dessa integracao.
+- Classificacao de 2026-10-19: Memorias/YouTube nao e excecao. Configuracao de
+  integracao externa pertence ao aplicativo, nao a configuracao do ambiente. Inclui
+  Client ID/Secret, chave de protecao, OAuth e tokens. Preservar tela, cofre,
+  bootstrap privado quando utilizado e precedencia existentes. A leitura do
+  bootstrap pertence ao deploy Memorias, sem distribuir esses valores aos
+  outros apps. SQL, RabbitMQ e JWT compartilhados seguem a politica geral da
+  infraestrutura. Esta decisao nao migrou arquivos nem alterou runtime.
 - Um usuario pode gerenciar N conexoes YouTube dentro do seu tenant. Cada
   conexao identifica um canal autorizado e possui ID estavel; ela nao e apenas
   um email Google nem um token global do servidor. Reconectar o mesmo canal
@@ -1240,6 +1247,72 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Infraestrutura Paralela
 
+- O primeiro passo e centralizar credenciais de implantacao em um unico arquivo
+  privado por ambiente, fora do repositorio, antes das rotinas de backup.
+  `infra/private/README.md` descreve a implementacao e a transicao para
+  /root/YeshuaPrivate/production/credentials.json, com secoes Shared/Apps.
+  `YESHUA_DEPLOY_SECRETS_FILE` pode selecionar outro arquivo absoluto privado.
+  Pasta administrativa 0700 e arquivo 0600;
+  subdiretorios de runtime privados usam UID/permissoes do consumidor.
+  Reutilizar o loader em todos os deploys; cada container recebe somente suas
+  configuracoes, nao o arquivo inteiro. Deploy normal deve apenas ler/validar,
+  sem gerar chaves ou trocar senhas existentes. Comprovar restricao, subida e
+  redeploy antes de passar ao backup. Implementado no repositorio; aceite de
+  producao pendente. Importacao/provisionamento sao operacoes explicitas.
+- Setup unico para servidor novo ou reconstruido, sem flag de restauracao.
+  Arquivo privado existente e valido e reutilizado; ausente gera somente exemplo
+  vazio e bloqueia a subida ate preenchimento. Criar apenas diretorios ausentes,
+  sem reescrever cofres/chaves ou reaplicar chown/chmod recursivo nos dados.
+  A restauracao dos dados/SQL acontece antes, por procedimento proprio futuro;
+  o setup nao escolhe backups nem infere intencao de restaurar pela falta de dados.
+  Apps.Memorias.PrivateRoot explicito deve existir e o bind YouTube nao cria
+  pasta no host automaticamente. Raiz vazia nao comprova cofre restaurado.
+  Nesta transicao o usuario exige preservar YouTube, nao migrar certificados
+  fiscais antigos. Nao apagar dados existentes implicitamente.
+- A revisao do plano de credenciais inventaria tambem HMAC de upload Clinica,
+  SQL operacional/MCP, broker Python, OAuth/cofres, certificados e entradas
+  auxiliares como setup-cert. Studios Central/APS.ADM/Fiscal aplicam
+  os overrides SQL de leitura/escrita; os appsettings nao guardam seus valores;
+  --database-only sem conexao nao pode aparentar migration executada.
+  Credenciais de clientes/tenants e sessoes nativas nao viram env global de deploy.
+- Distinguir configuracao do ambiente de integracao externa: Memorias/YouTube,
+  inclusive Client ID/Secret e chave do cofre, pertence a segunda categoria,
+  assim como provedores externos de ferramentas. Nao e excecao por aplicativo.
+  Nao adaptar configure-youtube.sh para escrever no arquivo geral nem trocar
+  precedencia/tela/cofre como parte da centralizacao de infraestrutura.
+- Raiz privada unica por ambiente com subareas por aplicativo/servico e,
+  quando aplicavel, tenant/titular/conexao. Proposta: apps/<App>/tenants/<Id>/...
+  Usar IDs/documentos normalizados estaveis, nao nomes editaveis de clientes.
+  Espelhar identidade logica dos apps/Studios, nao toda a arvore de fontes.
+  Estrutura nao significa permissao: binds/permissoes continuam por consumidor.
+  Cofres/ProcessingScope/chaves e referencias fiscais existentes exigem plano
+  de transicao; nao mover nem renomear por convencao antes de verificar.
+- `docs/operational/PLANO_BACKUP_SQL_LOCAL_FUTURO_YESHUA.md` preserva o piloto
+  SQL/restore como etapa posterior, nao como primeira entrega. SQL_ISOLADO nao
+  certifica consistencia entre modulos. O loader apenas le/valida; criacao de
+  arquivo e captura de configuracao existente usam credentials.py init.
+- Decisao de 2026-10-19: o padrao inicial de persistente privado e diretorio
+  fora do Git/imagens/rotas publicas, com permissoes e mounts restritos por
+  consumidor. Credenciais tecnicas podem ficar em texto nesses arquivos;
+  nao criar cifra local generica nem chave adicional de configuracao.
+  Preservar AES/cofre/key.bin existentes no Memorias e formatos de certificados;
+  nao remover protecoes, decifrar em massa ou trocar chaves para uniformizar.
+  Backup privado continua cifrado, com recuperacao independente da VPS.
+  Esta decisao nao implantou configuracoes nem alterou segredos no servidor.
+- `docs/operational/MAPA_DADOS_AREAS_E_BACKUP_YESHUA.md` mapeia dados, areas e
+  politicas candidatas de protecao. Novos arquivos devem reutilizar area e
+  politica; novas tabelas herdam a protecao do banco inteiro. Configuracao de
+  ambiente resolve o destino; eventual DSL referencia somente a area logica.
+  O plano prioriza politica -> area -> adesao -> prova -> operacao,
+  sem script/agenda por aplicativo. Reutilizar area inclui novos itens no
+  proximo ciclo da politica, nao implica copia imediata nem RPO zero.
+  Essa direcao ainda nao implementa jobs, validadores nem sintaxe de DSL.
+  Nunca confundir area declarada com copia ativa ou restore comprovado.
+- `docs/operational/PLANO_BACKUP_RESTAURACAO_YESHUA.md` registra o plano ainda
+  nao implantado de backup/restauracao do ambiente publicado. Priorizar bancos,
+  arquivos de negocio e chaves/cofres correspondentes; imagens Docker e snapshot
+  integral da VPS ficam para depois da estabilizacao. Comprovar restore isolado
+  antes de considerar a rotina entregue.
 - A geracao da aplicacao e a construcao da infraestrutura sao processos separados.
 - Projetos de Studio nao declaram workloads, hosts, portas, volumes ou providers.
 - O `MigrationBuilder` dos aplicativos executa apenas geracao de codigo e migrations de dados.
@@ -1266,14 +1339,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Migracao extraordinaria de layout e remocao indiscriminada de containers nao
   pertencem ao deploy cotidiano. O Nginx somente e recarregado quando os
   servicos configurados para o gateway estiverem em execucao.
-- Para execucao local no Windows, a Engine replica do `appsettings.json` do
-  Studio para API e Worker apenas `MyConfig.ReadConectionString` e
-  `MyConfig.WriteConectionString`; demais parametros de host antigos nao devem
-  ser propagados para os hosts gerados se nao forem consumidos.
+- A Engine cria campos vazios para `MyConfig.ReadConectionString` e
+  `MyConfig.WriteConectionString` nos hosts; nunca copia conexoes privadas do
+  Studio para os fontes gerados. No Windows, `tools/private/Use-YeshuaEnvironment.ps1`
+  carrega o JSON privado do ambiente local na sessao/processo escolhido.
 - Em Docker/Compose, conexoes continuam sendo fornecidas por variaveis de
   ambiente `MYCONFIG__READCONECTIONSTRING` e
-  `MYCONFIG__WRITECONECTIONSTRING`, mantendo o `appsettings` como fallback
-  local.
+  `MYCONFIG__WRITECONECTIONSTRING`; appsettings versionados nao sao fallback
+  de senhas locais.
 - A operacao publica permanece em tres passos: `setup.sh`, `setup-cert.sh` e `deploy.sh`.
 - `deploy.sh` sem argumento executa `all`; `central`, `clinica`, `aps-adm`,
   `fiscal` e `shared` limitam o destino.
@@ -1284,7 +1357,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
 - `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
 - `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.
-- `pendencia`: definir depois a estrategia de segredos sem bloquear a recuperacao operacional atual.
+- `pendencia`: concluir aceite de arquivos privados/permissoes na VPS. Migracao
+  do acervo antigo de certificados fiscais foi retirada desta entrega. Rotacao e separada,
+  sem alterar chaves existentes automaticamente nem apagar cofres.
 
 ## Inteligencia Operacional
 

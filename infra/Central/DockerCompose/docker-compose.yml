@@ -30,9 +30,9 @@ services:
       YeshuaProcessing__Scope: "production"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-telemetry:4317}"
-      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:-configure-using-user-secrets-or-environment-variables}"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CENTRAL_WRITE:?Configure credentials.json}"
     expose:
       - "7214"
     restart: unless-stopped
@@ -55,12 +55,12 @@ services:
       OperationalControl__Enabled: "true"
       OperationalControl__ApplicationApiBaseUrl: "http://central-api:7214"
       OperationalControl__RefreshSeconds: "5"
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CENTRAL_WRITE:?Configure credentials.json}"
       RabbitMq__HostName: "rabbitmq"
       RabbitMq__Port: "5672"
-      RabbitMq__Username: "yeshua"
-      RabbitMq__Password: "yeshua123"
+      RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
+      RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
     expose:
       - "7215"
@@ -76,9 +76,9 @@ services:
       args:
         YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
     environment:
-      MYCONFIG__READCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__WRITECONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
-      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "Server=sqlserver,1433;Database=${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL};User Id=sa;Password=123qwe!@#QWE;TrustServerCertificate=True;"
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CENTRAL_WRITE:?Configure credentials.json}"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
     restart: "no"
     networks:
       - yeshua-net

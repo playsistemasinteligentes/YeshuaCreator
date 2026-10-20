@@ -18,9 +18,11 @@ namespace Command.Receivers.UseCase
         private readonly IUnitOfWork _unitOfWork;
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
+        private readonly UploadTokenHelper _uploadTokens;
         
         public StarSessionUploadHandler(
     IUnitOfWork unitOfWork,
+    UploadTokenHelper uploadTokens,
     IyFileUploadReadRepository repReadyFileUpload,
     IyFileUploadWriteRepository repWriteyFileUpload,
     Dominio.Interfaces.ILogger logger,
@@ -28,6 +30,7 @@ namespace Command.Receivers.UseCase
     : base(logger, context)
         {
             _unitOfWork = unitOfWork;
+            _uploadTokens = uploadTokens;
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
             _logger = logger;
@@ -63,7 +66,7 @@ namespace Command.Receivers.UseCase
 
 
                 // gerar token
-                var token = UploadTokenHelper.Generate(
+                var token = _uploadTokens.Generate(
                     upload.Id.Value,
                     _executionContext.UserId,
                     _executionContext.TenantID

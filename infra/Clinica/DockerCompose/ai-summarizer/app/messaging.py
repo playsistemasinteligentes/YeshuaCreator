@@ -4,9 +4,7 @@ import pika
 import time
 from threading import Lock
 
-RABBITMQ_URL = os.environ.get(
-    "CELERY_BROKER_URL", "pyamqp://yeshua:yeshua123@rabbitmq:5672//"
-)
+RABBITMQ_URL = os.environ["CELERY_BROKER_URL"]
 
 if RABBITMQ_URL.startswith("pyamqp://"):
     RABBITMQ_URL = RABBITMQ_URL.replace("pyamqp://", "amqp://", 1)
