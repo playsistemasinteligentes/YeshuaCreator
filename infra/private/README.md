@@ -1,8 +1,17 @@
 # Configuracao Privada Yeshua
 
-Implementada no repositorio em 2026-10-19. Implantacao e aceite na VPS ainda
-pendentes. Deploy exige configuracao valida; setup pode criar o exemplo privado
-vazio e parar para preenchimento, sem subir os servicos da aplicacao.
+Implementada no repositorio em 2026-10-19. Preparacao privada conferida na VPS
+em 2026-10-19: JSON criado a partir dos containers ativos, validacao de todos os
+alvos aprovada, arquivo root:root 600 e pasta root:root 700. A chave de upload
+Clinica ausente nas variaveis foi preservada do codigo da revisao instalada
+`a4ccdbc3a`; nenhuma chave nova foi gerada. A referencia e os arquivos do cofre
+YouTube permaneceram inalterados.
+
+Nao foi executado deploy, pull, build, migration, parada ou reinicio de container
+nessa preparacao. O repositorio remoto instalado continua em `a4ccdbc3a`, ainda
+sem o leitor novo. A adocao pelos containers e o aceite funcional apos deploy
+continuam pendentes. Deploy exige configuracao valida; setup pode criar o exemplo
+privado vazio e parar para preenchimento, sem subir os servicos da aplicacao.
 
 ## Estrutura
 
@@ -167,6 +176,15 @@ fontes. O arquivo real nao e versionado. Sua ACL permite somente usuario atual,
 SYSTEM e Administradores. Campos nao encontrados continuam pendentes de
 configuracao; isso nao representa credenciais de producao validadas.
 
+Em 2026-10-20, com autorizacao explicita, foram completados somente quatro
+campos vazios do arquivo local: chave entre modulos, URL do broker e conexoes
+SQL leitura/escrita do Memorias. Valores locais ja preenchidos foram preservados.
+Os cinco aplicativos passaram na validacao de configuracao e permissoes locais.
+Isso nao comprova conectividade SQL, autorizacao no banco nem operacao do app.
+Nao foram copiados SQL administrativo, credenciais operacionais ou cofre YouTube;
+nenhum arquivo privado deve entrar no Git. A captura foi pontual, nao ha busca
+automatica de segredos da VPS em cada inicializacao.
+
 Com Python instalado (ou `-Python` apontando para o executavel), carregar na
 sessao antes de iniciar API/Worker/Studio:
 
@@ -184,6 +202,45 @@ Para uma execucao com restauracao das variaveis anteriores ao terminar:
 Esse ultimo exemplo **executa migrations**: usar somente com conexoes privadas
 locais previamente conferidas. O launcher nao inicia nada sem `-Command`.
 Processos/Visual Studio ja abertos nao herdam variaveis de um terminal novo.
+
+### Debug Local Com Banco No Servidor
+
+Localizacao do codigo e localizacao do banco sao independentes. As conexoes do
+JSON local podem apontar para o SQL da VPS; as senhas nao voltam para appsettings
+ou launchSettings. Neste ambiente, as conexoes locais existentes de Central,
+Clinica, APS.ADM e Fiscal ja apontavam para a VPS. Para novas conexoes, nomes
+internos Docker como `sqlserver` nao sao enderecos validos no Windows; utilizar
+o endereco autorizado do SQL, VPN ou tunel explicitamente configurado.
+
+Iniciar apenas o aplicativo que sera depurado, com o mesmo escopo exclusivo na
+API e no Worker locais que devam colaborar. Exemplo para a API Fiscal:
+
+```powershell
+./tools/private/Use-YeshuaEnvironment.ps1 -Application Fiscal -ProcessingScope debug-angelo -Command @('dotnet', 'run', '--project', 'src/CQRS/Infrastructure/Yeshua.Fiscal.CQRS.Infrastructure.Api')
+```
+
+No Visual Studio aberto, usar **Depurar > Anexar ao Processo** e selecionar
+`Yeshua.Fiscal.CQRS.Infrastructure.Api.exe`; os breakpoints continuam nos fontes
+locais. O iniciador nao depende de reiniciar o IDE e nao altera variaveis de
+usuario/maquina. Com `-Command`, restaura as variaveis da sessao ao terminar,
+inclusive quando o processo retorna erro. Sem `-Command`, carrega somente a
+sessao atual; nao inicia aplicativo, nao faz login e nao consulta banco.
+
+O leitor utiliza as [variaveis de ambiente do .NET](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-8.0#environment-variables).
+Nao carregar o perfil de um aplicativo no IDE e iniciar varios aplicativos com
+ele: `MYCONFIG__...` identifica a conexao do aplicativo selecionado. Para debug
+simultaneo, executar cada aplicativo em seu proprio iniciador/processo e anexar
+aos processos correspondentes, sem compartilhar o ambiente generico entre apps.
+
+`-ProcessingScope` apenas substitui `YeshuaProcessing:Scope` no processo iniciado.
+Usar valor diferente da producao e o mesmo nos processos locais participantes.
+Nao iniciar um Worker com o escopo publicado para fazer uma conferencia.
+Escopo isola consumo de Saga/Inbox/Outbox, nao isola dados de negocio, filas de
+outros tipos, canais YouTube ou chamadas externas. SQL com a mesma credencial
+continua tendo as mesmas permissoes: CRUD e integracoes podem alterar dados reais.
+Nao executar Studio `--database-only`, smoke/seed ou testes de escrita contra a
+VPS como parte da validacao de credenciais. Preferir banco/usuario de testes
+para trabalho cotidiano; sua criacao e uma operacao separada.
 
 Opcionalmente `Apps.<App>.Tests.Smoke|Seed` guarda Login/Password e configuracao
 publica de testes. `-TestProfile Smoke|Seed` carrega somente `TESTSETTINGS__...`;

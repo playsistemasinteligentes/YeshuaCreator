@@ -7,6 +7,9 @@ param(
     [string]$Python = $(if ($env:YESHUA_PYTHON) { $env:YESHUA_PYTHON } else { 'python' }),
     [ValidateSet('Smoke', 'Seed')]
     [string]$TestProfile,
+    [ValidateNotNullOrEmpty()]
+    [ValidatePattern('^[A-Za-z0-9][A-Za-z0-9._-]{0,63}$')]
+    [string]$ProcessingScope,
     [string[]]$Command = @()
 )
 $ErrorActionPreference = 'Stop'
@@ -39,6 +42,7 @@ if (-not $TestProfile) {
     $values['MemoriasYouTube__RedirectUri'] = if ($values['YESHUA_MEMORIAS_YOUTUBE_REDIRECT_URI']) { $values['YESHUA_MEMORIAS_YOUTUBE_REDIRECT_URI'] } else { $null }
     $values['MemoriasYouTube__ConfigurationAdminTenantId'] = if ($values['YESHUA_MEMORIAS_CONFIG_ADMIN_TENANT_ID']) { $values['YESHUA_MEMORIAS_CONFIG_ADMIN_TENANT_ID'] } else { $null }
     $values['MemoriasYouTube__ConfigurationAdminUserId'] = if ($values['YESHUA_MEMORIAS_CONFIG_ADMIN_USER_ID']) { $values['YESHUA_MEMORIAS_CONFIG_ADMIN_USER_ID'] } else { $null }
+    if ($ProcessingScope) { $values['YeshuaProcessing__Scope'] = $ProcessingScope }
 }
 $previous = @{}
 foreach ($key in $values.Keys) {

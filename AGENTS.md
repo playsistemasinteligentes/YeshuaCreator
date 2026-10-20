@@ -1343,6 +1343,13 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   `MyConfig.WriteConectionString` nos hosts; nunca copia conexoes privadas do
   Studio para os fontes gerados. No Windows, `tools/private/Use-YeshuaEnvironment.ps1`
   carrega o JSON privado do ambiente local na sessao/processo escolhido.
+- Debug local reutiliza o mesmo esquema de JSON privado por ambiente, fora do
+  Git; nao busca credenciais na VPS durante startup nem recria senhas nos fontes.
+  O iniciador seleciona um app por processo. Para depurar varios apps, iniciar
+  processos separados e anexar o depurador, sem propagar `MYCONFIG__...` de um
+  aplicativo para toda a solucao. `-ProcessingScope` permite escopo exclusivo
+  compartilhado entre API/Worker locais; ele nao isola tabelas de negocio nem
+  torna seguro executar testes de escrita ou integracoes contra producao.
 - Em Docker/Compose, conexoes continuam sendo fornecidas por variaveis de
   ambiente `MYCONFIG__READCONECTIONSTRING` e
   `MYCONFIG__WRITECONECTIONSTRING`; appsettings versionados nao sao fallback
@@ -1357,8 +1364,11 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
 - `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
 - `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.
-- `pendencia`: concluir aceite de arquivos privados/permissoes na VPS. Migracao
-  do acervo antigo de certificados fiscais foi retirada desta entrega. Rotacao e separada,
+- Arquivo privado/permissoes da VPS conferidos em 2026-10-19, sem deploy ou
+  mudanca dos cofres. Em 2026-10-20 foram completados, com autorizacao, somente
+  campos vazios do JSON local para debug; sem copia do cofre YouTube.
+- `pendencia`: concluir adocao pelos containers e aceite funcional apos deploy.
+  Migracao do acervo antigo de certificados fiscais foi retirada desta entrega. Rotacao e separada,
   sem alterar chaves existentes automaticamente nem apagar cofres.
 
 ## Inteligencia Operacional
