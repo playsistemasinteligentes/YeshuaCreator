@@ -1,6 +1,7 @@
 """Install backup tooling separately from application deployment. No app restart."""
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 import os
@@ -10,6 +11,8 @@ import subprocess
 import sys
 
 TIMERS = ("full", "differential", "logs", "files", "check", "check-data")
+INITIAL_KINDS = ("full", "differential", "logs", "files", "check-data")
+FILE_SELECTION = "persistent-roots-v3"
 FILES = ("backup.py", "sql.py", "routine.py", "policy.json", "install.py", "README.md", "RECOVERY.md",
          "yeshua-backup@.service", *("yeshua-backup-" + kind + ".timer" for kind in TIMERS))
 
@@ -30,20 +33,52 @@ def secure(path):
         raise RuntimeError("installer_directory_must_be_root_0700")
 
 
+def completed_proof(base, kind):
+    path = base / "status" / (kind + ".json")
+    receipt = json.loads(path.read_text()) if path.exists() else {}
+    if receipt.get("status") != "completed" or kind == "files" and receipt.get("file_selection") != FILE_SELECTION:
+        return None
+    try:
+        finished = datetime.fromisoformat(receipt["finished_at"])
+        if finished.tzinfo is None:
+            return None
+        failure = base / "status" / (kind + "-failure.json")
+        if failure.exists() and datetime.fromisoformat(json.loads(failure.read_text())["failed_at"]) > finished:
+            return None
+    except (ValueError, KeyError, TypeError):
+        return None
+    if kind == "check-data":
+        for source in INITIAL_KINDS[:-1]:
+            proof = completed_proof(base, source)
+            if not proof or datetime.fromisoformat(proof["finished_at"]) > finished:
+                return None
+    return receipt
+
+
 def initialize_online(env, base, machine):
     catalog = base / "state/sql-catalog.json"
     if catalog.exists() and json.loads(catalog.read_text()).get("source_machine") != machine:
         raise RuntimeError("backup_state_belongs_to_another_machine_do_not_overwrite")
-    for kind in ("full", "differential", "logs", "files", "check-data"):
-        proof = base / "status" / (kind + ".json")
-        receipt = json.loads(proof.read_text()) if proof.exists() else {}
-        selection_current = kind != "files" or receipt.get("file_selection") == "persistent-roots-v1"
-        if receipt.get("status") == "completed" and catalog.exists() and selection_current:
-            failure = base / "status" / (kind + "-failure.json")
-            if not failure.exists() or json.loads(failure.read_text()).get("failed_at", "") <= json.loads(proof.read_text()).get("finished_at", ""):
-                continue
+    refreshed = False
+    for kind in INITIAL_KINDS:
+        if completed_proof(base, kind) and catalog.exists() and not (kind == "check-data" and refreshed):
+            continue
         print("Initial online backup: " + kind, file=sys.stderr, flush=True)
         run(["systemctl", "start", "yeshua-backup@" + kind + ".service"], env=env, timeout=14400)
+        refreshed = True
+
+
+def confirm_key_custody(env, operator):
+    print("Conferindo recibo de guarda da senha do backup; nenhuma senha sera enviada aos logs.",
+          file=sys.stderr, flush=True)
+    try:
+        output = run([sys.executable, "-B", str(operator), "recovery-key"], env=env, timeout=3600)
+    except RuntimeError:
+        raise RuntimeError("recovery_key_custody_not_completed_use_private_terminal_and_rerun_installer") from None
+    result = json.loads(output)
+    if result.get("status") not in {"custody_confirmed", "custody_already_confirmed"}:
+        raise RuntimeError("backup_recovery_key_custody_required_before_initialization")
+    return result["status"]
 
 
 def install(enable=False, initialize=False):
@@ -106,22 +141,21 @@ def install(enable=False, initialize=False):
         run(["systemctl", "daemon-reload"])
         configured = run([sys.executable, "-B", str(link / "infra/backups/backup.py"), "configure-local"], env=env)
         result = json.loads(configured)
+        custody = confirm_key_custody(env, link / "infra/backups/backup.py")
         if initialize:
             initialize_online(env, Path("/root/YeshuaBackup"), Path("/etc/machine-id").read_text().strip())
             enable = True
         if enable:
-            base = Path("/root/YeshuaBackup/status")
-            for kind in ("full", "differential", "logs", "files", "check-data"):
-                proof = json.loads((base / (kind + ".json")).read_text())
-                if proof.get("status") != "completed":
+            base = Path("/root/YeshuaBackup")
+            for kind in INITIAL_KINDS:
+                if not completed_proof(base, kind):
                     raise RuntimeError("initial_backup_proofs_required_before_scheduling")
-                if kind == "files" and proof.get("file_selection") != "persistent-roots-v1":
-                    raise RuntimeError("current_persistent_root_snapshot_required_before_scheduling")
             run([sys.executable, "-B", str(link / "infra/backups/backup.py"), "sql-restore-plan"], env=env)
             run(["systemctl", "enable", "--now", *("yeshua-backup-" + k + ".timer" for k in TIMERS)])
         return {"operation": "install-backup-tooling", "release": release_id, "local_repository": result["repository"],
-                "schedules_enabled": enable, "external_destination_pending": True, "applications_restarted": False}
-    except Exception:
+                "recovery_key_custody": custody, "schedules_enabled": enable,
+                "external_destination_pending": True, "applications_restarted": False}
+    except BaseException:
         link.unlink()
         if previous:
             link.symlink_to(previous, target_is_directory=True)
@@ -135,6 +169,10 @@ if __name__ == "__main__":
     args = parser.parse_args()
     try:
         print(json.dumps(install(args.enable_schedules, args.initialize_online), indent=2))
+    except KeyboardInterrupt:
+        print(json.dumps({"operation": "install-backup-tooling", "status": "cancelled",
+                          "error": "installer_cancelled_review_state"}))
+        raise SystemExit(1)
     except Exception as error:
         print(json.dumps({"operation": "install-backup-tooling", "status": "failed",
                           "error": str(error) if isinstance(error, RuntimeError) else "installer_failed_details_omitted"}))

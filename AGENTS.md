@@ -1258,6 +1258,26 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Infraestrutura Paralela
 
+- Classificacao encerrada pelo usuario em 2026-10-21: nao reabrir a lista item a
+  item. Aplicar somente PERSISTENTE/VOLATIL. Implementacao local atual: captura
+  coordenada/online somente Storage/persistent inteiro, privados e SQL nativo dos
+  bancos de usuario (inclui Estudo/novos apps). HTTPS e volumes Shared de
+  RabbitMQ/Redis/agente fora; volume desconhecido bloqueia ate usar raiz
+  StorageLocation classificada, nunca backup implicito. Telemetria/Grafana em
+  /root/YeshuaStorage/volatile/infra/telemetry. Bind legado bloqueia captura ate
+  virada intencional, sem filtro dentro de persistente ou exclusao de origem.
+  Selecao de arquivos persistent-roots-v3 exige prova nova/leitura integral;
+  v2 continua recuperavel explicitamente. Sem deploy, parada ou limpeza na VPS.
+- Recriacao de acesso SQL pertence a infra/private/sql_access.py, usando leitor
+  privado e primitivas SQL existentes. sa vem de Shared.SqlServer.AdminPassword
+  pelo Compose; contas adicionais/roles exigem Shared.SqlServer.Logins explicito.
+  Nao interpretar connection strings para inferir grants, conceder sysadmin,
+  girar senhas ou copiar master/msdb. Validar declaracoes no inicio; setup habilita
+  YESHUA_SETUP_SQL_ACCESS=1, chama helper apos SQL, apos migrations/antes de hosts
+  e confere bancos declarados ao final. Deploy cotidiano nao habilita esse passo.
+  Remapear somente usuario SQL de mesmo nome ao login declarado; divergencia de
+  senha/principal exige reconciliacao. Prova em SQL/Linux real continua pendente.
+
 - O primeiro passo e centralizar credenciais de implantacao em um unico arquivo
   privado por ambiente, fora do repositorio, antes das rotinas de backup.
   `infra/private/README.md` descreve a implementacao e a transicao para
@@ -1274,7 +1294,13 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   nem chaves. Importacao/provisionamento sao operacoes explicitas.
 - Setup unico para servidor novo ou reconstruido, sem flag de restauracao.
   Arquivo privado existente e valido e reutilizado; ausente gera somente exemplo
-  vazio e bloqueia a subida ate preenchimento. Criar apenas diretorios ausentes,
+  vazio e aguarda preenchimento/reposicao no inicio por init --wait. O operador
+  prepara o arquivo no servidor em outra sessao e confirma PRONTO por /dev/tty;
+  nunca ler JSON/senhas do stdin, que pode conter o script curl | bash. Erros de
+  conteudo/permissao/cofre permitem corrigir e conferir na mesma execucao. Sem
+  terminal, exigir configuracao ja valida ou falhar cedo; CANCELAR/EOF/Ctrl+C nao iniciam
+  servicos. Configuracao valida nao pede confirmacao extra nem e reescrita.
+  O init sem --wait e os deploys continuam nao interativos. Criar apenas diretorios ausentes,
   sem reescrever cofres/chaves ou reaplicar chown/chmod recursivo nos dados.
   A restauracao dos dados/SQL acontece antes, por procedimento proprio futuro;
   o setup nao escolhe backups nem infere intencao de restaurar pela falta de dados.
@@ -1287,6 +1313,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   deploys destrutivos. Preservar fontes/infra e limitar a limpeza aos recursos
   Yeshua inventariados; sistema operacional, acessos administrativos e recursos
   de terceiros nao fazem parte. Nao apagar canais/videos publicados no Google.
+  Instrucao mais recente: limpeza/recriacao ADIADAS. Continuar implementacao
+  local; nao limpar, republicar, parar ou reiniciar a VPS nesta fase. A futura
+  reinstalacao e uma operacao separada, nunca uma etapa do deploy cotidiano.
 - A revisao do plano de credenciais inventaria tambem HMAC de upload Clinica,
   SQL operacional/MCP, broker Python, OAuth/cofres, certificados e entradas
   auxiliares como setup-cert. Studios Central/APS.ADM/Fiscal aplicam
@@ -1387,13 +1416,23 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   A versao da rotina instalada na VPS ainda e anterior a esta reforma local.
   Nao apagar origens/snapshots nem executar prune por causa dessa mudanca.
   Demais classificacoes continuam em revisao, sem inferencia por aplicativo.
+- Recuperacao de arquivos online usa o mesmo backup.py, acao restore-files:
+  simulacao por padrao e --apply explicito. Snapshot exato verificado, metadata
+  persistent-roots-v2, maquina nova confirmada e destinos ausentes/vazios.
+  Nunca sobrescrever dados, iniciar apps, alterar Nginx ou restaurar SQL por
+  esta acao. Preservar permissoes/atributos e verificar hashes antes/depois;
+  falha parcial nao autoriza remocao automatica. O kit de acesso fica fora dos
+  destinos. Novos dados entram pela raiz integral, sem lista de arquivos/app.
+  Setup deve refazer check-data depois de nova prova SQL/arquivos, sem adotar
+  uma verificacao antiga para habilitar agendas. Implementacao/testes locais
+  nao comprovam restauracao real nem autorizam executar a reinstalacao adiada.
 - A geracao da aplicacao e a construcao da infraestrutura sao processos separados.
 - Contrato de backup confirmado com o usuario em 2026-10-20: somente persistente
   e volatil. Tudo em persistente entra no backup, sem excecao de conteudo;
   volatil nao entra. Privacidade e metodo de captura nao criam outras categorias.
   100% dos bancos dos aplicativos definidos nos Studios sao persistentes,
   incluindo todas as tabelas e novos bancos; SQL usa backup nativo, nunca MDF/LDF
-  ativos. Bancos de sistema/legados nao identificados continuam em revisao.
+  ativos. Bancos legados nao identificados continuam em revisao.
   Recriaveis com fonte disponivel (copias de fontes, bundles Git, imagens,
   builds e caches) ficam fora de persistente/backup. Nao otimizar restauracao
   rapida nesta fase. StorageLocation devera ser o caminho obrigatorio de arquivos
@@ -1468,10 +1507,110 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   uso e conteudo antes de classificar; nenhuma alteracao autorizada por suposicao.
   A pasta legada persistent/Docs (D maiusculo) tambem foi confirmada como pendente
   da mesma investigacao; nao unificar caminhos nem deduzir classificacao no Linux.
+  Atualizacao de 2026-10-20: resultado apresentado; nenhum consumidor de negocio
+  identificado. Usuario aprovou retirar declaracoes/configuracoes/criacao dessas
+  pastas sem uso. Retirada implementada localmente em 2026-10-21; nao apagar diretorios existentes
+  nem excluir seu conteudo da copia de persistente. Prontuario/RegistroDocumental
+  pertencem ao SQL persistente, nao a essas pastas.
+- Investigacao de RabbitMQ apresentada em 2026-10-20; usuario definiu VOLATIL:
+  broker/mensagens fora das capturas online/coordenadas no codigo local atual.
+  Nao remover volumes/filas nem alterar durabilidade AMQP por essa decisao.
+  Credenciais privadas e tabelas SQL de Inbox/Outbox/Saga continuam persistentes.
+  Topologia e reconstruivel, mas mensagens/retornos pendentes nao tem retomada
+  integral demonstrada so pelo SQL. Clinica e Memorias marcam outbox como enviada
+  apos publicar; nao inferir que esse estado sera reenviado apos perda do broker.
+  Usuario pediu verificar se ACK apos erro e proposital antes de corrigir:
+  comentario ACK SEMPRE e explicito, mas nao documenta a politica por falha.
+  Erro de negocio ja gravado na Inbox pode ser confirmado; falha antes da
+  custodia duravel e diferente. O listener confirma apos excecao e o worker
+  gerado ignora State de erro do receiver; nenhum fallback de payload foi
+  identificado nesse caminho. Nao alterar ACK/retry nem criar transporte novo
+  sem decisao. Confirmacao do publisher segue pendencia independente. Backup
+  nao corrige essas janelas. Nenhuma fila, volume ou VPS foi alterada.
+  Decisao final do usuario apos esclarecimento: manter VOLATIL e NAO mudar o
+  conceito/comportamento atuais. Nao alterar ACK, retry, confirmacoes ou
+  tratamento de erros nesta tarefa. Observacoes anteriores sao informativas,
+  nao uma autorizacao para corrigir ou redesenhar o transporte.
+- Usuario confirmou Redis VOLATIL: fora do backup, sem desligar/remover servico
+  ou volume por essa classificacao. Captura coordenada local ja o exclui;
+  a copia online ja nao o inclui. O cache gerado usa IMemoryCache; consumidor
+  Redis ativo nao foi identificado na revisao local. Nao mudar caches, DSL ou
+  comportamento do RabbitMQ por causa desta decisao.
+- Usuario confirmou historico de telemetria VOLATIL (logs/metricas/rastros),
+  sem alterar coleta/retencao. Raiz local alterada para volatile/infra/telemetry;
+  a virada na VPS ainda nao foi feita. O bind mistura
+  esse historico com Grafana. Usuario tambem confirmou estado Grafana VOLATIL:
+  personalizacoes devem ser criadas/mantidas na infraestrutura recuperavel,
+  versionadas e aplicadas pelo provisionamento nativo, nunca depender somente
+  da interface. Nao criar backup do SQLite ou nova DSL para substituir isso.
+  Segredos seguem no arquivo privado, fora do Git. Essa regra nao autoriza
+  bloquear a interface, mudar usuarios, apagar ajustes ou reiniciar o servico.
+  SQL da inteligencia operacional e credenciais privadas continuam persistentes.
+- Senha de recuperacao do backup e PERSISTENTE/restrita, com custodia fora da
+  VPS. Por solicitacao do usuario, o setup entrega a senha existente por /dev/tty
+  privado (EXIBIR -> visualizacao -> GUARDEI) logo apos validar o JSON, antes de
+  atualizacao geral/Docker/builds. Se necessario, instala so Restic/util-linux
+  antes dessa etapa. Usa configure-local/recovery-key existentes; install.py final
+  reutiliza a confirmacao sem outra pergunta para mesma senha/repositorio/maquina.
+  Nunca enviar senha a stdout/stderr capturados,
+  JSON, recibos ou logs. Recibo privado sem senha permite repetir instalacao na
+  mesma maquina sem nova exposicao; senha/repositorio/maquina diferentes exigem
+  confirmacao. Recibo e declaracao humana, nao prova de copia externa/restauracao.
+  Consultar novamente exige recovery-key --show-recovery-key explicitamente.
+  Repositorio existente sem senha original bloqueia configure-local; nunca
+  gerar substituta nesse caso. Implementacao/testes locais, sem alterar a VPS.
+  Revisao dos caminhos de setup: demais chaves de ambiente/provedores devem vir
+  dos arquivos privados; nao sao geradas nem reexibidas. Chave de cofre YouTube
+  pode nascer na configuracao do aplicativo, nao no setup; nao expor ou redesenhar
+  esse cofre. Acesso do futuro destino externo ainda sera conferido ao defini-lo.
+- Identidade HTTPS/Certbot em /etc/letsencrypt e VOLATIL por decisao posterior
+  do usuario, substituindo a aprovacao inicial como persistente. Retirar das
+  novas capturas e recriar por infra/bootstraps/setup-cert.sh no servidor novo,
+  com validacao do dominio e renovacao conferidas. Selecao/cobertura local v3
+  exclui HTTPS; prova real pendente. Nao apagar arquivos/snapshots antigos nem executar emissao,
+  revogacao, mudanca de rotas ou reinicio do Nginx nesta revisao.
+- providers.json opcional do agente operacional e PERSISTENTE e restrito por
+  decisao do usuario; copia pela raiz privada no fluxo comum. Isso preserva
+  chaves de API configuradas, nao sessoes/logins/historicos/caches das CLIs.
+  Os volumes do agente continuam VOLATEIS; nao exportar seu conteudo para
+  providers.json ou SQL nem criar chaves por essa classificacao.
+- credentials.json administrativo do ambiente e PERSISTENTE e de acesso
+  restrito, confirmado pelo usuario. Manter pasta 0700/arquivo 0600 no Linux,
+  fora do Git/imagens/logs e sem entregar o JSON inteiro aos containers/Front.
+  Backup pelo fluxo comum cifrado ja existente; restauracao deve conferir as
+  permissoes antes de usar. Nao introduzir cifra local ou cofre adicional por
+  esta confirmacao, nem regenerar credenciais automaticamente.
+- Cofre privado YouTube do Memorias e PERSISTENTE, confirmado pelo usuario:
+  copiar integralmente a area privada e suas chaves correspondentes pelo fluxo
+  comum de arquivos. Configuracao/conexoes/estados continuam no Memorias, nao
+  na Central. Preservar a cifra e identidade de escopo/tenant existentes; copia
+  do banco sozinha nao recupera os arquivos. A pergunta sobre uso de SQL em vez
+  de arquivo nao autoriza migrar o cofre ou alterar sua implementacao.
+- Banco Estudo e PERSISTENTE por decisao explicita do usuario: manter backup
+  SQL nativo integral no mesmo fluxo dos bancos de usuario, mesmo sem Studio
+  apontando para ele. A futura exclusao de bancos de sistema nao pode exclui-lo.
+  Nao criar agenda particular nem limitar a descoberta SQL aos nomes dos apps.
+- Bancos de sistema SQL master/model/msdb e tempdb ficam fora do backup por
+  decisao do usuario: nao guardam dados de negocio necessarios neste ambiente.
+  Os acessos SQL necessarios devem ser criados pelo provisionamento versionado
+  da infraestrutura na instalacao/recriacao, com credenciais do arquivo privado,
+  sem restaurar bancos de sistema. O mesmo caminho deve conferir usuarios e
+  permissoes dos bancos restaurados antes de liberar os aplicativos. Adequar
+  selecao SQL e provisionamento implementados localmente, com prova real pendente;
+  nao apagar bancos, backups
+  anteriores ou alterar a VPS durante esta revisao de classificacao.
 - Setup de servidor e backup pertencem a infraestrutura, nunca a execucao da
   Engine. Engine pode gerar template inicial, sem acessar VPS, instalar pacotes
   ou criar agendas. setup.sh prepara a rotina comum depois do deploy inicial;
   --initialize-online completa provas ausentes sem trocar chave/historico.
+- Fechamento de 2026-10-21: o ciclo aprovado e instalacao limpa, uso com dados
+  de teste, backup, copia verificada fora da origem e somente depois ensaio de
+  restauracao. A copia privada local original de producao foi preservada;
+  uma segunda copia para servidor vazio retira apenas Apps.Memorias.PrivateRoot
+  porque o usuario autorizou descartar aquele cofre. Nao girar segredos nem
+  remover override em uma recuperacao que deva preservar o cofre. Sem copia
+  externa legivel dos dados, nao autorizar segundo descarte; credenciais/chave
+  sozinhas nao sao backup. Preparacao local nao autoriza operar a VPS atual.
   Novos bancos recebem baseline full no proximo ciclo; subpastas nas raizes
   Storage/privado herdam a copia. Projetos Compose playsis-* sob infra sao
   descobertos pelos metadados existentes. Bind fora das areas conhecidas e
@@ -1600,6 +1739,15 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   telemetria e uma copia de trabalho do repositorio para autoconhecimento do
   servidor. Credenciais de agentes devem entrar somente por ambiente/segredo do
   servidor, nunca gravadas na imagem.
+- Usuario classificou os tres volumes do agente operacional (workspace, Codex
+  e Claude) como VOLATEIS, fora do backup. Estado funcional que precisar de
+  persistencia deve ser mantido no banco correspondente ja protegido por backup,
+  pelo caminho normal da aplicacao, nao depender de arquivos desses volumes.
+  Nao criar backup particular ou outro banco de estado. Credenciais tecnicas
+  continuam na configuracao privada padrao; nao copiar sessoes/tokens das CLIs
+  para SQL por essa decisao. Nao habilitar escrita no agente observador, criar
+  tabelas ou apagar volumes nesta etapa. Investigacao do conteudo foi interrompida
+  pelo usuario; classificacao foi uma decisao direta, nao prova de volume vazio.
 - Politicas operacionais sao identificadas por `Application + Environment`,
   permitindo configuracoes independentes para producao e homologacao.
 - Cada host gerado mantem snapshot local e sincroniza a politica por polling. O

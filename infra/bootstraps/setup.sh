@@ -33,6 +33,18 @@ prepare_backup() {
     "$PYTHON" -B "$APP_DIR/infra/backups/install.py" --initialize-online
 }
 
+prepare_backup_key() {
+  if ! command -v restic >/dev/null 2>&1 || ! command -v ionice >/dev/null 2>&1; then
+    apt update || return 1
+    DEBIAN_FRONTEND=noninteractive apt install -y restic util-linux || return 1
+  fi
+  local action
+  for action in configure-local recovery-key; do
+    YESHUA_APP_DIR="$APP_DIR" YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" \
+      "$PYTHON" -B "$APP_DIR/infra/backups/backup.py" "$action" || return 1
+  done
+}
+
 main() {
   require_root || return 1
   if [[ "$-" == *x* ]]; then
@@ -55,14 +67,17 @@ main() {
   fi
 
   echo "==== Preparando a configuracao privada ===="
-  if ! "$PYTHON" "$APP_DIR/infra/private/credentials.py" init --file "$PRIVATE_FILE"; then
-    echo "Revise a configuracao privada e o diretorio YouTube. Nenhum servico da aplicacao foi iniciado pelo setup." >&2
+  if ! "$PYTHON" -B "$APP_DIR/infra/private/credentials.py" init --wait --file "$PRIVATE_FILE"; then
+    echo "Preparacao privada nao concluida. Nenhum servico da aplicacao foi iniciado pelo setup." >&2
     return 1
   fi
-  if ! "$PYTHON" "$APP_DIR/infra/private/credentials.py" validate --file "$PRIVATE_FILE" --target all; then
+  if ! "$PYTHON" -B "$APP_DIR/infra/private/credentials.py" validate --file "$PRIVATE_FILE" --target all; then
     echo "Complete ou reponha a configuracao privada e execute este mesmo setup novamente. Nenhum servico da aplicacao foi iniciado pelo setup." >&2
     return 1
   fi
+
+  echo "==== Guarda da senha de recuperacao antes das etapas demoradas ===="
+  prepare_backup_key || return 1
 
   echo "==== Atualizando o sistema ===="
   apt update
@@ -110,13 +125,15 @@ main() {
     volatile/memorias/publicacoes volatile/fiscal/planos-emissao volatile/fiscal/sefaz \
     volatile/clinica/uploads volatile/aps-adm/uploads \
     volatile/ia/transcriptions/input volatile/ia/transcriptions/output \
-    volatile/reports/input volatile/reports/output \
-    persistent/Docs/input persistent/Docs/output; do
+    volatile/reports/input volatile/reports/output volatile/infra/telemetry; do
     ensure_directory "/root/YeshuaStorage/$directory" 0:0 750
   done
 
   echo "==== Executando o deploy do servidor ===="
-  YESHUA_SKIP_UPDATE=1 bash "$DEPLOY_SCRIPT" all
+  YESHUA_SETUP_SQL_ACCESS=1 YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" YESHUA_SKIP_UPDATE=1 bash "$DEPLOY_SCRIPT" all
+
+  echo "==== Conferindo acessos SQL nos bancos criados ou restaurados ===="
+  "$PYTHON" -B "$APP_DIR/infra/private/sql_access.py" --file "$PRIVATE_FILE"
 
   echo "==== Preparando backup online e agendas ===="
   prepare_backup

@@ -4,6 +4,21 @@ Pacote unico inicial de observabilidade para o Yeshua. Ele usa a imagem oficial
 `grafana/otel-lgtm`, que junta OpenTelemetry Collector, Prometheus, Tempo, Loki
 e Grafana em um container.
 
+## Personalizacoes E Recuperacao
+
+Decisao do projeto: historico de telemetria e estado interno do Grafana sao
+VOLATEIS, fora do backup. Personalizacoes de paineis, alertas e fontes de dados
+devem ser mantidas nos arquivos de infraestrutura versionados, usando o
+provisionamento nativo do Grafana. Nao depender de alteracoes feitas somente
+pela interface. Segredos continuam no arquivo privado do ambiente, fora do Git.
+
+Na recriacao, repor a imagem/configuracao versionada e aplicar o provisionamento;
+nao restaurar o banco interno para substituir essas definicoes. O Compose agora
+usa /root/YeshuaStorage/volatile/infra/telemetry. O caminho antigo nao e movido
+ou apagado automaticamente e nao houve alteracao da VPS nesta implementacao.
+Uma captura sobre o bind legado exige a virada intencional para a raiz volatil.
+Essa regra nao muda permissoes da interface nem remove personalizacoes existentes.
+
 ## Retencao inicial
 
 - Prometheus: 5 dias ou 2 GB, o que chegar primeiro.
@@ -12,7 +27,7 @@ e Grafana em um container.
 - Docker log do proprio container: 3 arquivos de 10 MB.
 
 O limite forte de volume total depende do servidor. Para manter o alvo de 10 GB,
-monte `/root/YeshuaDB/persistent/telemetry` sobre uma particao, disco ou volume
+monte `/root/YeshuaStorage/volatile/infra/telemetry` sobre uma particao, disco ou volume
 com quota de 10 GB. O Compose aplica limite de CPU/memoria do container e a
 retencao por componente, mas Docker Compose puro nao limita tamanho de bind
 mount de forma portavel.

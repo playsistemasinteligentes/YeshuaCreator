@@ -1,14 +1,28 @@
 """Online SQL chains and deduplicated file snapshots using the existing operator."""
 
+from contextlib import contextmanager
 from datetime import datetime, timezone
+import hashlib
 import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import uuid
 
 
 KINDS = {"full", "differential", "logs", "files", "check", "check-data"}
+FILE_SELECTION = "persistent-roots-v3"
+LEGACY_FILE_SELECTION = "persistent-roots-v2"
+STORAGE_ROOT = Path("/root/YeshuaStorage/persistent")
+PRIVATE_ROOT = Path("/root/YeshuaPrivate/production")
+LEGACY_MEMORIAS_ROOT = Path("/root/YeshuaMemoriasSecrets")
+HTTPS_ROOT = Path("/etc/letsencrypt")
+RECOVERY_ROOT = Path("/root/YeshuaRecovery")
+
+
+def outer_roots(paths):
+    return sorted({p for p in paths if not any(p != other and p.is_relative_to(other) for other in paths)}, key=str)
 
 
 def configure_local(op, private_file, policy):
@@ -24,6 +38,8 @@ def configure_local(op, private_file, policy):
             raise op.Error("existing_external_repository_requires_explicit_transition")
         changed = False
         if not config.get("Password"):
+            if (base / "repository").exists():
+                raise op.Error("existing_backup_repository_requires_original_password")
             config["Password"] = secrets.token_urlsafe(48)
             changed = True
         if "Repository" not in config:
@@ -52,6 +68,66 @@ def configure_local(op, private_file, policy):
             "host_loss_protection": False})
     return {"operation": "configure-local", "repository": str(repository), "offsite": False,
             "external_destination_pending": True, "secrets_printed": False}
+
+
+@contextmanager
+def recovery_terminal(op):
+    try:
+        with open("/dev/tty", "r", encoding="utf-8") as reader, \
+             open("/dev/tty", "w", encoding="utf-8", buffering=1) as writer:
+            if not reader.isatty() or not writer.isatty():
+                raise op.Error("recovery_key_delivery_requires_private_terminal")
+            yield reader, writer
+    except OSError:
+        raise op.Error("recovery_key_delivery_requires_private_terminal") from None
+    except KeyboardInterrupt:
+        raise op.Error("recovery_key_delivery_cancelled") from None
+
+
+def recovery_key(op, private_file, policy, *, show=False):
+    base = op.private_directory(policy["staging"])
+    with op.locked(base / "backup.lock"):
+        before = op.digest(private_file)
+        document, _ = op.sql.load_credentials(op.ROOT, private_file, require_sql=False)
+        env = op.restic_env(document)
+        password, repository = env["RESTIC_PASSWORD"], env["RESTIC_REPOSITORY"]
+        fingerprint = hashlib.sha256(json.dumps(
+            ["yeshua-backup-recovery-v1", repository, password], ensure_ascii=True).encode()).hexdigest()
+        machine = op.machine_id()
+        state = op.private_directory(base / "state", create=True)
+        receipt_path = op.absolute(state / "recovery-key-custody.json")
+        receipt = op.read(receipt_path) if receipt_path.exists() else {}
+        confirmed = (receipt.get("schema") == 1 and receipt.get("source_machine") == machine
+                     and receipt.get("key_fingerprint") == fingerprint
+                     and receipt.get("operator_confirmed_external_copy") is True)
+        if confirmed and not show:
+            return {"operation": "recovery-key", "status": "custody_already_confirmed",
+                    "terminal_delivery": False, "external_copy_verified": False}
+
+        op.restic(document, ["snapshots", "--json"])
+        # Secrets go only to the controlling terminal, never captured stdout/stderr.
+        with recovery_terminal(op) as (reader, writer):
+            writer.write("\nGUARDA DA SENHA DE RECUPERACAO DO BACKUP\n"
+                         "Use um terminal privado, sem compartilhamento ou gravacao.\n"
+                         "Guarde a senha fora desta VPS e fora do backup que ela abre.\n"
+                         "Para visualizar a senha existente, digite EXIBIR: ")
+            writer.flush()
+            if reader.readline(64).strip() != "EXIBIR":
+                raise op.Error("recovery_key_display_not_authorized")
+            writer.write("\nRepositorio: " + repository + "\nSenha de recuperacao: " + password + "\n\n"
+                         "Nao envie essa senha ao chat, Git ou logs.\n"
+                         "A copia dos dados ainda e LOCAL; guardar a senha nao protege o disco da VPS.\n"
+                         "Depois de guardar em local protegido fora da VPS, digite GUARDEI: ")
+            writer.flush()
+            if reader.readline(64).strip() != "GUARDEI":
+                raise op.Error("recovery_key_custody_not_confirmed")
+        if op.digest(private_file) != before:
+            raise op.Error("credentials_changed_during_recovery_key_delivery")
+        op.write(receipt_path, {"schema": 1, "source_machine": machine,
+                               "key_fingerprint": fingerprint, "confirmed_at": op.now(),
+                               "operator_confirmed_external_copy": True, "external_copy_verified": False})
+        return {"operation": "recovery-key", "status": "custody_confirmed",
+                "terminal_delivery": True, "external_copy_verified": False}
 
 
 def preflight(op, policy):
@@ -142,6 +218,8 @@ def reconcile_intents(op, base, password, client):
     for path in sorted((base / "intents").glob("*.json")):
         op.absolute(path)
         intent = op.read(path)
+        if intent["system"] or intent["database_name"].casefold() in op.sql.SYSTEM_DATABASES:
+            continue
         existing = base / "records" / path.name
         if existing.exists():
             record = op.read(existing)
@@ -157,9 +235,14 @@ def reconcile_intents(op, base, password, client):
 def snapshot(op, document, policy, sources, kind, run_id):
     if kind == "files":
         op.storage_excludes(policy)
-    output = op.restic(document, ["backup", "--json", "--host", policy["scope"], "--tag", "yeshua",
-             "--tag", "scope=" + policy["scope"], "--tag", "kind=" + kind, "--tag", "run=" + run_id,
-             *[str(p) for p in sources]])
+    args = ["backup", "--json", "--host", policy["scope"], "--tag", "yeshua",
+            "--tag", "scope=" + policy["scope"], "--tag", "kind=" + kind, "--tag", "run=" + run_id]
+    if kind == "sql":
+        # A growing SQL history must not exceed the OS command-line limit.
+        names = [str(op.absolute(path)) for path in sources]
+        output = op.restic(document, [*args, "--files-from-raw", "-"], input="\0".join(names) + ("\0" if names else ""))
+    else:
+        output = op.restic(document, [*args, *[str(p) for p in sources]])
     summaries = [item for line in output.splitlines() if line.strip()
                  for item in [json.loads(line)] if item.get("message_type") == "summary"]
     if len(summaries) != 1 or not op.HASH.fullmatch(summaries[0].get("snapshot_id", "")):
@@ -176,17 +259,17 @@ def sql_cycle(op, document, password, policy, kind):
 
 def native_kind(op, password, client, database, kind, records):
     system = database["database_id"] <= 4
+    if system or database["name"].casefold() in op.sql.SYSTEM_DATABASES:
+        return None, None
     owned = [r for r in records if r["database_name"] == database["name"] and r["type"] == "D" and not r["is_copy_only"]]
     if kind == "logs":
-        if system:
-            return None, None
         # Onboard a newly created user database without waiting until Sunday.
         if not owned:
             return "full", None
         if database["recovery_model_desc"] not in {"FULL", "BULK_LOGGED"}:
             return None, None
     elif kind == "differential":
-        if system or not owned:
+        if not owned:
             return "full", None
         latest = max(owned, key=lambda r: r["created_at"])
         current = op.sql.differential_base(password, client, database["name"])
@@ -204,11 +287,12 @@ def _sql_cycle(op, document, password, policy, kind, base):
         expected = op.sql.assess(metadata, op.sql.expected_databases(op.ROOT))
         if expected["missing_databases"]:
             raise op.Error("expected_database_missing")
-        databases = [d for d in metadata["databases"] if d["name"] != "tempdb"]
+        databases = op.sql.user_databases(metadata)
         if any(d["state_desc"] != "ONLINE" or d.get("is_encrypted") for d in databases):
             raise op.Error("database_requires_readiness_review")
         reconcile_intents(op, base, password, client)
-        records = read_records(op, base)
+        records = [r for r in read_records(op, base)
+                   if not r["system"] and r["database_name"].casefold() not in op.sql.SYSTEM_DATABASES]
         run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
         native = op.absolute(Path(policy["sql_data"]) / "backup" / "yeshua-scheduled")
         if not native.exists():
@@ -254,7 +338,17 @@ def _sql_cycle(op, document, password, policy, kind, base):
         op.write(base / "state" / "sql-catalog.json", {"schema": 1, "source_machine": op.machine_id(),
                  "updated_at": op.now(), "sql_version": metadata["product_version"], "chains": chains, "restore_proven": False})
     # Do not block deployment for the repository write.
-    receipt = snapshot(op, document, policy, [native, base / "records", base / "state" / "sql-catalog.json"], "sql", run_id)
+    # Do not copy old system-database media again; retain it only in older snapshots/on disk.
+    record_files = []
+    for path in sorted((base / "records").glob("*.json")):
+        entry = op.read(path)
+        if not entry["system"] and entry["database_name"].casefold() not in op.sql.SYSTEM_DATABASES:
+            record_files.append(path)
+    media = [op.absolute(r["path"]) for r in records]
+    if any(not path.is_relative_to(native) for path in media):
+        raise op.Error("sql_snapshot_media_outside_native_backup_area")
+    sources = media + record_files + [base / "state" / "sql-catalog.json"]
+    receipt = snapshot(op, document, policy, sources, "sql", run_id)
     return {"operation": "scheduled", "kind": kind, "run_id": run_id,
             "database_backups": len(completed), "services_paused": False, "restore_proven": False, **receipt}
 
@@ -274,19 +368,18 @@ def files_cycle(op, document, private_file, policy):
             containers = op.inspect_running()
             areas = op.mount_areas(containers, document, private_file, policy)
             op.write(current / "compose.json", op.frozen_projects(containers, document, private_file))
-        sources = [Path("/root/YeshuaStorage/persistent"), private_file.parent,
-                   op.absolute(document["Apps"]["Memorias"]["PrivateRoot"]), current]
-        https = Path("/etc/letsencrypt")
-        if https.exists():
-            sources.append(https)
+        sources = [op.absolute(a["path"]) for a in areas] + [current]
+        sources = outer_roots(sources)
         for source in sources:
             op.absolute(source)
             if not source.is_dir() or source == base or base.is_relative_to(source):
                 raise op.Error("unsafe_online_file_snapshot_source")
         run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
-        op.write(current / "coverage.json", {"created_at": op.now(), "consistency": "online_not_globally_atomic",
+        op.write(current / "coverage.json", {"schema": 1, "source_machine": op.machine_id(),
+            "scope": policy["scope"], "run_id": run_id, "file_selection": FILE_SELECTION,
+            "created_at": op.now(), "consistency": "online_not_globally_atomic",
             "included": [str(p) for p in sources], "excluded_live_state": ["RabbitMQ", "Redis", "telemetry", "agent_volumes", "unmounted_container_uploads"],
-            "excluded_volatile_paths": ["/root/YeshuaStorage/volatile", "/app/uploads"],
+            "excluded_volatile_paths": ["/root/YeshuaStorage/volatile", "/etc/letsencrypt", "/app/uploads"],
             "coordinated_areas_pending": [a for a in areas if not any(Path(a["path"]).is_relative_to(p) for p in sources)],
             "source_and_toolkit_rebuild_from_git": True, "coordinated_capture_pending": True,
             "docker_images_deferred": True, "restore_proven": False})
@@ -299,7 +392,7 @@ def files_cycle(op, document, private_file, policy):
             raise op.Error("online_file_snapshot_would_exceed_disk_reserve")
         receipt = snapshot(op, document, policy, sources, "files", run_id)
     return {"operation": "scheduled", "kind": "files", "run_id": run_id, "services_paused": False,
-            "file_selection": "persistent-roots-v1",
+            "file_selection": FILE_SELECTION,
             "source_bytes_budget": source_bytes, "budget_includes_excluded_paths": False, "incremental_repository": True,
             "global_consistency": False, "coordinated_capture_pending": True, **receipt}
 
@@ -344,6 +437,140 @@ def restore_plan(op, policy):
                 raise op.Error("restore_chain_checksum_mismatch")
         result[name] = [{"type": r["type"], "path": r["path"], "backup_guid": r["backup_guid"], "last_lsn": r["last_lsn"]} for r in selected]
     return {"operation": "sql-restore-plan", "databases": result, "sql_changed": False, "restore_proven": False}
+
+
+def downloaded_path(op, root, original):
+    original = op.absolute(original)
+    return op.absolute(root / original.relative_to(original.anchor))
+
+
+def file_recovery_inventory(op, document, policy, root):
+    metadata = Path(policy["staging"]) / "metadata/current"
+    coverage_path = downloaded_path(op, root, metadata / "coverage.json")
+    coverage = op.read(coverage_path)
+    selection = coverage.get("file_selection")
+    if (coverage.get("schema") != 1 or coverage.get("scope") != policy["scope"]
+            or selection not in {FILE_SELECTION, LEGACY_FILE_SELECTION} or not coverage.get("source_machine")
+            or not op.SET_ID.fullmatch(coverage.get("run_id", ""))):
+        raise op.Error("files_snapshot_requires_current_recovery_metadata")
+    memory = op.absolute(op.sql.memorias_private_root(document, PRIVATE_ROOT / "credentials.json"))
+    if memory != LEGACY_MEMORIAS_ROOT and not memory.is_relative_to(PRIVATE_ROOT):
+        raise op.Error("files_recovery_private_layout_requires_review")
+    required = outer_roots([STORAGE_ROOT, PRIVATE_ROOT, memory, metadata])
+    included = coverage.get("included")
+    if not isinstance(included, list) or len(set(included)) != len(included):
+        raise op.Error("files_recovery_ambiguous_roots")
+    actual = {op.absolute(p) for p in included}
+    allowed = [set(required)]
+    if selection == LEGACY_FILE_SELECTION:
+        allowed.append(set(outer_roots([*required, HTTPS_ROOT])))
+    if actual not in allowed:
+        raise op.Error("files_recovery_roots_do_not_match_approved_layout")
+    roots = sorted(actual - {metadata}, key=str)
+    for target in roots:
+        if not downloaded_path(op, root, target).is_dir():
+            raise op.Error("files_recovery_required_root_missing")
+    return coverage_path, coverage, roots
+
+
+def file_tree(op, root):
+    # Offline integrity check: include every entry, with no persistent-content filter.
+    root = op.absolute(root)
+    checksum = op.hashlib.sha256()
+    total = 0
+    pending = [root]
+    while pending:
+        path = pending.pop()
+        info = path.lstat()
+        item = [path.relative_to(root).as_posix(), stat.S_IMODE(info.st_mode), info.st_uid, info.st_gid]
+        if stat.S_ISDIR(info.st_mode):
+            item.append("directory")
+            pending.extend(sorted(path.iterdir(), reverse=True))
+        elif stat.S_ISREG(info.st_mode):
+            item.extend(["file", info.st_size, op.digest(path)])
+            total += info.st_size
+        elif stat.S_ISLNK(info.st_mode):
+            if not path.resolve(strict=True).is_relative_to(root.resolve()):
+                raise op.Error("files_recovery_link_escapes_its_root")
+            link = os.readlink(path)
+            # Absolute links would still point into the original host after download.
+            if Path(link).is_absolute():
+                raise op.Error("files_recovery_absolute_link_requires_review")
+            item.extend(["link", link])
+        else:
+            raise op.Error("files_recovery_special_file_requires_review")
+        if hasattr(os, "listxattr"):
+            item.append([[key, os.getxattr(path, key, follow_symlinks=False).hex()]
+                         for key in sorted(os.listxattr(path, follow_symlinks=False))])
+        checksum.update(json.dumps(item, ensure_ascii=True, separators=(",", ":")).encode() + b"\n")
+    return {"sha256": checksum.hexdigest(), "bytes": total}
+
+
+def seal_files_download(op, document, policy, root):
+    coverage_path, coverage, targets = file_recovery_inventory(op, document, policy, root)
+    return {"coverage_sha256": op.digest(coverage_path), "source_machine": coverage["source_machine"],
+            "download_machine": op.machine_id(), "file_selection": coverage["file_selection"],
+            "roots": {str(p): file_tree(op, downloaded_path(op, root, p)) for p in targets}}
+
+
+def restore_files(op, document, policy, download_root, new_machine, *, apply=False):
+    root = op.private_directory(download_root)
+    if root == RECOVERY_ROOT or not root.is_relative_to(RECOVERY_ROOT):
+        raise op.Error("files_recovery_requires_verified_download_directory")
+    receipt = op.read(op.absolute(root / "download-receipt.json"))
+    if (receipt.get("kind") != "files" or not op.HASH.fullmatch(receipt.get("snapshot_id", ""))
+            or not receipt.get("verified_at") or receipt.get("file_selection") not in {FILE_SELECTION, LEGACY_FILE_SELECTION}):
+        raise op.Error("files_recovery_requires_verified_files_snapshot_receipt")
+    coverage_path, coverage, targets = file_recovery_inventory(op, document, policy, root)
+    if receipt["file_selection"] != coverage["file_selection"]:
+        raise op.Error("files_recovery_selection_receipt_mismatch")
+    actual = op.machine_id()
+    if (actual != new_machine or actual == coverage["source_machine"]
+            or receipt.get("source_machine") != coverage["source_machine"] or receipt.get("download_machine") != actual):
+        raise op.Error("files_recovery_refused_on_source_or_unconfirmed_server")
+    if op.digest(coverage_path) != receipt.get("coverage_sha256"):
+        raise op.Error("files_recovery_coverage_changed_after_download")
+    observed = {str(p): file_tree(op, downloaded_path(op, root, p)) for p in targets}
+    if observed != receipt.get("roots"):
+        raise op.Error("files_recovery_content_changed_after_download")
+
+    def check_destinations():
+        containers = op.sql.run(["docker", "ps", "--format", "{{.Names}}"]).splitlines()
+        if containers not in ([], [op.sql.SQL_CONTAINER]):
+            raise op.Error("files_recovery_requires_applications_stopped")
+        devices = {}
+        for target in targets:
+            op.absolute(target)
+            if target.exists() and (not target.is_dir() or any(target.iterdir())):
+                raise op.Error("files_recovery_destination_not_empty")
+            ancestor = target
+            while not ancestor.exists():
+                ancestor = ancestor.parent
+            device = ancestor.stat().st_dev
+            path, size = devices.get(device, (ancestor, 0))
+            devices[device] = (path, size + observed[str(target)]["bytes"])
+        for path, size in devices.values():
+            if shutil.disk_usage(path).free < size + policy["minimum_free_bytes"]:
+                raise op.Error("insufficient_disk_for_persistent_files_recovery")
+
+    check_destinations()
+    result = {"operation": "restore-files", "snapshot_id": receipt["snapshot_id"],
+              "targets": [str(p) for p in targets], "bytes": sum(v["bytes"] for v in observed.values()),
+              "applied": False, "services_started": False, "sql_changed": False, "restore_proven": False,
+              "global_consistency": False, "integrations_pending_reconciliation": True}
+    if not apply:
+        return result
+    with op.locked("/var/lock/yeshua-deploy.lock"):
+        check_destinations()
+        for target in targets:
+            target.mkdir(mode=0o700, parents=True, exist_ok=True)
+            op.sql.run(["cp", "--archive", "--no-clobber", "--no-target-directory", "--", str(downloaded_path(op, root, target)), str(target)],
+                       timeout=3600, stage="restore_persistent_files")
+            if file_tree(op, target) != observed[str(target)]:
+                raise op.Error("files_recovery_copy_verification_failed_partial_restore_requires_review")
+        result.update(applied=True, files_verified=True, target_machine=actual, completed_at=op.now())
+        op.write(root / "files-recovery.json", result)
+    return result
 
 
 def restore_sql_chain(op, password, policy, download_root, new_machine):

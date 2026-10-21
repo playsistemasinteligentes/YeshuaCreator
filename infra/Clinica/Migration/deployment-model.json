@@ -99,9 +99,7 @@
         "Storage__Locations__volatile/ia/transcriptions/input": "Disk",
         "Storage__Locations__volatile/ia/transcriptions/output": "Disk",
         "Storage__Locations__volatile/reports/input": "Disk",
-        "Storage__Locations__volatile/reports/output": "Disk",
-        "Storage__Locations__persistent/docs/input": "Disk",
-        "Storage__Locations__persistent/docs/output": "Disk"
+        "Storage__Locations__volatile/reports/output": "Disk"
       },
       "Secrets": [
         {
@@ -165,8 +163,6 @@
         "Storage__Locations__volatile/ia/transcriptions/output": "Disk",
         "Storage__Locations__volatile/reports/input": "Disk",
         "Storage__Locations__volatile/reports/output": "Disk",
-        "Storage__Locations__persistent/docs/input": "Disk",
-        "Storage__Locations__persistent/docs/output": "Disk",
         "RabbitMq__HostName": "rabbit01",
         "RabbitMq__Port": "5672",
         "RabbitMq__VirtualHost": "/",

@@ -10,9 +10,7 @@
   "command_timeout_seconds": 3600,
   "storage_excludes": [],
   "areas": [
-    {"id": "storage", "path": "/root/YeshuaStorage/persistent", "required": true},
-    {"id": "telemetry", "path": "/root/YeshuaDB/persistent/telemetry", "required": true},
-    {"id": "https", "path": "/etc/letsencrypt", "required": false}
+    {"id": "storage", "path": "/root/YeshuaStorage/persistent", "required": true}
   ],
   "container_files": [],
   "keep_daily": 7,

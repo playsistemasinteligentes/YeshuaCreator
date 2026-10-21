@@ -30,6 +30,7 @@ docker compose build aps-adm-migration
 docker compose build aps-adm-api aps-adm-worker
 echo "Executando migration APS.ADM no banco ${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM}..."
 docker compose run --rm aps-adm-migration
+yeshua_setup_sql_access
 docker compose up -d --remove-orphans \
   aps-adm-api \
   aps-adm-worker

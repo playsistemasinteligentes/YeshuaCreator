@@ -3,6 +3,7 @@ from contextlib import nullcontext
 import importlib.util
 import json
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from unittest.mock import MagicMock, patch
@@ -11,6 +12,7 @@ ROOT = Path(__file__).resolve().parents[3]
 def module(name, filename):
     spec = importlib.util.spec_from_file_location(name, ROOT / "infra/backups" / filename)
     result = importlib.util.module_from_spec(spec)
+    sys.modules[name] = result
     spec.loader.exec_module(result)
     return result
 
@@ -88,9 +90,11 @@ class NativeTests(unittest.TestCase):
         database = {"database_id": 10, "name": "Db", "recovery_model_desc": "SIMPLE"}
         self.assertEqual((None, None), routine.native_kind(op, "s", "c", database, "logs", [record()]))
 
-    def test_system_databases_do_not_receive_log_backup(self):
-        database = {"database_id": 1, "name": "master", "recovery_model_desc": "SIMPLE"}
-        self.assertEqual((None, None), routine.native_kind(op, "s", "c", database, "logs", []))
+    def test_system_databases_do_not_receive_any_native_backup(self):
+        for kind in ("full", "differential", "logs"):
+            for index, name in enumerate(("master", "tempdb", "model", "msdb"), start=1):
+                database = {"database_id": index, "name": name, "recovery_model_desc": "FULL"}
+                self.assertEqual((None, None), routine.native_kind(op, "s", "c", database, kind, []))
 
     def test_changed_differential_base_gets_new_full(self):
         database = {"database_id": 10, "name": "Db", "recovery_model_desc": "FULL"}
@@ -217,19 +221,29 @@ class LocalRepositoryTests(unittest.TestCase):
             routine.snapshot(op, {"Shared": {"Backup": {"Repository": ""}}}, {"scope": "yeshua-production"}, [], "sql", "run")
         self.assertNotIn("--exclude", restic.call_args.args[1])
 
+    def test_sql_file_list_uses_stdin_not_an_unbounded_command_line(self):
+        output = json.dumps({"message_type": "summary", "snapshot_id": "a" * 64})
+        sources = [Path("/root/YeshuaBackup/records/fixture.json"), Path("/root/YeshuaDB/persistent/sql/backup/fixture.bak")]
+        with patch.object(op, "restic", return_value=output) as restic, patch.object(op, "absolute", side_effect=Path):
+            routine.snapshot(op, {"Shared": {"Backup": {"Repository": ""}}}, {"scope": "yeshua-production"}, sources, "sql", "run")
+        self.assertEqual(["--files-from-raw", "-"], restic.call_args.args[1][-2:])
+        self.assertEqual("\0".join(map(str, sources)) + "\0", restic.call_args.kwargs["input"])
+        self.assertFalse(any(str(path) in restic.call_args.args[1] for path in sources))
+
     def test_file_snapshot_budgets_full_sources_before_repository_write(self):
         for free, accepted in ((1000, False), (100000, True)):
             with self.subTest(free=free), tempfile.TemporaryDirectory() as folder:
                 base = Path(folder) / "backup"
                 base.mkdir()
                 (base / "metadata").mkdir()
-                policy = {"staging": str(base), "minimum_free_bytes": 1024, "storage_excludes": STORAGE_EXCLUDES}
+                policy = {"staging": str(base), "scope": "yeshua-production", "minimum_free_bytes": 1024, "storage_excludes": STORAGE_EXCLUDES}
                 document = {"Apps": {"Memorias": {"PrivateRoot": "/vault"}}}
                 with patch.object(routine, "preflight", return_value=base), \
                      patch.object(op, "locked", return_value=nullcontext()), patch.object(op, "absolute", side_effect=Path), \
                      patch.object(Path, "is_dir", return_value=True), patch.object(op, "snapshot_source"), \
                      patch.object(op, "inspect_running", return_value=[]), patch.object(op, "frozen_projects", return_value={}), \
-                     patch.object(op, "mount_areas", return_value=[]), \
+                     patch.object(op, "mount_areas", return_value=[{"path": "/root/YeshuaStorage/persistent"},
+                         {"path": str(Path(folder) / "private")}, {"path": "/vault"}]), patch.object(op, "machine_id", return_value="current"), \
                      patch.object(op.sql, "run", side_effect=["revision", "1024\t/source\n2048\t/other\n"]), \
                      patch.object(routine.shutil, "disk_usage", return_value=MagicMock(free=free)), \
                      patch.object(routine, "snapshot", return_value={"snapshot_id": "a" * 64}) as snapshot:
@@ -240,6 +254,11 @@ class LocalRepositoryTests(unittest.TestCase):
                         self.assertIn(Path("/root/YeshuaStorage/persistent"), sources)
                         self.assertNotIn(Path("/root/YeshuaStorage"), sources)
                         self.assertFalse((base / "metadata/current/backup-toolkit").exists())
+                        coverage = op.read(base / "metadata/current/coverage.json")
+                        self.assertEqual("current", coverage["source_machine"])
+                        self.assertEqual(routine.FILE_SELECTION, coverage["file_selection"])
+                        self.assertNotIn(routine.HTTPS_ROOT, sources)
+                        self.assertIn("/etc/letsencrypt", coverage["excluded_volatile_paths"])
                         snapshot.assert_called_once()
                     else:
                         with self.assertRaises(op.Error):
@@ -284,7 +303,7 @@ class RecoveryGuardsTests(unittest.TestCase):
             with self.subTest(tags=tags), patch.object(op, "absolute", return_value=target), \
                  patch.object(op, "restic", return_value=json.dumps([{"id": "a" * 64, "tags": tags}])) as restic, \
                  patch.object(op, "private_directory") as mkdir, self.assertRaises(op.Error):
-                op.download({}, "a" * 64, "/root/YeshuaRecovery/test")
+                op.download({}, "a" * 64, "/root/YeshuaRecovery/test", {})
             self.assertEqual(1, restic.call_count)
             mkdir.assert_not_called()
 
@@ -295,8 +314,11 @@ class RecoveryGuardsTests(unittest.TestCase):
         for kind in ("sql", "files"):
             with self.subTest(kind=kind), patch.object(op, "absolute", return_value=target), \
                  patch.object(op, "restic", side_effect=[json.dumps([{"id": "a" * 64, "tags": ["kind=" + kind]}]), ""]) as restic, \
-                 patch.object(op, "private_directory"), patch.object(op, "write") as write:
-                result = op.download({}, "a" * 64, "/root/YeshuaRecovery/test")
+                 patch.object(op, "private_directory"), patch.dict(sys.modules, {"routine": routine}), \
+                 patch.object(routine, "seal_files_download", return_value={"file_selection": routine.FILE_SELECTION}) as seal, \
+                 patch.object(op, "write") as write:
+                result = op.download({}, "a" * 64, "/root/YeshuaRecovery/test", {})
+                self.assertEqual(1 if kind == "files" else 0, seal.call_count)
             self.assertEqual(kind, result["kind"])
             self.assertTrue(result["files_verified"])
             self.assertFalse(result["restore_proven"])
@@ -310,7 +332,7 @@ class RecoveryGuardsTests(unittest.TestCase):
         with patch.object(op, "absolute", return_value=target), \
              patch.object(op, "restic", side_effect=[json.dumps([{"id": "a" * 64, "tags": ["kind=sql"]}]), op.Error("failed")]), \
              patch.object(op, "private_directory"), patch.object(op, "write") as write, self.assertRaises(op.Error):
-            op.download({}, "a" * 64, "/root/YeshuaRecovery/test")
+            op.download({}, "a" * 64, "/root/YeshuaRecovery/test", {})
         write.assert_not_called()
 
 
@@ -322,7 +344,8 @@ class ServerSetupTests(unittest.TestCase):
             (base / "status").mkdir()
             op.write(base / "state/sql-catalog.json", {"source_machine": "current"})
             for kind in ("full", "differential", "logs", "files", "check-data"):
-                op.write(base / "status" / (kind + ".json"), {"status": "completed", "file_selection": "persistent-roots-v1"})
+                op.write(base / "status" / (kind + ".json"), {"status": "completed", "file_selection": routine.FILE_SELECTION,
+                         "finished_at": "2026-10-20T10:00:00Z"})
             with patch.object(installer, "run") as run:
                 installer.initialize_online({}, base, "current")
             run.assert_not_called()
@@ -334,11 +357,12 @@ class ServerSetupTests(unittest.TestCase):
             (base / "status").mkdir()
             op.write(base / "state/sql-catalog.json", {"source_machine": "current"})
             for kind in ("full", "differential", "logs", "files", "check-data"):
-                op.write(base / "status" / (kind + ".json"), {"status": "completed"})
+                op.write(base / "status" / (kind + ".json"), {"status": "completed", "file_selection": "persistent-roots-v1",
+                         "finished_at": "2026-10-20T10:00:00Z"})
             with patch.object(installer, "run") as run:
                 installer.initialize_online({}, base, "current")
-            self.assertEqual(1, run.call_count)
-            self.assertEqual("yeshua-backup@files.service", run.call_args.args[0][-1])
+            self.assertEqual(["yeshua-backup@files.service", "yeshua-backup@check-data.service"],
+                             [call.args[0][-1] for call in run.call_args_list])
 
     def test_new_server_bootstrap_uses_only_online_limited_units(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(installer, "run") as run:
@@ -354,12 +378,13 @@ class ServerSetupTests(unittest.TestCase):
             (base / "status").mkdir()
             op.write(base / "state/sql-catalog.json", {"source_machine": "current"})
             for kind in ("full", "differential", "logs", "files", "check-data"):
-                op.write(base / "status" / (kind + ".json"), {"status": "completed", "finished_at": "2026-10-20T10:00:00Z"})
+                op.write(base / "status" / (kind + ".json"), {"status": "completed", "file_selection": routine.FILE_SELECTION,
+                         "finished_at": "2026-10-20T10:00:00Z"})
             op.write(base / "status/files-failure.json", {"failed_at": "2026-10-20T11:00:00Z"})
             with patch.object(installer, "run") as run:
                 installer.initialize_online({}, base, "current")
-            self.assertEqual(1, run.call_count)
-            self.assertEqual("yeshua-backup@files.service", run.call_args.args[0][-1])
+            self.assertEqual(["yeshua-backup@files.service", "yeshua-backup@check-data.service"],
+                             [call.args[0][-1] for call in run.call_args_list])
 
     def test_copied_live_backup_state_is_not_adopted_on_another_machine(self):
         with tempfile.TemporaryDirectory() as folder:

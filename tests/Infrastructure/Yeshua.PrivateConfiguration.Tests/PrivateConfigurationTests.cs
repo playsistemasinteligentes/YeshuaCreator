@@ -40,7 +40,7 @@ public class PrivateConfigurationTests
         {
             Environment.SetEnvironmentVariable("YESHUA_FISCAL_PRIVATE_ROOT", directory);
             var result = await FiscalPayloadStore.SaveCertificateAsync(10, "12345678000199", "AB12", [1, 2, 3], "fixture-secret", default);
-            var expected = Path.Combine(directory, "tenants", "10", "titulares", "12345678000199", "certificados", "AB12");
+            var expected = Path.Combine(directory, "persistent", "fiscal", "certificados", "10", "titulares", "12345678000199", "AB12");
             Assert.AreEqual(Path.Combine(expected, "certificado.pfx"), result.CertificatePath);
             CollectionAssert.AreEqual(new byte[] { 1, 2, 3 }, await File.ReadAllBytesAsync(result.CertificatePath));
             Assert.AreEqual("fixture-secret", await File.ReadAllTextAsync(result.PasswordPath));
@@ -51,6 +51,29 @@ public class PrivateConfigurationTests
         {
             Environment.SetEnvironmentVariable("YESHUA_FISCAL_PRIVATE_ROOT", previous);
             if (Path.GetFullPath(directory).StartsWith(temporary + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
+                && Directory.Exists(directory))
+                Directory.Delete(directory, true);
+        }
+    }
+
+    [TestMethod]
+    public void EmissionPlanUsesVolatileStorage()
+    {
+        var temporary = Path.Combine(Path.GetTempPath(), "Yeshua.PrivateConfiguration.Tests");
+        var directory = Path.Combine(temporary, Guid.NewGuid().ToString("N"));
+        var previous = Environment.GetEnvironmentVariable("YESHUA_FISCAL_STORAGE_ROOT");
+        try
+        {
+            Environment.SetEnvironmentVariable("YESHUA_FISCAL_STORAGE_ROOT", directory);
+            var result = FiscalPayloadStore.SaveEmissionPlan("fixture-carga", "{\"fixture\":true}");
+            var expected = Path.Combine(directory, "volatile", "fiscal", "planos-emissao") + Path.DirectorySeparatorChar;
+            Assert.IsTrue(result.Path.StartsWith(expected, StringComparison.Ordinal));
+            Assert.AreEqual("{\"fixture\":true}", FiscalPayloadStore.Read(result.Path, result.Sha256));
+        }
+        finally
+        {
+            Environment.SetEnvironmentVariable("YESHUA_FISCAL_STORAGE_ROOT", previous);
+            if (Path.GetFullPath(directory).StartsWith(Path.GetFullPath(temporary) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)
                 && Directory.Exists(directory))
                 Directory.Delete(directory, true);
         }

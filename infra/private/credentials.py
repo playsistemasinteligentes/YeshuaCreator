@@ -3,6 +3,7 @@
 import argparse
 import base64
 import copy
+from contextlib import contextmanager, ExitStack
 import json
 import os
 from pathlib import Path
@@ -130,6 +131,43 @@ def required(value, name):
     return value
 
 
+def sql_logins(document):
+    shared = document.get("Shared", {})
+    server = shared.get("SqlServer", {}) if isinstance(shared, dict) else None
+    if not isinstance(server, dict):
+        raise ConfigurationError("Shared.SqlServer deve ser um objeto.")
+    config = server.get("Logins", {})
+    if not isinstance(config, dict):
+        raise ConfigurationError("Shared.SqlServer.Logins deve ser um objeto.")
+    roles = {"db_owner", "db_datareader", "db_datawriter", "db_ddladmin", "db_backupoperator"}
+    seen = set()
+    for name, entry in config.items():
+        if (not isinstance(name, str) or not name or len(name) > 128 or any(ord(c) < 32 for c in name)
+                or name.casefold() in {"sa", "dbo", "guest", "sys", "information_schema", "public"}
+                or name.casefold() in seen):
+            raise ConfigurationError("Nome de login SQL invalido, reservado ou duplicado.")
+        seen.add(name.casefold())
+        if not isinstance(entry, dict) or set(entry) - {"Password", "CreateDatabase", "Databases"}:
+            raise ConfigurationError("Login SQL aceita somente Password, CreateDatabase e Databases.")
+        required(get(entry, "Password"), "Shared.SqlServer.Logins.Password")
+        if type(entry.get("CreateDatabase", False)) is not bool:
+            raise ConfigurationError("CreateDatabase deve ser booleano.")
+        databases = entry.get("Databases", {})
+        if not isinstance(databases, dict):
+            raise ConfigurationError("Databases deve mapear nomes de bancos para listas de roles.")
+        seen_databases = set()
+        for database, selected in databases.items():
+            if (not isinstance(database, str) or not database or len(database) > 128
+                    or any(ord(c) < 32 for c in database) or database.casefold() in {"master", "model", "msdb", "tempdb"}
+                    or database.casefold() in seen_databases):
+                raise ConfigurationError("Banco de usuario invalido ou duplicado no provisionamento SQL.")
+            seen_databases.add(database.casefold())
+            if (not isinstance(selected, list) or any(not isinstance(role, str) or role not in roles for role in selected)
+                    or len(set(selected)) != len(selected)):
+                raise ConfigurationError("Roles SQL invalidas ou duplicadas; declarar somente roles de banco permitidas.")
+    return config
+
+
 def exports(document, root, target, include_shared=False):
     if type(document.get("SchemaVersion")) is not int or document["SchemaVersion"] != 1:
         raise ConfigurationError("SchemaVersion deve ser 1.")
@@ -137,6 +175,8 @@ def exports(document, root, target, include_shared=False):
         raise ConfigurationError("Destino de configuracao desconhecido.")
     selected = set(APPS.values()) if target == "all" else {APPS[target]} if target in APPS else set()
     shared = target in ("all", "shared", "gateway") or include_shared
+    if shared:
+        sql_logins(document)
     result = {
         "YESHUA_SQL_SA_PASSWORD": get(document, "Shared", "SqlServer", "AdminPassword"),
         "YESHUA_RABBITMQ_USERNAME": get(document, "Shared", "RabbitMq", "UserName"),
@@ -393,6 +433,65 @@ def from_development_source(template):
     return document
 
 
+def validate_initial_configuration(path):
+    if path.resolve().is_relative_to(Path(__file__).resolve().parents[2]):
+        raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+    document = read_json(path)
+    environment(document, path.parent, "all")
+    prepare_application_directories(path.parent)
+
+
+@contextmanager
+def configuration_terminal():
+    try:
+        # stdin can contain the setup script itself (curl | bash).
+        with open("/dev/tty", "r", encoding="utf-8") as reader, \
+                open("/dev/tty", "w", encoding="utf-8", buffering=1) as writer:
+            if not reader.isatty() or not writer.isatty():
+                raise ConfigurationError("Preparacao das credenciais exige terminal interativo privado.")
+            yield reader, writer
+    except OSError:
+        raise ConfigurationError("Sem terminal interativo privado. Prepare o arquivo e execute o mesmo setup novamente.") from None
+    except KeyboardInterrupt:
+        raise ConfigurationError("Preparacao das credenciais cancelada; nenhum servico foi iniciado nesta etapa.") from None
+
+
+def wait_for_configuration(path):
+    if path.resolve().is_relative_to(Path(__file__).resolve().parents[2]):
+        raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+    with ExitStack() as stack:
+        terminal = None
+        while True:
+            try:
+                if not path.exists() and not path.is_symlink():
+                    template = json.loads(Path(__file__).with_name("credentials.example.json").read_text(encoding="utf-8"))
+                    write_new_json(path, template)
+                validate_initial_configuration(path)
+                print("Configuracao privada pronta. Nenhuma credencial ou cofre existente foi substituido.")
+                return
+            except (ConfigurationError, OSError, ValueError, subprocess.SubprocessError) as error:
+                message = str(error) if isinstance(error, ConfigurationError) else "Nao foi possivel preparar a configuracao privada; conteudo omitido."
+            if terminal is None:
+                terminal = stack.enter_context(configuration_terminal())
+            reader, writer = terminal
+            writer.write("\n==== Arquivo de credenciais antes da instalacao ====\n")
+            writer.write(message + "\n")
+            writer.write("Destino no servidor: " + str(path) + "\n")
+            writer.write("Em outra sessao SSH/SFTP, reponha o arquivo preservado ou complete o exemplo nesse destino.\n")
+            writer.write("Pasta administrativa 0700, arquivo 0600, ambos do usuario que executa o setup.\n")
+            writer.write("Reponha tambem os diretorios privados explicitamente configurados, se houver.\n")
+            writer.write("Nao cole JSON, senhas ou chaves neste terminal. Nenhum servico foi iniciado nesta etapa.\n")
+            while True:
+                writer.write("Digite PRONTO para validar novamente ou CANCELAR para sair: ")
+                writer.flush()
+                answer = reader.readline(128)
+                if not answer or answer.strip() == "CANCELAR" or len(answer) == 128:
+                    raise ConfigurationError("Preparacao das credenciais cancelada; nenhum servico foi iniciado nesta etapa.")
+                if answer.strip() == "PRONTO":
+                    break
+                writer.write("Confirmacao nao reconhecida; nao informe segredos aqui.\n")
+
+
 def main():
     parser = argparse.ArgumentParser(description="Configuracao privada Yeshua; validate/init nao imprimem valores.")
     parser.add_argument("action", choices=["validate", "export", "init"])
@@ -402,18 +501,21 @@ def main():
     parser.add_argument("--from-running-containers", action="store_true")
     parser.add_argument("--from-development-source", action="store_true")
     parser.add_argument("--test-profile", choices=["Smoke", "Seed"])
+    parser.add_argument("--wait", action="store_true", help="init: aguarda preparo do arquivo em terminal privado, sem ler segredos do stdin.")
     args = parser.parse_args()
     try:
+        if args.wait and (args.action != "init" or args.from_running_containers or args.from_development_source
+                          or args.test_profile or args.target != "all" or args.include_shared):
+            raise ConfigurationError("--wait e exclusivo de init para todos os aplicativos, sem importacao.")
         path = Path(os.path.abspath(args.file))
         if args.action == "init":
+            if args.wait:
+                wait_for_configuration(path)
+                return 0
             if path.exists() or path.is_symlink():
                 if args.from_running_containers or args.from_development_source:
                     raise ConfigurationError("Arquivo ja existe; importacao nao pode sobrescreve-lo.")
-                if path.resolve().is_relative_to(Path(__file__).resolve().parents[2]):
-                    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
-                document = read_json(path)
-                environment(document, path.parent, "all")
-                prepare_application_directories(path.parent)
+                validate_initial_configuration(path)
                 print("Configuracao existente validada e reutilizada. Nenhuma credencial ou cofre foi substituido.")
                 return 0
             template = json.loads(Path(__file__).with_name("credentials.example.json").read_text(encoding="utf-8"))

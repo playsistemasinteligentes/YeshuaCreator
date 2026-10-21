@@ -115,7 +115,7 @@ services:
       - ./telemetry/loki-config.yaml:/otel-lgtm/loki-config.yaml:ro
       - ./telemetry/tempo-config.yaml:/otel-lgtm/tempo-config.yaml:ro
       - ./telemetry/prometheus.yaml:/otel-lgtm/prometheus.yaml:ro
-      - /root/YeshuaDB/persistent/telemetry:/data
+      - /root/YeshuaStorage/volatile/infra/telemetry:/data
     logging:
       driver: json-file
       options:

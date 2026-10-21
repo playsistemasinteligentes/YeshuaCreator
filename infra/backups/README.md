@@ -5,12 +5,17 @@ somente de leitura; o operador backup.py possui acoes explicitas para captura,
 repositorio e recuperacao. O destino externo permanece pendente por decisao
 do usuario; isso nao bloqueia a operacao local descrita abaixo.
 
+Instrucao atual: continuar implementacao/testes locais. A limpeza/recriacao da
+VPS foi adiada; os comandos deste documento nao foram executados nesta etapa.
+
 ## Rotina Online Local
 
 Destino inicial aprovado: /root/YeshuaBackup/repository, privado e criptografado
 pelo Restic. Shared.Backup.Repository vazio seleciona somente esse local;
 Password continua no mesmo credentials.json protegido. configure-local gera
 somente a senha de backup ausente, sem trocar qualquer chave existente.
+Se um repositorio local ja existir sem a senha configurada, configure-local
+recusa a operacao e exige a senha original; nao gera uma substituta inutilizavel.
 
 | Rotina | Janela America/Sao_Paulo | Metodo |
 | --- | --- | --- |
@@ -53,6 +58,10 @@ uma interrupcao deve ter seu recibo recuperado antes do proximo backup. Lacuna
 de LSN ou troca de fork bloqueia afirmacao de cadeia recuperavel.
 
 A rotina de arquivos cobre Storage/persistent, privado, cofre Memorias e HTTPS.
+DECISAO POSTERIOR: HTTPS (/etc/letsencrypt) e VOLATIL, recriado pelo setup-cert.sh
+no servidor novo. A rotina acima ainda o inclui; retirada das novas capturas e
+ajuste da cobertura/restauracao estao pendentes no mapa, sem apagar snapshots
+anteriores ou alterar certificados/Nginx agora.
 Fontes, historico Git, copias do toolkit, builds, modelos baixaveis e imagens
 Docker sao recriados, nao copiados. source.json registra somente revisao e
 presenca de alteracoes locais; nao preserva essas alteracoes. Commit/push do
@@ -74,6 +83,11 @@ repetir o setup preserva senha/historico e nao repete baselines aprovados. O
 setup pertence a infraestrutura, nao a Engine. Nao executar o setup geral no
 meio de um restore: ele tambem executa deploy/migrations. Usar RECOVERY.md.
 As unidades desta instalacao exigem os caminhos padrao do app e do JSON privado.
+Recibos novos de arquivos usam persistent-roots-v3 com identidade da origem e cobertura
+de recuperacao. O instalador refaz arquivos quando a selecao/metadata e antiga,
+seguido da leitura integral; nunca reaproveita check-data anterior a uma nova
+copia SQL/arquivos para habilitar as agendas. As baselines SQL validas continuam
+reutilizadas. Isso nao altera a agenda nem adiciona limpeza ao deploy.
 
 Novos bancos de usuario sao descobertos sem lista por app e recebem full na
 proxima rodada SQL, inclusive quando ainda nao existe base para logs. Depois
@@ -81,14 +95,86 @@ seguem o recovery model existente, sem troca automatica. Containers Yeshua
 sao reconhecidos pelo projeto playsis-* e arquivos Compose em infra do proprio
 repositorio, nao por lista dos seis apps atuais. Subdiretorios sob Storage/persistent e
 privado herdam a proxima copia. Montagens fora das areas conhecidas bloqueiam
-a copia com erro de classificacao; volumes quentes aparecem na cobertura como
-pendentes de captura coordenada. Nenhum diretorio aleatorio e assumido protegido.
+a copia com erro de classificacao. Os volumes nativos do Shared de RabbitMQ,
+Redis e agente sao VOLATEIS em ambas as capturas; outros volumes desconhecidos
+bloqueiam a captura e devem usar uma raiz StorageLocation classificada. Nao sao
+adotados implicitamente como persistentes. Nenhum diretorio aleatorio e assumido protegido.
 
 Esta reforma foi testada localmente; nao confundir com a versao instalada na VPS.
 Arquivos antigos em persistent continuam incluidos ate reclassificacao explicita:
 nao ha exclusao retroativa nem mudanca automatica de caminhos SQL antigos.
-O cofre YouTube nao foi movido. Docs/DocsInput/DocsOutput e volumes de infra
-continuam pendentes da revisao, sem classificacao inferida nesta reforma.
+O cofre YouTube nao foi movido. A classificacao foi ENCERRADA pelo usuario em
+2026-10-21. Declaracoes DocsInput/DocsOutput/configuracoes Docs sem consumidores
+foram retiradas sem apagar diretorios existentes. O Compose passa telemetria/Grafana
+para /root/YeshuaStorage/volatile/infra/telemetry, sem alterar coleta/retencao.
+Mount legado de telemetria bloqueia captura ate a virada intencional, sem filtro
+dentro de persistente. Nada disso foi aplicado a VPS nesta continuacao.
+
+Novas capturas online/coordenadas nao incluem /etc/letsencrypt. Recibos v2 nao
+habilitam as agendas atuais: refazer arquivos e leitura integral, preservando
+baselines SQL validas. Snapshots v2 continuam legiveis/restauraveis explicitamente,
+inclusive HTTPS quando capturado; nao apagar origens ou backups anteriores.
+
+### Guarda Da Senha De Recuperacao
+
+O setup.sh resolve a guarda logo apos validar a configuracao privada, antes da
+atualizacao geral, Docker ou builds. Usa as mesmas acoes configure-local e
+recovery-key do operador; caso faltem, instala somente Restic/util-linux nessa
+fase. O install.py final reutiliza a confirmacao, sem nova pergunta quando
+senha/repositorio/maquina forem os mesmos. Nao ha segundo modo de instalacao.
+
+Antes dessa guarda, o setup usa init --wait para aguardar o credentials.json
+ausente/invalido: preparar ou repor em outra sessao no caminho do servidor e
+confirmar PRONTO no terminal. Nao digitar segredos no prompt. Credenciais validas
+ja restauradas sao reutilizadas sem essa pergunta. Sem terminal para concluir
+o preparo, o setup para antes de instalar/subir servicos da aplicacao. A guarda
+da senha segue estes passos:
+
+1. Acompanhar em terminal privado interativo, sem gravacao/compartilhamento.
+2. Digitar EXIBIR para autorizar a visualizacao da senha existente.
+3. Guardar a senha e a identificacao do repositorio em local protegido fora da VPS
+   e fora do proprio backup cifrado. Nao enviar ao chat, Git ou logs.
+4. Digitar GUARDEI para confirmar a responsabilidade pela guarda.
+
+A senha e escrita diretamente em /dev/tty, nunca no stdout/stderr capturado,
+JSON de retorno ou recibos. Sem terminal privado ou confirmacao, o setup
+interrompe antes das atualizacoes/deploy; servicos e agendas preexistentes nao
+sao desligados. Sessoes de terminal podem ser gravadas externamente: o operador
+deve escolher um terminal privado, pois o script nao consegue detectar essa gravacao.
+
+state/recovery-key-custody.json guarda somente identificacao por hash, maquina,
+data e declaracao de guarda. Nao comprova a existencia/leitura da copia externa
+nem substitui o ensaio de recuperacao. Reinstalacao na mesma maquina com a mesma
+senha/repositorio reutiliza a confirmacao; outra maquina ou senha exige nova
+confirmacao. Nao ha rotacao automatica. Rotinas agendadas nao exibem segredos.
+
+Para visualizar de novo, somente de forma explicita no terminal privado:
+
+```bash
+sudo env YESHUA_APP_DIR=/root/YeshuaCreator \
+  python3 -B /opt/yeshua-backup/current/infra/backups/backup.py recovery-key --show-recovery-key
+```
+
+Esse comando nao gera senha nem exporta as demais credenciais. A copia dos dados
+ainda e local: guardar a senha fora da VPS nao protege o repositorio contra perda
+do disco. O destino externo continua como pendencia independente.
+
+### Outras Chaves Conferidas No Setup
+
+Nos caminhos de provisionamento revisados, a senha do backup e a unica chave
+de recuperacao que o setup gera e precisa entregar para guarda independente.
+Nao houve leitura de valores reais nem auditoria de chaves do sistema operacional.
+
+| Material | Momento e tratamento |
+| --- | --- |
+| SQL, RabbitMQ, JWT, autenticacao entre modulos e assinatura de upload | Entradas do credentials.json, preenchidas/restauradas antes da validacao inicial; nao gerar ou mostrar novamente |
+| Chaves dos provedores de IA | Integracoes opcionais no providers.json privado; nao geradas pelo setup, entram no backup privado |
+| Chave do cofre YouTube | Pode ser criada ao salvar a configuracao no Memorias, nao pelo setup; permanece com o cofre persistente e nao e exposta nesta etapa. Discussao sobre armazenamento continua adiada |
+| Certificados fiscais e senhas | Fornecidos ao aplicativo; persistentes na area privada, nao gerados no setup |
+| HTTPS/Certbot | Reemitido pelo setup-cert.sh separado, classificado VOLATIL; nao exige entrega manual de chave para backup |
+
+Quando o destino externo for escolhido, conferir tambem o acesso necessario a ele
+no kit de recuperacao. Essa credencial ainda nao e criada por esta instalacao.
 
 ```bash
 sudo python3 -B infra/backups/install.py
@@ -198,6 +284,7 @@ Compose de producao, Nginx, migrations, DNS ou o procedimento normal de deploy.
 | start-sql | Sobe somente SQL, porta vinculada a loopback |
 | restore-sql | Restaura bancos de usuario vazios com MOVE e CHECKDB |
 | restore-sql-chain | Aplica cadeia online verificada somente em SQL novo/vazio confirmado |
+| restore-files | Planeja reposicao integral dos arquivos; --apply exige maquina nova e destinos vazios |
 | create-services | Cria demais containers parados e recupera uploads internos |
 | resume-source | Retoma IDs originais apos interrupcao abrupta da captura |
 | retention | Simulacao por padrao; nunca executa prune |
@@ -209,10 +296,24 @@ de escrita externas, encerrar debug remoto e impedir tarefas externas durante
 a janela. As sessoes SQL existentes tambem sao verificadas. Isso nao controla
 efeitos ja enviados a provedores como SEFAZ/YouTube.
 
-Todos os bancos presentes, exceto tempdb, entram na captura completa, inclusive
-bancos adicionais e master/model/msdb. Nenhum e apagado ou renomeado. Restore
-automatico cobre os bancos de usuario; os backups de sistema exigem procedimento
-DBA controlado, documentado no roteiro, antes do aceite de recuperacao total.
+DECISAO APLICADA LOCALMENTE: master/model/msdb e tempdb ficam fora de novas
+capturas online/coordenadas, inclusive na chamada direta das primitivas SQL.
+Bancos de usuario sao selecionados automaticamente, sem lista fechada de Studios.
+Midias/recibos antigos de sistema nao sao copiados nos novos snapshots SQL; ficam
+intactos no disco/repositorio anterior. Nenhum
+banco ou backup anterior sera apagado por mudar a selecao futura.
+
+Estudo foi confirmado pelo usuario como PERSISTENTE: manter banco inteiro
+no backup SQL nativo comum e na recuperacao, mesmo sem Studio identificado.
+A selecao o inclui e tambem recebe novos bancos de usuario, sem limitar a
+descoberta aos nomes publicados em deploy.env.
+
+Instalacao/recriacao deve provisionar os acessos SQL necessarios pela
+infraestrutura versionada, usando o arquivo privado e conferindo os usuarios
+e permissoes dos bancos restaurados. Nao depender de restauracao de bancos de
+sistema. O setup integra infra/private/sql_access.py, com contas adicionais
+declaradas em Shared.SqlServer.Logins e sem rotacao automatica. Ver o roteiro
+em infra/private/README.md; uso real e vinculos restaurados ainda precisam de prova.
 
 Na captura coordenada, o padrao COPY_ONLY nao altera a base diferencial nem
 implementa cadeia de logs. Esse conjunto recupera o ponto da captura, nao um
@@ -221,8 +322,8 @@ normal, diferencial e logs nativos. Nao misturar os dois fulls nem prometer
 recuperacao por horario antes do ensaio. Os logs nativos ja sao capturados na
 fase local aprovada, sem mudar recovery model nem executar SHRINK.
 
-Storage/persistent entra inteiro; SQL cru fica sempre fora. As demais areas
-permanecem na selecao ate revisao com o usuario. Exportacao de imagens Docker
+Storage/persistent e raizes privadas entram inteiros; SQL cru e volateis ficam
+sempre fora. Exportacao de imagens Docker
 esta desabilitada para novas capturas. Software deve ser reconstruido do Git.
 O preparo automatico baseado em imagens exatas e fontes arquivados atende
 somente conjuntos antigos; veja a atualizacao no inicio de RECOVERY.md.

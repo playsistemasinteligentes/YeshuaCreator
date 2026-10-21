@@ -14,6 +14,9 @@
   <ItemGroup>
     <Compile Include="../../../src/CQRS/Application/Yeshua.Clinica.CQRS.Application.Command/Receivers/Custon/UseCases/FileUpload/Infra/UploadTokenHelper.cs" Link="UploadTokenHelper.cs" />
     <Compile Include="../../../src/CQRS/Application/Yeshua.Fiscal.CQRS.Application.Command/Receivers/Custon/Saga/FiscalPayloadStore.cs" Link="FiscalPayloadStore.cs" />
+    <Compile Include="../../../src/CQRS/Application/Yeshua.CQRS.Application.Command/Interfaces/Patterns/FileStore/StorageLocation.cs" Link="StorageLocation.cs" />
+    <Compile Include="../../../src/CQRS/Application/Yeshua.CQRS.Application.Command/Interfaces/Patterns/FileStore/StoragePath.cs" Link="StoragePath.cs" />
+    <Compile Include="../../../src/CQRS/Application/Yeshua.CQRS.Application.Command/Interfaces/Patterns/FileStore/StoragePathBuilder.cs" Link="StoragePathBuilder.cs" />
     <Compile Include="../../../src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/ConcretInterfaces/Queue/RabbitMQ/RabbitMqOptions.cs" Link="RabbitMqOptions.cs" />
     <Compile Include="../../../src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/Patterns/JWT/JwtSettings.cs" Link="JwtSettings.cs" />
   </ItemGroup>

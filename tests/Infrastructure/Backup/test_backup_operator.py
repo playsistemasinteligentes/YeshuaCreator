@@ -249,7 +249,7 @@ class ConfigurationTests(unittest.TestCase):
     def test_download_never_accepts_latest_or_short_id(self):
         for value in ("latest", "abcd", "../anything"):
             with self.assertRaises(backup.Error):
-                backup.download({}, value, Path("unused"))
+                backup.download({}, value, Path("unused"), {})
 
     def test_retention_defaults_to_simulation_stable_group(self):
         policy = {"scope": "yeshua-production", "keep_daily": 7, "keep_weekly": 4, "keep_monthly": 3}
@@ -500,6 +500,64 @@ class ComposeRecoveryTests(unittest.TestCase):
 
 
 class CoverageTests(unittest.TestCase):
+    def policy(self):
+        return {"areas": [{"id": "storage", "path": "/root/YeshuaStorage/persistent", "required": True}],
+                "staging": "/root/YeshuaBackup", "sql_data": "/root/YeshuaDB/persistent/sql"}
+
+    def test_approved_native_volumes_are_volatile_and_never_archived(self):
+        containers = [{"Name": "/" + name, "Config": {"Labels": {
+            "com.docker.compose.project": "playsis-shared", "com.docker.compose.service": name}},
+            "Mounts": [{"Type": "volume", "Name": "fixture-" + name,
+                        "Source": "/var/lib/docker/volumes/fixture-" + name + "/_data", "RW": True,
+                        "Destination": target} for target in backup.VOLATILE_VOLUME_TARGETS[name]]}
+            for name in ("rabbitmq", "redis", "operational-intelligence-agent")]
+        with patch.object(backup, "absolute", side_effect=Path):
+            areas = backup.mount_areas(containers, {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+        self.assertFalse(any("volume" in a for a in areas))
+        self.assertEqual(2, len(areas))
+
+    def test_new_volume_on_a_known_service_is_not_implicitly_volatile(self):
+        container = {"Name": "/redis", "Config": {"Labels": {
+            "com.docker.compose.project": "playsis-shared", "com.docker.compose.service": "redis"}},
+            "Mounts": [{"Type": "volume", "Name": "new-volume", "Source": "/var/lib/docker/volumes/new/_data",
+                        "Destination": "/new-important-area", "RW": True}]}
+        with patch.object(backup, "absolute", side_effect=Path), self.assertRaisesRegex(backup.Error, "unclassified_volume"):
+            backup.mount_areas([container], {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+
+    def test_new_unclassified_volume_is_rejected_not_implicitly_persistent(self):
+        container = {"Name": "/new-app", "Config": {"Labels": {
+            "com.docker.compose.project": "playsis-new", "com.docker.compose.service": "redis"}},
+            "Mounts": [{"Type": "volume", "Name": "fixture", "Source": "/var/lib/docker/volumes/fixture/_data", "RW": True}]}
+        with patch.object(backup, "absolute", side_effect=Path), self.assertRaisesRegex(backup.Error, "unclassified_volume"):
+            backup.mount_areas([container], {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+
+    def test_https_and_volatile_telemetry_are_not_capture_areas(self):
+        containers = [{"Name": "/service", "Mounts": [{"Type": "bind", "Source": source, "RW": True} for source in
+            ("/etc/letsencrypt", "/root/YeshuaStorage/volatile/infra/telemetry")]}]
+        with patch.object(backup, "absolute", side_effect=Path):
+            areas = backup.mount_areas(containers, {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+        self.assertEqual(2, len(areas))
+        self.assertFalse(any(a["path"] in ("/etc/letsencrypt", "/root/YeshuaStorage/volatile/infra/telemetry") for a in areas))
+
+    def test_legacy_telemetry_requires_intentional_redeploy_not_silent_exclusion(self):
+        containers = [{"Name": "/telemetry", "Mounts": [{"Type": "bind", "Source": "/root/YeshuaDB/persistent/telemetry", "RW": True}]}]
+        with patch.object(backup, "absolute", side_effect=Path), self.assertRaisesRegex(backup.Error, "legacy_telemetry_mount"):
+            backup.mount_areas(containers, {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+
+    def test_optional_memorias_override_uses_the_same_default_private_root(self):
+        path = Path("/root/YeshuaPrivate/production/credentials.json")
+        with patch.object(backup, "absolute", side_effect=Path):
+            areas = backup.mount_areas([], {}, path, self.policy())
+        self.assertEqual(2, len(areas))
+        self.assertIn(str(path.parent), [a["path"] for a in areas])
+
+    def test_private_override_cannot_reintroduce_volatile_or_https_into_backup(self):
+        for path in ("/root/YeshuaStorage/volatile/private", "/root/YeshuaStorage", "/etc/letsencrypt"):
+            document = {"Apps": {"Memorias": {"PrivateRoot": path}}}
+            with self.subTest(path=path), patch.object(backup, "absolute", side_effect=Path):
+                with self.assertRaisesRegex(backup.Error, "overlaps_volatile"):
+                    backup.mount_areas([], document, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+
     def test_new_app_under_repository_infra_does_not_need_backup_registration(self):
         container = {"Config": {"Labels": {"com.docker.compose.project": "playsis-new-app",
             "com.docker.compose.project.config_files": str(ROOT / "infra/NewApp/DockerCompose/docker-compose.yml")}}}

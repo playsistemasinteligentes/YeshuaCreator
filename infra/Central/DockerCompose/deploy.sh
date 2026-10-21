@@ -30,6 +30,7 @@ docker compose build central-migration
 docker compose build central-api central-worker central-front
 echo "Executando migration Central no banco ${YESHUA_DB_CENTRAL:-YESHUA_CENTRAL}..."
 docker compose run --rm central-migration
+yeshua_setup_sql_access
 docker compose up -d --remove-orphans --scale central-front=2 \
   central-api \
   central-front \

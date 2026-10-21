@@ -21,8 +21,12 @@ externa `yeshua-net`. Nenhum deploy de aplicativo executa `docker compose down`.
 
 Antes de setup/deploy, seguir [o roteiro de configuracao privada](private/README.md).
 Deploy exige `/root/YeshuaPrivate/production/credentials.json` valido e restrito.
-Setup cria um exemplo vazio se o arquivo nao existir e para para preenchimento,
-sem gerar senhas/chaves nem subir apps. Na VPS atual, a captura com os containers
+Setup cria um exemplo vazio se o arquivo nao existir e aguarda no inicio.
+Em outra sessao SSH/SFTP, completar ou repor o arquivo no destino do servidor;
+PRONTO valida novamente e segue na mesma execucao. Nao colar senhas/JSON no
+prompt. Sem terminal interativo, exige arquivo ja valido; caso contrario, falha
+antes de subir servicos.
+Nao gera senhas/chaves de ambiente. Na VPS atual, a captura com os containers
 antigos ativos continua sendo uma operacao unica antes desta transicao.
 
 ### 1. Setup
@@ -40,6 +44,20 @@ O mesmo setup atende servidor novo ou reconstruido: repor os arquivos privados
 preservados antes de executa-lo quando quiser reutiliza-los. Nao existe modo de
 restauracao nem restauracao automatica de bancos. Diretorios existentes nao
 recebem chown/chmod recursivo; somente os ausentes sao preparados.
+
+O setup tambem confere o administrador SQL e prepara contas adicionais declaradas
+em Shared.SqlServer.Logins, sem inferir permissoes nem trocar senhas. A mesma
+rotina vincula usuarios dos bancos restaurados apos as migrations e antes dos
+hosts; deploy cotidiano nao habilita essa etapa. Ver [acessos SQL](private/README.md#acessos-sql-na-instalacao-ou-reconstrucao).
+
+Logo apos validar a configuracao privada, antes da atualizacao geral/Docker/builds,
+o setup prepara o repositorio e resolve a guarda da senha em terminal privado.
+Se necessario instala primeiro somente Restic/util-linux. A primeira preparacao
+pede EXIBIR, mostra a senha somente nesse terminal e pede GUARDEI apos sua guarda
+protegida fora da VPS. Sem confirmacao, nao segue para atualizacoes/deploy.
+No final, o instalador reutiliza o recibo sem nova pergunta para a mesma senha/
+repositorio/maquina e completa provas/agendas. Nao usar terminal gravado/compartilhado.
+Detalhes e consulta explicita posterior em [Backup](backups/README.md#guarda-da-senha-de-recuperacao).
 
 ### 2. Certificado
 
@@ -81,15 +99,19 @@ repositorio uma vez e recarrega o nginx graciosamente ao final.
 
 ## Persistencia
 
-O planejamento de backups seletivos, checagens e restauracao esta em
+O contrato de persistencia, checagens e restauracao esta em
 [PLANO_BACKUP_RESTAURACAO_YESHUA.md](../docs/operational/PLANO_BACKUP_RESTAURACAO_YESHUA.md).
-E uma proposta; as rotinas ainda nao foram implantadas.
+As rotinas online foram instaladas na VPS na etapa anterior. A revisao atual de
+classificacao/setup ainda precisa do ensaio de instalacao e recuperacao em Linux.
+Existem somente PERSISTENTE e VOLATIL: bancos de usuario usam backup SQL nativo;
+Storage/persistent e raizes privadas entram inteiras, e volatile fica fora.
+Fontes/imagens/builds sao reconstruidos, nao copiados no backup de dados.
 
 O [mapa de dados, areas e politicas](../docs/operational/MAPA_DADOS_AREAS_E_BACKUP_YESHUA.md)
-classifica as origens atuais e propoe como novos recursos herdariam protecao
-pela area/banco escolhido, sem rotina de backup especifica por funcionalidade.
-A revisao 3 do plano organiza a implantacao por politica, area, adesao e prova;
-o inventario serve de mapa de cobertura, nao de lista de jobs por aplicativo.
+registra a classificacao encerrada na secao 0, que prevalece sobre o historico.
+Novas subpastas persistentes herdam a copia recursiva; novos bancos de usuario
+entram na descoberta SQL. Binds/volumes desconhecidos bloqueiam o backup ate
+classificacao, em vez de serem incluidos ou ignorados por suposicao.
 O padrao privado usa diretorios e acessos restritos, sem cifra local adicional
 obrigatoria; backup cifrado e protecoes existentes do Memorias sao preservados.
 
@@ -105,8 +127,11 @@ Configuracao do ambiente e diferente de integracao externa. Memorias/YouTube
 nao e excecao: Client ID/Secret, chave de protecao e tokens pertencem ao aplicativo.
 O JSON de ambiente usa secoes Shared/Apps e a raiz privada possui subdiretorios
 por app/tenant/titular/conexao. Preservar os cofres existentes e suas chaves.
-Novos certificados fiscais usam a area privada. Migracao do acervo antigo foi
-retirada do escopo pelo usuario; a preservacao exigida nesta transicao e YouTube.
+Novos certificados fiscais usam a area privada. O usuario autorizou descartar o
+acervo atual, inclusive YouTube, na futura instalacao limpa. Isso nao altera a
+classificacao persistente dos novos cofres nem autoriza limpeza no deploy comum.
+O [ciclo de instalacao/teste/backup/restauracao](backups/RECOVERY.md#ciclo-atual-instalacao-limpa-e-ensaio)
+separa essa instalacao da prova posterior de recuperacao. Nao executar agora na VPS.
 
 - SQL Server: `/root/YeshuaDB/persistent/sql`.
 - Storage: `/root/YeshuaStorage`.

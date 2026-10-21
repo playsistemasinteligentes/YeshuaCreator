@@ -8,8 +8,12 @@ DEPLOY_ENV="/root/YeshuaCreator/infra/docker/deploy.env"
 source "$APP_DIR/infra/docker/load-deploy-env.sh" shared
 
 cd "$COMPOSE_DIR"
-mkdir -p /root/YeshuaDB/persistent/telemetry
+mkdir -p /root/YeshuaStorage/volatile/infra/telemetry
 if [[ "${YESHUA_BUILD_SHARED:-0}" == "1" ]]; then
   docker compose build operational-intelligence-api operational-intelligence-agent
+fi
+if [[ "${YESHUA_SETUP_SQL_ACCESS:-0}" == "1" ]]; then
+  docker compose up -d sqlserver redis rabbitmq
+  yeshua_setup_sql_access
 fi
 docker compose up -d sqlserver redis rabbitmq operational-intelligence-api yeshua-telemetry operational-intelligence-agent

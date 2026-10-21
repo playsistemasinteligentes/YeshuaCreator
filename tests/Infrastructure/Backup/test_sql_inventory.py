@@ -15,6 +15,22 @@ spec.loader.exec_module(inventory)
 
 
 class SqlInventoryTests(unittest.TestCase):
+    def test_user_database_selection_includes_estudo_and_future_apps_not_systems(self):
+        databases = [self.database(name=name, database_id=index) for index, name in enumerate(
+            ("master", "tempdb", "model", "msdb", "YESHUA_CENTRAL", "Estudo", "NewApp"), start=1)]
+        self.assertEqual(["YESHUA_CENTRAL", "Estudo", "NewApp"],
+                         [d["name"] for d in inventory.user_databases({"databases": databases})])
+
+    def test_system_backup_cannot_be_requested_through_either_primitive(self):
+        for name in ("master", "MODEL", "msdb", "tempdb"):
+            for kind in ("full", "differential", "logs"):
+                with self.subTest(name=name, kind=kind), patch.object(inventory, "execute") as execute:
+                    with self.assertRaises(inventory.InventoryError):
+                        inventory.backup_native("fixture", "client", name, "/backup/file", kind)
+                    with self.assertRaises(inventory.InventoryError):
+                        inventory.backup_database("fixture", "client", name, "/backup/file")
+                    execute.assert_not_called()
+
     def database(self, **values):
         result = {"name": "YESHUA_CENTRAL", "database_id": 5, "state_desc": "ONLINE",
                   "recovery_model_desc": "SIMPLE", "is_encrypted": False}
@@ -55,10 +71,10 @@ class SqlInventoryTests(unittest.TestCase):
         result = inventory.assess(sql, {"CENTRAL": "YESHUA_CENTRAL"})
         self.assertEqual({"sql_encryption_key_recovery_required", "backup_or_restore_already_active"}, {item["code"] for item in result["findings"]})
 
-    def test_additional_databases_are_not_deleted_or_silently_adopted(self):
+    def test_additional_user_databases_are_included_without_a_studio_list(self):
         sql = {"databases": [self.database(), self.database(name="LEGACY", database_id=6), self.database(name="master", database_id=1)]}
         result = inventory.assess(sql, {"CENTRAL": "YESHUA_CENTRAL"})
-        self.assertEqual(["LEGACY"], result["additional_databases_to_classify"])
+        self.assertEqual(["LEGACY"], result["additional_databases_included"])
 
     def test_password_only_in_child_environment(self):
         captured = []

@@ -40,6 +40,7 @@ docker compose build "${BUILD_OPTIONS[@]}" fiscal-migration
 docker compose build "${BUILD_OPTIONS[@]}" fiscal-api fiscal-worker
 echo "Executando migration Fiscal no banco ${YESHUA_DB_FISCAL:-YESHUA_FISCAL}..."
 docker compose run --rm fiscal-migration
+yeshua_setup_sql_access
 docker compose up -d --remove-orphans \
   fiscal-api \
   fiscal-worker

@@ -161,9 +161,12 @@ O comando publico de download em infra/README.md chama esse mesmo script quando
 o repositorio ainda nao esta disponivel. O setup obtem o repositorio e, se
 necessario, instala somente Git/Python/curl para ler a configuracao primeiro.
 
-- JSON ausente: cria o exemplo vazio com permissoes restritas e interrompe antes
-  de atualizar o sistema completo, instalar/iniciar Docker ou publicar apps.
-  Completar os campos e repetir exatamente o mesmo setup. Nao gera chaves.
+- JSON ausente: cria o exemplo vazio com permissoes restritas e aguarda seu
+  preenchimento ou reposicao no inicio, antes da atualizacao geral/Docker/apps.
+  Em outra sessao SSH/SFTP, preparar o arquivo no destino mostrado no servidor;
+  nao e um caminho do computador local. Nao colar JSON, senhas ou chaves no prompt.
+  Digitar PRONTO confere novamente e continua na mesma execucao quando valido.
+  Nao gera chaves nem copia arquivos de outra maquina automaticamente.
 - JSON presente: valida e reutiliza sem reescrever, inclusive quando veio de uma
   copia restaurada. Diretorios ausentes de app sao criados; arquivos de cofre,
   chaves e dados presentes nao sao substituidos.
@@ -171,9 +174,20 @@ necessario, instala somente Git/Python/curl para ler a configuracao primeiro.
   chown/chmod recursivo. Se as permissoes restauradas estiverem erradas, revisar
   explicitamente antes de subir; nao aplicar uma correcao em massa.
 - JSON invalido, permissao indevida ou raiz YouTube explicitamente configurada
-  que nao existe: interrompe antes de iniciar servicos da aplicacao.
+  que nao existe: permite corrigir/repor em outra sessao e conferir com PRONTO,
+  sem substituir valores nem corrigir permissoes automaticamente. CANCELAR,
+  fim da entrada ou Ctrl+C interrompem antes dos servicos da aplicacao.
 
-`python3 infra/private/credentials.py init` segue a mesma regra: cria um exemplo
+O setup usa `credentials.py init --wait`. Essa espera le somente confirmacoes
+em /dev/tty, nunca stdin (que pode conter o script de download). Sem terminal
+interativo, uma configuracao ja valida e reutilizada sem perguntas; se precisar
+de preparo, o setup falha no inicio e preserva o exemplo para concluir depois.
+O arquivo deve ter dono administrativo, pasta 0700 e arquivo 0600. O terminal
+deve ser privado e nao gravado/compartilhado. A guarda da senha do backup vem
+logo depois desta validacao, ainda antes das etapas demoradas; nao ha novas
+perguntas previstas no final para a mesma senha/repositorio/maquina.
+
+Sem --wait, `python3 infra/private/credentials.py init` continua nao interativo: cria um exemplo
 se ausente; se presente e valido para todos os apps, reutiliza e prepara somente
 pastas ausentes. Importacoes explicitas continuam recusando um arquivo existente.
 `YESHUA_DEPLOY_SECRETS_FILE` permite outro caminho absoluto fora do repositorio;
@@ -185,6 +199,60 @@ conexoes antigas depende dos mesmos IDs e ProcessingScope. Preservar somente a
 configuracao Google do aplicativo nao equivale a restaurar todas as contas.
 
 ## Dados Existentes E Integracoes
+
+### Acessos SQL Na Instalacao Ou Reconstrucao
+
+O SQL novo cria o administrador sa com Shared.SqlServer.AdminPassword pelo
+Compose existente. Contas adicionais, quando utilizadas nas conexoes, devem
+estar declaradas no mesmo arquivo privado; nao sao inferidas das connection
+strings, nem extraidas de master/msdb. Exemplo somente estrutural:
+
+```json
+"SqlServer": {
+  "AdminPassword": "<senha administrativa existente>",
+  "Logins": {
+    "usuario_aplicativo": {
+      "Password": "<a mesma senha usada nas conexoes do aplicativo>",
+      "CreateDatabase": false,
+      "Databases": {
+        "YESHUA_MEMORIAS": ["db_datareader", "db_datawriter"]
+      }
+    }
+  }
+}
+```
+
+Logins e opcional: {} preserva ambientes que usam somente sa. Essa secao e
+administrativa; nao e enviada aos containers. Roles aceitas: db_owner,
+db_datareader, db_datawriter, db_ddladmin e db_backupoperator. Declarar apenas
+os acessos realmente necessarios. CreateDatabase=true concede explicitamente
+CREATE ANY DATABASE para uma conta que precisa criar o catalogo pela migration;
+nao concede sysadmin. A configuracao e validada antes das etapas demoradas.
+
+O setup habilita internamente YESHUA_SETUP_SQL_ACCESS=1: prepara logins apos a
+subida do SQL, reaplica os vinculos/roles apos cada migration e antes de iniciar
+os consumidores, e exige todos os bancos declarados ao final. O helper e
+infra/private/sql_access.py e reutiliza o leitor privado e cliente SQL existentes.
+O deploy cotidiano nao habilita esse provisionamento nem muda permissoes.
+
+Repetir nao troca senhas: conta existente deve estar habilitada e corresponder
+a senha declarada; divergencia interrompe e exige reconciliacao explicita.
+Usuarios SQL orfaos com o mesmo nome sao vinculados ao login recriado. Outros
+tipos de principal bloqueiam a operacao. Nao ha remocao de acessos existentes,
+nem criacao de um segundo usuario para um login que ja e dono do banco como dbo,
+criacao de bancos por esse helper nem copia de jobs/logins do servidor antigo.
+Connection strings devem corresponder as declaracoes; nao ha validacao automatica
+dessa correspondencia nem descoberta de contas externas nao declaradas.
+
+Depois de restaurar SQL e os arquivos privados, conferir os acessos ANTES dos hosts:
+
+```bash
+sudo python3 -B infra/private/sql_access.py
+```
+
+Senhas/SQL com senha seguem somente no ambiente/entrada do processo filho,
+nunca em argumentos ou logs. Os testes locais simulam SQL; grants e remapeamento
+reais ainda exigem o ensaio no novo servidor, com os aplicativos isolados.
 
 - Memorias: `Apps.Memorias.PrivateRoot` preserva explicitamente o bind antigo,
   inclusive `/root/YeshuaMemoriasSecrets`. Nao mover `accounts`, `key.bin`,
@@ -344,3 +412,35 @@ nao substitui uma copia externa dos dados.
 O [roteiro de recuperacao](../backups/RECOVERY.md) separa preparacao, SQL,
 reconciliacao e liberacao dos servicos. Nenhuma credencial real foi colocada
 no repositorio. Backup local executado nao e prova de restore integral.
+
+### Copia Para A Instalacao Limpa
+
+Em 2026-10-21, credentials.json completo de producao foi copiado via SSH com
+conferencia SHA256 para %USERPROFILE%/.yeshua/private/production/<data-hora>/,
+com ACL Windows restrita. Nao substitui a copia limitada de development nem
+o kit de recovery e nao inclui o cofre YouTube ou dados SQL.
+
+No mesmo diretorio, credentials-new-server.json e uma segunda copia validada
+para a instalacao vazia aprovada: somente Apps.Memorias.PrivateRoot foi retirado,
+para nao exigir o cofre antigo que sera descartado. Senhas/chaves preservadas;
+o original nao foi alterado. Transferir o arquivo escolhido com o nome
+credentials.json no destino padrao quando o setup aguardar. Nao e sincronizacao
+automatica e nao cria outro modo de setup. Para recuperar o cofre antigo,
+utilizar a configuracao original E os arquivos/chaves correspondentes, nao essa
+copia limpa. Alterar credenciais de servicos existentes exige rotacao coordenada.
+
+### Verificacao Local Repetivel
+
+```bash
+python3 -B -m unittest discover -s tests/Infrastructure/PrivateConfig -p 'test_*.py'
+python3 -B -m unittest discover -s tests/Infrastructure/Backup -p 'test_*.py'
+bash tests/Infrastructure/PrivateConfig/private-config-loader.test.sh
+bash tests/Infrastructure/PrivateConfig/unified-setup.test.sh
+dotnet test tests/Infrastructure/Yeshua.PrivateConfiguration.Tests/Yeshua.PrivateConfiguration.Tests.csproj
+dotnet test tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/Yeshua.CQRS.Infrastructure.Shared.Tests.csproj
+```
+
+O teste de modelos Compose usa somente fixtures, sem daemon/rede/VPS.
+Usa docker-compose ou docker compose; YESHUA_TEST_COMPOSE pode apontar para
+um executavel standalone oficial. Sem CLI, esse teste e explicitamente ignorado.
+Nunca substituir a fixture pelas credenciais reais para imprimir config.

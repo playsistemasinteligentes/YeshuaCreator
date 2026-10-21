@@ -3,6 +3,9 @@
 Status: implementacao disponivel para ensaio. Recuperacao real ainda nao provada.
 Nenhum comando deste roteiro foi executado para parar a VPS publicada.
 
+INSTRUCAO ATUAL: limpeza e recriacao do servidor foram ADIADAS. Continuar apenas
+a implementacao/testes locais; nao executar este roteiro na VPS nesta fase.
+
 DECISAO POSTERIOR: o usuario autorizou descartar o estado atual do ambiente
 Yeshua, inclusive bancos e conexoes YouTube, para uma instalacao limpa. Nao e
 necessario migrar tokens/arquivos antigos nesta virada. A autorizacao e pontual:
@@ -11,19 +14,89 @@ acessos administrativos ou canais/videos publicados no Google. Reinstalar do
 zero NAO comprova restore; gerar e validar uma nova base de backup depois da
 reinstalacao, antes do futuro ensaio de recuperacao em outro servidor.
 
+## Ciclo Atual: Instalacao Limpa E Ensaio
+
+Fechamento local de 2026-10-21. O proximo ciclo tem dois objetivos distintos;
+nenhum deles autoriza apagar a VPS nesta etapa de preparacao.
+
+### 1. Antes De Reinstalar
+
+- Enviar ao Git as alteracoes verificadas e registrar a revisao. O setup obtem
+  main; codigo apenas local nao chegara ao servidor. Nao publicar segredos.
+- Conferir acesso administrativo/console do provedor e a copia privada local
+  do credentials.json. O arquivo nao cria usuario SSH nem configura o provedor.
+- Para descartar o cofre antigo do Memorias, retirar somente o override
+  Apps.Memorias.PrivateRoot de uma COPIA do JSON. Manter o original intacto.
+  O setup usa a raiz padrao apps/Memorias e o canal sera reconectado depois.
+  Nunca retirar o override quando a intencao for recuperar aquele cofre.
+- A copia original e a copia para servidor vazio estao fora do Git em
+  %USERPROFILE%/.yeshua/private/production/<data-hora>/, com acesso restrito.
+  credentials-new-server.json preserva senhas/chaves; nao e rotacao de segredos.
+  Conferir host/nome dos bancos/conexoes caso o endereco do servidor mude.
+- A copia de credenciais nao contem os dados SQL, o cofre YouTube ou o
+  repositorio Restic. A primeira instalacao limpa descarta esses dados antigos,
+  conforme a decisao do usuario; nao anunciar recuperacao deles.
+
+### 2. Instalar E Usar
+
+No servidor vazio, executar o setup documentado em ../README.md. Na espera
+inicial, transferir a copia escolhida como
+/root/YeshuaPrivate/production/credentials.json: pasta 0700, arquivo 0600,
+proprietario root. Confirmar PRONTO; depois guardar a senha do backup quando
+o terminal privado solicitar EXIBIR/GUARDEI. Nao colar segredos no chat/logs.
+O setup segue o mesmo caminho, sem modo paralelo de instalacao/restauracao.
+
+Conferir SQL/acessos, migrations, Central com duas replicas de front, APIs,
+Workers, renderer e Nginx HTTP. Testar login/entrada nos aplicativos e criar
+dados identificaveis de teste. HTTPS e recriado separadamente por setup-cert.sh;
+conferir firewall/DNS/renovacao antes de expor. Personalizacoes devem vir do Git.
+
+O setup conclui full/diferencial/logs/arquivos/leitura integral iniciais e habilita
+as seis agendas somente depois das provas exigidas. Conferir status,
+sql-restore-plan e ausencia de falhas mais novas. O primeiro backup pode conter
+apenas a base recem-criada: depois de usar, gerar novas capturas dos dados de
+teste. Um resultado completed nao comprova restauracao funcional.
+
+### 3. Provar Recuperacao Antes Do Segundo Descarte
+
+Levar o repositorio cifrado para FORA do servidor de origem, juntamente com os
+IDs completos dos snapshots escolhidos e a revisao do software. Guardar a senha
+separadamente, em local restrito. O provedor externo definitivo segue pendente;
+uma copia temporaria fora da VPS precisa ser completa, legivel e verificada.
+Nao copiar um repositorio em alteracao sem coordenar os jobs de backup.
+
+Antes de apagar a origem de um ensaio, comprovar dessa copia externa o acesso
+ao repositorio, a leitura dos dados e o download --verify dos snapshots exatos
+SQL e arquivos. Ter somente a senha, um recibo ou um caminho local NAO basta.
+Sem essa prova, nao ha segundo descarte. Outra VPS permite manter a origem ate
+o aceite; usar a mesma VPS exige assumir a perda da origem apos essa checagem.
+
+No destino, seguir a recuperacao de dados abaixo: kit fora dos destinos,
+download verificado, restore-files, SQL isolado na versao compativel e
+restore-sql-chain. Software volta do Git; acessos SQL voltam da declaracao
+privada. Nao executar o setup completo sobre o SQL restaurado sem revisar
+migrations e bloquear integracoes externas. O ensaio so termina apos conferir
+os dados identificaveis, login, uso dos aplicativos e uma nova rodada de backup.
+
 ## Atualizacao: Restaurar Dados E Reconstruir Software
 
 Esta secao prevalece sobre o roteiro historico de recuperacao rapida abaixo.
+DECISAO POSTERIOR: HTTPS/Certbot (/etc/letsencrypt) e VOLATIL; recriar pelo
+setup-cert.sh no servidor novo, com dominio acessivel para validacao e renovacao
+conferida. Novas capturas locais v3 ja excluem HTTPS; conjuntos anteriores podem
+inclui-lo e continuam legiveis. Nao excluir origem
+ou snapshots antigos, nem reemitir/parar Nginx nesta revisao de classificacao.
 Novas copias NAO incluem fontes, bundle Git, toolkit nem imagens Docker.
 source.json identifica a revisao; alteracoes locais nao commitadas nao sao
-recuperaveis por esse backup. O cofre YouTube/chaves existentes sao preservados.
+recuperaveis por esse backup. Cofres/chaves presentes nas raizes privadas entram
+na copia; isso nao exige migrar o acervo de testes na futura reinstalacao limpa.
 
 No servidor novo: obter o fonte no Git/revisao publicada; instalar dependencias;
 baixar e verificar os snapshots exatos SQL e arquivos em uma area de recuperacao;
 repor credentials.json/cofres com suas permissoes originais; reconstruir as imagens;
-subir SOMENTE SQL, isolado, na versao compativel; executar sql-restore-plan e
-restore-sql-chain conforme as guardas abaixo; repor integralmente os diretorios
-persistentes em destinos vazios; depois publicar APIs/Workers/front a partir do
+subir SOMENTE SQL, isolado, na versao compativel; executar restore-sql-chain
+conforme as guardas abaixo; repor integralmente os diretorios persistentes em
+destinos vazios com restore-files; depois publicar APIs/Workers/front a partir do
 Git, verificando migrations e mantendo saidas externas bloqueadas ate aceite.
 Repor trilhas e outros assets recriaveis pelo deploy, nao pelo backup de dados.
 
@@ -33,12 +106,79 @@ XML completo da SEFAZ ainda exige investigacao por servico e nao e garantia atua
 
 NAO executar setup.sh sobre SQL restaurado sem revisar a etapa de deploy/migrations.
 O preparo automatico de um restore integral a partir de copias somente de dados
-ainda depende de terminar a classificacao dos volumes e do ensaio no servidor novo.
+depende do ensaio no servidor novo; a classificacao foi encerrada em 2026-10-21.
 prepare-server (modelo congelado/imagens exatas) atende conjuntos antigos e recusa
 novos conjuntos data-only ANTES de alterar destinos. --include-images esta
 desabilitado para novas capturas. Nao misturar o procedimento antigo com este.
 As ferramentas SQL online e download --verify continuam utilizaveis; recuperacao
 100% do ambiente permanece nao comprovada. Nao apontar DNS antes do aceite.
+
+### Arquivos Persistentes: Plano E Aplicacao Assistida
+
+O proprio backup.py agora possui restore-files para snapshots online kind=files.
+Nao e outro instalador, nao altera rotas, nao executa migrations, nao inicia
+containers e nao restaura SQL. Sem --apply, valida e apresenta o plano sem
+criar destinos. --apply e uma operacao explicita somente no novo servidor.
+
+O kit do operador deve ficar FORA dos destinos a restaurar, por exemplo em
+/root/YeshuaRecovery/operator/credentials.json, com diretorio 0700/arquivo 0600.
+Ele usa SchemaVersion=1, Shared.Backup (senha/repositorio/acesso) e
+Apps.Memorias.PrivateRoot quando o ambiente capturado usava uma raiz fora do
+padrao privado. Sem override, vale a mesma raiz apps/Memorias do deploy. O segredo
+SQL nao e necessario para baixar/repor arquivos. Nao colocar esse kit em Git
+nem preencher /root/YeshuaPrivate/production antes da reposicao: um destino
+nao vazio e recusado. O repositorio local tambem precisa ter sido transportado
+ou o destino externo configurado; caminho nao equivale a transferencia.
+
+```bash
+# SOMENTE no futuro ensaio autorizado, em servidor NOVO.
+sudo python3 -B infra/backups/backup.py download \
+  --file /root/YeshuaRecovery/operator/credentials.json \
+  --snapshot ID_COMPLETO_64_CARACTERES_DO_SNAPSHOT_FILES \
+  --target /root/YeshuaRecovery/files-ensaio
+
+# Simulacao: nao grava nenhum dos destinos.
+sudo python3 -B infra/backups/backup.py restore-files \
+  --file /root/YeshuaRecovery/operator/credentials.json \
+  --download-root /root/YeshuaRecovery/files-ensaio \
+  --new-server-machine-id ID_EXATO_DO_NOVO_SERVIDOR
+
+# Aplicacao explicita, depois de conferir o plano.
+sudo python3 -B infra/backups/backup.py restore-files \
+  --file /root/YeshuaRecovery/operator/credentials.json \
+  --download-root /root/YeshuaRecovery/files-ensaio \
+  --new-server-machine-id ID_EXATO_DO_NOVO_SERVIDOR --apply
+```
+
+Guardas: download Restic --verify com ID exato; recibo ligado a esta maquina;
+identidade da origem diferente do destino; manifestos da selecao
+persistent-roots-v3; raizes esperadas e hashes do conteudo/permissoes conferidos
+apos download e apos copia. Inclui Storage/persistent, privado, cofre Memorias
+quando separado, sem HTTPS/telemetria/volumes volateis. Snapshots antigos v2
+continuam aceitos com HTTPS quando capturado. Raizes aninhadas sao repostas uma
+vez. Nunca selecionar volatile, fontes, imagens ou SQL cru por esse caminho.
+O layout privado padrao e /root/YeshuaPrivate/production; a raiz legada
+/root/YeshuaMemoriasSecrets tambem e reconhecida quando configurada. Layout
+diferente exige revisao explicita, nao um destino inferido de manifesto externo.
+
+Todas as pastas de destino devem estar ausentes/vazias antes da primeira copia;
+a maquina deve estar sem containers ativos, exceto o SQL de recuperacao, se
+necessario. Exigir reserva de disco em cada filesystem e lock do deploy durante
+a aplicacao. A copia preserva proprietarios, modos, atributos e links relativos
+internos (inclusive live/archive do HTTPS). Links absolutos/externos, dispositivos
+e outros arquivos especiais bloqueiam a operacao, sem exclusao silenciosa.
+
+O recibo de arquivos e emitido somente apos todas as copias verificadas. Uma
+falha pode deixar destinos PARCIALMENTE preenchidos; nada e apagado/desfeito
+automaticamente e uma repeticao nao sobrescreve esses dados. Revisar o destino
+antes de tentar novamente. O recibo nao certifica consistencia global nem uso
+real dos aplicativos: restore_proven permanece false ate o ensaio completo.
+
+Copias anteriores sem a nova identidade/metadata nao recebem um aceite de
+restore-files por suposicao. O conteudo baixado fica disponivel para procedimento
+assistido; nao ha remocao/migracao retroativa de snapshots. O instalador deve
+gerar nova captura de arquivos e depois nova leitura integral antes de habilitar
+as agendas com esta versao. Ele nao repete baselines SQL ja validos por isso.
 
 ## Procedimento Historico: Conjuntos Com Fontes E Imagens
 
@@ -84,6 +224,13 @@ efeitos externos. Nao confundir agendas online ativas com esse aceite global.
 2. Preencher Shared.Backup no credentials.json existente, fora do Git. Na fase
    local, configure-local prepara esse bloco sem trocar segredos existentes.
 3. Guardar senha do repositorio e acesso ao armazenamento fora da VPS tambem.
+   O setup pede EXIBIR no terminal privado e GUARDEI apos a guarda logo depois
+   da validacao privada inicial, antes de atualizar o sistema/publicar apps.
+   O install.py final reutiliza a confirmacao da mesma senha/repositorio/maquina,
+   sem nova pergunta. A senha nao sai nos logs ou recibos. Para nova consulta
+   explicita, ver recovery-key --show-recovery-key
+   no README. A declaracao do operador nao comprova uma copia externa legivel;
+   conferir sua utilizacao no ensaio sem depender da VPS original.
 4. Instalar Restic no host por fonte confiavel; conferir versao e executar plan.
 5. Inicializar explicitamente o repositorio vazio. Nao inicializar sobre um
    endereco que deveria conter backup anterior; investigar em caso de erro.
@@ -232,25 +379,36 @@ Nenhum worker, renderer, automacao ou endpoint publico e ligado nessa etapa.
 
 ## 6. Estado De Servidor SQL E Reconciliacao
 
-Os arquivos master/model/msdb.bak sao capturados, mas NAO sao restaurados por
-restore-sql: master exige inicializacao single-user e para o processo ao ser
-restaurado; msdb pode reintroduzir jobs. Isso deve ser uma etapa DBA assistida
-na maquina nova, com imagem/build identicos e apps parados. Nao usar o
-procedimento de banco comum para substituir bancos de sistema.
+DECISAO CONFIRMADA: master/model/msdb e tempdb nao fazem parte do backup.
+O usuario nao guarda dados necessarios nesses bancos e determina que os acessos
+sejam criados na recriacao do servidor. Capturas anteriores podem conter .bak
+de sistema; nao restaura-los por cima da instancia nova nem apaga-los agora.
+A selecao atual exclui os quatro em novas capturas; Estudo e novos bancos de
+usuario permanecem incluidos automaticamente.
 
-O caminho padrao deste ensaio e restaurar os bancos de usuario e repor o
-estado administrativo necessario de maneira assistida. NAO restaurar master
-por cima depois disso: ele traria registros e caminhos fisicos antigos, que
-podem divergir dos arquivos MOVE ja recuperados. Se a recuperacao integral dos
-bancos de sistema for realmente necessaria, planejar a sequencia DBA antes de
-restore-sql, com outro destino vazio e verificacao dos caminhos de cada banco.
+O caminho da instalacao/restauracao deve provisionar logins, usuarios e permissoes
+necessarios pela infraestrutura versionada, lendo credenciais do arquivo privado.
+Conferir o vinculo dos usuarios aos logins na nova instancia apos restaurar os
+bancos de aplicativos e antes de liberar seus hosts. Nao regenerar credenciais
+ou substituir usuarios existentes indiscriminadamente. O helper comum esta
+integrado ao setup e aos pontos apos migration/antes dos hosts somente durante
+setup. Contas adicionais exigem Shared.SqlServer.Logins explicito; somente sa
+nao exige declaracao nova. Conferir conexoes/declaracoes no arquivo privado.
 
-Conferir e repor somente o estado administrativo necessario: logins/SIDs e
-permissoes, jobs, agendas, configuracao e dependencias de criptografia. Os cinco
-jobs encontrados na origem estavam sem agenda e o SQL Agent estava parado;
-nao liga-los automaticamente nem presumir que eram rotinas de backup.
-Manter backups de sistema para recuperacao assistida/comparacao. Se houver
-estado necessario nao recuperado, o aceite de 100% permanece bloqueado.
+```bash
+# No servidor novo, apos SQL/privado restaurados e ANTES de ligar hosts.
+sudo python3 -B infra/private/sql_access.py
+```
+
+Conta existente com senha divergente/desabilitada ou principal nao SQL exige
+reconciliacao explicita. O helper nao gira senhas, remove usuarios, restaura
+master nem concede roles inferidas. A prova real ainda esta pendente; nao
+declarar recuperacao completa sem testar os acessos dos aplicativos.
+
+Nao reconstruir jobs administrativos por simples presenca no inventario antigo:
+os cinco jobs observados nao tinham agenda e SQL Agent estava parado. Requisitos
+novos de instancia devem ser declarados na infraestrutura, nao depender de
+configuracao manual ou de backups dos bancos de sistema.
 
 Antes de ligar processadores:
 

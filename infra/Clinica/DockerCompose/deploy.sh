@@ -30,6 +30,7 @@ docker compose build clinica-migration
 docker compose build clinica-api clinica-worker
 echo "Executando migration Clinica no banco ${YESHUA_DB_CLINICA:-YESHUA_CLINICA}..."
 docker compose run --rm clinica-migration
+yeshua_setup_sql_access
 docker compose up -d --remove-orphans \
   clinica-api \
   clinica-worker

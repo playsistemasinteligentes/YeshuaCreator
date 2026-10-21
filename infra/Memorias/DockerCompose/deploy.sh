@@ -54,6 +54,7 @@ docker compose build "${BUILD_OPTIONS[@]}" memorias-migration
 docker compose build "${BUILD_OPTIONS[@]}" memorias-api memorias-worker memorias-media-renderer
 echo "Executando migration Memorias no banco ${YESHUA_DB_MEMORIAS:-YESHUA_MEMORIAS}..."
 docker compose run --rm memorias-migration
+yeshua_setup_sql_access
 docker compose up -d --remove-orphans \
   memorias-api \
   memorias-worker \

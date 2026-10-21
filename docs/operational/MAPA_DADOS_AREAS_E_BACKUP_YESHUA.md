@@ -15,12 +15,12 @@ documento registra os paths/volumes observados. O ensaio sera no servidor novo;
 o [roteiro executavel](../../infra/backups/RECOVERY.md) prevalece sobre etapas
 antigas de laboratorio preliminar. Nenhuma DSL de backup foi adicionada.
 
-Revisao de 2026-10-20 por solicitacao do usuario: salvo as decisoes confirmadas
-na secao 0, as classificacoes abaixo sao PROPOSTAS a discutir item por item.
-A correcao imediata retira das novas capturas somente volatile/** e
-persistent/memorias/publicacoes/*/.render-*/** de /root/YeshuaStorage.
-Os demais grupos ficam como estao ate revisao. Nao apagar origens, snapshots
-antigos ou executar prune nesta etapa.
+CLASSIFICACAO ENCERRADA pelo usuario em 2026-10-21. A secao 0 registra as decisoes
+finais: somente PERSISTENTE e VOLATIL. Os perfis e perguntas das secoes historicas
+nao reabrem a classificacao. A implementacao local aplica novas capturas a raiz
+persistente inteira e areas privadas; nada de filtros por conteudo, imagens,
+volumes volateis ou bancos de sistema. Nao apagar origens/snapshots/prune.
+VPS atual intacta; implantacao e comprovacao em servidor novo ainda pendentes.
 
 O procedimento de captura, checagem e restauracao esta no
 [plano operacional](PLANO_BACKUP_RESTAURACAO_YESHUA.md). Este mapa concentra a
@@ -46,8 +46,33 @@ e sugestoes anteriores deste mapa. Nao representa nova implantacao na VPS.
 - 100% dos bancos dos aplicativos definidos nos Studios sao PERSISTENTES,
   incluindo todas as tabelas e novos bancos desses aplicativos. O metodo
   continua sendo backup nativo SQL; nao copiar MDF/LDF ativos.
-- A decisao dos bancos de aplicativos nao classifica por consequencia bancos
-  de sistema ou legados sem aplicativo identificado. Esses itens seguem na revisao.
+- Banco Estudo e PERSISTENTE, confirmado pelo usuario apos a conferencia dos
+  metadados. Manter backup nativo integral no fluxo comum dos bancos de usuario,
+  mesmo sem Studio identificado; a exclusao de bancos de sistema nao o alcanca.
+- Cofre privado YouTube do Memorias e PERSISTENTE, confirmado pelo usuario:
+  copia integral da area privada com configuracao, conexoes, estados e chaves
+  correspondentes, pelo fluxo comum de arquivos. Permanece no Memorias e nao
+  cobre fotos/videos. Nao migrar armazenamento por curiosidade sobre uso de SQL.
+- credentials.json do ambiente e PERSISTENTE e restrito, confirmado pelo usuario.
+  Manter fora do Git/imagens/logs, pasta 0700/arquivo 0600 no Linux, backup no
+  repositorio cifrado existente e conferencia de permissoes na restauracao.
+  Privacidade nao cria terceira categoria nem novo modelo de criptografia local.
+- providers.json opcional do agente e PERSISTENTE e restrito, confirmado pelo
+  usuario. Chaves de API configuradas entram no backup da raiz privada;
+  sessoes/historicos/caches e volumes do agente continuam VOLATEIS.
+- Identidade HTTPS e estado Certbot em /etc/letsencrypt sao VOLATEIS por decisao
+  posterior do usuario: reemitir pelo setup-cert.sh no servidor novo, sem backup
+  dessa area. Isso substitui a aprovacao inicial como persistente. Novas capturas
+  v3 ja a excluem localmente; nao apagar origens/snapshots nem emitir certificados agora.
+- Credencial de recuperacao do backup e PERSISTENTE/restrita, com guarda fora
+  da VPS. Setup deve entrega-la ao operador por terminal privado e confirmar a
+  guarda antes de novas provas/agendas. Nunca registrar a senha nos logs/recibos
+  nem depender da unica copia dentro do backup cifrado que ela desbloqueia.
+- Bancos de sistema SQL master/model/msdb e tempdb ficam fora do backup,
+  confirmado pelo usuario. A instalacao/recriacao deve provisionar os acessos
+  necessarios pela infraestrutura versionada, com credenciais do arquivo privado,
+  sem restaurar bancos de sistema. A descoberta inclui os bancos de usuario,
+  inclusive Estudo e bancos novos, sem depender de uma lista fechada de Studios.
 - Tudo recriavel a partir de uma fonte disponivel fica fora de persistente
   e do backup: copias dos fontes, bundles Git, builds, imagens Docker e caches
   reconstruiveis. Nesta fase nao otimizar para restauracao rapida.
@@ -84,6 +109,25 @@ e sugestoes anteriores deste mapa. Nao representa nova implantacao na VPS.
   XMLs assinados, retornos SEFAZ e demais artefatos de processamento sao VOLATEIS
   por padrao, por decisao do usuario. Guarda persistente de XML depende de futura
   contratacao paga. O banco Fiscal continua integralmente persistente.
+- RabbitMQ e VOLATIL por decisao posterior do usuario: estado do broker e
+  mensagens pendentes nao entram no backup. Credenciais no JSON privado e
+  registros SQL de Inbox/Outbox/Saga continuam persistentes. Manter o protocolo
+  e o comportamento atuais de ACK/retry, conforme a decisao final do usuario.
+- Redis tambem e VOLATIL, confirmado pelo usuario: fora do backup, sem desligar
+  o servico ou remover seu volume por essa classificacao. Nao alterar o cache
+  em memoria dos aplicativos nem o funcionamento do RabbitMQ.
+- Historico de telemetria (logs, metricas e rastros) e VOLATIL, confirmado pelo
+  usuario. Nao alterar retencao/coleta por essa classificacao. O SQL operacional
+  continua persistente, fora deste item.
+- Estado interno do Grafana tambem e VOLATIL, confirmado pelo usuario. Paineis,
+  alertas e demais personalizacoes devem nascer e ser mantidos na infraestrutura
+  versionada/recuperavel, usando provisionamento nativo, nao apenas na interface.
+  Segredos continuam no arquivo privado, fora do Git. Nao criar backup do banco
+  interno para substituir esse contrato de recriacao.
+- Volumes do agente operacional (workspace, Codex e Claude) sao VOLATEIS,
+  confirmado pelo usuario. Estado funcional que precise sobreviver deve ser
+  mantido no banco correspondente ja protegido por backup, nao somente nesses
+  volumes. Credenciais tecnicas continuam seguindo o arquivo privado existente.
 
 ### 0.2 Atividades Da Reforma
 
@@ -96,9 +140,45 @@ operacional, acesso administrativo, recursos de terceiros ou canais/videos
 publicados no Google. A limpeza depende do inventario e do caminho de recriacao
 conferidos, para nao remover um recurso fora do escopo.
 
-PONTO DE RETOMADA: concluir a reinstalacao limpa e testar um novo backup; a
-revisao das categorias ainda nao classificadas e as investigacoes permanecem
-separadas. Nao implementar cobranca nem agendar limpeza generica por esta decisao.
+PONTO DE RETOMADA ATUALIZADO: o usuario adiou a limpeza/recriacao do servidor.
+Continuar a implementacao e os testes locais, sem deploy, parada, reinicio ou
+exclusao de dados na VPS. A reinstalacao limpa fica como etapa futura separada.
+A classificacao foi encerrada. Cobranca, limpeza generica e verificacoes de
+recuperacao externa continuam trabalhos separados; nao agendar exclusoes agora.
+
+APLICACAO LOCAL DE 2026-10-21: captura online e coordenada excluem bancos de
+sistema, HTTPS e volumes Shared RabbitMQ/Redis/agente. Telemetria/Grafana usam
+volatile/infra/telemetry no Compose, sem mudar coleta/retencao. Bind legado de
+telemetria bloqueia captura ate a virada intencional. Volumes desconhecidos nao
+viram persistentes por inferencia: exigem StorageLocation classificado.
+DocsInput/DocsOutput/configs/criacao Docs sem uso foram retirados sem apagar dados.
+Storage/persistent e privados entram inteiros; novas subpastas herdam a cobertura.
+Memorias sem PrivateRoot explicito usa apps/Memorias sob a raiz privada, como o deploy.
+Selecao v3 renova prova de arquivos/leitura integral; snapshots v2 continuam legiveis.
+Midias antigas de sistema ficam no disco/historico, sem nova copia SQL delas.
+
+PROVISIONAMENTO LOCAL: setup habilita o helper comum infra/private/sql_access.py,
+antes dos hosts e apos migrations. sa vem do Compose/arquivo privado; contas
+adicionais/roles devem ser declaradas em Shared.SqlServer.Logins. Nao inferir
+permissoes das connection strings nem copiar master/msdb. Senhas existentes nao
+giram; usuarios SQL orfaos de mesmo nome sao remapeados. Deploy cotidiano nao
+habilita essa etapa. Correspondencia das conexoes, efetividade dos grants e
+recuperacao real ainda precisam do ensaio isolado. Nenhuma operacao na VPS.
+
+VERIFICACAO DESTA APLICACAO LOCAL (2026-10-21): backup com 166 testes, 164
+aprovados e dois nao executados por ferramentas/permissoes do ambiente;
+configuracao privada com 52 aprovados; Shared .NET com 28 aprovados. No fechamento,
+o teste Compose validou os seis modelos com CLI oficial v2.25.0 e
+fixtures, sem daemon; a suite .NET privada compilou com as dependencias reais de
+StorageLocation e aprovou cinco testes (cofre fiscal e plano volatil incluidos).
+Duas simulacoes Bash e sintaxe dos dez scripts aprovadas. JSON alterados validos.
+Total: 249 testes aprovados, dois nao executados. Os 42 arquivos preparados para
+commit foram comparados aos segredos da copia privada de producao, sem valores
+encontrados. Segredos reais permanecem fora do Git; historico antigo nao e limpo
+nem credenciais sao revogadas por essa verificacao.
+SQL real, builds/containers Docker, Restic/GNU cp/ACLs Linux e recuperacao integral
+nao foram executados nesta rodada. Modelo Compose valido nao comprova subida.
+Esses resultados nao sao prova de restauracao 100% nem de copia externa.
 
 IMPLEMENTACAO LOCAL: novas fotos, trilhas, manifestos/MP4 do Memorias e planos/XML
 do Fiscal usam destinos volateis. Certificado/senha usam localizacao persistente
@@ -113,6 +193,20 @@ de arquivos antigo. SQL continua nativo e automatico para novos bancos. O ensaio
 de recuperacao integral e o destino externo permanecem pendentes. O modo antigo
 prepare-server nao e um restore rapido para os novos conjuntos somente de dados;
 reconstruir software pelo Git conforme RECOVERY.md. Nao houve deploy na VPS.
+
+CONTINUACAO LOCAL: restore-files integra a recuperacao de arquivos ao mesmo
+operador, com plano por padrao/--apply explicito, snapshot verificado, identidade
+de maquina nova, destinos vazios e verificacao de conteudo/permissoes. Nao liga
+servicos nem muda SQL/Nginx. Cobertura atual persistent-roots-v3 inclui identidade da
+origem; o setup atualiza a prova de arquivos e refaz a leitura integral quando
+necessario, sem repetir baselines SQL validas. A comprovacao Linux/Restic e o
+ensaio funcional em servidor novo permanecem pendentes.
+
+VERIFICACAO DA CONTINUACAO: suite de backup com 134 testes, 132 aprovados e
+2 dependentes do ambiente/ferramentas Linux ou de permissao para criar symlinks;
+suite de credenciais privadas com 25 aprovados. A copia dos testes e simulada:
+GNU cp/Restic, ACLs/xattrs Linux e uso real dos aplicativos ainda precisam do
+ensaio no novo servidor. Nenhuma operacao desta continuacao alterou a VPS.
 
 TRANSICAO AINDA NAO EXECUTADA: autorizada a recriacao limpa, sem migrar caminhos antigos.
 Conteudo que continuar fisicamente em persistent continua integralmente no backup,
@@ -149,17 +243,70 @@ rotina generica de limpeza por idade/tamanho nem apaga o audio original.
   volatil pela regra confirmada para as areas ja volateis.
 - [x] Registrar certificado/senha do Fiscal como persistentes e os demais
   arquivos fiscais como volateis por padrao; guarda paga de XML a planejar.
-- [ ] Concluir com o usuario a classificacao dos demais itens, um por vez.
-- [ ] Investigar DocsInput da Clinica antes de classificar: identificar uso real,
-  escritores/leitores, conteudo e referencias; conferir docs/Docs no ambiente.
-  Usuario nao recorda a finalidade. Nao mover, excluir nem mudar a selecao por suposicao.
-- [ ] Investigar tambem DocsOutput da Clinica, por decisao posterior do usuario:
-  identificar finalidade, uso e conteudo antes de classificar; sem alteracao agora.
-- [ ] Incluir a pasta legada persistent/Docs (D maiusculo) na mesma investigacao,
-  confirmado pelo usuario; nao presumir que e equivalente a persistent/docs no Linux.
+- [x] Encerrar com o usuario a classificacao; seguir implementacao, sem nova rodada item a item.
+- [x] Investigar DocsInput/DocsOutput e o nome legado Docs: nenhum consumidor
+  de negocio identificado no codigo; resultado apresentado e retirada aprovada.
+- [x] Aplicar localmente a retirada aprovada das declaracoes/configuracoes/criacao automatica
+  de DocsInput/DocsOutput/Docs, sem apagar pastas existentes. Prontuario e
+  RegistroDocumental continuam no SQL persistente. Conferencia da VPS nao foi repetida.
+- [x] Investigar RabbitMQ e registrar decisao do usuario: VOLATIL, fora do backup.
+- [x] Adequar localmente a captura coordenada para nao copiar o estado do
+  RabbitMQ. Volumes desconhecidos bloqueiam, em vez de serem adotados. A copia online
+  ja nao inclui o broker. Nao remover volumes, filas ou alterar a VPS agora.
+- [x] Esclarecer o ACK do listener: usuario decidiu manter o conceito e o
+  comportamento atuais. Nao alterar ACK, retry, confirmacoes ou tratamento de
+  erros como parte desta tarefa; RabbitMQ permanece VOLATIL no plano de backup.
+- [x] Investigar Redis e registrar a decisao do usuario: VOLATIL, fora do backup.
+- [x] Adequar localmente a selecao coordenada para excluir o estado Redis,
+  sem apagar volumes ou alterar o servico. A copia online ja nao o inclui.
+- [x] Investigar historico de telemetria e registrar decisao do usuario: VOLATIL.
+- [x] Investigar Grafana e registrar decisao do usuario: estado interno VOLATIL;
+  personalizacoes obrigatoriamente versionadas na infraestrutura recuperavel.
+- [x] Registrar decisao direta do usuario sobre os tres volumes do agente:
+  VOLATEIS; qualquer estado funcional persistente devera ir ao banco ja protegido.
+- [x] Adequar localmente a captura coordenada para nao copiar workspace/volumes Codex/Claude.
+  Nao apagar volumes, copiar sessoes para SQL ou habilitar escrita do agente agora.
+- [x] Adequar localmente as raizes/binds e a selecao coordenada para manter
+  historico de telemetria e estado Grafana em volatil, sem filtros dentro de
+  persistente. Nao apagar dados, mover diretorios ou mudar a VPS nesta fase.
+- [x] Registrar decisao do usuario: master/model/msdb e tempdb fora do backup;
+  acessos SQL necessarios devem ser criados na instalacao/recriacao do servidor.
+- [x] Conferir metadados do Estudo via API operacional e registrar a decisao
+  posterior do usuario: PERSISTENTE, manter backup nativo integral na rotina
+  comum. Selecao atual ja o inclui; preservar cobertura na reforma da selecao SQL.
+- [x] Conferir o cofre YouTube do Memorias e registrar decisao do usuario:
+  PERSISTENTE, copia integral com suas chaves, sem migrar para Central ou SQL.
+  A raiz privada ja integra a selecao comum de arquivos; restore ainda a provar.
+- [x] Registrar credentials.json como PERSISTENTE e de acesso restrito por
+  confirmacao do usuario. Manter protecoes existentes de origem/copia/restore,
+  sem gerar chaves, expor valores ou criar outro cofre/cifra local.
+- [x] Registrar providers.json como PERSISTENTE e restrito quando utilizado,
+  confirmado pelo usuario, sem mudar a classificacao VOLATIL dos volumes do agente.
+- [x] Registrar decisao posterior: /etc/letsencrypt VOLATIL e recriavel pelo
+  setup-cert.sh, substituindo a aprovacao inicial como persistente.
+- [x] Implementar entrega da senha existente do backup no INICIO do setup:
+  apos validar o JSON, antes de atualizacoes/Docker/builds; EXIBIR -> terminal
+  privado -> GUARDEI. Instalador final reutiliza recibo sem senha/sem nova pergunta.
+  Ausencia de terminal/confirmacao impede atualizacoes/deploy; rotinas agendadas
+  nao exibem a senha e credenciais existentes nao sao trocadas.
+- [ ] Comprovar a entrega por terminal Linux real e a guarda independente no
+  ensaio do servidor novo; declaracao do operador nao comprova copia externa.
+- [x] Retirar localmente HTTPS das novas capturas online/coordenadas e adequar provas de
+  cobertura/restauracao. Nao apagar a origem ou snapshots antigos por isso.
+- [ ] Integrar/conferir recriacao HTTPS no roteiro de servidor novo pelo script
+  existente, com validacao do dominio e agenda/renovacao comprovadas. Certbot
+  standalone requer acesso para validacao; nao emitir/reiniciar Nginx nesta revisao.
+- [x] Adequar localmente selecao SQL online/coordenada e provas de cobertura para excluir
+  bancos de sistema. Nao apagar bancos ou snapshots anteriores; bancos de
+  usuario continuam integralmente protegidos, inclusive Estudo e apps futuros.
+- [x] Implementar provisionamento de logins, usuarios e permissoes SQL
+  no caminho existente da infraestrutura, usando o arquivo privado. Reutilizar
+  na instalacao e restauracao, conferir vinculos de usuarios em bancos restaurados
+  antes de liberar apps. Nao depender de master/model/msdb antigos.
+- [ ] Comprovar grants, vinculos e acesso real de cada aplicativo no servidor novo.
 - [x] Direcionar novos uploads de fotos do Memorias a StorageLocation volatil.
-- [ ] Executar a reinstalacao limpa dos recursos Yeshua da VPS, conforme a
-  autorizacao posterior, sem migrar dados/cofre antigos e sem atingir terceiros.
+- [ ] ETAPA FUTURA ADIADA: reinstalacao limpa dos recursos Yeshua da VPS, sem
+  migrar dados/cofre antigos e sem atingir terceiros. Nao executar nesta fase.
 - [ ] Inventariar caminhos de storage montados diretamente em codigo, configuracao,
   templates e integracoes; substituir pelo uso das localizacoes existentes.
 - [x] Consolidar StorageLocation com as duas categorias, sem nova DSL de backup;
@@ -173,6 +320,10 @@ rotina generica de limpeza por idade/tamanho nem apaga o audio original.
   excecao .render-*. Diretorios antigos continuam incluidos ate transicao explicita.
 - [x] Testar heranca automatica para arquivo/subpasta/tenant novo em localizacao
   existente e para banco novo de aplicativo; testar recusa de destino fora das raizes.
+- [x] Implementar reposicao assistida de arquivos pelo operador existente,
+  com simulacao, destinos vazios, identificacao da origem e hashes/permissoes.
+- [x] Recusar aceite de leitura integral anterior a uma nova copia SQL/arquivos
+  no setup; testar renovacao da prova de arquivos sem refazer baselines SQL validas.
 - [ ] Conferir a instalacao inicial e a rotina publicada depois das alteracoes;
   nao declarar estas atividades concluidas apenas pelo planejamento.
 - [ ] Planejar preservacao paga de fotos por tenant inteiro ou por usuario
@@ -328,6 +479,621 @@ essa regra aos MP4 do Memorias, que permanecem sempre volateis.
 Status: CLASSIFICACAO CONFIRMADA; IMPLEMENTACAO PENDENTE. Nao mover/apagar arquivos,
 ativar cobranca, criar novas rotas ou alterar a VPS nesta revisao.
 
+### 0.8 Investigacoes Apresentadas Individualmente
+
+Registro historico das conferencias. Classificacao encerrada em 2026-10-21;
+implementacao local atual descrita em 0.2 prevalece sobre pendencias historicas.
+Implantacao e prova real no servidor novo ainda nao foram feitas.
+
+Instrucao do usuario: apresentar o resultado de cada investigacao, um por vez,
+para decidir a classificacao/acao antes de aplicar. Nao tratar recomendacao como
+aceite. Limpeza e recriacao da VPS continuam adiadas.
+
+#### 1. Documentos Da Clinica: Entrada, Saida E Nome Legado
+
+Conferencia local em 2026-10-20, sem nova consulta ou alteracao na VPS:
+
+- DocsInput e DocsOutput existem como propriedades fixas em StorageLocation,
+  apontando para persistent/docs/input e persistent/docs/output. Ja estavam
+  assim no commit 7119f7e9c; nao nasceram na reforma de backup.
+- A busca por essas propriedades/caminhos nos fontes identificou declaracoes e
+  configuracoes, mas nenhum consumidor de negocio que grave ou leia essas areas.
+  A DSL/migrations da Clinica nao declaram um fluxo de documentos em arquivo.
+- Os consumidores de IFileStorage localizados na Clinica usam os destinos
+  volateis de transcricao/upload, nao DocsInput/DocsOutput. O campo
+  RegistroDocumental de Sesoes e Varchar(8000), assim como Prontuario: texto
+  persistido em SQL, nao um arquivo nessas pastas.
+- O Compose da Clinica configura docs minusculo. O setup.sh cria Docs com D
+  maiusculo. Sao caminhos diferentes no Linux. O inventario anterior registrado
+  na secao 10 encontrou apenas persistent/Docs vazio e nenhum persistent/docs;
+  isso e evidencia anterior, nao uma verificacao atual de producao.
+
+Conclusao limitada ao codigo consultado: aparente reserva antiga de storage,
+sem funcionalidade ativa identificada. Nao confundir com prontuarios/registros
+clinicos no banco, que continuam persistentes e protegidos integralmente.
+
+DECISAO APROVADA pelo usuario em 2026-10-20: retirar declaracoes/configuracoes e criacao
+automatica dessas pastas sem uso, em vez de manter uma classificacao presumida
+para documentos futuros. Uma funcionalidade nova devera declarar sua propria
+StorageLocation e escolher persistente ou volatil explicitamente. Nao apagar
+pastas existentes nem filtrar seu conteudo no backup durante esta implementacao;
+tudo que continuar fisicamente em persistent permanece incluido.
+
+Status: RETIRADA IMPLEMENTADA LOCALMENTE em 2026-10-21. Nenhum destino foi movido
+nem dado existente foi apagado. Declaracoes/configuracoes/criacao automatica removidas.
+
+#### 2. RabbitMQ: Mensagens De Trabalho E De Retorno
+
+Conferencia local em 2026-10-20, sem alterar filas/containers nem consultar
+mensagens de producao. Decisao posterior do usuario: RabbitMQ VOLATIL, fora
+do backup. Nenhuma fila/volume foi apagada e nenhuma configuracao mudou na VPS.
+
+- A DSL da Clinica declara filas para transcricao/resumo de texto; a DSL do
+  Memorias declara pedido/retorno de renderizacao. A topologia e recriada pelo
+  inicializador a partir desses contratos. Credenciais tecnicas estao no JSON
+  privado e nao precisam ser extraidas do volume do broker para essa finalidade.
+- O publisher usa mensagens marcadas Persistent e o inicializador respeita
+  Durable das filas. Esses nomes tecnicos nao decidem a categoria de backup.
+- O transportador da Clinica marca yOutbox.Status=1 apos publicar. ClaimBatch
+  seleciona Status=0 e locks Status=9 expirados, nao os enviados Status=1.
+  O transportador de renderizacao do Memorias tambem marca a outbox como enviada.
+  Portanto, restaurar o SQL nao demonstra reenvio automatico de tudo que estava
+  no RabbitMQ. Nao redefinir mensagens enviadas por suposicao: pode duplicar efeitos.
+- O worker Python da Clinica publica a transcricao em audio.transcribed.inbox;
+  o texto chega ao SQL apenas depois da recepcao pelo aplicativo. Pode haver
+  resultado pronto no broker e ainda nao persistido na Inbox/prontuario.
+- O Compose Shared nao declara mount explicito para /var/lib/rabbitmq. O
+  inventario anterior registrou um volume anonimo. A copia online atual nao
+  cobre o estado vivo desse broker; a captura coordenada e uma etapa separada,
+  ainda nao provada. Nenhuma protecao foi ativada por esta investigacao.
+- Pendencia independente: RabbitMQQueueListener confirma a mensagem mesmo
+  apos excecao do handler; tambem ha retorno Error convertido em State sem
+  garantia, no listener, de recusa da confirmacao. O ConnectionManager registra
+  confirmacao do publisher como pendencia. Backup nao corrige essas janelas
+  de perda; revisar pelo mecanismo padrao de entrega, sem criar outro transporte.
+
+Exemplo de perda: tarefa enviada consta no SQL como enviada, mas a solicitacao
+ou o resultado aguardando consumo desaparece junto com o broker. Uma saga pode
+continuar esperando; o processamento nao e necessariamente retomado sozinho.
+Arquivos de audio/video volateis ausentes tambem podem impedir reprocessamento.
+
+A recomendacao inicial de persistente NAO foi adotada. DECISAO DO USUARIO:
+VOLATIL. Planejar o broker fora da selecao de backup, sem desativar por isso a
+durabilidade de entrega em operacao normal. A possibilidade de perder pendencias
+na recriacao foi explicitada; nao prometer retomada automatica pelo SQL enquanto
+ela nao existir. Isso nao e aceite automatico para perder mensagens por erro de
+recebimento com o ambiente funcionando. Credenciais de ambiente e tabelas SQL
+mantem a classificacao persistente ja aprovada.
+
+Status: CLASSIFICACAO CONFIRMADA, ADEQUACAO DA CAPTURA COORDENADA PENDENTE.
+Nenhuma mensagem foi apagada, reenviada ou alterada; nenhuma configuracao mudou.
+
+Esclarecimento sobre intencao do ACK, solicitado pelo usuario:
+
+- Existe comentario explicito no listener: ACK SEMPRE (ou voce pode sofisticar
+  depois). Isso demonstra comportamento deliberado no codigo, mas nao documenta
+  uma decisao de negocio para cada categoria de falha. O motivo de evitar
+  redelivery infinito e plausivel, nao comprovado por esse comentario.
+- O retorno da IA pode representar falha do trabalho. Se o recebimento grava
+  esse fato em yInbox com sucesso, confirmar a mensagem e coerente: o erro foi
+  recebido e sua continuidade/retry pertence ao processamento SQL da Inbox/Saga.
+  Nao exigir sucesso de toda a saga para retirar a mensagem de transporte.
+- No caminho consultado da Clinica, InboxListenerHandler captura erro de
+  AddInboxEvent e devolve State de erro; o QueueListenerWorker gerado ignora
+  esse resultado. Em outro caminho, uma excecao propagada tambem e capturada
+  pelo listener, que imprime no console e chama BasicAckAsync depois do catch.
+  Nao foi identificado armazenamento alternativo da mensagem nesse tratamento.
+- Assim, indisponibilidade SQL antes de inserir a Inbox pode resultar em ACK
+  sem custodia duravel. Distinguir essa falha de recebimento da falha de negocio
+  ja recebida/persistida. Registro em console nao comprova recuperacao do payload.
+- Confirmacao AMQP permite ao broker descartar a entrega; nao e somente aviso
+  de que o codigo foi chamado. Referencia: [RabbitMQ: Consumer Acknowledgements](https://www.rabbitmq.com/docs/confirms#consumer-acks).
+- Qualquer alteracao deve ser decidida separadamente: sucesso/duplicidade
+  reconhecida/falha de negocio assumida podem encerrar a entrega; falha de
+  custodia ou mensagem invalida exigem politica explicita, evitando tanto perda
+  silenciosa quanto reentrega infinita. Nao aplicar requeue=true indiscriminado.
+
+Nenhuma regra de ACK, retry, confirmacao de publicacao ou listener foi alterada.
+
+DECISAO FINAL DO USUARIO: deixar RabbitMQ VOLATIL e nao mudar o conceito atual.
+Preservar integralmente o comportamento existente de recebimento, confirmacao,
+retry e tratamento de erros. A analise acima fica como registro informativo,
+nao como autorizacao ou atividade pendente de correcao nesta tarefa. Alterar o
+escopo do backup nao deve modificar o protocolo de entrega. Nenhuma mudanca de
+runtime ou operacao na VPS foi feita para aplicar esta decisao.
+
+#### 3. Redis: Servico Presente, Consumidor Nao Identificado
+
+Conferencia local em 2026-10-20, sem consultar chaves/valores, limpar dados,
+parar containers ou mudar a VPS. Classificacao confirmada pelo usuario: VOLATIL.
+
+- O Compose Shared declara redis:7-alpine, container yeshua-redis, sem mount
+  explicito. O deploy Shared inclui o servico. O inventario anterior registrou
+  um volume Docker anonimo; nao foi feita nova inspecao do conteudo desse volume.
+- O Studio de ambiente Production tambem declara redis01. Isso confirma a
+  previsao de infraestrutura, nao o uso dos dados por uma aplicacao.
+- A busca nos fontes/configuracoes consultados nao encontrou cliente Redis,
+  leitura/escrita de chaves, IDistributedCache ou result_backend Redis. O mapa
+  de configuracoes ja registra Redis__Host removido dos Compose ativos por
+  ausencia de consumidor. O template inicial antigo ainda contem essa chave;
+  sua presenca nao demonstra que o host gerado a utiliza.
+- O template de DI da Engine registra ICacheService<> como MemoryCacheService<>,
+  cuja implementacao usa IMemoryCache dentro do proprio processo. Esse cache
+  nao pertence ao container Redis e nao depende de seu volume para funcionar.
+- Os Celery consultados da Clinica (transcricao/resumo) e do renderer Memorias
+  configuram broker AMQP por CELERY_BROKER_URL, sem backend Redis de resultados.
+  Os retornos usam as filas correspondentes; nao foi identificado polling de
+  AsyncResult/result_backend para recuperar o resultado via Redis.
+
+Conclusao limitada ao codigo consultado: o Redis esta previsto/subindo na
+infraestrutura, mas nao foi identificada dependencia ativa das aplicacoes ou
+dado exclusivo de negocio salvo nele. Isso nao prova que o Redis publicado
+esteja vazio nem descarta um cliente externo nao representado neste repositorio.
+
+DECISAO DO USUARIO: VOLATIL, fora do backup. Manter o servico como
+esta nesta revisao; desligar/remover container ou volume e outra decisao, nao
+uma consequencia automatica da classificacao. Nao alterar o cache em memoria,
+o broker RabbitMQ, a DSL ou os workers Python por causa desta investigacao.
+
+Status: CLASSIFICACAO CONFIRMADA, ADEQUACAO DA CAPTURA COORDENADA PENDENTE.
+Nenhuma configuracao/dado mudou na VPS.
+
+#### 4. Historico De Telemetria: Logs, Metricas E Rastros
+
+Conferencia local em 2026-10-20, sem consultar conteudo de logs, alterar retencao,
+parar servicos ou acessar a VPS. Classificacao confirmada pelo usuario: VOLATIL.
+
+- O container yeshua-telemetry usa grafana/otel-lgtm e recebe a telemetria OTLP
+  das aplicacoes. O Collector encaminha logs ao Loki, metricas ao Prometheus e
+  rastros ao Tempo. Ha tambem pipeline de profiles configurado; isso nao comprova
+  que exista produtor ativo desse sinal.
+- A configuracao versionada do Loki aponta seus arquivos para /data/loki,
+  incluindo chunks/indices/retencao. Define retention_period=120h e habilita
+  retencao no compactor: previsao de historico rotativo de cinco dias.
+- O Tempo aponta WAL/blocos para /data/tempo e configura block_retention=120h.
+  O Prometheus recebe limites de retencao de cinco dias e tamanho padrao de 2GB
+  via Compose (o tamanho e configuravel). O log Docker do container e rotativo,
+  com tres arquivos de 10MB. Sao limites declarados, nao uma medicao atual da VPS
+  nem garantia de limite rigido para o tamanho total do bind.
+- Collector, Loki, Tempo e Prometheus tem configuracoes no Git. Essas definicoes
+  podem ser repostas pelo deploy, mas nao recriam o historico observado.
+- O consumo identificado do historico e diagnostico/observabilidade, inclusive
+  consultas/coleta de evidencias pela API operacional. Perder esse historico
+  reduz investigacao de execucoes anteriores; nao apaga cadastros, documentos ou
+  Inbox/Outbox/Saga dos bancos SQL dos aplicativos. O banco da inteligencia
+  operacional continua sendo banco de aplicativo persistente, fora deste item.
+- O Compose atual monta /root/YeshuaDB/persistent/telemetry inteiro em /data.
+  A copia online nao inclui esse estado vivo. A area ainda consta no modelo de
+  captura coordenada; mudar a classificacao exige adequar o destino/raizes na
+  implementacao, nao excluir subpastas por filtro dentro de persistente.
+
+DECISAO DO USUARIO: historico de diagnostico VOLATIL, sem backup.
+Na recriacao, os coletores passam a formar historico novo; o antigo nao volta.
+Nao alterar a retencao ou desligar observabilidade por causa dessa classificacao.
+
+ESCOPO: a investigacao do estado proprio do Grafana foi apresentada em separado
+no item 5 e tambem resultou em VOLATIL. Historico e estado runtime do pacote
+podem, portanto, usar raiz volatil na futura instalacao. Configuracoes versionadas
+e credenciais privadas tem suas proprias origens de recuperacao; o SQL operacional
+nao pertence a esse bind. Nao filtrar subpastas dentro da raiz persistente antiga
+nem mover/excluir seu conteudo antes da transicao adiada.
+
+Status: CLASSIFICACAO CONFIRMADA, ADEQUACAO DAS RAIZES PENDENTE.
+Nenhuma configuracao/dado mudou na VPS.
+
+#### 5. Estado Do Grafana: Paineis E Ajustes Pela Interface
+
+Conferencia local e das fontes oficiais em 2026-10-20. Nao houve leitura de
+banco/painel/usuario da VPS, mudanca de credenciais, export de dados ou reinicio.
+Classificacao confirmada pelo usuario: VOLATIL. A conferencia nao comprovou
+ausencia de personalizacoes publicadas; a decisao define como elas devem ser
+mantidas daqui em diante, sem exigir uma copia do estado interno atual.
+
+- O Compose define usuario/senha de provisionamento por variaveis vindas de
+  Shared.Grafana no credentials.json privado. Esse arquivo continua persistente.
+  Rotas /telemetry, ajustes de subpath e configuracoes de coleta estao no Git.
+- A imagem oficial inclui definicoes padrao de datasources e dashboards. Na
+  busca no repositorio Yeshua nao foram identificados paineis/provisionamentos
+  Grafana customizados versionados. A imagem pode repor seu proprio padrao,
+  mas isso nao significa repor edicoes feitas pela interface.
+- Grafana usa um banco interno para usuarios/paineis e outras configuracoes;
+  o padrao documentado e SQLite. Esse estado nao e um banco de aplicativo dos
+  Studios nem esta coberto pela rotina SQL Server de full/diferencial/logs.
+- A fonte upstream atual do otel-lgtm aponta os dados Grafana para
+  /data/grafana/data e os plugins para /data/grafana/plugins. Nosso Compose
+  monta /root/YeshuaDB/persistent/telemetry em /data. Como a tag padrao e latest,
+  o caminho/versao efetivos devem ser confirmados antes de uma implementacao:
+  fonte upstream atual nao e prova da imagem instalada na VPS.
+- Paineis, contas/permissoes, fontes de dados e regras de alerta criados ou
+  modificados pela interface podem representar configuracao unica. Sem
+  preservacao/versionamento correspondente, esses ajustes precisarao ser
+  refeitos apos recriar o Grafana. Nao afirmar que existem ou que sao dispensaveis
+  sem inventario/autorizacao ou confirmacao do usuario.
+- A senha administrativa de provisionamento e aplicada na criacao inicial.
+  Uma senha alterada na interface nao e necessariamente a mesma guardada no
+  JSON; preservar o bootstrap nao equivale a recuperar o cadastro de usuarios.
+
+DECISAO DO USUARIO: estado Grafana VOLATIL, fora do backup. Personalizacoes
+devem ser criadas e mantidas na infraestrutura recuperavel, nao depender de
+edicoes feitas apenas na interface. Definicoes de paineis, alertas e fontes de
+dados devem usar os arquivos/provisionamento nativos versionados em infra;
+valores secretos continuam no JSON privado existente, nunca nesses arquivos Git.
+Na recriacao, provisionar a partir dessas fontes. Nao criar outra DSL, camada
+de configuracao ou copia do SQLite para substituir esse caminho.
+
+A regra de autoria nao e uma autorizacao para bloquear a interface, mudar
+permissoes/usuarios, apagar personalizacoes publicadas ou reiniciar o Grafana.
+Nao foram criadas personalizacoes por esta decisao. Adequar apenas a infraestrutura
+local/roteiro quando a implementacao das classificacoes for retomada; a transicao
+de dados e a recriacao da VPS continuam adiadas.
+
+Fontes oficiais consultadas: [configuracao e banco do Grafana](https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/),
+[backup do Grafana](https://grafana.com/docs/grafana/latest/administration/back-up-grafana/),
+[imagem e provisionamento padrao](https://github.com/grafana/docker-otel-lgtm/blob/main/docker/Dockerfile),
+[paths de inicializacao](https://github.com/grafana/docker-otel-lgtm/blob/main/docker/run-grafana.sh).
+
+Status: CLASSIFICACAO CONFIRMADA, ADEQUACAO DAS RAIZES PENDENTE.
+Nenhuma configuracao/dado mudou na VPS.
+
+#### 6. Volumes Do Agente Operacional
+
+DECISAO DIRETA DO USUARIO: VOLATEIS. A investigacao foi interrompida pelo usuario
+apos identificar os tres mounts no Compose; nao afirmar que houve inventario do
+conteudo, de alteracoes locais ou de autenticacoes existentes nesses volumes.
+
+Escopo confirmado: operational-agent-workspace (/workspace),
+operational-agent-codex (/home/agent/.codex) e
+operational-agent-claude (/home/agent/.claude). Esses volumes nao entram no backup.
+Sua recriacao nao promete recuperar sessoes ou trabalho local nao publicado.
+Fontes/infra recuperaveis continuam tendo o Git como origem, nao uma copia do
+workspace do agente no backup de dados.
+
+Regra adicional do usuario: se algum estado funcional do agente precisar de
+persistencia, coloca-lo no banco correspondente que ja tem backup, pelo caminho
+normal de aplicacao/repositorio. Nao criar um cofre de estado paralelo em arquivo,
+outro banco avulso ou um backup particular para esses volumes. Isso e uma regra
+para funcionalidades que vierem a exigir persistencia, nao a alegacao de que
+elas ja gravam no SQL.
+
+Credenciais tecnicas de ambiente continuam no arquivo privado padrao; esta
+decisao nao manda copiar tokens/sessoes das CLIs para o banco nem altera o modelo
+de autenticacao dos agentes. A regra tambem nao habilita escrita no agente
+observador/build-only, nao cria tabelas e nao executa migrations.
+
+Status: CLASSIFICACAO CONFIRMADA, ADEQUACAO DA CAPTURA COORDENADA PENDENTE.
+Nenhum volume, arquivo, banco ou container foi alterado ou apagado na VPS.
+
+#### 7. Bancos De Sistema SQL: master, model, msdb E tempdb
+
+Conferencia local e de documentacao oficial em 2026-10-20. Nao houve nova
+consulta SQL, leitura de senhas/chaves, execucao de jobs ou operacao na VPS.
+Esta investigacao nao decide a base legada Estudo, que sera um item separado.
+
+- master guarda metadados/configuracoes da instancia, incluindo contas de
+  acesso e referencias aos bancos. model serve de modelo para bancos novos.
+  msdb guarda rotinas/agendas do SQL Agent e historicos administrativos.
+  tempdb e uma area temporaria recriada na inicializacao e nao aceita backup.
+- O codigo do operador atual seleciona todos os bancos, exceto tempdb. Portanto,
+  ja inclui master/model/msdb via backup SQL nativo, sem copiar MDF/LDF ativos.
+  No ciclo diferencial, os bancos de sistema recebem full; no ciclo de logs,
+  sao ignorados. Nao ha nova agenda ou modelo de backup por banco nesta revisao.
+- A recuperacao automatica dos bancos de usuario nao restaura esses tres bancos
+  de sistema. O roteiro existente mantem seu uso/recuperacao como procedimento
+  assistido, evitando sobrescrever a instancia nova com caminhos/estado antigos.
+- O inventario anterior, registrado no plano/RECOVERY.md, encontrou cinco jobs
+  habilitados, sem agenda, e SQL Agent parado. Isso nao prova que sejam uteis,
+  descartaveis ou de backup. O conteudo/uso dessas rotinas nao foi investigado
+  novamente nesta etapa, nem elas foram ativadas/excluidas.
+- Na busca local dirigida nao foram identificados scripts de criacao desses
+  jobs, provisionamento de logins SQL ou demais customizacoes da instancia em
+  infra/Engine. Credenciais no JSON privado, sozinhas, nao comprovam recriacao
+  de todos os logins/permissoes/configuracoes existentes.
+
+Conclusao: o estado PADRAO e recriavel, mas a reconstituicao integral das
+customizacoes ainda nao foi demonstrada. Nao aplicar a regra "recriavel a partir
+do fonte" a esse estado sem identificar o que e necessario e onde foi declarado.
+Tambem nao presumir dependencia de chaves de criptografia inexistentes: isso
+exigiria conferencia especifica antes de qualquer recuperacao/descarte.
+
+DECISAO POSTERIOR CONFIRMADA: o usuario informa que nao guarda dados necessarios
+em master/model/msdb e determinou que os acessos sejam criados na recriacao do
+servidor. Esses tres bancos, assim como tempdb, ficam fora do backup. A sugestao
+anterior de manter copias de sistema foi rejeitada. Nao exportar logins/jobs para
+contornar a decisao nem criar outro backup de estado administrativo.
+
+O provisionamento pertence a infraestrutura versionada, com segredos no arquivo
+privado. Deve criar os logins/usuarios/permissoes necessarios na instalacao e
+conferir seu vinculo aos bancos de aplicativos restaurados antes de liberar os
+hosts. Nao recriar indiscriminadamente os cinco jobs antigos nem ativar SQL Agent.
+Essa exigencia esta na lista de atividades; a automacao ainda nao foi comprovada.
+
+Fontes oficiais: [backup/restauracao de bancos de sistema](https://learn.microsoft.com/en-us/sql/relational-databases/backup-restore/back-up-and-restore-of-system-databases-sql-server?view=sql-server-ver16),
+[metadados do master](https://learn.microsoft.com/en-us/sql/relational-databases/databases/master-database?view=sql-server-ver16).
+
+Status: SELECAO SQL E PROVISIONAMENTO IMPLEMENTADOS LOCALMENTE em 2026-10-21.
+Grants/vinculos reais ainda precisam do ensaio. Jobs, acessos e VPS nao foram
+alterados operacionalmente; snapshots antigos nao foram apagados.
+
+#### 8. Banco Adicional Estudo
+
+Conferencia local em 2026-10-20, sem nova consulta SQL ou operacao na VPS.
+
+- O inventario anterior encontrou Estudo ONLINE na mesma instancia, alem dos
+  seis bancos Yeshua. Nao e banco de sistema; a decisao sobre master/model/msdb
+  nao o exclui automaticamente.
+- Na busca dirigida em src, infra, tests, tools e docs, nao foi identificada
+  referencia de configuracao ou Studio usando o catalogo Estudo. As ocorrencias
+  restantes sao registros do inventario ou uso comum da palavra "estudo".
+  Ausencia de referencia local nao comprova ausencia de consumidores externos.
+- Nao foram inspecionados tabelas, conteudo, sessoes atuais ou responsavel pela
+  base nesta etapa. Nao inferir que seja vazio, descartavel ou recriavel pelo nome.
+- A selecao atual descobre bancos de usuario e ainda inclui Estudo. Nenhum banco
+  foi apagado ou excluido; snapshots anteriores permanecem intactos.
+
+Resposta do usuario: nao recorda a finalidade da base. Isso nao e autorizacao
+para descartar ou excluir do backup. Identificacao fica pendente, sem presumir
+que seja uma base de testes e sem classificar os demais bancos por consequencia.
+
+CONFERENCIA REAL SOLICITADA PELO USUARIO em 2026-10-20: API operacional publicada
+respondeu healthy; chamadas MCP yeshua.database.select pela conexao configurada
+Central consultaram somente metadados de Estudo e DMVs. Nao houve SSH, leitura
+de registros de negocio/credenciais, alteracao SQL, deploy ou reinicio.
+
+Resultados:
+
+- Estudo ONLINE, FULL, sem criptografia declarada em sys.databases. Arquivos
+  com 712 MiB de dados e 1.608 MiB de log ALOCADOS (2.320 MiB, cerca de 2,27 GiB).
+  Nao confundir alocacao com dados uteis, log utilizado ou tamanho de backup.
+- 198 tabelas de usuario em tres schemas: dbo tem 187 tabelas, aproximadamente
+  1.212 linhas e 13,18 MiB reservados; importacao tem quatro tabelas, 383 linhas
+  e 3,59 MiB; importacao_tipado tem sete tabelas, 1.546.376 linhas e 652,80 MiB.
+  Contagens sao estimativas dos metadados, sem COUNT de registros de negocio.
+- Em dbo aparecem Carga, CargaPrevista, Cliente, CorridasOnduladeiraEstudo,
+  BoletimEstudo, ySagaStep e yInbox. BoletimEstudo e CorridasOnduladeiraEstudo
+  tambem estao declaradas em src/Studio/Yeshua.Studio.APS.ADM/Migrations/M000002.cs,
+  com LegacySource. Isso demonstra correspondencia de estrutura, nao prova que
+  o APS atual use o catalogo Estudo.
+- importacao_tipado.t006 concentra cerca de 1.437.576 linhas e 515,57 MiB
+  reservados. Nomes de colunas indicam funcionarios/usuarios e rastreabilidade
+  de importacao (__archive_row_id, __source_database_id, __archive_imported_at).
+  t003 tem cerca de 78.148 linhas e 99,57 MiB, com colunas de empresas e emissores
+  fiscais. Ha nomes de colunas referentes a dados pessoais e senhas; nenhum valor
+  foi lido. A consulta de colunas inicial limitada a 100 retornou truncated=true;
+  uma consulta separada conferiu os primeiros 15 nomes da t006. Nao e inventario
+  completo de todas as colunas.
+- Nenhuma sessao de usuario com Estudo como banco atual apareceu no instante
+  consultado. Contadores de uso de indices para Estudo nao retornaram ultimas
+  leituras/escritas; SQL informou inicio em 2026-10-19. Essa observacao nao
+  comprova ausencia de uso historico, acessos por outro contexto ou uso futuro.
+
+Inferencia: provavel base de estudo/importacao do legado relacionada ao APS,
+com dados importados, nao uma base vazia. Origem exata, responsavel e necessidade
+de preservacao continuam sem confirmacao. Nao atribuir descarte automatico pela
+ausencia momentanea de sessoes. Apresentar esses achados antes da decisao.
+
+DECISAO POSTERIOR CONFIRMADA: usuario determinou manter o backup do Estudo.
+Classificacao PERSISTENTE, banco inteiro, pelo mesmo backup SQL nativo dos
+demais bancos de usuario. Nao criar agenda exclusiva nem excluir por nao constar
+dos Studios/deploy.env. A reforma que retira bancos de sistema deve preservar
+Estudo tanto na captura online quanto na coordenada e na recuperacao.
+
+Status: CLASSIFICACAO CONFIRMADA, PERSISTENTE. Selecao atual ja inclui Estudo
+e permanece mantida; nenhuma alteracao na VPS, exclusao ou limpeza executada.
+
+#### 9. Cofre Privado YouTube Do Memorias
+
+Conferencia dos fontes customizados e Compose locais em 2026-10-20, sem abrir
+arquivos privados, consultar valores secretos ou operar a VPS.
+
+- EncryptedYouTubeApplicationConfigurationRepository guarda configuracao Google
+  em accounts/configuration/<hash-do-escopo>/oauth.bin e sua chave em key.bin.
+  A configuracao salva pelo aplicativo tem precedencia sobre o bootstrap.
+- EncryptedYouTubeAccountRepository guarda conexoes/autorizacoes dos canais
+  em accounts/<hash-do-escopo>/tenants/<TenantId>/connection-*.bin. A identidade
+  criptografica atual e v2, vinculada a ProcessingScope, tenant e finalidade.
+  Manter arquivo cifrado sem a chave correspondente nao comprova recuperacao.
+- O mesmo cofre tambem guarda estados de upload/recibos upload-*.bin e estados
+  temporarios authorization-*.bin. Restaurar um arquivo nao valida novamente
+  autorizacao expirada nem comprova retomada/estado externo de uma publicacao.
+- Esses arquivos nao sao fotos, MP4 ou manifestos de renderizacao e nao ficam
+  no banco SQL. Backup do banco sozinho nao recupera configuracao/conexoes.
+- API e Worker montam Apps.Memorias.PrivateRoot em /memorias-secrets e usam
+  /memorias-secrets/accounts. O backup de arquivos atual inclui essa raiz
+  privada; nao foi medido novamente seu tamanho/conteudo na VPS nesta etapa.
+- Essa configuracao pertence ao Memorias, nao a Central. Nao transferir tokens
+  ou configuracao da integracao para a Central, remover a cifra existente,
+  mudar precedencia ou gerar outra chave por causa desta revisao de backup.
+
+DECISAO CONFIRMADA: usuario aprovou o cofre como PERSISTENTE, com copia integral
+da area privada pelo fluxo comum, incluindo chaves correspondentes e preservando
+identidade de escopo/tenant. Nao criar filtros de conteudo dentro de persistente
+nem outro job/cofre. Fotos/videos locais continuam VOLATEIS.
+
+A permissao anterior para descartar o estado de testes na futura reinstalacao
+nao define a politica futura do cofre. A reinstalacao continua adiada e esta
+classificacao nao autoriza limpar arquivos, migrar tokens ou ativar backup novo.
+
+Curiosidade do usuario sobre arquivo versus SQL: manter o cofre nesta reforma
+preserva o mecanismo que a integracao ja usava, sem misturar migracao de dados
+com organizacao/backup. Nao ha exigencia tecnica de manter tokens em arquivos;
+armazenamento cifrado no banco seria outra implementacao, com gestao de chave
+separada. A pergunta nao aprova migracao, mudanca de criptografia ou nova camada.
+
+RETOMADA ADIADA pelo usuario: explicar o mecanismo do cofre e avaliar eventual
+uso do banco em outra conversa/etapa. Usuario reafirmou que nao e volatil.
+Nao prosseguir nesse redesenho durante a classificacao dos demais itens.
+
+Status: CLASSIFICACAO CONFIRMADA, PERSISTENTE. Selecao atual mantida; nenhuma
+mudanca no aplicativo, banco, arquivos privados ou VPS. Restore ainda a provar.
+
+#### 10. Arquivo Central De Credenciais Do Ambiente
+
+Conferencia da documentacao infra/private/README.md e selecao local de arquivos,
+sem abrir o JSON real ou mostrar senhas/chaves. Nenhuma operacao na VPS.
+
+- /root/YeshuaPrivate/production/credentials.json e configuracao administrativa
+  do ambiente, com Shared e Apps.<Aplicativo>. "Centralizado" nao significa
+  pertencente ao aplicativo Central nem novo servico em runtime.
+- Contem conexoes SQL dos apps e operacionais, autenticacao RabbitMQ, chaves JWT,
+  autenticacao entre modulos, Grafana e assinatura de upload. Deploy le o arquivo
+  privado; Compose recebe somente variaveis declaradas para cada consumidor.
+  O JSON inteiro nao e montado nos containers e o Front nao recebe segredos.
+- Integracoes externas de tenants/canais e o cofre YouTube continuam no respectivo
+  aplicativo, fora deste JSON. Esta revisao nao altera essa separacao.
+- O arquivo e consumido antes da subida dos servicos. Guardar sua unica copia
+  dentro do banco que ele permite acessar criaria dependencia de recuperacao;
+  nao propor essa mudanca ao discutir o armazenamento do cofre Memorias.
+- O backup atual de arquivos inclui a raiz privada. O arquivo deve manter
+  permissoes restritas e permanecer fora do Git/imagens/logs. O JSON nao cria
+  logins SQL por si so: provisionamento de acessos na recriacao continua sendo
+  obrigacao da infraestrutura registrada no item 7.
+
+DECISAO CONFIRMADA: usuario determinou manter PERSISTENTE e seguro, com copia
+integral da raiz privada pelo fluxo de arquivos existente, sem outro job ou
+modelo de segredo. Privacidade e controle de acesso, nao categoria de backup.
+
+Manter os controles existentes: diretorio 0700 e arquivo 0600 no Linux, fora
+do Git/imagens/logs, sem expor valores em relatorios ou montar o JSON inteiro
+nos consumidores. Copias permanecem no repositorio cifrado comum. Restaurar
+configuracao e conferir permissoes antes de provisionar/subir consumidores,
+sem regenerar chaves automaticamente. Nao acrescentar criptografia local ou
+outro cofre; a chave de recuperacao do backup exige custodia independente.
+
+Status: CLASSIFICACAO CONFIRMADA, PERSISTENTE COM ACESSO RESTRITO. Selecao atual
+mantida, sem mudanca de arquivo privado, deploy ou servidor. Esta confirmacao
+nao equivale a nova auditoria de seguranca ou prova de restauracao funcional.
+
+#### 11. Chaves Dos Provedores Do Agente Operacional
+
+Conferencia local de infra/private/credentials.py, infra/private/README.md e
+Compose Shared, sem ler providers.json real, consultar valores ou operar a VPS.
+
+- O arquivo opcional fica em shared/OperationalAgent/integracoes/providers.json
+  sob a raiz privada do ambiente. Campos OpenAI.ApiKey e Anthropic.ApiKey alimentam
+  OPENAI_API_KEY e ANTHROPIC_API_KEY do agente pelo leitor comum do deploy.
+- O arquivo e configuracao de integracao do consumidor, nao conteudo dos volumes
+  operational-agent-workspace/codex/claude. Sua existencia nao e obrigatoria para
+  validar a infraestrutura basica; nao foi conferida novamente na VPS nesta etapa.
+- Sessoes de login das CLIs, historicos, caches e arquivos do workspace continuam
+  VOLATEIS conforme decisao anterior. Nao exportar sessoes/tokens desses volumes
+  para providers.json, SQL ou backup em decorrencia desta investigacao.
+- O backup de arquivos ja seleciona a raiz privada integralmente. Um providers.json
+  presente nessa raiz e incluido; nao criar arquivo vazio, novas chaves ou agenda
+  particular para justificar a cobertura.
+
+DECISAO CONFIRMADA: usuario aprovou providers.json PERSISTENTE quando utilizado,
+com acesso restrito, fora do Git/imagens/logs e no backup cifrado comum, conforme
+o padrao privado existente. Isso nao transforma os volumes do agente em persistentes
+nem transfere a integracao ao aplicativo Central.
+
+Status: CLASSIFICACAO CONFIRMADA, PERSISTENTE COM ACESSO RESTRITO. Selecao atual
+mantida, sem alteracao de chaves, containers, volumes ou servidor.
+
+#### 12. Identidade HTTPS E Configuracao Certbot
+
+Conferencia local de infra/bootstraps/setup-cert.sh, Compose Shared, template
+20-https.conf.disabled e selecao de arquivos em 2026-10-20. Documentacao oficial
+Certbot conferida; nenhuma chave privada, conta ou arquivo real foi aberto.
+Nao houve consulta/operacao na VPS, emissao, renovacao ou parada do Nginx.
+
+- Nginx monta /etc/letsencrypt como somente leitura e aponta para
+  live/playsis.com.br/fullchain.pem e privkey.pem. O conteudo e identidade HTTPS
+  do dominio, distinto dos certificados fiscais dos tenants.
+- Certbot mantem certificados/chaves e configuracao de renovacao sob essa raiz,
+  com referencias entre live/archive. Capturar apenas um .pem isolado nao e o
+  mesmo que preservar a area e suas dependencias. Chaves privadas exigem sigilo.
+- O backup atual inclui /etc/letsencrypt quando presente. Preservacao de links,
+  permissoes e teste de uso/renovacao na restauracao ainda dependem do ensaio.
+- setup-cert.sh instala Certbot e emite por standalone, podendo parar o gateway
+  durante a emissao. Nao executar esse script para classificar os dados nem
+  reemitir automaticamente durante restore de certificados existentes.
+- Scripts/templates do provisionamento continuam recriaveis pelo Git. O estado
+  emitido nao e o proprio fonte. Renovacao automatica e sua agenda/hooks nao
+  foram conferidos em runtime; nao declarar que estao corretos ou quebrados.
+
+DECISAO POSTERIOR CONFIRMADA: usuario escolheu area HTTPS VOLATIL, apos esclarecer
+que setup-cert.sh ja permite emitir certificados na recriacao do servidor. Essa
+decisao substitui a aprovacao inicial como persistente e retira a excecao proposta.
+Novas capturas nao devem incluir /etc/letsencrypt; scripts/templates continuam no
+Git. A selecao atual e as provas de cobertura ainda precisam dessa adequacao.
+Nao mudar rotas, renovar, revogar certificados ou reiniciar servicos nesta revisao.
+
+Fonte: [Certbot, arquivos e renovacao](https://eff-certbot.readthedocs.io/en/stable/using.html#where-are-my-certificates).
+
+Status: CLASSIFICACAO CONFIRMADA, VOLATIL. Novas capturas v3 excluem HTTPS;
+prova de recriacao PENDENTE. Nao houve deploy ou alteracao de
+arquivos/configuracao na VPS. Recriar nao equivale a certificado automaticamente
+valido: provar emissao/renovacao no momento apropriado, com dominio validavel.
+
+#### 13. Credencial De Recuperacao Do Proprio Backup
+
+Conferencia local de restic_env em infra/backups/backup.py e do roteiro de
+recuperacao, sem ler Shared.Backup.Password, kit real ou chaves de acesso.
+
+- O operador usa Shared.Backup.Password do JSON privado para abrir o repositorio
+  Restic. Endereco e credenciais do armazenamento sao configurados no mesmo bloco;
+  destino externo continua pendente, com repositorio LOCAL nesta fase.
+- A copia do JSON dentro de um backup cifrado nao basta para abrir esse proprio
+  backup. E necessaria custodia independente da senha e do acesso ao repositorio,
+  fora da VPS e fora da unica copia que esses valores permitem descriptografar.
+- Ha registro anterior de kit restrito fora da VPS no plano operacional; ele
+  nao foi aberto nem revalidado nesta etapa. Nao afirmar disponibilidade atual
+  ou recuperacao funcional a partir desse registro historico.
+- Regenerar outra senha/chave do zero nao recria o acesso ao conjunto anterior.
+  Nao trocar credenciais, criar kit novo nem registrar seus valores no Git/chat/logs
+  por causa da classificacao. Fontes das ferramentas continuam recriaveis.
+
+DECISAO/IMPLEMENTACAO SOLICITADA: credencial PERSISTENTE/restrita, com guarda
+independente. Ao preparar o servidor e os agentes de backup, expor a senha ao
+operador para guarda protegida, sem depender de uma copia somente no servidor.
+Nao criar nova categoria, cofre ou modelo de criptografia.
+
+IMPLEMENTACAO LOCAL ATUALIZADA: o setup chama configure-local/recovery-key logo
+apos validar o JSON privado, antes de atualizacao geral/Docker/builds. Instala
+somente Restic/util-linux antes disso se faltarem. O instalador final reutiliza
+a confirmacao da mesma senha/repositorio/maquina, sem pedir nova atencao; depois
+completa initialize_online/habilitacao das agendas, como antes.
+Antes da guarda, init --wait aguarda o arquivo privado no caminho do servidor,
+preparado em outra sessao e confirmado com PRONTO por /dev/tty, sem ler senhas
+do stdin. Erros podem ser corrigidos na mesma execucao; arquivo valido e
+reutilizado sem pergunta. CANCELAR/EOF/Ctrl+C ou ausencia de terminal quando
+precisa de preparo interrompem antes dos servicos. Validacao/testes locais;
+nenhum deploy, limpeza ou alteracao na VPS nesta etapa.
+Senha/repositorio sao verificados pelo acesso Restic; EXIBIR autoriza exibir a
+senha existente somente em /dev/tty e GUARDEI confirma a guarda fora da VPS.
+Nao usar stdout/stderr capturados. Sem terminal privado, recusa ou interrupcao,
+nao confirmar custodia nem seguir para atualizacoes/deploy. Apps/agendas preexistentes
+nao sao desligados. O operador deve evitar gravacao/compartilhamento do terminal;
+o script nao consegue detectar uma gravacao externa da sessao.
+
+state/recovery-key-custody.json guarda hash de identificacao, maquina, data e
+declaracao de guarda, sem senha. Mesmo repositorio/senha/maquina reutiliza essa
+confirmacao; outra maquina ou senha exige nova confirmacao. Consulta posterior
+exige recovery-key --show-recovery-key, mantendo consentimento/terminal privado.
+configure-local recusa gerar senha substituta se o repositorio ja existe e a
+senha original esta ausente. Nenhuma credencial real foi lida, criada ou trocada.
+
+Status: IMPLEMENTADO LOCALMENTE, SEM DEPLOY. Testes usam somente dados ficticios;
+terminal Linux real, guarda externa e recuperacao continuam para o ensaio futuro.
+A declaracao de guarda nao equivale a prova de copia externa nem resolve a
+pendencia do destino externo dos dados, que continuam locais nesta fase.
+
+REVISAO DE OUTRAS CHAVES: nos caminhos de setup auditados, somente a senha do
+backup e gerada e precisa de entrega manual para guarda independente. Credenciais
+SQL/broker/JWT/assinatura e chaves de provedores sao entradas privadas existentes,
+validadas no inicio, sem nova exposicao. A chave do cofre YouTube pode nascer ao
+salvar configuracao no aplicativo, nao no setup; manter backup do cofre sem expor
+essa chave aqui. Certificados fiscais sao fornecidos ao app e HTTPS e reemitivel.
+Nao houve leitura de valores nem auditoria de chaves do sistema operacional.
+Credencial do destino externo dos dados sera conferida quando ele for escolhido.
+
+Verificacao local desta entrega: 17 testes novos de entrega/recusa/repeticao e
+nao exposicao, suite de backup com 151 testes (149 aprovados, dois dependentes
+de ferramentas/permissoes Linux), 25 testes de configuracao privada aprovados
+e teste Bash simulado do setup aprovado. Nenhuma credencial real utilizada.
+O teste do setup tambem cobre guarda antes de apt upgrade/deploy, recusa no
+inicio, servidor sem Restic e falha nos pre-requisitos, sem comandos reais de infra.
+
 ## 1. Decisao Principal
 
 Definir a estrategia da area uma vez. Ao criar um recurso, escolher uma area
@@ -461,13 +1227,15 @@ Ambiente publicado
 | DB_FISCAL | YESHUA_FISCAL | PERSISTENTE, confirmado | Banco inteiro; documentos, protocolos, planos, referencias e estado das sagas |
 | DB_MEMORIAS | YESHUA_MEMORIAS | PERSISTENTE, confirmado | Banco inteiro; albuns, fotos, publicacoes e canais; arquivos/cofre seguem revisao propria |
 | DB_OPERATIONAL_INTELLIGENCE | YESHUA_OPERATIONAL_INTELLIGENCE | PERSISTENTE, confirmado | Banco inteiro por ser aplicativo definido em Studio; sem exclusao de tabelas reconstruiveis |
-| DB_SQL_SYSTEM | master, msdb, model quando aplicaveis | SQL_ESSENCIAL, roteiro proprio | Metadados de instancia, SIDs, logins, jobs e chaves; compatibilidade de restore especifica |
-| DB_LEGADOS | Context_CLINICA e outros bancos encontrados | SEM_CLASSIFICACAO ate inventario | Nao excluir por nao aparecerem no deploy.env; identificar uso, dono e necessidade |
+| DB_SQL_SYSTEM | master, msdb, model e tempdb | VOLATIL / recriavel, fora do backup, confirmado | Provisionar acessos necessarios pela infraestrutura e arquivo privado; selecao SQL e prova de recriacao pendentes. Nao recriar jobs antigos por suposicao |
+| DB_ESTUDO | Estudo, metadados conferidos via API operacional | PERSISTENTE, confirmado | Banco inteiro, backup nativo na rotina comum, mesmo sem Studio identificado. Manter na captura/recuperacao ao excluir bancos de sistema; nao criar agenda particular |
+| DB_LEGADOS | Context_CLINICA e outros bancos eventualmente encontrados | SEM_CLASSIFICACAO ate inventario | Nao excluir por nao aparecerem no deploy.env; identificar presenca, uso, dono e necessidade separadamente de Estudo |
 | DB_LEITURA_FUTURO | Eventual banco separado de leitura de aplicativo | PERSISTENTE | A regra de todos os bancos dos aplicativos tambem cobre novas bases de leitura; nao presumir exclusao por replay |
 
 Toda tabela do banco entra: tabelas Y, negocio, Saga/Step, Inbox/Outbox,
 idempotencia, sequencias e ledgers. Nao excluir essas tabelas como se fossem
-cache. tempdb e recriado pelo SQL e nao entra na rotina de backup.
+cache. Bancos de sistema ficam fora por decisao explicita, sem reduzir a cobertura
+dos bancos de aplicativos; acesso e provisionado na recriacao do servidor.
 
 Replicacao nao substitui backup. Dois bancos contendo a mesma exclusao
 acidental nao oferecem um ponto anterior recuperavel.
@@ -480,9 +1248,9 @@ acidental nao oferecem um ponto anterior recuperavel.
 | MEMORIAS_VIDEOS_LOCAIS | /root/YeshuaStorage/persistent/memorias/publicacoes/{id}/video.mp4 (destino atual a corrigir) | SEMPRE VOLATIL, confirmado | Sem preservacao paga; direcionar via StorageLocation a volatil e tratar ausencia/limpeza na aplicacao |
 | MEMORIAS_PUBLICACOES | /root/YeshuaStorage/persistent/memorias/publicacoes/{id}/manifest.json (destino atual a corrigir) | VOLATIL, confirmado | Instrucoes de renderizacao para o Python; direcionar via StorageLocation e tratar ausencia na aplicacao; .render-* tambem volatil |
 | MEMORIAS_MUSICAS | /root/YeshuaStorage/persistent/memorias/music (destino atual a corrigir) | Trilhas padrao versionadas VOLATEIS, confirmado | Repor do Git/deploy com hash; eventuais arquivos nao versionados exigem identificacao/classificacao propria |
-| CLINICA_DOCUMENTOS_ENTRADA | /root/YeshuaStorage/persistent/docs/input | PENDENTE DE INVESTIGACAO, por decisao do usuario | Localizacao declarada/configurada, sem fluxo identificado na conferencia do codigo; confirmar finalidade e conteudo antes de decidir persistente/volatil |
-| CLINICA_DOCUMENTOS_SAIDA | /root/YeshuaStorage/persistent/docs/output | PENDENTE DE INVESTIGACAO, por decisao do usuario | Confirmar finalidade, uso e conteudo antes de decidir persistente/volatil; nenhuma alteracao agora |
-| DOCUMENTOS_LEGADOS | /root/YeshuaStorage/persistent/Docs/input e output | PENDENTE DE INVESTIGACAO, confirmado pelo usuario | Conferir junto com DocsInput/DocsOutput; bootstrap cria Docs maiusculo, distinto de docs no Linux; vazio no inventario anterior |
+| CLINICA_DOCUMENTOS_ENTRADA | /root/YeshuaStorage/persistent/docs/input | RETIRADA APROVADA, implementacao pendente | Nenhum consumidor de negocio identificado; retirar declaracao/configuracao sem apagar pastas existentes |
+| CLINICA_DOCUMENTOS_SAIDA | /root/YeshuaStorage/persistent/docs/output | RETIRADA APROVADA, implementacao pendente | Mesma investigacao; prontuario/RegistroDocumental continuam em SQL persistente |
+| DOCUMENTOS_LEGADOS | /root/YeshuaStorage/persistent/Docs/input e output | RETIRADA APROVADA, implementacao pendente | Retirar criacao automatica com D maiusculo; nao apagar conteudo existente nem filtrar persistente |
 | CLINICA_AUDIO_ORIGINAL | /root/YeshuaStorage/volatile/ia/transcriptions/input | VOLATIL, confirmado individualmente | Ja usa StorageLocation.Volatile.TranscriptionsInput; tratar ausencia/reenvio e limpeza na aplicacao; nenhuma exclusao da origem nesta revisao |
 | CLINICA_TRANSCRICAO_ARQUIVOS | /root/YeshuaStorage/volatile/ia/transcriptions/output; temporarios do worker | VOLATIL, confirmado individualmente | Texto retornado pela fila e salvo no banco permanece persistente; sem gravacao identificada nessa pasta no worker consultado; conferir necessidade da localizacao e tratar temporarios |
 | CLINICA_RELATORIOS_ENTRADA | /root/YeshuaStorage/volatile/reports/input | VOLATIL, confirmado individualmente | Manter classificacao existente, por decisao do usuario; origem/uso nao comprovados no codigo conferido; nenhuma limpeza ativada |
@@ -508,18 +1276,19 @@ conjunto; caminho legado comprovadamente sem uso nao e inventado no servidor.
 
 | ID | Origem ou localizador | Politica | Dependencia critica |
 | --- | --- | --- | --- |
-| MEMORIAS_COFRE | Apps.Memorias.PrivateRoot/accounts, atualmente /root/YeshuaMemoriasSecrets/accounts | SEGREDOS_ESSENCIAIS | Resolver bind privado; preservar conexoes, configuracao OAuth cifrada, sessoes, recibos e chaves |
-| MEMORIAS_CONFIG_CIFRADA | accounts/configuration/<hash-do-escopo>/oauth.bin e key.bin | SEGREDOS_ESSENCIAIS | Configuracao salva pela interface pode prevalecer sobre bootstrap.json; restaurar par correspondente |
-| MEMORIAS_UPLOAD_STATE | accounts/<escopo>/tenants/.../upload-*.bin | SEGREDOS_ESSENCIAIS | Sessao/recibo vinculado ao mesmo video, destino, hash e publicacao; evitar upload duplicado |
-| MEMORIAS_OAUTH_PENDING | authorization-*.bin no cofre | SEGREDOS_ESSENCIAIS na captura do cofre | Estado transitorio com validade; restore nao ressuscita autorizacao expirada |
+| MEMORIAS_COFRE | Apps.Memorias.PrivateRoot/accounts, atualmente /root/YeshuaMemoriasSecrets/accounts | PERSISTENTE, confirmado | Cofre do Memorias, fora do SQL; conexoes/configuracao/chaves e estados de upload/autorizacao. Copia integral ja selecionada, sem prova de restore nesta revisao |
+| MEMORIAS_CONFIG_CIFRADA | accounts/configuration/<hash-do-escopo>/oauth.bin e key.bin | PERSISTENTE, junto do cofre confirmado | Configuracao salva pela interface prevalece sobre bootstrap quando presente; preservar chave correspondente e identidade de escopo, sem transferir integracao para Central |
+| MEMORIAS_UPLOAD_STATE | accounts/<escopo>/tenants/.../upload-*.bin | PERSISTENTE, parte da copia integral do cofre | Sessao/recibo vinculado ao mesmo video, destino, hash e publicacao; evitar upload duplicado |
+| MEMORIAS_OAUTH_PENDING | authorization-*.bin no cofre | PERSISTENTE, parte da copia integral do cofre | Estado transitorio com validade; restore nao ressuscita autorizacao expirada; sem exclusao por conteudo dentro de persistente |
 | FISCAL_CERTIFICADOS | /root/YeshuaPrivate/production/apps/Fiscal/tenants/<Id>/titulares/<Documento>/certificados/<Thumbprint> | PERSISTENTE, confirmado | Certificado PFX e senha.secret com acesso restrito; alinhar StorageLocation na reforma, sem exposicao publica |
-| CONFIG_PRIVADA | /root/YeshuaPrivate/production/credentials.json | SEGREDOS_ESSENCIAIS | Fonte tecnica unica por ambiente; Shared/Apps, root 0600, fora do Git e das imagens |
-| INTEGRACOES_PRIVADAS | /root/YeshuaPrivate/production/apps/Memorias/integracoes/youtube/bootstrap.json e shared/OperationalAgent/integracoes/providers.json | SEGREDOS_ESSENCIAIS quando usados | Integracoes dos respectivos consumidores, opcionais; nao substituir o cofre Memorias por bootstrap vazio |
+| CONFIG_PRIVADA | /root/YeshuaPrivate/production/credentials.json | PERSISTENTE com acesso restrito, confirmado | Configuracao administrativa Shared/Apps; pasta 0700/arquivo 0600, fora do Git/imagens/logs; backup cifrado comum e permissoes conferidas no restore. Nao guardar unica copia no SQL que depende dela |
+| INTEGRACOES_PRIVADAS | /root/YeshuaPrivate/production/apps/Memorias/integracoes/youtube/bootstrap.json | SEGREDOS_ESSENCIAIS quando usado | Bootstrap opcional do Memorias; nao substituir o cofre por bootstrap vazio. Discussao de armazenamento do cofre adiada; providers do agente tratados separadamente |
+| AGENTE_PROVIDERS | shared/OperationalAgent/integracoes/providers.json sob a raiz privada | PERSISTENTE com acesso restrito, confirmado | Chaves de API opcionais lidas pelo deploy; nao sao sessoes/historicos das CLIs. Raiz privada ja selecionada; volumes do agente continuam VOLATEIS |
 | CONFIG_PRIVADA_LEGADA | /root/YeshuaDB/persistent/config e /root/YeshuaStorage/fiscal/certificados | Inventariar legado sem adocao implicita | Nao sao o destino atual de novas credenciais; confirmar uso, sem migracao ou exclusao automatica |
 | CHAVES_HOSTS | Origem efetiva de JWT, autenticacao entre modulos, credenciais SQL/broker e provedores | SEGREDOS_ESSENCIAIS | Pode vir de ambiente ou arquivo externo; preservar fonte recuperavel sem imprimir valores |
 | SQL_CRIPTOGRAFIA | Certificados/chaves de TDE ou backup cifrado, se existirem | SEGREDOS_ESSENCIAIS | Exportacao suportada e acesso em outra instancia; .bak sozinho pode ser inutilizavel |
-| HTTPS_IDENTIDADE | /etc/letsencrypt | SEGREDOS_ESSENCIAIS | Chaves privadas, conta ACME, links, permissoes e renovacao; alternativa de reemissao documentada |
-| BACKUP_RECUPERACAO | Credencial do destino externo e senha/chave do repositorio | SEGREDOS_ESSENCIAIS, custodia independente | Kit fora da VPS e fora do unico repositorio que ele desbloqueia |
+| HTTPS_IDENTIDADE | /etc/letsencrypt | VOLATIL, confirmado por decisao posterior | Reemitir pelo setup-cert.sh na recriacao, com validacao do dominio/renovacao. Retirada das novas capturas/cobertura pendente; nao apagar origem/snapshots agora |
+| BACKUP_RECUPERACAO | Credencial do destino externo e senha/chave do repositorio | PERSISTENTE/restrito, com entrega ao operador solicitada | Setup entrega senha por terminal privado e confirma guarda independente; recibo sem senha nao e prova de copia externa. Implementado localmente, sem deploy/validacao de terminal Linux real |
 
 Nao guardar valores secretos neste mapa nem em um manifesto versionado.
 No Memorias, o ProcessingScope integra a identidade criptografica: preservar
@@ -542,9 +1311,9 @@ da copia cifrada ou no servidor perdido.
 | CONFIG_NAO_GIT | .env, appsettings ou override externo efetivamente consumido | CONFIGURACAO_ESSENCIAL; SEGREDOS_ESSENCIAIS se secreto | Registrar precedencia e origem real sem despejar ambiente/inspect em relatorio publico |
 | ACESSO_SERVIDOR | Regras de firewall, DNS, portas, mounts, UID/GID, usuarios e acesso administrativo | CONFIGURACAO_ESSENCIAL | Registrar tambem configuracoes no provedor; chaves privadas em custodia restrita, nao copiar toda a home indiscriminadamente |
 | AGENDAS_E_MONITORES | Timers/cron, rotinas de backup, checagens e destinatarios de alertas | CONFIGURACAO_ESSENCIAL | Incluir estado fora do Git e demonstrar deteccao de backup atrasado |
-| BROKER_DEFINICOES | Export de definicoes do RabbitMQ e versao/nodename pertinentes | CONFIGURACAO_ESSENCIAL | Topologia, usuarios e politicas; export restrito nao equivale a backup de mensagens |
-| GRAFANA_CONFIG | Dashboards, alertas, datasources e alteracoes feitas pela interface | CONFIGURACAO_ESSENCIAL se nao estiverem em Git | Identificar armazenamento/export suportado; nao descartar junto do historico rotativo |
-| TELEMETRIA_HISTORICO | /root/YeshuaDB/persistent/telemetry | EVIDENCIA_SELETIVA | Copia consistente de recortes; nao copiar diretorio ativo sem procedimento proprio |
+| BROKER_DEFINICOES | Estado/configuracao interna do RabbitMQ | VOLATIL, confirmado pelo usuario | Recriar topologia pelos contratos e credenciais pelo JSON privado; nao incluir export do broker no backup. Configuracao privada continua persistente |
+| GRAFANA_CONFIG | Estado interno do Grafana | VOLATIL, confirmado pelo usuario | Personalizacoes devem ser versionadas/provisionadas pela infra, nao existir apenas na interface; segredos no JSON privado. Adequar raiz runtime sem apagar dados agora |
+| TELEMETRIA_HISTORICO | Historico de logs/metricas/rastros hoje no bind /root/YeshuaDB/persistent/telemetry | VOLATIL, confirmado pelo usuario | Adequar raizes; nao mudar retencao/coleta. Grafana tambem classificado como volatil; nao filtrar conteudo da raiz persistente antiga |
 | EVIDENCIAS_ENSAIOS | Manifestos de backup, resultados de checagem, hashes e provas de restore | CONFIGURACAO_ESSENCIAL | Guardar fora do servidor tambem; sem payloads/tokens; material sensivel com acesso restrito |
 | CONJUNTOS_BACKUP | Staging local e snapshots externos a implantar | Preservar conforme politica de retencao do plano | .bak/.trn e arquivos selados alimentam a copia externa; nao incluir o repositorio/staging recursivamente no proprio backup |
 
@@ -552,8 +1321,8 @@ da copia cifrada ou no servidor perdido.
 
 | ID | Recurso | Tratamento proposto | Limite atual |
 | --- | --- | --- | --- |
-| BROKER_MENSAGENS | Mensagens prontas, nao confirmadas e em execucao | LACUNA: estrategia propria de recuperacao a aprovar | Compose nao declara volume do RabbitMQ; nao presumir reentrega apenas porque existe Outbox |
-| REDIS_ESTADO | Conteudo Redis | RECONSTRUIVEL somente se uso exclusivo como cache comprovado | Se guardar unico job, sessao indispensavel ou dado de negocio, deixa de ser cache e precisa de protecao correspondente |
+| BROKER_MENSAGENS | Mensagens prontas, nao confirmadas e em execucao | VOLATIL, confirmado pelo usuario | Fora do backup; adequar captura coordenada. Nao prometer retomada automatica via SQL e nao mudar ACK por causa dessa classificacao |
+| REDIS_ESTADO | Conteudo Redis | VOLATIL, confirmado pelo usuario | Adequar captura coordenada; nao desligar/remover servico por essa decisao. Nenhum consumidor ativo identificado no codigo; cache gerado usa IMemoryCache |
 | CELERY_TAREFAS | Tarefas Python/renderer e seus retornos | Reconciliacao com SQL, arquivos, fila e estado externo | Renderer Memorias usa ACK antecipado; backup SQL+arquivos nao garante recuperar tarefa aceita |
 | ESTADO_EM_MEMORIA | Politica operacional temporaria e outros singletons | Sem backup da memoria | Preservar configuracao base; override que precise sobreviver deve ter persistencia deliberada |
 | EFEITOS_SEFAZ | Autorizacoes, eventos e protocolos externos | Preservar evidencias locais e reconciliar | Restore nao desfaz emissao/evento externo; sem reemissao automatica baseada apenas em ausencia local |
@@ -574,7 +1343,7 @@ um novo tipo de persistencia exige comprovar esse procedimento uma vez.
 | IA_MODELOS_PUBLICOS | Cache de modelos, NuGet, pip e demais downloads | RECONSTRUIVEL | Registrar versao/fonte e disponibilidade; modelo privado ou ajustado exclusivamente e ARQUIVOS_ESSENCIAIS |
 | RELATORIO_DERIVADO | Preview, miniatura, PDF nao assinado ou export reproduzivel | RECONSTRUIVEL apos prova | Fonte completa preservada e tempo aceitavel; documento entregue/alterado manualmente pode nao ser reproduzivel |
 | BUILD_OUTPUT | bin, obj e caches de compilacao | RECONSTRUIVEL | Fonte e dependencias recuperaveis; nao implica build identico sem versoes fixadas |
-| AGENTE_AMBIENTE | operational-agent-workspace/codex/claude | RECONSTRUIVEL para ferramentas e autenticacao | Reautenticar; separar fontes/evidencias exclusivas antes de excluir volumes; nao arquivar sessao de agente indiscriminadamente |
+| AGENTE_AMBIENTE | operational-agent-workspace/codex/claude | VOLATIL, confirmado pelo usuario | Fora do backup; estado funcional persistente deve ir ao banco ja protegido. Nao copiar sessoes para SQL nem apagar volumes por essa classificacao |
 | LOGS_ROTATIVOS | Logs brutos Docker e sistema | EVIDENCIA_SELETIVA | Recorte de incidente pode ser essencial; nao prometer historico integral |
 | DOCKER_IMAGENS | Imagens de Front Central, APIs, workers, SQL, Python/IA e demais servicos | IMAGENS_ADIADAS | Registrar identidade agora; criar estrategia de preservacao depois de estabilizar |
 | VPS_SNAPSHOT | Snapshot integral, sistema operacional e camada Docker | IMAGENS_ADIADAS | Complemento futuro; nao substitui SQL nativo, arquivos e copia externa |
@@ -780,7 +1549,7 @@ cada upload, command, consulta SQL ou escrita de arquivo.
 | Limpeza de volatile e .render-* | Task pendente por tempo e/ou tamanho, com contrato de cada aplicacao | Definir limites e proteger arquivos em uso; nenhum agendamento/exclusao ativado |
 | Limpeza de staging SQL | Separar de limpeza de arquivos do aplicativo | Exigir backup externo validado, ausencia de SQL ativo e preservacao da cadeia/ultimo conjunto recuperavel |
 | Upload local em containers | Preservar se existir e depois apontar para area adequada | Hoje nao ha persistencia declarada correspondente |
-| Mensagens RabbitMQ | Definir recuperacao e provar antes de prometer cobertura | Definicoes nao guardam mensagens; tarefa aceita pode nao estar mais na fila |
+| Mensagens RabbitMQ | VOLATIL confirmado; adequar captura coordenada | Investigar intencao do ACK separadamente; perda de broker nao implica aceite de perda silenciosa no recebimento normal |
 | Grafana/interface | Exportar configuracao propria antes de dispensar historico | Dashboard alterado manualmente pode existir somente em /data |
 | Recursos novos | Escolher area existente primeiro; politica por area nova somente se necessario | Evita criar backup especifico por funcionalidade |
 | Sintaxe DSL | Nao criar agora; fechar os vinculos e validar com poucos casos | Configuracao atual pode resolver a primeira entrega sem nova abstracao |

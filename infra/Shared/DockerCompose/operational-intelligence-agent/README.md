@@ -39,3 +39,17 @@ yeshua-agent-sync
 
 Autenticacao dos agentes deve ser feita por variaveis/segredos do ambiente do
 servidor, nunca gravada na imagem.
+
+## Estado E Backup
+
+Os volumes operational-agent-workspace, operational-agent-codex e
+operational-agent-claude sao VOLATEIS e ficam fora do backup. Nao depender
+deles para recuperar trabalho local, sessoes ou estado funcional do agente.
+Fontes e infraestrutura devem estar publicados no Git.
+
+Se uma funcionalidade precisar manter estado, ele deve ir ao banco correspondente
+ja protegido por backup, pelo caminho normal da aplicacao. Nao criar um backup
+particular desses volumes ou um arquivo paralelo para esse estado. Credenciais
+tecnicas continuam na configuracao privada existente, nao em copias de sessoes
+das CLIs no SQL. Esta regra nao habilita escrita no agente observador nem altera
+seu comportamento atual; a adequacao da captura coordenada ainda esta pendente.

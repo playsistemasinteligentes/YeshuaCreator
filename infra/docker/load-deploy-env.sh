@@ -41,3 +41,10 @@ while IFS=$'\t' read -r _yeshua_key _yeshua_encoded; do
 done <<< "$_yeshua_config_values"
 unset _yeshua_config_values _yeshua_value _yeshua_encoded _yeshua_key
 unset _yeshua_config_target _yeshua_config_options _yeshua_config_file
+
+# Setup only: reuse the same provisioning after migrations and before consumers.
+yeshua_setup_sql_access() {
+  if [[ "${YESHUA_SETUP_SQL_ACCESS:-0}" == "1" ]]; then
+    "${YESHUA_PYTHON:-python3}" -B "$APP_DIR/infra/private/sql_access.py" --allow-missing-databases
+  fi
+}

@@ -29,6 +29,11 @@ HASH = re.compile(r"[0-9a-f]{64}")
 PROJECT_NAME = re.compile(r"playsis-[a-z0-9][a-z0-9-]*")
 BACKEND_ENV = {"AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN", "AWS_DEFAULT_REGION",
                "AZURE_ACCOUNT_NAME", "AZURE_ACCOUNT_KEY", "B2_ACCOUNT_ID", "B2_ACCOUNT_KEY"}
+VOLATILE_VOLUME_TARGETS = {
+    "redis": {"/data"},
+    "rabbitmq": {"/var/lib/rabbitmq"},
+    "operational-intelligence-agent": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
+}
 
 
 def now():
@@ -88,7 +93,7 @@ def checked_policy(path):
         raise Error("unsupported_sql_storage_or_mode")
     for area in policy["areas"]:
         area_path = absolute(area["path"])
-        if str(area_path) not in {"/root/YeshuaStorage/persistent", "/root/YeshuaDB/persistent/telemetry", "/etc/letsencrypt"}:
+        if str(area_path) != "/root/YeshuaStorage/persistent" or area.get("required") is not True:
             raise Error("area_requires_explicit_coverage_review")
     for key in ("minimum_free_bytes", "minimum_available_memory_mb", "stop_timeout_seconds", "command_timeout_seconds",
                 "keep_daily", "keep_weekly", "keep_monthly"):
@@ -146,22 +151,26 @@ def inspect_running():
 def mount_areas(containers, document, private_file, policy):
     areas = list(policy["areas"]) + [
         {"id": "private", "path": str(private_file.parent), "required": True},
-        {"id": "memorias-vault", "path": document.get("Apps", {}).get("Memorias", {}).get("PrivateRoot", ""), "required": True}]
+        {"id": "memorias-vault", "path": str(sql.memorias_private_root(document, private_file)), "required": True}]
     covered = [absolute(a["path"]) for a in areas]
     if any(p in {Path("/"), Path("/root"), ROOT} or p.is_relative_to(Path(policy["staging"])) for p in covered):
         raise Error("unsafe_or_recursive_capture_root")
     if any(p.is_relative_to(Path(policy["sql_data"])) or Path(policy["sql_data"]).is_relative_to(p) for p in covered):
         raise Error("raw_sql_storage_must_never_be_an_area")
+    volatile = [Path("/root/YeshuaStorage/volatile"), Path("/etc/letsencrypt"), Path("/root/YeshuaDB/persistent/telemetry")]
+    if any(p.is_relative_to(v) or v.is_relative_to(p) for p in covered for v in volatile):
+        raise Error("persistent_capture_root_overlaps_volatile_area")
     for c in containers:
+        labels = c.get("Config", {}).get("Labels") or {}
         for mount in c.get("Mounts", []):
             source = absolute(mount["Source"])
             if mount["Type"] == "volume":
                 if not re.fullmatch(r"[a-zA-Z0-9_.-]+", mount.get("Name", "")):
                     raise Error("invalid_docker_volume_name")
-                if source not in covered:
-                    areas.append({"id": "volume-" + hashlib.sha256(str(source).encode()).hexdigest()[:12],
-                                  "path": str(source), "required": True, "volume": mount["Name"]})
-                    covered.append(source)
+                if (labels.get("com.docker.compose.project") == "playsis-shared"
+                        and mount.get("Destination") in VOLATILE_VOLUME_TARGETS.get(labels.get("com.docker.compose.service"), ())):
+                    continue
+                raise Error("unclassified_volume_use_storage_location_persistent_or_volatile")
             elif mount["Type"] != "bind":
                 raise Error("unsupported_persistent_mount_type")
             elif source == Path(policy["sql_data"]) and c["Name"] == "/" + sql.SQL_CONTAINER:
@@ -169,14 +178,21 @@ def mount_areas(containers, document, private_file, policy):
             elif source == Path("/root/YeshuaStorage") or source.is_relative_to(Path("/root/YeshuaStorage/volatile")):
                 # The shared mount exposes both categories; only persistent is captured.
                 continue
+            elif source == Path("/etc/letsencrypt"):
+                continue
+            elif source.is_relative_to(Path("/root/YeshuaDB/persistent/telemetry")):
+                raise Error("legacy_telemetry_mount_requires_volatile_root_redeploy")
             elif source.is_relative_to(ROOT):
                 if mount.get("RW"):
                     raise Error("writable_repository_mount_requires_review")
             elif not any(source.is_relative_to(root) for root in covered):
                 raise Error("unclassified_bind_mount")
     # Nested roots are captured once, preserving their original location/permissions.
-    return [a for a in areas if not any(Path(a["path"]) != Path(b["path"])
-            and Path(a["path"]).is_relative_to(Path(b["path"])) for b in areas)]
+    unique = {}
+    for area in areas:
+        unique.setdefault(area["path"], area)
+    return [a for a in unique.values() if not any(Path(a["path"]) != Path(b["path"])
+            and Path(a["path"]).is_relative_to(Path(b["path"])) for b in unique.values())]
 
 
 def public_summary(plan):
@@ -202,7 +218,7 @@ def make_plan(document, password, private_file, policy):
     if any("agent" in service["servicename"].lower() and service["status_desc"] == "Running"
            for service in metadata.get("sql_services", [])):
         raise Error("sql_agent_running_requires_writer_isolation_review")
-    databases = [d for d in metadata["databases"] if d["name"] != "tempdb"]
+    databases = sql.user_databases(metadata)
     if any(d["state_desc"] != "ONLINE" or d.get("is_encrypted") or d.get("can_backup_database") != 1 for d in databases):
         raise Error("database_unavailable_encrypted_or_permission_missing")
     memory = {line.split(":")[0]: int(line.split()[1]) for line in Path("/proc/meminfo").read_text().splitlines()}
@@ -566,12 +582,12 @@ def restic_env(document):
                 RESTIC_CACHE_DIR="/root/.cache/yeshua-restic", GOMAXPROCS="1")
 
 
-def restic(document, args, *, timeout=14400):
+def restic(document, args, *, timeout=14400, input=None):
     if not shutil.which("restic"):
         raise Error("restic_not_installed_no_automatic_install")
     return sql.run(["nice", "-n", "19", "ionice", "-c", "3", "restic", "--no-cache",
                     "--limit-upload", "2048", "--limit-download", "4096", *args],
-                   env=restic_env(document), timeout=timeout, stage="restic_operation")
+                   env=restic_env(document), timeout=timeout, input=input, stage="restic_operation")
 
 
 def upload(document, stage, policy):
@@ -594,7 +610,7 @@ def upload(document, stage, policy):
         return {"operation": "upload", **receipt}
 
 
-def download(document, snapshot_id, target):
+def download(document, snapshot_id, target, policy):
     if not HASH.fullmatch(snapshot_id):
         raise Error("exact_64_character_snapshot_id_required_not_latest")
     target = absolute(target)
@@ -610,7 +626,11 @@ def download(document, snapshot_id, target):
     restic(document, ["restore", snapshot_id, "--verify", "--target", str(target)])
     profile = next(iter(profiles))
     if profile != "coordinated":
-        write(target / "download-receipt.json", {"snapshot_id": snapshot_id, "kind": profile, "verified_at": now()})
+        details = {}
+        if profile == "files":
+            import routine
+            details = routine.seal_files_download(sys.modules[__name__], document, policy, target)
+        write(target / "download-receipt.json", {"snapshot_id": snapshot_id, "kind": profile, "verified_at": now(), **details})
         return {"operation": "download", "snapshot_id": snapshot_id, "kind": profile, "directory": str(target),
                 "files_verified": True, "restore_proven": False}
     manifests = list(target.rglob("manifest.json"))
@@ -909,7 +929,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", nargs="?", default="plan", choices=("plan", "capture", "init-repository", "upload", "check",
                         "download", "prepare-server", "start-sql", "restore-sql", "create-services", "resume-source", "retention", "cleanup-staging",
-                        "configure-local", "scheduled", "status", "sql-restore-plan", "restore-sql-chain"))
+                        "configure-local", "recovery-key", "scheduled", "status", "sql-restore-plan", "restore-sql-chain", "restore-files"))
     parser.add_argument("--file", type=Path, default=Path(os.environ.get("YESHUA_DEPLOY_SECRETS_FILE", "/root/YeshuaPrivate/production/credentials.json")))
     parser.add_argument("--policy", type=Path, default=Path(__file__).with_name("policy.json"))
     parser.add_argument("--set", type=Path)
@@ -923,10 +943,13 @@ def main(argv=None):
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--kind", choices=("full", "differential", "logs", "files", "check", "check-data", "sql", "coordinated"))
     parser.add_argument("--download-root", type=Path)
+    parser.add_argument("--show-recovery-key", action="store_true", help="Show the existing recovery password again, only in a private controlling terminal.")
     args = parser.parse_args(argv)
     try:
         if os.name != "posix" or os.geteuid() != 0:
             raise Error("run_on_linux_as_root_operator")
+        if args.show_recovery_key and args.action != "recovery-key":
+            raise Error("recovery_key_display_requires_explicit_action")
         os.umask(0o077)
         policy = checked_policy(args.policy)
         require_sql = args.action in {"plan", "capture", "restore-sql", "restore-sql-chain"} or args.action == "scheduled" and args.kind in {"full", "differential", "logs"}
@@ -934,11 +957,13 @@ def main(argv=None):
         stage = absolute(args.set) if args.set else None
         if args.action in {"upload", "prepare-server", "start-sql", "restore-sql", "create-services", "resume-source", "cleanup-staging"} and stage is None:
             raise Error("set_directory_required")
-        if args.action in {"configure-local", "scheduled", "status", "sql-restore-plan", "restore-sql-chain"}:
+        if args.action in {"configure-local", "recovery-key", "scheduled", "status", "sql-restore-plan", "restore-sql-chain", "restore-files"}:
             import routine
             op = sys.modules[__name__]
             if args.action == "configure-local":
                 result = routine.configure_local(op, args.file, policy)
+            elif args.action == "recovery-key":
+                result = routine.recovery_key(op, args.file, policy, show=args.show_recovery_key)
             elif args.action == "scheduled":
                 result = routine.scheduled(op, document, password, args.file, policy, args.kind)
             elif args.action == "status":
@@ -948,7 +973,10 @@ def main(argv=None):
             else:
                 if not args.download_root:
                     raise Error("verified_download_root_required")
-                result = routine.restore_sql_chain(op, password, policy, args.download_root, args.new_server_machine_id)
+                if args.action == "restore-files":
+                    result = routine.restore_files(op, document, policy, args.download_root, args.new_server_machine_id, apply=args.apply)
+                else:
+                    result = routine.restore_sql_chain(op, password, policy, args.download_root, args.new_server_machine_id)
         elif args.action == "plan":
             result = public_summary(make_plan(document, password, args.file, policy))
         elif args.action == "capture":
@@ -965,7 +993,7 @@ def main(argv=None):
         elif args.action == "download":
             if not args.target or not args.snapshot:
                 raise Error("snapshot_and_new_target_required")
-            result = download(document, args.snapshot, args.target)
+            result = download(document, args.snapshot, args.target, policy)
         elif args.action == "prepare-server":
             result = prepare_server(stage, args.new_server_machine_id)
         elif args.action == "start-sql":

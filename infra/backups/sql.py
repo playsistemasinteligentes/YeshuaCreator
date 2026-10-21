@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[2]
 SQL_CONTAINER = "yeshua-sqlserver"
 SQLCMD_PATHS = ("/opt/mssql-tools18/bin/sqlcmd", "/opt/mssql-tools/bin/sqlcmd")
 JSON_MARKER = "YESHUA_SQL_INVENTORY="
+SYSTEM_DATABASES = frozenset({"master", "model", "msdb", "tempdb"})
 QUERY = """
 SET NOCOUNT ON;
 SET LOCK_TIMEOUT 5000;
@@ -209,6 +210,7 @@ def database_files(password, client, name):
 
 
 def backup_database(password, client, name, container_path, *, copy_only=True):
+    require_user_database(name)
     # Never initialize/overwrite an existing media file. Caller owns a fresh SetId directory.
     query = ("BACKUP DATABASE " + identifier(name) + " TO DISK=" + literal(container_path)
              + " WITH " + ("COPY_ONLY, " if copy_only else "")
@@ -244,6 +246,7 @@ def verify_native(password, client, container_path):
 
 
 def backup_native(password, client, name, container_path, kind):
+    require_user_database(name)
     if kind not in {"full", "differential", "logs"}:
         raise InventoryError("unsupported_native_backup_kind")
     command = "BACKUP LOG " if kind == "logs" else "BACKUP DATABASE "
@@ -259,7 +262,7 @@ def differential_base(password, client, name):
 
 
 def restore_database(password, client, name, container_path, files, *, recover=True):
-    if name.casefold() in {"master", "model", "msdb", "tempdb"}:
+    if name.casefold() in SYSTEM_DATABASES:
         raise InventoryError("system_database_requires_dba_recovery_procedure")
     if not files or any(item.get("type_desc") not in {"ROWS", "LOG"} for item in files):
         raise InventoryError("unsupported_database_file_type")
@@ -289,6 +292,22 @@ def finish_restore(password, client, name):
             + identifier(name) + ") WITH NO_INFOMSGS, ALL_ERRORMSGS;")
 
 
+def require_user_database(name):
+    identifier(name)
+    if name.casefold() in SYSTEM_DATABASES:
+        raise InventoryError("system_databases_are_excluded_from_backup")
+
+
+def user_databases(metadata):
+    return [d for d in metadata["databases"]
+            if d["database_id"] > 4 and d["name"].casefold() not in SYSTEM_DATABASES]
+
+
+def memorias_private_root(document, private_file):
+    value = document.get("Apps", {}).get("Memorias", {}).get("PrivateRoot")
+    return Path(value) if value else private_file.parent / "apps/Memorias"
+
+
 def assess(sql, expected):
     databases = {item["name"]: item for item in sql["databases"]}
     missing = sorted(set(expected.values()) - databases.keys())
@@ -310,7 +329,7 @@ def assess(sql, expected):
         findings.append({"code": "backup_or_restore_already_active"})
     extra = sorted(name for name in databases if name not in expected.values()
                    and databases[name].get("database_id", 0) > 4)
-    return {"missing_databases": missing, "additional_databases_to_classify": extra,
+    return {"missing_databases": missing, "additional_databases_included": extra,
             "findings": findings, "backup_executed": False, "restore_proven": False}
 
 
@@ -344,24 +363,21 @@ def host_inventory(document, private_file):
         memory[key] = int(value.split()[0])
     disk = os.statvfs("/root")
     private_root = private_file.parent
-    memory_root = document.get("Apps", {}).get("Memorias", {}).get("PrivateRoot")
-    if not memory_root or not Path(memory_root).is_absolute():
-        raise InventoryError("memorias_private_bind_must_be_explicit")
+    memory_root = memorias_private_root(document, private_file)
+    if not memory_root.is_absolute():
+        raise InventoryError("memorias_private_bind_must_be_absolute")
     paths = {
         "sql_data": "/root/YeshuaDB/persistent/sql",
         "sql_backup_staging": "/root/YeshuaDB/persistent/sql/backup",
-        "memorias_photos": "/root/YeshuaStorage/persistent/memorias/photos",
-        "memorias_publications": "/root/YeshuaStorage/persistent/memorias/publicacoes",
-        "memorias_music": "/root/YeshuaStorage/persistent/memorias/music",
-        "documents_lowercase": "/root/YeshuaStorage/persistent/docs",
-        "documents_legacy_case": "/root/YeshuaStorage/persistent/Docs",
-        "volatile_requires_classification": "/root/YeshuaStorage/volatile",
+        "persistent_storage": "/root/YeshuaStorage/persistent",
+        "volatile_storage": "/root/YeshuaStorage/volatile",
         "fiscal_plans_and_legacy": "/root/YeshuaStorage/fiscal",
         "fiscal_xml": "/root/YeshuaStorage/sefaz",
         "private_configuration": str(private_root),
-        "memorias_vault": memory_root,
+        "memorias_vault": str(memory_root),
         "https_configuration": "/etc/letsencrypt",
-        "telemetry": "/root/YeshuaDB/persistent/telemetry",
+        "telemetry_volatile": "/root/YeshuaStorage/volatile/infra/telemetry",
+        "telemetry_legacy_requires_redeploy": "/root/YeshuaDB/persistent/telemetry",
     }
     return {"cpus": os.cpu_count(), "available_memory_mb": memory["MemAvailable"] // 1024,
             "swap_free_mb": memory["SwapFree"] // 1024,

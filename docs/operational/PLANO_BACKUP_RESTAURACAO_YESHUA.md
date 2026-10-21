@@ -2,9 +2,21 @@
 
 Data: 2026-10-17.
 
+INSTRUCAO ATUAL: limpeza/recriacao do servidor adiadas pelo usuario. Continuar
+implementacao e testes locais, sem deploy ou alteracao operacional na VPS.
+
+FECHAMENTO LOCAL DE 2026-10-21: concluir revisao/testes e enviar o codigo ao
+remoto antes do servidor novo. Credenciais completas preservadas fora do Git;
+copia separada para instalacao limpa remove somente o override do cofre antigo
+Memorias, sem girar senhas. O ciclo aprovado e instalar vazio -> usar/criar dados
+de teste -> gerar/validar backup -> copiar/verificar fora da VPS -> restaurar e
+conferir uso. Nao fazer o segundo descarte com backup somente no mesmo disco.
+O roteiro atual esta no inicio de infra/backups/RECOVERY.md e prevalece sobre
+instrucoes historicas abaixo. Instalacao e restore reais ainda nao comprovados.
+
 DECISAO POSTERIOR: esta virada pode descartar os dados atuais do Yeshua, inclusive
 bancos e cofres/conexoes YouTube, e reinstalar os aplicativos do zero. Preservar
-codigo/configuracao de instalacao, HTTPS e acesso administrativo; limitar a
+codigo/configuracao de instalacao e acesso administrativo; reemitir HTTPS; limitar a
 operacao aos recursos inventariados do Yeshua. Nao apagar canais/videos do Google.
 Nao migrar referencias antigas nem confundir reinstalacao limpa com prova de
 restauracao. A politica futura de persistente/backup permanece integral.
@@ -20,8 +32,19 @@ Os dados/caminhos antigos nao foram movidos nem apagados: enquanto estiverem em
 persistent, continuam incluidos. Transicao e prova real no servidor novo seguem
 pendentes. Nao usar prepare-server/imagens congeladas como promessa de restore
 dos novos conjuntos data-only; reconstruir software pelo Git e restaurar os dados
-conforme a atualizacao em infra/backups/RECOVERY.md. A revisao item a item retoma
-nas credenciais YouTube; investigacoes e cobranca/limpeza ficam pendentes no mapa.
+conforme a atualizacao em infra/backups/RECOVERY.md. Classificacao ENCERRADA pelo
+usuario em 2026-10-21; nao ha nova rodada item a item. Cobranca/limpeza continuam
+pendentes no mapa.
+
+APLICACAO LOCAL DE 2026-10-21: selecao SQL somente bancos de usuario (inclui
+Estudo e novos bancos); capturas de arquivos v3 sem HTTPS ou volumes volateis.
+Telemetria/Grafana no bind volatile/infra/telemetry; Docs sem uso retirados.
+Snapshot SQL copia apenas midias/recibos de bancos de usuario, sem recapturar
+backups antigos de sistema. Nenhuma origem ou snapshot antigo foi apagado.
+Setup integra provisao explicita Shared.SqlServer.Logins pelo helper comum,
+sem rotacao de senhas, roles inferidas ou novo servico. Deploy diario nao habilita
+essa etapa. Provas reais de SQL/grants, terminal Linux e recuperacao integral
+permanecem no ensaio do servidor novo; nao houve deploy desta implementacao.
 
 Revisao 6, em 2026-10-20: inventario real concluido e implementacao operacional
 em infra/backups. O ensaio final escolhido pelo usuario e restaurar o ambiente
@@ -45,6 +68,54 @@ para arquivos dos aplicativos. A lista de atividades e a separacao entre contrat
 aprovado e implementacao atual estao na secao 0 do
 [mapa de dados](MAPA_DADOS_AREAS_E_BACKUP_YESHUA.md#0-decisoes-confirmadas-e-lista-de-atividades).
 Esta revisao registra decisoes, sem nova alteracao no servidor.
+
+DECISAO POSTERIOR SOBRE SQL DE SISTEMA: master/model/msdb e tempdb ficam fora
+do backup. O usuario nao mantem dados necessarios nesses bancos; acessos devem
+ser criados pela infraestrutura na instalacao/recriacao, com segredos no arquivo
+privado e conferencia dos usuarios/permissoes dos bancos restaurados. A selecao
+SQL local ja os exclui; provisionamento integrado, com prova real pendente
+no mapa. Registros de capturas anteriores abaixo sao historicos,
+nao autorizacao para manter backup de sistema. Nao apagar copias antigas agora.
+
+Banco adicional Estudo: usuario confirmou manter seu backup apos conferencia
+dos metadados pela API operacional. Classificacao PERSISTENTE, banco inteiro,
+pelo fluxo SQL nativo comum, sem agenda nova. A selecao atual ja o inclui;
+preservar essa cobertura ao retirar os bancos de sistema, mesmo sem Studio
+apontando para Estudo.
+
+Cofre privado YouTube do Memorias: PERSISTENTE, confirmado pelo usuario;
+copia integral da area privada e chaves correspondentes pelo fluxo comum de
+arquivos, sem nova agenda. A raiz ja esta na selecao; restauracao funcional
+ainda precisa de prova. Permanece no Memorias, com a cifra/identidade existentes,
+sem migrar para Central ou SQL por causa da revisao de backup.
+
+credentials.json administrativo: usuario confirmou PERSISTENTE e seguro.
+Manter acesso restrito (pasta 0700/arquivo 0600 no Linux), fora do Git/imagens/logs,
+backup no repositorio cifrado comum e conferencia das permissoes na restauracao.
+Nao criar cofre/cifra local adicional ou regenerar credenciais por essa decisao.
+
+providers.json opcional do agente: PERSISTENTE e restrito, confirmado pelo
+usuario. Chaves de API configuradas entram na copia da raiz privada pelo fluxo
+comum. Isso nao preserva sessoes/historicos/caches dos volumes do agente, que
+continuam VOLATEIS; nao extrair logins das CLIs para criar outra persistencia.
+
+HTTPS/Certbot em /etc/letsencrypt: VOLATIL por decisao posterior do usuario,
+substituindo a aprovacao inicial como persistente. Reemitir no servidor novo
+por infra/bootstraps/setup-cert.sh, com validacao do dominio e renovacao conferidas.
+A rotina local atual exclui essa area; recibos antigos de arquivos nao habilitam
+agendas atuais sem nova captura v3/leitura integral. Snapshots antigos sao preservados.
+Nao apagar origem/snapshots nem emitir, revogar ou reiniciar servicos nesta etapa.
+
+Senha de recuperacao do backup: usuario solicitou entrega ao operador durante
+a instalacao. Implementado no INICIO do mesmo setup, apos validar o JSON e antes
+de atualizacoes/Docker/builds: EXIBIR autoriza visualizacao em terminal privado
+e GUARDEI confirma a guarda fora da VPS. Restic/util-linux sao preparados antes
+se faltarem. O install.py final reutiliza a confirmacao, sem nova pergunta para
+a mesma senha/repositorio/maquina, sem rotacao. Senha nunca sai no JSON/log/recibo.
+Ausencia de terminal ou confirmacao interrompe o preparo antes das atualizacoes/
+deploy, sem desligar apps/agendas existentes.
+Recibo nao comprova guarda externa. Testes locais ficticios; entrega Linux real
+e restauracao independente permanecem para o ensaio, sem publicacao na VPS.
 
 Fotos originais do Memorias foram confirmadas como volateis por padrao.
 O caminho atual em persistent precisa ser corrigido via StorageLocation na
@@ -289,8 +360,9 @@ esta nos fontes; nao foi executado setup geral/upgrade/deploy sobre a VPS ativa.
 - Imagens Docker: permanecem adiadas; quatro referencias nao estavam
   exportaveis no inventario. Nao reconstruir nem reiniciar aplicativos para
   esconder essa lacuna. O ensaio exige imagens exatas ou alternativa aprovada.
-- Estado SQL administrativo: backups master/model/msdb existem; restauracao
-  ou reposicao de logins/jobs/configuracoes continua uma etapa DBA assistida.
+- Acessos SQL: provisionar logins/usuarios/permissoes na instalacao e restauracao,
+  usando infraestrutura versionada e arquivo privado, sem restaurar bancos de
+  sistema. Copias master/model/msdb anteriores nao compoem a estrategia futura.
 - Retencao/limpeza: somente simulacao ate aceite funcional. A reserva de
   8 GiB interrompe novos backups se necessario, nunca dispara exclusao.
 - Aviso independente da VPS: definir canal externo de alerta de atraso/falha.
@@ -498,11 +570,11 @@ Confirmar tambem bancos antigos como `Context_CLINICA` e quaisquer bancos fora
 dessa lista. Um banco descoberto nao e apagado, ignorado nem substituido
 automaticamente: registrar se esta ativo, historico ou descartavel.
 
-Proteger `master`, `msdb` e `model` em backups proprios, especialmente apos
-alteracoes de instancia. Inventariar logins, SIDs, jobs, certificados e chaves
-SQL quando existirem. A restauracao desses bancos de sistema exige roteiro
-especifico e compatibilidade de versao; nao sera parte de um restore generico
-de banco de aplicativo. `tempdb` e recriado e nao recebe backup.
+Nao incluir `master`, `msdb`, `model` ou `tempdb` no backup, por decisao do
+usuario. Configuracao necessaria deve ser reproduzida pela infraestrutura, com
+segredos no arquivo privado. Provisionar acessos e conferir o vinculo dos usuarios
+e permissoes aos bancos restaurados; nao depender de bancos de sistema antigos.
+O codigo atual ainda precisa refletir essa selecao e comprovar o provisionamento.
 
 ### 3.2 SQL E Diretorios Do Host
 
@@ -520,7 +592,7 @@ de banco de aplicativo. `tempdb` e recriado e nao recebe backup.
 | /root/YeshuaPrivate/production/credentials.json | Credenciais tecnicas do ambiente | Obrigatorio e restrito; dono root e modo 0600 |
 | /root/YeshuaPrivate/production/apps e shared | Integracoes externas, certificados fiscais novos e configuracoes proprias | Incluir subareas efetivamente usadas, com permissoes dos consumidores |
 | /root/YeshuaDB/persistent/config | Arquivos antigos de configuracao | Legado para inventario; nao e mais a fonte do loader atual nem exige migracao nesta etapa |
-| /etc/letsencrypt | Certificados HTTPS, chaves e configuracao de renovacao | Incluir preservando links e permissoes; alternativa de reemissao deve ser documentada |
+| /etc/letsencrypt | Certificados HTTPS, chaves e configuracao de renovacao | VOLATIL, confirmado; reemitir pelo setup-cert.sh na recriacao, nao copiar nas novas capturas. Adequacao pendente, sem exclusao da origem/snapshots |
 | /root/YeshuaCreator/infra | Compose, scripts, rotas e arquivos locais de implantacao | Registrar commit e preservar diferencas locais necessarias, inclusive arquivos ignorados |
 | /root/YeshuaDB/persistent/telemetry | Grafana, Loki, Tempo e Prometheus | B4; nao arquivar o diretorio ativo sem procedimento proprio |
 
@@ -997,7 +1069,7 @@ resultados devem ficar claros ao operador antes de qualquer substituicao.
 | 5 | Restaurar staging em area alternativa e verificar | Origem intacta e dados legiveis |
 | 6 | Preparar mounts e subir somente SQL e dependencias estritamente necessarias | APIs/workers/renderer ainda desligados |
 | 7 | Restaurar bancos, arquivos e cofres | Mesmo conjunto logico, paths internos e identidades preservados |
-| 8 | Restaurar logins/configuracoes SQL necessarios de forma controlada | Sem restore cego de master/msdb de outra versao |
+| 8 | Provisionar acessos/configuracoes SQL necessarios pela infraestrutura e arquivo privado | Logins, usuarios e permissoes conferidos nos bancos restaurados, sem restore de bancos de sistema |
 | 9 | Recriar rede, cache e topologia do broker | Lacunas de mensagens registradas e reconciliadas |
 | 10 | Preparar imagens do codigo compativel e validar banco/schema | Sem disparar migrations de atualizacao antes da verificacao |
 | 11 | Subir API Central, APIs e Front sob acesso restrito | Conferir login, menus, leitura e referencias de arquivos |

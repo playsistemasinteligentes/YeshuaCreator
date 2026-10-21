@@ -25,8 +25,6 @@ namespace Command.Interfaces.Patterns.FileStore
 		public static class Persistent
 		{
 			public static StorageLocation For(string application, string area) => Create("persistent", application, area);
-			public static StorageLocation DocsInput => new("persistent/docs/input");
-			public static StorageLocation DocsOutput => new("persistent/docs/output");
 		}
 
 		private static StorageLocation Create(string category, string application, string area)
