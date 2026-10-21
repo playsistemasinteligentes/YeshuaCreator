@@ -1655,7 +1655,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   ambiente `MYCONFIG__READCONECTIONSTRING` e
   `MYCONFIG__WRITECONECTIONSTRING`; appsettings versionados nao sao fallback
   de senhas locais.
-- A operacao publica permanece em tres passos: `setup.sh`, `setup-cert.sh` e `deploy.sh`.
+- Por decisao do usuario em 2026-10-21, a instalacao publica usa um unico comando
+  para baixar/executar setup.sh. Ele prepara pastas/permissoes novas, aguarda o
+  arquivo privado, resolve guarda da chave, instala/deploya, prepara backup,
+  chama setup-cert.sh existente e verifica HTTP/HTTPS/status. Nao criar outro
+  instalador, modo, emissor TLS nem publicar credenciais para eliminar a espera.
+  DNS/portas no provedor sao pre-requisitos externos. Falha impede anunciar
+  conclusao; setup-cert.sh permanece helper de manutencao e deploy.sh permanece
+  o caminho unico de publicacao cotidiana, sem mudar rotas por essa integracao.
 - `deploy.sh` sem argumento executa `all`; `central`, `clinica`, `aps-adm`,
   `fiscal` e `shared` limitam o destino.
 - A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.

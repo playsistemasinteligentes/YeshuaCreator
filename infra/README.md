@@ -31,14 +31,23 @@ antigos ativos continua sendo uma operacao unica antes desta transicao.
 
 ### 1. Setup
 
+No Ubuntu vazio, entrar como root e executar somente esta linha. O dominio
+playsis.com.br deve apontar para a VPS e as portas 80/443 devem estar acessiveis
+no provedor para a emissao HTTPS. A reinstalacao do SO/DNS/firewall do provedor
+nao e feita por esse script.
+
 ```bash
-sudo apt update && sudo apt install -y curl && \
-sudo curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup.sh | sudo bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup.sh -o /root/yeshua-setup.sh && bash /root/yeshua-setup.sh
 ```
 
 O setup prepara o servidor, sobe o Shared, executa as migrations, sobe os
-aplicativos ativos e inicia o nginx por HTTP. Cada Migration cria seu proprio banco
-quando ele ainda nao existe.
+aplicativos ativos, prepara backup, chama o setup-cert.sh existente e confere
+HTTP/HTTPS e o status do backup. Cada Migration cria seu proprio banco quando
+ele ainda nao existe. Nao e necessario criar a pasta privada/chmod, chamar o
+HTTPS ou executar checagens manuais na instalacao normal: as pastas novas e o
+JSON-exemplo ja nascem com 0700/0600. O operador ainda precisa fornecer o JSON
+privado na espera inicial e confirmar a guarda da senha; senhas nao estao no Git.
+Arquivos privados repostos devem preservar esses acessos restritos.
 
 O mesmo setup atende servidor novo ou reconstruido: repor os arquivos privados
 preservados antes de executa-lo quando quiser reutiliza-los. Nao existe modo de
@@ -59,13 +68,18 @@ No final, o instalador reutiliza o recibo sem nova pergunta para a mesma senha/
 repositorio/maquina e completa provas/agendas. Nao usar terminal gravado/compartilhado.
 Detalhes e consulta explicita posterior em [Backup](backups/README.md#guarda-da-senha-de-recuperacao).
 
-### 2. Certificado
+### 2. Manutencao HTTPS
+
+Nao e uma segunda etapa da instalacao: o setup acima ja executa este helper.
+Ele continua disponivel para manutencao explicita do certificado:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup-cert.sh | bash
 ```
 
 Somente o nginx e parado durante a emissao. Os aplicativos permanecem ativos.
+Se a emissao ou uma verificacao falhar, setup nao anuncia conclusao. Conferir
+o erro/DNS/portas e repetir a mesma linha de setup; nao apagar dados como reparo.
 
 ### 3. Deploy
 

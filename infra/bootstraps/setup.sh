@@ -45,6 +45,32 @@ prepare_backup_key() {
   done
 }
 
+configure_aliases() {
+  if [[ ! -e /root/.bash_aliases && ! -L /root/.bash_aliases ]]; then
+    cat <<'EOF' > /root/.bash_aliases
+alias ycd='cd /root/YeshuaCreator/infra'
+alias yps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
+alias ylogs='docker logs --tail=100 -f --timestamps yeshua-nginx'
+alias ydeploy='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash'
+alias ydeploycentral='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- central'
+alias ydeployclinica='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica'
+alias ydeployaps='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- aps-adm'
+alias ydeployfiscal='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- fiscal'
+EOF
+  fi
+}
+
+verify_installation() {
+  docker ps --format 'table {{.Names}}\t{{.Status}}' || return 1
+  curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-connrefused \
+    --connect-timeout 5 --max-time 20 --output /dev/null http://127.0.0.1/spa/ || return 1
+  curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-connrefused \
+    --connect-timeout 5 --max-time 20 --output /dev/null \
+    --resolve playsis.com.br:443:127.0.0.1 https://playsis.com.br/spa/ || return 1
+  YESHUA_APP_DIR="$APP_DIR" YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" \
+    "$PYTHON" -B "$APP_DIR/infra/backups/backup.py" status
+}
+
 main() {
   require_root || return 1
   if [[ "$-" == *x* ]]; then
@@ -130,29 +156,26 @@ main() {
   done
 
   echo "==== Executando o deploy do servidor ===="
-  YESHUA_SETUP_SQL_ACCESS=1 YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" YESHUA_SKIP_UPDATE=1 bash "$DEPLOY_SCRIPT" all
+  YESHUA_SETUP_SQL_ACCESS=1 YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" YESHUA_SKIP_UPDATE=1 bash "$DEPLOY_SCRIPT" all || return 1
 
   echo "==== Conferindo acessos SQL nos bancos criados ou restaurados ===="
-  "$PYTHON" -B "$APP_DIR/infra/private/sql_access.py" --file "$PRIVATE_FILE"
+  "$PYTHON" -B "$APP_DIR/infra/private/sql_access.py" --file "$PRIVATE_FILE" || return 1
 
   echo "==== Preparando backup online e agendas ===="
-  prepare_backup
+  prepare_backup || return 1
 
-  if [[ ! -e /root/.bash_aliases && ! -L /root/.bash_aliases ]]; then
-    cat <<'EOF' > /root/.bash_aliases
-alias ycd='cd /root/YeshuaCreator/infra'
-alias yps='docker ps --format "table {{.Names}}\t{{.Status}}\t{{.Ports}}"'
-alias ylogs='docker logs --tail=100 -f --timestamps yeshua-nginx'
-alias ydeploy='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash'
-alias ydeploycentral='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- central'
-alias ydeployclinica='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- clinica'
-alias ydeployaps='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- aps-adm'
-alias ydeployfiscal='curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- fiscal'
-EOF
+  echo "==== Configurando HTTPS ===="
+  if ! YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" bash "$APP_DIR/infra/bootstraps/setup-cert.sh"; then
+    echo "HTTPS nao concluido. Confira DNS de playsis.com.br e portas 80/443 no provedor; depois repita este mesmo setup. Os aplicativos e backups nao foram apagados." >&2
+    return 1
   fi
 
+  configure_aliases || return 1
+  echo "==== Conferindo instalacao ===="
+  verify_installation || return 1
+
   echo "=========================================="
-  echo "Setup concluido. Use setup-cert.sh se HTTPS ainda nao estiver configurado."
+  echo "Setup concluido: aplicativos, backup e HTTPS conferidos. https://playsis.com.br/spa/"
 }
 
 if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]}" == "$0" ]]; then
