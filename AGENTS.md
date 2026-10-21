@@ -1552,6 +1552,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   atualizacao geral/Docker/builds. Se necessario, instala so Restic/util-linux
   antes dessa etapa. Usa configure-local/recovery-key existentes; install.py final
   reutiliza a confirmacao sem outra pergunta para mesma senha/repositorio/maquina.
+  EXIBIR/GUARDEI aceitam maiusculas/minusculas; erro de digitacao repete somente
+  a pergunta atual, sem sair do setup, reexibir senha ou registrar a resposta.
+  CANCELAR/Ctrl+C/fim da entrada encerram sem confirmar guarda automaticamente.
   Nunca enviar senha a stdout/stderr capturados,
   JSON, recibos ou logs. Recibo privado sem senha permite repetir instalacao na
   mesma maquina sem nova exposicao; senha/repositorio/maquina diferentes exigem

@@ -84,6 +84,27 @@ def recovery_terminal(op):
         raise op.Error("recovery_key_delivery_cancelled") from None
 
 
+def confirm_recovery_key(op, reader, writer, prompt, expected, failure):
+    while True:
+        writer.write(prompt)
+        writer.flush()
+        answer = reader.readline(128)
+        if not answer:
+            raise op.Error(failure)
+        oversized = len(answer) == 128
+        # Discard the entire invalid line so a suffix cannot confirm the next prompt.
+        if oversized:
+            while answer and not answer.endswith("\n"):
+                answer = reader.readline(128)
+        else:
+            answer = answer.strip().upper()
+            if answer == expected:
+                return
+            if answer == "CANCELAR":
+                raise op.Error("recovery_key_delivery_cancelled")
+        writer.write("Confirmacao nao reconhecida. Digite " + expected + " ou CANCELAR para sair.\n")
+
+
 def recovery_key(op, private_file, policy, *, show=False):
     base = op.private_directory(policy["staging"])
     with op.locked(base / "backup.lock"):
@@ -109,18 +130,16 @@ def recovery_key(op, private_file, policy, *, show=False):
         with recovery_terminal(op) as (reader, writer):
             writer.write("\nGUARDA DA SENHA DE RECUPERACAO DO BACKUP\n"
                          "Use um terminal privado, sem compartilhamento ou gravacao.\n"
-                         "Guarde a senha fora desta VPS e fora do backup que ela abre.\n"
-                         "Para visualizar a senha existente, digite EXIBIR: ")
-            writer.flush()
-            if reader.readline(64).strip() != "EXIBIR":
-                raise op.Error("recovery_key_display_not_authorized")
+                         "Guarde a senha fora desta VPS e fora do backup que ela abre.\n")
+            confirm_recovery_key(op, reader, writer,
+                                 "Para visualizar a senha existente, digite EXIBIR (ou CANCELAR para sair): ",
+                                 "EXIBIR", "recovery_key_display_not_authorized")
             writer.write("\nRepositorio: " + repository + "\nSenha de recuperacao: " + password + "\n\n"
                          "Nao envie essa senha ao chat, Git ou logs.\n"
-                         "A copia dos dados ainda e LOCAL; guardar a senha nao protege o disco da VPS.\n"
-                         "Depois de guardar em local protegido fora da VPS, digite GUARDEI: ")
-            writer.flush()
-            if reader.readline(64).strip() != "GUARDEI":
-                raise op.Error("recovery_key_custody_not_confirmed")
+                         "A copia dos dados ainda e LOCAL; guardar a senha nao protege o disco da VPS.\n")
+            confirm_recovery_key(op, reader, writer,
+                                 "Depois de guardar em local protegido fora da VPS, digite GUARDEI (ou CANCELAR para sair): ",
+                                 "GUARDEI", "recovery_key_custody_not_confirmed")
         if op.digest(private_file) != before:
             raise op.Error("credentials_changed_during_recovery_key_delivery")
         op.write(receipt_path, {"schema": 1, "source_machine": machine,

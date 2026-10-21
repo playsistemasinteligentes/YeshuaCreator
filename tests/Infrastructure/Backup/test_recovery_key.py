@@ -100,6 +100,75 @@ class RecoveryKeyTests(unittest.TestCase):
                     routine.recovery_key(op, env.private, env.policy)
                 self.assertFalse((env.base / "state/recovery-key-custody.json").exists())
 
+    def test_lowercase_and_mixed_case_confirmations_are_accepted(self):
+        for answer in ("exibir\nguardei\n", "  ExIbIr  \n\tGuArDeI\t\n"):
+            with self.subTest(answer=answer), self.environment(answer) as env:
+                result = routine.recovery_key(op, env.private, env.policy)
+                self.assertEqual("custody_confirmed", result["status"])
+                self.assertEqual(1, env.terminal.getvalue().count(PASSWORD))
+                self.assertNotIn("Confirmacao nao reconhecida", env.terminal.getvalue())
+                self.assertEqual(env.original, op.read(env.private))
+
+    def test_invalid_answers_repeat_each_prompt_without_repeating_password_or_logging_input(self):
+        answer = "\nwrong-display\nEXIBIR\n\nwrong-custody\nGUARDEI\n"
+        with self.environment(answer) as env, redirect_stdout(io.StringIO()) as stdout, redirect_stderr(io.StringIO()) as stderr:
+            with patch.object(sys, "stdin") as stdin:
+                result = routine.recovery_key(op, env.private, env.policy)
+                stdin.read.assert_not_called()
+                stdin.readline.assert_not_called()
+            output = env.terminal.getvalue()
+            self.assertEqual("custody_confirmed", result["status"])
+            self.assertEqual(3, output.count("Para visualizar a senha existente"))
+            self.assertEqual(3, output.count("Depois de guardar em local protegido"))
+            self.assertEqual(4, output.count("Confirmacao nao reconhecida"))
+            self.assertEqual(1, output.count(PASSWORD))
+            for value in (PASSWORD, "wrong-display", "wrong-custody"):
+                self.assertNotIn(value, stdout.getvalue() + stderr.getvalue() + json.dumps(result))
+            self.assertNotIn("wrong-display", output)
+            self.assertNotIn("wrong-custody", output)
+            self.assertNotIn(PASSWORD, output[:output.index("\nRepositorio:")])
+            self.assertEqual(env.original, op.read(env.private))
+
+    def test_invalid_answers_never_reveal_or_confirm_on_eof(self):
+        for answer, error, displayed in (("", "display_not_authorized", False),
+                                          ("wrong\n\n", "display_not_authorized", False),
+                                          ("EXIBIR\nwrong\n\n", "custody_not_confirmed", True)):
+            with self.subTest(answer=answer), self.environment(answer) as env:
+                with self.assertRaisesRegex(op.Error, error):
+                    routine.recovery_key(op, env.private, env.policy)
+                self.assertEqual(displayed, PASSWORD in env.terminal.getvalue())
+                self.assertFalse((env.base / "state/recovery-key-custody.json").exists())
+                self.assertEqual(env.original, op.read(env.private))
+
+    def test_cancel_at_either_prompt_does_not_confirm_custody(self):
+        for answer, displayed in (("CANCELAR\n", False), (" cancelar \n", False),
+                                   ("EXIBIR\ncancelar\n", True)):
+            with self.subTest(answer=answer), self.environment(answer) as env:
+                with self.assertRaisesRegex(op.Error, "delivery_cancelled"):
+                    routine.recovery_key(op, env.private, env.policy)
+                self.assertEqual(displayed, PASSWORD in env.terminal.getvalue())
+                self.assertFalse((env.base / "state/recovery-key-custody.json").exists())
+                self.assertEqual(env.original, op.read(env.private))
+
+    def test_oversized_line_is_discarded_before_retrying(self):
+        for size in (127, 128, 1024):
+            answer = "x" * size + "EXIBIR\nEXIBIR\n" + "x" * size + "GUARDEI\nGUARDEI\n"
+            with self.subTest(size=size), self.environment(answer) as env:
+                result = routine.recovery_key(op, env.private, env.policy)
+                self.assertEqual("custody_confirmed", result["status"])
+                self.assertEqual(2, env.terminal.getvalue().count("Confirmacao nao reconhecida"))
+                self.assertEqual(1, env.terminal.getvalue().count(PASSWORD))
+
+    def test_confirmation_words_at_end_of_oversized_line_are_not_accepted(self):
+        for answer, error, displayed in (("x" * 128 + "EXIBIR\n", "display_not_authorized", False),
+                                          ("EXIBIR\n" + "x" * 128 + "GUARDEI\n", "custody_not_confirmed", True),
+                                          ("x" * 128, "display_not_authorized", False)):
+            with self.subTest(answer=answer), self.environment(answer) as env:
+                with self.assertRaisesRegex(op.Error, error):
+                    routine.recovery_key(op, env.private, env.policy)
+                self.assertEqual(displayed, PASSWORD in env.terminal.getvalue())
+                self.assertFalse((env.base / "state/recovery-key-custody.json").exists())
+
     def test_missing_private_terminal_fails_without_fallback_to_stdout(self):
         with self.environment() as env, redirect_stdout(io.StringIO()) as stdout:
             env.tty.side_effect = op.Error("recovery_key_delivery_requires_private_terminal")

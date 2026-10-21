@@ -136,6 +136,12 @@ da senha segue estes passos:
    e fora do proprio backup cifrado. Nao enviar ao chat, Git ou logs.
 4. Digitar GUARDEI para confirmar a responsabilidade pela guarda.
 
+EXIBIR e GUARDEI aceitam maiusculas/minusculas e espacos nas bordas. Respostas
+incorretas ou vazias repetem somente a pergunta atual, sem encerrar o setup,
+reexibir a senha ou registrar o texto digitado. Uma linha longa e descartada por
+inteiro antes da nova pergunta. CANCELAR, Ctrl+C ou fim da entrada encerram sem
+confirmar a guarda; nao ha aceite automatico nem geracao de outra senha.
+
 A senha e escrita diretamente em /dev/tty, nunca no stdout/stderr capturado,
 JSON de retorno ou recibos. Sem terminal privado ou confirmacao, o setup
 interrompe antes das atualizacoes/deploy; servicos e agendas preexistentes nao
