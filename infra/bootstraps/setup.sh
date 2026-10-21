@@ -64,11 +64,14 @@ verify_installation() {
   docker ps --format 'table {{.Names}}\t{{.Status}}' || return 1
   curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-connrefused \
     --connect-timeout 5 --max-time 20 --output /dev/null http://127.0.0.1/spa/ || return 1
+  YESHUA_APP_DIR="$APP_DIR" YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" \
+    "$PYTHON" -B "$APP_DIR/infra/backups/backup.py" status
+}
+
+verify_https() {
   curl --fail --silent --show-error --retry 5 --retry-delay 2 --retry-connrefused \
     --connect-timeout 5 --max-time 20 --output /dev/null \
     --resolve playsis.com.br:443:127.0.0.1 https://playsis.com.br/spa/ || return 1
-  YESHUA_APP_DIR="$APP_DIR" YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" \
-    "$PYTHON" -B "$APP_DIR/infra/backups/backup.py" status
 }
 
 main() {
@@ -165,9 +168,11 @@ main() {
   prepare_backup || return 1
 
   echo "==== Configurando HTTPS ===="
-  if ! YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" bash "$APP_DIR/infra/bootstraps/setup-cert.sh"; then
-    echo "HTTPS nao concluido. Confira DNS de playsis.com.br e portas 80/443 no provedor; depois repita este mesmo setup. Os aplicativos e backups nao foram apagados." >&2
-    return 1
+  local https_configured=0
+  if YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" bash "$APP_DIR/infra/bootstraps/setup-cert.sh"; then
+    https_configured=1
+  else
+    echo "HTTPS nao configurado; seguindo para conferir a instalacao em HTTP. Veja o erro acima." >&2
   fi
 
   configure_aliases || return 1
@@ -175,7 +180,13 @@ main() {
   verify_installation || return 1
 
   echo "=========================================="
-  echo "Setup concluido: aplicativos, backup e HTTPS conferidos. https://playsis.com.br/spa/"
+  if [[ "$https_configured" == 1 ]] && verify_https; then
+    echo "Setup concluido: aplicativos, backup e HTTPS conferidos. https://playsis.com.br/spa/"
+  else
+    echo "Setup concluido em HTTP: aplicativos e backup conferidos. HTTPS PENDENTE."
+    echo "Acesso por IP em HTTP na rota /spa/. HTTP nao protege senhas ou dados em transito."
+    echo "Confira o erro do HTTPS, DNS de playsis.com.br e portas 80/443; depois repita o mesmo comando padrao de setup."
+  fi
 }
 
 if [[ -z "${BASH_SOURCE[0]:-}" || "${BASH_SOURCE[0]}" == "$0" ]]; then

@@ -1661,11 +1661,17 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Por decisao do usuario em 2026-10-21, a instalacao publica usa um unico comando
   para baixar/executar setup.sh. Ele prepara pastas/permissoes novas, aguarda o
   arquivo privado, resolve guarda da chave, instala/deploya, prepara backup,
-  chama setup-cert.sh existente e verifica HTTP/HTTPS/status. Nao criar outro
+  chama setup-cert.sh existente e verifica HTTP/status. Nao criar outro
   instalador, modo, emissor TLS nem publicar credenciais para eliminar a espera.
-  DNS/portas no provedor sao pre-requisitos externos. Falha impede anunciar
-  conclusao; setup-cert.sh permanece helper de manutencao e deploy.sh permanece
-  o caminho unico de publicacao cotidiana, sem mudar rotas por essa integracao.
+  Por decisao posterior do usuario, DNS/HTTPS nao bloqueiam a instalacao em HTTP
+  por IP: falha de configuracao ou verificacao TLS informa HTTPS PENDENTE, sem
+  anunciar HTTPS conferido. Deploy/SQL/backup/HTTP continuam obrigatorios. Nao
+  esperar propagacao nem criar integracao DNS, novo modo ou certificado ficticio.
+  Para iniciar/retomar, orientar sempre a mesma linha publica completa que baixa
+  do Git e executa; depois do ajuste DNS, ela tenta HTTPS novamente. HTTP nao
+  protege credenciais/dados em transito. setup-cert.sh permanece helper de
+  manutencao; deploy.sh permanece o caminho unico de publicacao cotidiana,
+  sem mudar rotas por essa integracao.
 - `deploy.sh` sem argumento executa `all`; `central`, `clinica`, `aps-adm`,
   `fiscal` e `shared` limitam o destino.
 - A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.

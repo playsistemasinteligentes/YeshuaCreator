@@ -49,8 +49,12 @@ O setup segue o mesmo caminho, sem modo paralelo de instalacao/restauracao.
 Conferir SQL/acessos, migrations, Central com duas replicas de front, APIs,
 Workers, renderer e Nginx HTTP. Testar login/entrada nos aplicativos e criar
 dados identificaveis de teste. O setup unico ja chama setup-cert.sh e confere
-HTTP/HTTPS/status; nao sao comandos adicionais para a instalacao. Conferir
-firewall/DNS antes de executar e renovacao antes de expor. Personalizacoes devem vir do Git.
+HTTP/status; quando o HTTPS configura, verifica tambem o certificado. Se falhar,
+conclui em HTTP com HTTPS PENDENTE desde que HTTP/backup estejam validos: o DNS
+pode ser ajustado depois, repetindo o MESMO comando publico do setup. Nao e
+necessario alternar etapas/comandos HTTP e HTTPS. Acesso HTTP por IP nao protege
+credenciais/dados em transito; usar acesso protegido para os testes. Conferir
+firewall/DNS para emitir e renovacao antes de expor dados. Personalizacoes devem vir do Git.
 
 O setup conclui full/diferencial/logs/arquivos/leitura integral iniciais e habilita
 as seis agendas somente depois das provas exigidas. Conferir status,

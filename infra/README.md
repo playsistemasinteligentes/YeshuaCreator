@@ -31,23 +31,35 @@ antigos ativos continua sendo uma operacao unica antes desta transicao.
 
 ### 1. Setup
 
-No Ubuntu vazio, entrar como root e executar somente esta linha. O dominio
-playsis.com.br deve apontar para a VPS e as portas 80/443 devem estar acessiveis
-no provedor para a emissao HTTPS. A reinstalacao do SO/DNS/firewall do provedor
-nao e feita por esse script.
+No Ubuntu vazio, entrar como root e executar somente esta linha. Para emitir o
+certificado HTTPS, playsis.com.br precisa apontar para a VPS e as portas 80/443
+devem estar acessiveis no provedor. Esse apontamento DNS NAO e requisito para
+concluir a instalacao em HTTP com acesso por IP. A reinstalacao do
+SO/DNS/firewall do provedor nao e feita por esse script.
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup.sh -o /root/yeshua-setup.sh && bash /root/yeshua-setup.sh
 ```
 
 O setup prepara o servidor, sobe o Shared, executa as migrations, sobe os
-aplicativos ativos, prepara backup, chama o setup-cert.sh existente e confere
-HTTP/HTTPS e o status do backup. Cada Migration cria seu proprio banco quando
+aplicativos ativos, prepara backup, tenta o setup-cert.sh existente e confere
+HTTP e o status do backup. Se a configuracao HTTPS funcionar, verifica tambem o
+certificado sem ignorar erros TLS. Cada Migration cria seu proprio banco quando
 ele ainda nao existe. Nao e necessario criar a pasta privada/chmod, chamar o
 HTTPS ou executar checagens manuais na instalacao normal: as pastas novas e o
 JSON-exemplo ja nascem com 0700/0600. O operador ainda precisa fornecer o JSON
 privado na espera inicial e confirmar a guarda da senha; senhas nao estao no Git.
 Arquivos privados repostos devem preservar esses acessos restritos.
+
+Se a configuracao ou verificacao HTTPS falhar, o setup nao espera propagacao nem
+repete a emissao em loop: confere o ambiente HTTP/backup e, se estiverem validos,
+conclui com HTTPS PENDENTE. Nunca anuncia HTTPS conferido nesse caso. O acesso
+por IP usa HTTP na rota /spa/, sem confidencialidade das senhas/dados em transito;
+usar apenas para conferencia em acesso protegido ate configurar HTTPS. Depois
+de ajustar DNS/portas ou a causa indicada, repetir EXATAMENTE o mesmo comando
+publico acima; ele reutiliza credenciais/persistencia e tenta HTTPS novamente.
+Nao alternar as instrucoes de instalacao/retomada com atalhos locais.
+Falhas de deploy, SQL, backup ou HTTP continuam interrompendo a instalacao.
 
 O mesmo setup atende servidor novo ou reconstruido: repor os arquivos privados
 preservados antes de executa-lo quando quiser reutiliza-los. Nao existe modo de
@@ -78,8 +90,11 @@ curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCrea
 ```
 
 Somente o nginx e parado durante a emissao. Os aplicativos permanecem ativos.
-Se a emissao ou uma verificacao falhar, setup nao anuncia conclusao. Conferir
-o erro/DNS/portas e repetir a mesma linha de setup; nao apagar dados como reparo.
+Se a emissao falhar, o helper tenta religar o Nginx que estava ativo. O helper de
+manutencao ainda retorna erro; o setup trata essa falha como HTTPS PENDENTE e so
+conclui em HTTP se o ambiente/backup passarem nas verificacoes obrigatorias.
+Conferir o erro/DNS/portas e repetir a mesma linha de setup; nao apagar dados
+como reparo. Nao ha segundo modo de instalacao nem integracao DNS automatica.
 
 ### 3. Deploy
 

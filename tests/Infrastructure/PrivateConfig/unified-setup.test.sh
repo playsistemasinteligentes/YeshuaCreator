@@ -139,12 +139,12 @@ for scenario in fresh restored; do
   [[ "$status" -eq 0 ]]
   mapfile -t calls < "$log"
   [[ "${calls[0]} ${calls[1]} ${calls[2]} ${calls[3]} ${calls[4]} ${calls[5]}" == 'git init validate backup:configure-local backup:recovery-key apt' ]]
-  [[ "${calls[-9]} ${calls[-8]} ${calls[-7]} ${calls[-6]} ${calls[-5]} ${calls[-4]} ${calls[-3]} ${calls[-2]} ${calls[-1]}" == 'deploy sql-access install-backup https aliases docker-list curl-http curl-https backup:status' ]]
+  [[ "${calls[-9]} ${calls[-8]} ${calls[-7]} ${calls[-6]} ${calls[-5]} ${calls[-4]} ${calls[-3]} ${calls[-2]} ${calls[-1]}" == 'deploy sql-access install-backup https aliases docker-list curl-http backup:status curl-https' ]]
   grep -F 'Setup concluido: aplicativos, backup e HTTPS conferidos.' "$temporary/result" >/dev/null
 done
 
 # Every required stage must stop the single setup before claiming completion.
-for failure in deploy_valid sql_access_valid backup_install_valid https_valid http_health_valid https_health_valid; do
+for failure in deploy_valid sql_access_valid backup_install_valid http_health_valid; do
   : > "$log"
   status=0
   (declare "$failure=no"; main) > "$temporary/result" 2>&1 || status=$?
@@ -157,11 +157,55 @@ for failure in deploy_valid sql_access_valid backup_install_valid https_valid ht
     deploy_valid) [[ "$(tail -n 1 "$log")" == deploy ]] ;;
     sql_access_valid) [[ "$(tail -n 1 "$log")" == sql-access ]] ;;
     backup_install_valid) [[ "$(tail -n 1 "$log")" == install-backup ]] ;;
-    https_valid) [[ "$(tail -n 1 "$log")" == https ]] ;;
     http_health_valid) [[ "$(tail -n 1 "$log")" == curl-http ]] ;;
-    https_health_valid) [[ "$(tail -n 1 "$log")" == curl-https ]] ;;
   esac
 done
+
+# DNS/certificate failures are pending work, not a failed HTTP installation.
+for failure in https_valid https_health_valid; do
+  : > "$log"
+  status=0
+  (declare "$failure=no"; main) > "$temporary/result" 2>&1 || status=$?
+  [[ "$status" -eq 0 ]]
+  grep -F 'Setup concluido em HTTP: aplicativos e backup conferidos. HTTPS PENDENTE.' "$temporary/result" >/dev/null
+  if grep -F 'Setup concluido: aplicativos, backup e HTTPS conferidos.' "$temporary/result" >/dev/null; then
+    echo "FAIL: setup claimed verified HTTPS after $failure failed" >&2
+    exit 1
+  fi
+  grep -Fx 'curl-http' "$log" >/dev/null
+  grep -Fx 'backup:status' "$log" >/dev/null
+  if [[ "$failure" == https_valid ]]; then
+    [[ "$(tail -n 1 "$log")" == backup:status ]]
+    if grep -Fx 'curl-https' "$log" >/dev/null; then
+      echo 'FAIL: setup checked HTTPS after certificate configuration failed' >&2
+      exit 1
+    fi
+  else
+    [[ "$(tail -n 1 "$log")" == curl-https ]]
+  fi
+
+  # A pending certificate never hides a broken HTTP application.
+  : > "$log"
+  status=0
+  (declare "$failure=no"; http_health_valid=no; main) > "$temporary/result" 2>&1 || status=$?
+  [[ "$status" -eq 1 ]]
+  [[ "$(tail -n 1 "$log")" == curl-http ]]
+  if grep -F 'Setup concluido' "$temporary/result" >/dev/null; then
+    echo 'FAIL: HTTPS fallback hid a broken HTTP installation' >&2
+    exit 1
+  fi
+done
+
+# The same entry point can complete HTTPS later, without a second install mode.
+: > "$log"
+(main) > "$temporary/result" 2>&1
+grep -Fx 'https' "$log" >/dev/null
+grep -Fx 'curl-https' "$log" >/dev/null
+grep -F 'Setup concluido: aplicativos, backup e HTTPS conferidos.' "$temporary/result" >/dev/null
+if grep -F 'HTTPS PENDENTE' "$temporary/result" >/dev/null; then
+  echo 'FAIL: setup kept HTTPS pending after a successful retry' >&2
+  exit 1
+fi
 rm -f -- "$temporary/result"
 
 # A bare server installs only backup prerequisites before asking for custody.
@@ -192,4 +236,4 @@ prepare_backup
 grep -F -- '-B' "$log" >/dev/null
 grep -F -- '/infra/backups/install.py --initialize-online' "$log" >/dev/null
 
-echo 'PASS: one setup includes credentials, early key custody, deploy, SQL, backup, HTTPS and final health checks; failures stop completion; existing directories unchanged.'
+echo 'PASS: one setup verifies HTTP and backup, reports HTTPS pending on certificate/HTTPS failure, and completes HTTPS on retry; required failures stop completion; existing directories unchanged.'
