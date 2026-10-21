@@ -314,9 +314,11 @@ def _sql_cycle(op, document, password, policy, kind, base):
                    if not r["system"] and r["database_name"].casefold() not in op.sql.SYSTEM_DATABASES]
         run_id = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ-") + uuid.uuid4().hex[:12]
         native = op.absolute(Path(policy["sql_data"]) / "backup" / "yeshua-scheduled")
-        if not native.exists():
-            native.mkdir(mode=0o700)
-            os.chmod(native, 0o711)
+        # A fresh SQL volume may not have backup/. Keep existing permissions intact.
+        for directory in (native.parent, native):
+            if not directory.exists():
+                directory.mkdir(mode=0o700)
+                os.chmod(directory, 0o711)
         if native.stat().st_uid != 0 or native.stat().st_mode & 0o022:
             raise op.Error("native_backup_parent_owner_or_mode_mismatch")
         if not native.stat().st_mode & 0o001:

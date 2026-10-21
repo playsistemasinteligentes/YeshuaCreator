@@ -22,18 +22,33 @@ class ClassificationCycleTests(unittest.TestCase):
             self.assertEqual(before, path.read_bytes())
 
     def test_online_cycle_never_recopies_system_media_but_keeps_estudo_and_new_app(self):
+        self.assert_online_cycle("populated")
+
+    def test_first_online_cycle_creates_missing_native_backup_directories(self):
+        self.assert_online_cycle("empty")
+
+    def test_first_online_cycle_keeps_existing_backup_parent_permissions(self):
+        self.assert_online_cycle("backup-only")
+
+    def assert_online_cycle(self, layout):
         with tempfile.TemporaryDirectory() as folder:
             base = Path(folder) / "backup"
             for name in ("records", "intents", "state"):
                 (base / name).mkdir(parents=True)
             data = Path(folder) / "sql"
+            data.mkdir()
+            data_before = data.stat()
             native = data / "backup/yeshua-scheduled"
-            native.mkdir(parents=True)
+            if layout != "empty":
+                native.parent.mkdir()
+            parent_before = native.parent.stat() if native.parent.exists() else None
             old = native / "old-master.bak"
-            old.write_bytes(b"keep old media on disk, not in new snapshots")
             old_record = base / "records/old-master.json"
-            op.write(old_record, record(database_name="master", system=True, path=str(old), schema=1,
-                                        source_machine="fixture-machine"))
+            if layout == "populated":
+                native.mkdir()
+                old.write_bytes(b"keep old media on disk, not in new snapshots")
+                op.write(old_record, record(database_name="master", system=True, path=str(old), schema=1,
+                                            source_machine="fixture-machine"))
             policy = {"sql_data": str(data), "minimum_free_bytes": 1024, "scope": "yeshua-production"}
             database = {"state_desc": "ONLINE", "recovery_model_desc": "SIMPLE", "is_encrypted": False,
                         "data_allocated_mb": 1, "log_allocated_mb": 1}
@@ -68,9 +83,16 @@ class ClassificationCycleTests(unittest.TestCase):
                     patch.object(routine, "preflight", return_value=base), \
                     patch.object(routine, "snapshot", return_value={"snapshot_id": "a" * 64}) as snapshot, \
                     patch.object(routine.shutil, "disk_usage", return_value=SimpleNamespace(free=10 ** 12)), \
+                    patch.object(routine.os, "chmod", wraps=routine.os.chmod) as chmod, \
                     patch.object(routine.os, "chown", create=True), patch.object(Path, "stat", path_stat):
                 result = routine._sql_cycle(op, {}, "fixture", policy, "full", base)
 
+            created = {"empty": [native.parent, native], "backup-only": [native], "populated": []}[layout]
+            self.assertEqual([(path, 0o711) for path in created], [call.args for call in chmod.call_args_list])
+            self.assertEqual((data_before.st_uid, data_before.st_mode), (data.stat().st_uid, data.stat().st_mode))
+            if parent_before:
+                self.assertEqual((parent_before.st_uid, parent_before.st_mode),
+                                 (native.parent.stat().st_uid, native.parent.stat().st_mode))
             self.assertEqual(["Estudo", "NewApp"], [call.args[2] for call in backup.call_args_list])
             self.assertEqual(2, result["database_backups"])
             sources = snapshot.call_args.args[3]
@@ -79,8 +101,8 @@ class ClassificationCycleTests(unittest.TestCase):
             self.assertNotIn(old, sources)
             self.assertNotIn(old_record, sources)
             self.assertEqual(2, sum(path.suffix == ".bak" for path in sources))
-            self.assertTrue(old.is_file())
-            self.assertTrue(old_record.is_file())
+            self.assertEqual(layout == "populated", old.is_file())
+            self.assertEqual(layout == "populated", old_record.is_file())
             self.assertEqual({"Estudo", "NewApp"}, set(op.read(base / "state/sql-catalog.json")["chains"]))
 
 

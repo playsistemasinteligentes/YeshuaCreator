@@ -52,7 +52,12 @@ mais essa reserva, mesmo que a deduplicacao normalmente reduza o incremento.
 
 O SQL nativo escreve somente no subdiretorio dedicado
 /root/YeshuaDB/persistent/sql/backup/yeshua-scheduled; apenas esse subdiretorio,
-e nao MDF/LDF, entra na copia Restic. Records e intents em /root/YeshuaBackup
+e nao MDF/LDF, entra na copia Restic. No primeiro ciclo, o operador cria backup/
+e yeshua-scheduled/ quando ausentes, com modo 0711 para permitir a travessia pelo
+processo SQL. Diretorios existentes e a raiz SQL mantem dono/permissoes; cada
+pasta nova de execucao continua 0700 e pertence ao UID do SQL no container.
+Essa preparacao usa o mesmo fluxo do setup, sem comando manual adicional.
+Records e intents em /root/YeshuaBackup
 relacionam GUID, LSN, fork, tipo, checksum e arquivo. Um log concluido antes de
 uma interrupcao deve ter seu recibo recuperado antes do proximo backup. Lacuna
 de LSN ou troca de fork bloqueia afirmacao de cadeia recuperavel.
