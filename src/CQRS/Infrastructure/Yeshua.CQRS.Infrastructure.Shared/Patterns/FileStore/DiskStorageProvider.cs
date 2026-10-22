@@ -29,13 +29,7 @@ namespace Shered.Patterns.FileStore
             StoragePath path,
             CancellationToken cancellationToken)
         {
-            var fullPath = GetFullPath(path);
-
-            var directory = Path.GetDirectoryName(fullPath);
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory!);
-
-            using var output = new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+            using var output = OpenWrite(path);
             await stream.CopyToAsync(output, cancellationToken);
 
             return new FileStorageResult
@@ -100,7 +94,7 @@ namespace Shered.Patterns.FileStore
             if (!Directory.Exists(directory))
                 Directory.CreateDirectory(directory!);
 
-            return new FileStream(fullPath, FileMode.Create, FileAccess.Write);
+            return StorageFile.OpenWrite(fullPath);
         }
 
         public string GetBaseUrl(StoragePath path)

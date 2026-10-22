@@ -164,7 +164,7 @@ main() {
   echo "==== Conferindo acessos SQL nos bancos criados ou restaurados ===="
   "$PYTHON" -B "$APP_DIR/infra/private/sql_access.py" --file "$PRIVATE_FILE" || return 1
 
-  echo "==== Preparando backup online e agendas ===="
+  echo "==== Preparando backup online, agendas e limpeza volatil de 7 dias ===="
   prepare_backup || return 1
 
   echo "==== Configurando HTTPS ===="

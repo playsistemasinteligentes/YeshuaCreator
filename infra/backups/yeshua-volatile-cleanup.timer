@@ -1,0 +1,11 @@
+[Unit]
+Description=Daily Yeshua volatile file expiration (Sao Paulo)
+
+[Timer]
+OnCalendar=*-*-* 04:30:00 America/Sao_Paulo
+RandomizedDelaySec=60s
+Persistent=false
+Unit=yeshua-volatile-cleanup.service
+
+[Install]
+WantedBy=timers.target

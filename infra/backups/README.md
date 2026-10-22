@@ -26,6 +26,77 @@ recusa a operacao e exige a senha original; nao gera uma substituta inutilizavel
 | Integridade | Diariamente 05:30 | Metadados do repositorio |
 | Leitura dos blocos | Domingo 06:00 | restic check --read-data |
 
+### Limpeza Dos Arquivos Volateis
+
+Decisao de 2026-10-22: expirar arquivos de aplicativos apos 7 dias da criacao
+real no filesystem. Atualizar o arquivo nao renova o prazo. volatile.py usa o
+birth time fornecido pelo GNU stat (%W) sobre o descritor aberto; nao interpreta
+mtime nem ctime como criacao. Decisao final: se a criacao nativa faltar, consultar
+o atributo user.yeshua.created_at_unix (UTC em segundos Unix). Se ambas faltarem
+ou o atributo alternativo estiver invalido, preservar e emitir aviso no resultado
+(files_without_creation_time, completed_with_warnings,
+missing_creation_time_policy=preserve_and_warn). Essa decisao substitui a exclusao
+anterior de arquivos sem data. Erro de leitura/comando nao e atributo ausente e
+interrompe a rotina, sem presumir permissao para excluir.
+
+StorageFile registra o atributo Linux no descritor aberto, com criacao atomica
+sem sobrescrever valor existente. DiskStorageProvider usa esse ponto em SaveAsync
+e OpenWrite; os gravadores volateis identificados de planos/XML Fiscal tambem.
+O renderer Python registra o mesmo atributo nos clipes, manifesto de concatenacao
+e video antes de promover a saida final. Falha de registro nao e ignorada.
+Windows de desenvolvimento mantem sua criacao nativa; nao emula atributo Linux
+com sidecar. Nao ha tabela, arquivo auxiliar, DSL nova ou renovacao por edicao.
+As rotas /upload das APIs Clinica e APS ADM usam IFileStorage e StorageLocation
+volatil; a copia da API generica antiga foi alinhada ao mesmo contrato da Clinica,
+incluindo autenticacao, chave relativa e configuracao do provider. O transcritor
+Python da Clinica e sua copia historica em infra/docker gravam audio baixado/WAV
+em STORAGE_ROOT/volatile/ia/transcriptions/output, a localizacao ja existente
+StorageLocation.Volatile.TranscriptionsOutput. Registram o mesmo atributo de
+criacao no descritor antes de gravar conteudo; erro de registro recusa a tentativa
+e remove o arquivo reservado. Nao ha fallback para /tmp. A limpeza imediata da
+tentativa continua; sobras de uma queda abrupta ficam na raiz da limpeza de 7 dias.
+O servico de IA continua desativado no Compose, com mount de /storage preparado.
+Copiar/recriar um arquivo em outro filesystem pode criar um novo birth time;
+o prazo nao se refere a data EXIF, a data de captura da foto ou ao registro SQL.
+
+O mesmo install.py do setup instala yeshua-volatile-cleanup.service/timer e
+habilita a agenda diaria as 04:30 America/Sao_Paulo quando habilita as agendas
+de backup. Nao executa exclusao durante a instalacao nem durante deploy normal;
+o timer nao recupera horarios perdidos. A primeira exclusao ocorre na proxima
+janela, incluindo arquivos ja existentes que cumprirem o criterio de idade.
+
+Escopo fixo: /root/YeshuaStorage/volatile, incluindo arquivos de apps/tenants e
+subpastas novos. Preserva diretorios, links, arquivos com hardlinks e montagens
+internas (inclusive binds no mesmo filesystem). Nao atravessa para persistente,
+privado, SQL ou repositorio de backup. O servico limita escrita a raiz volatil,
+CPU a 25%, memoria a 256 MiB e executa com prioridade baixa. O resultado no
+journal informa contagens/bytes selecionados e removidos, sem nomes de arquivos.
+
+volatile/infra fica fora da exclusao generica: e estado interno de servicos,
+nao arquivos soltos. Telemetria mantem a retencao nativa ja configurada de
+5 dias para Prometheus/Loki/Tempo, sem apagar indices/WAL/Grafana pelo host.
+Volumes Docker e certificados HTTPS nao recebem expiracao por idade.
+
+Arquivos identificados como abertos por processos (inclusive containers) ou
+com flock sao preservados; falha ao inspecionar processos recusa a limpeza.
+Reconfere inode/data de modificacao antes de remover para detectar alteracoes
+concorrentes. A verificacao de handles nao e um protocolo transacional com
+uploads/sagas: uma abertura posterior a ultima checagem ainda pode concorrer.
+A aplicacao continua responsavel por ausencia/reenvio/regeneracao e por manter
+locks compartilhados enquanto usar arquivos de vida longa. Nao ha consulta a
+banco para inferir se uma saga terminou.
+
+Sem --apply, somente simula a selecao, usando as mesmas protecoes:
+
+```bash
+sudo python3 -B /opt/yeshua-backup/current/infra/backups/volatile.py
+```
+
+O gatilho de espaco fica pendente para avaliar capacidade livre do servidor
+como um todo, nao quotas individuais por funcao. Esta entrega nao ativa esse
+gatilho, nao executa prune e nao limpa midias SQL nem historico de backup.
+Testes locais nao comprovam ativacao do timer nem exclusao real na VPS.
+
 ### Selecao Por Raiz, Sem Excecoes
 
 Decisao confirmada: somente PERSISTENTE e VOLATIL. O backup de arquivos seleciona
@@ -88,6 +159,27 @@ repetir o setup preserva senha/historico e nao repete baselines aprovados. O
 setup pertence a infraestrutura, nao a Engine. Nao executar o setup geral no
 meio de um restore: ele tambem executa deploy/migrations. Usar RECOVERY.md.
 As unidades desta instalacao exigem os caminhos padrao do app e do JSON privado.
+
+Atualizacao de um servidor existente: deploy.sh atualiza os aplicativos, mas
+NAO reinstala /opt/yeshua-backup/current nem adiciona/atualiza unidades systemd.
+O comando padrao de setup cobre ambas as etapas. Para quem ja concluiu o deploy
+normal e quer atualizar somente o agente e suas agendas, executar como root:
+
+```bash
+python3 -B /root/YeshuaCreator/infra/backups/install.py --initialize-online
+```
+
+O fonte em /root/YeshuaCreator precisa estar atualizado antes desse comando.
+Ele preserva senha e historico, completa provas iniciais ausentes e habilita
+as seis agendas de backup mais yeshua-volatile-cleanup.timer. Nao reinicia
+aplicativos nem executa a limpeza imediatamente. A limpeza fica para a proxima
+janela diaria das 04:30 America/Sao_Paulo (ate 60 segundos de atraso aleatorio).
+Conferir as agendas com:
+
+```bash
+systemctl list-timers --all 'yeshua-backup-*' 'yeshua-volatile-cleanup.timer'
+```
+
 Recibos novos de arquivos usam persistent-roots-v3 com identidade da origem e cobertura
 de recuperacao. O instalador refaz arquivos quando a selecao/metadata e antiga,
 seguido da leitura integral; nunca reaproveita check-data anterior a uma nova
@@ -369,10 +461,10 @@ continua exigindo janela e isolamento real de escritores externos.
 Retencao destrutiva exige recibo administrativo de aceite e recusa remover o
 snapshot aceito. Descarte local e separado, restrito a um SetId selado,
 com recibo de upload, manifest externo correspondente e aceite deste snapshot.
-Limpeza de arquivos de negocio, SQL cru, volumes, imagens e
-cache Docker nao faz parte da rotina. Retencao deve selecionar --kind sql,
+Limpeza de SQL cru, volumes, imagens e cache Docker nao faz parte do backup.
+Arquivos volateis tem a agenda separada descrita acima. Retencao deve selecionar --kind sql,
 --kind files ou --kind coordinated: nunca misturar perfis, nem agrupar pelo
-RunId unico. Nao ha agenda de retencao destrutiva ou limpeza nesta fase.
+RunId unico. Nao ha agenda de retencao destrutiva do repositorio nesta fase.
 
 ## Testes Sem Producao
 

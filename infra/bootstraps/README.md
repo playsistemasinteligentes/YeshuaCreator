@@ -45,7 +45,10 @@ Depois do deploy inicial, o mesmo setup instala/prepara as ferramentas em
 /opt/yeshua-backup, preserva a configuracao privada existente e chama
 install.py --initialize-online. Completa somente as provas iniciais ausentes
 (full, diferencial, logs, arquivos e leitura integral) usando as unidades com
-limites de recursos; depois habilita as seis agendas. Em reexecucao, nao troca
+limites de recursos; depois habilita as seis agendas de backup e a limpeza
+diaria dos arquivos volateis as 04:30 America/Sao_Paulo, com idade de 7 dias
+desde a criacao real no filesystem. A limpeza nao roda durante o setup;
+detalhes e simulacao estao no README de infra/backups. Em reexecucao, nao troca
 chaves, nao apaga historico e nao repete uma inicializacao ja concluida.
 Falha nessa etapa e falha de setup, nao sucesso silencioso.
 

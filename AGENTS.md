@@ -1453,9 +1453,31 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Videos MP4 locais gerados pelo Memorias sao SEMPRE VOLATEIS, inclusive para
   pagantes; nao estender preservacao paga de fotos aos videos. Todo dado volatil
   exige tratamento especifico da aplicacao para ciclo de vida, arquivo ausente,
-  reenvio/regeneracao quando aplicavel e liberacao para limpeza. Task pendente:
-  limpeza por tempo e/ou tamanho atingido, com limites ainda a planejar e
-  protecao de arquivos em uso. Nao ativar exclusao ou agendamento por inferencia.
+  reenvio/regeneracao quando aplicavel e liberacao para limpeza. Decisao de
+  2026-10-22: expiracao de arquivos dos apps apos 7 dias da criacao no filesystem,
+  nao mtime/ctime. infra/backups/volatile.py consulta birth time por GNU stat %W
+  no inode aberto. Decisao FINAL do usuario: criacao nativa ou data registrada
+  pelo aplicativo; sem ambas, PRESERVAR e emitir aviso, revogando a exclusao por
+  ausencia. StorageFile concentra o registro generico no Shared, usado pelo
+  DiskStorageProvider e gravadores volateis identificados do Fiscal. Em Linux,
+  atributo user.yeshua.created_at_unix em UTC/segundos Unix, criado uma vez por
+  inode sem renovar nas edicoes; renderer Memorias usa o mesmo contrato. Sem
+  sidecar, tabela, DSL ou runner adicional. Windows de desenvolvimento mantem
+  criacao nativa. Uploads Clinica/APS ADM ja usam IFileStorage/StorageLocation;
+  nao repetir a pendencia antiga de migracao dessas rotas. Temporarios do
+  transcritor Python (Clinica e copia infra/docker) agora ficam em
+  STORAGE_ROOT/volatile/ia/transcriptions/output e registram o mesmo atributo
+  na criacao, sem fallback para /tmp. Limpeza imediata por tentativa mantida;
+  sobras de queda abrupta ficam na raiz da limpeza. IA segue desativada no Compose.
+  Erro de consulta nao equivale a ausencia e interrompe a rotina. O mesmo
+  instalador de backup do setup instala agenda diaria as 04:30 Sao Paulo,
+  sem exclusao durante setup/deploy. Escopo fixo Storage/volatile; diretorios,
+  links, hardlinks, mounts e arquivos identificados em uso/lock ficam fora.
+  volatile/infra mantem retencao nativa (telemetria 5 dias), sem apagar indices,
+  bancos ou WAL por idade. Verificacao de handles nao substitui contrato de
+  uso/ausencia das aplicacoes nem elimina todas as corridas com leitores.
+  Gatilho por espaco GLOBAL do servidor fica pendente, sem quota por funcao.
+  Implementacao/testes locais; ativacao e prova Linux/VPS continuam pendentes.
   Manifestos manifest.json de renderizacao do Memorias tambem foram confirmados
   como VOLATEIS; direcionar via StorageLocation e tratar ausencia na aplicacao.
 - Trilhas padrao versionadas do Memorias tambem sao VOLATEIS, confirmado pelo
@@ -1465,16 +1487,22 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Audios originais da Clinica sao VOLATEIS, confirmados pelo usuario. Ja usam
   StorageLocation.Volatile.TranscriptionsInput; conferir tratamento de ausencia,
   necessidade de reenvio e limpeza sem apagar uploads/transcricoes em andamento.
-- Upload direto de audio das APIs da Clinica e do APS (/upload -> uploads
-  relativo ao processo) e VOLATIL, confirmado pelo usuario para ambos os apps.
-  Investigar uso das rotas;
-  adequar a StorageLocation volatil se usada, ou remover se comprovadamente
-  obsoleta. Nao remover rota ou arquivos durante a revisao de classificacao.
+- Upload direto de audio das APIs da Clinica e do APS (/upload) e VOLATIL,
+  confirmado pelo usuario para ambos os apps. As duas rotas ja usam IFileStorage,
+  StorageLocation.Volatile.For(aplicativo, "uploads"), autenticacao e chave
+  relativa; conferencia do fonte em 2026-10-22, nao prova de deploy. A copia da
+  API generica Yeshua.CQRS.Infrastructure.Api tambem foi alinhada ao mesmo
+  storage autenticado/configuracao da Clinica em 2026-10-22, mas nao e a API
+  publicada pelos Dockerfiles atuais desses apps. Seu build completo tem
+  referencias antigas ausentes em Commands/Receivers/Patterns.OutBox; nao
+  confundir teste do contrato de upload com comprovacao de funcionamento do host.
+  Nao remover rota ou arquivos por inferencia de obsolescencia.
 - Arquivos auxiliares/de saida da transcricao da Clinica sao VOLATEIS,
   confirmados pelo usuario. O texto salvo no banco continua persistente.
-  O worker consultado retorna texto pela fila, sem gravacao identificada em
-  TranscriptionsOutput; alinhar seus arquivos temporarios de audio/WAV ao
-  contrato de storage/limpeza e conferir a necessidade dessa localizacao.
+  O worker retorna texto pela fila; TranscriptionsOutput agora recebe os
+  temporarios de audio baixado/WAV, via STORAGE_ROOT, com criacao registrada
+  e limpeza por tentativa. A copia historica usa o mesmo contrato. Falhas nao
+  desviam arquivos para /tmp; nenhuma mudanca de semantica de mensagens/retry.
 - Relatorios da Clinica em volatile/reports/input permanecem VOLATEIS por
   confirmacao do usuario; a mesma regra vale para volatile/reports/output.
   O usuario orientou manter como volatil o que ja esta nessa area. A geracao

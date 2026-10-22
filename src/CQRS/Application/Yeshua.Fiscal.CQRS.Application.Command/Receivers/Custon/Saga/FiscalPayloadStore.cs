@@ -19,7 +19,7 @@ namespace Command.Receivers
                 .ResolveUnder(Path.GetFullPath(StorageRoot()));
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
             if (!File.Exists(path))
-                File.WriteAllText(path, json, new UTF8Encoding(false));
+                StorageFile.WriteAllText(path, json, new UTF8Encoding(false));
 
             return new FiscalPayloadStorageResult(path, hash);
         }

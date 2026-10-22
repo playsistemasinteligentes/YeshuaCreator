@@ -1,0 +1,22 @@
+[Unit]
+Description=Expire Yeshua volatile application files after seven days
+RequiresMountsFor=/root/YeshuaStorage/volatile
+
+[Service]
+Type=oneshot
+User=root
+Group=root
+UMask=0077
+Nice=19
+IOSchedulingClass=idle
+CPUQuota=25%
+MemoryMax=256M
+Environment=PYTHONDONTWRITEBYTECODE=1
+ExecStart=/usr/bin/python3 -B /opt/yeshua-backup/current/infra/backups/volatile.py --apply
+TimeoutStartSec=1h
+KillMode=control-group
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/root/YeshuaStorage/volatile
+ReadOnlyPaths=-/root/YeshuaStorage/volatile/infra
+

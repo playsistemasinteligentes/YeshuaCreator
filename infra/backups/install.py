@@ -13,8 +13,10 @@ import sys
 TIMERS = ("full", "differential", "logs", "files", "check", "check-data")
 INITIAL_KINDS = ("full", "differential", "logs", "files", "check-data")
 FILE_SELECTION = "persistent-roots-v3"
-FILES = ("backup.py", "sql.py", "routine.py", "policy.json", "install.py", "README.md", "RECOVERY.md",
-         "yeshua-backup@.service", *("yeshua-backup-" + kind + ".timer" for kind in TIMERS))
+BACKUP_TIMERS = tuple("yeshua-backup-" + kind + ".timer" for kind in TIMERS)
+CLEANUP_TIMER = "yeshua-volatile-cleanup.timer"
+UNITS = ("yeshua-backup@.service", *BACKUP_TIMERS, "yeshua-volatile-cleanup.service", CLEANUP_TIMER)
+FILES = ("backup.py", "sql.py", "routine.py", "volatile.py", "policy.json", "install.py", "README.md", "RECOVERY.md", *UNITS)
 
 
 def run(args, env=None, timeout=120):
@@ -126,7 +128,7 @@ def install(enable=False, initialize=False):
     pending.symlink_to(release, target_is_directory=True)
     os.replace(pending, link)
     env = dict(os.environ, YESHUA_APP_DIR="/root/YeshuaCreator", PYTHONDONTWRITEBYTECODE="1")
-    units = ["yeshua-backup@.service", *("yeshua-backup-" + kind + ".timer" for kind in TIMERS)]
+    units = UNITS
     try:
         run(["systemd-analyze", "verify", *[str(release / "infra/backups" / name) for name in units]])
         for name in units:
@@ -151,9 +153,9 @@ def install(enable=False, initialize=False):
                 if not completed_proof(base, kind):
                     raise RuntimeError("initial_backup_proofs_required_before_scheduling")
             run([sys.executable, "-B", str(link / "infra/backups/backup.py"), "sql-restore-plan"], env=env)
-            run(["systemctl", "enable", "--now", *("yeshua-backup-" + k + ".timer" for k in TIMERS)])
+            run(["systemctl", "enable", "--now", *BACKUP_TIMERS, CLEANUP_TIMER])
         return {"operation": "install-backup-tooling", "release": release_id, "local_repository": result["repository"],
-                "recovery_key_custody": custody, "schedules_enabled": enable,
+                "recovery_key_custody": custody, "schedules_enabled": enable, "volatile_cleanup_scheduled": enable,
                 "external_destination_pending": True, "applications_restarted": False}
     except BaseException:
         link.unlink()

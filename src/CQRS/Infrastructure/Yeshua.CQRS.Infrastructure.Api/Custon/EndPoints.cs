@@ -113,7 +113,9 @@ namespace API.Migrations
 
 
 
-            app.MapPost("/upload", async (HttpContext context) =>
+            app.MapPost("/upload", async (HttpContext context,
+                Command.Interfaces.Patterns.FileStore.IFileStorage storage,
+                Aplication.Interfaces.Services.IExecutionContext actor) =>
             {
                 try
                 {
@@ -127,27 +129,19 @@ namespace API.Migrations
                     if (file == null || file.Length == 0)
                         return Results.BadRequest("Nenhum arquivo foi enviado.");
 
-                    // Define o caminho onde os �udios ser�o salvos
-                    var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "uploads");
-                    Directory.CreateDirectory(uploadsFolder); // Garante que a pasta existe
-
-                    var filePath = Path.Combine(uploadsFolder, file.FileName);
-
-                    // Salva o arquivo no servidor
-                    using (var stream = new FileStream(filePath, FileMode.Create))
-                    {
-                        await file.CopyToAsync(stream);
-                    }
-
-                    Console.WriteLine($"Arquivo salvo em: {filePath}");
-                    return Results.Ok(new { message = "Arquivo recebido com sucesso!", filePath });
+                    if (actor.TenantID <= 0 || actor.UserId <= 0) return Results.Unauthorized();
+                    var location = Command.Interfaces.Patterns.FileStore.StorageLocation.Volatile.For("clinica", "uploads");
+                    var path = Command.Interfaces.Patterns.FileStore.StoragePathBuilder.Build(location,
+                        actor.TenantID.ToString(), actor.UserId.ToString(), Guid.NewGuid().ToString("N"));
+                    await storage.SaveAsync(file, path, context.RequestAborted);
+                    return Results.Ok(new { message = "Arquivo recebido com sucesso!", filePath = path.Value.Replace('\\', '/') });
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"Erro ao receber arquivo: {ex.Message}");
                     return Results.Problem("Erro ao processar o arquivo.");
                 }
-            });
+            }).RequireAuthorization();
         }
     }
 }

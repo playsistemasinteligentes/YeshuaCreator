@@ -137,7 +137,7 @@ namespace Command.Receivers
                 .ResolveUnder(Path.GetFullPath(raiz));
             Directory.CreateDirectory(Path.GetDirectoryName(path)!);
 
-            File.WriteAllText(path, xml, Encoding.UTF8);
+            StorageFile.WriteAllText(path, xml, Encoding.UTF8);
 
             return new SefazXmlStorageResult(path, Hash(xml));
         }

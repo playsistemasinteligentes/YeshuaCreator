@@ -289,6 +289,9 @@ Backup*/
 !/infra/backups/RECOVERY.md
 !/infra/backups/routine.py
 !/infra/backups/install.py
+!/infra/backups/volatile.py
+!/infra/backups/yeshua-volatile-cleanup.service
+!/infra/backups/yeshua-volatile-cleanup.timer
 !/infra/backups/yeshua-backup@.service
 !/infra/backups/yeshua-backup-*.timer
 !/tests/Infrastructure/Backup/

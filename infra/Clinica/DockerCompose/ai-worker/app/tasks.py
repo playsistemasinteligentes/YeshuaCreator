@@ -1,22 +1,54 @@
 ﻿import os
 import json
+import errno
 import tempfile
 import subprocess
 import requests
+import sys
+import time
 import wave
 import uuid
+from pathlib import Path
+from urllib.parse import urlsplit
 from app.celery_app import celery_app
 from app.transcribe import transcribe_audio_file
 from app.messaging import publish_message
 
+TRANSCRIPTIONS_OUTPUT_STORAGE_KEY = "volatile/ia/transcriptions/output"
+
+
+def _temporary_audio(suffix: str):
+    storage_root = Path(os.environ.get("STORAGE_ROOT", "/storage")).resolve()
+    directory = storage_root / TRANSCRIPTIONS_OUTPUT_STORAGE_KEY
+    if directory.resolve() != directory:
+        raise ValueError("A area temporaria nao pode redirecionar para fora de sua localizacao de storage.")
+    directory.mkdir(parents=True, exist_ok=True)
+    temporary = tempfile.NamedTemporaryFile(delete=False, suffix=suffix, dir=directory)
+    try:
+        if sys.platform == "linux":
+            try:
+                os.setxattr(temporary.fileno(), "user.yeshua.created_at_unix",
+                            str(int(time.time())).encode("ascii"), os.XATTR_CREATE)
+            except OSError as error:
+                if error.errno != errno.EEXIST:
+                    raise
+        return temporary
+    except Exception:
+        temporary.close()
+        os.remove(temporary.name)
+        raise
+
+
 def download_file(url: str) -> str:
     """Baixa o arquivo da URL mantendo a extensão original."""
-    ext = os.path.splitext(url)[1] or ".webm"
+    ext = os.path.splitext(urlsplit(url).path)[1].lower()
+    if not 1 < len(ext) <= 12 or not ext[1:].isascii() or not ext[1:].isalnum():
+        ext = ".webm"
     path = None
     try:
         with requests.get(url, stream=True, timeout=30) as response:
             response.raise_for_status()
-            with tempfile.NamedTemporaryFile(delete=False, suffix=ext) as tmp:
+            with _temporary_audio(ext) as tmp:
                 path = tmp.name
                 for chunk in response.iter_content(chunk_size=8192):
                     if chunk:
@@ -39,7 +71,7 @@ def convert_to_wav(input_path: str) -> str:
     """Converte qualquer áudio para WAV mono 16kHz compatível com Whisper."""
     if input_path.lower().endswith(".wav") and is_wav_compatible(input_path):
         return input_path
-    with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as output:
+    with _temporary_audio(".wav") as output:
         output_path = output.name
     try:
         subprocess.run([

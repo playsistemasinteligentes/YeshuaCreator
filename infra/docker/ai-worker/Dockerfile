@@ -14,6 +14,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
-ENV PYTHONUNBUFFERED=1
+ENV PYTHONUNBUFFERED=1 \
+    STORAGE_ROOT=/storage
 
 CMD ["celery", "-A", "app.celery_app", "worker","-Q", "audio.transcribe.outbox", "--concurrency=1", "--loglevel=info"]

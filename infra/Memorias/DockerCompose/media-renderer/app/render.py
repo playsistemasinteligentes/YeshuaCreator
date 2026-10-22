@@ -1,9 +1,12 @@
+import errno
 import hashlib
 import json
 import math
 import os
 import subprocess
+import sys
 import tempfile
+import time
 from pathlib import Path
 
 
@@ -74,10 +77,12 @@ def render_album(manifest_storage_key: str) -> dict:
             clip = temp_root / f"clip-{index:06d}.mp4"
             _render_clip(source_path, clip, rotation, width, height, fps, frames, motion, zoom,
                          min(transition_seconds, duration / 4) if transition == "fade" else 0, crf)
+            _record_creation(clip)
             concat_lines.append(f"file '{clip.name}'")
             total_frames += frames
 
         concat_path.write_text("\n".join(concat_lines) + "\n", encoding="utf-8")
+        _record_creation(concat_path)
         total_duration = total_frames / fps
         completed_path = temp_root / "completed.mp4"
         # Todos os clipes ja estao codificados no mesmo perfil; a uniao nao recomprime video.
@@ -98,6 +103,7 @@ def render_album(manifest_storage_key: str) -> dict:
         command += ["-c:v", "copy", "-threads", "2", "-filter_threads", "1",
                     "-video_track_timescale", str(fps * 512), "-movflags", "+faststart", str(completed_path)]
         subprocess.run(command, check=True, capture_output=True, text=True)
+        _record_creation(completed_path)
         os.replace(completed_path, output_path)
 
     return {
@@ -110,6 +116,17 @@ def render_album(manifest_storage_key: str) -> dict:
         "height": height,
         "fps": fps,
     }
+
+
+def _record_creation(path: Path):
+    if sys.platform != "linux":
+        return
+    with path.open("rb") as stream:
+        try:
+            os.setxattr(stream.fileno(), "user.yeshua.created_at_unix", str(int(time.time())).encode("ascii"), os.XATTR_CREATE)
+        except OSError as error:
+            if error.errno != errno.EEXIST:
+                raise
 
 
 def _photo_filters(rotation, width, height, zoom=1):
