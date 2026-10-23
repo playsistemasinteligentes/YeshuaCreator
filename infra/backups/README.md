@@ -6,6 +6,41 @@ repositorio e recuperacao. O destino e unico e configurado no JSON privado;
 pode ser o filesystem inicial, SFTP ou S3 HTTPS. Multidestino/replicacao continuam
 em planejamento. A configuracao nao e alterada por um deploy dos aplicativos.
 
+## Entrada Unica Por Papel
+
+`infra/bootstraps/setup.sh` prepara a VPS dos aplicativos e `setup-storage.sh`
+prepara a Storage VPS. Ambos perguntam no inicio instalar/reaplicar ou recuperar,
+usam a mesma base e nunca instalam os dois papeis na mesma maquina.
+Comandos completos e roteiro em [RECOVERY.md](RECOVERY.md).
+
+- setup.py coordena escolha, configuracao inicial e retomada por machine-id.
+- recovery.py captura/valida contrato de recuperacao, reconstroi a revisao Git
+  exata e usa os restauradores SQL/arquivos e Compose ja existentes.
+- enrollment.py vincula origens/controlador via SSH administrativo temporario,
+  depois mantem apenas acessos tecnicos restritos. Nao guarda a senha root.
+- install.py --prepare-only instala a mesma release e unidades sem inicializar
+  repositorio, ligar agendas ou disparar captura.
+
+Recuperacao nao e deploy: hosts/migrations nao sobem antes dos dados. Files
+novos elegiveis recebem recovery=server-v1 e contrato de commit, servicos,
+replicas, digests e UID SQL. Backups antigos seguem assistidos. Fontes/imagens,
+SQL cru e volateis nao entram na copia. Assets recriaveis especificos usam
+recovery-assets.sh junto ao Compose, compartilhado com deploy e verificado no
+commit capturado. Modelos privados de Compose preservam caracteres literais e
+proveniencia, permitindo voltar a gerar backups depois da restauracao.
+
+O JSON privado do storage acrescenta Shared.Backup.Storage com Schema, Address,
+Receivers (Name/Layout/SourceAddress/PublicKey), PendingOffers e, se necessario,
+PreviousMachineId. Receivers permite reconstruir SFTP/chroots apos desastre;
+PendingOffers nao e fonte ativa. Controller.Sources continua o cadastro
+operacional existente e so recebe o vinculo apos as provas de identidade,
+repositorio e SSH. Guardar essa configuracao e chaves fora das duas VPSs.
+
+Storage pode ser preparado com origens offline. Historico ausente nunca recebe
+init automatico; retorna pendencia. Estado preparado nao equivale a restore
+concluido nem a captura agendada. O teste funcional completo em VPS nova e a
+segunda copia externa continuam pendentes.
+
 ## Papel Dos Destinos
 
 Decisao de 2026-10-22: /root/YeshuaBackup/repository e um destino de backup

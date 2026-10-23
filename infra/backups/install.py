@@ -19,7 +19,7 @@ UNITS = ("yeshua-backup@.service", *BACKUP_TIMERS, "yeshua-volatile-cleanup.serv
 SOURCE_CONTROL_UNITS = ("yeshua-backup-request@.service", "yeshua-backup-sql-safety.service", "yeshua-backup-sql-safety.timer")
 CONTROLLER_UNITS = ("yeshua-backup-controller@.service", "yeshua-backup-maintenance@.service", "yeshua-backup-controller-tick.timer")
 CONTROLLER_TIMERS = tuple("yeshua-backup-controller-" + kind + ".timer" for kind in TIMERS)
-FILES = ("backup.py", "sql.py", "routine.py", "destination.py", "storage.py", "control.py", "source.py", "volatile.py", "policy.json", "install.py", "README.md", "RECOVERY.md", *UNITS, *SOURCE_CONTROL_UNITS, *CONTROLLER_UNITS)
+FILES = ("backup.py", "sql.py", "routine.py", "destination.py", "storage.py", "control.py", "source.py", "setup.py", "recovery.py", "enrollment.py", "volatile.py", "policy.json", "install.py", "README.md", "RECOVERY.md", *UNITS, *SOURCE_CONTROL_UNITS, *CONTROLLER_UNITS)
 
 
 def run(args, env=None, timeout=120):
@@ -110,7 +110,9 @@ def controller_owner(base, machine):
     return value
 
 
-def install(enable=False, initialize=False, role="source"):
+def install(enable=False, initialize=False, role="source", prepare_only=False):
+    if prepare_only and (enable or initialize):
+        raise RuntimeError("prepare_only_does_not_initialize_or_enable_schedules")
     if os.name != "posix" or os.geteuid() != 0:
         raise RuntimeError("run_installer_on_linux_as_root")
     if os.environ.get("YESHUA_APP_DIR", "/root/YeshuaCreator") != "/root/YeshuaCreator" or os.environ.get(
@@ -169,6 +171,9 @@ def install(enable=False, initialize=False, role="source"):
                 os.chmod(target, 0o644)
         run(["systemd-analyze", "verify", *[str(Path("/etc/systemd/system") / name) for name in units]])
         run(["systemctl", "daemon-reload"])
+        if prepare_only:
+            return {"operation": "prepare-backup-tooling", "release": release_id, "role": role,
+                    "schedules_enabled": False, "repository_initialized": False, "applications_restarted": False}
         if role == "controller":
             run([sys.executable, "-I", str(link / "infra/backups/control.py"), "probe"], timeout=180)
             if enable:
@@ -211,9 +216,10 @@ if __name__ == "__main__":
     parser.add_argument("--enable-schedules", action="store_true")
     parser.add_argument("--initialize-online", action="store_true", help="Complete missing initial proofs and enable schedules; preserve existing backups/keys.")
     parser.add_argument("--role", choices=["source", "controller"], default="source")
+    parser.add_argument("--prepare-only", action="store_true", help="Install tooling/units without connecting, initializing repositories or enabling schedules.")
     args = parser.parse_args()
     try:
-        print(json.dumps(install(args.enable_schedules, args.initialize_online, args.role), indent=2))
+        print(json.dumps(install(args.enable_schedules, args.initialize_online, args.role, args.prepare_only), indent=2))
     except KeyboardInterrupt:
         print(json.dumps({"operation": "install-backup-tooling", "status": "cancelled",
                           "error": "installer_cancelled_review_state"}))

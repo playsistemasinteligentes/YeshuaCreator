@@ -292,6 +292,9 @@ Backup*/
 !/infra/backups/storage.py
 !/infra/backups/control.py
 !/infra/backups/source.py
+!/infra/backups/setup.py
+!/infra/backups/recovery.py
+!/infra/backups/enrollment.py
 !/infra/backups/yeshua-backup-controller@.service
 !/infra/backups/yeshua-backup-maintenance@.service
 !/infra/backups/yeshua-backup-request@.service

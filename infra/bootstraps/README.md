@@ -1,22 +1,48 @@
-# Primeiro Ciclo Do Servidor
+# Instalacao E Recuperacao Dos Servidores
 
-O processo operacional permanece em tres passos.
+Uma entrada por maquina. As duas entradas usam o mesmo bootstrap e perguntam
+no inicio: **1 - instalar/reaplicar; 2 - recuperar backup**. Nao ha comando de
+restore a executar manualmente depois: o setup coordena as fases separadas.
+Repetir o mesmo comando retoma a escolha registrada nesta maquina. Nunca rode
+o setup storage na VPS dos aplicativos. Requer Linux com Python 3.12 ou superior
+(Ubuntu 24.04 ou superior), root e acesso aos repositorios de pacotes/imagens.
 
-## 1. Setup
-
-```bash
-nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/bootstraps/setup.sh | bash" > /root/setup.log 2>&1 &
-tail -f /root/setup.log
-```
-
-## 2. Certificado
+## Servidor Dos Aplicativos
 
 ```bash
-nohup bash -c "curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/bootstraps/setup-cert.sh | bash" > /root/setup-cert.log 2>&1 &
-tail -f /root/setup-cert.log
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup.sh -o /root/yeshua-setup.sh && bash /root/yeshua-setup.sh
 ```
 
-## 3. Deploys Posteriores
+Na instalacao limpa, recebe/valida o JSON privado no inicio, prepara as mesmas
+pastas, publica os aplicativos e configura backup. Pode vincular uma Storage VPS
+por SSH administrativo temporario, sem guardar a senha root. Na recuperacao,
+recebe o kit em /root/YeshuaRecovery/operator, lista pontos compativeis, obtem
+a revisao Git capturada e restaura os dados antes de liberar os aplicativos.
+Nao roda deploy normal nem migrations nesse caminho.
+
+O certificado ja e tratado pelo setup. Se DNS/ACME nao estiver disponivel,
+conclui em HTTP com HTTPS pendente; nao precisa esperar a troca de IP/DNS para
+preparar o ambiente. HTTP nao protege senhas; mantenha o acesso restrito ate
+habilitar HTTPS. Depois de corrigir DNS, repita o mesmo comando padrao.
+
+## Servidor De Storage
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/bootstraps/setup-storage.sh -o /root/yeshua-storage-setup.sh && bash /root/yeshua-storage-setup.sh
+```
+
+Prepara apenas receptor SFTP, ferramentas e controlador/agendas; nao instala
+Docker nem aplicativos. Pode ficar pronto com as origens desligadas. Na
+recuperacao, repor JSON/chaves e o repositorio cifrado preservado, sem init.
+Repositorio ou origem ausente aparece como pendencia, nao como restore concluido.
+Em perda das duas maquinas, recuperar primeiro o storage e seu historico;
+depois recuperar o servidor dos aplicativos pelo outro comando.
+
+Execute os comandos em terminal interativo, sem nohup/redirecionar os prompts.
+Credenciais e confirmacoes sao solicitadas no inicio, antes das etapas longas.
+As fases, guardas e limitacoes estao em [RECOVERY.md](../backups/RECOVERY.md).
+
+## Deploys Posteriores
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/docker/deploy.sh | bash
@@ -65,19 +91,19 @@ Com uma Storage VPS controladora ja vinculada, o mesmo instalador reconhece
 state/controller-owner.json: preserva as seis agendas no controlador, mantem
 somente a seguranca SQL local e a limpeza volatil na origem. Nao reativa timers
 legados nem executa novamente a bateria inicial na origem. A configuracao de
-uma nova maquina controladora e install.py --role controller, apos preparar
-Restic, credenciais privadas e os acessos SSH restritos; nao executar o setup
+uma nova maquina controladora usa setup-storage.sh acima; o instalador interno
+continua sendo o mesmo install.py --role controller. Nao executar o setup
 completo dos aplicativos nessa maquina. Instrucoes em infra/backups/README.md.
 
 A instalacao atual utiliza /root/YeshuaCreator e
 /root/YeshuaPrivate/production/credentials.json. Layout diferente exige revisao
 explicita; o instalador recusa usar caminhos divergentes das unidades.
 
-Nao executar setup.sh como atalho de restore: ele continua fazendo upgrade e
-deploy/migrations, como antes. Recuperar primeiro pelo roteiro
-[RECOVERY.md](../backups/RECOVERY.md), sem publicar nem ligar workers; somente
-apos reconciliacao/aceite retornar ao deploy normal. O instalador de backup e
-o mesmo em servidor novo e recuperado. Nao copiar o state vivo de backup da
+Escolher recuperar no inicio do setup em uma maquina vazia. O caminho de
+recuperacao nao chama o deploy/migrations; os servicos so sao liberados apos
+arquivos, SQL e acessos verificados. Backups antigos sem contrato exigem o
+roteiro assistido de [RECOVERY.md](../backups/RECOVERY.md). O instalador de backup
+e o mesmo em servidor novo e recuperado. Nao copiar o state vivo de backup da
 origem sobre o state de outra maquina; recuperar dados e historico do repositorio
 nao significa adotar os locks/recibos operacionais antigos.
 

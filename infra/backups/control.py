@@ -264,10 +264,10 @@ def reconcile(item, value, *, capture_slots, maintenance_active):
 
 
 def controller(kind):
-    config = configuration()
-    items = [item for item in config["Sources"] if item["Enabled"]]
     op.private_directory(BASE, create=True)
     with controller_lock():
+        config = configuration()
+        items = [item for item in config["Sources"] if item["Enabled"]]
         if kind in routine.KINDS:
             for item in items:
                 value = read_state(item)

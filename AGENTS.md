@@ -1307,8 +1307,42 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   2026-10-20 na revisao de runtime `5a356472e`: configuracao, permissoes,
   subida dos cinco apps/API operacional e redeploy Central sem trocar containers
   nem chaves. Importacao/provisionamento sao operacoes explicitas.
-- Setup unico para servidor novo ou reconstruido, sem flag de restauracao.
-  Arquivo privado existente e valido e reutilizado; ausente gera somente exemplo
+- Decisao atual de 2026-10-23: uma entrada publica por papel fisico.
+  `infra/bootstraps/setup.sh` prepara o servidor dos aplicativos e
+  `infra/bootstraps/setup-storage.sh` prepara somente a Storage VPS. Ambos usam
+  o mesmo bootstrap e perguntam no inicio instalar/reaplicar ou recuperar.
+  Nunca executar os dois papeis na mesma maquina. A escolha fica vinculada ao
+  machine-id; repetir o comando retoma o estado, nao escolhe nem sobrescreve
+  dados silenciosamente. Opcao digitada errada solicita novamente.
+  Preparacao, recuperacao de dados e liberacao continuam responsabilidades
+  separadas internamente em setup.py, recovery.py e enrollment.py, reutilizando
+  Restic, restore SQL/arquivos, Compose, SSH restrito e agendas existentes.
+  `install.py --prepare-only` instala as mesmas ferramentas/unidades sem
+  inicializar repositorio nem habilitar agendas ou executar backup.
+  Recuperacao usa kit privado fora da raiz que sera restaurada, lista pontos
+  files/SQL compativeis e exige confirmacao de isolamento da origem antiga.
+  Somente snapshots files com contrato `recovery=server-v1` entram no fluxo
+  automatico. Backups antigos continuam disponiveis para recuperacao assistida.
+  O contrato captura revisao Git, servicos/replicas, digest SQL e UID, sem fontes,
+  imagens ou SQL cru. Reconstroi a revisao exata, nao usa latest como fallback,
+  restaura arquivos, sobe somente SQL em loopback, restaura cadeias/CHECKDB e
+  acessos, e depois libera hosts. Nao executar deploy normal nem migrations
+  antes/depois da recuperacao para tentar completar silenciosamente o estado.
+  Interrupcao parcial de SQL ou liberacao exige revisao, nao repeticao destrutiva.
+  Modelos privados de Compose preservam caracteres literais e proveniencia
+  vinculada a maquina/arquivos de origem, para permitir novos backups apos restore.
+  Assets recriaveis especificos usam recovery-assets.sh junto ao Compose,
+  compartilhado com o deploy e verificado pelo hash da revisao capturada.
+  Storage sobe mesmo com origem desligada; repositorio historico ausente fica
+  pendente e NUNCA e reinicializado. Configuracao Storage.Receivers preserva
+  chaves publicas/IPs/layout; PendingOffers nao vira Sources ativa antes da prova.
+  Acesso root de vinculacao e temporario pelo prompt SSH, sem senha em JSON/logs.
+  Setup continua exigindo guarda independente das chaves e senhas de recuperacao.
+  Mudancas futuras de infraestrutura devem manter testes de instalacao limpa E
+  recuperacao. Suites isoladas nao comprovam restore funcional completo: ensaio
+  em VPS nova, reconciliacao externa e aceite humano continuam obrigatorios.
+- No caminho de instalacao limpa, o arquivo privado existente e valido e reutilizado.
+  Ausente gera somente exemplo
   vazio e aguarda preenchimento/reposicao no inicio por init --wait. O operador
   prepara o arquivo no servidor em outra sessao e confirma PRONTO por /dev/tty;
   nunca ler JSON/senhas do stdin, que pode conter o script curl | bash. Erros de
@@ -1317,8 +1351,10 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   servicos. Configuracao valida nao pede confirmacao extra nem e reescrita.
   O init sem --wait e os deploys continuam nao interativos. Criar apenas diretorios ausentes,
   sem reescrever cofres/chaves ou reaplicar chown/chmod recursivo nos dados.
-  A restauracao dos dados/SQL acontece antes, por procedimento proprio futuro;
-  o setup nao escolhe backups nem infere intencao de restaurar pela falta de dados.
+  No caminho de recuperacao, a escolha e explicita no inicio; nunca inferir
+  intencao de restaurar pela ausencia de dados. O roteiro atual esta em
+  infra/backups/RECOVERY.md e substitui a antiga orientacao de restore manual
+  antes do setup.
   Apps.Memorias.PrivateRoot explicito deve existir e o bind YouTube nao cria
   pasta no host automaticamente. Raiz vazia nao comprova cofre restaurado.
   Decisao posterior do usuario: esta transicao pode recriar o ambiente Yeshua

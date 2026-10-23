@@ -1,5 +1,107 @@
 # Roteiro De Recuperacao Em Novo Servidor
 
+## Fluxo Atual Do Setup - 2026-10-23
+
+Uma entrada publica por papel, com a escolha inicial instalar/reaplicar ou
+recuperar. Comandos completos em [bootstraps/README.md](../bootstraps/README.md).
+`setup.sh` pertence a VPS dos aplicativos; `setup-storage.sh` pertence a outra
+VPS. Nao instalar os dois papeis na mesma maquina.
+
+O caminho recuperar separa preparacao, dados e liberacao internamente; nao
+exige lembrar outro comando de restore nem executa o deploy/migrations normais.
+Os testes automatizados verificam guardas e ordem; **restauracao funcional em
+VPS nova ainda nao foi comprovada**. Nenhuma execucao deste setup deve ser
+usada para substituir ou sobrescrever a VPS publicada.
+
+### Kit Independente Das VPSs
+
+- JSON privado dos aplicativos, incluindo a senha Restic e as chaves do cofre.
+- Chave de envio SFTP e known_hosts, preservados junto com esse JSON.
+- JSON privado do storage/controlador, suas chaves de controle e known_hosts.
+- Shared.Backup.Storage.Receivers com nome/layout/IP e chave publica de cada
+  origem. No storage existente, o setup pode extrair a declaracao legada da
+  conta SFTP administrada; no desastre, repor a declaracao preservada.
+- Acesso administrativo independente aos dois servidores e ao provedor da
+  copia externa. Senha Restic nao substitui acesso SSH nem contem os dados.
+
+Guardar em local restrito fora das duas VPSs. Nao disponibilizar segredos no
+Git, nas linhas de comando, nos logs ou somente dentro do backup cifrado.
+O atual destino unico e a Storage VPS; se o disco dela for perdido sem outra
+copia, reinstalar o storage NAO recupera o historico perdido.
+
+### Ordem No Desastre
+
+1. Isolar/desligar as maquinas antigas para impedir processamento duplicado.
+2. Se o storage foi perdido, executar setup-storage.sh na nova Storage VPS e
+   escolher recuperar. Repor seu credentials.json e suas chaves nos caminhos
+   solicitados, root/0600, diretorios 0700. Confirmar a vinculacao do novo
+   machine-id e informar o novo IP; nunca editar /etc/machine-id.
+3. Repor o repositorio Restic cifrado a partir da copia externa, no caminho
+   declarado. O setup reconstroi contas/chroot e ajusta a posse do repositorio
+   explicitamente nesse modo, sem seguir symlinks. Verifica ID/senha. Ausente,
+   permanece pendente: nao inicializa outro repositorio no lugar do historico.
+4. A origem pode continuar desligada. O storage pode ficar preparado sem
+   habilitar captura; os vinculos serao concluidos quando a origem existir.
+5. Executar setup.sh na nova VPS dos aplicativos e escolher recuperar. Repor
+   o JSON da origem e seus arquivos SSH em /root/YeshuaRecovery/operator, fora
+   das raizes restauradas. O JSON pode manter os caminhos originais se os
+   mesmos nomes de arquivos estiverem ao lado dele; o leitor remapeia somente
+   para esse diretorio privado. Se o storage mudou, atualizar a referencia.
+6. Se o IP da origem mudou, o setup oferece acesso SSH administrativo temporario
+   para autorizar esse IP no storage e obter a identidade do host. A senha e
+   digitada no prompt SSH e nao e persistida.
+7. Escolher um ponto files/SQL da lista. Apenas files com contrato
+   recovery=server-v1 entram nessa lista. O par usa SQL anterior aos arquivos,
+   do mesmo host/escopo. Nao e snapshot globalmente atomico entre aplicativos.
+8. Confirmar RECUPERAR no inicio. O setup baixa/verifica os dados, exige host
+   Docker vazio e destinos vazios, obtem o commit Git capturado e reconstrui
+   imagens a partir das fontes. Imagens externas usam digests, principalmente
+   a versao SQL exata. Nao ha fallback para latest nem backup de imagens/fontes.
+9. Restaurar arquivos persistentes/privados; recriar diretorios volateis vazios
+   e assets recriaveis. Subir somente SQL, com porta no loopback. Restaurar
+   cadeias nativas, executar CHECKDB e recriar os acessos declarados.
+10. Criar os demais servicos parados, liberar os hosts e conferir HTTP/saude.
+    Vincular a nova origem ao storage, conferir agendas e configurar HTTPS.
+    Operacoes externas podem exigir reconciliacao antes do uso normal.
+
+### Retomada E Limites
+
+Repetir o MESMO comando retoma o estado vinculado a esta maquina. Conclusao
+nao reaplica os dados. Interrupcao durante SQL, copia parcial de arquivos ou
+liberacao dos hosts exige revisao; nao apaga dados nem repete efeitos externos
+silenciosamente. Nao remover o estado manualmente para contornar essas guardas.
+O checkout permanece no commit restaurado; usar deploy normal somente apos o
+aceite funcional e a decisao explicita de atualizar o ambiente.
+
+Alteracoes locais nao publicadas no Git nao sao reconstruidas; o setup avisa
+e exige aceite para continuar somente com o commit. Git, registros de imagens,
+pacotes e dependencias de build precisam estar disponiveis. SQL e arquivos sao
+verificados tecnicamente, mas login, regras de negocio, integracoes externas,
+RPO e tempo total precisam do ensaio real. Backups anteriores sem contrato
+continuam preservados e exigem recuperacao assistida, nao adivinhacao do codigo.
+
+### Verificacao Desta Entrega
+
+Em 2026-10-23: 303 testes aprovados no Linux; no Windows, 294 aprovados e
+9 especificos de Linux ignorados. Os quatro caminhos do bootstrap (dois papeis,
+novo/recuperacao) foram executados com operacoes de sistema simuladas, sem
+instalar nem parar os ambientes reais. Tambem foi conferido o Compose real
+com um container ficticio criado parado e removido, comprovando a preservacao
+de caracteres especiais na configuracao, sem iniciar o container.
+
+A consulta somente de leitura ao ambiente publicado encontrou 6 projetos,
+19 servicos e UID SQL 10001. O checkout publicado tem alteracoes locais nao
+capturadas pelo Git, e o agente operacional possui imagem ausente; nao corrigir
+esses pontos por reset/pull/descarte automatico. Captura dos dados deve continuar,
+mas reconstrucao funcional e atualizacao do aplicativo exigem revisao propria.
+Essas verificacoes NAO substituem o ensaio integral de recuperacao.
+
+## Roteiro Historico E Recuperacao Assistida
+
+As anotacoes abaixo preservam as etapas anteriores e ferramentas de baixo
+nivel. Orientacoes antigas sobre restore separado/antes do setup sao
+substituidas pelo fluxo atual acima quando houver contrato server-v1.
+
 Status: implementacao disponivel para ensaio. Recuperacao real ainda nao provada.
 Nenhum comando deste roteiro foi executado para parar a VPS publicada.
 

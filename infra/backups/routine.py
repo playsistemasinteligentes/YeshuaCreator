@@ -267,11 +267,13 @@ def reconcile_intents(op, base, password, client):
             complete_intent(op, base, password, client, intent, path)
 
 
-def snapshot(op, document, policy, sources, kind, run_id):
+def snapshot(op, document, policy, sources, kind, run_id, *, server_recovery=False):
     if kind == "files":
         op.storage_excludes(policy)
     args = ["backup", "--json", "--host", policy["scope"], "--tag", "yeshua",
             "--tag", "scope=" + policy["scope"], "--tag", "kind=" + kind, "--tag", "run=" + run_id]
+    if kind == "files" and server_recovery:
+        args += ["--tag", "recovery=server-v1"]
     if kind == "sql":
         # A growing SQL history must not exceed the OS command-line limit.
         names = [str(op.absolute(path)) for path in sources]
@@ -408,10 +410,16 @@ def files_cycle(op, document, private_file, policy):
         current.mkdir(mode=0o700)
         with op.locked("/var/lock/yeshua-deploy.lock"):
             revision = op.sql.run(["git", "-C", str(op.ROOT), "rev-parse", "HEAD"])
-            op.snapshot_source(current, revision)
+            source = op.snapshot_source(current, revision)
             containers = op.inspect_running()
             areas = op.mount_areas(containers, document, private_file, policy)
             op.write(current / "compose.json", op.frozen_projects(containers, document, private_file))
+            import importlib.util
+            spec = importlib.util.spec_from_file_location("yeshua_recovery_contract", Path(__file__).with_name("recovery.py"))
+            recovery = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(recovery)
+            contract = recovery.capture_contract(op, containers, source)
+            op.write(current / "recovery-contract.json", contract)
         sources = [op.absolute(a["path"]) for a in areas] + [current]
         sources = outer_roots(sources)
         for source in sources:
@@ -434,7 +442,8 @@ def files_cycle(op, document, private_file, policy):
         source_bytes = sum(int(line.split()[0]) for line in estimate.splitlines())
         if source_bytes <= 0 or shutil.disk_usage(base).free < source_bytes + policy["minimum_free_bytes"]:
             raise op.Error("online_file_snapshot_would_exceed_disk_reserve")
-        receipt = snapshot(op, document, policy, sources, "files", run_id)
+        receipt = snapshot(op, document, policy, sources, "files", run_id,
+                           server_recovery=contract["automatic_recovery_ready"])
     return {"operation": "scheduled", "kind": "files", "run_id": run_id, "services_paused": False,
             "file_selection": FILE_SELECTION,
             "source_bytes_budget": source_bytes, "budget_includes_excluded_paths": False, "incremental_repository": True,

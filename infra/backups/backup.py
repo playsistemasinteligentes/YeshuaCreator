@@ -28,6 +28,7 @@ Error = sql.InventoryError
 SET_ID = re.compile(r"[0-9]{8}T[0-9]{6}Z-[0-9a-f]{12}")
 HASH = re.compile(r"[0-9a-f]{64}")
 PROJECT_NAME = re.compile(r"playsis-[a-z0-9][a-z0-9-]*")
+RECOVERY_COMPOSE = Path("/root/YeshuaRecovery/setup/compose")
 BACKEND_ENV = {"AWS_ACCESS_KEY_ID", "AWS_SECRET_ACCESS_KEY", "AWS_SESSION_TOKEN", "AWS_DEFAULT_REGION",
                "AZURE_ACCOUNT_NAME", "AZURE_ACCOUNT_KEY", "B2_ACCOUNT_ID", "B2_ACCOUNT_KEY"}
 VOLATILE_VOLUME_TARGETS = {
@@ -122,14 +123,33 @@ def machine_id():
     return Path("/etc/machine-id").read_text().strip()
 
 
+def compose_source_files(container, *, revision=None):
+    labels = container.get("Config", {}).get("Labels") or {}
+    project = labels.get("com.docker.compose.project", "")
+    files = [absolute(p) for p in labels.get("com.docker.compose.project.config_files", "").split(",") if p]
+    if len(files) == 1 and files[0].parent == RECOVERY_COMPOSE:
+        path = files[0]
+        private_directory(RECOVERY_COMPOSE)
+        provenance = read(RECOVERY_COMPOSE / "provenance.json")
+        entry = provenance.get("projects", {}).get(project, {})
+        expected = entry.get("model_sha256") if path.name == project + ".json" else None
+        if path.name == "sql-only.json" and labels.get("com.docker.compose.service") == "sqlserver" and project == "playsis-shared":
+            expected = provenance.get("sql_only_sha256")
+        if (provenance.get("schema") != 1 or provenance.get("machine_id") != machine_id()
+                or expected != digest(path) or revision is not None and provenance.get("source_revision") != revision.strip()):
+            raise Error("recovered_compose_provenance_changed_review_before_backup")
+        files = [absolute(ROOT / p) for p in entry.get("files", [])]
+    if not files or not all(path.is_relative_to(ROOT / "infra") for path in files):
+        raise Error("yeshua_compose_project_requires_repository_infra_ownership")
+    return files
+
+
 def managed_project(container):
     labels = container.get("Config", {}).get("Labels") or {}
     project = labels.get("com.docker.compose.project", "")
     if not PROJECT_NAME.fullmatch(project):
         return False
-    files = labels.get("com.docker.compose.project.config_files", "").split(",")
-    if not all(path and absolute(path).is_relative_to(ROOT / "infra") for path in files):
-        raise Error("yeshua_compose_project_requires_repository_infra_ownership")
+    compose_source_files(container)
     return True
 
 
@@ -324,8 +344,7 @@ def snapshot_source(stage, revision):
     return source
 
 
-def frozen_projects(containers, document, private_file):
-    """Use existing Compose models, not a second container launcher."""
+def compose_environment(document, private_file):
     reader_spec = importlib.util.spec_from_file_location("private_for_compose", ROOT / "infra/private/credentials.py")
     reader = importlib.util.module_from_spec(reader_spec)
     reader_spec.loader.exec_module(reader)
@@ -335,15 +354,21 @@ def frozen_projects(containers, document, private_file):
             key, value = line.split("=", 1)
             env[key] = value
     env.update(reader.environment(document, private_file.parent, "all", True))
+    return env
+
+
+def frozen_projects(containers, document, private_file):
+    """Use existing Compose models, not a second container launcher."""
+    env = compose_environment(document, private_file)
     result = {}
     for project in sorted({c["Config"]["Labels"]["com.docker.compose.project"] for c in containers}):
         selected = [c for c in containers if c["Config"]["Labels"]["com.docker.compose.project"] == project]
-        files = selected[0]["Config"]["Labels"]["com.docker.compose.project.config_files"].split(",")
+        files = compose_source_files(selected[0])
         if any(not absolute(f).is_relative_to(ROOT) for f in files):
             raise Error("compose_model_outside_repository")
         args = ["docker", "compose", "--project-name", project]
         for path in files:
-            args += ["-f", path]
+            args += ["-f", str(path)]
         model = json.loads(sql.run([*args, "config", "--format", "json"], env=env, stage="freeze_compose"))
         active_services = {c["Config"]["Labels"]["com.docker.compose.service"] for c in selected}
         model["services"] = {k: v for k, v in model["services"].items() if k in active_services}
@@ -598,7 +623,7 @@ def sftp_options(document):
     paths = []
     for name in ("IdentityFile", "KnownHostsFile"):
         path = absolute(settings[name])
-        if not path.is_relative_to(Path("/root/YeshuaPrivate/production")):
+        if not any(path.is_relative_to(root) for root in (Path("/root/YeshuaPrivate/production"), Path("/root/YeshuaRecovery/operator"))):
             raise Error("sftp_credentials_require_private_root")
         private_directory(path.parent)
         info = path.stat()

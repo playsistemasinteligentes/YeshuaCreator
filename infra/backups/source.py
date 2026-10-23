@@ -153,11 +153,11 @@ def safety(c):
         return c.routine.sql_cycle(c.op, document, password, policy, "logs", native_only=True)
 
 
-def activate(c, controller_machine):
+def activate(c, controller_machine, *, previous_controller=None):
     if not re.fullmatch(r"[a-f0-9]{32}", controller_machine):
         raise c.op.Error("invalid_controller_machine")
     previous = owner(c)
-    if previous and previous["controller_machine"] != controller_machine:
+    if previous and previous["controller_machine"] not in {controller_machine, previous_controller}:
         raise c.op.Error("explicit_controller_transfer_required")
     base = c.op.private_directory(c.policy()["staging"])
     timers = ["yeshua-backup-" + kind + ".timer" for kind in c.routine.KINDS]
@@ -175,7 +175,7 @@ def activate(c, controller_machine):
     return {"status": "controller_owns_schedules", "local_sql_safety": True, "applications_restarted": False}
 
 
-def configure_access(c, public_key, controller_ip):
+def configure_access(c, public_key, controller_ip, *, previous_controller=None):
     import pwd
     storage = c.load("storage")
     key = storage.key_line(public_key, controller_ip)
@@ -189,7 +189,19 @@ def configure_access(c, public_key, controller_ip):
     if account.pw_uid == 0 or account.pw_dir != "/nonexistent" or account.pw_shell != "/bin/sh":
         raise c.op.Error("existing_controller_account_requires_review")
     storage.directory(Path("/etc/ssh/authorized_keys"))
-    storage.managed_file(Path("/etc/ssh/authorized_keys") / USER, key, 0o644)
+    authorized_path = Path("/etc/ssh/authorized_keys") / USER
+    if authorized_path.exists() and authorized_path.read_text() != key:
+        previous = owner(c)
+        if (not previous_controller or not previous or previous["controller_machine"] != previous_controller
+                or authorized_path.is_symlink() or authorized_path.stat().st_uid != 0
+                or authorized_path.stat().st_mode & 0o022):
+            raise c.op.Error("explicit_previous_controller_required_to_replace_control_key")
+        # Only this managed technical key is replaced; root/admin access is untouched.
+        temporary = authorized_path.with_suffix(".pending")
+        storage.managed_file(temporary, key, 0o644)
+        os.replace(temporary, authorized_path)
+    else:
+        storage.managed_file(authorized_path, key, 0o644)
     sudo = Path("/etc/sudoers.d/yeshua-backup-control")
     storage.managed_file(sudo, USER + " ALL=(root) NOPASSWD: " + COMMAND + "\n", 0o440)
     c.run(["/usr/sbin/visudo", "-cf", str(sudo)])

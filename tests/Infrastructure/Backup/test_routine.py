@@ -240,7 +240,7 @@ class LocalRepositoryTests(unittest.TestCase):
                 document = {"Apps": {"Memorias": {"PrivateRoot": "/vault"}}}
                 with patch.object(routine, "preflight", return_value=base), \
                      patch.object(op, "locked", return_value=nullcontext()), patch.object(op, "absolute", side_effect=Path), \
-                     patch.object(Path, "is_dir", return_value=True), patch.object(op, "snapshot_source"), \
+                     patch.object(Path, "is_dir", return_value=True), patch.object(op, "snapshot_source", return_value={"revision": "a" * 40, "tracked_diff": False}), \
                      patch.object(op, "inspect_running", return_value=[]), patch.object(op, "frozen_projects", return_value={}), \
                      patch.object(op, "mount_areas", return_value=[{"path": "/root/YeshuaStorage/persistent"},
                          {"path": str(Path(folder) / "private")}, {"path": "/vault"}]), patch.object(op, "machine_id", return_value="current"), \

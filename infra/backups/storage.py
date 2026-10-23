@@ -91,7 +91,27 @@ def source_layout(source_name=None):
     return "yeshua-bk-" + source_name, ROOT / source_name, CONFIG.with_name("60-yeshua-backup-" + source_name + ".conf")
 
 
-def configure(public_key, source_ip, source_name=None):
+def adopt_encrypted_repository(repository, uid, gid):
+    descriptor = os.open(repository, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        os.fchown(descriptor, uid, gid)
+        os.fchmod(descriptor, 0o700)
+        for _, directories, files, parent in os.fwalk(repository, follow_symlinks=False):
+            for name in directories + files:
+                child = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK, dir_fd=parent)
+                try:
+                    info = os.fstat(child)
+                    if not (stat.S_ISREG(info.st_mode) or stat.S_ISDIR(info.st_mode)):
+                        raise RuntimeError("restored_repository_contains_special_file")
+                    os.fchown(child, uid, gid)
+                    os.fchmod(child, 0o700 if stat.S_ISDIR(info.st_mode) else 0o600)
+                finally:
+                    os.close(child)
+    finally:
+        os.close(descriptor)
+
+
+def configure(public_key, source_ip, source_name=None, *, update_source_address=False, adopt_repository=False):
     import pwd
     if os.name != "posix" or os.geteuid() != 0:
         raise RuntimeError("run_storage_setup_on_linux_as_root")
@@ -112,10 +132,25 @@ def configure(public_key, source_ip, source_name=None):
     if not repository.exists():
         repository.mkdir(mode=0o700)
         os.chown(repository, account.pw_uid, account.pw_gid)
+    if adopt_repository:
+        # Restore may bring numeric owners from another host. Only this receiver's
+        # encrypted repository is adopted; links/devices are never followed.
+        adopt_encrypted_repository(repository, account.pw_uid, account.pw_gid)
     directory(repository, account.pw_uid, account.pw_gid, 0o700)
     directory(KEYS)
     # sshd reads this public key as the target user; only root may modify it.
-    managed_file(KEYS / user, authorized, 0o644)
+    key_path = KEYS / user
+    if update_source_address and key_path.exists() and key_path.read_text() != authorized:
+        old = key_path.read_text().strip().split()
+        expected = authorized.strip().split()
+        if (key_path.is_symlink() or key_path.stat().st_uid != 0 or key_path.stat().st_mode & 0o022
+                or len(old) != len(expected) or old[1:] != expected[1:] or not old[0].startswith('from="')):
+            raise RuntimeError("storage_address_update_requires_same_managed_public_key")
+        pending = key_path.with_suffix(".pending")
+        managed_file(pending, authorized, 0o644)
+        os.replace(pending, key_path)
+    else:
+        managed_file(key_path, authorized, 0o644)
     created = managed_file(configuration, ssh_configuration(user, root), 0o644)
     try:
         run(["/usr/sbin/sshd", "-t"])

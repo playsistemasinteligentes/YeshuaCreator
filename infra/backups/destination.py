@@ -31,7 +31,8 @@ def finish_transition(op, base, target, custody):
     transition.replace(base / "state" / ("repository-transition-" + op.repository_id(target)[:16] + ".json"))
 
 
-def move_to_sftp(op, routine, private_file, policy, repository, identity, known_hosts, *, apply=False, initialize=False):
+def move_to_sftp(op, routine, private_file, policy, repository, identity, known_hosts, *, apply=False, initialize=False,
+                 allow_empty_initial=False):
     if (not isinstance(repository, str) or not re.fullmatch(r"sftp:[a-z][a-z0-9-]*@[0-9.]+:/repository", repository)
             or identity is None or known_hosts is None):
         raise op.Error("explicit_sftp_user_ipv4_repository_and_private_ssh_paths_required")
@@ -72,7 +73,7 @@ def move_to_sftp(op, routine, private_file, policy, repository, identity, known_
                 or custody.get("key_fingerprint") != custody_fingerprint(source["RESTIC_REPOSITORY"], source["RESTIC_PASSWORD"])):
             raise op.Error("original_backup_key_custody_required_before_transition")
         snapshots = json.loads(op.restic(original, ["snapshots", "--json"]))
-        if not snapshots:
+        if not snapshots and not (allow_empty_initial and apply):
             raise op.Error("local_backup_history_required_before_transition")
         if not apply:
             return {"operation": "move-to-sftp", "status": "planned", "source_snapshots": len(snapshots),
