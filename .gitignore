@@ -288,6 +288,14 @@ Backup*/
 !/infra/backups/policy.json
 !/infra/backups/RECOVERY.md
 !/infra/backups/routine.py
+!/infra/backups/destination.py
+!/infra/backups/storage.py
+!/infra/backups/control.py
+!/infra/backups/source.py
+!/infra/backups/yeshua-backup-controller@.service
+!/infra/backups/yeshua-backup-maintenance@.service
+!/infra/backups/yeshua-backup-request@.service
+!/infra/backups/yeshua-backup-sql-safety.service
 !/infra/backups/install.py
 !/infra/backups/volatile.py
 !/infra/backups/yeshua-volatile-cleanup.service

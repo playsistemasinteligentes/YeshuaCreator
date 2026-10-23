@@ -70,6 +70,22 @@ def configure_local(op, private_file, policy):
             "external_destination_pending": True, "secrets_printed": False}
 
 
+def configure_repository(op, private_file, policy):
+    document, _ = op.sql.load_credentials(op.ROOT, private_file, require_sql=False)
+    if not document.get("Shared", {}).get("Backup", {}).get("Repository"):
+        result = configure_local(op, private_file, policy)
+        document, _ = op.sql.load_credentials(op.ROOT, private_file, require_sql=False)
+    else:
+        base = op.private_directory(policy["staging"], create=True)
+        with op.locked(base / "backup.lock"), op.locked(base / "files.lock"):
+            op.restic(document, ["snapshots", "--json"])
+            for name in ("state", "records", "intents", "metadata", "status"):
+                op.private_directory(base / name, create=True)
+        result = {"operation": "configure-repository", "repository": op.restic_env(document)["RESTIC_REPOSITORY"],
+                  "offsite": True, "external_destination_pending": False, "secrets_printed": False}
+    return dict(result, repository_id=op.repository_id(document))
+
+
 @contextmanager
 def recovery_terminal(op):
     try:
@@ -136,7 +152,7 @@ def recovery_key(op, private_file, policy, *, show=False):
                                  "EXIBIR", "recovery_key_display_not_authorized")
             writer.write("\nRepositorio: " + repository + "\nSenha de recuperacao: " + password + "\n\n"
                          "Nao envie essa senha ao chat, Git ou logs.\n"
-                         "A copia dos dados ainda e LOCAL; guardar a senha nao protege o disco da VPS.\n")
+                         "Guardar a senha nao comprova a recuperacao nem a existencia de copias externas.\n")
             confirm_recovery_key(op, reader, writer,
                                  "Depois de guardar em local protegido fora da VPS, digite GUARDEI (ou CANCELAR para sair): ",
                                  "GUARDEI", "recovery_key_custody_not_confirmed")
@@ -270,10 +286,10 @@ def snapshot(op, document, policy, sources, kind, run_id):
             "bytes_processed": summaries[0].get("total_bytes_processed"), "offsite": bool(document["Shared"]["Backup"].get("Repository"))}
 
 
-def sql_cycle(op, document, password, policy, kind):
+def sql_cycle(op, document, password, policy, kind, *, native_only=False):
     base = preflight(op, policy)
     with op.locked(base / "backup.lock"):
-        return _sql_cycle(op, document, password, policy, kind, base)
+        return _sql_cycle(op, document, password, policy, kind, base, native_only=native_only)
 
 
 def native_kind(op, password, client, database, kind, records):
@@ -298,7 +314,7 @@ def native_kind(op, password, client, database, kind, records):
     return kind, None
 
 
-def _sql_cycle(op, document, password, policy, kind, base):
+def _sql_cycle(op, document, password, policy, kind, base, *, native_only=False):
     with op.locked("/var/lock/yeshua-deploy.lock"):
         metadata, client = op.sql.sql_inventory(password)
         if metadata.get("active_backup_restore"):
@@ -358,6 +374,11 @@ def _sql_cycle(op, document, password, policy, kind, base):
             chains[name] = [r["backup_guid"] for r in chain(op, records, name)]
         op.write(base / "state" / "sql-catalog.json", {"schema": 1, "source_machine": op.machine_id(),
                  "updated_at": op.now(), "sql_version": metadata["product_version"], "chains": chains, "restore_proven": False})
+        generated = {"schema": 1, "source_machine": op.machine_id(), "generated_at": op.now(),
+                     "run_id": run_id, "database_backups": len(completed), "delivered": False}
+        op.write(base / "state" / "sql-generated.json", generated)
+    if native_only:
+        return dict(generated, operation="sql-safety", status="generated_locally", restore_proven=False)
     # Do not block deployment for the repository write.
     # Do not copy old system-database media again; retain it only in older snapshots/on disk.
     record_files = []
@@ -370,6 +391,8 @@ def _sql_cycle(op, document, password, policy, kind, base):
         raise op.Error("sql_snapshot_media_outside_native_backup_area")
     sources = media + record_files + [base / "state" / "sql-catalog.json"]
     receipt = snapshot(op, document, policy, sources, "sql", run_id)
+    op.write(base / "state" / "sql-generated.json", dict(generated, delivered=True,
+             delivered_at=op.now(), snapshot_id=receipt["snapshot_id"]))
     return {"operation": "scheduled", "kind": kind, "run_id": run_id,
             "database_backups": len(completed), "services_paused": False, "restore_proven": False, **receipt}
 
@@ -422,6 +445,11 @@ def scheduled(op, document, password, private_file, policy, kind):
     if kind not in KINDS:
         raise op.Error("invalid_scheduled_backup_kind")
     base = op.private_directory(policy["staging"])
+    with op.locked(base / "execution.lock"):
+        return _scheduled(op, document, password, private_file, policy, kind, base)
+
+
+def _scheduled(op, document, password, private_file, policy, kind, base):
     try:
         if kind in {"full", "differential", "logs"}:
             result = sql_cycle(op, document, password, policy, kind)
@@ -431,7 +459,8 @@ def scheduled(op, document, password, private_file, policy, kind):
             with op.locked(base / "backup.lock"), op.locked(base / "files.lock"):
                 op.restic(document, ["check", *(["--read-data"] if kind == "check-data" else [])])
             result = {"operation": "scheduled", "kind": kind, "data_read": kind == "check-data"}
-        result.update(status="completed", finished_at=op.now(), external_destination_pending=not bool(document["Shared"]["Backup"].get("Repository")), restore_proven=False)
+        result.update(status="completed", finished_at=op.now(), repository_id=op.repository_id(document),
+                      external_destination_pending=not bool(document["Shared"]["Backup"].get("Repository")), restore_proven=False)
         op.write(base / "status" / (kind + ".json"), result)
         return result
     except Exception as error:

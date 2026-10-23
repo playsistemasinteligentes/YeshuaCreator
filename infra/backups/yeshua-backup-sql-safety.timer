@@ -1,0 +1,11 @@
+[Unit]
+Description=Check local SQL log safety every five minutes
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Unit=yeshua-backup-sql-safety.service
+
+[Install]
+WantedBy=timers.target

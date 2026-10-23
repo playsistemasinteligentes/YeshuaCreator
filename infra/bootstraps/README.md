@@ -41,6 +41,15 @@ Responsabilidade da infraestrutura. A Engine pode gerar o template inicial do
 aplicativo, mas nao instala pacotes, acessa a VPS, cria agendas nem executa backup.
 Nao existe um setup de backup por aplicativo.
 
+O repositorio atual no filesystem da VPS tem papel de destino de backup, como
+um volume externo, e esta local apenas para desenvolvimento/testes da arquitetura.
+Nao e uma copia interna completa obrigatoria antes dos futuros destinos remotos.
+Essa decisao nao significa protecao fisica externa: o destino atual continua
+offsite=false enquanto fisicamente local. O instalador preserva/verifica o
+destino externo ja configurado, sem fallback silencioso. A mudanca inicial de
+local para SFTP e explicita pelo operador, nao pelo deploy. Multidestino segue
+em planejamento; veja infra/backups/README.md, secao Storage SFTP.
+
 Depois do deploy inicial, o mesmo setup instala/prepara as ferramentas em
 /opt/yeshua-backup, preserva a configuracao privada existente e chama
 install.py --initialize-online. Completa somente as provas iniciais ausentes
@@ -51,6 +60,14 @@ desde a criacao real no filesystem. A limpeza nao roda durante o setup;
 detalhes e simulacao estao no README de infra/backups. Em reexecucao, nao troca
 chaves, nao apaga historico e nao repete uma inicializacao ja concluida.
 Falha nessa etapa e falha de setup, nao sucesso silencioso.
+
+Com uma Storage VPS controladora ja vinculada, o mesmo instalador reconhece
+state/controller-owner.json: preserva as seis agendas no controlador, mantem
+somente a seguranca SQL local e a limpeza volatil na origem. Nao reativa timers
+legados nem executa novamente a bateria inicial na origem. A configuracao de
+uma nova maquina controladora e install.py --role controller, apos preparar
+Restic, credenciais privadas e os acessos SSH restritos; nao executar o setup
+completo dos aplicativos nessa maquina. Instrucoes em infra/backups/README.md.
 
 A instalacao atual utiliza /root/YeshuaCreator e
 /root/YeshuaPrivate/production/credentials.json. Layout diferente exige revisao
@@ -69,7 +86,7 @@ nao significa adotar os locks/recibos operacionais antigos.
 | Recurso novo | Comportamento |
 | --- | --- |
 | Banco de usuario no mesmo SQL | Descoberto automaticamente; recebe full inicial na proxima rodada SQL e segue diferencial/logs conforme recovery model |
-| Subpastas em /root/YeshuaStorage | Herdam a politica da area e suas exclusoes: volatile e intermediarios de render nao entram; demais grupos aguardam revisao |
+| Subpastas em /root/YeshuaStorage/persistent | Entram integralmente; volatile fica fora. A aplicacao escolhe a area pelo StorageLocation |
 | Subpastas privadas na raiz production | Entram na mesma rotina privada, incluindo apps/tenants novos |
 | App publicado com Compose playsis-* em infra do repositorio | Descoberto pelos metadados Compose existentes, sem lista fixa de apps no backup |
 | Bind fora das areas conhecidas | A copia de arquivos falha com pendencia de classificacao; nao assume descartavel nem copia SQL cru |
@@ -78,4 +95,6 @@ nao significa adotar os locks/recibos operacionais antigos.
 Novo aplicativo ainda deve aderir normalmente ao deploy/credenciais/mounts da
 infraestrutura. Isso nao e cadastro de estrategia de backup por app. Criar uma
 pasta em qualquer outro lugar da VPS nao a torna protegida automaticamente.
-O destino externo continua pendente, sem impedir a operacao local.
+Sem destino externo configurado, a pendencia nao impede a operacao local.
+Se houver SFTP, a chave e o known_hosts ficam na raiz privada e devem ser
+repostos no inicio junto com credentials.json, antes de validar o backup.

@@ -39,6 +39,18 @@ e sugestoes anteriores deste mapa. Nao representa nova implantacao na VPS.
 
 ### 0.1 Contrato Atual
 
+- Decisao de 2026-10-22: o repositorio em /root/YeshuaBackup/repository tem
+  papel de DESTINO de backup, como um volume externo. Estar local na VPS e
+  uma conveniencia temporaria de desenvolvimento/testes, nao uma exigencia
+  arquitetural de manter uma copia interna completa antes dos demais destinos.
+  A evolucao multidestino deve tratar todos os destinos com o mesmo papel,
+  independentemente do acesso por filesystem, SFTP ou armazenamento de objetos.
+  Intermediarios de captura SQL/cache/controle sao outra responsabilidade, nao
+  um repositorio interno obrigatorio. Isso nao muda a classificacao dos dados.
+  O destino atual continua fisicamente na VPS: offsite=false e ausencia de
+  protecao contra perda do servidor devem continuar explicitos. Multidestino
+  e liberacao dos intermediarios ainda estao em planejamento; nenhuma mudanca
+  de runtime, exclusao de historico ou migracao foi executada por esta decisao.
 - Existem somente PERSISTENTE e VOLATIL. Privacidade/permissoes nao criam
   outra categoria de backup.
 - Tudo que estiver na area persistente entra integralmente no backup;

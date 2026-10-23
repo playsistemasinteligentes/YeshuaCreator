@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path, PurePosixPath
 import re
+import shlex
 import shutil
 import signal
 import stat
@@ -556,12 +557,16 @@ def validate_set(stage):
     return manifest
 
 
-def restic_env(document):
+def restic_env(document, *, local_repository=None):
     config = document.get("Shared", {}).get("Backup", {})
     repository, password = config.get("Repository", ""), config.get("Password", "")
     # A path on the VPS is not an external backup. SSH trust/keys are prepared
     # separately; never disable host verification or put passwords in a URL.
-    if repository == "":
+    if local_repository is not None:
+        repository = str(absolute(local_repository))
+        if not Path(repository).is_relative_to(Path("/srv/yeshua-backups")) or not (Path(repository) / "config").is_file():
+            raise Error("controller_requires_initialized_storage_repository")
+    elif repository == "":
         # Explicit interim destination selected by the operator. Never infer
         # offsite protection merely because a repository exists locally.
         private_directory("/root/YeshuaBackup")
@@ -582,12 +587,45 @@ def restic_env(document):
                 RESTIC_CACHE_DIR="/root/.cache/yeshua-restic", GOMAXPROCS="1")
 
 
-def restic(document, args, *, timeout=14400, input=None):
+def sftp_options(document):
+    config = document.get("Shared", {}).get("Backup", {})
+    settings = config.get("Sftp")
+    if settings is None:
+        return []
+    if (not config.get("Repository", "").startswith("sftp:") or not isinstance(settings, dict)
+            or set(settings) != {"IdentityFile", "KnownHostsFile"}):
+        raise Error("invalid_sftp_configuration")
+    paths = []
+    for name in ("IdentityFile", "KnownHostsFile"):
+        path = absolute(settings[name])
+        if not path.is_relative_to(Path("/root/YeshuaPrivate/production")):
+            raise Error("sftp_credentials_require_private_root")
+        private_directory(path.parent)
+        info = path.stat()
+        if not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid() or info.st_mode & 0o077:
+            raise Error("sftp_credentials_must_be_owned_and_0600")
+        paths.append(str(path))
+    args = ["-F", "/dev/null", "-i", paths[0], "-o", "IdentitiesOnly=yes", "-o", "BatchMode=yes",
+            "-o", "StrictHostKeyChecking=yes", "-o", "UserKnownHostsFile=" + paths[1],
+            "-o", "ConnectTimeout=15", "-o", "ServerAliveInterval=30", "-o", "ServerAliveCountMax=3"]
+    return ["-o", "sftp.args=" + shlex.join(args), "-o", "sftp.connections=2"]
+
+
+def repository_id(document):
+    return hashlib.sha256(restic_env(document)["RESTIC_REPOSITORY"].encode()).hexdigest()
+
+
+def restic(document, args, *, timeout=14400, input=None, from_document=None, local_repository=None):
     if not shutil.which("restic"):
         raise Error("restic_not_installed_no_automatic_install")
+    env = restic_env(document, local_repository=local_repository)
+    if from_document is not None:
+        origin = restic_env(from_document)
+        env.update(RESTIC_FROM_REPOSITORY=origin["RESTIC_REPOSITORY"], RESTIC_FROM_PASSWORD=origin["RESTIC_PASSWORD"])
+    options = [] if local_repository is not None else sftp_options(document)
     return sql.run(["nice", "-n", "19", "ionice", "-c", "3", "restic", "--no-cache",
-                    "--limit-upload", "2048", "--limit-download", "4096", *args],
-                   env=restic_env(document), timeout=timeout, input=input, stage="restic_operation")
+                    "--limit-upload", "2048", "--limit-download", "4096", *options, *args],
+                   env=env, timeout=timeout, input=input, stage="restic_operation")
 
 
 def upload(document, stage, policy):
@@ -929,7 +967,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("action", nargs="?", default="plan", choices=("plan", "capture", "init-repository", "upload", "check",
                         "download", "prepare-server", "start-sql", "restore-sql", "create-services", "resume-source", "retention", "cleanup-staging",
-                        "configure-local", "recovery-key", "scheduled", "status", "sql-restore-plan", "restore-sql-chain", "restore-files"))
+                        "configure-local", "configure-repository", "move-to-sftp", "recovery-key", "scheduled", "status", "sql-restore-plan", "restore-sql-chain", "restore-files"))
     parser.add_argument("--file", type=Path, default=Path(os.environ.get("YESHUA_DEPLOY_SECRETS_FILE", "/root/YeshuaPrivate/production/credentials.json")))
     parser.add_argument("--policy", type=Path, default=Path(__file__).with_name("policy.json"))
     parser.add_argument("--set", type=Path)
@@ -943,6 +981,10 @@ def main(argv=None):
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--kind", choices=("full", "differential", "logs", "files", "check", "check-data", "sql", "coordinated"))
     parser.add_argument("--download-root", type=Path)
+    parser.add_argument("--repository", help="Explicit SFTP destination for move-to-sftp only.")
+    parser.add_argument("--sftp-identity-file", type=Path)
+    parser.add_argument("--sftp-known-hosts-file", type=Path)
+    parser.add_argument("--initialize-target", action="store_true", help="Explicitly initialize a new empty SFTP repository before copying.")
     parser.add_argument("--show-recovery-key", action="store_true", help="Show the existing recovery password again, only in a private controlling terminal.")
     args = parser.parse_args(argv)
     try:
@@ -957,11 +999,17 @@ def main(argv=None):
         stage = absolute(args.set) if args.set else None
         if args.action in {"upload", "prepare-server", "start-sql", "restore-sql", "create-services", "resume-source", "cleanup-staging"} and stage is None:
             raise Error("set_directory_required")
-        if args.action in {"configure-local", "recovery-key", "scheduled", "status", "sql-restore-plan", "restore-sql-chain", "restore-files"}:
+        if args.action in {"configure-local", "configure-repository", "move-to-sftp", "recovery-key", "scheduled", "status", "sql-restore-plan", "restore-sql-chain", "restore-files"}:
             import routine
             op = sys.modules[__name__]
             if args.action == "configure-local":
                 result = routine.configure_local(op, args.file, policy)
+            elif args.action == "configure-repository":
+                result = routine.configure_repository(op, args.file, policy)
+            elif args.action == "move-to-sftp":
+                import destination
+                result = destination.move_to_sftp(op, routine, args.file, policy, args.repository,
+                    args.sftp_identity_file, args.sftp_known_hosts_file, apply=args.apply, initialize=args.initialize_target)
             elif args.action == "recovery-key":
                 result = routine.recovery_key(op, args.file, policy, show=args.show_recovery_key)
             elif args.action == "scheduled":

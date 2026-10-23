@@ -1258,6 +1258,21 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Infraestrutura Paralela
 
+- Decisao arquitetural de 2026-10-22: o repositorio atual em
+  /root/YeshuaBackup/repository representa um DESTINO de backup, equivalente
+  conceitualmente a um volume externo. Esta fisicamente na VPS apenas para
+  desenvolver/testar a arquitetura antes da contratacao dos destinos remotos.
+  Nao transformar esse diretorio em repositorio interno obrigatorio, origem
+  intermediaria universal ou copia completa local exigida para todo envio.
+  Na evolucao multidestino, os destinos devem ter o mesmo papel arquitetural;
+  filesystem local, SFTP e armazenamento de objetos sao formas de acesso.
+  Area de trabalho da captura SQL, cache e registros de controle nao sao um
+  destino adicional nem justificam manter todo o historico internamente.
+  Papel arquitetural nao comprova separacao fisica: offsite=false e ausencia
+  de protecao contra perda da VPS continuam corretos para o destino atual.
+  Multidestino e ciclo de vida dos intermediarios permanecem em planejamento;
+  nao mover/apagar backups, mudar credenciais ou alterar flags de protecao
+  apenas para refletir essa decisao conceitual.
 - Classificacao encerrada pelo usuario em 2026-10-21: nao reabrir a lista item a
   item. Aplicar somente PERSISTENTE/VOLATIL. Implementacao local atual: captura
   coordenada/online somente Storage/persistent inteiro, privados e SQL nativo dos
@@ -1401,6 +1416,36 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   nao param servicos e nao garantem atomicidade entre bancos/arquivos: volumes
   quentes, uploads sem bind e integracoes exigem captura coordenada/ensaio depois.
   Nao apagar chains nem agendar prune/retencao antes do aceite de restore.
+- Etapa SFTP autorizada em 2026-10-23: a VPS dedicada recebe somente arquivos
+  cifrados, sem Docker, aplicativos, Restic ou agente instalado. O mesmo operador
+  da origem envia diretamente por SFTP; nao criar hub local obrigatorio nem
+  agente central de coleta nesta etapa. storage.py provisiona conta tecnica
+  chroot/SFTP-only, chave restrita ao IP da origem, sem alterar acesso root.
+  Shared.Backup.Sftp referencia IdentityFile/KnownHostsFile na raiz privada.
+  move-to-sftp copia e verifica o historico antes de trocar Repository, mantendo
+  senha e copia antiga. configure-repository preserva o destino no setup comum,
+  sem fallback local em falha externa. Provas iniciais sao vinculadas ao destino.
+  Troca de senha root nao revoga chaves. Segunda copia fora do provedor,
+  imutabilidade, liberacao de midias SQL e restore integral continuam pendentes.
+- Evolucao aprovada em 2026-10-23: a Storage VPS passa a controlar agendas,
+  recibos e verificacoes locais de integridade. A origem conserva somente o
+  executor transitorio, SQL nativo e Restic para leitura/deduplicacao/cifragem
+  e envio unico por SFTP. Nao mover MDF/LDF nem inventar captura SQL por SSH.
+  control.py/source.py reutilizam routine.py; nao criar API, fila, banco de
+  controle ou daemon. Pedidos identificados persistem antes do disparo de
+  oneshots systemd e sobrevivem ao encerramento da sessao SSH, sem repetir o
+  mesmo pedido. Acesso de controle usa chave exclusiva por origem, comando
+  forcado e sudo limitado ao protocolo; nunca root SSH nas rotinas.
+  Um trabalho por origem, ate dois envios simultaneos inicialmente e uma
+  verificacao pesada global. O setup comum respeita controller-owner.json e
+  nao reativa as seis agendas legadas apos a transferencia. A origem mantem
+  verificacao de seguranca SQL a cada cinco minutos: apos vinte minutos sem
+  geracao nativa concluida, gera logs localmente pelo mesmo executor/locks,
+  sem depender do storage. Isso nao equivale a entrega externa nem libera
+  midias SQL. Fonte nova usa usuario/chroot/repositorio/chaves individuais;
+  storage.py --source-name provisiona o isolamento. Engine/DSL nao controlam
+  credenciais, SSH ou agendas dos hosts. Retencao destrutiva, append-only,
+  segundo provedor, notificacao externa e restauracao integral seguem pendentes.
 - Execucao da fase local em 2026-10-20 substitui o status antigo de somente
   planejamento: Restic instalado sem upgrade/restart de aplicativos, repositorio
   cifrado inicializado e backups reais full/diferencial/logs verificados. O kit

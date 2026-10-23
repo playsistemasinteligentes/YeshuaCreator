@@ -270,7 +270,8 @@ class LocalRepositoryTests(unittest.TestCase):
         self.assertIn("CPUQuota=25%", service)
         self.assertIn("MemoryMax=768M", service)
         self.assertNotIn(" capture", service)
-        for path in (ROOT / "infra/backups").glob("yeshua-backup-*.timer"):
+        for kind in installer.TIMERS:
+            path = ROOT / "infra/backups" / ("yeshua-backup-" + kind + ".timer")
             text = path.read_text()
             self.assertIn("America/Sao_Paulo", text)
             self.assertIn("Persistent=false", text)

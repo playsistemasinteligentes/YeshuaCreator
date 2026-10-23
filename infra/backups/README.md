@@ -2,13 +2,154 @@
 
 Ferramentas operacionais fora dos aplicativos e do deploy. O inventario segue
 somente de leitura; o operador backup.py possui acoes explicitas para captura,
-repositorio e recuperacao. O destino externo permanece pendente por decisao
-do usuario; isso nao bloqueia a operacao local descrita abaixo.
+repositorio e recuperacao. O destino e unico e configurado no JSON privado;
+pode ser o filesystem inicial, SFTP ou S3 HTTPS. Multidestino/replicacao continuam
+em planejamento. A configuracao nao e alterada por um deploy dos aplicativos.
 
-Instrucao atual: continuar implementacao/testes locais. A limpeza/recriacao da
-VPS foi adiada; os comandos deste documento nao foram executados nesta etapa.
+## Papel Dos Destinos
 
-## Rotina Online Local
+Decisao de 2026-10-22: /root/YeshuaBackup/repository e um destino de backup
+equivalente conceitualmente a um volume externo. Ele esta fisicamente na VPS
+apenas por conveniencia da etapa atual de desenvolvimento/testes. Nao e um
+repositorio interno obrigatorio nem uma etapa local completa que todo futuro
+envio precisa atravessar.
+
+Na arquitetura multidestino em planejamento, destinos filesystem, SFTP e
+armazenamento de objetos terao o mesmo papel. Os intermediarios da captura SQL,
+cache e controles operacionais ficam separados desse conceito; seu dimensionamento
+e liberacao ainda precisam ser definidos, sem exigir historico local completo.
+
+Essa equivalencia e arquitetural, nao fisica: enquanto o destino estiver na
+mesma VPS, offsite=false e host_loss_protection=false permanecem verdadeiros.
+Nao reclassificar a protecao real nem apagar/mover o repositorio atual por isso.
+A implementacao abaixo ainda usa um unico destino; multidestino nao foi ativado.
+
+## Storage SFTP
+
+A VPS de storage recebe somente arquivos cifrados. Nao precisa de Docker,
+Restic, SQL ou agente: o Restic continua na origem e usa o SFTP do OpenSSH.
+storage.py provisiona yeshua-backup sem senha/shell, com chroot em
+/srv/yeshua-backups e escrita somente em repository (0700). A chave publica
+fica em /etc/ssh/authorized_keys/yeshua-backup, pertencente ao root e legivel
+pelo usuario (0644). Match User limita a configuracao somente a essa conta;
+sshd -t e a configuracao efetiva sao conferidos antes do reload do SSH.
+Nao altera senhas de root nem instala aplicativos.
+
+Na origem, a chave de transporte e o known_hosts conferido ficam em
+/root/YeshuaPrivate/production/shared/Backup/ssh (0700; arquivos privados 0600).
+Shared.Backup.Sftp possui IdentityFile e KnownHostsFile com esses caminhos.
+Shared.Backup.Repository usa sftp:USUARIO@IP:/repository, relativo ao chroot,
+nao o caminho absoluto do host. Password continua sendo a senha independente
+do Restic. A autenticacao SSH exige a chave e o IP de origem autorizados;
+nao desabilita host checking, nao consulta ssh-agent nem pede senha em rotina.
+
+Transicao explicita: pausar somente as seis agendas de backup, aguardar os
+servicos em andamento e chamar move-to-sftp com --repository,
+--sftp-identity-file e --sftp-known-hosts-file. Sem --apply, somente planeja.
+--initialize-target exige destino novo/vazio; em retomada de repositorio ja
+inicializado omitir essa opcao. A rotina copia os parametros de deduplicacao,
+copia o historico, confere arvores/metadados e le todos os blocos remotos antes
+de alterar somente Shared.Backup. Falhas anteriores preservam a configuracao
+original. Nao apaga o repositorio local, nao troca senha e nao executa prune.
+O recibo real da guarda da mesma senha e transferido para o novo endereco,
+preservando a data original e sem simular uma nova confirmacao do operador.
+
+configure-repository, usado pelo instalador comum, preserva e verifica um
+repositorio externo ja configurado; nao o inicializa nem cai silenciosamente
+para uma copia local se estiver indisponivel. As provas das agendas sao
+vinculadas ao destino; uma prova local nao habilita sozinha a agenda remota.
+Depois da transicao, install.py --initialize-online completa as provas nesse
+destino e reativa as agendas. As proximas capturas vao direto ao storage:
+o historico local antigo fica preservado, mas nao recebe outra copia completa.
+
+Guardar fora das VPS o credentials.json atualizado, a chave SFTP e known_hosts,
+ou um acesso administrativo independente ao storage para recuperar/emitir
+nova chave. A senha Restic isolada nao substitui o acesso ao armazenamento.
+Trocar a senha do root nao revoga chaves SSH; remova a linha marcada em
+authorized_keys para revogar um acesso especifico. Um invasor da origem ainda
+pode excluir o repositorio SFTP: chroot nao equivale a imutabilidade. A segunda
+copia em outro provedor e a protecao contra exclusao continuam pendentes.
+
+## Controle Central Na Storage VPS
+
+Evolucao de 2026-10-23, posterior ao receptor SFTP simples acima:
+
+```text
+Storage VPS: agendas -> pedido SSH restrito -> origem
+Origem: oneshot systemd -> SQL nativo / arquivos -> Restic -> SFTP storage
+Storage VPS: confirma snapshot -> verifica metadados/blocos no disco local
+```
+
+O controlador nao copia bancos vivos por SSH. Geracao nativa, verificacao SQL,
+leitura dos arquivos, deduplicacao e cifragem continuam na origem. Nao ha
+repositorio local completo obrigatorio, novo daemon, API, fila ou banco de
+controle. As verificacoes de integridade deixam de baixar os blocos para a
+VPS dos aplicativos; rodam no storage. Replicacao continua pendente.
+
+As mesmas seis janelas sao reaproveitadas pelo instalador, sem outra lista de
+horarios. Cada calendario enfileira uma intencao em pequenos arquivos privados;
+eventos repetidos do mesmo tipo sao consolidados. Um reconciliador curto a
+cada 30 segundos acompanha/dispara trabalhos, em rodizio limitado por ciclo.
+Comecamos com dois envios simultaneos no conjunto, um trabalho por origem e
+uma verificacao pesada por vez. Novas origens entram no mesmo cadastro, sem
+agente residente. Cinquenta maquinas exigem medir tempos/capacidade, nao apenas
+alterar o numero de origens. Os limites do cliente nao limitam o SQL Server.
+
+Pedidos possuem identificador persistido antes do disparo. A origem executa
+yeshua-backup-request@ID.service, independente da conexao SSH. Repetir o mesmo
+pedido consulta/reaproveita sua execucao; nao gera outro backup. Interrupcao
+de processo/reboot nao vira recibo de sucesso. O controlador confirma ID,
+run, perfil, host e identidade do repositorio no proprio storage. Geracao,
+entrega, verificacao de blocos e restauracao funcional sao provas diferentes.
+
+A origem mantem apenas uma protecao local adicional para SQL, usando o mesmo
+routine.py e locks: a cada cinco minutos verifica a ultima geracao nativa;
+apos vinte minutos sem conclusao, gera logs sem chamar Restic. O proximo envio
+inclui essas midias/catalogo. Trabalho ativo impede concorrencia. Nao garante
+entrega externa durante indisponibilidade nem evita crescimento ilimitado se
+o problema persistir; reserva de disco/memoria continua sendo respeitada.
+
+### Configuracao E Instalacao
+
+Shared.Backup.Controller no credentials.json privado DO STORAGE contem Schema=1,
+MachineId do controlador, MaxActiveCaptures=2 e Sources. Cada origem declara
+Name, Host (IP), Port, MachineId, RepositoryId (hash do endereco visto pela
+origem), ResticRepositoryId (ID real), RepositoryPath, Scope, Enabled,
+IdentityFile, KnownHostsFile e Password (somente a senha Restic daquela origem).
+Nao copiar senhas SQL/aplicativos para o controlador. Configuracao e chaves:
+root, diretorios 0700 e arquivos 0600; identidades de host fixadas.
+
+1. Na nova origem, usar o setup comum e comprovar as capturas iniciais.
+2. Criar chave de controle exclusiva NO STORAGE e fixar o host da origem.
+3. Na origem, executar control.py source-access --authorized-key ARQUIVO_PUBLICO
+   --controller-ip IP_STORAGE. Provisiona yeshua-backup-control, comando forcado
+   e sudo estritamente limitado ao protocolo; sem shell/TTY/forwarding/senha.
+4. Para uma nova origem no storage, storage.py --source-name NOME --source-ip IP
+   --authorized-key CHAVE_DE_ENVIO cria conta/chroot/repositorio separados.
+   Omitir --source-name preserva o receptor original. Usar nova senha Restic e
+   chave de envio por origem; inicializar/verificar seu repositorio antes de
+   adicionar Sources. A configuracao de envio fica na propria origem.
+5. Instalar Restic confiavel no storage; install.py --role controller instala
+   somente o ferramental e unidades, valida configuracao/repositorios e faz
+   probe SSH, sem habilitar agendas nem instalar Docker/aplicativos.
+6. Aguardar trabalhos em curso. Na origem, control.py source-activate
+   --controller-machine MACHINE_ID_STORAGE entrega agendas e liga protecao SQL.
+7. No storage, install.py --role controller --enable-schedules liga os seis
+   calendarios e reconciliacao. Executar e conferir os seis perfis antes do aceite.
+
+O arquivo controller-owner.json fica no estado privado da origem. Reexecutar
+install.py --initialize-online ou o setup normal preserva essa propriedade:
+nao reativa agendas antigas, nao transfere verificacoes para a origem e mantem
+a limpeza volatil local. Deploy comum dos apps continua sem atualizar esse
+ferramental. Atualizacao de backup usa o instalador dedicado em cada papel.
+
+No storage, control.py status mostra pendencias, trabalho atual, ultimo recibo
+de cada perfil e atrasos. Atraso de logs acima de 30 minutos ja exige atencao;
+isso nao e promessa contratual de RPO. Falhas vao ao journal e ao estado
+privado, com retentativa limitada; notificacao fora das maquinas ainda falta.
+Nao existem agendas de prune/forget nem exclusao automatica das midias SQL.
+
+## Rotina Online Inicial Na Origem
 
 Destino inicial aprovado: /root/YeshuaBackup/repository, privado e criptografado
 pelo Restic. Shared.Backup.Repository vazio seleciona somente esse local;
@@ -438,12 +579,13 @@ editar telas nem publicar por eles. O retorno ao deploy normal e um gate final.
 
 ## Credenciais Do Repositorio
 
-Shared.Backup no mesmo JSON privado: Repository, Password e Environment.
+Shared.Backup no mesmo JSON privado: Repository, Password, Environment e Sftp opcional.
 Repository aceita S3 HTTPS ou SFTP, ou vazio para a fase LOCAL explicitamente
 aprovada. Uma pasta na VPS nunca e descrita como copia externa. Password e independente das senhas SQL/SSH. Environment aceita
 somente as variaveis do backend listadas no codigo. Valores nao vao em argumentos,
 relatorios ou logs. SFTP exige chave e host previamente confiados pelo sistema;
-o operador nao desabilita verificacao SSH nem administra chaves automaticamente.
+o operador nao desabilita verificacao SSH. storage.py administra somente a
+conta tecnica de recebimento; o acesso administrativo permanece separado.
 
 Copiar o acesso ao armazenamento e a senha de recuperacao para um lugar seguro
 fora da VPS e fora da unica copia criptografada. Nao guardar a unica chave

@@ -39,7 +39,7 @@ prepare_backup_key() {
     DEBIAN_FRONTEND=noninteractive apt install -y restic util-linux || return 1
   fi
   local action
-  for action in configure-local recovery-key; do
+  for action in configure-repository recovery-key; do
     YESHUA_APP_DIR="$APP_DIR" YESHUA_DEPLOY_SECRETS_FILE="$PRIVATE_FILE" \
       "$PYTHON" -B "$APP_DIR/infra/backups/backup.py" "$action" || return 1
   done

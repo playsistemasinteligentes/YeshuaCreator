@@ -14,7 +14,54 @@ acessos administrativos ou canais/videos publicados no Google. Reinstalar do
 zero NAO comprova restore; gerar e validar uma nova base de backup depois da
 reinstalacao, antes do futuro ensaio de recuperacao em outro servidor.
 
-## Ciclo Atual: Instalacao Limpa E Ensaio
+## Acesso Ao Storage SFTP
+
+Atualizacao de 2026-10-23: a origem pode usar diretamente uma VPS separada de
+storage, sem manter nova copia completa local. O JSON privado atualizado tem
+Shared.Backup.Repository e Shared.Backup.Sftp com os caminhos de IdentityFile
+e KnownHostsFile. Guardar esses dois arquivos junto com credentials.json em
+local restrito FORA das VPSs, nunca somente dentro do repositorio cifrado.
+Nao confundir a senha do Restic com senha SSH ou com a chave de transporte.
+
+Antes de validar o backup no setup/restore, repor o JSON e os arquivos SSH nos
+mesmos caminhos Linux, com dono root, diretorios 0700 e arquivos 0600.
+Se o IP da nova origem mudou, um administrador precisa atualizar a restricao
+from= da chave em /etc/ssh/authorized_keys/yeshua-backup no STORAGE.
+Nao retirar a restricao nem desligar a verificacao de host para contornar erro.
+Guardar tambem acesso administrativo independente ao storage, para autorizar
+o IP novo ou emitir nova chave caso o acesso da origem tenha sido perdido.
+
+O instalador valida o destino existente e nao cria repositorio local alternativo
+em falha de rede/autenticacao. Nao reinicializar o destino que contem o historico.
+A chave de recuperacao do Restic nao mudou durante a transicao. Recuperar
+arquivos em pasta isolada e executar VERIFYONLY nao equivale a reconstruir
+o ambiente inteiro: o ensaio funcional em servidor novo continua obrigatorio.
+
+## Recuperar O Controlador
+
+Na evolucao centralizada, guardar fora das duas VPSs tambem o credentials.json
+DO STORAGE e as chaves/known_hosts do controlador. Esse JSON possui somente
+senhas Restic por origem e configuracao operacional; nao precisa de senhas SQL.
+O kit privado local 20261023-storage/controller contem essa copia. Chave SSH
+de controle e chave de envio SFTP tem papeis opostos e nao sao intercambiaveis.
+
+Reinstalar a Storage VPS com Linux/OpenSSH e Restic, recuperar o repositorio
+sem reinicializa-lo e repor configuracoes/chaves privadas. Reconstituir as contas
+SFTP/chroots pelo storage.py e o comando restrito da origem pelo source-access.
+Conferir novos fingerprints e IPs por canal administrativo confiavel. Uma nova
+instancia tem outro machine-id: revisar/revincular a identidade do controlador,
+nao editar o JSON para fingir que a maquina antiga voltou. Transferencia para
+outro controlador exige retirar a propriedade anterior na origem com operador,
+apos parar suas agendas; nao ha transferencia automatica entre controladores.
+
+Instalar com --role controller, testar probe e identidades e somente depois
+habilitar agendas. Enquanto o controlador estiver ausente, a protecao SQL local
+gera midias, mas arquivos novos nao tem entrega externa garantida. Acompanhar
+espaco e idade do ultimo envio. Nunca apagar essas midias para liberar espaco
+antes de conferir as cadeias e entregas. Restauracao de banco/arquivo continua
+pelas acoes existentes, separada da instalacao limpa.
+
+## Ciclo De Ensaio
 
 Fechamento local de 2026-10-21. O proximo ciclo tem dois objetivos distintos;
 nenhum deles autoriza apagar a VPS nesta etapa de preparacao.
