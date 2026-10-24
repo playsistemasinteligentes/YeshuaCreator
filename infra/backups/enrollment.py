@@ -80,9 +80,19 @@ def admin_session(s, host, port=22, user="root"):
     print("Acesso administrativo temporario a " + host + ". Confira a identidade SSH; digite a senha somente no prompt SSH.",
           file=__import__("sys").stderr)
     # OpenSSH uses /dev/tty for host confirmation/password; neither is placed in argv/config.
-    process = subprocess.run([*base[:-1], "-M", "-fN", base[-1]], check=False, timeout=300)
-    if process.returncode:
-        raise s.op.Error("temporary_administrative_ssh_not_established")
+    while True:
+        try:
+            process = subprocess.run([*base[:-1], "-M", "-fN", base[-1]], check=False, timeout=300)
+        except subprocess.TimeoutExpired:
+            print("O tempo do acesso SSH expirou. Nenhuma etapa remota foi iniciada por esta tentativa.",
+                  file=__import__("sys").stderr)
+        else:
+            if process.returncode == 0:
+                break
+            print("O acesso SSH nao foi concluido. A conexao pode ter expirado, sido recusada ou encerrada."
+                  " Confira a mensagem do SSH acima e a senha do servidor de destino.", file=__import__("sys").stderr)
+        # Only an explicit operator action retries authentication; remote operations are never replayed here.
+        s.ask("Digite TENTAR para refazer somente o acesso SSH ou CANCELAR para sair:", {"TENTAR": True})
     try:
         yield [*base[:-1], "-o", "BatchMode=yes", base[-1]]
     finally:

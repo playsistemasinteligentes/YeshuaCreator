@@ -45,6 +45,11 @@ Nomes de origem digitados em maiusculas sao normalizados para minusculas
 (YESHUA01 vira yeshua01). IP IPv4, porta de 1 a 65535 e nome invalido solicitam
 novamente somente o campo, sem encerrar o setup. Nomes usam ate 20 caracteres,
 comecam por letra e aceitam letras ASCII, numeros e hifen. CANCELAR encerra.
+Se a autenticacao SSH expirar ou a conexao for encerrada, o setup oferece
+TENTAR ou CANCELAR; somente a autenticacao e repetida, mediante escolha do
+operador. Nenhuma senha e guardada e a verificacao da identidade SSH continua
+obrigatoria. Falhas em etapas remotas posteriores nao sao repetidas por esse
+tratamento de login, para evitar duplicar operacoes.
 As fases, guardas e limitacoes estao em [RECOVERY.md](../backups/RECOVERY.md).
 
 ## Deploys Posteriores

@@ -570,9 +570,59 @@ class EnrollmentTests(unittest.TestCase):
     def test_failed_admin_authentication_never_proceeds(self):
         with tempfile.TemporaryDirectory() as folder, patch.object(s, "BASE", Path(folder)), \
                 patch.object(s.op, "private_directory", side_effect=directory), \
-                patch.object(enrollment.subprocess, "run", return_value=MagicMock(returncode=1)), self.assertRaises(s.op.Error):
+                patch.object(s, "ask", side_effect=s.op.Error("setup_cancelled")) as ask, \
+                patch.object(enrollment.subprocess, "run", return_value=MagicMock(returncode=1)) as run, \
+                self.assertRaisesRegex(s.op.Error, "setup_cancelled"):
             with enrollment.admin_session(s, "192.0.2.1"):
                 self.fail("must not execute remote setup")
+        ask.assert_called_once()
+        run.assert_called_once()
+
+    def test_closed_admin_connection_retries_only_after_operator_confirmation(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(s, "BASE", Path(folder)), \
+                patch.object(s.op, "private_directory", side_effect=directory), \
+                patch.object(s, "ask", return_value=True) as ask, \
+                patch.object(enrollment.subprocess, "run", side_effect=[MagicMock(returncode=255), MagicMock(returncode=0), MagicMock(returncode=0)]) as run:
+            entered = 0
+            with enrollment.admin_session(s, "192.0.2.1") as command:
+                entered += 1
+                self.assertIn("BatchMode=yes", command)
+        self.assertEqual(1, entered)
+        ask.assert_called_once()
+        self.assertEqual(3, run.call_count)
+        self.assertEqual(run.call_args_list[0].args[0], run.call_args_list[1].args[0])
+        self.assertIn("StrictHostKeyChecking=ask", run.call_args_list[1].args[0])
+        self.assertEqual(["-O", "exit"], run.call_args.args[0][-3:-1])
+
+    def test_admin_timeout_offers_retry_without_aborting_prepared_setup(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(s, "BASE", Path(folder)), \
+                patch.object(s.op, "private_directory", side_effect=directory), \
+                patch.object(s, "ask", return_value=True) as ask, \
+                patch.object(enrollment.subprocess, "run", side_effect=[subprocess.TimeoutExpired(["ssh"], 300), MagicMock(returncode=0), MagicMock(returncode=0)]):
+            with enrollment.admin_session(s, "192.0.2.1"):
+                pass
+        ask.assert_called_once()
+
+    def test_invalid_ssh_retry_answer_reprompts_instead_of_restarting_setup(self):
+        reader, writer = io.StringIO("wrong\nTENTAR\n"), io.StringIO()
+        with tempfile.TemporaryDirectory() as folder, patch.object(s, "BASE", Path(folder)), \
+                patch.object(s.op, "private_directory", side_effect=directory), \
+                patch.object(s, "terminal", side_effect=lambda: nullcontext((reader, writer))), \
+                patch.object(enrollment.subprocess, "run", side_effect=[MagicMock(returncode=255), MagicMock(returncode=0), MagicMock(returncode=0)]) as run:
+            with enrollment.admin_session(s, "192.0.2.1"):
+                pass
+        self.assertIn("Tente novamente", writer.getvalue())
+        self.assertEqual(3, run.call_count)
+
+    def test_peer_failure_after_login_is_not_replayed_as_an_authentication_retry(self):
+        with tempfile.TemporaryDirectory() as folder, patch.object(s, "BASE", Path(folder)), \
+                patch.object(s.op, "private_directory", side_effect=directory), patch.object(s, "ask") as ask, \
+                patch.object(enrollment.subprocess, "run", return_value=MagicMock(returncode=0)) as run, \
+                self.assertRaisesRegex(s.op.Error, "remote_step_failed"):
+            with enrollment.admin_session(s, "192.0.2.1"):
+                raise s.op.Error("remote_step_failed")
+        ask.assert_not_called()
+        self.assertEqual(2, run.call_count)
 
     def test_storage_can_wait_for_origin_without_enabling_any_jobs(self):
         value = {"mode": "restore", "phase": "prepared", "pair_now": False}
