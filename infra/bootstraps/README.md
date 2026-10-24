@@ -39,7 +39,12 @@ Em perda das duas maquinas, recuperar primeiro o storage e seu historico;
 depois recuperar o servidor dos aplicativos pelo outro comando.
 
 Execute os comandos em terminal interativo, sem nohup/redirecionar os prompts.
-Credenciais e confirmacoes sao solicitadas no inicio, antes das etapas longas.
+O modo e a configuracao inicial sao solicitados antes das etapas longas; a
+vinculacao posterior pode pedir confirmacao SSH e senha administrativa temporaria.
+Nomes de origem digitados em maiusculas sao normalizados para minusculas
+(YESHUA01 vira yeshua01). IP IPv4, porta de 1 a 65535 e nome invalido solicitam
+novamente somente o campo, sem encerrar o setup. Nomes usam ate 20 caracteres,
+comecam por letra e aceitam letras ASCII, numeros e hifen. CANCELAR encerra.
 As fases, guardas e limitacoes estao em [RECOVERY.md](../backups/RECOVERY.md).
 
 ## Deploys Posteriores

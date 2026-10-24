@@ -15,6 +15,25 @@ import time
 import uuid
 
 SFTP = re.compile(r"sftp:([a-z][a-z0-9-]{0,31})@(\d+\.\d+\.\d+\.\d+):/repository")
+SOURCE_NAME_PROMPT = "Nome desta origem (exemplo production; ate 20 letras/numeros/hifen, comecando por letra):"
+
+
+def source_name(value):
+    value = value.lower()
+    if not re.fullmatch(r"[a-z][a-z0-9-]{0,19}", value):
+        raise ValueError("invalid_source_name")
+    return value
+
+
+def ssh_port(value):
+    port = int(value)
+    if not 1 <= port <= 65535:
+        raise ValueError("invalid_ssh_port")
+    return port
+
+
+def ipv4_address(value):
+    return str(ipaddress.IPv4Address(value))
 
 
 def endpoint(s, address):
@@ -152,7 +171,7 @@ def prepare_storage(s, mode):
         existing = s.control.private_json(s.PRIVATE)
         backup = existing.get("Shared", {}).get("Backup", {})
         if "Storage" not in backup and backup.get("Controller", {}).get("Sources"):
-            host = s.ask("Endereco publico desta Storage VPS:")
+            host = s.ask("Endereco IPv4 publico desta Storage VPS:", validator=ipv4_address)
             receivers = []
             for item in backup["Controller"]["Sources"]:
                 if item["RepositoryPath"] == "/srv/yeshua-backups/repository":
@@ -162,7 +181,7 @@ def prepare_storage(s, mode):
                                       "PublicKey": " ".join(fields[1:3])})
             backup["Storage"] = {"Schema": 1, "Address": endpoint(s, host), "Receivers": receivers}
             s.op.write(s.PRIVATE, existing)
-    address = endpoint(s, s.ask("Endereco publico desta Storage VPS:")) if not s.PRIVATE.exists() and mode == "new" else ""
+    address = s.ask("Endereco IPv4 publico desta Storage VPS:", validator=ipv4_address) if not s.PRIVATE.exists() and mode == "new" else ""
     document = s.wait_file(s.PRIVATE, validate, {"SchemaVersion": 1, "Shared": {"Backup": {
         "Storage": {"Schema": 1, "Address": address, "Receivers": []},
         "Controller": {"Schema": 1, "MachineId": "", "MaxActiveCaptures": 2, "Sources": []}}}})
@@ -172,17 +191,15 @@ def prepare_storage(s, mode):
             raise s.op.Error("storage_machine_changed_choose_restore_do_not_impersonate_previous_machine")
         s.confirm("Este JSON pertence ao storage anterior. Vincular a nova maquina e preservar a identidade anterior para a transferencia?", "VINCULAR")
         document["Shared"]["Backup"]["Storage"]["PreviousMachineId"] = controller["MachineId"]
-        document["Shared"]["Backup"]["Storage"]["Address"] = endpoint(s, s.ask("Endereco publico da NOVA Storage VPS:"))
+        document["Shared"]["Backup"]["Storage"]["Address"] = s.ask("Endereco IPv4 publico da NOVA Storage VPS:", validator=ipv4_address)
     controller["MachineId"] = s.op.machine_id()
     s.op.write(s.PRIVATE, document)
     add = s.ask("Vincular agora um servidor de aplicativos? SIM ou NAO (pode estar fora do ar):", {"SIM": True, "S": True, "NAO": False, "N": False})
     result = {"pair_now": add}
     if add:
-        result["peer_host"] = endpoint(s, s.ask("IP do servidor dos aplicativos:"))
-        result["peer_port"] = int(s.ask("Porta SSH do servidor dos aplicativos (normalmente 22):"))
-        result["source_name"] = s.ask("Nome desta origem (por exemplo production):")
-        if not re.fullmatch(r"[a-z][a-z0-9-]{0,19}", result["source_name"]):
-            raise s.op.Error("invalid_source_name")
+        result["peer_host"] = s.ask("IP IPv4 do servidor dos aplicativos:", validator=ipv4_address)
+        result["peer_port"] = s.ask("Porta SSH do servidor dos aplicativos (1 a 65535; normalmente 22):", validator=ssh_port)
+        result["source_name"] = s.ask(SOURCE_NAME_PROMPT, validator=source_name)
     return result
 
 
@@ -366,7 +383,7 @@ def authorize_recovery(s, document):
         raise s.op.Error("automatic_recovery_pairing_requires_sftp_ipv4_repository")
     identity = document["Shared"]["Backup"]["Sftp"]["IdentityFile"]
     public = command(s, ["ssh-keygen", "-y", "-f", identity]).decode().strip()
-    port = int(s.ask("Porta SSH administrativa do storage (normalmente 22):"))
+    port = s.ask("Porta SSH administrativa do storage (1 a 65535; normalmente 22):", validator=ssh_port)
     with admin_session(s, match[2], port) as ssh:
         directory = send_toolkit(s, ssh)
         peer(s, ssh, directory, "authorize-recovery", {"user": match[1], "public_key": public})
@@ -384,9 +401,9 @@ def pair_from_source(s, value):
     address = value.get("storage_address") or (match[2] if match else None)
     if not address:
         raise s.op.Error("storage_address_required_for_pairing")
-    port = value.get("storage_port") or int(s.ask("Porta SSH administrativa do storage (normalmente 22):"))
+    port = value.get("storage_port") or s.ask("Porta SSH administrativa do storage (1 a 65535; normalmente 22):", validator=ssh_port)
     info = source_info(s)
-    name = value.get("source_name") or s.ask("Nome da origem no storage (por exemplo production):")
+    name = value.get("source_name") or s.ask(SOURCE_NAME_PROMPT, validator=source_name)
     public_host = Path("/etc/ssh/ssh_host_ed25519_key.pub").read_text().strip()
     with admin_session(s, address, port) as ssh:
         directory = send_toolkit(s, ssh)

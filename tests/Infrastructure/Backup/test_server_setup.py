@@ -80,6 +80,59 @@ class SetupSelectionTests(unittest.TestCase):
             self.assertEqual("restore", s.ask("mode", {"2": "restore"}))
         self.assertIn("Tente novamente", writer.getvalue())
 
+    def test_name_accepts_uppercase_and_reprompts_for_invalid_identifiers(self):
+        writer = io.StringIO()
+        with patch.object(s, "terminal", return_value=nullcontext((io.StringIO("invalid_name\n../prod\nYESHUA01\n"), writer))):
+            self.assertEqual("yeshua01", s.ask(enrollment.SOURCE_NAME_PROMPT, validator=enrollment.source_name))
+        self.assertEqual(2, writer.getvalue().count("Valor invalido"))
+
+    def test_ip_and_port_retry_until_valid_and_preserve_cancel(self):
+        for validator, answers, expected in (
+                (enrollment.ipv4_address, "server\n999.1.2.3\n::1\n162.35.13.23\n", "162.35.13.23"),
+                (enrollment.ssh_port, "ssh\n0\n65536\n22\n", 22)):
+            with self.subTest(expected=expected), patch.object(s, "terminal", return_value=nullcontext((io.StringIO(answers), io.StringIO()))):
+                self.assertEqual(expected, s.ask("value", validator=validator))
+            with patch.object(s, "terminal", return_value=nullcontext((io.StringIO("invalid\nCANCELAR\n"), io.StringIO()))), \
+                    self.assertRaisesRegex(s.op.Error, "setup_cancelled"):
+                s.ask("value", validator=validator)
+
+    def test_storage_preparation_retries_the_field_without_losing_valid_answers(self):
+        reader = io.StringIO("bad\n162.35.13.23\nSIM\nbad-host\n69.164.247.138\nssh\n70000\n22\ninvalid_name\nYESHUA01\n")
+        writer = io.StringIO()
+        with patch.object(s, "PRIVATE", self.base / "credentials.json"), \
+                patch.object(s, "terminal", side_effect=lambda: nullcontext((reader, writer))):
+            result = enrollment.prepare_storage(s, "new")
+            document = s.op.read(s.PRIVATE)
+        self.assertEqual({"pair_now": True, "peer_host": "69.164.247.138", "peer_port": 22, "source_name": "yeshua01"}, result)
+        self.assertEqual("162.35.13.23", document["Shared"]["Backup"]["Storage"]["Address"])
+        self.assertEqual(1, writer.getvalue().count("Vincular agora"))
+        self.assertEqual(2, writer.getvalue().count("Nome desta origem"))
+
+    def test_source_name_limits_are_not_relaxed_by_normalization(self):
+        self.assertEqual("prod01", enrollment.source_name("PROD01"))
+        self.assertEqual("p" * 20, enrollment.source_name("P" * 20))
+        for value in ("", "p" * 21, "01prod", "prod_01", "prod;id", "prod name", "memorias/01", "pr\u00f3d"):
+            with self.subTest(value=value), self.assertRaises(ValueError):
+                enrollment.source_name(value)
+
+    def test_storage_retry_reuses_existing_private_configuration_and_saves_normalized_name(self):
+        document = {"SchemaVersion": 1, "Shared": {"Backup": {
+            "Storage": {"Schema": 1, "Address": "162.35.13.23", "Receivers": []},
+            "Controller": {"Schema": 1, "MachineId": MACHINE, "MaxActiveCaptures": 2, "Sources": []}}}}
+        reader, writer = io.StringIO("SIM\n69.164.247.138\n22\nPROD01\n"), io.StringIO()
+        with patch.object(s, "PRIVATE", self.base / "credentials.json"), \
+                patch.object(s, "terminal", side_effect=lambda: nullcontext((reader, writer))):
+            s.op.write(s.PRIVATE, document)
+            s.save({"schema": 1, "role": "storage", "mode": "new", "machine_id": MACHINE, "phase": "selected"})
+            s.prepare("storage", "new")
+            state = s.read_state("storage")
+            with patch.object(s, "ask", side_effect=AssertionError("do not ask completed preparation again")):
+                s.prepare("storage", "new")
+            self.assertEqual(document, s.op.read(s.PRIVATE))
+        self.assertEqual("prepared", state["phase"])
+        self.assertEqual("prod01", state["source_name"])
+        self.assertNotIn("publico desta Storage", writer.getvalue())
+
     def test_oversized_answer_is_discarded_in_full(self):
         writer = io.StringIO()
         with patch.object(s, "terminal", return_value=nullcontext((io.StringIO("x" * 4096 + "2\n2\n"), writer))):

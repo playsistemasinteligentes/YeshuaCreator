@@ -33,7 +33,7 @@ def terminal():
         yield pair
 
 
-def ask(message, choices=None):
+def ask(message, choices=None, *, validator=None):
     with terminal() as (reader, writer):
         while True:
             writer.write(message + " ")
@@ -47,10 +47,13 @@ def ask(message, choices=None):
                 writer.write("Resposta muito longa; tente novamente.\n")
                 continue
             answer = answer.strip()
-            if choices is None and answer:
-                return answer
-            if choices and answer.upper() in choices:
-                return choices[answer.upper()]
+            if (choices is None and answer) or (choices and answer.upper() in choices):
+                value = answer if choices is None else choices[answer.upper()]
+                try:
+                    return validator(value) if validator else value
+                except (ValueError, op.Error):
+                    writer.write("Valor invalido. Tente novamente ou digite CANCELAR.\n")
+                    continue
             writer.write("Opcao nao reconhecida. Tente novamente ou digite CANCELAR.\n")
 
 
@@ -182,9 +185,10 @@ def prepare(role, mode):
             pair = bool(match) or ask("Vincular os backups a uma Storage VPS agora? SIM ou NAO:",
                                      {"SIM": True, "S": True, "NAO": False, "N": False})
             if pair:
-                value["storage_address"] = match[2] if match else load("enrollment").endpoint(context, ask("IP da Storage VPS:"))
-                value["storage_port"] = int(ask("Porta SSH administrativa do storage (normalmente 22):"))
-                value["source_name"] = ask("Nome desta origem no storage (por exemplo production):")
+                enrollment = load("enrollment")
+                value["storage_address"] = match[2] if match else ask("IP IPv4 da Storage VPS:", validator=enrollment.ipv4_address)
+                value["storage_port"] = ask("Porta SSH administrativa do storage (1 a 65535; normalmente 22):", validator=enrollment.ssh_port)
+                value["source_name"] = ask(enrollment.SOURCE_NAME_PROMPT, validator=enrollment.source_name)
         value["phase"] = "prepared"
     save(value)
     return {"status": "prepared", "role": role, "mode": mode}
