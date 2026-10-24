@@ -38,43 +38,45 @@ services:
     networks:
       - yeshua-net
 
-  operational-intelligence-api:
+  operational-intelligence:
     build:
       context: ../../..
-      dockerfile: infra/Shared/DockerCompose/operational-intelligence-api/Dockerfile
+      dockerfile: infra/Shared/DockerCompose/operational-intelligence/Dockerfile
+    container_name: yeshua-operational-intelligence
+    init: true
+    stop_grace_period: 45s
     environment:
-      ASPNETCORE_URLS: "http://0.0.0.0:5728"
+      ASPNETCORE_URLS: "http://0.0.0.0:5728;http://127.0.0.1:5729"
       ASPNETCORE_ENVIRONMENT: "Production"
       ConnectionStrings__OperationalIntelligence: "${YESHUA_SQL_OPERATIONAL_INTELLIGENCE:?Configure credentials.json}"
-      Mcp__LokiBaseUrl: "http://yeshua-telemetry:3100"
-      Mcp__TempoBaseUrl: "http://yeshua-telemetry:3200"
-      Mcp__PrometheusBaseUrl: "http://yeshua-telemetry:9090"
+      Mcp__LokiBaseUrl: "http://yeshua-observability:3100"
+      Mcp__TempoBaseUrl: "http://yeshua-observability:3200"
+      Mcp__PrometheusBaseUrl: "http://yeshua-observability:9090"
       Mcp__DatabaseQuery__Connections__OperationalIntelligence: "${YESHUA_SQL_MCP_OPERATIONAL_INTELLIGENCE:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Central: "${YESHUA_SQL_MCP_CENTRAL:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Clinica: "${YESHUA_SQL_MCP_CLINICA:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__ApsAdm: "${YESHUA_SQL_MCP_APS_ADM:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Fiscal: "${YESHUA_SQL_MCP_FISCAL:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Memorias: "${YESHUA_SQL_MCP_MEMORIAS:?Configure credentials.json}"
-    ports:
-      - "127.0.0.1:5728:5728"
-    restart: unless-stopped
-    networks:
-      - yeshua-net
-
-  operational-intelligence-agent:
-    build:
-      context: ./operational-intelligence-agent
-      dockerfile: Dockerfile
-    container_name: yeshua-operational-intelligence-agent
-    environment:
-      OPERATIONAL_INTELLIGENCE_BASE_URL: "http://operational-intelligence-api:5728"
-      OPERATIONAL_INTELLIGENCE_MCP_URL: "http://operational-intelligence-api:5728/mcp"
+      Mcp__PrivatePort: "5729"
+      McpTunnel__Id: "${YESHUA_MCP_TUNNEL_ID:-}"
+      McpTunnel__ApiKey: "${YESHUA_MCP_TUNNEL_API_KEY:-}"
+      OPERATIONAL_INTELLIGENCE_BASE_URL: "http://127.0.0.1:5728"
+      OPERATIONAL_INTELLIGENCE_MCP_URL: "http://127.0.0.1:5729/mcp"
       YESHUA_AGENT_SOURCE: "/server/YeshuaCreator"
       YESHUA_AGENT_WORKSPACE: "/workspace/YeshuaCreator"
       YESHUA_AGENT_SYNC_ON_START: "${YESHUA_AGENT_SYNC_ON_START:-auto}"
       YESHUA_AGENT_MODE: "${YESHUA_AGENT_MODE:-observe}"
+      AgentTasks__Enabled: "${YESHUA_AGENT_TASKS_ENABLED:-true}"
+      AgentTasks__WorkspacePath: "/workspace/YeshuaCreator"
+      AgentTasks__RuntimeScript: "/app/agent/codex-task.mjs"
+      AgentTasks__AllowWorkspaceWrite: "${YESHUA_AGENT_ALLOW_WORKSPACE_WRITE:-false}"
+      AgentTasks__ChatGptAuthentication: "${YESHUA_AGENT_CHATGPT_AUTHENTICATION:-true}"
+      AgentTasks__CodexHomePath: "/home/agent/.codex"
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+    ports:
+      - "127.0.0.1:5728:5728"
     volumes:
       - /root/YeshuaCreator:/server/YeshuaCreator:ro
       - /root/YeshuaStorage:/storage:ro
@@ -82,22 +84,24 @@ services:
       - operational-agent-codex:/home/agent/.codex
       - operational-agent-claude:/home/agent/.claude
     depends_on:
-      - operational-intelligence-api
-      - yeshua-telemetry
+      - sqlserver
+      - yeshua-observability
     restart: unless-stopped
     networks:
-      - yeshua-net
+      yeshua-net:
+        aliases:
+          - operational-intelligence-api
 
-  yeshua-telemetry:
+  yeshua-observability:
     image: grafana/otel-lgtm:${YESHUA_TELEMETRY_IMAGE_TAG:-latest}
-    container_name: yeshua-telemetry
+    container_name: yeshua-observability
     mem_limit: "${YESHUA_TELEMETRY_MEMORY_LIMIT:-1536m}"
     cpus: "${YESHUA_TELEMETRY_CPUS:-0.75}"
     environment:
       GF_SECURITY_ADMIN_USER: "${YESHUA_TELEMETRY_GRAFANA_USER:?Configure credentials.json}"
       GF_SECURITY_ADMIN_PASSWORD: "${YESHUA_TELEMETRY_GRAFANA_PASSWORD:?Configure credentials.json}"
       GF_USERS_ALLOW_SIGN_UP: "false"
-      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s/telemetry/"
+      GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s/observability/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
       ENABLE_LOGS_TEMPO: "${YESHUA_TELEMETRY_ENABLE_LOGS_TEMPO:-true}"
       LGTM_SHUTDOWN_TIMEOUT_SECONDS: "15"
@@ -111,10 +115,10 @@ services:
       - "3200"
       - "9090"
     volumes:
-      - ./telemetry/otelcol-config.yaml:/otel-lgtm/otelcol-config.yaml:ro
-      - ./telemetry/loki-config.yaml:/otel-lgtm/loki-config.yaml:ro
-      - ./telemetry/tempo-config.yaml:/otel-lgtm/tempo-config.yaml:ro
-      - ./telemetry/prometheus.yaml:/otel-lgtm/prometheus.yaml:ro
+      - ./observability/otelcol-config.yaml:/otel-lgtm/otelcol-config.yaml:ro
+      - ./observability/loki-config.yaml:/otel-lgtm/loki-config.yaml:ro
+      - ./observability/tempo-config.yaml:/otel-lgtm/tempo-config.yaml:ro
+      - ./observability/prometheus.yaml:/otel-lgtm/prometheus.yaml:ro
       - /root/YeshuaStorage/volatile/infra/telemetry:/data
     logging:
       driver: json-file
@@ -123,7 +127,9 @@ services:
         max-file: "3"
     restart: unless-stopped
     networks:
-      - yeshua-net
+      yeshua-net:
+        aliases:
+          - yeshua-telemetry
 
   nginx:
     image: nginx:1.27-alpine

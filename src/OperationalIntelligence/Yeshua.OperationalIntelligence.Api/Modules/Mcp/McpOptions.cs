@@ -5,6 +5,7 @@ public sealed class McpOptions
     public const string SectionName = "Mcp";
 
     public bool Enabled { get; init; } = true;
+    public int PrivatePort { get; init; } = 5729;
     public string LokiBaseUrl { get; init; } = "http://localhost:3100";
     public string TempoBaseUrl { get; init; } = "http://localhost:3200";
     public string PrometheusBaseUrl { get; init; } = "http://localhost:9090";

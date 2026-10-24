@@ -2,7 +2,7 @@
 set -u
 
 workspace="${YESHUA_AGENT_WORKSPACE:-/workspace/YeshuaCreator}"
-operational_api="${OPERATIONAL_INTELLIGENCE_BASE_URL:-http://operational-intelligence-api:5728}"
+operational_api="${OPERATIONAL_INTELLIGENCE_BASE_URL:-http://127.0.0.1:5728}"
 
 echo "== tools =="
 dotnet --version 2>/dev/null | sed 's/^/dotnet /' || echo "dotnet unavailable"

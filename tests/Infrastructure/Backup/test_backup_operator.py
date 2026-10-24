@@ -510,7 +510,7 @@ class CoverageTests(unittest.TestCase):
             "Mounts": [{"Type": "volume", "Name": "fixture-" + name,
                         "Source": "/var/lib/docker/volumes/fixture-" + name + "/_data", "RW": True,
                         "Destination": target} for target in backup.VOLATILE_VOLUME_TARGETS[name]]}
-            for name in ("rabbitmq", "redis", "operational-intelligence-agent")]
+            for name in ("rabbitmq", "redis", "operational-intelligence", "operational-intelligence-agent")]
         with patch.object(backup, "absolute", side_effect=Path):
             areas = backup.mount_areas(containers, {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
         self.assertFalse(any("volume" in a for a in areas))

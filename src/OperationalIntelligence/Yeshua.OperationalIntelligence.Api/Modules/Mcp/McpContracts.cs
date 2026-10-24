@@ -28,15 +28,12 @@ public sealed record RawTelemetryResult(
     JsonElement? Data,
     IReadOnlyList<string> Warnings);
 
-public sealed record McpToolDescriptor(
-    string Name,
-    string Description,
-    object InputSchema);
-
 public interface IMcpTool
 {
     string Name { get; }
     string Description { get; }
     object InputSchema { get; }
+    bool IsPublic => false;
+    bool IsReadOnly => true;
     Task<McpToolResult> CallAsync(JsonElement arguments, CancellationToken cancellationToken);
 }

@@ -12,8 +12,8 @@ Clinica. A operacao normal deve usar `deploy.sh`.
 
 Somente `playsis-central/central-front` e publicado. Clinica, APS.ADM, Fiscal e
 Memorias publicam API, Worker e Migration; Memorias tambem publica seu worker
-Python de midia. O Shared publica a Operational Intelligence API, o pacote de
-telemetria e o Operational Intelligence Agent de diagnostico/build. O fluxo
+Python de midia. O Shared publica `yeshua-operational-intelligence`, reunindo
+API/MCP e agentes, e o pacote separado `yeshua-observability`. O fluxo
 continua conceitualmente igual ao deploy historico da Clinica: limpa e atualiza
 a copia local do repositorio, constroi as imagens, executa as migrations, sobe
 os servicos e reconcilia o Nginx por ultimo.

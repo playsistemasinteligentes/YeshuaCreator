@@ -52,6 +52,39 @@ class CredentialsTests(unittest.TestCase):
         result = credentials.environment(configured(), Path("/path-that-does-not-exist"), "shared")
         self.assertEqual("", result["OPENAI_API_KEY"])
         self.assertEqual("", result["ANTHROPIC_API_KEY"])
+        self.assertEqual("", result["YESHUA_MCP_TUNNEL_ID"])
+        self.assertEqual("", result["YESHUA_MCP_TUNNEL_API_KEY"])
+
+    def test_tunnel_configuration_uses_private_provider_file_only_for_shared(self):
+        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+            root = Path(directory)
+            providers = root / "shared/OperationalAgent/integracoes/providers.json"
+            credentials.write_new_json(providers, {"McpTunnel": {"Id": "tunnel_fixture", "ApiKey": "fixture-tunnel-key"}})
+            result = credentials.environment(configured(), root, "shared")
+            self.assertEqual("tunnel_fixture", result["YESHUA_MCP_TUNNEL_ID"])
+            self.assertEqual("fixture-tunnel-key", result["YESHUA_MCP_TUNNEL_API_KEY"])
+            self.assertEqual("", credentials.environment(configured(), root, "central")["YESHUA_MCP_TUNNEL_API_KEY"])
+
+    def test_partial_tunnel_configuration_is_rejected_without_exposing_key(self):
+        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+            root = Path(directory)
+            providers = root / "shared/OperationalAgent/integracoes/providers.json"
+            credentials.write_new_json(providers, {"McpTunnel": {"ApiKey": "do-not-display"}})
+            with self.assertRaises(credentials.ConfigurationError) as error:
+                credentials.environment(configured(), root, "shared")
+            self.assertNotIn("do-not-display", str(error.exception))
+
+    def test_import_recognizes_unified_operational_service_and_renamed_observability(self):
+        template = json.loads((ROOT / "infra/private/credentials.example.json").read_text())
+        services = {
+            "yeshua-observability": ({"GF_SECURITY_ADMIN_USER": "fixture-user", "GF_SECURITY_ADMIN_PASSWORD": "fixture-password"}, []),
+            "operational-intelligence": ({"ConnectionStrings__OperationalIntelligence": "fixture-connection",
+                "Mcp__DatabaseQuery__Connections__Memorias": "fixture-read-only"}, []),
+        }
+        result = credentials.from_containers(template, services)
+        self.assertEqual("fixture-user", result["Shared"]["Grafana"]["UserName"])
+        self.assertEqual("fixture-connection", result["Shared"]["OperationalIntelligence"]["ConnectionString"])
+        self.assertEqual("fixture-read-only", result["Shared"]["OperationalIntelligence"]["DatabaseQueries"]["Memorias"])
 
     def test_schema_types_and_control_characters(self):
         for invalid in [None, False, ["a"], "value\n", "value\0"]:

@@ -1,6 +1,10 @@
 using Microsoft.Extensions.Options;
+using System.Text.Json;
+using ModelContextProtocol.AspNetCore;
+using ModelContextProtocol.Protocol;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Clients;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Tools;
+using Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.Mcp;
 
@@ -16,6 +20,7 @@ public static class McpServiceCollectionExtensions
             .Validate(options => options.MaxLimit >= options.DefaultLimit, "MCP max limit must be greater than or equal to default limit.")
             .Validate(options => options.TimeoutSeconds > 0, "MCP timeout must be positive.")
             .Validate(options => options.MaxTimeRangeHours > 0, "MCP max time range must be positive.")
+            .Validate(options => options.PrivatePort is > 0 and <= 65535, "MCP private port must be valid.")
             .Validate(options => options.DatabaseQuery.MaxRows > 0, "MCP database max rows must be positive.")
             .Validate(options => options.DatabaseQuery.CommandTimeoutSeconds > 0, "MCP database timeout must be positive.")
             .Validate(options => options.DatabaseQuery.MaxSqlLength > 0, "MCP database max SQL length must be positive.")
@@ -58,7 +63,32 @@ public static class McpServiceCollectionExtensions
         services.AddScoped<LogKnowledgeReferenceEnricher>();
         services.AddScoped<DatabaseReadOnlySqlGuard>();
         services.AddScoped<McpToolRegistry>();
-        services.AddScoped<McpJsonRpcRouter>();
+        services.AddHttpContextAccessor();
+        services.AddScoped<McpAccessPolicy>();
+        services.AddOptions<McpTunnelOptions>().BindConfiguration("McpTunnel")
+            .Validate(options => string.IsNullOrWhiteSpace(options.Id) ||
+                (options.Id.StartsWith("tunnel_", StringComparison.Ordinal) && options.Id.Length <= 100 &&
+                 !string.IsNullOrWhiteSpace(options.ApiKey)), "MCP tunnel requires its ID and a runtime API key.")
+            .ValidateOnStart();
+        services.AddHostedService<McpTunnelWorker>();
+        services.AddMcpServer(options =>
+            {
+                options.ServerInfo = new Implementation { Name = "yeshua-operational-intelligence", Version = "1.0.0" };
+                options.ServerInstructions = AgentTaskProtocol.Instructions;
+            })
+            .WithHttpTransport(options => options.SessionMode = HttpServerSessionMode.Stateless)
+            .WithListToolsHandler((context, _) => ValueTask.FromResult(new ListToolsResult
+            {
+                Tools = context.Services!.GetRequiredService<McpToolRegistry>().List()
+            }))
+            .WithCallToolHandler(async (context, cancellationToken) =>
+            {
+                var arguments = JsonSerializer.SerializeToElement(context.Params?.Arguments);
+                if (arguments.ValueKind != JsonValueKind.Object)
+                    arguments = JsonSerializer.SerializeToElement(new Dictionary<string, string>());
+                return await context.Services!.GetRequiredService<McpToolRegistry>()
+                    .CallAsync(context.Params!.Name, arguments, cancellationToken);
+            });
         return services;
     }
 

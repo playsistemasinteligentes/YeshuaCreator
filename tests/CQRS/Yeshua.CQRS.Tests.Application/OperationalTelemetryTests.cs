@@ -230,11 +230,11 @@ public sealed class OperationalTelemetryTests
             Configuration([
                 new KeyValuePair<string, string?>(
                     "OpenTelemetry:Otlp:Endpoint",
-                    "http://yeshua-telemetry:4317")
+                    "http://yeshua-observability:4317")
             ]));
 
         Assert.Equal(OperationalTelemetryExportMode.Otlp, settings.Mode);
-        Assert.Equal("http://yeshua-telemetry:4317/", settings.OtlpEndpoint!.ToString());
+        Assert.Equal("http://yeshua-observability:4317/", settings.OtlpEndpoint!.ToString());
     }
 
     [Fact]
@@ -245,7 +245,7 @@ public sealed class OperationalTelemetryTests
                 new KeyValuePair<string, string?>("OpenTelemetry:ExportMode", "ConsoleJsonl"),
                 new KeyValuePair<string, string?>(
                     "OpenTelemetry:Otlp:Endpoint",
-                    "http://yeshua-telemetry:4317")
+                    "http://yeshua-observability:4317")
             ]));
 
         Assert.Equal(OperationalTelemetryExportMode.ConsoleJsonl, settings.Mode);

@@ -35,6 +35,7 @@ VOLATILE_VOLUME_TARGETS = {
     "redis": {"/data"},
     "rabbitmq": {"/var/lib/rabbitmq"},
     "operational-intelligence-agent": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
+    "operational-intelligence": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
 }
 
 
@@ -444,7 +445,7 @@ def stop_and_capture(plan, stage, password, policy):
         # Close the external entrance first; stop every known writer before local capture.
         def stop_order(container):
             service = container["Config"]["Labels"]["com.docker.compose.service"]
-            return 0 if service == "nginx" else 3 if service in {"rabbitmq", "redis"} else 2 if service == "yeshua-telemetry" else 1
+            return 0 if service == "nginx" else 3 if service in {"rabbitmq", "redis"} else 2 if service in {"yeshua-observability", "yeshua-telemetry"} else 1
         pause.sort(key=stop_order)
         for container in pause:
             stopped.append(container["Id"])

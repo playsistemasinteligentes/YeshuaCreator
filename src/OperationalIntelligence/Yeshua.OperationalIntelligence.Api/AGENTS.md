@@ -3,6 +3,31 @@
 Este projeto expoe o indice de engenharia reversa e os bundles de codigo-fonte
 para aplicativos Yeshua e sistemas legados.
 
+Tambem hospeda a ponte administrativa `AgentTasks`, autorizada em 2026-10-23,
+no mesmo processo/container dos agentes. Entradas MCP usam o SDK oficial e
+ficam em Modules/Mcp. O endpoint publico anuncia somente yeshua_health;
+consultas internas e yeshua_task_send/yeshua_task_read exigem loopback na porta
+privada, acessada pelo Secure MCP Tunnel do workspace autorizado. Headers de
+proxy nao autorizam acesso. O protocolo registra pedidos/respostas pelo
+repository no banco operacional; sessoes/tokens internos das CLIs nao vao para
+SQL. Nao adicionar SQL aos receivers nem criar outro banco de estado.
+`yeshua_task_read` inclui numeros validos somente para a lista apresentada e
+`activeExecution`; a selecao fica na conversa do cliente, nunca globalmente.
+`yeshua_agent_restart` e outra mutacao administrativa privada, explicitamente
+autorizada: exige confirmacao e o par exato taskId/requestId da ordem ativa.
+Interrompe o processo e persiste Interrupted, sem replay, limpeza de sessoes,
+restart de container ou controle Docker. API morta exige recuperacao pelo host.
+`yeshua_codex_status` e `yeshua_codex_auth` mediam toda a autenticacao do operador
+pelo mesmo MCP privado. Somente account RPCs permitidos usam app-server local
+por stdio; nao publicar o Codex em rede nem receber senha/tokens. Claim/execucao
+e troca de autenticacao sao mutuamente exclusivos. Durante login, ordens ficam
+Queued; falha/cancelamento/logout nao reutilizam a conta anterior silenciosamente.
+Um unico CODEX_HOME preserva historico local entre logins; thread de task nao
+pode mudar. Sessao ausente bloqueia a continuacao sem nova conversa automatica.
+Homologacao real entre contas e obrigatoria antes de prometer continuidade.
+O marcador tecnico de reautenticacao no home e volatil, sem credenciais nem
+estado de negocio. Nao criar tabela/cofre de contas ou copiar tokens para SQL.
+
 Tambem hospeda o modulo `OperationalControl`, que mantem em memoria a politica
 central de logging. A configuracao fornece o baseline; overrides temporarios
 sao aplicados por API e se perdem com seguranca quando o processo reinicia.
@@ -71,9 +96,11 @@ concreto que impedir a chamada.
 - Respeitar ownership, editable e sourceOfTruth ao sugerir alteracoes.
 - Evidencias TEXT_REFERENCE selecionam fontes candidatos, mas nao provam
   semanticamente leitura ou escrita.
-- A camada MCP inicial e deliberadamente crua e somente leitura. Ela nao
-  implementa assinatura operacional, agente especialista, comando de negocio
-  nem persistencia propria.
+- Ferramentas MCP de consulta continuam somente leitura. A ponte administrativa
+  de tarefas permite pedidos idempotentes, consulta, interrupcao explicita da
+  ordem ativa, processamento local em serie e respostas. Nao repetir ordens em andamento
+  apos falha/reinicio. Nao adicionar assinatura operacional, especialistas,
+  runner paralelo ou acesso de tenants por essa ponte.
 - DEBITO TECNICO CRITICO: acesso MCP a banco de dados e fontes indexados ainda
   nao possui modelo formal de autorizacao. Antes de expor fora de ambiente
   interno/confiavel, definir controle por usuario, tenant, aplicativo, ambiente,

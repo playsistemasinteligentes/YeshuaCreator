@@ -118,22 +118,48 @@ devera ser movida para um Worker separado.
 
 ## MCP
 
-O endpoint `POST /mcp` expoe uma camada MCP minima em JSON-RPC para agentes.
-Ele suporta `initialize`, `server/discover`, `ping`, `tools/list` e
-`tools/call`. As ferramentas iniciais sao somente leitura:
+O endpoint `/mcp` usa o SDK oficial `ModelContextProtocol.AspNetCore` com
+Streamable HTTP e negociacao de protocolo. A URL publica anuncia somente
+`yeshua_health`. Consultas internas e tarefas exigem loopback na porta
+`Mcp:PrivatePort` (5729), normalmente pelo Secure MCP Tunnel. Nginx encaminha
+apenas para 5728; headers de proxy nao autorizam acesso privado.
+
+As ferramentas de leitura na conexao privada sao anunciadas como:
 
 ```text
-yeshua.health
-yeshua.database.select
-yeshua.errors.query
-yeshua.logs.query
-yeshua.logs.source_context
-yeshua.traces.query
-yeshua.metrics.query
-yeshua.source.search
+yeshua_health
+yeshua_database_select
+yeshua_errors_query
+yeshua_logs_query
+yeshua_logs_source_context
+yeshua_traces_query
+yeshua_metrics_query
+yeshua_source_search
 ```
 
-No servidor, as consultas de telemetria apontam para o pacote `yeshua-telemetry`
+Nomes antigos com pontos continuam aceitos em chamadas autorizadas.
+As ferramentas privadas `yeshua_task_send` e `yeshua_task_read` implementam
+ordens e consultas ao Codex no container unificado. Commands/Receivers usam
+repository e persistem em `OI_AgentTasks`/`OI_AgentTaskMessages` no banco
+operacional. O worker local processa uma ordem por vez, sem nova fila RabbitMQ.
+Listagens incluem `selectionNumber`, valido somente para a lista apresentada;
+o cliente conserva a correspondencia com `taskId` e sua selecao nesta conversa.
+Selecionar nao executa nem altera uma selecao global no servidor.
+`yeshua_agent_restart`, tambem privada, interrompe somente os `taskId/requestId`
+atuais de `activeExecution`, com `confirm=true` e pedido explicito do operador.
+Ela nao reinicia API/container nem repete tarefas. A recuperacao externa por
+SSH usa `infra/Shared/DockerCompose/restart-operational-intelligence.sh` no host.
+`yeshua_codex_status` consulta conta/plano/limites; `yeshua_codex_auth` medeia
+login ChatGPT por codigo, cancelamento e logout pelo mesmo MCP privado.
+O Codex app-server recebe somente chamadas locais por stdio, nunca uma conexao
+direta do celular. Confirmacao e expectedSessionId protegem alteracoes atrasadas.
+A fila nao retira ordens sem autenticacao valida e durante a troca; a sessao
+Codex, workspace e task sao mantidos. Retomada entre contas reais exige teste
+explicito; nao criar outra conversa silenciosamente quando a original faltar.
+Instalacao/configuracao e teste por voz estao em
+`infra/Shared/DockerCompose/operational-intelligence/README.md`.
+
+No servidor, as consultas de telemetria apontam para o pacote `yeshua-observability`
 via configuracao `Mcp__LokiBaseUrl`, `Mcp__TempoBaseUrl` e
 `Mcp__PrometheusBaseUrl`. Localmente, os defaults usam `localhost`.
 

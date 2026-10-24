@@ -63,7 +63,7 @@ preenchimento, sem subir os servicos da aplicacao.
 ```text
 /root/YeshuaPrivate/production/
   credentials.json
-  shared/OperationalAgent/integracoes/providers.json  # opcional
+  shared/OperationalAgent/integracoes/providers.json  # opcional: agentes e tunel MCP
   apps/
     Central/
     Clinica/
@@ -271,8 +271,10 @@ reais ainda exigem o ensaio no novo servidor, com os aplicativos isolados.
   cofre/tela existentes nao muda. `configure-youtube.sh` administra somente esse
   arquivo, nao o JSON geral e nao gera chave. Pode-se continuar usando a tela.
 - Providers opcionais do agente: `shared/OperationalAgent/integracoes/providers.json`,
-  com `OpenAI.ApiKey` e `Anthropic.ApiKey`. Nao sao necessarios para validar as
-  credenciais basicas da infraestrutura.
+  com `OpenAI.ApiKey`, `Anthropic.ApiKey` e o par opcional `McpTunnel.Id` /
+  `McpTunnel.ApiKey`. O par do tunel deve ser preenchido junto e e entregue somente
+  ao container operacional unificado. Consulte `providers.example.json`.
+  Esses providers nao sao necessarios para validar as credenciais basicas da infraestrutura.
 - Fiscal: novos certificados seguem tenant/titular/thumbprint na area privada,
   montada somente na API/Worker Fiscal. PFX e senha sao arquivos separados;
   o banco continua guardando referencias. Por decisao do usuario, nao faremos

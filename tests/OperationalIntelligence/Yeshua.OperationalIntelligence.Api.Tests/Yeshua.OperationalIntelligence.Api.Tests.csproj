@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OperationalIntelligence\Yeshua.OperationalIntelligence.Api\Yeshua.OperationalIntelligence.Api.csproj" />
+    <None Update="Fixtures\*.cjs" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 
 </Project>

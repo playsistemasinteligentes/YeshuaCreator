@@ -1857,18 +1857,17 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - O modulo `OperationalControl` permanece na Operational Intelligence API nesta
   fase. Ele possui singleton central carregado por configuracao e overrides
   temporarios em memoria; nao usa o banco de engenharia reversa.
-- A Operational Intelligence API e publicada como servico unico do Compose
-  Shared. Os aplicativos a consultam pelo nome do servico na rede Docker
-  compartilhada. A rota nginx `/operational/` permanece temporariamente publica
-  e deve receber autenticacao e autorizacao na etapa de seguranca.
-- O `operational-intelligence-agent` pertence ao Compose Shared, nao a um
-  Studio. Ele e um container interno de apoio tecnico com SDK .NET, Git,
-  Node/Python, Codex CLI e Claude Code para diagnostico, leitura de codigo,
-  compilacao e testes em workspace proprio.
-- A primeira versao do agente operacional e observadora/build-only: nao monta
-  `/var/run/docker.sock`, nao reinicia containers, nao executa migration, nao
-  publica deploy e nao altera banco. Acoes operacionais destrutivas ou de
-  escrita continuam exigindo comando humano explicito.
+- Decisao de 2026-10-23: o servico `operational-intelligence`, container
+  `yeshua-operational-intelligence`, unifica API .NET, MCP e ambiente dos agentes
+  no Compose Shared. A API e o processo principal; o SDK oficial do Codex executa
+  tarefas em processo filho. SDK .NET, Git, Node/Python, Codex CLI e Claude Code
+  ficam na mesma imagem; a ponte inicial executa somente Codex. Nao criar Studio.
+  O nome anterior `operational-intelligence-api` permanece como alias de rede.
+- O workspace do agente e proprio e VOLATIL; repositorio do servidor e storage
+  sao montados somente leitura. O modo observe e somente leitura no sandbox.
+  `workspace-write` exige habilitacao de servidor e escolha explicita na ordem,
+  limitada ao workspace. Nao montar `/var/run/docker.sock`, conceder deploy,
+  reinicio de containers ou escrita nos bancos dos aplicativos ao agente.
 - O agente operacional deve consumir a Operational Intelligence API, MCP local,
   telemetria e uma copia de trabalho do repositorio para autoconhecimento do
   servidor. Credenciais de agentes devem entrar somente por ambiente/segredo do
@@ -1879,19 +1878,69 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   pelo caminho normal da aplicacao, nao depender de arquivos desses volumes.
   Nao criar backup particular ou outro banco de estado. Credenciais tecnicas
   continuam na configuracao privada padrao; nao copiar sessoes/tokens das CLIs
-  para SQL por essa decisao. Nao habilitar escrita no agente observador, criar
-  tabelas ou apagar volumes nesta etapa. Investigacao do conteudo foi interrompida
-  pelo usuario; classificacao foi uma decisao direta, nao prova de volume vazio.
+  para SQL por essa decisao. A ponte autorizada em 2026-10-23 persiste somente
+  seus pedidos, recibos, progresso, respostas e referencia de conversa em
+  `OI_AgentTasks`/`OI_AgentTaskMessages` no banco operacional existente, pelo
+  repository. Isso nao exporta arquivos/historicos internos das CLIs. Perder
+  uma sessao volatil exige nova tarefa; respostas persistidas continuam legiveis.
+- A ponte minima do MCP usa `yeshua_task_send` (criar/continuar) e
+  `yeshua_task_read` (listar/consultar), com Commands/Receivers e repository.
+  `requestId` identifica uma ordem idempotente; `taskId` identifica a conversa.
+  O worker local processa uma ordem por vez e nao usa RabbitMQ. Uma falha ou
+  reinicio nao repete automaticamente uma ordem em execucao: ela fica Failed ou
+  Interrupted. Esta primeira versao exige uma unica instancia operacional.
+  A resposta de voz e produzida pelo cliente que consultar o resultado; o MCP
+  nao inicia notificacao, conversa nem fala automatica no celular.
+- Listagens de tarefas incluem `selectionNumber`, valido somente para aquela
+  lista. O cliente conserva numero -> taskId na propria conversa; selecionar
+  uma task apenas le seu contexto. Nao criar selecao global compartilhada entre
+  clientes nem usar posicao de lista como identidade de tarefa.
+- A autenticacao ChatGPT do Codex operacional e mediada pelo mesmo MCP privado:
+  `yeshua_codex_status` consulta e `yeshua_codex_auth` inicia login por codigo,
+  cancela ou desconecta, sempre por pedido explicito. O cliente nao acessa o
+  Codex diretamente; `codex app-server` e filho local por stdio, sem porta nova.
+  Este uso e administrativo da instancia pessoal/confiavel, nao autenticacao de
+  clientes/tenants nem servico comercial hospedado com assinatura ChatGPT.
+- No modo ChatGPT, account RPC e executor compartilham um unico CODEX_HOME e
+  workspace. Nao manter historico separado por conta nem sobrescrever a thread
+  original de uma task. Continuacao sem sessao/ID confirmado falha sem criar
+  outra conversa; retomada entre contas reais exige homologacao A -> B.
+  A fila nao retira ordens durante login ou sem autenticacao valida. Mudanca de
+  conta e recusada durante claim/execucao; sessionId de controle e requestId
+  protegem contra chamadas atrasadas e repetidas. Nao fazer rodizio automatico
+  por cota, fallback para API key, replay de trabalho ou expor senha/tokens.
+- O marcador tecnico `.yeshua-reauthentication-required` no CODEX_HOME contem
+  apenas a exigencia de concluir login apos uma troca interrompida. Nao e fila,
+  historico ou cofre novo. Continua VOLATIL com o volume Codex; tokens permanecem
+  exclusivamente no cache nativo da CLI, nunca SQL, Git, logs ou respostas MCP.
+- A recuperacao administrativa `yeshua_agent_restart` exige pedido explicito,
+  `confirm=true` e o par taskId/requestId de `activeExecution`. Ela interrompe
+  somente o processo da ordem atual e persiste Interrupted, sem repetir trabalho,
+  apagar sessoes ou conceder controle Docker ao agente. Um pedido atrasado nao
+  pode interromper a ordem seguinte. Mensagens enfileiradas nao sao canceladas.
+  Cada turno ja inicia um processo novo; nao existe daemon Codex a reiniciar.
+- API/MCP totalmente indisponivel exige recuperacao externa pelo SSH do host.
+  `infra/Shared/DockerCompose/restart-operational-intelligence.sh --confirm`
+  valida labels e reinicia somente o container operacional, sem deploy, exclusao
+  de volumes, restart do daemon Docker ou de bancos. Nao expor outra porta nem
+  montar socket Docker para contornar essa fronteira. Restart por voz de um MCP
+  morto nao esta implementado por essa ferramenta.
 - Politicas operacionais sao identificadas por `Application + Environment`,
   permitindo configuracoes independentes para producao e homologacao.
 - Cada host gerado mantem snapshot local e sincroniza a politica por polling. O
   RabbitMQ somente sera considerado se a latencia ou o custo medidos justificarem.
 - A primeira centralizacao OTLP do Yeshua usa um pacote unico
-  `yeshua-telemetry` no Compose Shared, baseado em OpenTelemetry Collector,
+  `yeshua-observability` no Compose Shared, baseado em OpenTelemetry Collector,
   Loki, Tempo, Prometheus e Grafana. O pacote inicia como um bloco operacional
   unico, com retencao padrao de 5 dias e limites apertados de CPU/memoria; a
   separacao fisica dos componentes so deve ocorrer quando medicao real
   justificar.
+- Na renomeacao para `yeshua-observability`, a pasta de configuracao passou a
+  `infra/Shared/DockerCompose/observability`; o bind de dados continua em
+  `/root/YeshuaStorage/volatile/infra/telemetry`, sem mover/apagar conteudo.
+  `yeshua-telemetry` permanece como alias de rede. Grafana usa `/observability/`
+  e a rota antiga `/telemetry/` redireciona. Variaveis de sinais OTLP conservam
+  o prefixo `YESHUA_TELEMETRY_*`. Deploy/backup/importacao reconhecem a transicao.
 - Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.
@@ -1912,13 +1961,20 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   quebrar as verificacoes tecnicas parciais anteriores.
 - Quando o usuario solicitar uma investigacao, o agente deve chamar diretamente a Operational Intelligence API e interpretar o resultado; o Swagger e opcional e nao deve ser delegado ao usuario sem necessidade.
 - A API, o orquestrador e os coletores permanecem no mesmo projeto e processo nesta fase.
-- A camada MCP inicial fica dentro de
-  `Yeshua.OperationalIntelligence.Api/Modules/Mcp`, no mesmo processo da API.
-  Ela deve expor somente ferramentas de leitura e dados crus para agentes:
-  health, logs, errors, traces, metrics, source search, correlacao simples
-  log -> fonte indexada e SELECT SQL por conexoes configuradas. Nao criar ainda
-  assinatura operacional, especialistas, trilhas, comandos de negocio ou
-  persistencia propria.
+- O MCP fica em `Yeshua.OperationalIntelligence.Api/Modules/Mcp`, no mesmo
+  processo da API, usando o SDK oficial `ModelContextProtocol.AspNetCore` e
+  Streamable HTTP. Schemas, negociacao e anotacoes usam os tipos do SDK.
+  Nomes anunciados usam underscores; nomes antigos com pontos sao aliases de
+  chamada sujeitos ao mesmo acesso. O endpoint publico `/operational/mcp`
+  anuncia e executa somente `yeshua_health`.
+- Ferramentas internas de leitura e a ponte administrativa de tarefas exigem
+  loopback na porta privada 5729 do mesmo processo. Nao publicar essa porta no
+  host nem no Nginx; headers de proxy nao concedem acesso. Secure MCP Tunnel
+  autentica a conexao do workspace administrativo autorizado. O cliente oficial
+  de tunel e opcional e inicia em processo filho quando Id/ApiKey estao juntos
+  no `providers.json` privado existente; nenhuma chave aparece em argumentos,
+  imagem, Git ou payloads de ferramentas. Sem configuracao, nao inicia tunel.
+  Instalar o plugin e testar voz na conta/celular ainda exige homologacao real.
 - `DEBITO TECNICO CRITICO`: definir o conceito formal de controle de acesso
   para ferramentas MCP que leem banco de dados, codigo-fonte, bundles,
   historico Git, logs e telemetria. O modelo atual deve ser tratado apenas como

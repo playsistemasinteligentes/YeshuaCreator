@@ -20,6 +20,7 @@ public sealed class HealthTool : IMcpTool
     }
 
     public string Name => "yeshua.health";
+    public bool IsPublic => true;
     public string Description => "Checks the Yeshua MCP layer and telemetry backends.";
     public object InputSchema => McpToolSchemas.Empty();
 

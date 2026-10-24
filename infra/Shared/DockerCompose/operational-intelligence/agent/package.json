@@ -1,0 +1,9 @@
+{
+  "name": "yeshua-operational-intelligence-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test" },
+  "dependencies": { "@openai/codex-sdk": "0.164.0" },
+  "devDependencies": { "yaml": "2.9.1" }
+}

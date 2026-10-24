@@ -233,6 +233,7 @@ def exports(document, root, target, include_shared=False):
     result["MYCONFIG__WRITECONECTIONSTRING"] = result["YESHUA_SQL_" + suffix + "_WRITE"] if suffix else ""
     result["MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING"] = result["YESHUA_SQL_CENTRAL_AUTHORIZATION"]
     result.update({key: "" for key in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY",
+        "YESHUA_MCP_TUNNEL_ID", "YESHUA_MCP_TUNNEL_API_KEY",
         "YESHUA_MEMORIAS_YOUTUBE_CLIENT_ID", "YESHUA_MEMORIAS_YOUTUBE_CLIENT_SECRET",
         "YESHUA_MEMORIAS_YOUTUBE_ENCRYPTION_KEY", "YESHUA_MEMORIAS_YOUTUBE_REDIRECT_URI",
         "YESHUA_MEMORIAS_CONFIG_ADMIN_TENANT_ID", "YESHUA_MEMORIAS_CONFIG_ADMIN_USER_ID")})
@@ -275,6 +276,11 @@ def environment(document, root, target, include_shared=False):
             config = read_json(providers)
             result["OPENAI_API_KEY"] = get(config, "OpenAI", "ApiKey")
             result["ANTHROPIC_API_KEY"] = get(config, "Anthropic", "ApiKey")
+            result["YESHUA_MCP_TUNNEL_ID"] = get(config, "McpTunnel", "Id")
+            result["YESHUA_MCP_TUNNEL_API_KEY"] = get(config, "McpTunnel", "ApiKey")
+            tunnel_id, tunnel_key = result["YESHUA_MCP_TUNNEL_ID"], result["YESHUA_MCP_TUNNEL_API_KEY"]
+            if bool(tunnel_id) != bool(tunnel_key) or (tunnel_id and not tunnel_id.startswith("tunnel_")):
+                raise ConfigurationError("McpTunnel exige Id valido e ApiKey juntos em providers.json.")
     return result
 
 
@@ -366,9 +372,9 @@ def from_containers(template, services):
     shared["RabbitMq"]["UserName"] = env("rabbitmq").get("RABBITMQ_DEFAULT_USER", "")
     shared["RabbitMq"]["Password"] = env("rabbitmq").get("RABBITMQ_DEFAULT_PASS", "")
     shared["RabbitMq"]["BrokerUrl"] = env("memorias-media-renderer").get("CELERY_BROKER_URL", "")
-    grafana = env("yeshua-telemetry")
+    grafana = env("yeshua-observability") or env("yeshua-telemetry")
     shared["Grafana"].update(UserName=grafana.get("GF_SECURITY_ADMIN_USER", ""), Password=grafana.get("GF_SECURITY_ADMIN_PASSWORD", ""))
-    ops = env("operational-intelligence-api")
+    ops = env("operational-intelligence") or env("operational-intelligence-api")
     shared["OperationalIntelligence"]["ConnectionString"] = ops.get("ConnectionStrings__OperationalIntelligence", "")
     for name in [*DB_KEYS, "OperationalIntelligence"]:
         shared["OperationalIntelligence"]["DatabaseQueries"][name] = ops.get("Mcp__DatabaseQuery__Connections__" + ("ApsAdm" if name == "APS.ADM" else name), "")
@@ -533,11 +539,12 @@ def main():
                         youtube[key] = memory["MemoriasYouTube__" + key]
                 if any(youtube.values()):
                     write_new_json(path.parent / "apps" / "Memorias" / "integracoes" / "youtube" / "bootstrap.json", youtube)
-                agent = services.get("operational-intelligence-agent", ({}, []))[0]
-                if agent.get("OPENAI_API_KEY") or agent.get("ANTHROPIC_API_KEY"):
+                agent = services.get("operational-intelligence", services.get("operational-intelligence-agent", ({}, [])))[0]
+                if any(agent.get(key) for key in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "McpTunnel__Id", "McpTunnel__ApiKey")):
                     write_new_json(path.parent / "shared" / "OperationalAgent" / "integracoes" / "providers.json",
                                    {"OpenAI": {"ApiKey": agent.get("OPENAI_API_KEY", "")},
-                                    "Anthropic": {"ApiKey": agent.get("ANTHROPIC_API_KEY", "")}})
+                                    "Anthropic": {"ApiKey": agent.get("ANTHROPIC_API_KEY", "")},
+                                    "McpTunnel": {"Id": agent.get("McpTunnel__Id", ""), "ApiKey": agent.get("McpTunnel__ApiKey", "")}})
             write_new_json(path, template)
             prepare_application_directories(path.parent)
             print("Arquivo privado criado. Complete campos ausentes e execute validate antes de publicar.")

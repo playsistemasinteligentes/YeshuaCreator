@@ -8,6 +8,7 @@ using Yeshua.OperationalIntelligence.Api.OpenApi;
 using Yeshua.OperationalIntelligence.Api.Repositories;
 using Yeshua.OperationalIntelligence.Api.Modules.OperationalControl;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp;
+using Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +33,7 @@ builder.Services
     .Bind(builder.Configuration.GetSection(OperationalControlOptions.SectionName));
 builder.Services.AddSingleton<OperationalPolicyState>();
 builder.Services.AddYeshuaMcp();
+builder.Services.AddAgentTasks();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>

@@ -1,8 +1,14 @@
-# Yeshua Telemetry
+# Yeshua Observability
 
 Pacote unico inicial de observabilidade para o Yeshua. Ele usa a imagem oficial
 `grafana/otel-lgtm`, que junta OpenTelemetry Collector, Prometheus, Tempo, Loki
 e Grafana em um container.
+
+Servico/container: `yeshua-observability`. O nome anterior `yeshua-telemetry`
+continua como alias de rede. Configuracoes ficam na pasta `observability`;
+o bind `/root/YeshuaStorage/volatile/infra/telemetry` foi preservado, sem mover
+ou apagar dados. Grafana usa `/observability/`, com redirecionamento da rota
+anterior `/telemetry/`.
 
 ## Personalizacoes E Recuperacao
 
@@ -43,7 +49,7 @@ padrao:
 
 ```env
 YESHUA_TELEMETRY_EXPORT_MODE=Otlp
-YESHUA_TELEMETRY_OTLP_ENDPOINT=http://yeshua-telemetry:4317
+YESHUA_TELEMETRY_OTLP_ENDPOINT=http://yeshua-observability:4317
 ```
 
 Em execucao local, se essa variavel nao existir, o codigo continua em
