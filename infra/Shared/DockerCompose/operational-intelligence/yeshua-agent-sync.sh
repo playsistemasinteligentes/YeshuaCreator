@@ -9,9 +9,18 @@ if [[ ! -d "$source_path" ]]; then
   exit 1
 fi
 
+owner_args=()
+if [[ "$(id -u)" == "0" ]]; then
+  if [[ "$target_path" != "/workspace/YeshuaCreator" || -L "$target_path" ]]; then
+    echo "Root sync requires the fixed, non-symlink workspace." >&2
+    exit 1
+  fi
+  owner_args=(--chown=agent:agent)
+fi
+
 mkdir -p "$(dirname "$target_path")"
 
-rsync -a --delete \
+rsync -a --delete "${owner_args[@]}" \
   --exclude '.vs/' \
   --exclude '.idea/' \
   --exclude 'bin/' \

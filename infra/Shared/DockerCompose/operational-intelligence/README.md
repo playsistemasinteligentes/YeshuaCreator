@@ -37,6 +37,11 @@ O modo anterior por chave exige desativar explicitamente essa opcao e configurar
 
 O workspace nasce da copia do repositorio montado somente leitura em
 `/server/YeshuaCreator`; o agente trabalha em `/workspace/YeshuaCreator`.
+O entrypoint prepara os volumes e a copia inicial como root para ler checkouts
+protegidos do host, sem abrir suas permissoes. A copia pertence a `agent`;
+antes de iniciar a API, `gosu` descarta os privilegios. API, Codex e cliente
+de tunel executam como `agent`, nunca como root. O deploy aguarda a saude
+dos servicos antes de reconciliar o gateway.
 `yeshua-agent-sync` substitui essa copia: antes de usa-lo, preserve alteracoes
 existentes no workspace. `yeshua-agent-health` confere as ferramentas e a API.
 

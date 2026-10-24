@@ -41,6 +41,21 @@ test('private MCP and tunnel administration are loopback only and never publishe
   assert.equal(/5729|5730/.test(upstreams + route), false);
 });
 
+test('root bootstrap copies restricted source then drops privileges before running the API', () => {
+  const directory = resolve(shared, 'operational-intelligence');
+  const dockerfile = readFileSync(resolve(directory, 'Dockerfile'), 'utf8');
+  const entrypoint = readFileSync(resolve(directory, 'entrypoint.sh'), 'utf8');
+  const sync = readFileSync(resolve(directory, 'yeshua-agent-sync.sh'), 'utf8');
+  const deploy = readFileSync(resolve(shared, 'deploy.sh'), 'utf8');
+  assert.ok(dockerfile.includes('        gosu \\'));
+  assert.ok(dockerfile.lastIndexOf('USER root') > dockerfile.lastIndexOf('USER agent'));
+  assert.ok(entrypoint.includes('exec gosu agent "$@"'));
+  assert.ok(entrypoint.includes('-L "$workspace"'));
+  assert.ok(sync.includes('-L "$target_path"'));
+  assert.ok(sync.includes('--chown=agent:agent'));
+  assert.ok(deploy.includes('up -d --wait --wait-timeout 180'));
+});
+
 test('Docker build inputs exist and every application sends OTLP to the renamed observability service', () => {
   const operations = compose.services['operational-intelligence'];
   const context = resolve(shared, operations.build.context);

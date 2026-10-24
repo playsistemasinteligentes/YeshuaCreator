@@ -16,6 +16,7 @@ RUN apt-get update \
         curl \
         dnsutils \
         git \
+        gosu \
         iputils-ping \
         jq \
         openssh-client \
@@ -71,7 +72,6 @@ RUN chmod +x \
       /usr/local/bin/yeshua-agent-health \
       /usr/local/bin/yeshua-agent-sync
 
-USER agent
 ENV ASPNETCORE_URLS="http://0.0.0.0:5728;http://127.0.0.1:5729"
 EXPOSE 5728
 HEALTHCHECK --interval=30s --timeout=5s --start-period=30s CMD curl -fsS http://127.0.0.1:5728/api/health || exit 1

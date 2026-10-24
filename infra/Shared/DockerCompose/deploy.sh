@@ -23,4 +23,4 @@ for legacy_service in operational-intelligence-api operational-intelligence-agen
     docker rm "${legacy_ids[@]}"
   fi
 done
-docker compose up -d sqlserver redis rabbitmq yeshua-observability operational-intelligence
+docker compose up -d --wait --wait-timeout 180 sqlserver redis rabbitmq yeshua-observability operational-intelligence
