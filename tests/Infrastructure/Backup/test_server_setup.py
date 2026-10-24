@@ -722,6 +722,20 @@ class PairingResponseTests(unittest.TestCase):
     def test_successful_peer_response_is_parsed(self):
         self.assertEqual({"status": "source_prepared"}, self.invoke(0, b'{"status":"source_prepared"}'))
 
+    def test_filesystem_diagnostics_survive_ssh_without_exposing_paths_or_exception_text(self):
+        for error, expected in ((FileNotFoundError("private-path-with-secret"), "pairing_required_file_or_directory_missing"),
+                (PermissionError("private-path-with-secret"), "pairing_file_permission_denied"),
+                (OSError("private-path-with-secret"), "pairing_filesystem_operation_failed")):
+            with self.subTest(expected=expected):
+                result = enrollment.peer_failure(s, error)
+                self.assertEqual({"status": "failed", "error": expected}, result)
+                with self.assertRaisesRegex(s.op.Error, "^" + expected + "$"):
+                    self.invoke(1, json.dumps(result).encode())
+
+    def test_unexpected_peer_exception_does_not_expose_details(self):
+        self.assertEqual({"status": "failed", "error": "pairing_failed_details_omitted"},
+            enrollment.peer_failure(s, ValueError("private-path-with-secret")))
+
 
 class NewHistoryConfirmationTests(unittest.TestCase):
     def test_confirmation_is_bound_to_both_repositories_and_machines_and_persisted(self):
@@ -786,11 +800,42 @@ class SourcePairSafetyTests(unittest.TestCase):
                 patch.object(s.op, "private_directory", side_effect=directory),
                 patch.object(s.op, "locked", side_effect=lambda *a: nullcontext()),
                 patch.object(s.op.sql, "load_credentials", side_effect=lambda *a, **k: (s.op.read(context.PRIVATE), "")),
-                patch.object(enrollment, "key", return_value=(identity, PUBLIC)),
-                patch.object(enrollment, "private_bytes", side_effect=private_bytes)):
+                patch.object(enrollment, "key", return_value=(identity, PUBLIC))):
+            item.start()
+            self.addCleanup(item.stop)
+        if os.name != "posix":
+            item = patch.object(enrollment, "private_bytes", side_effect=private_bytes)
             item.start()
             self.addCleanup(item.stop)
         return context, document, payload, known, destination
+
+    @unittest.skipUnless(os.name == "posix" and getattr(os, "geteuid", lambda: -1)() == 0,
+                         "Real Linux root ownership and atomic private file writes")
+    def test_new_candidate_directories_are_created_privately_before_real_atomic_pin_write(self):
+        private_directory = s.op.private_directory
+        with tempfile.TemporaryDirectory() as folder:
+            context, document, payload, known, _ = self.environment(folder)
+            before = known.read_bytes()
+            self.assertFalse((known.parent / "targets").exists())
+            mask = os.umask(0o022)
+            try:
+                with patch.object(s.op, "private_directory", side_effect=private_directory), \
+                        patch.object(s.op, "restic", side_effect=s.op.Error("synthetic_restic_failure")), \
+                        self.assertRaisesRegex(s.op.Error, "^synthetic_restic_failure$"):
+                    enrollment.source_pair(context, payload)
+            finally:
+                os.umask(mask)
+            pins = list(known.parent.glob("targets/*/known_hosts"))
+            self.assertEqual(1, len(pins))
+            pin = pins[0]
+            self.assertEqual("192.0.2.25 " + PUBLIC + "\n", pin.read_text())
+            self.assertEqual(0o600, pin.stat().st_mode & 0o777)
+            for directory in (pin.parent, pin.parent.parent):
+                self.assertEqual(0o700, directory.stat().st_mode & 0o777)
+                self.assertEqual(0, directory.stat().st_uid)
+            self.assertFalse(pin.with_name("known_hosts.pending").exists())
+            self.assertEqual(before, known.read_bytes())
+            self.assertEqual(document, s.op.read(context.PRIVATE))
 
     def test_failed_candidate_preserves_original_credentials_and_live_ssh_trust(self):
         with tempfile.TemporaryDirectory() as folder:

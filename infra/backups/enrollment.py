@@ -30,6 +30,7 @@ PEER_ERRORS = frozenset({
     "only_local_to_sftp_transition_supported", "stop_backup_timers_before_repository_transition",
     "remote_history_verification_failed_original_configuration_unchanged",
     "remote_history_missing_restore_or_confirm_new_history", "invalid_pairing_flags",
+    "pairing_required_file_or_directory_missing", "pairing_file_permission_denied", "pairing_filesystem_operation_failed",
 })
 
 
@@ -164,6 +165,18 @@ def peer(s, ssh, directory, action, payload):
     if process.returncode:
         raise s.op.Error("pairing_command_failed_ssh")
     return result
+
+
+def peer_failure(s, error):
+    if isinstance(error, FileNotFoundError):
+        code = "pairing_required_file_or_directory_missing"
+    elif isinstance(error, PermissionError):
+        code = "pairing_file_permission_denied"
+    elif isinstance(error, OSError):
+        code = "pairing_filesystem_operation_failed"
+    else:
+        code = str(error) if isinstance(error, s.op.Error) else "pairing_failed_details_omitted"
+    return {"status": "failed", "error": code}
 
 
 def confirm_new_history(s, value, source, repository, *, allowed):
@@ -404,7 +417,9 @@ def _source_pair(s, payload, address, base):
     s.load("storage").key_line(" ".join(host_key[:2]), address)
     content = address + " " + " ".join(host_key[:2]) + "\n"
     target_id = hashlib.sha256((payload["repository"] + "\n" + content).encode()).hexdigest()
-    known = path.parent / "targets" / target_id / "known_hosts"
+    targets = s.op.private_directory(path.parent / "targets", create=True)
+    target = s.op.private_directory(targets / target_id, create=True)
+    known = target / "known_hosts"
     # Candidate trust is isolated: a failed enrollment must not break the active repository's SSH pin.
     private_bytes(s, known, content.encode())
     settings = {"IdentityFile": str(path), "KnownHostsFile": str(known)}
@@ -655,5 +670,5 @@ if __name__ == "__main__":
             raise setup.op.Error("oversized_pairing_request")
         print(json.dumps(peer_action(setup, args.action, json.loads(raw))))
     except Exception as error:
-        print(json.dumps({"status": "failed", "error": str(error) if isinstance(error, setup.op.Error) else "pairing_failed_details_omitted"}))
+        print(json.dumps(peer_failure(setup, error)))
         raise SystemExit(1)
