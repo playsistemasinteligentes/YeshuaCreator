@@ -3,7 +3,10 @@ import base64
 import copy
 import importlib.util
 import json
+import os
 from pathlib import Path
+import shutil
+import subprocess
 import tempfile
 from types import SimpleNamespace
 import unittest
@@ -226,6 +229,146 @@ class DestinationTests(unittest.TestCase):
                                                 "repository_id": "old"})
             self.assertIsNone(installer.completed_proof(base, "full", "new"))
             self.assertIsNotNone(installer.completed_proof(base, "full", "old"))
+
+    def remote_environment(self, folder):
+        base, private, document, custody = self.environment(folder)
+        previous = "sftp:yeshua-backup@192.0.2.24:/repository"
+        document["Shared"]["Backup"].update(Repository=previous, Sftp={
+            "IdentityFile": "/private/old-key", "KnownHostsFile": "/private/old-hosts"})
+        custody["key_fingerprint"] = destination.custody_fingerprint(previous, PASSWORD)
+        op.write(private, document)
+        op.write(base / "state/recovery-key-custody.json", custody)
+        self.start_mocks(base, private)
+        return base, private, document, custody, previous
+
+    def new_history(self, base, private, previous, initialize=False):
+        return destination.start_new_sftp_history(op, private, {"staging": str(base)}, REPOSITORY,
+            Path("/private/key"), Path("/private/hosts"), previous_repository=previous, initialize=initialize)
+
+    def test_new_history_does_not_contact_old_storage_and_keeps_password_and_real_custody(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base, private, document, custody, previous = self.remote_environment(folder)
+            def restic(config, args, **kwargs):
+                self.assertEqual(REPOSITORY, config["Shared"]["Backup"]["Repository"])
+                self.assertEqual(document, op.read(private))
+                self.assertNotIn("from_document", kwargs)
+                if args[0] == "snapshots":
+                    return "[]"
+                return json.dumps({"id": "d" * 64}) if args[0] == "cat" else ""
+            with patch.object(op, "restic", side_effect=restic) as calls:
+                result = self.new_history(base, private, previous, initialize=True)
+            self.assertEqual(["init", "snapshots", "check", "cat"], [call.args[1][0] for call in calls.call_args_list])
+            current = op.read(private)
+            self.assertEqual(PASSWORD, current["Shared"]["Backup"]["Password"])
+            self.assertEqual(REPOSITORY, current["Shared"]["Backup"]["Repository"])
+            self.assertEqual(document["Apps"], current["Apps"])
+            updated = op.read(base / "state/recovery-key-custody.json")
+            self.assertEqual(custody["confirmed_at"], updated["confirmed_at"])
+            self.assertEqual(destination.custody_fingerprint(REPOSITORY, PASSWORD), updated["key_fingerprint"])
+            self.assertFalse(result["previous_history_deleted"])
+            self.assertNotIn(PASSWORD, json.dumps(result) + json.dumps(updated))
+
+    def test_new_history_retry_verifies_initialized_empty_target_without_reinitializing(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base, private, _, _, previous = self.remote_environment(folder)
+            def restic(config, args):
+                return "[]" if args[0] == "snapshots" else json.dumps({"id": "d" * 64})
+            with patch.object(op, "restic", side_effect=restic) as calls:
+                self.new_history(base, private, previous)
+            self.assertNotIn("init", [call.args[1][0] for call in calls.call_args_list])
+
+    def test_new_history_failure_preserves_config_and_custody_and_never_deletes_data(self):
+        for failure in ("init", "snapshots", "check", "cat", "not_empty", "bad_id"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as folder:
+                base, private, document, custody, previous = self.remote_environment(folder)
+                def restic(config, args):
+                    if args[0] == failure:
+                        raise op.Error("synthetic_failure")
+                    if args[0] == "snapshots":
+                        return json.dumps([SNAPSHOT] if failure == "not_empty" else [])
+                    return json.dumps({"id": "invalid" if failure == "bad_id" else "d" * 64})
+                with patch.object(op, "restic", side_effect=restic) as calls, self.assertRaises(op.Error):
+                    self.new_history(base, private, previous, initialize=True)
+                self.assertEqual(document, op.read(private))
+                self.assertEqual(custody, op.read(base / "state/recovery-key-custody.json"))
+                self.assertFalse({"forget", "prune", "copy", "backup"} & {call.args[1][0] for call in calls.call_args_list})
+
+    def test_new_history_rejects_changed_source_and_unknown_password_custody(self):
+        for failure in ("binding", "custody"):
+            with self.subTest(failure=failure), tempfile.TemporaryDirectory() as folder:
+                base, private, document, custody, previous = self.remote_environment(folder)
+                if failure == "custody":
+                    custody["key_fingerprint"] = "not-our-password"
+                    op.write(base / "state/recovery-key-custody.json", custody)
+                with patch.object(op, "restic") as calls, self.assertRaises(op.Error):
+                    self.new_history(base, private, previous if failure != "binding" else REPOSITORY + "other")
+                calls.assert_not_called()
+                self.assertEqual(document, op.read(private))
+
+    def test_new_history_does_not_overwrite_concurrent_credentials_edits(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base, private, document, custody, previous = self.remote_environment(folder)
+            updated = copy.deepcopy(document)
+            updated["Apps"]["Example"]["Password"] = "operator-edited"
+            def restic(config, args):
+                if args[0] == "cat":
+                    op.write(private, updated)
+                return "[]" if args[0] == "snapshots" else json.dumps({"id": "d" * 64})
+            with patch.object(op, "restic", side_effect=restic), self.assertRaisesRegex(op.Error, "credentials_changed"):
+                self.new_history(base, private, previous)
+            self.assertEqual(updated, op.read(private))
+            self.assertEqual(custody, op.read(base / "state/recovery-key-custody.json"))
+
+    def test_new_history_resumes_receipt_after_config_commit_without_new_key_acknowledgement(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base, private, document, custody, previous = self.remote_environment(folder)
+            target = copy.deepcopy(document)
+            target["Shared"]["Backup"].update(Repository=REPOSITORY)
+            op.write(private, target)
+            op.write(base / "state/repository-transition.pending.json", {
+                "source_machine": "source", "repository": REPOSITORY, "previous_repository": previous,
+                "previous_custody": custody, "data_read_verified": True, "new_history": True})
+            with patch.object(op, "restic", return_value="") as calls:
+                destination.resume_transition(op, base, target)
+            calls.assert_called_once_with(target, ["check", "--read-data"])
+            self.assertEqual(custody["confirmed_at"], op.read(base / "state/recovery-key-custody.json")["confirmed_at"])
+
+    @unittest.skipUnless(os.name == "posix" and shutil.which("restic"), "Real Restic/Linux disposable repository")
+    def test_new_history_with_real_encrypted_repository_and_existing_data_protection(self):
+        with tempfile.TemporaryDirectory() as folder:
+            base, private, document, custody, previous = self.remote_environment(folder)
+            repository = base / "disposable-repository"
+            def restic(config, args):
+                # Transport is tested separately; only the disposable backend is used by the real binary here.
+                self.assertEqual(REPOSITORY, config["Shared"]["Backup"]["Repository"])
+                result = subprocess.run(["nice", "-n", "19", "restic", "-r", str(repository), "--no-cache", *args],
+                    env=dict(os.environ, RESTIC_PASSWORD=PASSWORD, GOMAXPROCS="1"),
+                    capture_output=True, text=True, timeout=90, check=False)
+                if result.returncode:
+                    raise op.Error("synthetic_restic_failed")
+                return result.stdout
+            target = copy.deepcopy(document)
+            target["Shared"]["Backup"]["Repository"] = REPOSITORY
+            with patch.object(op, "restic", side_effect=restic):
+                self.new_history(base, private, previous, initialize=True)
+                config_before = (repository / "config").read_bytes()
+                op.write(private, document)
+                op.write(base / "state/recovery-key-custody.json", custody)
+                self.new_history(base, private, previous)  # Resume with the same encrypted repository.
+                self.assertEqual(config_before, (repository / "config").read_bytes())
+                sample = base / "synthetic-data"
+                sample.write_text("disposable test only")
+                restic(target, ["backup", str(sample)])
+                snapshots_before = json.loads(restic(target, ["snapshots", "--json"]))
+                op.write(private, document)
+                op.write(base / "state/recovery-key-custody.json", custody)
+                with self.assertRaisesRegex(op.Error, "requires_empty_target"):
+                    self.new_history(base, private, previous)
+                with self.assertRaisesRegex(op.Error, "synthetic_restic_failed"):
+                    self.new_history(base, private, previous, initialize=True)
+                self.assertEqual(document, op.read(private))
+                self.assertEqual(config_before, (repository / "config").read_bytes())
+                self.assertEqual(snapshots_before, json.loads(restic(target, ["snapshots", "--json"])))
 
 
 if __name__ == "__main__":

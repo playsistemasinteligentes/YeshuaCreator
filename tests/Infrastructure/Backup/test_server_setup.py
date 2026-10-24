@@ -472,6 +472,53 @@ class PairingTransactionTests(unittest.TestCase):
         context.control.private_json.side_effect = lambda path: document if path == context.PRIVATE else s.op.read(path)
         return context, document
 
+    def test_new_storage_replacement_resumes_after_init_without_reasking_or_reinitializing(self):
+        with tempfile.TemporaryDirectory() as folder:
+            context, document = self.context(folder)
+            root = Path(folder) / "receiver"
+            (root / "repository").mkdir(parents=True)
+            identity = Path(folder) / "ssh/id_ed25519"
+            identity.parent.mkdir()
+            storage = MagicMock()
+            storage.source_layout.return_value = ("yeshua-bk-prod", root, None)
+            installer = MagicMock(CONTROLLER_TIMERS=("timer",))
+            context.load.side_effect = lambda name: installer if name == "install" else storage
+            context.control.rpc.return_value = {"centrally_managed": True}
+            source = {"machine_id": OLD, "scope": "yeshua-production", "public_key": PUBLIC, "backup_password": "x" * 32,
+                      "repository": "sftp:yeshua-backup@192.0.2.24:/repository", "controller_machine": "c" * 32}
+            value = {"mode": "new", "phase": "prepared", "pair_now": True,
+                     "peer_host": "192.0.2.1", "peer_port": 22, "source_name": "prod"}
+            attempts = []
+            def peer(s, ssh, directory, action, payload):
+                if action == "source-info":
+                    return source
+                if action == "source-pair":
+                    attempts.append(dict(payload))
+                    if len(attempts) == 1:
+                        (root / "repository/config").write_text("synthetic-encrypted-config")
+                        raise context.op.Error("synthetic_interruption_after_init")
+                    return {"repository_id": "d" * 64, "restic_repository_id": "e" * 64}
+                return {"status": "controller_owns_schedules"}
+            read_text = Path.read_text
+            def read(path, *args, **kwargs):
+                return PUBLIC if str(path).replace("\\", "/") == "/etc/ssh/ssh_host_ed25519_key.pub" else read_text(path, *args, **kwargs)
+            with patch.object(s.op, "machine_id", return_value=MACHINE), patch.object(s.op, "private_directory", side_effect=directory), \
+                    patch.object(enrollment, "admin_session", side_effect=lambda *a: nullcontext(["ssh", "root@192.0.2.1"])), \
+                    patch.object(enrollment, "send_toolkit", return_value="/private/toolkit"), \
+                    patch.object(enrollment, "key", return_value=(identity, PUBLIC)), \
+                    patch.object(enrollment, "command", return_value=PUBLIC.encode()), \
+                    patch.object(enrollment, "peer", side_effect=peer), patch.object(Path, "read_text", read):
+                with self.assertRaisesRegex(s.op.Error, "synthetic_interruption"):
+                    enrollment._run_storage(context, value)
+                result = enrollment._run_storage(context, value)
+            self.assertEqual("storage_ready", result["status"])
+            self.assertTrue(attempts[0]["initialize_target"])
+            self.assertFalse(attempts[1]["initialize_target"])
+            self.assertTrue(all(p["new_history"] for p in attempts))
+            self.assertEqual(1, len([c for c in context.confirm.call_args_list if c.args[1] == "NOVOHISTORICO"]))
+            self.assertEqual(6, context.control.controller.call_count)
+            self.assertEqual(1, len(document["Shared"]["Backup"]["Controller"]["Sources"]))
+
     def test_offer_is_pending_and_never_breaks_existing_controller_sources(self):
         with tempfile.TemporaryDirectory() as folder:
             context, document = self.context(folder)
@@ -644,6 +691,170 @@ class EnrollmentTests(unittest.TestCase):
         self.assertEqual("storage_prepared_restore_pending", result["status"])
         self.assertFalse(result["repository_initialized"])
         run.assert_not_called()
+
+
+class PairingResponseTests(unittest.TestCase):
+    def invoke(self, code, output):
+        with patch.object(enrollment.subprocess, "run", return_value=MagicMock(returncode=code, stdout=output)):
+            return enrollment.peer(s, ["ssh", "root@192.0.2.1"], "/private/toolkit", "source-pair", {})
+
+    def test_safe_remote_failure_survives_nonzero_ssh_exit(self):
+        for code in ("new_history_requires_explicit_confirmation", "command_failed_exit_1_sql_codes__categories_"):
+            with self.subTest(code=code), self.assertRaisesRegex(s.op.Error, "^" + code + "$"):
+                self.invoke(1, json.dumps({"status": "failed", "error": code}).encode())
+
+    def test_untrusted_error_payload_is_never_echoed(self):
+        for code in ("secret-password", "lowercasepassword", "token=secret\nnext", {"password": "secret"}, None):
+            with self.subTest(code=code), self.assertRaisesRegex(s.op.Error, "^peer_setup_failed_details_omitted$"):
+                self.invoke(1, json.dumps({"status": "failed", "error": code}).encode())
+
+    def test_nonzero_exit_cannot_masquerade_as_success(self):
+        with self.assertRaisesRegex(s.op.Error, "^pairing_command_failed_ssh$"):
+            self.invoke(255, b'{"status":"source_prepared"}')
+
+    def test_malformed_oversized_and_non_object_responses_fail_without_raw_output(self):
+        for code, output, expected in ((255, b"secret stderr", "pairing_command_failed_ssh"),
+                (0, b"not-json", "invalid_pairing_response"), (0, b"[]", "invalid_pairing_response"),
+                (0, b"x" * 1048577, "oversized_pairing_response")):
+            with self.subTest(expected=expected), self.assertRaisesRegex(s.op.Error, "^" + expected + "$"):
+                self.invoke(code, output)
+
+    def test_successful_peer_response_is_parsed(self):
+        self.assertEqual({"status": "source_prepared"}, self.invoke(0, b'{"status":"source_prepared"}'))
+
+
+class NewHistoryConfirmationTests(unittest.TestCase):
+    def test_confirmation_is_bound_to_both_repositories_and_machines_and_persisted(self):
+        context = MagicMock(op=s.op)
+        source = {"repository": "sftp:yeshua-backup@192.0.2.24:/repository", "machine_id": OLD}
+        target = "sftp:yeshua-bk-prod@192.0.2.25:/repository"
+        state = {"mode": "new"}
+        with patch.object(s.op, "machine_id", return_value=MACHINE):
+            self.assertTrue(enrollment.confirm_new_history(context, state, source, target, allowed=True))
+            self.assertTrue(enrollment.confirm_new_history(context, state, source, target, allowed=True))
+            context.confirm.assert_called_once()
+            self.assertEqual("NOVOHISTORICO", context.confirm.call_args.args[1])
+            context.save.assert_called_once_with(state)
+            self.assertTrue(enrollment.confirm_new_history(context, state, dict(source, machine_id="c" * 32), target, allowed=True))
+        self.assertEqual(2, context.confirm.call_count)
+
+    def test_restore_local_bootstrap_and_same_repository_never_authorize_new_history(self):
+        context = MagicMock(op=s.op)
+        target = "sftp:yeshua-bk-prod@192.0.2.25:/repository"
+        for previous, allowed in ((target, True), ("", True), ("sftp:old@192.0.2.24:/repository", False)):
+            self.assertFalse(enrollment.confirm_new_history(context, {}, {"repository": previous}, target, allowed=allowed))
+        context.confirm.assert_not_called()
+        context.save.assert_not_called()
+
+    def test_cancel_does_not_save_or_authorize_anything(self):
+        context = MagicMock(op=s.op)
+        context.confirm.side_effect = s.op.Error("setup_cancelled")
+        value = {"mode": "new"}
+        with patch.object(s.op, "machine_id", return_value=MACHINE), self.assertRaises(s.op.Error):
+            enrollment.confirm_new_history(context, value, {"machine_id": OLD, "repository": "sftp:old@192.0.2.24:/repository"},
+                "sftp:new@192.0.2.25:/repository", allowed=True)
+        self.assertNotIn("new_history_authorized", value)
+        context.save.assert_not_called()
+
+
+class SourcePairSafetyTests(unittest.TestCase):
+    def environment(self, folder):
+        base = Path(folder)
+        context = MagicMock(op=s.op)
+        context.PRIVATE = base / "credentials.json"
+        context.control.policy.return_value = {"staging": str(base)}
+        context.control.source.state.return_value = base / "control"
+        (base / "control").mkdir()
+        identity = base / "ssh/id_ed25519"
+        identity.parent.mkdir()
+        identity.write_text("synthetic-key")
+        known = identity.with_name("known_hosts")
+        known.write_text("192.0.2.24 " + PUBLIC + "\n")
+        old = "sftp:yeshua-backup@192.0.2.24:/repository"
+        document = {"Shared": {"Backup": {"Repository": old, "Password": "x" * 32,
+            "Sftp": {"IdentityFile": str(identity), "KnownHostsFile": str(known)}}}}
+        s.op.write(context.PRIVATE, document)
+        destination = MagicMock()
+        context.load.side_effect = lambda name: destination if name == "destination" else MagicMock()
+        payload = {"controller_machine": MACHINE, "repository": "sftp:yeshua-bk-prod@192.0.2.25:/repository",
+            "storage_address": "192.0.2.25", "storage_host_key": PUBLIC, "controller_public_key": PUBLIC,
+            "expected_repository": old, "initialize_target": False, "new_history": False}
+        def private_bytes(s, path, content):
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_bytes(content)
+        for item in (patch.object(s.op, "machine_id", return_value=OLD),
+                patch.object(s.op, "private_directory", side_effect=directory),
+                patch.object(s.op, "locked", side_effect=lambda *a: nullcontext()),
+                patch.object(s.op.sql, "load_credentials", side_effect=lambda *a, **k: (s.op.read(context.PRIVATE), "")),
+                patch.object(enrollment, "key", return_value=(identity, PUBLIC)),
+                patch.object(enrollment, "private_bytes", side_effect=private_bytes)):
+            item.start()
+            self.addCleanup(item.stop)
+        return context, document, payload, known, destination
+
+    def test_failed_candidate_preserves_original_credentials_and_live_ssh_trust(self):
+        with tempfile.TemporaryDirectory() as folder:
+            context, document, payload, known, _ = self.environment(folder)
+            previous = known.read_bytes()
+            with patch.object(s.op, "restic", side_effect=s.op.Error("synthetic_failure")), self.assertRaises(s.op.Error):
+                enrollment.source_pair(context, payload)
+            self.assertEqual(document, s.op.read(context.PRIVATE))
+            self.assertEqual(previous, known.read_bytes())
+            context.control.source.configure_access.assert_not_called()
+            candidates = list(known.parent.glob("targets/*/known_hosts"))
+            self.assertEqual(1, len(candidates))
+            self.assertEqual("192.0.2.25 " + PUBLIC + "\n", candidates[0].read_text())
+
+    def test_remote_empty_target_without_consent_never_switches_or_initializes(self):
+        for initialize in (False, True):
+            with self.subTest(initialize=initialize), tempfile.TemporaryDirectory() as folder:
+                context, document, payload, known, _ = self.environment(folder)
+                previous = known.read_bytes()
+                payload["initialize_target"] = initialize
+                with patch.object(s.op, "restic", return_value="[]") as restic, self.assertRaises(s.op.Error):
+                    enrollment.source_pair(context, payload)
+                self.assertEqual(document, s.op.read(context.PRIVATE))
+                self.assertEqual(previous, known.read_bytes())
+                self.assertFalse(any(c.args[1][0] == "init" for c in restic.call_args_list))
+
+    def test_confirmed_new_history_uses_shared_transition_then_loads_committed_settings(self):
+        with tempfile.TemporaryDirectory() as folder:
+            context, document, payload, known, destination = self.environment(folder)
+            previous = known.read_bytes()
+            payload.update(new_history=True, initialize_target=True)
+            def transition(op, private, policy, repository, identity, hosts, **kwargs):
+                changed = copy.deepcopy(document)
+                changed["Shared"]["Backup"].update(Repository=repository, Sftp={
+                    "IdentityFile": str(identity), "KnownHostsFile": str(hosts)})
+                op.write(private, changed)
+            destination.start_new_sftp_history.side_effect = transition
+            with patch.object(s.op, "restic", return_value=json.dumps({"id": "d" * 64})):
+                result = enrollment.source_pair(context, payload)
+            destination.start_new_sftp_history.assert_called_once()
+            self.assertEqual(document["Shared"]["Backup"]["Repository"],
+                destination.start_new_sftp_history.call_args.kwargs["previous_repository"])
+            self.assertTrue(destination.start_new_sftp_history.call_args.kwargs["initialize"])
+            self.assertEqual(previous, known.read_bytes())
+            self.assertEqual(payload["repository"], s.op.read(context.PRIVATE)["Shared"]["Backup"]["Repository"])
+            self.assertEqual("source_prepared", result["status"])
+            context.control.source.configure_access.assert_called_once()
+
+    def test_changed_source_repository_invalidates_previous_consent(self):
+        with tempfile.TemporaryDirectory() as folder:
+            context, document, payload, _, destination = self.environment(folder)
+            payload.update(new_history=True, expected_repository="sftp:other@192.0.2.23:/repository")
+            with self.assertRaisesRegex(s.op.Error, "source_repository_changed"):
+                enrollment.source_pair(context, payload)
+            destination.start_new_sftp_history.assert_not_called()
+            self.assertEqual(document, s.op.read(context.PRIVATE))
+
+    def test_string_boolean_is_not_consent(self):
+        with tempfile.TemporaryDirectory() as folder:
+            context, _, payload, _, destination = self.environment(folder)
+            payload["new_history"] = "false"
+            with self.assertRaisesRegex(s.op.Error, "invalid_pairing_flags"):
+                enrollment.source_pair(context, payload)
+            destination.start_new_sftp_history.assert_not_called()
 
 
 @unittest.skipUnless(os.name == "posix", "Bash/Linux bootstrap harness")

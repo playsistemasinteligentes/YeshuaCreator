@@ -50,6 +50,16 @@ TENTAR ou CANCELAR; somente a autenticacao e repetida, mediante escolha do
 operador. Nenhuma senha e guardada e a verificacao da identidade SSH continua
 obrigatoria. Falhas em etapas remotas posteriores nao sao repetidas por esse
 tratamento de login, para evitar duplicar operacoes.
+Se um storage NOVO e vazio substituir o destino ainda salvo na origem, o setup
+pede TRANSFERIR para mudar o controlador e NOVOHISTORICO para iniciar novas
+copias sem buscar o destino antigo. Isso nao recupera historico perdido nem apaga
+bancos, arquivos ou repositorios anteriores. A autorizacao fica vinculada as
+duas maquinas e aos dois enderecos; repetir o comando retoma a mesma escolha.
+Uma tentativa interrompida verifica o repositorio ja inicializado, sem reinicia-lo.
+O modo recuperar nunca usa essa autorizacao para inicializar historico ausente.
+As chaves SSH do destino candidato ficam isoladas; erro no pareamento preserva
+a configuracao e a confianca SSH que estavam em uso. Erros remotos apresentam
+somente codigos seguros, nunca senhas ou a saida bruta dos comandos.
 As fases, guardas e limitacoes estao em [RECOVERY.md](../backups/RECOVERY.md).
 
 ## Deploys Posteriores

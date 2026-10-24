@@ -1338,6 +1338,15 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   chaves publicas/IPs/layout; PendingOffers nao vira Sources ativa antes da prova.
   Acesso root de vinculacao e temporario pelo prompt SSH, sem senha em JSON/logs.
   Setup continua exigindo guarda independente das chaves e senhas de recuperacao.
+  Storage novo pode substituir uma origem ainda apontada para destino antigo
+  sem historico, mediante NOVOHISTORICO explicito, separado de TRANSFERIR o
+  controlador. O consentimento vincula maquina origem/controlador e ambos os
+  repositorios. Nao consultar/apagar destino anterior nem alterar bancos; manter
+  senha e recibo real de guarda da chave. Init so no destino novo autorizado;
+  recuperar nunca inicializa historico ausente. Pin SSH candidato e privado e
+  separado do ativo, que permanece intacto em falha. Erros remotos de pareamento
+  preservam codigo diagnostico seguro mesmo com SSH exit diferente de zero,
+  nunca stdout/stderr bruto ou segredos.
   Mudancas futuras de infraestrutura devem manter testes de instalacao limpa E
   recuperacao. Suites isoladas nao comprovam restore funcional completo: ensaio
   em VPS nova, reconciliacao externa e aceite humano continuam obrigatorios.

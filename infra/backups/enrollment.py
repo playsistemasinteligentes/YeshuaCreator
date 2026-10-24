@@ -16,6 +16,21 @@ import uuid
 
 SFTP = re.compile(r"sftp:([a-z][a-z0-9-]{0,31})@(\d+\.\d+\.\d+\.\d+):/repository")
 SOURCE_NAME_PROMPT = "Nome desta origem (exemplo production; ate 20 letras/numeros/hifen, comecando por letra):"
+PEER_ERRORS = frozenset({
+    "pairing_failed_details_omitted", "command_unavailable_or_timed_out", "another_backup_or_deploy_holds_lock",
+    "operator_directory_must_be_owned_and_0700", "private_pairing_file_permissions_require_review",
+    "pairing_private_key_requires_root_0600", "invalid_pairing_repository_identity",
+    "original_backup_key_custody_required_before_transition", "pending_repository_transition_requires_review",
+    "credentials_changed_during_repository_transition", "source_repository_changed_repeat_pairing",
+    "new_history_requires_empty_target_no_data_deleted", "invalid_new_history_transition",
+    "new_history_requires_explicit_confirmation", "initialize_only_allowed_for_confirmed_new_history",
+    "explicit_controller_transfer_required", "explicit_previous_controller_required_to_replace_control_key",
+    "existing_controller_account_requires_review", "effective_source_ssh_configuration_mismatch",
+    "wait_for_current_backup_before_handoff", "wait_for_current_backups_before_storage_transition",
+    "only_local_to_sftp_transition_supported", "stop_backup_timers_before_repository_transition",
+    "remote_history_verification_failed_original_configuration_unchanged",
+    "remote_history_missing_restore_or_confirm_new_history", "invalid_pairing_flags",
+})
 
 
 def source_name(value):
@@ -125,13 +140,43 @@ def send_toolkit(s, ssh):
 
 def peer(s, ssh, directory, action, payload):
     remote = "python3 -I " + shlex.quote(directory + "/infra/backups/enrollment.py") + " peer --action " + action
-    output = command(s, [*ssh, remote], input=json.dumps(payload).encode(), timeout=14400)
+    try:
+        process = subprocess.run([*ssh, remote], input=json.dumps(payload).encode(), capture_output=True,
+                                 timeout=14400, check=False)
+    except (OSError, subprocess.TimeoutExpired):
+        raise s.op.Error("pairing_peer_unavailable_or_timed_out") from None
+    output = process.stdout
     if len(output) > 1048576:
         raise s.op.Error("oversized_pairing_response")
-    result = json.loads(output)
+    try:
+        result = json.loads(output)
+    except (ValueError, UnicodeError):
+        raise s.op.Error("invalid_pairing_response" if not process.returncode else "pairing_command_failed_ssh") from None
+    if not isinstance(result, dict):
+        raise s.op.Error("invalid_pairing_response")
     if result.get("status") == "failed":
-        raise s.op.Error(result.get("error", "peer_setup_failed"))
+        code = result.get("error")
+        # Only known codes or the SQL runner's numeric diagnostic may cross this boundary, never raw output/secrets.
+        numeric = isinstance(code, str) and re.fullmatch(
+            r"command_failed_exit_-?[0-9]{1,3}_sql_codes_(?:[0-9]{3,6}(?:,[0-9]{3,6})*)?_categories_"
+            r"(?:(?:login_rejected|client_option_rejected|connection_unavailable)(?:,(?:login_rejected|client_option_rejected|connection_unavailable))*)?", code)
+        raise s.op.Error(code if isinstance(code, str) and (code in PEER_ERRORS or numeric) else "peer_setup_failed_details_omitted")
+    if process.returncode:
+        raise s.op.Error("pairing_command_failed_ssh")
     return result
+
+
+def confirm_new_history(s, value, source, repository, *, allowed):
+    previous = source.get("repository", "")
+    if not previous or previous == repository or not allowed:
+        return False
+    binding = {"source_machine": source["machine_id"], "previous_repository": previous,
+               "repository": repository, "controller_machine": s.op.machine_id()}
+    if value.get("new_history_authorized") != binding:
+        s.confirm("A origem ainda aponta para " + previous + ". Iniciar NOVO historico neste storage, sem copiar nem apagar o destino anterior?", "NOVOHISTORICO")
+        value["new_history_authorized"] = binding
+        s.save(value)
+    return True
 
 
 def key(s, directory, comment):
@@ -267,6 +312,9 @@ def _run_storage(s, value):
                        "initialize_target": not (root / "repository/config").is_file() and value["mode"] == "new"}
             if payload["previous_controller"] and payload["previous_controller"] != s.op.machine_id():
                 s.confirm("A origem esta vinculada a outro controlador. Revogar a chave tecnica anterior e transferir para este storage?", "TRANSFERIR")
+            payload["new_history"] = confirm_new_history(s, value, item, destination,
+                allowed=value["mode"] == "new" and previous is None)
+            payload["expected_repository"] = item.get("repository", "")
             result = peer(s, ssh, directory, "source-pair", payload)
             configured = {"Name": source_name, "Host": value["peer_host"], "Port": value["peer_port"],
                 "MachineId": item["machine_id"], "RepositoryId": result["repository_id"],
@@ -323,6 +371,7 @@ def source_info(s):
     ownership = s.control.source.owner(s.control)
     return {"machine_id": s.op.machine_id(), "scope": s.control.policy()["scope"], "public_key": public,
             "backup_password": document["Shared"]["Backup"]["Password"],
+            "repository": document["Shared"]["Backup"].get("Repository", ""),
             "controller_machine": ownership["controller_machine"] if ownership else None}
 
 
@@ -334,18 +383,30 @@ def source_pair(s, payload):
         raise s.op.Error("application_and_storage_roles_require_different_machines")
     if not SFTP.fullmatch(payload.get("repository", "")) or SFTP.fullmatch(payload["repository"])[2] != address:
         raise s.op.Error("pairing_repository_address_mismatch")
+    if any(type(payload.get(field, False)) is not bool for field in ("initialize_target", "new_history")):
+        raise s.op.Error("invalid_pairing_flags")
+    base = s.op.private_directory(s.control.policy()["staging"])
+    control = s.control.source.state(s.control)
+    # Exclude controller captures, SQL safety and newly queued requests while switching the connection.
+    with s.op.locked(control / "execution.lock"), s.op.locked(base / "execution.lock"), s.op.locked(control / "dispatch.lock"):
+        return _source_pair(s, payload, address, base)
+
+
+def _source_pair(s, payload, address, base):
     document, _ = s.op.sql.load_credentials(s.op.APP_ROOT, s.PRIVATE, require_sql=False)
+    before = s.op.digest(s.PRIVATE)
+    config = document["Shared"]["Backup"]
+    old = config.get("Repository", "")
+    if "expected_repository" in payload and old != payload["expected_repository"]:
+        raise s.op.Error("source_repository_changed_repeat_pairing")
     path, _ = key(s, s.PRIVATE.parent / "shared/Backup/ssh", "yeshua-source-backup")
-    known = path.with_name("known_hosts")
     host_key = payload["storage_host_key"].strip().split()
     s.load("storage").key_line(" ".join(host_key[:2]), address)
     content = address + " " + " ".join(host_key[:2]) + "\n"
-    if known.exists() and known.read_text() != content:
-        s.op.write(known.with_name("known_hosts.previous.json"), {"previous": known.read_text(), "changed_at": s.op.now()})
-    known.write_text(content)
-    known.chmod(0o600)
-    config = document["Shared"]["Backup"]
-    old = config.get("Repository", "")
+    target_id = hashlib.sha256((payload["repository"] + "\n" + content).encode()).hexdigest()
+    known = path.parent / "targets" / target_id / "known_hosts"
+    # Candidate trust is isolated: a failed enrollment must not break the active repository's SSH pin.
+    private_bytes(s, known, content.encode())
     settings = {"IdentityFile": str(path), "KnownHostsFile": str(known)}
     if not old:
         installer = s.load("install")
@@ -363,22 +424,37 @@ def source_pair(s, payload):
                     raise s.op.Error("wait_for_current_backups_before_storage_transition")
                 time.sleep(3)
             s.load("destination").move_to_sftp(s.op, s.routine, s.PRIVATE, s.control.policy(), payload["repository"],
-                path, known, apply=True, initialize=bool(payload.get("initialize_target")), allow_empty_initial=True)
+                path, known, apply=True, initialize=payload.get("initialize_target", False), allow_empty_initial=True)
         except BaseException:
             if active_timers and not s.control.source.owner(s.control):
                 s.control.run(["systemctl", "enable", "--now", *active_timers])
             raise
         document, _ = s.op.sql.load_credentials(s.op.APP_ROOT, s.PRIVATE, require_sql=False)
     else:
-        if old != payload["repository"]:
-            # History must be restored/copied explicitly; never silently switch to an empty destination.
+        destination = s.load("destination")
+        if old != payload["repository"] and payload.get("new_history") is True:
+            if payload.get("expected_repository") != old:
+                raise s.op.Error("new_history_requires_explicit_confirmation")
+            destination.start_new_sftp_history(s.op, s.PRIVATE, s.control.policy(), payload["repository"], path, known,
+                previous_repository=old, initialize=payload.get("initialize_target", False))
+            document, _ = s.op.sql.load_credentials(s.op.APP_ROOT, s.PRIVATE, require_sql=False)
+        else:
+            if payload.get("initialize_target"):
+                raise s.op.Error("initialize_only_allowed_for_confirmed_new_history")
             candidate = json.loads(json.dumps(document))
             candidate["Shared"]["Backup"].update(Repository=payload["repository"], Sftp=settings)
-            s.op.restic(candidate, ["snapshots", "--json"])
-            s.op.write(Path(s.control.policy()["staging"]) / "previous-repository.json", {"repository": old, "changed_at": s.op.now()})
-        document["Shared"]["Backup"].update(Repository=payload["repository"], Sftp=settings)
-        s.op.restic(document, ["snapshots", "--json"])
-        s.op.write(s.PRIVATE, document)
+            with s.op.locked(base / "backup.lock"), s.op.locked(base / "files.lock"):
+                snapshots = json.loads(s.op.restic(candidate, ["snapshots", "--json"]))
+                if old != payload["repository"] and not snapshots:
+                    raise s.op.Error("remote_history_missing_restore_or_confirm_new_history")
+                s.op.restic(candidate, ["cat", "config"])
+                if s.op.digest(s.PRIVATE) != before:
+                    raise s.op.Error("credentials_changed_during_repository_transition")
+                if old != payload["repository"]:
+                    s.op.write(base / "previous-repository.json", {"repository": old, "changed_at": s.op.now()})
+                s.op.write(s.PRIVATE, candidate)
+                destination.resume_transition(s.op, base, candidate)
+                document = candidate
     installer = s.load("install")
     installer.install(prepare_only=True)
     s.control.source.configure_access(s.control, payload["controller_public_key"], address,
@@ -423,6 +499,9 @@ def pair_from_source(s, value):
         # The storage public identity is read over the authenticated administrative session.
         offer["storage_host_key"] = command(s, [*ssh, "cat /etc/ssh/ssh_host_ed25519_key.pub"]).decode().strip()
         offer["previous_controller"] = info.get("controller_machine")
+        offer["expected_repository"] = info.get("repository", "")
+        offer["new_history"] = confirm_new_history(s, value, info, offer["repository"],
+            allowed=value["mode"] == "new" and offer.get("new_source") is True)
         paired = source_pair(s, offer)
         s.control.source.activate(s.control, offer["controller_machine"], previous_controller=info.get("controller_machine"))
         peer(s, ssh, directory, "storage-confirm", {"name": name, "source_machine": info["machine_id"], **paired})
@@ -478,7 +557,8 @@ def storage_offer(s, payload):
     s.op.write(s.PRIVATE, document)
     return {"status": "storage_offered", "repository": "sftp:" + user + "@" + settings["Address"] + ":/repository",
             "storage_address": settings["Address"], "controller_machine": s.op.machine_id(),
-            "controller_public_key": public, "initialize_target": not initialized}
+            "controller_public_key": public, "initialize_target": not initialized,
+            "new_source": not old or bool(pending_offer)}
 
 
 def storage_confirm(s, payload):
