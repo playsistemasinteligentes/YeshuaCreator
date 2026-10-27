@@ -106,6 +106,7 @@ builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadReceiver>()
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKEspecialidadeIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKUsuarioAcessoIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IDisponibilidadeAgendaWriteRepository, Input.Repository.DisponibilidadeAgenda.DisponibilidadeAgendaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IDisponibilidadeAgendaReadRepository, Read.Repository.DisponibilidadeAgendaReadRepository>();
@@ -180,6 +181,7 @@ builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKMovimentacaoFin
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKProfissionalIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.SesoesReadFKRegistroFinalizadoPorUserIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IPlanoContaWriteRepository, Input.Repository.PlanoConta.PlanoContaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IPlanoContaReadRepository, Read.Repository.PlanoContaReadRepository>();
@@ -203,6 +205,19 @@ builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadRece
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKContaDebitoIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.MovimentoFinanceiroReadFKUserIdReceiver>();
+
+builder.Services.AddTransient<IRepository.Write.IRevisaoRegistroSessaoWriteRepository, Input.Repository.RevisaoRegistroSessao.RevisaoRegistroSessaoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IRevisaoRegistroSessaoReadRepository, Read.Repository.RevisaoRegistroSessaoReadRepository>();
+builder.Services.AddTransient<IQuery.Read.IRevisaoRegistroSessaoQueryRead, Query.Read.RevisaoRegistroSessaoQueryRead>();
+builder.Services.AddTransient<IQuery.Write.IRevisaoRegistroSessaoQueryWrite, Query.Write.RevisaoRegistroSessaoQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertRevisaoRegistroSessaoReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateRevisaoRegistroSessaoReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteRevisaoRegistroSessaoReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadFKSessaoIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadFKAutorUserIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadFKUserIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
@@ -446,6 +461,26 @@ builder.Services.AddTransient<Dominio.Saga.PsychologySessionInsightSaga>();
 builder.Services.AddTransient<Command.Receivers.PsychologySessionInsightSagaHandlerResolver>();
 builder.Services.AddTransient<AudioTranscriptRequestedHandler>();
 builder.Services.AddTransient<ReportEndProntuaryRequestedHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarAtendimentosHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AgendarAtendimentoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.IniciarAtendimentoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.EncerrarAtendimentoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CancelarAtendimentoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.RegistrarFaltaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.SalvarRegistroHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.FinalizarRegistroHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CorrigirRegistroHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.VincularProfissionalHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

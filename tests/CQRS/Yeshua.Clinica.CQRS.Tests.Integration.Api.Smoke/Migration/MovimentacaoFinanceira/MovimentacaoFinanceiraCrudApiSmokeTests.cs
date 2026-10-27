@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.MovimentacaoFinanceira;
 
-[SmokeTestOrder(8)]
+[SmokeTestOrder(6)]
 public partial class MovimentacaoFinanceiraCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/MovimentacaoFinanceira/PostMovimentacaoFinanceira";

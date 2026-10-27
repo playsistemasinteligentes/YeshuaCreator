@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.Sesoes;
 
-[SmokeTestOrder(9)]
+[SmokeTestOrder(28)]
 public partial class SesoesCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Sesoes/PostSesoes";
@@ -105,6 +105,11 @@ public partial class SesoesCrudApiSmokeTests : ApiIntegrationTestBase
             ["ServicoId"] = ApiSmokeTestContext.GetRequiredCreatedId("Servico", "ServicoId"),
             ["MovimentacaoFinanceiraId"] = ApiSmokeTestContext.GetRequiredCreatedId("MovimentacaoFinanceira", "MovimentacaoFinanceiraId"),
             ["ProfissionalId"] = ApiSmokeTestContext.GetRequiredCreatedId("Profissional", "ProfissionalId"),
+            ["AtendimentoIniciadoEm"] = DateTime.UtcNow,
+            ["AtendimentoEncerradoEm"] = DateTime.UtcNow,
+            ["RegistroFinalizadoEm"] = DateTime.UtcNow,
+            ["RegistroFinalizadoPorUserId"] = ApiSmokeTestContext.GetRequiredCreatedId("yUser", "RegistroFinalizadoPorUserId"),
+            ["SugestoesIncorporadas"] = ApiTestData.Text("Sesoes SugestoesIncorporadas", 80),
         };
     }
 
@@ -148,6 +153,11 @@ public partial class SesoesCrudApiSmokeTests : ApiIntegrationTestBase
         payload["ServicoId"] = ApiSmokeTestContext.GetRequiredCreatedId("Servico", "ServicoId");
         payload["MovimentacaoFinanceiraId"] = ApiSmokeTestContext.GetRequiredCreatedId("MovimentacaoFinanceira", "MovimentacaoFinanceiraId");
         payload["ProfissionalId"] = ApiSmokeTestContext.GetRequiredCreatedId("Profissional", "ProfissionalId");
+        payload["AtendimentoIniciadoEm"] = DateTime.UtcNow.AddMinutes(1);
+        payload["AtendimentoEncerradoEm"] = DateTime.UtcNow.AddMinutes(1);
+        payload["RegistroFinalizadoEm"] = DateTime.UtcNow.AddMinutes(1);
+        payload["RegistroFinalizadoPorUserId"] = ApiSmokeTestContext.GetRequiredCreatedId("yUser", "RegistroFinalizadoPorUserId");
+        payload["SugestoesIncorporadas"] = ApiTestData.Text("Sesoes SugestoesIncorporadas Update", 80);
         return payload;
     }
 

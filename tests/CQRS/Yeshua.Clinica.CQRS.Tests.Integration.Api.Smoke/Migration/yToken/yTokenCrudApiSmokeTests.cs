@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.yToken;
 
-[SmokeTestOrder(17)]
+[SmokeTestOrder(14)]
 public partial class yTokenCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yToken/PostyToken";

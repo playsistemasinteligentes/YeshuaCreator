@@ -68,10 +68,14 @@ public partial class PsychologySessionInsightSagaApiSmokeTests
             var data = ApiJson.GetRequiredProperty(state, "data");
             var items = (JsonArray)ApiJson.GetRequiredProperty(data, "items");
             var session = Assert.Single(items.OfType<JsonObject>());
-            Assert.Equal(3, ApiJson.GetRequiredProperty(session, "StatusProntuario").GetValue<int>());
-            Assert.False(string.IsNullOrWhiteSpace(ApiJson.GetRequiredProperty(session, "Prontuario").GetValue<string>()));
-            Assert.False(string.IsNullOrWhiteSpace(ApiJson.GetRequiredProperty(session, "RegistroDocumental").GetValue<string>()));
-            Assert.NotNull(ApiJson.GetRequiredProperty(session, "QueixaPrincipal").GetValue<string>());
+            Assert.Equal(2, ApiJson.GetRequiredProperty(session, "StatusProntuario").GetValue<int>());
+            // A completed technical saga only makes a suggestion available.
+            using var panel = await client.PostAsJsonAsync("yapi/Clinica/AtendimentosConsultarAtendimentosUseCase",
+                new { Data = DateTime.UtcNow.ToString("yyyy-MM-dd"), SessaoId = id }, JsonOptions, token);
+            panel.EnsureSuccessStatusCode();
+            var view = await panel.Content.ReadFromJsonAsync<JsonObject>(JsonOptions, token);
+            var audios = (JsonArray)ApiJson.GetRequiredProperty(view!, "Audios");
+            Assert.Contains(audios.OfType<JsonObject>(), a => !string.IsNullOrWhiteSpace(ApiJson.GetRequiredProperty(a, "Prontuario").GetValue<string>()));
         };
     }
 }

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.yPerfilGrant;
 
-[SmokeTestOrder(27)]
+[SmokeTestOrder(24)]
 public partial class yPerfilGrantCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yPerfilGrant/PostyPerfilGrant";

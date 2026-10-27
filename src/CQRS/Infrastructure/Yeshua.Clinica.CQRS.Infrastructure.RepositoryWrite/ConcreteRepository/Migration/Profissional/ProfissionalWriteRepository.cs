@@ -91,6 +91,11 @@ namespace Input.Repository.Profissional
             var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateUsuarioAcessoId(int id, int value)
+        {
+            var query = _query.UpdateUsuarioAcessoId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

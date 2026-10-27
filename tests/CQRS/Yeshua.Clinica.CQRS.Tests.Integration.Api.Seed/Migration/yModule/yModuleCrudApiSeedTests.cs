@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.yModule;
 
-[SeedTestOrder(23)]
+[SeedTestOrder(20)]
 public partial class yModuleCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yModule/PostyModule";

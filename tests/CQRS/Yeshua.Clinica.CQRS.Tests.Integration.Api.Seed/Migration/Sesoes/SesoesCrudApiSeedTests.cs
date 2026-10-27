@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.Sesoes;
 
-[SeedTestOrder(9)]
+[SeedTestOrder(28)]
 public partial class SesoesCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Sesoes/PostSesoes";
@@ -83,6 +83,11 @@ public partial class SesoesCrudApiSeedTests : ApiIntegrationTestBase
             ["ServicoId"] = ApiSeedTestContext.GetRequiredCreatedId("Servico", "ServicoId"),
             ["MovimentacaoFinanceiraId"] = ApiSeedTestContext.GetRequiredCreatedId("MovimentacaoFinanceira", "MovimentacaoFinanceiraId"),
             ["ProfissionalId"] = ApiSeedTestContext.GetRequiredCreatedId("Profissional", "ProfissionalId"),
+            ["AtendimentoIniciadoEm"] = DateTime.UtcNow,
+            ["AtendimentoEncerradoEm"] = DateTime.UtcNow,
+            ["RegistroFinalizadoEm"] = DateTime.UtcNow,
+            ["RegistroFinalizadoPorUserId"] = ApiSeedTestContext.GetRequiredCreatedId("yUser", "RegistroFinalizadoPorUserId"),
+            ["SugestoesIncorporadas"] = ApiTestData.Text("Sesoes SugestoesIncorporadas", 80),
         };
     }
 
@@ -126,6 +131,11 @@ public partial class SesoesCrudApiSeedTests : ApiIntegrationTestBase
         payload["ServicoId"] = ApiSeedTestContext.GetRequiredCreatedId("Servico", "ServicoId");
         payload["MovimentacaoFinanceiraId"] = ApiSeedTestContext.GetRequiredCreatedId("MovimentacaoFinanceira", "MovimentacaoFinanceiraId");
         payload["ProfissionalId"] = ApiSeedTestContext.GetRequiredCreatedId("Profissional", "ProfissionalId");
+        payload["AtendimentoIniciadoEm"] = DateTime.UtcNow.AddMinutes(1);
+        payload["AtendimentoEncerradoEm"] = DateTime.UtcNow.AddMinutes(1);
+        payload["RegistroFinalizadoEm"] = DateTime.UtcNow.AddMinutes(1);
+        payload["RegistroFinalizadoPorUserId"] = ApiSeedTestContext.GetRequiredCreatedId("yUser", "RegistroFinalizadoPorUserId");
+        payload["SugestoesIncorporadas"] = ApiTestData.Text("Sesoes SugestoesIncorporadas Update", 80);
         return payload;
     }
 

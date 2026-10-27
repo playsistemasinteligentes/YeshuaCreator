@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.Saga.PsychologySessionInsight;
 
-[SmokeTestOrder(29)]
+[SmokeTestOrder(30)]
 [Trait("TestPurpose", "SagaE2ESmoke")]
 [Trait("SpecificationGate", "G7")]
 [Trait("DiagnosticDepth", "D1")]

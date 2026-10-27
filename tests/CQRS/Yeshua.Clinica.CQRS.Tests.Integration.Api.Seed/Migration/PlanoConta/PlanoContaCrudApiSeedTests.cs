@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.PlanoConta;
 
-[SeedTestOrder(10)]
+[SeedTestOrder(7)]
 public partial class PlanoContaCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/PlanoConta/PostPlanoConta";

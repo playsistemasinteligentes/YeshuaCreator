@@ -53,6 +53,12 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    DateTime? AtendimentoIniciadoEm { get; set; }
+    DateTime? AtendimentoEncerradoEm { get; set; }
+    int VersaoAtendimento { get; set; }
+    DateTime? RegistroFinalizadoEm { get; set; }
+    int? RegistroFinalizadoPorUserId { get; set; }
+    string? SugestoesIncorporadas { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

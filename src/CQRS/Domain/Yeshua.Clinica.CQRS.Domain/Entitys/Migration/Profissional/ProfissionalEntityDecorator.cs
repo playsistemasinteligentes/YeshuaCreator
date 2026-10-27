@@ -29,6 +29,7 @@
             public const ulong Changed = 1UL << 6;
             public const ulong UserId = 1UL << 7;
             public const ulong OperationalEntityId = 1UL << 8;
+            public const ulong UsuarioAcessoId = 1UL << 9;
         }
 
         public static class ProfissionalOperationalFields
@@ -42,6 +43,7 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification UsuarioAcessoId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ProfissionalDecorator : IProfissionalEntity
@@ -191,6 +193,7 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+    public int? UsuarioAcessoId => _inner.UsuarioAcessoId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

@@ -1,9 +1,17 @@
+> Atualização 27/10/2026: a conclusão técnica de `PsychologySessionInsight` apenas
+> disponibiliza transcrição e resumo validados nos payloads dos steps. Não altera
+> campos nem StatusProntuario. O painel incorpora sugestões explicitamente e a
+> finalização humana usa Commands com versão, autor e histórico de revisão.
+
 # Ficha Operacional - Prontuario A Partir Do Audio Da Sessao
 
-> Atualizacao de fonte em 2026-10-27: a adequacao da saga e o executor Codex
-> estao descritos em [CODEX_EXECUTOR.md](CODEX_EXECUTOR.md). Os bloqueios abaixo
-> registram o levantamento original; o novo fonte ainda requer homologacao
-> real antes de mudar a elegibilidade operacional desta ficha.
+> Ficha historica do levantamento inicial: os bloqueios e gates abaixo retratam
+> aquela rodada, nao o estado atual do codigo. A publicacao e a homologacao real
+> da transcricao OpenAI e do resumo Codex em 2026-10-27 estao registradas em
+> [OPENAI_TRANSCRIPTION.md](OPENAI_TRANSCRIPTION.md) e
+> [CODEX_EXECUTOR.md](CODEX_EXECUTOR.md). A evolucao proposta para agendamento,
+> atendimento e fechamento humano esta em
+> [PLANO_PAINEL_ATENDIMENTOS.md](PLANO_PAINEL_ATENDIMENTOS.md), ainda sem implementacao.
 
 ## 1. Identificacao
 

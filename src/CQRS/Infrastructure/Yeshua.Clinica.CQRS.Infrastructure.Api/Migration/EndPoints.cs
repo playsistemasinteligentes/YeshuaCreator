@@ -218,6 +218,27 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "UsuarioAcessoId", title = "Usuário de acesso", classification = "Internal" },
+                }
+            },
+            new
+            {
+                name = "RevisaoRegistroSessao",
+                title = "RevisaoRegistroSessao",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID", classification = "Internal" },
+                    new { name = "SessaoId", title = "Sessão", classification = "Internal" },
+                    new { name = "Versao", title = "Versão", classification = "Internal" },
+                    new { name = "AutorUserId", title = "Autor", classification = "Internal" },
+                    new { name = "RevisadoEm", title = "Revisado em", classification = "Internal" },
+                    new { name = "Motivo", title = "Motivo da correção", classification = "Internal" },
+                    new { name = "Registro", title = "Registro revisado", classification = "Internal" },
+                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
+                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
+                    new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                 }
             },
             new
@@ -276,6 +297,12 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "AtendimentoIniciadoEm", title = "Início real", classification = "Internal" },
+                    new { name = "AtendimentoEncerradoEm", title = "Fim real", classification = "Internal" },
+                    new { name = "VersaoAtendimento", title = "Versão", classification = "Internal" },
+                    new { name = "RegistroFinalizadoEm", title = "Registro finalizado em", classification = "Internal" },
+                    new { name = "RegistroFinalizadoPorUserId", title = "Revisado por", classification = "Internal" },
+                    new { name = "SugestoesIncorporadas", title = "Origem das sugestões", classification = "Internal" },
                 }
             },
             new
@@ -778,6 +805,15 @@ app.MapPost("/yapi/MovimentoFinanceiro/PostMovimentoFinanceiro", async ([FromSer
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/RevisaoRegistroSessao/PostRevisaoRegistroSessao", async ([FromServices] Command.Receivers.Write.InsertRevisaoRegistroSessaoReceiver receiver, [FromBody] Command.Write.RevisaoRegistroSessaoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yFileUpload/PostyFileUpload", async ([FromServices] Command.Receivers.Write.InsertyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1039,6 +1075,15 @@ app.MapPut("/yapi/MovimentoFinanceiro/PutMovimentoFinanceiro", async ([FromServi
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/RevisaoRegistroSessao/PutRevisaoRegistroSessao", async ([FromServices] Command.Receivers.Write.UpdateRevisaoRegistroSessaoReceiver receiver, [FromBody] Command.Write.RevisaoRegistroSessaoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/yFileUpload/PutyFileUpload", async ([FromServices] Command.Receivers.Write.UpdateyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1296,6 +1341,15 @@ app.MapDelete("/yapi/MovimentoFinanceiro/DeleteMovimentoFinanceiro", async ([Fro
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/RevisaoRegistroSessao/DeleteRevisaoRegistroSessao", async ([FromServices] Command.Receivers.Write.DeleteRevisaoRegistroSessaoReceiver receiver, [FromBody] Command.Write.RevisaoRegistroSessaoCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -1693,6 +1747,15 @@ app.MapPost("/yapi/MovimentoFinanceiro/ReadMovimentoFinanceiro", async ([FromSer
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/RevisaoRegistroSessao/ReadRevisaoRegistroSessao", async ([FromServices] Command.Receivers.Read.RevisaoRegistroSessaoReadReceiver receiver, [FromBody] Command.Read.RevisaoRegistroSessaoReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yFileUpload/ReadyFileUpload", async ([FromServices] Command.Receivers.Read.yFileUploadReadReceiver receiver, [FromBody] Command.Read.yFileUploadReadCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1873,6 +1936,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -1892,6 +1957,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -1911,6 +1978,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -1930,6 +1999,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -1949,6 +2020,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -1968,6 +2041,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -1987,6 +2062,29 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Profissional/ProfissionalReadFKUsuarioAcessoId", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKUsuarioAcessoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2006,6 +2104,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2025,6 +2125,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2044,6 +2146,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2063,6 +2167,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2082,6 +2188,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2101,6 +2209,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2120,6 +2230,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2139,6 +2251,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2158,6 +2272,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2177,6 +2293,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2196,6 +2314,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2215,6 +2335,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2234,6 +2356,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2253,6 +2377,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2272,6 +2398,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2291,6 +2419,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2310,6 +2440,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2329,6 +2461,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2348,6 +2482,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2367,6 +2503,29 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/SesoesReadFKRegistroFinalizadoPorUserId", async ([FromServices] Command.Receivers.Read.SesoesReadFKRegistroFinalizadoPorUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2386,6 +2545,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2405,6 +2566,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2424,6 +2587,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2443,6 +2608,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2462,6 +2629,92 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKSessaoId", async ([FromServices] Command.Receivers.Read.RevisaoRegistroSessaoReadFKSessaoIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKAutorUserId", async ([FromServices] Command.Receivers.Read.RevisaoRegistroSessaoReadFKAutorUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKTenantID", async ([FromServices] Command.Receivers.Read.RevisaoRegistroSessaoReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKUserId", async ([FromServices] Command.Receivers.Read.RevisaoRegistroSessaoReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2481,6 +2734,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2500,6 +2755,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2519,6 +2776,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2538,6 +2797,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2557,6 +2818,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2576,6 +2839,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2595,6 +2860,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2614,6 +2881,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2633,6 +2902,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2652,6 +2923,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2671,6 +2944,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2690,6 +2965,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2709,6 +2986,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2728,6 +3007,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2747,6 +3028,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2766,6 +3049,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2785,6 +3070,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2804,6 +3091,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2823,6 +3112,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2842,6 +3133,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2861,6 +3154,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2880,6 +3175,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2899,6 +3196,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2918,6 +3217,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2937,6 +3238,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2956,6 +3259,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2975,6 +3280,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2994,6 +3301,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3013,6 +3322,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3032,6 +3343,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3051,6 +3364,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3070,6 +3385,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3089,6 +3406,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3108,6 +3427,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3127,6 +3448,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3146,6 +3469,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3165,6 +3490,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3184,6 +3511,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3203,6 +3532,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3222,6 +3553,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3241,6 +3574,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3260,6 +3595,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3845,7 +4182,7 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                 new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" },}, },
+                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
                 new { id = "statusprontuario", label = "Status Prontuario", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
                 new { id = "prontuario", label = "Prontuario", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3870,13 +4207,19 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                 new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versaoatendimento", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
                 new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" },}, },
+                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
                 new { id = "statusprontuario", label = "Status Prontuario", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
                 new { id = "prontuario", label = "Prontuario", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3901,6 +4244,12 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                 new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versaoatendimento", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -3909,6 +4258,7 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                 servicoid = "/Sesoes/SesoesReadFKServicoId",
                 movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
                 profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+                registrofinalizadoporuserid = "/Sesoes/SesoesReadFKRegistroFinalizadoPorUserId",
             }
             },
         },
@@ -3917,7 +4267,7 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
             new { id = "pacienteid", label = "Paciente", type = "int", required = false, displaygroup = "Agenda", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "datainicio", label = "Data Inicio", type = "DateTime", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "datafim", label = "Data Fim", type = "DateTime", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" },}, },
+            new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
             new { id = "statusprontuario", label = "Status Prontuario", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
             new { id = "prontuario", label = "Prontuario", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3942,6 +4292,12 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
             new { id = "servicoid", label = "Serviço", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "profissionalid", label = "Profissional", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versaoatendimento", label = "Versão", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3952,6 +4308,7 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                  servicoid = "/Sesoes/SesoesReadFKServicoId",
                  movimentacaofinanceiraid = "/Sesoes/SesoesReadFKMovimentacaoFinanceiraId",
                  profissionalid = "/Sesoes/SesoesReadFKProfissionalId",
+                 registrofinalizadoporuserid = "/Sesoes/SesoesReadFKRegistroFinalizadoPorUserId",
             create = "/Sesoes/PostSesoes",
             read = "/Sesoes/ReadSesoes",
             update = "/Sesoes/PutSesoes",
@@ -4097,6 +4454,84 @@ app.MapGet("/yapi/getMetaDataMovimentoFinanceiro", (HttpContext context) =>
             read = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
             update = "/MovimentoFinanceiro/PutMovimentoFinanceiro",
             delete = "/MovimentoFinanceiro/DeleteMovimentoFinanceiro"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataRevisaoRegistroSessao", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "RevisaoRegistroSessao",
+        entityDescription = "RevisaoRegistroSessao",
+        source = new
+        {
+            kind = "table",
+            name = "RevisaoRegistroSessao"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/RevisaoRegistroSessao/ReadRevisaoRegistroSessao",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sessaoid", label = "Sessão", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versao", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "autoruserid", label = "Autor", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "revisadoem", label = "Revisado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "motivo", label = "Motivo da correção", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "registro", label = "Registro revisado", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "sessaoid", label = "Sessão", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versao", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "autoruserid", label = "Autor", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "revisadoem", label = "Revisado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "motivo", label = "Motivo da correção", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "registro", label = "Registro revisado", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new 
+            {
+                sessaoid = "/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKSessaoId",
+                autoruserid = "/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKAutorUserId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sessaoid", label = "Sessão", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versao", label = "Versão", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "autoruserid", label = "Autor", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "revisadoem", label = "Revisado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "motivo", label = "Motivo da correção", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registro", label = "Registro revisado", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+                 sessaoid = "/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKSessaoId",
+                 autoruserid = "/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKAutorUserId",
+            create = "/RevisaoRegistroSessao/PostRevisaoRegistroSessao",
+            read = "/RevisaoRegistroSessao/ReadRevisaoRegistroSessao",
+            update = "/RevisaoRegistroSessao/PutRevisaoRegistroSessao",
+            delete = "/RevisaoRegistroSessao/DeleteRevisaoRegistroSessao"
         }
     };
     return Results.Ok(metadatacrud);
@@ -5429,6 +5864,216 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
     return Results.Ok(metadatacrud);
 }).RequireAuthorization();
 #region ServicesMethod
+app.MapPost("/yapi/Clinica/AtendimentosConsultarAtendimentosUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarAtendimentosHandler receiver, [FromBody] Command.UseCase.ConsultarAtendimentosInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosAgendarAtendimentoUseCase", async ([FromServices] Command.Receivers.UseCase.AgendarAtendimentoHandler receiver, [FromBody] Command.UseCase.AgendarAtendimentoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosIniciarAtendimentoUseCase", async ([FromServices] Command.Receivers.UseCase.IniciarAtendimentoHandler receiver, [FromBody] Command.UseCase.IniciarAtendimentoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosEncerrarAtendimentoUseCase", async ([FromServices] Command.Receivers.UseCase.EncerrarAtendimentoHandler receiver, [FromBody] Command.UseCase.EncerrarAtendimentoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosCancelarAtendimentoUseCase", async ([FromServices] Command.Receivers.UseCase.CancelarAtendimentoHandler receiver, [FromBody] Command.UseCase.CancelarAtendimentoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosRegistrarFaltaUseCase", async ([FromServices] Command.Receivers.UseCase.RegistrarFaltaHandler receiver, [FromBody] Command.UseCase.RegistrarFaltaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosSalvarRegistroUseCase", async ([FromServices] Command.Receivers.UseCase.SalvarRegistroHandler receiver, [FromBody] Command.UseCase.SalvarRegistroInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosFinalizarRegistroUseCase", async ([FromServices] Command.Receivers.UseCase.FinalizarRegistroHandler receiver, [FromBody] Command.UseCase.FinalizarRegistroInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosCorrigirRegistroUseCase", async ([FromServices] Command.Receivers.UseCase.CorrigirRegistroHandler receiver, [FromBody] Command.UseCase.CorrigirRegistroInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosVincularProfissionalUseCase", async ([FromServices] Command.Receivers.UseCase.VincularProfissionalHandler receiver, [FromBody] Command.UseCase.VincularProfissionalInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.StarSessionUploadHandler receiver, [FromBody] Command.UseCase.StarSessionUploadInputCommand command) =>
 {
 try
@@ -5438,6 +6083,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -5457,6 +6104,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -5478,6 +6127,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -5497,6 +6148,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -5516,6 +6169,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -5535,6 +6190,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -5554,6 +6211,8 @@ if (result.StatusCode == 200)
     return Results.Ok(result.Data);
 else if (result.StatusCode == 403)
     return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }

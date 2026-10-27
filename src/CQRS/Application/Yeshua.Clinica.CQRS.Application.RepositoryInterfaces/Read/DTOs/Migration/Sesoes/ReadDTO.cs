@@ -51,6 +51,12 @@ namespace Repositorio.Outputs
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
+    public DateTime atendimentoiniciadoem { get; set; }
+    public DateTime atendimentoencerradoem { get; set; }
+    public int versaoatendimento { get; set; }
+    public DateTime registrofinalizadoem { get; set; }
+    public int registrofinalizadoporuserid { get; set; }
+    public string sugestoesincorporadas { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

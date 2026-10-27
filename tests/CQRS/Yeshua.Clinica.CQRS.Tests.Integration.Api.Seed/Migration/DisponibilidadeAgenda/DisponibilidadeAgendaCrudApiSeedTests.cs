@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.DisponibilidadeAgenda;
 
-[SeedTestOrder(4)]
+[SeedTestOrder(27)]
 public partial class DisponibilidadeAgendaCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/DisponibilidadeAgenda/PostDisponibilidadeAgenda";

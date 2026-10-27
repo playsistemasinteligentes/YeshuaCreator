@@ -211,6 +211,36 @@ namespace Input.Repository.Sesoes
             var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateAtendimentoIniciadoEm(int id, DateTime value)
+        {
+            var query = _query.UpdateAtendimentoIniciadoEm(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateAtendimentoEncerradoEm(int id, DateTime value)
+        {
+            var query = _query.UpdateAtendimentoEncerradoEm(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateVersaoAtendimento(int id, int value)
+        {
+            var query = _query.UpdateVersaoAtendimento(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateRegistroFinalizadoEm(int id, DateTime value)
+        {
+            var query = _query.UpdateRegistroFinalizadoEm(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateRegistroFinalizadoPorUserId(int id, int value)
+        {
+            var query = _query.UpdateRegistroFinalizadoPorUserId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateSugestoesIncorporadas(int id, string value)
+        {
+            var query = _query.UpdateSugestoesIncorporadas(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

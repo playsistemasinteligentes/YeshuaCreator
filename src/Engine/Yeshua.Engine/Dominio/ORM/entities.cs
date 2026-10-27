@@ -58,6 +58,8 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? UsuarioAcessoId { get; set; }
+        public yUser yUser_UsuarioAcessoId { get; set; }
 
         public static MyApp.QueryBuilder.Query<Profissional> Query() => new MyApp.QueryBuilder.Query<Profissional>();
     }
@@ -199,6 +201,13 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public DateTime? AtendimentoIniciadoEm { get; set; }
+        public DateTime? AtendimentoEncerradoEm { get; set; }
+        public int VersaoAtendimento { get; set; }
+        public DateTime? RegistroFinalizadoEm { get; set; }
+        public int? RegistroFinalizadoPorUserId { get; set; }
+        public yUser yUser_RegistroFinalizadoPorUserId { get; set; }
+        public string? SugestoesIncorporadas { get; set; }
 
         public static MyApp.QueryBuilder.Query<Sesoes> Query() => new MyApp.QueryBuilder.Query<Sesoes>();
     }
@@ -239,6 +248,28 @@ namespace MyApp.Domain.Entities
         public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<MovimentoFinanceiro> Query() => new MyApp.QueryBuilder.Query<MovimentoFinanceiro>();
+    }
+
+    public class RevisaoRegistroSessao
+    {
+        public int? Id { get; set; }
+        public int SessaoId { get; set; }
+        public Sesoes Sesoes { get; set; }
+        public int Versao { get; set; }
+        public int AutorUserId { get; set; }
+        public yUser yUser { get; set; }
+        public DateTime RevisadoEm { get; set; }
+        public string? Motivo { get; set; }
+        public string Registro { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser_UserId { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<RevisaoRegistroSessao> Query() => new MyApp.QueryBuilder.Query<RevisaoRegistroSessao>();
     }
 
     public class yFileUpload

@@ -42,6 +42,7 @@ namespace Dominio.Schemas.CQRS
             {
                 sb.AppendLine($"    public class {entity.EntityName}");
                 sb.AppendLine("    {");
+                var propertyNames = entity.AddColumns.Select(c => c.Name).ToHashSet(StringComparer.Ordinal);
 
                 // Propriedades normais
                 foreach (var column in entity.AddColumns)
@@ -49,7 +50,17 @@ namespace Dominio.Schemas.CQRS
                     var type = column.getCsharpType(true);
                     sb.AppendLine($"        public {type} {column.Name} {{ get; set; }}");
                     if (column.IsFK)
-                        sb.AppendLine($"        public {column.EntityFK.EntityName} {column.EntityFK.EntityName} {{ get; set; }}");
+                    {
+                        var navigationName = column.EntityFK.EntityName;
+                        if (!propertyNames.Add(navigationName))
+                        {
+                            navigationName = $"{column.EntityFK.EntityName}_{column.Name}";
+                            var suffix = 2;
+                            while (!propertyNames.Add(navigationName))
+                                navigationName = $"{column.EntityFK.EntityName}_{column.Name}_{suffix++}";
+                        }
+                        sb.AppendLine($"        public {column.EntityFK.EntityName} {navigationName} {{ get; set; }}");
+                    }
 
                 }
 

@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.yToken;
 
-[SeedTestOrder(17)]
+[SeedTestOrder(14)]
 public partial class yTokenCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yToken/PostyToken";

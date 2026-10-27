@@ -49,7 +49,7 @@ public partial class SendFileHandler
                 throw new InvalidOperationException("Upload nao encontrado para o usuario atual.");
             var upload = _uploads.FirstById(token.uploadId);
             if (upload is null || upload.entitytype != "Sesoes" || !int.TryParse(upload.entityid, out var sessionId)
-                || _sessions.FirstById(sessionId) is null || !Guid.TryParse(upload.operationalentityid, out _))
+                || _sessions.ExigirAtendimento(sessionId) is null || !Guid.TryParse(upload.operationalentityid, out _))
                 throw new InvalidOperationException("Upload sem sessao clinica valida.");
             if (upload.status == 1)
             {
@@ -96,7 +96,6 @@ public partial class SendFileHandler
             _uploadsWrite.UpdateFilePath(upload.id, final.Value);
             _uploadsWrite.UpdateStatus(upload.id, 1);
             _uploadsWrite.UpdateCompletedAt(upload.id, DateTime.UtcNow);
-            _sessionsWrite.MarkInsightPending(sessionId);
             _sagasWrite.Save(saga);
             _work.Commit();
             return Success("Audio pronto para processamento.", new SendFileOutputCommand

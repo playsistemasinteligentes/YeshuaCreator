@@ -46,112 +46,116 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step2.DeleteAsync);
             await step2.ExecuteAsync();
 
-            var step3 = new Profissional.ProfissionalCrudApiSmokeTests();
+            var step3 = new GrupoServico.GrupoServicoCrudApiSmokeTests();
             deleteSteps.Push(step3.DeleteAsync);
             await step3.ExecuteAsync();
 
-            var step4 = new DisponibilidadeAgenda.DisponibilidadeAgendaCrudApiSmokeTests();
+            var step4 = new Servico.ServicoCrudApiSmokeTests();
             deleteSteps.Push(step4.DeleteAsync);
             await step4.ExecuteAsync();
 
-            var step5 = new GrupoServico.GrupoServicoCrudApiSmokeTests();
+            var step5 = new Paciente.PacienteCrudApiSmokeTests();
             deleteSteps.Push(step5.DeleteAsync);
             await step5.ExecuteAsync();
 
-            var step6 = new Servico.ServicoCrudApiSmokeTests();
+            var step6 = new MovimentacaoFinanceira.MovimentacaoFinanceiraCrudApiSmokeTests();
             deleteSteps.Push(step6.DeleteAsync);
             await step6.ExecuteAsync();
 
-            var step7 = new Paciente.PacienteCrudApiSmokeTests();
+            var step7 = new PlanoConta.PlanoContaCrudApiSmokeTests();
             deleteSteps.Push(step7.DeleteAsync);
             await step7.ExecuteAsync();
 
-            var step8 = new MovimentacaoFinanceira.MovimentacaoFinanceiraCrudApiSmokeTests();
+            var step8 = new MovimentoFinanceiro.MovimentoFinanceiroCrudApiSmokeTests();
             deleteSteps.Push(step8.DeleteAsync);
             await step8.ExecuteAsync();
 
-            var step9 = new Sesoes.SesoesCrudApiSmokeTests();
+            var step9 = new yFileUpload.yFileUploadCrudApiSmokeTests();
             deleteSteps.Push(step9.DeleteAsync);
             await step9.ExecuteAsync();
 
-            var step10 = new PlanoConta.PlanoContaCrudApiSmokeTests();
+            var step10 = new ySaga.ySagaCrudApiSmokeTests();
             deleteSteps.Push(step10.DeleteAsync);
             await step10.ExecuteAsync();
 
-            var step11 = new MovimentoFinanceiro.MovimentoFinanceiroCrudApiSmokeTests();
+            var step11 = new ySagaStep.ySagaStepCrudApiSmokeTests();
             deleteSteps.Push(step11.DeleteAsync);
             await step11.ExecuteAsync();
 
-            var step12 = new yFileUpload.yFileUploadCrudApiSmokeTests();
+            var step12 = new yOutbox.yOutboxCrudApiSmokeTests();
             deleteSteps.Push(step12.DeleteAsync);
             await step12.ExecuteAsync();
 
-            var step13 = new ySaga.ySagaCrudApiSmokeTests();
+            var step13 = new yInbox.yInboxCrudApiSmokeTests();
             deleteSteps.Push(step13.DeleteAsync);
             await step13.ExecuteAsync();
 
-            var step14 = new ySagaStep.ySagaStepCrudApiSmokeTests();
+            var step14 = new yToken.yTokenCrudApiSmokeTests();
             deleteSteps.Push(step14.DeleteAsync);
             await step14.ExecuteAsync();
 
-            var step15 = new yOutbox.yOutboxCrudApiSmokeTests();
+            var step15 = new yTenantApplication.yTenantApplicationCrudApiSmokeTests();
             deleteSteps.Push(step15.DeleteAsync);
             await step15.ExecuteAsync();
 
-            var step16 = new yInbox.yInboxCrudApiSmokeTests();
+            var step16 = new yUser.yUserCrudApiSmokeTests();
             deleteSteps.Push(step16.DeleteAsync);
             await step16.ExecuteAsync();
 
-            var step17 = new yToken.yTokenCrudApiSmokeTests();
+            var step17 = new yConfigArcteture.yConfigArctetureCrudApiSmokeTests();
             deleteSteps.Push(step17.DeleteAsync);
             await step17.ExecuteAsync();
 
-            var step18 = new yTenantApplication.yTenantApplicationCrudApiSmokeTests();
+            var step18 = new yConfigNotification.yConfigNotificationCrudApiSmokeTests();
             deleteSteps.Push(step18.DeleteAsync);
             await step18.ExecuteAsync();
 
-            var step19 = new yUser.yUserCrudApiSmokeTests();
+            var step19 = new yPerfil.yPerfilCrudApiSmokeTests();
             deleteSteps.Push(step19.DeleteAsync);
             await step19.ExecuteAsync();
 
-            var step20 = new yConfigArcteture.yConfigArctetureCrudApiSmokeTests();
+            var step20 = new yModule.yModuleCrudApiSmokeTests();
             deleteSteps.Push(step20.DeleteAsync);
             await step20.ExecuteAsync();
 
-            var step21 = new yConfigNotification.yConfigNotificationCrudApiSmokeTests();
+            var step21 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
             deleteSteps.Push(step21.DeleteAsync);
             await step21.ExecuteAsync();
 
-            var step22 = new yPerfil.yPerfilCrudApiSmokeTests();
+            var step22 = new yUserModule.yUserModuleCrudApiSmokeTests();
             deleteSteps.Push(step22.DeleteAsync);
             await step22.ExecuteAsync();
 
-            var step23 = new yModule.yModuleCrudApiSmokeTests();
+            var step23 = new yGrant.yGrantCrudApiSmokeTests();
             deleteSteps.Push(step23.DeleteAsync);
             await step23.ExecuteAsync();
 
-            var step24 = new yTenantModule.yTenantModuleCrudApiSmokeTests();
+            var step24 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
             deleteSteps.Push(step24.DeleteAsync);
             await step24.ExecuteAsync();
 
-            var step25 = new yUserModule.yUserModuleCrudApiSmokeTests();
+            var step25 = new yUserGrant.yUserGrantCrudApiSmokeTests();
             deleteSteps.Push(step25.DeleteAsync);
             await step25.ExecuteAsync();
 
-            var step26 = new yGrant.yGrantCrudApiSmokeTests();
+            var step26 = new Profissional.ProfissionalCrudApiSmokeTests();
             deleteSteps.Push(step26.DeleteAsync);
             await step26.ExecuteAsync();
 
-            var step27 = new yPerfilGrant.yPerfilGrantCrudApiSmokeTests();
+            var step27 = new DisponibilidadeAgenda.DisponibilidadeAgendaCrudApiSmokeTests();
             deleteSteps.Push(step27.DeleteAsync);
             await step27.ExecuteAsync();
 
-            var step28 = new yUserGrant.yUserGrantCrudApiSmokeTests();
+            var step28 = new Sesoes.SesoesCrudApiSmokeTests();
             deleteSteps.Push(step28.DeleteAsync);
             await step28.ExecuteAsync();
 
-            var step29 = new Saga.PsychologySessionInsight.PsychologySessionInsightSagaApiSmokeTests();
-            await step29.PsychologySessionInsight_saga_should_run_with_real_api_and_infrastructure();
+            var step29 = new RevisaoRegistroSessao.RevisaoRegistroSessaoCrudApiSmokeTests();
+            deleteSteps.Push(step29.DeleteAsync);
+            await step29.ExecuteAsync();
+
+            var step30 = new Saga.PsychologySessionInsight.PsychologySessionInsightSagaApiSmokeTests();
+            await step30.PsychologySessionInsight_saga_should_run_with_real_api_and_infrastructure();
 
         }
         catch (Exception ex)

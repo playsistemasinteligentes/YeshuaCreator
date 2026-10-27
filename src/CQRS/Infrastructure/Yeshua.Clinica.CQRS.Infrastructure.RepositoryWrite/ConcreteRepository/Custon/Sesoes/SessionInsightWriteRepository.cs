@@ -8,20 +8,6 @@ public partial class SesoesWriteRepository
     public SesoesWriteRepository(IUnitOfWork unitOfWork, ISesoesQueryWrite query, IExecutionContext context)
         : this(unitOfWork, query) => _insightContext = context;
     public void ApplyInsight(int sessionId, string prontuario, string queixaPrincipal, string registroDocumental)
-    {
-        var count = _UnitOfWork.Execute(@"UPDATE Sesoes
-            SET Prontuario = @Prontuario, QueixaPrincipal = @QueixaPrincipal,
-                RegistroDocumental = @RegistroDocumental, StatusProntuario = 3
-            WHERE Id = @Id AND TenantID = @TenantID AND Deleted = 0;",
-            new { Id = sessionId, TenantID = _insightContext.TenantID, Prontuario = prontuario,
-                QueixaPrincipal = queixaPrincipal, RegistroDocumental = registroDocumental });
-        if (count != 1) throw new InvalidOperationException("Sessao indisponivel no tenant atual.");
-    }
-    public void MarkInsightPending(int sessionId)
-    {
-        var count = _UnitOfWork.Execute(@"UPDATE Sesoes SET StatusProntuario = 2
-            WHERE Id = @Id AND TenantID = @TenantID AND Deleted = 0;",
-            new { Id = sessionId, TenantID = _insightContext.TenantID });
-        if (count != 1) throw new InvalidOperationException("Sessao indisponivel no tenant atual.");
-    }
+        => throw new InvalidOperationException("Resultados de IA são sugestões; utilize os Commands de revisão humana.");
+    public void MarkInsightPending(int sessionId) { /* Upload não modifica o registro clínico. */ }
 }

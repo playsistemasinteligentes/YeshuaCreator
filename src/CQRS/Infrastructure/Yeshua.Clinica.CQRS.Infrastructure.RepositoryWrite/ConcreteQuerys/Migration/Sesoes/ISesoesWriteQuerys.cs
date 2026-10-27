@@ -49,6 +49,12 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateAtendimentoIniciadoEm(int id, DateTime value);
+        QueryModel UpdateAtendimentoEncerradoEm(int id, DateTime value);
+        QueryModel UpdateVersaoAtendimento(int id, int value);
+        QueryModel UpdateRegistroFinalizadoEm(int id, DateTime value);
+        QueryModel UpdateRegistroFinalizadoPorUserId(int id, int value);
+        QueryModel UpdateSugestoesIncorporadas(int id, string value);
         public QueryModel DeleteSesoesQuery(ISesoesEntity Sesoes);
     }
 }

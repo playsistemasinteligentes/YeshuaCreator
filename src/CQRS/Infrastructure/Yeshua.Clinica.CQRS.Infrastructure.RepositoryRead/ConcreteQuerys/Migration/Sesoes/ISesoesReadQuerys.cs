@@ -20,6 +20,7 @@ namespace IQuery.Read
         public QueryModel SesoesProfissionalIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel SesoesTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel SesoesUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel SesoesRegistroFinalizadoPorUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByPacienteIdQuery(int value );
         public QueryModel ExistsByDataInicioQuery(DateTime value );
         public QueryModel ExistsByDataFimQuery(DateTime value );
@@ -53,6 +54,12 @@ namespace IQuery.Read
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel ExistsByOperationalEntityIdQuery(string value );
+        public QueryModel ExistsByAtendimentoIniciadoEmQuery(DateTime value );
+        public QueryModel ExistsByAtendimentoEncerradoEmQuery(DateTime value );
+        public QueryModel ExistsByVersaoAtendimentoQuery(int value );
+        public QueryModel ExistsByRegistroFinalizadoEmQuery(DateTime value );
+        public QueryModel ExistsByRegistroFinalizadoPorUserIdQuery(int value );
+        public QueryModel ExistsBySugestoesIncorporadasQuery(string value );
         public QueryModel FirstByPacienteIdQuery(int value );
         public QueryModel FirstByDataInicioQuery(DateTime value );
         public QueryModel FirstByDataFimQuery(DateTime value );
@@ -86,6 +93,12 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+        public QueryModel FirstByAtendimentoIniciadoEmQuery(DateTime value );
+        public QueryModel FirstByAtendimentoEncerradoEmQuery(DateTime value );
+        public QueryModel FirstByVersaoAtendimentoQuery(int value );
+        public QueryModel FirstByRegistroFinalizadoEmQuery(DateTime value );
+        public QueryModel FirstByRegistroFinalizadoPorUserIdQuery(int value );
+        public QueryModel FirstBySugestoesIncorporadasQuery(string value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

@@ -29,6 +29,7 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    int? UsuarioAcessoId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

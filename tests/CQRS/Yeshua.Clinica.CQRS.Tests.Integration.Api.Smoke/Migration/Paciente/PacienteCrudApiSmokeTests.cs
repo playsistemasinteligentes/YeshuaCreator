@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.Paciente;
 
-[SmokeTestOrder(7)]
+[SmokeTestOrder(5)]
 public partial class PacienteCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Paciente/PostPaciente";

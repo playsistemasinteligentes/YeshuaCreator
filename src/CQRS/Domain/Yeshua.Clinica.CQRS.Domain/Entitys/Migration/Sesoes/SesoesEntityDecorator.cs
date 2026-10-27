@@ -53,6 +53,12 @@
             public const ulong Changed = 1UL << 30;
             public const ulong UserId = 1UL << 31;
             public const ulong OperationalEntityId = 1UL << 32;
+            public const ulong AtendimentoIniciadoEm = 1UL << 33;
+            public const ulong AtendimentoEncerradoEm = 1UL << 34;
+            public const ulong VersaoAtendimento = 1UL << 35;
+            public const ulong RegistroFinalizadoEm = 1UL << 36;
+            public const ulong RegistroFinalizadoPorUserId = 1UL << 37;
+            public const ulong SugestoesIncorporadas = 1UL << 38;
         }
 
         public static class SesoesOperationalFields
@@ -90,6 +96,12 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AtendimentoIniciadoEm = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification AtendimentoEncerradoEm = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VersaoAtendimento = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RegistroFinalizadoEm = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RegistroFinalizadoPorUserId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification SugestoesIncorporadas = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class SesoesDecorator : ISesoesEntity
@@ -575,6 +587,90 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+
+                                    public DateTime? AtendimentoIniciadoEm
+                                    {
+                                        get => _inner.AtendimentoIniciadoEm;
+                                        set
+                                        {
+                                            if (_inner.AtendimentoIniciadoEm != value)
+                                            {
+                                                _inner.AtendimentoIniciadoEm = value;
+                                                if ((_trackingMask & SesoesTrackingFields.AtendimentoIniciadoEm) != 0UL)
+                                                    _logger.DomainValueChanged("Sesoes", "AtendimentoIniciadoEm", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.AtendimentoIniciadoEm, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? AtendimentoEncerradoEm
+                                    {
+                                        get => _inner.AtendimentoEncerradoEm;
+                                        set
+                                        {
+                                            if (_inner.AtendimentoEncerradoEm != value)
+                                            {
+                                                _inner.AtendimentoEncerradoEm = value;
+                                                if ((_trackingMask & SesoesTrackingFields.AtendimentoEncerradoEm) != 0UL)
+                                                    _logger.DomainValueChanged("Sesoes", "AtendimentoEncerradoEm", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.AtendimentoEncerradoEm, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int VersaoAtendimento
+                                    {
+                                        get => _inner.VersaoAtendimento;
+                                        set
+                                        {
+                                            if (_inner.VersaoAtendimento != value)
+                                            {
+                                                _inner.VersaoAtendimento = value;
+                                                if ((_trackingMask & SesoesTrackingFields.VersaoAtendimento) != 0UL)
+                                                    _logger.DomainValueChanged("Sesoes", "VersaoAtendimento", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.VersaoAtendimento, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public DateTime? RegistroFinalizadoEm
+                                    {
+                                        get => _inner.RegistroFinalizadoEm;
+                                        set
+                                        {
+                                            if (_inner.RegistroFinalizadoEm != value)
+                                            {
+                                                _inner.RegistroFinalizadoEm = value;
+                                                if ((_trackingMask & SesoesTrackingFields.RegistroFinalizadoEm) != 0UL)
+                                                    _logger.DomainValueChanged("Sesoes", "RegistroFinalizadoEm", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.RegistroFinalizadoEm, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? RegistroFinalizadoPorUserId
+                                    {
+                                        get => _inner.RegistroFinalizadoPorUserId;
+                                        set
+                                        {
+                                            if (_inner.RegistroFinalizadoPorUserId != value)
+                                            {
+                                                _inner.RegistroFinalizadoPorUserId = value;
+                                                if ((_trackingMask & SesoesTrackingFields.RegistroFinalizadoPorUserId) != 0UL)
+                                                    _logger.DomainValueChanged("Sesoes", "RegistroFinalizadoPorUserId", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.RegistroFinalizadoPorUserId, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? SugestoesIncorporadas
+                                    {
+                                        get => _inner.SugestoesIncorporadas;
+                                        set
+                                        {
+                                            if (_inner.SugestoesIncorporadas != value)
+                                            {
+                                                _inner.SugestoesIncorporadas = value;
+                                                if ((_trackingMask & SesoesTrackingFields.SugestoesIncorporadas) != 0UL)
+                                                    _logger.DomainValueChanged("Sesoes", "SugestoesIncorporadas", _trackingTraceId, _trackingOperation, _trackingRecordId, value, SesoesOperationalFields.SugestoesIncorporadas, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

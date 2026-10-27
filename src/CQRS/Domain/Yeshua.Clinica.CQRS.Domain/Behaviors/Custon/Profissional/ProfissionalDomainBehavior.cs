@@ -1,21 +1,8 @@
-﻿// <yeshua>
-// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
-// createdBy: DSL
-// ownership: IA_DEV
-// editable: true
-// regeneration: NEVER_OVERWRITE
-// sourceOfTruth: THIS_FILE
-// generator: Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration
-// </yeshua>
-
 using Dominio.Entitys;
 using Dominio.Patterns.Domain;
-using System.Collections.Generic;
-
-namespace Dominio.Behaviors
+namespace Dominio.Behaviors;
+public static partial class ProfissionalDomainBehavior
 {
-    public static partial class ProfissionalDomainBehavior
-    {
-    }
+    static partial void ValidateCustom(IProfissionalEntity entity,DomainOperationContext context,List<string> errors)
+    { if(context.EntryPoint==DomainEntryPoint.Crud && context.Operation==DomainOperation.Registro && entity.UsuarioAcessoId.HasValue)errors.Add("Configure o vínculo de acesso pela ação administrativa."); }
 }
-//Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

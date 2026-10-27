@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.yInbox;
 
-[SmokeTestOrder(16)]
+[SmokeTestOrder(13)]
 public partial class yInboxCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yInbox/PostyInbox";

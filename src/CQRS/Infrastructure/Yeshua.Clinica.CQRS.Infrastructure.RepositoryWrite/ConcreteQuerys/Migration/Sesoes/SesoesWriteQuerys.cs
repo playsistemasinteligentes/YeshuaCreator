@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSesoesQuery(ISesoesEntity Sesoes)
         {
-            this.Query = $@" INSERT INTO [Sesoes] ([PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @DataInicio, @DataFim, @StatusAgendamento, @StatusProntuario, @Prontuario, @QueixaPrincipal, @RegistroDocumental, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @UsoMedicacao, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico, @ServicoId, @MovimentacaoFinanceiraId, @ProfissionalId, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
+            this.Query = $@" INSERT INTO [Sesoes] ([PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @DataInicio, @DataFim, @StatusAgendamento, @StatusProntuario, @Prontuario, @QueixaPrincipal, @RegistroDocumental, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @UsoMedicacao, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico, @ServicoId, @MovimentacaoFinanceiraId, @ProfissionalId, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @AtendimentoIniciadoEm, @AtendimentoEncerradoEm, @VersaoAtendimento, @RegistroFinalizadoEm, @RegistroFinalizadoPorUserId, @SugestoesIncorporadas) ";
             this.Parameters = new
             {
                 PacienteId = Sesoes.PacienteId,
@@ -65,12 +65,18 @@ namespace Query.Write
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
                 OperationalEntityId = Sesoes.OperationalEntityId,
+                AtendimentoIniciadoEm = Sesoes.AtendimentoIniciadoEm,
+                AtendimentoEncerradoEm = Sesoes.AtendimentoEncerradoEm,
+                VersaoAtendimento = 0,
+                RegistroFinalizadoEm = Sesoes.RegistroFinalizadoEm,
+                RegistroFinalizadoPorUserId = Sesoes.RegistroFinalizadoPorUserId,
+                SugestoesIncorporadas = Sesoes.SugestoesIncorporadas,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateSesoesQuery(ISesoesEntity Sesoes)
         {
-            this.Query = $@" UPDATE [Sesoes] SET [PacienteId] = @PacienteId, [DataInicio] = @DataInicio, [DataFim] = @DataFim, [StatusAgendamento] = @StatusAgendamento, [StatusProntuario] = @StatusProntuario, [Prontuario] = @Prontuario, [QueixaPrincipal] = @QueixaPrincipal, [RegistroDocumental] = @RegistroDocumental, [SintomasRelatados] = @SintomasRelatados, [MudancasDesdeUltimaSessaao] = @MudancasDesdeUltimaSessaao, [ComportamentoObservado] = @ComportamentoObservado, [EstadoEmocionalGeral] = @EstadoEmocionalGeral, [DiscursoPensamentos] = @DiscursoPensamentos, [UsoMedicacao] = @UsoMedicacao, [TecnicasUtilizadas] = @TecnicasUtilizadas, [QuestionamentosReflexoesAbordadas] = @QuestionamentosReflexoesAbordadas, [ExerciciosTarefasSugeridas] = @ExerciciosTarefasSugeridas, [DiagnoosticoHipoteseDiagnoostica] = @DiagnoosticoHipoteseDiagnoostica, [ObjetivosCurtoPrazo] = @ObjetivosCurtoPrazo, [ObjetivosLongoPrazo] = @ObjetivosLongoPrazo, [FrequenciaSugeridaSessooes] = @FrequenciaSugeridaSessooes, [EncaminhamentoOutrosProfissionais] = @EncaminhamentoOutrosProfissionais, [InformacoesRelevantesFuturasConsultas] = @InformacoesRelevantesFuturasConsultas, [FeedbackPacienteSobreProcessoTerapeeutico] = @FeedbackPacienteSobreProcessoTerapeeutico, [ServicoId] = @ServicoId, [MovimentacaoFinanceiraId] = @MovimentacaoFinanceiraId, [ProfissionalId] = @ProfissionalId, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [Sesoes] SET [PacienteId] = @PacienteId, [DataInicio] = @DataInicio, [DataFim] = @DataFim, [StatusAgendamento] = @StatusAgendamento, [StatusProntuario] = @StatusProntuario, [Prontuario] = @Prontuario, [QueixaPrincipal] = @QueixaPrincipal, [RegistroDocumental] = @RegistroDocumental, [SintomasRelatados] = @SintomasRelatados, [MudancasDesdeUltimaSessaao] = @MudancasDesdeUltimaSessaao, [ComportamentoObservado] = @ComportamentoObservado, [EstadoEmocionalGeral] = @EstadoEmocionalGeral, [DiscursoPensamentos] = @DiscursoPensamentos, [UsoMedicacao] = @UsoMedicacao, [TecnicasUtilizadas] = @TecnicasUtilizadas, [QuestionamentosReflexoesAbordadas] = @QuestionamentosReflexoesAbordadas, [ExerciciosTarefasSugeridas] = @ExerciciosTarefasSugeridas, [DiagnoosticoHipoteseDiagnoostica] = @DiagnoosticoHipoteseDiagnoostica, [ObjetivosCurtoPrazo] = @ObjetivosCurtoPrazo, [ObjetivosLongoPrazo] = @ObjetivosLongoPrazo, [FrequenciaSugeridaSessooes] = @FrequenciaSugeridaSessooes, [EncaminhamentoOutrosProfissionais] = @EncaminhamentoOutrosProfissionais, [InformacoesRelevantesFuturasConsultas] = @InformacoesRelevantesFuturasConsultas, [FeedbackPacienteSobreProcessoTerapeeutico] = @FeedbackPacienteSobreProcessoTerapeeutico, [ServicoId] = @ServicoId, [MovimentacaoFinanceiraId] = @MovimentacaoFinanceiraId, [ProfissionalId] = @ProfissionalId, [Changed] = @Changed, [UserId] = @UserId, [AtendimentoIniciadoEm] = @AtendimentoIniciadoEm, [AtendimentoEncerradoEm] = @AtendimentoEncerradoEm, [VersaoAtendimento] = @VersaoAtendimento, [RegistroFinalizadoEm] = @RegistroFinalizadoEm, [RegistroFinalizadoPorUserId] = @RegistroFinalizadoPorUserId, [SugestoesIncorporadas] = @SugestoesIncorporadas WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 PacienteId = Sesoes.PacienteId,
@@ -102,6 +108,12 @@ namespace Query.Write
                 ProfissionalId = Sesoes.ProfissionalId,
                 Changed = Sesoes.Changed,
                 UserId = _executionContext.UserId,
+                AtendimentoIniciadoEm = Sesoes.AtendimentoIniciadoEm,
+                AtendimentoEncerradoEm = Sesoes.AtendimentoEncerradoEm,
+                VersaoAtendimento = Sesoes.VersaoAtendimento,
+                RegistroFinalizadoEm = Sesoes.RegistroFinalizadoEm,
+                RegistroFinalizadoPorUserId = Sesoes.RegistroFinalizadoPorUserId,
+                SugestoesIncorporadas = Sesoes.SugestoesIncorporadas,
                 Id = Sesoes.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -422,6 +434,66 @@ namespace Query.Write
             this.Parameters = new
             {
                 OperationalEntityId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateAtendimentoIniciadoEm(int id, DateTime value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [AtendimentoIniciadoEm] = @AtendimentoIniciadoEm WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                AtendimentoIniciadoEm = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateAtendimentoEncerradoEm(int id, DateTime value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [AtendimentoEncerradoEm] = @AtendimentoEncerradoEm WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                AtendimentoEncerradoEm = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateVersaoAtendimento(int id, int value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [VersaoAtendimento] = @VersaoAtendimento WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                VersaoAtendimento = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateRegistroFinalizadoEm(int id, DateTime value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [RegistroFinalizadoEm] = @RegistroFinalizadoEm WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                RegistroFinalizadoEm = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateRegistroFinalizadoPorUserId(int id, int value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [RegistroFinalizadoPorUserId] = @RegistroFinalizadoPorUserId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                RegistroFinalizadoPorUserId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateSugestoesIncorporadas(int id, string value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [SugestoesIncorporadas] = @SugestoesIncorporadas WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                SugestoesIncorporadas = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

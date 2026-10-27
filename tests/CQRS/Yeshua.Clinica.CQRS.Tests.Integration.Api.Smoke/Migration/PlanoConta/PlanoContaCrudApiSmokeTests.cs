@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.PlanoConta;
 
-[SmokeTestOrder(10)]
+[SmokeTestOrder(7)]
 public partial class PlanoContaCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/PlanoConta/PostPlanoConta";

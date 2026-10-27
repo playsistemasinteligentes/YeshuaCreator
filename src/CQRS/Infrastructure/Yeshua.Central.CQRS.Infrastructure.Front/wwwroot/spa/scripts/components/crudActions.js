@@ -1,4 +1,4 @@
-﻿import {
+import {
     initActionModal,
     showActionModal,
     loadActionContent
@@ -15,6 +15,7 @@ export async function setupCrudActions(metadata, getFormData) {
     if (!btnSave) return;
 
     const actionsContainer = btnSave.parentElement;
+    if (runCrudExtension("replaceActions", { metadata, getFormData, actionsContainer }) === true) return;
 
     // evita duplicação
     if (document.getElementById("btn-action-audio")) {

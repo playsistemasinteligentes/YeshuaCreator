@@ -38,83 +38,86 @@ public sealed class ApiSeedCrudSuiteTests
         var step2 = new Especialidade.EspecialidadeCrudApiSeedTests();
         await step2.ExecuteAsync();
 
-        var step3 = new Profissional.ProfissionalCrudApiSeedTests();
+        var step3 = new GrupoServico.GrupoServicoCrudApiSeedTests();
         await step3.ExecuteAsync();
 
-        var step4 = new DisponibilidadeAgenda.DisponibilidadeAgendaCrudApiSeedTests();
+        var step4 = new Servico.ServicoCrudApiSeedTests();
         await step4.ExecuteAsync();
 
-        var step5 = new GrupoServico.GrupoServicoCrudApiSeedTests();
+        var step5 = new Paciente.PacienteCrudApiSeedTests();
         await step5.ExecuteAsync();
 
-        var step6 = new Servico.ServicoCrudApiSeedTests();
+        var step6 = new MovimentacaoFinanceira.MovimentacaoFinanceiraCrudApiSeedTests();
         await step6.ExecuteAsync();
 
-        var step7 = new Paciente.PacienteCrudApiSeedTests();
+        var step7 = new PlanoConta.PlanoContaCrudApiSeedTests();
         await step7.ExecuteAsync();
 
-        var step8 = new MovimentacaoFinanceira.MovimentacaoFinanceiraCrudApiSeedTests();
+        var step8 = new MovimentoFinanceiro.MovimentoFinanceiroCrudApiSeedTests();
         await step8.ExecuteAsync();
 
-        var step9 = new Sesoes.SesoesCrudApiSeedTests();
+        var step9 = new yFileUpload.yFileUploadCrudApiSeedTests();
         await step9.ExecuteAsync();
 
-        var step10 = new PlanoConta.PlanoContaCrudApiSeedTests();
+        var step10 = new ySaga.ySagaCrudApiSeedTests();
         await step10.ExecuteAsync();
 
-        var step11 = new MovimentoFinanceiro.MovimentoFinanceiroCrudApiSeedTests();
+        var step11 = new ySagaStep.ySagaStepCrudApiSeedTests();
         await step11.ExecuteAsync();
 
-        var step12 = new yFileUpload.yFileUploadCrudApiSeedTests();
+        var step12 = new yOutbox.yOutboxCrudApiSeedTests();
         await step12.ExecuteAsync();
 
-        var step13 = new ySaga.ySagaCrudApiSeedTests();
+        var step13 = new yInbox.yInboxCrudApiSeedTests();
         await step13.ExecuteAsync();
 
-        var step14 = new ySagaStep.ySagaStepCrudApiSeedTests();
+        var step14 = new yToken.yTokenCrudApiSeedTests();
         await step14.ExecuteAsync();
 
-        var step15 = new yOutbox.yOutboxCrudApiSeedTests();
+        var step15 = new yTenantApplication.yTenantApplicationCrudApiSeedTests();
         await step15.ExecuteAsync();
 
-        var step16 = new yInbox.yInboxCrudApiSeedTests();
+        var step16 = new yUser.yUserCrudApiSeedTests();
         await step16.ExecuteAsync();
 
-        var step17 = new yToken.yTokenCrudApiSeedTests();
+        var step17 = new yConfigArcteture.yConfigArctetureCrudApiSeedTests();
         await step17.ExecuteAsync();
 
-        var step18 = new yTenantApplication.yTenantApplicationCrudApiSeedTests();
+        var step18 = new yConfigNotification.yConfigNotificationCrudApiSeedTests();
         await step18.ExecuteAsync();
 
-        var step19 = new yUser.yUserCrudApiSeedTests();
+        var step19 = new yPerfil.yPerfilCrudApiSeedTests();
         await step19.ExecuteAsync();
 
-        var step20 = new yConfigArcteture.yConfigArctetureCrudApiSeedTests();
+        var step20 = new yModule.yModuleCrudApiSeedTests();
         await step20.ExecuteAsync();
 
-        var step21 = new yConfigNotification.yConfigNotificationCrudApiSeedTests();
+        var step21 = new yTenantModule.yTenantModuleCrudApiSeedTests();
         await step21.ExecuteAsync();
 
-        var step22 = new yPerfil.yPerfilCrudApiSeedTests();
+        var step22 = new yUserModule.yUserModuleCrudApiSeedTests();
         await step22.ExecuteAsync();
 
-        var step23 = new yModule.yModuleCrudApiSeedTests();
+        var step23 = new yGrant.yGrantCrudApiSeedTests();
         await step23.ExecuteAsync();
 
-        var step24 = new yTenantModule.yTenantModuleCrudApiSeedTests();
+        var step24 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
         await step24.ExecuteAsync();
 
-        var step25 = new yUserModule.yUserModuleCrudApiSeedTests();
+        var step25 = new yUserGrant.yUserGrantCrudApiSeedTests();
         await step25.ExecuteAsync();
 
-        var step26 = new yGrant.yGrantCrudApiSeedTests();
+        var step26 = new Profissional.ProfissionalCrudApiSeedTests();
         await step26.ExecuteAsync();
 
-        var step27 = new yPerfilGrant.yPerfilGrantCrudApiSeedTests();
+        var step27 = new DisponibilidadeAgenda.DisponibilidadeAgendaCrudApiSeedTests();
         await step27.ExecuteAsync();
 
-        var step28 = new yUserGrant.yUserGrantCrudApiSeedTests();
+        var step28 = new Sesoes.SesoesCrudApiSeedTests();
         await step28.ExecuteAsync();
+
+        var step29 = new RevisaoRegistroSessao.RevisaoRegistroSessaoCrudApiSeedTests();
+        await step29.ExecuteAsync();
 
     }
 }

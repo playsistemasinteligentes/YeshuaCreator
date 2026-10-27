@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Migration.Profissional;
 
-[SmokeTestOrder(3)]
+[SmokeTestOrder(26)]
 public partial class ProfissionalCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/Profissional/PostProfissional";
@@ -81,6 +81,7 @@ public partial class ProfissionalCrudApiSmokeTests : ApiIntegrationTestBase
             ["Nome"] = ApiTestData.Text("Profissional Nome", 80),
             ["EspecialidadeId"] = ApiSmokeTestContext.GetRequiredCreatedId("Especialidade", "EspecialidadeId"),
             ["Telefone"] = ApiTestData.Text("Profissional Telefone", 20),
+            ["UsuarioAcessoId"] = ApiSmokeTestContext.GetRequiredCreatedId("yUser", "UsuarioAcessoId"),
         };
     }
 
@@ -100,6 +101,7 @@ public partial class ProfissionalCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Nome"] = ApiTestData.Text("Profissional Nome Update", 80);
         payload["EspecialidadeId"] = ApiSmokeTestContext.GetRequiredCreatedId("Especialidade", "EspecialidadeId");
         payload["Telefone"] = ApiTestData.Text("Profissional Telefone Update", 20);
+        payload["UsuarioAcessoId"] = ApiSmokeTestContext.GetRequiredCreatedId("yUser", "UsuarioAcessoId");
         return payload;
     }
 

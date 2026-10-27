@@ -34,7 +34,7 @@ namespace Query.Read
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $@" select [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] from [Sesoes] ";
+            this.Query = $@" select [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] from [Sesoes] ";
 if (Command.PacienteId.HasValue) dict["PacienteId"] = Command.PacienteId.Value;
 if (Command.PacienteId.HasValue) whereClauses.Add($"[PacienteId] = @PacienteId");
 if (Command.StatusAgendamento.HasValue)
@@ -104,6 +104,12 @@ if (Command.UserId.HasValue) dict["UserId"] = Command.UserId.Value;
 if (Command.UserId.HasValue) whereClauses.Add($"[UserId] = @UserId");
 if (!string.IsNullOrEmpty(Command.OperationalEntityId)) dict["OperationalEntityId"] = $"%{Command.OperationalEntityId}%";
 if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[OperationalEntityId] like @OperationalEntityId");
+if (Command.VersaoAtendimento.HasValue) dict["VersaoAtendimento"] = Command.VersaoAtendimento.Value;
+if (Command.VersaoAtendimento.HasValue) whereClauses.Add($"[VersaoAtendimento] = @VersaoAtendimento");
+if (Command.RegistroFinalizadoPorUserId.HasValue) dict["RegistroFinalizadoPorUserId"] = Command.RegistroFinalizadoPorUserId.Value;
+if (Command.RegistroFinalizadoPorUserId.HasValue) whereClauses.Add($"[RegistroFinalizadoPorUserId] = @RegistroFinalizadoPorUserId");
+if (!string.IsNullOrEmpty(Command.SugestoesIncorporadas)) dict["SugestoesIncorporadas"] = $"%{Command.SugestoesIncorporadas}%";
+if (!string.IsNullOrEmpty(Command.SugestoesIncorporadas)) whereClauses.Add($"[SugestoesIncorporadas] like @SugestoesIncorporadas");
             if (whereClauses.Any()) 
                  this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
@@ -264,6 +270,36 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             return new QueryModel(this.Query, this.Parameters); 
         }
         public QueryModel SesoesUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
+        {
+            this.Query = $@" select [Id], [Nome] from [yUser] ";
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            if (!string.IsNullOrEmpty(Command.searchFK)) 
+            {
+                 if (int.TryParse(Command.searchFK, out int numero)) 
+                 {
+                      dict["Id"] = numero; //01
+                      whereClauses.Add($" [Id] = @Id");//01 
+                 }
+                 else 
+                 {
+                      dict["Id"] = $"%{Command.searchFK}%";//02 
+                      whereClauses.Add($" [Id] like @Id ");//02
+                      dict["Nome"] = $"%{Command.searchFK}%";//02 
+                      whereClauses.Add($" [Nome] like @Nome ");//02
+                 }
+           }
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters); 
+        }
+        public QueryModel SesoesRegistroFinalizadoPorUserIdQuery(Command.Patterns.Command.SearchFKCommand Command )
         {
             this.Query = $@" select [Id], [Nome] from [yUser] ";
             var whereClauses = new List<string>();
@@ -854,12 +890,114 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel ExistsByAtendimentoIniciadoEmQuery(DateTime value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["AtendimentoIniciadoEm"] = value; //04
+                      whereClauses.Add($" [AtendimentoIniciadoEm] = @AtendimentoIniciadoEm ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByAtendimentoEncerradoEmQuery(DateTime value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["AtendimentoEncerradoEm"] = value; //04
+                      whereClauses.Add($" [AtendimentoEncerradoEm] = @AtendimentoEncerradoEm ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByVersaoAtendimentoQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["VersaoAtendimento"] = value; //04
+                      whereClauses.Add($" [VersaoAtendimento] = @VersaoAtendimento ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByRegistroFinalizadoEmQuery(DateTime value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["RegistroFinalizadoEm"] = value; //04
+                      whereClauses.Add($" [RegistroFinalizadoEm] = @RegistroFinalizadoEm ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsByRegistroFinalizadoPorUserIdQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["RegistroFinalizadoPorUserId"] = value; //04
+                      whereClauses.Add($" [RegistroFinalizadoPorUserId] = @RegistroFinalizadoPorUserId ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel ExistsBySugestoesIncorporadasQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT 1 FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["SugestoesIncorporadas"] = value; //04
+                      whereClauses.Add($" [SugestoesIncorporadas] = @SugestoesIncorporadas ");//04
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
         public QueryModel FirstByPacienteIdQuery(int value )
         {
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -876,7 +1014,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -893,7 +1031,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -910,7 +1048,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -927,7 +1065,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -944,7 +1082,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -961,7 +1099,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -978,7 +1116,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -995,7 +1133,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1012,7 +1150,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1029,7 +1167,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1046,7 +1184,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1063,7 +1201,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1080,7 +1218,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1097,7 +1235,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1114,7 +1252,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1131,7 +1269,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1148,7 +1286,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1165,7 +1303,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1182,7 +1320,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1199,7 +1337,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1216,7 +1354,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1233,7 +1371,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1250,7 +1388,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1267,7 +1405,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1284,7 +1422,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1301,7 +1439,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1318,7 +1456,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1335,7 +1473,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1352,7 +1490,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1369,7 +1507,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1386,7 +1524,7 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
@@ -1403,13 +1541,115 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             var whereClauses = new List<string>();
             dynamic parameters = new ExpandoObject();
             var dict = (IDictionary<string, object>)parameters;
-            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId] FROM [Sesoes] ";
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
  dict["TenantID"] = _executionContext.TenantID;
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationalEntityId"] = value; //06
                       whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByAtendimentoIniciadoEmQuery(DateTime value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["AtendimentoIniciadoEm"] = value; //06
+                      whereClauses.Add($" [AtendimentoIniciadoEm] = @AtendimentoIniciadoEm ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByAtendimentoEncerradoEmQuery(DateTime value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["AtendimentoEncerradoEm"] = value; //06
+                      whereClauses.Add($" [AtendimentoEncerradoEm] = @AtendimentoEncerradoEm ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByVersaoAtendimentoQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["VersaoAtendimento"] = value; //06
+                      whereClauses.Add($" [VersaoAtendimento] = @VersaoAtendimento ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByRegistroFinalizadoEmQuery(DateTime value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["RegistroFinalizadoEm"] = value; //06
+                      whereClauses.Add($" [RegistroFinalizadoEm] = @RegistroFinalizadoEm ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstByRegistroFinalizadoPorUserIdQuery(int value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["RegistroFinalizadoPorUserId"] = value; //06
+                      whereClauses.Add($" [RegistroFinalizadoPorUserId] = @RegistroFinalizadoPorUserId ");//06
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, parameters);
+        }
+        public QueryModel FirstBySugestoesIncorporadasQuery(string value )
+        {
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+            this.Query = $"SELECT [PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [Id], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas] FROM [Sesoes] ";
+ dict["TenantID"] = _executionContext.TenantID;
+ whereClauses.Add($"[TenantID] = @TenantID");
+ dict["Deleted"] = 0;
+ whereClauses.Add($"[Deleted] = @Deleted");
+                      dict["SugestoesIncorporadas"] = value; //06
+                      whereClauses.Add($" [SugestoesIncorporadas] = @SugestoesIncorporadas ");//06
             if (whereClauses.Any()) 
             this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;

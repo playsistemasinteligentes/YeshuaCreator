@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Seed.Migration.MovimentoFinanceiro;
 
-[SeedTestOrder(11)]
+[SeedTestOrder(8)]
 public partial class MovimentoFinanceiroCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/MovimentoFinanceiro/PostMovimentoFinanceiro";

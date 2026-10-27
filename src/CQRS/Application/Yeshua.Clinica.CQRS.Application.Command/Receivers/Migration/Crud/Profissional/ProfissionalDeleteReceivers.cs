@@ -54,7 +54,7 @@ namespace Command.Receivers.Write
                  if (!hasExecutionIdentity && trackingMask != 0UL)
                      executionIdentity = _executionContext.OperationalIdentity;
                  var context = DomainOperationContext.Create(DomainOperation.Remocao, DomainEntryPoint.Crud, "DeleteProfissional", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(DeleteProfissionalReceiver), commandName: "Command.Write.ProfissionalCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
-                 var profissional = new ProfissionalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.EspecialidadeId, c.Telefone, trackingMask: trackingMask);
+                 var profissional = new ProfissionalFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.EspecialidadeId, c.Telefone, c.UsuarioAcessoId, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", profissional.OperationalEntityId);
                  var domainResult = ProfissionalDomainBehavior.Apply(profissional, context);
                  if (!domainResult.IsValid)

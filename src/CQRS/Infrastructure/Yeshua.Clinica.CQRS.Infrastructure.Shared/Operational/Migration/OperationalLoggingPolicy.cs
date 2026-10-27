@@ -337,6 +337,7 @@ private OperationalLoggingDecision Evaluate(
                         "Sesoes" => GetSesoesMask(policy, operation, recordId),
                         "PlanoConta" => GetPlanoContaMask(policy, operation, recordId),
                         "MovimentoFinanceiro" => GetMovimentoFinanceiroMask(policy, operation, recordId),
+                        "RevisaoRegistroSessao" => GetRevisaoRegistroSessaoMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -433,6 +434,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ProfissionalTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "Profissional", operation, recordId, "OperationalEntityId"))
                         mask |= ProfissionalTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "Profissional", operation, recordId, "UsuarioAcessoId"))
+                        mask |= ProfissionalTrackingFields.UsuarioAcessoId;
                     return mask;
                 }
 
@@ -657,6 +660,18 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SesoesTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "OperationalEntityId"))
                         mask |= SesoesTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "AtendimentoIniciadoEm"))
+                        mask |= SesoesTrackingFields.AtendimentoIniciadoEm;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "AtendimentoEncerradoEm"))
+                        mask |= SesoesTrackingFields.AtendimentoEncerradoEm;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "VersaoAtendimento"))
+                        mask |= SesoesTrackingFields.VersaoAtendimento;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "RegistroFinalizadoEm"))
+                        mask |= SesoesTrackingFields.RegistroFinalizadoEm;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "RegistroFinalizadoPorUserId"))
+                        mask |= SesoesTrackingFields.RegistroFinalizadoPorUserId;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "SugestoesIncorporadas"))
+                        mask |= SesoesTrackingFields.SugestoesIncorporadas;
                     return mask;
                 }
 
@@ -717,6 +732,39 @@ private OperationalLoggingDecision Evaluate(
                         mask |= MovimentoFinanceiroTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "MovimentoFinanceiro", operation, recordId, "OperationalEntityId"))
                         mask |= MovimentoFinanceiroTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetRevisaoRegistroSessaoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "Id"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "SessaoId"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.SessaoId;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "Versao"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.Versao;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "AutorUserId"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.AutorUserId;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "RevisadoEm"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.RevisadoEm;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "Motivo"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.Motivo;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "Registro"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.Registro;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "TenantID"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "Deleted"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "Changed"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "UserId"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "OperationalEntityId"))
+                        mask |= RevisaoRegistroSessaoTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

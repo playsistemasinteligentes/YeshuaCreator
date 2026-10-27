@@ -39,7 +39,6 @@ public partial class ReportEndProntuaryRequestedHandler
     }
     partial void CustomApplyResponse(SagaBase saga, SagaStepBase step, string payload)
     {
-        var values = SessionInsightContract.ReadSummary(payload);
-        _sessions.ApplyInsight(SessionId(saga), values["Prontuario"], values["QueixaPrincipal"], values["RegistroDocumental"]);
+        _ = SessionInsightContract.ReadSummary(payload); // Validated suggestion remains in the step payload for explicit human adoption.
     }
 }

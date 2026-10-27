@@ -2039,11 +2039,28 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   preservadas. O consumidor usa o alias /clinica-work para montar apenas sua
   pasta temporaria de saida, pois a raiz do storage da VPS e privada ao root.
   Nao abrir a raiz para o usuario agent. Ver docs/operational/clinica/CODEX_EXECUTOR.md.
-- O plano da tela customizada Atendimentos do psicologo esta preservado em
-  docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md, ainda sem implementacao.
-  Propoe agenda, preparo com historico/planos, registro e fechamento humano;
-  separar sugestao da IA de registro final e proteger contra retornos atrasados
-  sao adaptacoes futuras, nao comportamentos ja implementados no executor atual.
+- O painel Atendimentos do Clinica foi implementado em 2026-10-27 no Front
+  Central (`Custon/Apps/Clinica/pages/atendimentos.*`), com Commands declarados
+  em M000005. Nao criar saga para o ciclo clinico: agendar, iniciar, encerrar,
+  salvar, finalizar e corrigir sao Commands normais. A saga de audio permanece.
+  UsuarioAcessoId vincula explicitamente o profissional ao usuario; o vinculo
+  usa Command administrativo e nao depende do criador do cadastro. Leituras e
+  escritas do painel exigem tenant e profissional. O CRUD legado de sessoes e
+  revisoes nao pode contornar autorizacao, versao e revisao do prontuario.
+  VersaoAtendimento protege atualizacoes concorrentes; finalizacao e correcao
+  preservam snapshot dos campos do painel, autor, data e motivo. O diagnostico
+  criptografado nao e copiado para JSON nem alterado por esses Commands.
+  Inicio/fim reais nao substituem DataInicio/DataFim previstos. Legados realizados
+  podem ser revisados sem inventar horarios reais. Falta usa status novo 4.
+  Cada upload finalizado continua iniciando uma saga tecnica, correlacionada ao
+  OperationalEntityId do upload. ApplyInsight nao pode escrever automaticamente
+  no prontuario e MarkInsightPending nao reabre registro; resultado validado
+  permanece no payload do step como sugestao para incorporacao humana explicita.
+  O gravador usa MediaRecorder WebM, chunks de dez segundos, pausa/retomada e
+  IndexedDB para recuperacao por tenant/usuario/sessao. Bytes locais somente sao
+  removidos apos IsFinalized com SagaId do C#. A API valida o profissional e a
+  finalidade/autorizacao declarada; a chave OpenAI continua exclusivamente privada.
+  Ver docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md para fluxo e limites.
 - Direcao arquitetural implementada localmente para transcricao:
   Saga -> Outbox -> execucao externa -> Inbox -> Saga, sempre.
   OpenAI e Codex sao ambos executores externos. A escolha de destino pertence

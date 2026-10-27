@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirProfissionalQuery(IProfissionalEntity Profissional)
         {
-            this.Query = $@" INSERT INTO [Profissional] ([Nome], [EspecialidadeId], [Telefone], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@Nome, @EspecialidadeId, @Telefone, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
+            this.Query = $@" INSERT INTO [Profissional] ([Nome], [EspecialidadeId], [Telefone], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [UsuarioAcessoId]) OUTPUT INSERTED.[Id] VALUES(@Nome, @EspecialidadeId, @Telefone, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @UsuarioAcessoId) ";
             this.Parameters = new
             {
                 Nome = Profissional.Nome,
@@ -41,6 +41,7 @@ namespace Query.Write
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
                 OperationalEntityId = Profissional.OperationalEntityId,
+                UsuarioAcessoId = Profissional.UsuarioAcessoId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -134,6 +135,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 OperationalEntityId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateUsuarioAcessoId(int id, int value)
+        {
+            this.Query = $@" UPDATE [Profissional] SET [UsuarioAcessoId] = @UsuarioAcessoId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                UsuarioAcessoId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

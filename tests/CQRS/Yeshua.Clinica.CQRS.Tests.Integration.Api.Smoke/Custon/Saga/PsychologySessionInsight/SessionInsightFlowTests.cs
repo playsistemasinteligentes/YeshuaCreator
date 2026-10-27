@@ -62,8 +62,8 @@ public class SessionInsightFlowTests
         fixture.Receive(Summary());
         fixture.Executor.Execute(fixture.Saga, fixture.Resolver);
         Assert.Equal(SagaStatus.Completed, fixture.Saga.Status);
-        Assert.Equal(1, fixture.Applied);
-        Assert.Equal(509, fixture.AppliedSession);
+        Assert.Equal(0, fixture.Applied); // A completed suggestion must never overwrite a human chart.
+        Assert.Equal("registro de teste", SessionInsightContract.ReadSummary(fixture.Saga.Steps.Last().Payload)["Prontuario"]);
     }
 
     [Fact]
@@ -116,7 +116,7 @@ public class SessionInsightFlowTests
         var sagaWrites = Fake<IySagaWriteRepository>((_, _) => { saves++; return null; });
         var token = new UploadTokenHelper(new string('x', 32));
         var handler = new SendFileHandler(work, uploads, write, fixture.Storage, token, sagaReads, sagaWrites,
-            Fake<ISesoesReadRepository>((_, _) => new SesoesDTO { id = 509 }), fixture.Sessions, fixture.Logger, context);
+            Fake<ISesoesReadRepository>((_, _) => new global::Clinica.Atendimentos.RegistroAtendimentoInfo(Id: 509)), fixture.Sessions, fixture.Logger, context);
         var input = new SendFileInputCommand
         {
             token = token.Generate(71, 7, 1), IsFinalChunk = true, ChunkIndex = 2,

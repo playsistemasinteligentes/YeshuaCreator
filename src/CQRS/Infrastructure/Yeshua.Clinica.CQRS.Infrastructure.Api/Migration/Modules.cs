@@ -112,6 +112,9 @@ public static class StaticModules
     {
         Modules.Clear();
         Modules.Add(new Module("PSI", "Clinica  Psicologia"));
+        var menuGroup0_0 = new Menu("Atendimento", "", "menuGroup");
+        menuGroup0_0.AddSubMenu(new SubMenu("Atendimentos", "#clinica-atendimentos", "customPage", "clinica-atendimentos", "clinica.atendimentos"));
+        Modules[Modules.Count - 1].Menus.Add(menuGroup0_0);
         Modules[Modules.Count - 1].Menus.Add(new Menu("Clinica", "/getMetaDataClinica", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("Especialidade", "/getMetaDataEspecialidade", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("Profissional", "/getMetaDataProfissional", "crud", "", ""));
@@ -121,6 +124,7 @@ public static class StaticModules
         Modules[Modules.Count - 1].Menus.Add(new Menu("Paciente", "/getMetaDataPaciente", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("MovimentacaoFinanceira", "/getMetaDataMovimentacaoFinanceira", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("Sesoes", "/getMetaDataSesoes", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("RevisaoRegistroSessao", "/getMetaDataRevisaoRegistroSessao", "crud", "", ""));
         Modules.Add(new Module("FIN", "Financeiro"));
         Modules[Modules.Count - 1].Menus.Add(new Menu("PlanoConta", "/getMetaDataPlanoConta", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("MovimentoFinanceiro", "/getMetaDataMovimentoFinanceiro", "crud", "", ""));

@@ -25,6 +25,7 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateUsuarioAcessoId(int id, int value);
         public QueryModel DeleteProfissionalQuery(IProfissionalEntity Profissional);
     }
 }

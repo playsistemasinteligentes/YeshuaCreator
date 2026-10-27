@@ -47,12 +47,14 @@ namespace Command.Receivers.UseCase
             {
 
                 if (comand.entityType != "Sesoes" || !int.TryParse(comand.entityId, out var sessionId)
-                    || sessionId <= 0 || _sessions.FirstById(sessionId) is null)
+                    || sessionId <= 0 || !_sessions.PodeGravarAtendimento(sessionId))
                     return ValidationError("Sessao clinica nao encontrada.", new StarSessionUploadOutputCommand());
-                // Criar entidade
+                if (comand.Finalidade is not ("consulta" or "relato") || (comand.Finalidade == "consulta" && !comand.Autorizado))
+                    return ValidationError("Confirme a autorizacao do paciente para gravar a consulta.", new StarSessionUploadOutputCommand());
+                // A confirmação de autorização fica associada ao upload, ator e data.
                 var upload = new yFileUploadFactory(_logger).Create(
                   0,
-                  "audio.transcribe",
+                  comand.Finalidade == "consulta" ? "audio.transcribe.consulta.autorizada" : "audio.transcribe.relato",
                   0,                       
                   "",
                   0,

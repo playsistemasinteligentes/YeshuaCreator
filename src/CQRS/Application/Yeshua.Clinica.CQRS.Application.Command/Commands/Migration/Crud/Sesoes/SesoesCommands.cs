@@ -46,6 +46,12 @@ namespace Command.Write
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string OperationalEntityId { get; set; }
+        public DateTime? AtendimentoIniciadoEm { get; set; }
+        public DateTime? AtendimentoEncerradoEm { get; set; }
+        public int VersaoAtendimento { get; set; }
+        public DateTime? RegistroFinalizadoEm { get; set; }
+        public int? RegistroFinalizadoPorUserId { get; set; }
+        public string? SugestoesIncorporadas { get; set; }
  public string OperationalEntity => "Sesoes";
  public string? OperationalRecordId => OperationalEntityId;
     }

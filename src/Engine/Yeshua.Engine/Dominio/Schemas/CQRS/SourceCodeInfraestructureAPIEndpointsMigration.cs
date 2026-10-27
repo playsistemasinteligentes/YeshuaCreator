@@ -1194,6 +1194,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($"    return Results.Ok({result});");
             sb.AppendLine("else if (result.StatusCode == 403)");
             sb.AppendLine("    return Results.Json(result, statusCode: 403);");
+            sb.AppendLine("else if (result.StatusCode == 409)");
+            sb.AppendLine("    return Results.Json(result, statusCode: 409);");
             sb.AppendLine("else");
             sb.AppendLine("    return Results.BadRequest(result);");
             sb.AppendLine("}");
