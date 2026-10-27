@@ -121,7 +121,7 @@ namespace Dominio.Migration
             foreach (var migration in migrations)
             {
                 if (migration.SagaWorkerLoopMilliseconds.HasValue)
-                    _migrationConcriteBase.ConfigureSagaWorkers(migration.SagaWorkerLoopMilliseconds.Value);
+                    _migrationConcriteBase.ConfigureSagaWorkers(migration.SagaWorkerLoopMilliseconds.Value, migration.GenerateSagaQueueWorkers);
 
                 SanitizeMigrationEndEntityToCodeGenerete(migration);
                 SanitizeMigrationEndHubAgentsToCodeGenerete(migration);

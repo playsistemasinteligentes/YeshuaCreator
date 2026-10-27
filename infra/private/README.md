@@ -446,3 +446,20 @@ O teste de modelos Compose usa somente fixtures, sem daemon/rede/VPS.
 Usa docker-compose ou docker compose; YESHUA_TEST_COMPOSE pode apontar para
 um executavel standalone oficial. Sem CLI, esse teste e explicitamente ignorado.
 Nunca substituir a fixture pelas credenciais reais para imprimir config.
+
+### Executor Codex Do Clinica
+
+A configuracao Apps.Clinica no credentials.json geral usa o cofre privado
+existente, junto das conexoes SQL e demais chaves. Ela e carregada para
+Clinica/Shared/all pelo exportador,
+com variaveis CLINICA_* limpas quando nao configuradas. Ver
+docs/operational/clinica/CODEX_EXECUTOR.md. Nenhuma credencial e criada ou
+migrada automaticamente, e o modo de tarefas depende de override explicito.
+
+O Worker C# do Clinica usa `Apps.Clinica.Transcription` desse arquivo
+para entrega direta da Outbox a OpenAI. `Transcription.Provider` aceita
+`OpenAI` (padrao) ou `Queue`; `ApiKey`, `Model` e `BaseUrl` alimentam
+`CLINICA_TRANSCRIPTION_*`. Nao duplicar a chave em outro arquivo. A opcao Queue
+mantem o executor externo pela fila; resumo continua pela fila em ambos os modos.
+O antigo apps/Clinica/integracoes/codex-executor.json nao e lido nem usado como fallback.
+Configuracao e limites: [transcricao OpenAI](../../docs/operational/clinica/OPENAI_TRANSCRIPTION.md).

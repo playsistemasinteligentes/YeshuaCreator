@@ -40,6 +40,8 @@ namespace Dominio
         public UseCaseCommand InBoxPollingWorker { get; set; }
         public UseCaseCommand QueueListenerWorker { get; set; }
         public bool IsWait { get; set; }
+        public QueueTopology? OutboxQueueTopology { get; set; }
+        public QueueTopology? InboxQueueTopology { get; set; }
         public List<SagaStepCommandTransport> CommandTransports { get; set; } = new List<SagaStepCommandTransport>();
         //public QueueTopology queueTopologyConsumer { get; set; }
         public List<QueueTopology> LstQueueTopology { get; set; } = new List<QueueTopology>();

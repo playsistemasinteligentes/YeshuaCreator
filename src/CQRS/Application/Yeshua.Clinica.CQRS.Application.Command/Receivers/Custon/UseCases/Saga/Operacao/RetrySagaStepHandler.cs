@@ -1,43 +1,32 @@
-﻿// <yeshua>
-// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
-// createdBy: DSL
-// ownership: IA_DEV
-// editable: true
-// regeneration: NEVER_OVERWRITE
-// sourceOfTruth: THIS_FILE
-// generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
-// </yeshua>
-
-using Dominio.Interfaces;
-using Aplication.Interfaces.Services;
+using Command.UseCase;
+using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
-using IRepository.Read;
-using IRepository.Write;
-using Command.UseCase;
-
-namespace Command.Receivers.UseCase
+namespace Command.Receivers.UseCase;
+public partial class RetrySagaStepHandler
 {
-    public partial class RetrySagaStepHandler
+    private readonly IUnitOfWork _work;
+    private readonly IySagaStepWriteRepository _steps;
+    public RetrySagaStepHandler(IUnitOfWork work, IySagaStepWriteRepository steps,
+        Dominio.Interfaces.ILogger logger, Aplication.Interfaces.Services.IExecutionContext context) : base(logger, context)
+        { _work = work; _steps = steps; _logger = logger; _executionContext = context; }
+    protected partial Task<State<RetrySagaStepOutputCommand>> CustomActionHookAsync(
+        State<RetrySagaStepOutputCommand> state, RetrySagaStepInputCommand command, CancellationToken cancellationToken)
     {
-        private readonly IUnitOfWork _unitOfWork = default!;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
-        private readonly IySagaStepReadRepository _repReadySagaStep = default!;
-        private readonly IySagaStepWriteRepository _repWriteySagaStep = default!;
-        public RetrySagaStepHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IySagaStepReadRepository repReadySagaStep, IySagaStepWriteRepository repWriteySagaStep)
-            : base(logger, executionContext)
+        _work.BeginTran();
+        try
         {
-           _unitOfWork = unitOfWork;
-           _logger = logger;
-           _executionContext = executionContext;
-           _domainTrackingPolicy = domainTrackingPolicy;
-            _repReadySagaStep = repReadySagaStep;
-            _repWriteySagaStep = repWriteySagaStep;
+            var key = _steps.RetryFailedStep(command.SagaId, command.SagaStepId,
+                _executionContext.TenantID, _executionContext.UserId, _executionContext.ProcessingScope);
+            if (key is null)
+            {
+                _work.Rollback();
+                return Task.FromResult(ValidationError("Somente o step em falha do processamento atual pode ser reaberto.", new RetrySagaStepOutputCommand()));
+            }
+            _work.Commit();
+            return Task.FromResult(Success("Retomada agendada para o Worker.", new RetrySagaStepOutputCommand
+                { SagaId = command.SagaId, SagaStepId = command.SagaStepId, StepKey = key, Status = "Pending" }));
         }
-protected partial Task<State<RetrySagaStepOutputCommand>> CustomActionHookAsync(State<RetrySagaStepOutputCommand> state, RetrySagaStepInputCommand comand, CancellationToken cancellationToken)
-{
-    return Task.FromResult(state);
-}
+        catch { _work.Rollback(); throw; }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

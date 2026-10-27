@@ -22,6 +22,10 @@ echo "Yeshua Operational Intelligence API and agents ready."
 echo "Workspace: $workspace"
 echo "Operational API: ${OPERATIONAL_INTELLIGENCE_BASE_URL:-http://127.0.0.1:5728}"
 
+if [[ "${CLINICA_CODEX_EXECUTOR_ENABLED:-false}" == "true" ]]; then
+  exec /opt/clinica-executor/supervise.sh "$@"
+fi
+
 if [[ "$(id -u)" == "0" ]]; then
   exec gosu agent "$@"
 fi

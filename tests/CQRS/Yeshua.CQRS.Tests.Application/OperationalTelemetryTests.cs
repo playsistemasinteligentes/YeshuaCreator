@@ -473,6 +473,8 @@ public sealed class OperationalTelemetryTests
             new TestSagaHandler("FinalStep", requiresExternalStimulus: false));
 
         executor.Execute(saga, resolver);
+        // A second attempt is runnable only after its scheduled backoff.
+        saga.GetCurrent().SetPending(DateTime.UtcNow.AddSeconds(-1));
         executor.Execute(saga, resolver);
 
         var starts = logger.Snapshot().Sagas

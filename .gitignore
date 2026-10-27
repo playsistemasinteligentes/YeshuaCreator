@@ -5,6 +5,7 @@
 
 # dotenv files
 .env
+.artifacts/
 credentials.json
 bootstrap.json
 providers.json

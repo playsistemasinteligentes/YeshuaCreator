@@ -1,7 +1,8 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/ src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/
-RUN dotnet publish src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Yeshua.OperationalIntelligence.Api.csproj -c Release -o /app/publish
+ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
+RUN dotnet publish src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Yeshua.OperationalIntelligence.Api.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0
 
@@ -23,6 +24,8 @@ RUN apt-get update \
         procps \
         python3 \
         python3-pip \
+        python3-venv \
+        ffmpeg \
         ripgrep \
         rsync \
         unzip \
@@ -30,6 +33,12 @@ RUN apt-get update \
     && curl -fsSL "https://deb.nodesource.com/setup_${NODE_MAJOR}.x" | bash - \
     && apt-get install -y --no-install-recommends nodejs \
     && rm -rf /var/lib/apt/lists/*
+
+COPY infra/Clinica/DockerCompose/codex-executor/requirements.txt /opt/task-runtime-requirements.txt
+RUN python3 -m venv /opt/task-runtime \
+    && /opt/task-runtime/bin/pip install --no-cache-dir -r /opt/task-runtime-requirements.txt
+COPY infra/Clinica/DockerCompose/codex-executor/ /opt/clinica-executor/
+RUN chmod +x /opt/clinica-executor/supervise.sh
 
 RUN archive="tunnel-client-${TUNNEL_CLIENT_VERSION}-linux-$(dpkg --print-architecture).zip" \
     && release="https://github.com/openai/tunnel-client/releases/download/${TUNNEL_CLIENT_VERSION}" \

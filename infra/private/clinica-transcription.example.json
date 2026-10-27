@@ -1,0 +1,8 @@
+{
+  "Transcription": {
+    "Provider": "OpenAI",
+    "ApiKey": "",
+    "Model": "gpt-transcribe",
+    "BaseUrl": "https://api.openai.com/v1"
+  }
+}

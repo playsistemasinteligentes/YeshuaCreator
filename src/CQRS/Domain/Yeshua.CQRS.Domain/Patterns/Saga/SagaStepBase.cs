@@ -130,13 +130,19 @@ namespace Dominio.Patterns.Saga
             string? rootOperationId = null,
             string? operationId = null,
             string? executionId = null,
-            string? causationId = null)
+            string? causationId = null,
+            int executionCount = 0,
+            DateTime? lastExecutionAt = null,
+            string? errorMessage = null)
         {
             Id = id;
             Status = (SagaStepStatus)status;
             CorrelationId = correlationId;
             CompletedAt = completedAt;
             RetryCount = retryCount;
+            ExecutionCount = executionCount;
+            LastExecutionAt = lastExecutionAt;
+            ErrorMessage = errorMessage ?? string.Empty;
             //NextExecutionAt = nextExecutionAt;
             Payload = payload;
             RootOperationId = rootOperationId;

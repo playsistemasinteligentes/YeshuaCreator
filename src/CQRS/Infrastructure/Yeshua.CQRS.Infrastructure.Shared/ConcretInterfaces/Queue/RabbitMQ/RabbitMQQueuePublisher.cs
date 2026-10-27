@@ -1,4 +1,4 @@
-﻿using Command.Interfaces.Patterns.Queue;
+using Command.Interfaces.Patterns.Queue;
 using Command.Patterns.Queue;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -34,7 +34,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             await channel.BasicPublishAsync(
                 exchange: exchange,
                 routingKey: routingKey,
-                mandatory: false,
+                mandatory: true,
                 basicProperties: props,
                 body: body,
                 cancellationToken: ct);
@@ -72,7 +72,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             }
 
             // 🔥 GARANTE nome correto da task (caso venha errado)
-            var taskId = message.CorrelationId ?? message.Id.ToString();
+            var taskId = message.MenssageId ?? message.CorrelationId ?? message.Id.ToString();
 
             string? eta = null;
             var celeryBody = new
@@ -82,13 +82,11 @@ public class RabbitMQQueuePublisher : IQueuePublisher
                 args = args,
                 kwargs = new { },
                 retries = 0,
+                processingScope = message.ProcessingScope,
                 eta
             };
 
             var json = JsonSerializer.Serialize(celeryBody);
-
-            Console.WriteLine("CELERY JSON:");
-            Console.WriteLine(json);
 
             var body = Encoding.UTF8.GetBytes(json);
 
@@ -110,7 +108,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
             await channel.BasicPublishAsync(
                 exchange: exchange,
                 routingKey: routingKey,
-                mandatory: false,
+                mandatory: true,
                 basicProperties: props,
                 body: body,
                 cancellationToken: ct);
@@ -119,7 +117,7 @@ public class RabbitMQQueuePublisher : IQueuePublisher
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao publicar Celery: {ex.Message}");
+            Console.WriteLine($"Falha ao publicar tarefa: {ex.GetType().Name}");
             return false;
         }
     }

@@ -20,3 +20,21 @@ curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCrea
 ```
 
 O deploy nao executa `down` e nao altera containers dos demais aplicativos.
+
+## Transcricao OpenAI
+
+O Worker usa `OpenAI` como provider padrao. O FFmpeg e instalado e conferido
+durante a construcao da imagem; o Compose define seu executavel em
+`/usr/bin/ffmpeg`. Ele prepara somente audios que exigem ajuste de formato/tamanho.
+
+A chave vem do arquivo geral privado `credentials.json`, no bloco
+`Apps.Clinica.Transcription`, junto das conexoes de banco e demais chaves.
+O modelo publico sem chave esta em
+[clinica-transcription.example.json](../../private/clinica-transcription.example.json).
+Ao usar um arquivo existente, preservar os outros campos e preencher somente o
+bloco `Transcription`. O deploy carrega esse bloco pelo leitor privado atual.
+
+Configuracao preparada no repositorio nao atualiza um container que ja esta em
+execucao. Publicado e validado na VPS em 27/10/2026, com a chave no arquivo geral.
+O resumo separado continua dependendo de um consumidor para sua fila.
+O resumo continua sendo outra tarefa entregue pela fila.

@@ -6,15 +6,18 @@ namespace Dominio.Schemas.CQRS
     public sealed class SourceCodeApplicationSagaWorker : SourceCodeBase
     {
         private readonly bool _inboxWorker;
+        private readonly bool _transactionalSteps;
 
-        public SourceCodeApplicationSagaWorker(bool inboxWorker)
+        public SourceCodeApplicationSagaWorker(bool inboxWorker, bool transactionalSteps = false)
         {
             _inboxWorker = inboxWorker;
+            _transactionalSteps = transactionalSteps;
         }
 
         protected override StringBuilder GenerateCode()
         {
-            return new StringBuilder(_inboxWorker ? GenerateInboxWorker() : GenerateSagaWorker());
+            return new StringBuilder((_inboxWorker ? GenerateInboxWorker() : GenerateSagaWorker())
+                .Replace("const bool TransactionalStepWrites = false;", $"const bool TransactionalStepWrites = {(_transactionalSteps ? "true" : "false")};"));
         }
 
         protected override StringBuilder GenerateCustonCode()
@@ -349,14 +352,25 @@ namespace Command.Patterns
                             continue;
 
                         var resolver = _registry.Resolve(saga);
-                        _executor.Execute(saga, resolver);
-
-                        if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
-                            continue;
-
-                        _unitOfWork.BeginTran();
+                        const bool TransactionalStepWrites = false;
+                        if (TransactionalStepWrites)
+                            _unitOfWork.BeginTran();
                         try
                         {
+                            _executor.Execute(saga, resolver);
+                            if (TransactionalStepWrites && saga.LastExecutionFailed)
+                            {
+                                _unitOfWork.Rollback();
+                                _unitOfWork.BeginTran();
+                            }
+                            if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
+                            {
+                                if (TransactionalStepWrites)
+                                    _unitOfWork.Rollback();
+                                continue;
+                            }
+                            if (!TransactionalStepWrites)
+                                _unitOfWork.BeginTran();
                             _sagaWriteRepository.Save(saga);
                             _unitOfWork.Commit();
                             processed++;

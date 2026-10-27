@@ -1,64 +1,46 @@
-﻿using System.Text;
 using System.Text.Json;
-using System.Windows.Input;
 using Command.Interfaces.Patterns.Queue;
-using Command.Patterns.Queue;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Shered.ConcretInterfaces.Queue.RabbitMQ;
-
 namespace Shared.InterfacesConcrete.Queue.RabbitMQ;
 
 public sealed class RabbitMQQueueListener : IQueueListener
 {
     private readonly RabbitMqConnectionManager _connectionManager;
-
-    public RabbitMQQueueListener(RabbitMqConnectionManager connectionManager)
-    {
-        _connectionManager = connectionManager;
-    }
-
-
+    public RabbitMQQueueListener(RabbitMqConnectionManager manager) => _connectionManager = manager;
 
     public async Task ListenAsync<TCommand>(string queueName, Func<TCommand, Task> handler, CancellationToken cancellationToken)
-       where TCommand : class
+        where TCommand : class
     {
         var connection = await _connectionManager.GetConnectionAsync(cancellationToken);
-        var channel = await connection.CreateChannelAsync();
-
+        await using var channel = await connection.CreateChannelAsync(cancellationToken: cancellationToken);
         await channel.BasicQosAsync(0, 1, false, cancellationToken);
-
         var consumer = new AsyncEventingBasicConsumer(channel);
-
-        consumer.ReceivedAsync += async (_, args) =>
+        consumer.ReceivedAsync += async (_, delivery) =>
         {
             try
             {
-                var json = Encoding.UTF8.GetString(args.Body.ToArray());
-
-                // 🔥 desserializa para o tipo correto
-                var message = JsonSerializer.Deserialize<TCommand>(json);
-
-                if (message == null)
-                    throw new Exception("Mensagem inválida ou nula");
-
+                var message = JsonSerializer.Deserialize<TCommand>(delivery.Body.Span)
+                    ?? throw new JsonException("Mensagem nula.");
                 await handler(message);
+                await channel.BasicAckAsync(delivery.DeliveryTag, false, cancellationToken);
             }
-            catch (Exception ex)
+            catch (JsonException)
             {
-                // loga erro (não quebra o worker)
-                Console.WriteLine($"Erro ao processar mensagem: {ex}");
+                // Invalid envelopes cannot be recovered by redelivery.
+                await channel.BasicNackAsync(delivery.DeliveryTag, false, false, cancellationToken);
             }
-
-            // 🔥 ACK SEMPRE (ou você pode sofisticar depois)
-            await channel.BasicAckAsync(args.DeliveryTag, false, cancellationToken);
+            catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Falha no consumidor de fila: {exception.GetType().Name}");
+                await Task.Delay(TimeSpan.FromSeconds(2), cancellationToken);
+                await channel.BasicNackAsync(delivery.DeliveryTag, false, true, cancellationToken);
+            }
         };
-
-        await channel.BasicConsumeAsync(
-            queue: queueName,
-            autoAck: false,
-            consumer: consumer,
-            cancellationToken: cancellationToken
-        );
+        await channel.BasicConsumeAsync(queueName, false, consumer, cancellationToken);
+        try { await Task.Delay(Timeout.Infinite, cancellationToken); }
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested) { }
     }
 }

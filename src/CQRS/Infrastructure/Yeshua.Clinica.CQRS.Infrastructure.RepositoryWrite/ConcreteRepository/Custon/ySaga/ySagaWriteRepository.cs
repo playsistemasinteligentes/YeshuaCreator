@@ -1,4 +1,4 @@
-﻿// pendencia: definir a geracao compartilhada deste repository interno para todos os aplicativos do Studio.
+// pendencia: definir a geracao compartilhada deste repository interno para todos os aplicativos do Studio.
 using Dominio.Entitys;
 using Dominio.Interfaces;
 using Dominio.Patterns.Saga;
@@ -66,10 +66,10 @@ namespace Input.Repository.ySaga
                 
                 if (step.IsNew)
                 {
-                    stepEntity.CorrelationId = Guid.NewGuid().ToString();
                     if (!stepEntity.isValidInsert())
                         throw new Exception(string.Join(", ", stepEntity.getErroMensagens()));
                     _stepWriteRepository.Insert(stepEntity);
+                    step.Id = stepEntity.Id.GetValueOrDefault();
                     continue;
                 }
 
@@ -81,15 +81,7 @@ namespace Input.Repository.ySaga
                 _stepWriteRepository.Update(stepEntity);
             }
 
-            // =========================================
-            // OUTBOX (continua regra de estado)
-            // =========================================
-
-            foreach (var step in saga.Steps)
-            {
-                if (step.Status == SagaStepStatus.WaitingResponse)
-                    CreateOutbox(MapStep(step, step.Id));
-            }
+            saga.MarkPersisted();
         }
         // =========================================
         // HELPERS
@@ -97,19 +89,29 @@ namespace Input.Repository.ySaga
 
         private IySagaEntity MapSaga(SagaBase saga)
         {
-            return new ySagaFactory(_logger).Create(saga.Id, saga.CorrelationId.ToString(), saga.Type, (int)saga.Status, saga.KeyCurrentStep, saga.CreatedAt, saga.CompletedAt, saga.EntityType, saga.EntityId,saga.NextExecutionAt,saga.LockedAt,saga.LockedBy);
+            var entity = new ySagaFactory(_logger).Create(saga.Id == 0 ? null : saga.Id,
+                saga.CorrelationId.ToString(), saga.Type, (int)saga.Status, saga.KeyCurrentStep,
+                saga.CreatedAt.Year < 1800 ? DateTime.UtcNow : saga.CreatedAt,
+                saga.Status == SagaStatus.Completed ? saga.CompletedAt : null,
+                saga.EntityType, saga.EntityId,
+                saga.NextExecutionAt.Year < 1800 ? DateTime.UtcNow : saga.NextExecutionAt,
+                string.IsNullOrWhiteSpace(saga.LockedBy) ? null : saga.LockedAt, saga.LockedBy);
+            entity.RootOperationId = saga.RootOperationId;
+            entity.OperationId = saga.OperationId;
+            entity.ExecutionId = saga.ExecutionId;
+            entity.CausationId = saga.CausationId;
+            return entity;
         }
 
         private IySagaStepEntity MapStep(SagaStepBase step , int sagaId)
         {
             var entity = new ySagaStepFactory(_logger).Create(step.Id, sagaId, step.Key, step.Order, step.CorrelationId, (int)step.Status, step.ExecutionCount, step.LastExecutionAt, step.CompletedAt, step.ErrorMessage, step.Payload, step.RetryCount);
+            entity.RootOperationId = step.RootOperationId;
+            entity.OperationId = step.OperationId;
+            entity.ExecutionId = step.ExecutionId;
+            entity.CausationId = step.CausationId;
             return entity;
         }
 
-        private void CreateOutbox(IySagaStepEntity step)
-        {
-            // placeholder
-        }
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

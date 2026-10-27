@@ -1,178 +1,112 @@
-using System.Threading.Tasks;
-using System.Threading;
-using Aplication.Interfaces.Services;
-using Command.Interfaces;
 using Command.Interfaces.Patterns.FileStore;
-using Command.Patterns.OutBox;
 using Command.Receivers.Custon.UseCases.FileUpload.Infra;
 using Command.UseCase;
-using Dominio.Entitys;
-using Dominio.Interfaces;
+using Dominio.Patterns.Saga;
 using Dominio.Saga;
 using IRepository.Read;
 using IRepository.Write;
 using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using System.Text.Json;
 
-namespace Command.Receivers.UseCase
+namespace Command.Receivers.UseCase;
+
+public partial class SendFileHandler
 {
-    public partial class SendFileHandler
+    private readonly IUnitOfWork _work;
+    private readonly IyFileUploadReadRepository _uploads;
+    private readonly IyFileUploadWriteRepository _uploadsWrite;
+    private readonly IFileStorage _storage;
+    private readonly UploadTokenHelper _tokens;
+    private readonly IySagaReadRepository _sagas;
+    private readonly IySagaWriteRepository _sagasWrite;
+    private readonly ISesoesReadRepository _sessions;
+    private readonly ISesoesWriteRepository _sessionsWrite;
+
+    public SendFileHandler(IUnitOfWork work, IyFileUploadReadRepository uploads,
+        IyFileUploadWriteRepository uploadsWrite, IFileStorage storage, UploadTokenHelper tokens,
+        IySagaReadRepository sagas, IySagaWriteRepository sagasWrite,
+        ISesoesReadRepository sessions, ISesoesWriteRepository sessionsWrite,
+        Dominio.Interfaces.ILogger logger, Aplication.Interfaces.Services.IExecutionContext context) : base(logger, context)
     {
+        _work = work; _uploads = uploads; _uploadsWrite = uploadsWrite; _storage = storage; _tokens = tokens;
+        _sagas = sagas; _sagasWrite = sagasWrite; _sessions = sessions; _sessionsWrite = sessionsWrite;
+        _logger = logger; _executionContext = context;
+    }
 
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IyFileUploadReadRepository _repReadyFileUpload;
-        private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
-        private readonly IFileStorage _fileStorage;
-        private readonly UploadTokenHelper _uploadTokens;
-        private readonly IyOutboxWriteRepository _yOutboxWriteRepository;
-        private readonly IySagaWriteRepository _ySagaWriteRepository;
-        private readonly PsychologySessionInsightSaga _psychologySessionInsightSaga;
-        private readonly ISagaExecutor _sagaExecutor;
-        
-
-
-        public SendFileHandler(
-            IUnitOfWork unitOfWork,
-            IyFileUploadReadRepository repReadyFileUpload,
-            IyFileUploadWriteRepository repWriteyFileUpload,
-            IFileStorage fileStorage,
-            UploadTokenHelper uploadTokens,
-            IyOutboxWriteRepository yOutboxWriteRepository,
-            IySagaWriteRepository ySagaWriteRepository,
-            PsychologySessionInsightSaga psychologySessionInsightSaga,
-            ISagaExecutor sagaExecutor,
-            Dominio.Interfaces.ILogger logger,
-            Aplication.Interfaces.Services.IExecutionContext context)
-            : base(logger, context)
+    protected partial async Task<State<SendFileOutputCommand>> CustomActionHookAsync(
+        State<SendFileOutputCommand> state, SendFileInputCommand command, CancellationToken cancellationToken)
+    {
+        if (command.FileStream is null || command.FileStream.Length == 0 || command.ChunkIndex < 0 || command.ChunkIndex > 10000)
+            return ValidationError("Parte de audio invalida.", new SendFileOutputCommand());
+        var token = _tokens.ValidateAndExtract(command.token);
+        if (token.tenantId != _executionContext.TenantID || token.userId != _executionContext.UserId)
+            return ValidationError("Token de upload invalido para o usuario atual.", new SendFileOutputCommand());
+        _work.BeginTran();
+        try
         {
-            _unitOfWork = unitOfWork;
-            _repReadyFileUpload = repReadyFileUpload;
-            _repWriteyFileUpload = repWriteyFileUpload;
-            _fileStorage = fileStorage;
-            _uploadTokens = uploadTokens;
-            _yOutboxWriteRepository = yOutboxWriteRepository;
-            _ySagaWriteRepository = ySagaWriteRepository;
-            _psychologySessionInsightSaga = psychologySessionInsightSaga;
-            _sagaExecutor = sagaExecutor;
-            _logger = logger;
-            _executionContext = context;
-        }
-
-
-
-        protected partial async Task<State<SendFileOutputCommand>> CustomActionHookAsync(State<SendFileOutputCommand> state, SendFileInputCommand comand, CancellationToken cancellationToken)
-{
-
-            try
+            if (!_uploadsWrite.LockUploadForCurrentActor(token.uploadId, token.tenantId, token.userId))
+                throw new InvalidOperationException("Upload nao encontrado para o usuario atual.");
+            var upload = _uploads.FirstById(token.uploadId);
+            if (upload is null || upload.entitytype != "Sesoes" || !int.TryParse(upload.entityid, out var sessionId)
+                || _sessions.FirstById(sessionId) is null || !Guid.TryParse(upload.operationalentityid, out _))
+                throw new InvalidOperationException("Upload sem sessao clinica valida.");
+            if (upload.status == 1)
             {
-                if (comand.FileStream == null)
-                    throw new ReceiverException<SendFileOutputCommand>(
-                        Error("FileStream é obrigatório.", default));
-
-                if (string.IsNullOrWhiteSpace(comand.token))
-                    throw new ReceiverException<SendFileOutputCommand>(
-                        Error("Token é obrigatório.", default));
-
-                // 🔐 valida token
-                var tokenData = _uploadTokens.ValidateAndExtract(comand.token);
-
-                var uploadId = tokenData.uploadId;
-                var userId = tokenData.userId;
-                var tenantId = tokenData.tenantId;
-                string idEntity = Path.Combine(uploadId.ToString(), "pending_merge");
-
-                // segurança
-                if (tenantId != _executionContext.TenantID)
-                    throw new ReceiverException<SendFileOutputCommand>(
-                        Error("Token inválido para o tenant atual.", default));
-
-
-                // 📁 nome do chunk
-                var chunkFileName = $"chunk_{comand.ChunkIndex}.part";
-
-                StoragePath path = StoragePathBuilder.Build(
-                    StorageLocation.Volatile.TranscriptionsInput,
-                    tenantId.ToString(),
-                    idEntity,
-                    chunkFileName,
-                    false
-                );
-
-                // 💾 salva chunk
-                var result = _fileStorage
-                    .SaveAsync(comand.FileStream, path, CancellationToken.None)
-                    .GetAwaiter()
-                    .GetResult();
-
-                // 🧩 se não for último chunk
-                if (!comand.IsFinalChunk)
+                var existing = _sagas.FirstByCorrelationId(Guid.Parse(upload.operationalentityid).ToString("D"));
+                if (existing is null) throw new InvalidOperationException("Upload concluido sem processamento associado.");
+                _work.Commit();
+                return Success("Upload ja finalizado.", new SendFileOutputCommand
+                { Success = true, IsFinalized = true, ChunkIndex = command.ChunkIndex, SagaId = existing.id, SagaCorrelationId = existing.correlationid });
+            }
+            if (upload.status != 0) throw new InvalidOperationException("Upload nao aceita novas partes.");
+            var pending = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,
+                token.tenantId.ToString(), Path.Combine(token.uploadId.ToString(), "pending_merge"),
+                $"chunk_{command.ChunkIndex}.part", false);
+            await _storage.SaveAsync(command.FileStream, pending, cancellationToken);
+            if (!command.IsFinalChunk)
+            {
+                _work.Commit();
+                return Success("Parte recebida.", new SendFileOutputCommand { Success = true, ChunkIndex = command.ChunkIndex });
+            }
+            var parts = _storage.ListFiles(StoragePathBuilder.BuildFromFullPath(
+                StorageLocation.Volatile.TranscriptionsInput, pending.Directory + Path.DirectorySeparatorChar))
+                .Where(p => Path.GetFileName(p.Value).StartsWith("chunk_", StringComparison.Ordinal)).ToList();
+            if (parts.Count != command.ChunkIndex + 1)
+                throw new InvalidOperationException("Ainda faltam partes do audio. Reenvie as partes ausentes.");
+            var final = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,
+                token.tenantId.ToString(), token.uploadId.ToString(), "audio.webm", false);
+            using (var output = _storage.OpenWrite(final))
+            {
+                for (var index = 0; index <= command.ChunkIndex; index++)
                 {
-                    state = Success("Chunk recebido com sucesso.",
-                    new SendFileOutputCommand
-                    {
-                        Success = true,
-                        ChunkIndex = comand.ChunkIndex,
-                        IsFinalized = false
-                    });
-
-                    return state;
+                    var part = parts.SingleOrDefault(p => Path.GetFileName(p.Value) == $"chunk_{index}.part")
+                        ?? throw new InvalidOperationException("Sequencia de partes incompleta.");
+                    using var input = _storage.OpenRead(part);
+                    await input.CopyToAsync(output, cancellationToken);
                 }
-
-                // --------------------------------
-                // FINALIZA UPLOAD
-                // --------------------------------
-
-
-                //// 🔎 busca upload criado no StartUpload
-                //var upload = _repReadyFileUpload.FirstById(uploadId);
-
-                //if (upload == null)
-                //    throw new ReceiverException<SendFileOutputCommand>(
-                //        Error("Upload não encontrado.", default));
-
-                StoragePath finalPath = StoragePathBuilder.Build(
-                    StorageLocation.Volatile.TranscriptionsInput,
-                    tenantId.ToString(),
-                    uploadId.ToString(),
-                    $"{Guid.NewGuid():N}.webm",
-                    false
-                );
-
-                // 🧩 aqui você pode juntar os chunks se necessário  
-                //var payload = new UploadCompletedEvent($"{_fileStorage.GetBaseUrl(finalPath)}");
-
-                _psychologySessionInsightSaga.Start(uploadId.ToString(), "yFileUpload");
-
-                _unitOfWork.BeginTran();
-                _repWriteyFileUpload.UpdateFilePath(uploadId, finalPath.Value);
-                _repWriteyFileUpload.UpdateStatus(uploadId, 1);
-                _repWriteyFileUpload.UpdateCompletedAt(uploadId, DateTime.UtcNow);
-                _ySagaWriteRepository.Save(_psychologySessionInsightSaga);
-                _unitOfWork.Commit();
-
-                
-                state = Success("Upload finalizado com sucesso.",
-                    new SendFileOutputCommand
-                    {
-                        Success = true,
-                        ChunkIndex = comand.ChunkIndex,
-                        IsFinalized = true
-                    });
             }
-            catch (ReceiverException<SendFileOutputCommand>)
-            {
-                _unitOfWork.Rollback();
-                throw;
-            }
-            catch (Exception ex)
-            {
-                _unitOfWork.Rollback();
-                throw new ReceiverException<SendFileOutputCommand>(
-                    Error(ex, default));
-            }
-            return state;
+            var saga = new PsychologySessionInsightSaga();
+            saga.Start(sessionId.ToString(), "Sesoes");
+            // Explicit, persisted upload-to-processing association and idempotency key.
+            saga.SetCorrelationId(upload.operationalentityid);
+            saga.GetCurrent()!.SetPayload(JsonSerializer.Serialize(new { uploadId = upload.id }));
+            if (_executionContext.TryGetOperationalIdentity(out var identity))
+                saga.SetOperationalIdentity(identity.RootOperationId, identity.OperationId, identity.ExecutionId, identity.CausationId);
+            _uploadsWrite.UpdateFilePath(upload.id, final.Value);
+            _uploadsWrite.UpdateStatus(upload.id, 1);
+            _uploadsWrite.UpdateCompletedAt(upload.id, DateTime.UtcNow);
+            _sessionsWrite.MarkInsightPending(sessionId);
+            _sagasWrite.Save(saga);
+            _work.Commit();
+            return Success("Audio pronto para processamento.", new SendFileOutputCommand
+            { Success = true, ChunkIndex = command.ChunkIndex, IsFinalized = true, SagaId = saga.Id, SagaCorrelationId = saga.CorrelationId.ToString("D") });
+        }
+        catch
+        {
+            _work.Rollback();
+            throw;
         }
     }
-    public record UploadCompletedEvent(string FilePath);
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationCommandReceiversUseCase
+public record UploadCompletedEvent(string FilePath);

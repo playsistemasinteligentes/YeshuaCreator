@@ -73,6 +73,14 @@ services:
       AgentTasks__AllowWorkspaceWrite: "${YESHUA_AGENT_ALLOW_WORKSPACE_WRITE:-false}"
       AgentTasks__ChatGptAuthentication: "${YESHUA_AGENT_CHATGPT_AUTHENTICATION:-true}"
       AgentTasks__CodexHomePath: "/home/agent/.codex"
+      CLINICA_CODEX_EXECUTOR_ENABLED: "${CLINICA_CODEX_EXECUTOR_ENABLED:-false}"
+      CLINICA_CODEX_BIN: "/home/agent/.npm-global/bin/codex"
+      CLINICA_CODEX_MODEL: "${CLINICA_CODEX_MODEL:-}"
+      CLINICA_CODEX_TIMEOUT_SECONDS: "${CLINICA_CODEX_TIMEOUT_SECONDS:-900}"
+      CLINICA_EXECUTOR_QUEUES: "text.summarize.outbox"
+      YESHUA_PROCESSING_SCOPE: "${CLINICA_PROCESSING_SCOPE:-production}"
+      CELERY_BROKER_URL: "${YESHUA_CELERY_BROKER_URL:?Configure credentials.json}"
+      STORAGE_ROOT: "/storage"
       OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
     ports:
@@ -80,6 +88,7 @@ services:
     volumes:
       - /root/YeshuaCreator:/server/YeshuaCreator:ro
       - /root/YeshuaStorage:/storage:ro
+      - /root/YeshuaStorage/volatile/ia/transcriptions/output:/storage/volatile/ia/transcriptions/output
       - operational-agent-workspace:/workspace
       - operational-agent-codex:/home/agent/.codex
       - operational-agent-claude:/home/agent/.claude

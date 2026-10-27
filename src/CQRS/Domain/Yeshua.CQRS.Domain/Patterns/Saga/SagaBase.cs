@@ -40,6 +40,11 @@ namespace Dominio.Patterns.Saga
         public IReadOnlyCollection<SagaStepBase> Steps => _steps;
         // 🔥 NOVO: controle de persistência
         public bool IsDirty { get; private set; } = false;
+        // The persistence boundary rolls back the writes of an unsuccessful attempt.
+        public bool LastExecutionFailed { get; private set; }
+
+        public void BeginExecutionAttempt() => LastExecutionFailed = false;
+        public void MarkExecutionAttemptFailed() => LastExecutionFailed = true;
 
         public void SetCorrelationId(string guid)
         {

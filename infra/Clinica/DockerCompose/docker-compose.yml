@@ -62,6 +62,11 @@ services:
       RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
       RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: /
+      ClinicaTranscription__Provider: "${CLINICA_TRANSCRIPTION_PROVIDER:-OpenAI}"
+      ClinicaTranscription__ApiKey: "${CLINICA_TRANSCRIPTION_API_KEY:-}"
+      ClinicaTranscription__Model: "${CLINICA_TRANSCRIPTION_MODEL:-gpt-transcribe}"
+      ClinicaTranscription__BaseUrl: "${CLINICA_TRANSCRIPTION_BASE_URL:-https://api.openai.com/v1}"
+      ClinicaTranscription__FFmpegExecutable: "/usr/bin/ffmpeg"
     expose:
       - "7215"
     volumes:

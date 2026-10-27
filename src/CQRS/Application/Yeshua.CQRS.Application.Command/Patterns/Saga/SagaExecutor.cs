@@ -20,9 +20,13 @@ namespace Command.Patterns
 
         public void Execute(SagaBase saga, ISagaHandlerResolver resolver)
         {
+            saga.BeginExecutionAttempt();
             var step = saga.GetCurrent();
 
             if (step == null)
+                return;
+
+            if (step.Status == SagaStepStatus.Pending && step.NextExecutionAt > DateTime.UtcNow)
                 return;
 
             var handlers = resolver.GetHandlers();
@@ -194,6 +198,7 @@ namespace Command.Patterns
 
         private void HandleFailure(SagaBase saga, SagaStepBase step, Exception e, bool retryable)
         {
+            saga.MarkExecutionAttemptFailed();
             if (retryable)
             {
                 step.IncrementRetry();
@@ -201,6 +206,7 @@ namespace Command.Patterns
                 {
                     var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
                     step.SetPending(DateTime.UtcNow.Add(delay));
+                    saga.NextExecutionAt = step.NextExecutionAt.Value;
                     return;
                 }
             }

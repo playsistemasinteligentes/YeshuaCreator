@@ -33,6 +33,8 @@ public partial record SendFileOutputCommand : ICommand
     public bool Success { get; set; }
     public int ChunkIndex { get; set; }
     public bool IsFinalized { get; set; }
+    public int SagaId { get; set; }
+    public string SagaCorrelationId { get; set; } = string.Empty;
 }
 
 }

@@ -1,4 +1,4 @@
-﻿using global::RabbitMQ.Client;
+using global::RabbitMQ.Client;
 using Microsoft.Extensions.Options;
 using Shared.InterfacesConcrete.Queue.RabbitMQ;
 using System.Collections.Concurrent;
@@ -86,7 +86,7 @@ Worker
 
             var connection = await GetConnectionAsync(ct);
 
-            var channel = await connection.CreateChannelAsync(null, ct);
+            var channel = await connection.CreateChannelAsync(new CreateChannelOptions(publisherConfirmationsEnabled: true, publisherConfirmationTrackingEnabled: true), ct);
 
             _channels[channelId] = channel;
 

@@ -1,5 +1,10 @@
 # Ficha Operacional - Prontuario A Partir Do Audio Da Sessao
 
+> Atualizacao de fonte em 2026-10-27: a adequacao da saga e o executor Codex
+> estao descritos em [CODEX_EXECUTOR.md](CODEX_EXECUTOR.md). Os bloqueios abaixo
+> registram o levantamento original; o novo fonte ainda requer homologacao
+> real antes de mudar a elegibilidade operacional desta ficha.
+
 ## 1. Identificacao
 
 | Campo | Valor |

@@ -19,10 +19,12 @@ namespace Command.Receivers.UseCase
         private readonly IyFileUploadReadRepository _repReadyFileUpload;
         private readonly IyFileUploadWriteRepository _repWriteyFileUpload;
         private readonly UploadTokenHelper _uploadTokens;
+        private readonly ISesoesReadRepository _sessions;
         
         public StarSessionUploadHandler(
     IUnitOfWork unitOfWork,
     UploadTokenHelper uploadTokens,
+    ISesoesReadRepository sessions,
     IyFileUploadReadRepository repReadyFileUpload,
     IyFileUploadWriteRepository repWriteyFileUpload,
     Dominio.Interfaces.ILogger logger,
@@ -31,6 +33,7 @@ namespace Command.Receivers.UseCase
         {
             _unitOfWork = unitOfWork;
             _uploadTokens = uploadTokens;
+            _sessions = sessions;
             _repReadyFileUpload = repReadyFileUpload;
             _repWriteyFileUpload = repWriteyFileUpload;
             _logger = logger;
@@ -43,6 +46,9 @@ namespace Command.Receivers.UseCase
             try
             {
 
+                if (comand.entityType != "Sesoes" || !int.TryParse(comand.entityId, out var sessionId)
+                    || sessionId <= 0 || _sessions.FirstById(sessionId) is null)
+                    return ValidationError("Sessao clinica nao encontrada.", new StarSessionUploadOutputCommand());
                 // Criar entidade
                 var upload = new yFileUploadFactory(_logger).Create(
                   0,
@@ -50,10 +56,10 @@ namespace Command.Receivers.UseCase
                   0,                       
                   "",
                   0,
-                  comand.entityId,
                   comand.entityType,
+                  comand.entityId,
                   DateTime.UtcNow,
-                  DateTime.MinValue
+                  null
               );
 
                 if (!upload.isValidInsert())

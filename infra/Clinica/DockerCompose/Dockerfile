@@ -5,9 +5,10 @@ ARG YESHUA_COMMIT_SHA=UNSET
 
 COPY . .
 
-RUN dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj -c Release -o /app/publish/migration
-RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj -c Release -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/api
-RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj -c Release -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/worker
+ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
+RUN dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish/migration
+RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/api
+RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/worker
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS aspnet-health
 WORKDIR /app
@@ -24,6 +25,10 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
 ENTRYPOINT ["dotnet", "Yeshua.Clinica.CQRS.Infrastructure.Api.dll"]
 
 FROM aspnet-health AS worker
+RUN apt-get update \
+  && apt-get install -y --no-install-recommends ffmpeg \
+  && /usr/bin/ffmpeg -version > /dev/null \
+  && rm -rf /var/lib/apt/lists/*
 COPY --from=publish /app/publish/worker .
 ENV ASPNETCORE_URLS=http://0.0.0.0:7215
 EXPOSE 7215

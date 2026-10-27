@@ -281,6 +281,32 @@ def environment(document, root, target, include_shared=False):
             tunnel_id, tunnel_key = result["YESHUA_MCP_TUNNEL_ID"], result["YESHUA_MCP_TUNNEL_API_KEY"]
             if bool(tunnel_id) != bool(tunnel_key) or (tunnel_id and not tunnel_id.startswith("tunnel_")):
                 raise ConfigurationError("McpTunnel exige Id valido e ApiKey juntos em providers.json.")
+    # App-owned configuration lives in the main credentials document; never inherit secrets.
+    clinical_keys = ("CLINICA_PROCESSING_SCOPE", "CLINICA_CODEX_MODEL", "CLINICA_CODEX_TIMEOUT_SECONDS",
+                     "CLINICA_TRANSCRIPTION_API_KEY", "CLINICA_TRANSCRIPTION_MODEL", "CLINICA_TRANSCRIPTION_BASE_URL",
+                     "CLINICA_TRANSCRIPTION_PROVIDER", "CLINICA_CODEX_EXECUTOR_ENABLED")
+    result.update({key: "" for key in clinical_keys})
+    if target in ("clinica", "shared", "all") or include_shared:
+        config = document.get("Apps", {}).get("Clinica", {})
+        if config:
+            enabled = config.get("Codex", {}).get("Enabled", False)
+            if type(enabled) is not bool:
+                raise ConfigurationError("Apps.Clinica.Codex.Enabled deve ser booleano.")
+            result.update({
+                "CLINICA_CODEX_EXECUTOR_ENABLED": str(enabled).lower(),
+                "CLINICA_PROCESSING_SCOPE": get(config, "ProcessingScope"),
+                "CLINICA_CODEX_MODEL": get(config, "Codex", "Model"),
+                "CLINICA_CODEX_TIMEOUT_SECONDS": str(config.get("Codex", {}).get("TimeoutSeconds", 900)),
+                "CLINICA_TRANSCRIPTION_API_KEY": get(config, "Transcription", "ApiKey"),
+                "CLINICA_TRANSCRIPTION_MODEL": get(config, "Transcription", "Model") or "gpt-transcribe",
+                "CLINICA_TRANSCRIPTION_BASE_URL": get(config, "Transcription", "BaseUrl") or "https://api.openai.com/v1",
+                "CLINICA_TRANSCRIPTION_PROVIDER": get(config, "Transcription", "Provider") or "OpenAI",
+            })
+            if not result["CLINICA_CODEX_TIMEOUT_SECONDS"].isdigit() or not 30 <= int(result["CLINICA_CODEX_TIMEOUT_SECONDS"]) <= 3600:
+                raise ConfigurationError("Codex.TimeoutSeconds deve estar entre 30 e 3600.")
+            if result["CLINICA_TRANSCRIPTION_PROVIDER"] not in ("OpenAI", "Queue"):
+                raise ConfigurationError("Transcription.Provider deve ser OpenAI ou Queue.")
+
     return result
 
 

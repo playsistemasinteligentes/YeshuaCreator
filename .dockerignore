@@ -1,6 +1,7 @@
 **/.classpath
 **/.dockerignore
 **/.env
+**/.artifacts
 **/credentials.json
 **/bootstrap.json
 **/providers.json

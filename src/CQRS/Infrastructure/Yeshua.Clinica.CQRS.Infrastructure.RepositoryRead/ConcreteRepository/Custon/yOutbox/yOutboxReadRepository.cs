@@ -17,7 +17,7 @@ namespace Read.Repository
         SET 
             Status = 9,
             ProcessingAt = @now
-        OUTPUT inserted.*
+        OUTPUT inserted.*, deleted.Status AS ClaimPreviousStatus
         WHERE 
             (
                 Status = 0
@@ -26,6 +26,7 @@ namespace Read.Repository
                     AND ProcessingAt < DATEADD(MINUTE, -@TimeoutMinutes, @now)
                 )
             )
+            AND ProcessingScope = @ProcessingScope AND Deleted = 0
             AND SagaId is not null 
             AND (NextAttemptAt IS NULL OR NextAttemptAt <= @now)
     ";
@@ -33,7 +34,8 @@ namespace Read.Repository
             return _unitOfWork.Query<yOutboxDTO>(sql, new
             {
                 BatchSize = batchSize,
-                TimeoutMinutes = 5
+                TimeoutMinutes = 5,
+                ProcessingScope = _executionContext.ProcessingScope
             }).ToList();
         }
 

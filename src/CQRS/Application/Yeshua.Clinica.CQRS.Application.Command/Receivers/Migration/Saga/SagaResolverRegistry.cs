@@ -67,6 +67,7 @@ namespace Command.Receivers.Migration.Saga
             saga.CompletedAt = dto.completedat;
             saga.EntityType = dto.entitytype;
             saga.EntityId = dto.entityid;
+            saga.NextExecutionAt = dto.nextexecutionat;
             saga.HydrateOperationalIdentity(dto.rootoperationid, dto.operationid, dto.executionid, dto.causationid);
 
             if (dto.Steps != null && dto.Steps.Any())
@@ -78,7 +79,7 @@ namespace Command.Receivers.Migration.Saga
                     if (dtoStep == null)
                         continue;
 
-                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid);
+                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage);
                 }
             }
 

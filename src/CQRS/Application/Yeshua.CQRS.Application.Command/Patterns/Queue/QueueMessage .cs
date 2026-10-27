@@ -1,4 +1,4 @@
-﻿using Dominio.Operational;
+using Dominio.Operational;
 
 namespace Command.Patterns.Queue;
 
@@ -43,6 +43,7 @@ public sealed class QueueMessage
 
     // quem originou
     public string? Source { get; init; }
+    public string? ProcessingScope { get; init; }
 
     // versão do contrato
     public int Version { get; init; } = 1;

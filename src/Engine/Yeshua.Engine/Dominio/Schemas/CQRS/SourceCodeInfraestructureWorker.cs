@@ -1,4 +1,4 @@
-﻿using Dominio.Migration;
+using Dominio.Migration;
 using Dominio.Schemas.CQRS.Abstraction;
 using Interfaces.Schemas;
 using Migration.Dominio;
@@ -45,48 +45,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("{");
 
 
-            foreach (var group in _migration.UseCaseGroup)
-            {
-                foreach (var subGroup in group.UseCaseSubGroup)
-                {
-                    foreach (var saga in subGroup.Saga)
-                    {
-                        foreach (var stepGroup in saga.SagaStepGroup)
-                        {
-                            foreach (var step in stepGroup.Steps)
-                            {
-                                //avaliar pois o outbox pode ser mais padronizado sem necessidade de um por step ou por saga podendo eventualmente ser um apenas 
-                                //padronizar o outbox ou seja um outbox por sistema  eventualmente por saga mas tem que ter codigo padrao  
-
-                                // pendencia: ativar os PollingWorkers de Saga e Inbox a partir da DSL.
-                                // observacao: os handlers ja implementam IWorkerCycleResult; ao ativar,
-                                // o ReciverBase incorpora os contadores na telemetria do Command.
-
-                                //if (step.SagaStepUseCaseCommand != null)
-                                //    AppendPollingWorker(sb, step.SagaStepUseCaseCommand);
-                                //
-                                //if (step.OutBoxPollingWorker != null)
-                                //    AppendPollingWorker(sb, step.OutBoxPollingWorker);
-                                //
-                                //if (step.InBoxPollingWorker != null)
-                                //    AppendPollingWorker(sb, step.InBoxPollingWorker);
-                                //
-                                //if (step.QueueListenerWorker != null)
-                                //{
-                                //    foreach (var exchange in step.queueTopology.Exchanges)
-                                //    {
-                                //        foreach (var binding in exchange.Bindings)
-                                //        {
-                                //            var queueName = binding.QueueName;
-                                //            AppendQueueListenerWorker(sb, queueName, step.QueueListenerWorker);
-                                //        }
-                                //    }
-                                //}
-                            }
-                        }
-                    }
-                }
-            }
+            if (_migration.GenerateSagaQueueWorkers)
+                AppendStandardQueueWorkers(sb);
 
             if (HasSagas())
                 AppendSagaPollingWorkers(sb);
@@ -131,45 +91,28 @@ builder.Services.AddHostedService(sp =>
 ");
         }
 
-        private void AppendPollingWorker(StringBuilder sb, UseCaseCommand handler)
+        private void AppendStandardQueueWorkers(StringBuilder sb)
         {
-            sb.AppendLine($@"
-                builder.Services.AddHostedService(sp =>
-                    new PollingWorker<{CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.HandlerName},
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.InputCommandName},
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.OutputCommandName}>(
-                        sp,
-                        sp.GetRequiredService<
-                            ILogger<PollingWorker<
-                                {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.HandlerName},
-                                {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.InputCommandName},
-                                {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.OutputCommandName}>>>(),
-                        TimeSpan.FromSeconds(5)
-                    ));
-                ");
-        }
-        private void AppendQueueListenerWorker(StringBuilder sb,string queueName, UseCaseCommand handler)
-        {
-            sb.AppendLine($@"
-                builder.Services.AddHostedService(sp =>
-                {{
-                    var listener = sp.GetRequiredService<IQueueListener>();
-                    var logger = sp.GetRequiredService<ILogger<QueueListenerWorker<
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.HandlerName},
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.InputCommandName},
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.OutputCommandName}>>>();
-
-                    return new QueueListenerWorker<
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.HandlerName},
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.InputCommandName},
-                        {CQRSParam.I.NameSpaceCommandCommandsSaga}.{handler.OutputCommandName}>(
-                            sp,
-                            listener,
-                            logger,
-                            queueName: ""{queueName}""
-                    );
-                }});
-                ");
+            var steps = _migration.UseCaseGroup.SelectMany(g => g.UseCaseSubGroup)
+                .SelectMany(g => g.Saga).SelectMany(s => s.SagaStepGroup).SelectMany(g => g.Steps).ToList();
+            if (steps.Any(s => s.OutboxQueueTopology != null))
+                sb.AppendLine(@"
+builder.Services.AddTransient<Command.Patterns.OutBox.yOutBoxWorkerHandler>();
+builder.Services.AddHostedService(sp =>
+    new PollingWorker<Command.Patterns.OutBox.yOutBoxWorkerHandler, Command.Patterns.OutBox.yOutboxInputCommand, Command.Patterns.OutBox.yOutboxOutputCommand>(
+        sp, sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.OutBox.yOutBoxWorkerHandler, Command.Patterns.OutBox.yOutboxInputCommand, Command.Patterns.OutBox.yOutboxOutputCommand>>>(),
+        TimeSpan.FromMilliseconds(2000)));");
+            var queues = steps.Where(s => s.InboxQueueTopology != null)
+                .SelectMany(s => s.InboxQueueTopology!.Exchanges).SelectMany(e => e.Bindings)
+                .Select(b => b.QueueName).Distinct().ToList();
+            if (queues.Count == 0) return;
+            sb.AppendLine(@"
+builder.Services.AddTransient<Command.Patterns.OutBox.InboxListenerHandler>();
+builder.Services.AddHostedService(sp =>
+    new QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>(
+        sp, sp.GetRequiredService<IQueueListener>(),
+        sp.GetRequiredService<ILogger<QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>>>(),");
+            sb.AppendLine("        new string[] { " + string.Join(", ", queues.Select(q => System.Text.Json.JsonSerializer.Serialize(q))) + " }));");
         }
     }
 }

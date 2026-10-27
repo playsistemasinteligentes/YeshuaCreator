@@ -299,6 +299,7 @@ Command
                 }
             };
 
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.OutboxQueueTopology = queueTopology;
             return AddqueueTopology(queueTopology);
         }
 
@@ -322,6 +323,7 @@ Command
                 }
             };
 
+            this.UseCaseSubGroup.Last().Saga.Last().SagaStepGroup.Last().LastStep.InboxQueueTopology = queueTopology;
             return AddqueueTopology(queueTopology);
         }
         public UseCaseGroup AddqueueTopology(QueueTopology queueTopology)

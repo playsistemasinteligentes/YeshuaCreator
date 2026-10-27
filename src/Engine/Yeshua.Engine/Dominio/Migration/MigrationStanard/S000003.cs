@@ -233,7 +233,7 @@ namespace Migration.Dominio.Migration
 
         }
         public record SendFileCommand(string token, int ChunkIndex, bool IsFinalChunk, string FileName, string ContentType, IFormFile FileStream);
-        public record SendFileResponse(bool Success, int ChunkIndex, bool IsFinalized);
+        public record SendFileResponse(bool Success, int ChunkIndex, bool IsFinalized, int SagaId = 0, string SagaCorrelationId = "");
         public record SessionUploadToken(string uploadToken);
         public record AutenticationToken(string token, string entityType, string entityId);
 

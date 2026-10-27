@@ -20,6 +20,19 @@ public static class WorkersBuilder
 public static void MapWorkersBuilder(WebApplicationBuilder builder)
 {
 
+builder.Services.AddTransient<Command.Patterns.OutBox.yOutBoxWorkerHandler>();
+builder.Services.AddHostedService(sp =>
+    new PollingWorker<Command.Patterns.OutBox.yOutBoxWorkerHandler, Command.Patterns.OutBox.yOutboxInputCommand, Command.Patterns.OutBox.yOutboxOutputCommand>(
+        sp, sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.OutBox.yOutBoxWorkerHandler, Command.Patterns.OutBox.yOutboxInputCommand, Command.Patterns.OutBox.yOutboxOutputCommand>>>(),
+        TimeSpan.FromMilliseconds(2000)));
+
+builder.Services.AddTransient<Command.Patterns.OutBox.InboxListenerHandler>();
+builder.Services.AddHostedService(sp =>
+    new QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>(
+        sp, sp.GetRequiredService<IQueueListener>(),
+        sp.GetRequiredService<ILogger<QueueListenerWorker<Command.Patterns.OutBox.InboxListenerHandler, Command.Patterns.OutBox.InboxInputCommand, Command.Patterns.OutBox.InboxOutputCommand>>>(),
+        new string[] { "audio.transcribed.inbox", "text.summarized.inbox" }));
+
 builder.Services.AddTransient<Command.Patterns.SagaWorkerCommandHandler>();
 builder.Services.AddTransient<Command.Patterns.SagaInboxWorkerCommandHandler>();
 

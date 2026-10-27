@@ -12,32 +12,25 @@ namespace Read.Repository
         public int SetPendingApply()
         {
             var sql = @"
-                    BEGIN TRAN
-
-                    UPDATE s
-                    SET s.Status = 4, s.Payload = i.Payload
-                    FROM ySagaStep s
-                    INNER JOIN yInbox i ON i.CorrelationId = s.CorrelationId
-                    INNER JOIN ySaga sg ON sg.Id = s.SagaId
-                    WHERE i.Status = 0
-                      AND i.ProcessingScope = @ProcessingScope
-                      AND sg.ProcessingScope = @ProcessingScope;
-
-                    UPDATE i
-                    SET i.Status = 1
-                    FROM yInbox i
-                    INNER JOIN ySagaStep s ON s.CorrelationId = i.CorrelationId
-                    INNER JOIN ySaga sg ON sg.Id = s.SagaId
-                    WHERE s.Status = 4
-                      AND i.Status = 0
-                      AND i.ProcessingScope = @ProcessingScope
-                      AND sg.ProcessingScope = @ProcessingScope;
-
-                    DECLARE @Applied INT = @@ROWCOUNT;
-
-                    COMMIT;
-                    SELECT @Applied";
-
+                SET XACT_ABORT ON;
+                BEGIN TRAN;
+                DECLARE @applied TABLE (InboxId int, SagaId int);
+                UPDATE st SET Status = 4, Payload = i.Payload
+                  OUTPUT i.Id, inserted.SagaId INTO @applied
+                  FROM ySagaStep st WITH (UPDLOCK)
+                  INNER JOIN ySaga sg WITH (UPDLOCK) ON sg.Id = st.SagaId
+                  CROSS APPLY (SELECT TOP 1 * FROM yInbox i WHERE i.CorrelationId = st.CorrelationId
+                    AND i.SagaId = st.SagaId AND i.SagaStepId = st.Id AND i.Status = 0
+                    AND i.ProcessingScope = @ProcessingScope AND i.TenantID = sg.TenantID
+                    ORDER BY i.Id) i
+                 WHERE st.Status = 3 AND sg.Status = 1 AND st.Deleted = 0 AND sg.Deleted = 0
+                   AND sg.ProcessingScope = @ProcessingScope;
+                UPDATE sg SET NextExecutionAt = SYSUTCDATETIME()
+                  FROM ySaga sg INNER JOIN @applied a ON a.SagaId = sg.Id;
+                UPDATE i SET Status = 1 FROM yInbox i INNER JOIN @applied a ON a.InboxId = i.Id;
+                DECLARE @count int = (SELECT COUNT(*) FROM @applied);
+                COMMIT;
+                SELECT @count;";
             return _unitOfWork.ExecuteScalar<int>(sql, new
             {
                 ProcessingScope = _executionContext.ProcessingScope

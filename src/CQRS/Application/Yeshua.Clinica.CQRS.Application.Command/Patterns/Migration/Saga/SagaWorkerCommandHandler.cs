@@ -332,14 +332,25 @@ namespace Command.Patterns
                             continue;
 
                         var resolver = _registry.Resolve(saga);
-                        _executor.Execute(saga, resolver);
-
-                        if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
-                            continue;
-
-                        _unitOfWork.BeginTran();
+                        const bool TransactionalStepWrites = true;
+                        if (TransactionalStepWrites)
+                            _unitOfWork.BeginTran();
                         try
                         {
+                            _executor.Execute(saga, resolver);
+                            if (TransactionalStepWrites && saga.LastExecutionFailed)
+                            {
+                                _unitOfWork.Rollback();
+                                _unitOfWork.BeginTran();
+                            }
+                            if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
+                            {
+                                if (TransactionalStepWrites)
+                                    _unitOfWork.Rollback();
+                                continue;
+                            }
+                            if (!TransactionalStepWrites)
+                                _unitOfWork.BeginTran();
                             _sagaWriteRepository.Save(saga);
                             _unitOfWork.Commit();
                             processed++;

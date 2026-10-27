@@ -2010,3 +2010,73 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - O perfil `BusinessRule` exclui contratos, classes-base, testes e bordas arquiteturais.
 - Arquivos regeneraveis recebem `GENERATED_REGENERABLE`; custom criados uma vez recebem `DSL_SEEDED_CUSTOM_OWNED_BY_DEV` e nunca sao sobrescritos.
 - Especificacoes em projetos Studio sao classificadas como `DSL_SPECIFICATION`.
+
+## Clinica E Executor Codex
+
+- PsychologySessionInsight mantem transcricao e resumo como dois StepWait
+  independentes, conservando os identificadores de steps ja persistidos.
+- Novas sagas pertencem a Sesoes; a referencia explicita ao upload usa sua
+  OperationalEntityId imutavel como CorrelationId da saga, com normalizacao N/D.
+  Finalizacao repetida do mesmo upload retorna o processamento existente.
+- Transcricao literal fica no payload persistido do primeiro step. Os tres
+  campos clinicos sao aplicados somente depois de validar todo o resumo.
+  StatusProntuario usa 2 Pendente e 3 Concluido; falha tecnica fica na saga.
+- ConfigureSagaWorkers(..., generateQueueWorkers: true) opta pelo transporte
+  gerado e persistencia transacional dos steps. A opcao explicita evita criar
+  consumidores concorrentes aos transportadores customizados de outros apps.
+  A padronizacao integral dos repositories internos ainda permanece pendente.
+- MessageId da Outbox identifica a tentativa logica; reentrega preserva o id,
+  retry do step gera outra tentativa. Resultado confere requestId, step, saga,
+  escopo e duplicidade. Confirmar pedido da fila somente apos publicar seu
+  resultado com confirmacao do broker.
+- O modo opcional clinica-tasks do Docker operacional executa Codex em jobs
+  efemeros e separados. Audio usa ferramenta MCP restrita ao arquivo da tarefa;
+  resumo recebe explicitamente o texto. Credencial da ferramenta de audio
+  pertence a Apps.Clinica.Transcription no credentials.json geral privado e nao e implicita na autenticacao do Codex.
+- O override e a homologacao estao em docs/operational/clinica/CODEX_EXECUTOR.md.
+  Essa implementacao local nao comprova deploy ou transcricao real.
+- O plano da tela customizada Atendimentos do psicologo esta preservado em
+  docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md, ainda sem implementacao.
+  Propoe agenda, preparo com historico/planos, registro e fechamento humano;
+  separar sugestao da IA de registro final e proteger contra retornos atrasados
+  sao adaptacoes futuras, nao comportamentos ja implementados no executor atual.
+- Direcao arquitetural implementada localmente para transcricao:
+  Saga -> Outbox -> execucao externa -> Inbox -> Saga, sempre.
+  OpenAI e Codex sao ambos executores externos. A escolha de destino pertence
+  ao processamento da Outbox, nunca ao Receiver da saga. Nao criar caminho de
+  resultado direto para OpenAI nem alternancia entre step interno e externo.
+  Ver docs/operational/clinica/ESTUDO_API_OPENAI_TRANSCRICAO.md.
+- Escopo confirmado para essa integracao: preservar gravacao/telas atuais,
+  envio dos chunks e recepcao/juncao pelo C#, que o usuario informa funcionarem.
+  A troca comeca no arquivo finalizado e abrange a transcricao externa. Preparo
+  eventual de formato/tamanho fica no Worker, depois do upload existente.
+- O ponto de extensao e o yOutBoxWorkerHandler existente: selecionar adaptador
+  OpenAI HTTP ou entrega por fila para executor externo, sem novo host/Worker.
+  Ambos preservam pedido e retorno versionados, identidade, retry e idempotencia.
+  Normalizar a resposta HTTP na mesma entrada de Inbox; nunca aplicar no step
+  ou no prontuario a partir do adaptador. Confirmar a Outbox somente apos garantir
+  entrega/retorno duravel conforme o transporte, com transacoes curtas e reserva
+  adequada ao tempo de I/O. A Inbox valida rota por fila ou contrato logico
+  declarado independente de transporte, sem inventar fila ficticia.
+- Preservar destino/identidade dos pedidos ativos ao trocar configuracao, usando
+  metadata existente da Outbox antes de criar campos. Sem fallback automatico.
+  Nao reformar ISagaStepHandler para async por causa da OpenAI: o processamento
+  da Outbox ja tem borda assincrona. FFmpeg e preparo ficam depois do upload.
+  Os chunks MediaRecorder de dez segundos nao sao garantidos como arquivos
+  independentes; manter a juncao C# no piloto. Resumo continua separado.
+- TranscriptionDeliveryFactory aplica o conceito Strategy no processamento da
+  Outbox: OpenAI HTTP e Queue implementam IOutboxDeliveryStrategy. OpenAI e o
+  padrao de novas transcricoes; resumo permanece Queue. O destino fica congelado
+  em TransportData.DeliveryProvider antes do envio, sem nova coluna ou fallback.
+  Entregas antigas recuperadas/retried sem destino explicito preservam Queue.
+  Retorno HTTP entra pela aceitacao comum de Inbox e e persistido na mesma
+  transacao curta da confirmacao da Outbox, com fence de reserva e escopo.
+  Retry transitorio pertence a Outbox; falha terminal devolve contrato pela
+  Inbox e evita espera infinita. O limite HTTP total e 240 s para reserva de 5 min.
+  FFmpeg condicional no Worker prepara partes; upload e gravacao nao mudam.
+  Chave/modelo usam Apps.Clinica.Transcription no credentials.json geral privado.
+  Esse arquivo e a fonte unica tambem para as conexoes e demais chaves; nao
+  criar provider separado ou fallback para a chave OpenAI.
+  Ver docs/operational/clinica/OPENAI_TRANSCRIPTION.md. API/Worker publicados na
+  VPS em 27/10/2026; prova do adaptador C# + FFmpeg + OpenAI com voz sintetica
+  aprovada. Homologacao pela tela ainda pendente; fila de resumo sem consumidor.

@@ -1,0 +1,16 @@
+# Optional queue-based transcription on the existing operational container.
+# The standard deployment enables only the separate summary consumer through
+# Apps.Clinica.Codex.Enabled in the general private credentials file.
+services:
+  operational-intelligence:
+    environment:
+      CLINICA_CODEX_EXECUTOR_ENABLED: "true"
+      CLINICA_EXECUTOR_QUEUES: "audio.transcribe.outbox,text.summarize.outbox"
+      CELERY_BROKER_URL: "${YESHUA_CELERY_BROKER_URL:?Configure the standard private configuration}"
+      YESHUA_PROCESSING_SCOPE: "${CLINICA_PROCESSING_SCOPE:?Use the same scope as Clinica API and Worker}"
+      CLINICA_CODEX_MODEL: "${CLINICA_CODEX_MODEL:-}"
+      CLINICA_CODEX_TIMEOUT_SECONDS: "${CLINICA_CODEX_TIMEOUT_SECONDS:-900}"
+      CLINICA_TRANSCRIPTION_API_KEY: "${CLINICA_TRANSCRIPTION_API_KEY:?Configure the audio tool credential}"
+      CLINICA_TRANSCRIPTION_MODEL: "${CLINICA_TRANSCRIPTION_MODEL:-gpt-transcribe}"
+      CLINICA_TRANSCRIPTION_BASE_URL: "${CLINICA_TRANSCRIPTION_BASE_URL:-https://api.openai.com/v1}"
+      STORAGE_ROOT: "/storage"

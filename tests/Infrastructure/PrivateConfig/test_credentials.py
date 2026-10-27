@@ -20,7 +20,7 @@ def configured():
     def fill(value):
         if isinstance(value, dict):
             return {key: fill(item) for key, item in value.items()}
-        return "fixture-'\"$#;\\!= " + "x" * 40 if isinstance(value, str) else value
+        return "fixture-'\"$#;\\!= " + "x" * 40 if value == "" else value
     return fill(document)
 
 
@@ -85,6 +85,60 @@ class CredentialsTests(unittest.TestCase):
         self.assertEqual("fixture-user", result["Shared"]["Grafana"]["UserName"])
         self.assertEqual("fixture-connection", result["Shared"]["OperationalIntelligence"]["ConnectionString"])
         self.assertEqual("fixture-read-only", result["Shared"]["OperationalIntelligence"]["DatabaseQueries"]["Memorias"])
+
+    def test_clinica_executor_uses_app_owned_private_configuration(self):
+        document = configured()
+        config = {"ProcessingScope": "test", "Codex": {"Model": "configured-codex", "TimeoutSeconds": 600},
+                  "Transcription": {"ApiKey": "fixture-audio-key", "Model": "configured-audio"}}
+        document["Apps"]["Clinica"].update(config)
+        with patch.object(Path, "exists", return_value=False), \
+             patch.object(credentials, "read_json", side_effect=AssertionError("No separate Clinica provider file")):
+            result = credentials.environment(document, Path("/private"), "shared")
+            self.assertEqual("fixture-audio-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
+            self.assertEqual("configured-codex", result["CLINICA_CODEX_MODEL"])
+            self.assertEqual("test", result["CLINICA_PROCESSING_SCOPE"])
+            self.assertEqual("OpenAI", result["CLINICA_TRANSCRIPTION_PROVIDER"])
+            unselected = credentials.environment(document, Path("/private"), "central")
+            self.assertEqual("", unselected["CLINICA_TRANSCRIPTION_API_KEY"])
+
+    def test_clinica_executor_does_not_inherit_provider_secret(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"]["ApiKey"] = ""
+        with patch.dict(os.environ, CLINICA_TRANSCRIPTION_API_KEY="inherited-secret"):
+            result = credentials.environment(document, Path("/path-that-does-not-exist"), "shared")
+        self.assertEqual("", result["CLINICA_TRANSCRIPTION_API_KEY"])
+
+    def test_clinica_can_select_queue_without_changing_the_private_secret_source(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"].update(Provider="Queue", ApiKey="fixture-key")
+        result = credentials.environment(document, Path("/private"), "clinica")
+        self.assertEqual("Queue", result["CLINICA_TRANSCRIPTION_PROVIDER"])
+        self.assertEqual("fixture-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
+
+    def test_clinica_rejects_unknown_delivery_provider(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"]["Provider"] = "invalid"
+        with self.assertRaises(credentials.ConfigurationError):
+            credentials.environment(document, Path("/private"), "clinica")
+
+    def test_clinica_general_credentials_are_authoritative_even_when_old_file_exists(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"]["ApiKey"] = "main-file-key"
+        with patch.object(Path, "exists", lambda path: path.name == "codex-executor.json"), \
+             patch.object(credentials, "read_json", side_effect=AssertionError("Obsolete provider must not be read")):
+            result = credentials.environment(document, Path("/private"), "clinica")
+        self.assertEqual("main-file-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
+
+    def test_clinica_codex_summary_is_disabled_by_default_and_explicitly_enabled(self):
+        document = configured()
+        result = credentials.environment(document, Path("/private"), "shared")
+        self.assertEqual("false", result["CLINICA_CODEX_EXECUTOR_ENABLED"])
+        document["Apps"]["Clinica"]["Codex"]["Enabled"] = True
+        result = credentials.environment(document, Path("/private"), "shared")
+        self.assertEqual("true", result["CLINICA_CODEX_EXECUTOR_ENABLED"])
+        document["Apps"]["Clinica"]["Codex"]["Enabled"] = "true"
+        with self.assertRaises(credentials.ConfigurationError):
+            credentials.environment(document, Path("/private"), "shared")
 
     def test_schema_types_and_control_characters(self):
         for invalid in [None, False, ["a"], "value\n", "value\0"]:

@@ -256,7 +256,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("            {");
 
                     sb.AppendLine("                // marca execução");
-                    sb.AppendLine("                step.SetInProgress();");
+                    // The shared executor owns the initial transition and attempt count.
                     sb.AppendLine();
 
                     sb.AppendLine("                // lógica de domínio");
@@ -530,6 +530,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("            saga.CompletedAt = dto.completedat;");
                 sb.AppendLine("            saga.EntityType = dto.entitytype;");
                 sb.AppendLine("            saga.EntityId = dto.entityid;");
+                sb.AppendLine("            saga.NextExecutionAt = dto.nextexecutionat;");
                 sb.AppendLine("            saga.HydrateOperationalIdentity(dto.rootoperationid, dto.operationid, dto.executionid, dto.causationid);");
                 sb.AppendLine();
 
@@ -542,7 +543,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("                    if (dtoStep == null)");
                 sb.AppendLine("                        continue;");
                 sb.AppendLine();
-                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid);");
+                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage);");
                 sb.AppendLine("                }");
                 sb.AppendLine("            }");
                 sb.AppendLine();
