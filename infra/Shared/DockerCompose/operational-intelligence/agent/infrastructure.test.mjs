@@ -34,6 +34,8 @@ test('private MCP and tunnel administration are loopback only and never publishe
   assert.equal(operations.ports.some(binding => /5729|5730/.test(String(binding))), false);
   assert.ok(operations.volumes.includes('/root/YeshuaCreator:/server/YeshuaCreator:ro'));
   assert.ok(operations.volumes.includes('/root/YeshuaStorage:/storage:ro'));
+  assert.equal(operations.environment.STORAGE_ROOT, '/clinica-work');
+  assert.ok(operations.volumes.includes('/root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output'));
   assert.equal(operations.volumes.some(binding => binding.includes('docker.sock')), false);
   const upstreams = readFileSync(resolve(shared, 'nginx/conf.d/00-upstreams.conf'), 'utf8');
   const route = readFileSync(resolve(shared, 'nginx/routes/30-operational-intelligence.conf'), 'utf8');

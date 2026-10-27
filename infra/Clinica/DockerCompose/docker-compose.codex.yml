@@ -13,4 +13,6 @@ services:
       CLINICA_TRANSCRIPTION_API_KEY: "${CLINICA_TRANSCRIPTION_API_KEY:?Configure the audio tool credential}"
       CLINICA_TRANSCRIPTION_MODEL: "${CLINICA_TRANSCRIPTION_MODEL:-gpt-transcribe}"
       CLINICA_TRANSCRIPTION_BASE_URL: "${CLINICA_TRANSCRIPTION_BASE_URL:-https://api.openai.com/v1}"
-      STORAGE_ROOT: "/storage"
+      STORAGE_ROOT: "/clinica-work"
+    volumes:
+      - /root/YeshuaStorage/volatile/ia/transcriptions/input:/clinica-work/volatile/ia/transcriptions/input:ro

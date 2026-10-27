@@ -1,6 +1,6 @@
 # Transcrição OpenAI no Clínica
 
-Implementação local de 27/10/2026. O Worker existente entrega o pedido à API
+Publicado e homologado pela API em 27/10/2026. O Worker existente entrega o pedido à API
 OpenAI usando Strategy. Gravação, telas, upload e junção dos chunks pelo C#
 permanecem no caminho atual.
 
@@ -126,16 +126,16 @@ Evidência local desta implementação:
 | Entrega OpenAI/fila e fluxo da sessão | 31 testes aprovados |
 | Engine, incluindo contratos e geração de Outbox/Inbox | 51 testes aprovados |
 | CQRS compartilhado | 37 testes aprovados |
-| Exportador privado: fonte geral única, segredo isolado e seleção do provider | 5 testes locais aprovados |
+| Exportador privado: fonte geral única, segredo isolado e seleção do provider | 6 testes focados aprovados |
 | API e Worker do Clínica | Compilação com sucesso |
 | Studio `--codegen-only` e preservação dos fontes de gravação/upload/step | Conferidos |
 
-Total: 124 testes locais. Os resultados .NET estão em `.artifacts/TestResults/clinica-openai*.trx`.
+As três suítes .NET somam 119 testes; a configuração focada soma outros 6. Os resultados .NET estão em `.artifacts/TestResults/clinica-openai*.trx`.
 Isso não representa execução com SQL real, OpenAI ou conversão de mídia real.
 
-A publicação na VPS e a prova real do adaptador foram concluídas em 27/10/2026,
-conforme o registro abaixo. Ainda falta homologar pela tela atual com áudio real
-do navegador, sessão longa e fluxo de resumo. O plano futuro de fechamento
+A publicação na VPS e a homologação integrada pela API foram concluídas em
+27/10/2026, conforme os registros abaixo. Permanecem como ensaios adicionais
+a gravação por microfone na tela e sessões longas de áudio. O plano futuro de fechamento
 humano está em [PLANO_PAINEL_ATENDIMENTOS.md](PLANO_PAINEL_ATENDIMENTOS.md).
 
 ### Publicação e validação em 27/10/2026
@@ -183,14 +183,63 @@ Nenhum áudio de paciente foi usado. Nenhum upload, consulta ou saga de negócio
 foi criado pelo verificador. Os diretórios temporários foram limpos. Essa prova
 valida o adaptador/FFmpeg/provedor; não substitui um teste completo pela tela.
 
-O resumo continua em uma chamada separada via `text.summarize.outbox`, sem
-consumidor no servidor neste momento. Uma consulta pode concluir a transcrição
-e permanecer aguardando resumo; o fechamento completo ainda depende desse executor.
+### Homologação integrada e resumo separado
 
-Os recibos privados, manifestos dos 64 fontes publicados, testes, identidades
-das imagens anteriores e resultados ficam em
+O consumidor de `text.summarize.outbox` foi habilitado por
+`Apps.Clinica.Codex.Enabled = true` no arquivo geral, com scope `production`.
+Ele roda no serviço `operational-intelligence` existente, preservando sua API,
+MCP e autenticação Codex. Nenhum novo container de aplicação foi criado.
+A transcrição continua OpenAI HTTP no Worker C#, sem passar pelo Codex.
+
+A primeira tentativa completa comprovou a transcrição e revelou uma falha no
+resumo: `/storage` é root:root `0750` na VPS. A pasta temporária foi montada em
+`/clinica-work/volatile/ia/transcriptions/output`, com `STORAGE_ROOT=/clinica-work`.
+O original continua somente leitura e suas permissões não foram ampliadas.
+O teste de regressão do Compose e a prova de escrita na pasta isolada passaram.
+
+A saga sintética 1 foi retomada pelo Command público normal de retry, apenas
+no step de resumo. Terminou em cerca de 13,1 s. O step de transcrição conservou
+`ExecutionCount=1`; o resumo concluiu na tentativa 4, após as três falhas de
+permissão. Isso comprovou a retomada sem repetir a transcrição.
+
+Em seguida, uma segunda consulta sintética confirmou o caminho de sucesso:
+
+- Login na Central, abertura da sessão do Clínica por `getMenu` e uso do token
+  de aplicação, como faz a tela.
+- WebM com fala fictícia enviado em três chunks; repetição do último devolveu
+  a mesma saga.
+- Saga -> Outbox -> OpenAI -> Inbox -> transcrição persistida.
+- Outro pedido Outbox -> RabbitMQ -> Codex -> Inbox -> resumo persistido.
+- Saga 2 com status 2, ambos os steps com status 5 e exatamente duas Outboxes.
+- `StatusProntuario=3`; Prontuario, QueixaPrincipal e RegistroDocumental
+  preenchidos com os fatos da gravação, sem acrescentar diagnóstico ou medicação.
+
+O teste .NET real passou em 24 s de execução (41,2 s incluindo preparação/build).
+Resultado: `.artifacts/TestResults/clinica-real-homologation.trx`. A gravação de
+homologação tem apenas personagens fictícios; nenhum áudio de paciente foi usado.
+As duas consultas sintéticas foram excluídas logicamente pela API normal depois
+da conferência dos resultados; as sagas e os recibos técnicos foram preservados.
+A prova percorre os endpoints reais de upload e a junção C#, sem automatizar
+captura de microfone no navegador.
+
+O `401` inicial vinha do perfil de teste apontando para o login legado do
+Clínica, enquanto a senha guardada pertencia à Central. A autenticação correta é
+`/apps/central/yapi/login`, seguida de `/apps/clinica/yapi/getMenu`, que fornece
+`X-Yeshua-Application-Token`. Nenhuma senha foi trocada para realizar o teste.
+
+| Suíte desta publicação | Resultado |
+| --- | --- |
+| Fluxo/Strategy do Clínica | 31 aprovados |
+| Engine | 51 aprovados |
+| CQRS compartilhado | 37 aprovados |
+| Executor Python | 13 aprovados |
+| Leitor de credenciais completo em Linux | 28 aprovados; 1 de ACL Windows ignorado |
+| Ambiente operacional Node | 17 aprovados |
+| Saga real com SQL, RabbitMQ, OpenAI e Codex | 1 aprovado |
+
+Os recibos privados, fontes/imagens anteriores, testes e manifestos ficam em
 `/root/YeshuaPrivate/production/operations/clinica-openai-0bd622c63ced`.
-A publicação contém alterações da versão de trabalho ainda sem commit/push.
-Antes de executar novamente o deploy habitual que atualiza e limpa o checkout,
-versionar essas alterações para não descartá-las. Nenhum commit ou push foi
-realizado nesta operação.
+O núcleo foi versionado em `0ee995a424101d86856ae121f0f6c6b3798447d8` e enviado
+à branch `codex/clinica-openai-transcription`. Esta revisão também versiona o
+ajuste do mount, o smoke de três chunks e o registro da homologação para entrega
+na `main`. Chaves e artefatos privados permanecem fora do Git e do build Docker.

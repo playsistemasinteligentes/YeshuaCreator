@@ -454,7 +454,10 @@ existente, junto das conexoes SQL e demais chaves. Ela e carregada para
 Clinica/Shared/all pelo exportador,
 com variaveis CLINICA_* limpas quando nao configuradas. Ver
 docs/operational/clinica/CODEX_EXECUTOR.md. Nenhuma credencial e criada ou
-migrada automaticamente, e o modo de tarefas depende de override explicito.
+migrada automaticamente. Apps.Clinica.Codex.Enabled (booleano, padrao false)
+ativa somente o resumo no Docker operational-intelligence existente. Model e
+TimeoutSeconds continuam opcionais. A autenticacao do Codex usa seu volume
+privado existente e nao depende da chave de transcricao.
 
 O Worker C# do Clinica usa `Apps.Clinica.Transcription` desse arquivo
 para entrega direta da Outbox a OpenAI. `Transcription.Provider` aceita

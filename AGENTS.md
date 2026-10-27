@@ -2029,12 +2029,16 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   retry do step gera outra tentativa. Resultado confere requestId, step, saga,
   escopo e duplicidade. Confirmar pedido da fila somente apos publicar seu
   resultado com confirmacao do broker.
-- O modo opcional clinica-tasks do Docker operacional executa Codex em jobs
-  efemeros e separados. Audio usa ferramenta MCP restrita ao arquivo da tarefa;
-  resumo recebe explicitamente o texto. Credencial da ferramenta de audio
-  pertence a Apps.Clinica.Transcription no credentials.json geral privado e nao e implicita na autenticacao do Codex.
-- O override e a homologacao estao em docs/operational/clinica/CODEX_EXECUTOR.md.
-  Essa implementacao local nao comprova deploy ou transcricao real.
+- Apps.Clinica.Codex.Enabled no credentials.json geral ativa o consumidor de
+  resumo no Docker operacional unificado existente (operational-intelligence).
+  API e consumidor sao supervisionados no mesmo container; nao substituir a API
+  pelo processo de fila. Codex usa sua autenticacao privada existente, recebe
+  somente a transcricao e devolve JSON validado. A transcricao padrao permanece
+  OpenAI HTTP no Worker C#, com credencial Apps.Clinica.Transcription.
+- O storage original /storage continua somente leitura e com permissoes
+  preservadas. O consumidor usa o alias /clinica-work para montar apenas sua
+  pasta temporaria de saida, pois a raiz do storage da VPS e privada ao root.
+  Nao abrir a raiz para o usuario agent. Ver docs/operational/clinica/CODEX_EXECUTOR.md.
 - O plano da tela customizada Atendimentos do psicologo esta preservado em
   docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md, ainda sem implementacao.
   Propoe agenda, preparo com historico/planos, registro e fechamento humano;
@@ -2079,4 +2083,7 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   criar provider separado ou fallback para a chave OpenAI.
   Ver docs/operational/clinica/OPENAI_TRANSCRIPTION.md. API/Worker publicados na
   VPS em 27/10/2026; prova do adaptador C# + FFmpeg + OpenAI com voz sintetica
-  aprovada. Homologacao pela tela ainda pendente; fila de resumo sem consumidor.
+  aprovada. Resumo separado publicado no mesmo Docker operacional. Homologacao
+  usa conta da Central e abre a sessao local por getMenu antes dos Commands;
+  nao usar a senha da Central no login legado do aplicativo. O ensaio de
+  gravacao por microfone na tela permanece separado do teste real de API.

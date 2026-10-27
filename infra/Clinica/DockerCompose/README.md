@@ -36,5 +36,7 @@ bloco `Transcription`. O deploy carrega esse bloco pelo leitor privado atual.
 
 Configuracao preparada no repositorio nao atualiza um container que ja esta em
 execucao. Publicado e validado na VPS em 27/10/2026, com a chave no arquivo geral.
-O resumo separado continua dependendo de um consumidor para sua fila.
-O resumo continua sendo outra tarefa entregue pela fila.
+O resumo e outra tarefa pela fila; Apps.Clinica.Codex.Enabled ativa seu
+consumidor no Docker operacional existente. A pasta temporaria e montada no
+alias /clinica-work, preservando o storage original somente leitura. Ver
+[executor Codex](../../../docs/operational/clinica/CODEX_EXECUTOR.md).

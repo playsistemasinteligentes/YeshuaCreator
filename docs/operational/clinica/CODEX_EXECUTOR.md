@@ -1,142 +1,106 @@
 # Executor Codex do Clinica
 
-> Direcao revisada em 2026-10-27: o estudo
-> [ESTUDO_API_OPENAI_TRANSCRICAO.md](ESTUDO_API_OPENAI_TRANSCRICAO.md) recomenda
-> um unico fluxo Saga -> Outbox -> execucao externa -> Inbox -> Saga. A escolha
-> entre OpenAI HTTP e executor por fila ocorre no processamento da Outbox.
-> Nenhum provedor aplica resultado diretamente na saga. A implementacao local
-> esta em [OPENAI_TRANSCRIPTION.md](OPENAI_TRANSCRIPTION.md), ainda sem homologacao real.
-> Este arquivo documenta o prototipo opcional pela fila; o resumo
-> permanece uma tarefa separada.
+A transcricao padrao usa a Strategy OpenAI no Worker C#. O resumo continua em
+uma chamada separada pela fila, executada pelo Codex no Docker operacional
+existente. O fluxo comum permanece Saga -> Outbox -> executor -> Inbox -> Saga.
+A configuracao e a homologacao estao em [OPENAI_TRANSCRIPTION.md](OPENAI_TRANSCRIPTION.md).
 
-Implementacao preparada em 2026-10-27. Publicacao, transcricao real e homologacao com SQL/RabbitMQ continuam pendentes; testes locais usam dados sinteticos e respostas controladas.
+## Contratos
 
-## Fluxo e contratos
-
-A saga PsychologySessionInsight mantem seus dois identificadores de step:
-AudioTranscriptRequested e ReportEndProntuaryRequested. Ambos sao esperas externas.
-A sessao Sesoes e a identidade de negocio de novos processamentos. O upload e vinculado explicitamente pela identidade operacional imutavel: sua OperationalEntityId (N) e a CorrelationId (D) da saga. Isso fornece uma chave persistente de finalizacao idempotente sem nova tabela. O codigo ainda reconhece sagas antigas ancoradas em yFileUpload quando o vinculo com Sesoes e valido; registros com associacao invertida nao sao adivinhados ou corrigidos automaticamente.
-
-| Ordem | Task | Fila do pedido | Fila do retorno |
+| Operacao | Task do executor | Pedido | Retorno |
 | --- | --- | --- | --- |
-| Transcrever | app.tasks.transcribe_audio | audio.transcribe.outbox | audio.transcribed.inbox |
-| Resumir | app.tasks.summarize_session | text.summarize.outbox | text.summarized.inbox |
+| Resumo ativo | app.tasks.summarize_session | text.summarize.outbox | text.summarized.inbox |
+| Transcricao opcional por fila | app.tasks.transcribe_audio | audio.transcribe.outbox | audio.transcribed.inbox |
 
-Os exchanges/routing keys existentes permanecem. O corpo do pedido segue o envelope JSON ja emitido pelo publisher: task, id, args=[correlationId,payloadJSON], acrescido de processingScope. O id e a MessageId da Outbox; cada tentativa logica usa stepCorrelationId:ExecutionCount. Reentregas da mesma Outbox preservam esse id. Uma nova tentativa do step tem outro id.
+O pedido conserva o envelope emitido pelo publisher: task, id,
+args=[correlationId,payloadJSON] e processingScope. id identifica a tentativa
+logica; uma reentrega preserva esse identificador. O retorno contem messageId,
+requestId, correlationId, status, result e error. Publicar e confirmar o resultado
+antes do ACK do pedido; perder o processo pode repetir a chamada ao modelo,
+mas a Inbox aplica o retorno de forma idempotente.
 
-O retorno contem messageId, requestId, correlationId, status, result e error.
-requestId ecoa o id do pedido; messageId e deterministica por pedido. A entrada confere fila/saga/step declarados, escopo, tentativa atual e duplicidade antes de persistir.
-Os status continuam audio.transcription.completed/failed e text.summarize.completed/failed.
-O resultado da transcricao e {text}; o resumo e {fields:[{key,value}]} com as tres chaves conhecidas.
+O resumo recebe explicitamente context.transcricao. Devolve fields com
+Prontuario, QueixaPrincipal e RegistroDocumental, com limites 8000, 1000 e 8000.
+Prontuario e RegistroDocumental nao podem ficar vazios; QueixaPrincipal pode
+ficar vazia quando nao foi relatada. Nao criar diagnosticos ou fatos ausentes.
+A transcricao literal permanece no primeiro step; os tres campos sao aplicados
+juntos pelo segundo. Falhas mantem o prontuario pendente.
 
-A transcricao fica no payload persistido do primeiro step e e fornecida explicitamente ao segundo. Prontuario, QueixaPrincipal e RegistroDocumental sao validados integralmente antes da atualizacao conjunta. StatusProntuario usa os valores existentes: 2 Pendente e 3 Concluido; falhas mantem pendencia, com o diagnostico tecnico no estado da saga.
+## Configuracao e execucao
 
-## Execucao
+Usar Apps.Clinica no arquivo geral privado credentials.json. Exemplo do bloco:
 
-O modo opcional clinica-tasks utiliza o Docker operacional existente. O modo observador continua padrao. O override fica em infra/Clinica/DockerCompose/docker-compose.codex.yml e deve ser combinado com o Compose Shared apenas para ativacao explicita.
-
-Python recebe as mensagens existentes, executa uma tarefa por vez e inicia codex exec com sessao efemera, configuracao dedicada e resposta JSON validada. Shell e pesquisa web do agente ficam desabilitados; o job nao herda as ferramentas MCP operacionais.
-Na transcricao, o unico MCP e a ferramenta local transcribe_audio. Ela le exclusivamente o arquivo fixado pelo executor e chama a API de transcricao configurada. O supervisor exige que o texto final do Codex seja identico ao resultado dessa ferramenta.
-O resumo usa uma nova execucao do Codex e recebe somente a transcricao e as instrucoes fixas do Clinica.
-
-Ter Codex autenticado nao fornece, por si so, acesso a uma API de transcricao. A ferramenta de audio exige credencial propria. O modelo inicial configuravel e gpt-transcribe; o modelo Codex pode ser escolhido na configuracao, ou permanecer no padrao da CLI instalada.
-
-O audio original e somente leitura em /storage/volatile/ia/transcriptions/input.
-Jobs e partes MP3 ficam exclusivamente em /storage/volatile/ia/transcriptions/output, com limpeza por tentativa. O diretorio de saida precisa permitir escrita ao usuario agent; nao abrir escrita no restante do storage.
-Arquivos preparados sao segmentados em intervalos de dez minutos e 64 kbps para respeitar o limite de upload da ferramenta. A segmentacao e ordenada; a fidelidade em fronteiras de partes precisa ser incluida na avaliacao com audio real.
-
-A publicacao do retorno usa confirmacao do broker. O ACK do pedido ocorre somente depois dela. Perda do processo pode executar novamente a IA, mas a mesma tarefa conserva a chave do resultado e a aplicacao na saga e idempotente. Nao se promete uma unica chamada ao provedor em caso de crash.
-
-## Configuracao privada
-
-Usar o mecanismo privado existente, sem criar .env ou gravar segredos no repositorio.
-Usar Apps.Clinica no arquivo geral YESHUA_PRIVATE_ROOT/credentials.json,
-junto das conexoes de banco e demais chaves. O antigo codex-executor.json nao e lido.
-
-Fragmento para Apps.Clinica (preencher a chave somente no arquivo geral privado):
-
-~~~json
+```json
 {
   "ProcessingScope": "production",
-  "Codex": { "Model": "", "TimeoutSeconds": 900 },
-  "Transcription": {
-    "ApiKey": "",
-    "Model": "gpt-transcribe",
-    "BaseUrl": "https://api.openai.com/v1"
-  }
+  "Codex": { "Enabled": true, "Model": "", "TimeoutSeconds": 900 }
 }
-~~~
+```
 
-ProcessingScope deve ser exatamente igual ao YeshuaProcessing:Scope da API e Worker.
-infra/private/credentials.py carrega Apps.Clinica do arquivo geral para Clinica/Shared/all, limpa valores herdados e exporta as variaveis CLINICA_* usadas pelo override. A credencial normal do Codex continua no mecanismo privado do agente existente.
-CELERY_BROKER_URL vem do Shared.RabbitMq.BrokerUrl padrao.
+Enabled e booleano e inicia false em novas instalacoes. O exportador entrega
+CLINICA_CODEX_EXECUTOR_ENABLED, modelo, prazo e escopo ao Compose Shared.
+A autenticacao do Codex usa seu volume privado existente, separado da chave
+Apps.Clinica.Transcription.ApiKey. O resumo nao recebe essa chave.
 
-O override nao faz parte do deploy automatico. Depois de carregar o ambiente privado com infra/docker/load-deploy-env.sh shared, a ativacao controlada deve combinar os dois arquivos Compose com o projeto Shared ja existente. Nao executar o deploy all para testar este executor. API e Worker precisam estar na revisao correspondente e as filas devem ter sido inicializadas pela DSL.
+O servico operacional atual chama-se operational-intelligence, unificando API,
+MCP e Codex. O antigo operational-intelligence-agent foi substituido. O resumo
+roda como processo supervisionado dentro do servico atual: nenhuma nova API,
+instancia de Worker, fila tecnica ou banco foi criado. A API operacional continua
+ativa. Saida inesperada de um dos processos encerra o container para que a
+politica Docker o recupere; trabalho sem ACK permanece no broker.
 
-## Politica da Engine
+O consumidor usa basic_get e processa uma tarefa por vez, mantendo o heartbeat
+enquanto espera o Codex. Por ser polling, consumers=0 no RabbitMQ nao comprova
+ausencia do executor; verificar ClinicaExecutor.Ready, processos e uma entrega
+real. A selecao padrao contempla somente text.summarize.outbox.
 
-ConfigureSagaWorkers(2000, generateQueueWorkers: true) ativa o transporte gerado e o ciclo transacional dos steps do Clinica.
-A escolha e explicita durante a transicao: Memorias e outros aplicativos que possuem transportadores customizados nao recebem consumidores concorrentes por uma regeneracao incidental.
-Os templates geram registro dos workers e as rotas estaticas de resultado a partir das filas declaradas. Os contratos de repository usados pelo transporte devem estar implementados pelo aplicativo; a consolidacao integral desses repositories na Engine continua sendo uma pendencia conhecida.
+Cada pedido executa codex exec efemero, sem ferramentas de shell ou pesquisa,
+sem herdar os MCP operacionais. O schema JSON e o resultado sao validados.
+O modelo vazio conserva o padrao da CLI instalada; nao ha troca automatica de
+modelo, conta ou provedor em caso de falha.
 
-## Validacao
+## Storage
 
-- Testes de fluxo usam os handlers reais, SagaExecutor e repositorios controlados, sem API externa.
-- Testes Python verificam identidades, isolamento de arquivo, falha/limpeza, contrato JSON e confirmacao antes do ACK.
-- Testes da Engine conferem geracao das filas declaradas e ausencia de transporte implicito.
-- O smoke real e opt-in: CLINICA_SAGA_SMOKE_ENABLED=1, CLINICA_SAGA_SMOKE_SESSION_ID e CLINICA_SAGA_SMOKE_AUDIO.
-  Ele exige sessao e audio sinteticos/autorizados, API, Worker, SQL, RabbitMQ e executor configurados. Nao aponta automaticamente para producao.
+O storage original permanece montado em /storage somente leitura, com suas
+permissoes preservadas. Na VPS sua raiz e root:root 0750, inacessivel ao usuario
+agent. Por isso a pasta temporaria foi montada separadamente:
 
-Conferir na homologacao: sucesso completo, resposta invalida, retry somente do resumo, reentrega duplicada, retorno atrasado, reinicio antes/depois da publicacao, concorrencia entre workers e isolamento de escopo/tenant.
-Os testes locais nao substituem essa homologacao.
+- Host: /root/YeshuaStorage/volatile/ia/transcriptions/output.
+- Docker: /clinica-work/volatile/ia/transcriptions/output.
+- STORAGE_ROOT do consumidor: /clinica-work.
 
-Referencias oficiais consultadas: https://learn.chatgpt.com/docs/non-interactive-mode,
-https://learn.chatgpt.com/docs/extend/mcp?surface=cli e
-https://developers.openai.com/api/docs/guides/speech-to-text.
+Somente essa pasta precisa permitir escrita ao usuario agent. Jobs recebem
+nomes unicos e sao limpos ao terminar. Nao abrir leitura/escrita na raiz do
+storage para resolver permissao do executor.
 
-## Evidencias Locais Em 2026-10-27
+## Transcricao opcional por fila
 
-Compilacao de Engine/Studio, API e Worker concluida. Passaram 51 testes da
-Engine, 37 testes compartilhados, 11 casos do fluxo Clinica, 12 casos Python
-do executor e 2 casos focados da configuracao privada (113 no total).
-Os testes do fluxo usam doubles para repositories/storage; nao comprovam as
-queries em um SQL Server real. A suite privada completa foi interrompida por
-falta de progresso em validacoes de ACL nesta estacao Windows; os dois testes
-novos do provider foram executados separadamente e passaram.
-Docker nao esta disponivel nesta estacao; a imagem, as dependencias MCP no
-container e as chamadas reais a Codex/transcricao ainda precisam da
-homologacao no servidor. Nenhum deploy ou comando de migration foi executado.
+O override infra/Clinica/DockerCompose/docker-compose.codex.yml pode ativar
+as duas filas no mesmo servico e montar o input somente leitura no alias
+/clinica-work. Exige permissao de leitura nos arquivos atribuidos e credencial
+de transcricao no arquivo geral. Nao e necessario para o piloto OpenAI HTTP.
+A ferramenta MCP desse modo so recebe o arquivo fixado pelo executor; Codex
+nao pode reescrever o resultado da ferramenta. O parametro de idioma usa
+languages[] para gpt-transcribe e language para os modelos legados configurados.
+Esse caminho opcional nao foi declarado homologado pela prova do resumo.
 
-## Pendencias da retomada em 2026-10-27
+## Homologacao
 
-O plano futuro do painel do psicologo foi preservado em
-[PLANO_PAINEL_ATENDIMENTOS.md](PLANO_PAINEL_ATENDIMENTOS.md), sem implementar a tela.
-A retomada atual e o fluxo de transcricao.
+A CLI 0.164.0 do Docker foi conferida e o login ChatGPT existente foi reutilizado.
+Uma chamada real de resumo sintetico produziu os tres campos em cerca de 6,6 s.
+Passaram 13 testes Python do contrato/ACK/isolamento, 6 testes focados da
+configuracao e 17 testes do ambiente operacional. A regressao do alias de
+storage tambem foi executada no Docker.
 
-1. Corrigir a compatibilidade do parametro de idioma da ferramenta de audio.
-   `audio_tool.py` envia `language=pt`, enquanto o modelo padrao `gpt-transcribe`
-   usa `languages` no lugar de `language`. A documentacao oficial mostra o
-   campo multipart `languages[]`. Modelos legados configuraveis podem manter
-   contrato diferente; nao alterar indiscriminadamente sem tratar essa escolha.
-   Este ajuste foi identificado na revisao, ainda nao implementado nem coberto
-   por teste de contrato contra o provedor.
-2. Validar a configuracao privada do ambiente alvo: autenticacao Codex,
-   credencial propria da ferramenta de audio, broker, storage/permissoes e
-   ProcessingScope igual ao da API e do Worker. Nao foi conferida a presenca
-   dessas credenciais no servidor nesta retomada.
-3. Construir e iniciar o modo opcional do executor no Docker do servidor e
-   colocar API/Worker na revisao correspondente. Confirmar que consumidores
-   antigos nao disputam as mesmas filas; os servicos antigos estao comentados
-   no Compose versionado, mas o estado real do servidor ainda nao foi inspecionado.
-4. Executar primeiro uma tarefa de transcricao com audio curto sintetico ou
-   autorizado e conferir o texto retornado. Depois validar o caminho completo
-   upload -> saga -> Outbox/RabbitMQ -> executor -> Inbox -> transcricao persistida.
-5. Validar o resumo como tarefa separada, alem de falhas, retry, duplicidade,
-   retorno atrasado e reinicio. Avaliar tambem audio longo e fronteiras das partes.
+O teste real de saga e opt-in: CLINICA_SAGA_SMOKE_ENABLED=1,
+CLINICA_SAGA_SMOKE_SESSION_ID e CLINICA_SAGA_SMOKE_AUDIO. Utiliza a conta
+privada de testes, autentica pela Central, abre a sessao do Clinica por getMenu,
+envia tres chunks e repete o ultimo para verificar idempotencia. Confere os dois
+steps concluindo e os campos persistidos da consulta sintetica.
+Para perfis antigos, usar TestSettings.BaseUrl=https://playsis.com.br/apps/clinica/
+e LoginPath=/apps/central/yapi/login. Essas URLs podem ser fornecidas por
+TESTSETTINGS__BASEURL e TESTSETTINGS__LOGINPATH sem expor Login/Password.
 
-Referencia da verificacao do parametro:
-https://developers.openai.com/api/docs/guides/speech-to-text#add-transcription-context
-
-O comportamento atual ainda aplica o resumo e marca o prontuario como concluido.
-A revisao humana explicita e a protecao de edicoes contra resultados posteriores
-fazem parte do plano futuro do painel; nao estao resolvidas pelo ajuste de idioma.
+Referencias oficiais: https://learn.chatgpt.com/docs/non-interactive-mode e
+https://learn.chatgpt.com/docs/auth. A prova real do ambiente esta registrada
+no documento de transcricao, sem valores de credenciais.
