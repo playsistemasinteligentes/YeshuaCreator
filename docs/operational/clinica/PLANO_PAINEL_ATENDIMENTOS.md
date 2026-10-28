@@ -1,4 +1,26 @@
-> Versão funcional implementada em 27/10/2026, em homologação nesta etapa.
+> Homologação concluída em 28/10/2026: navegador → MediaRecorder (voz sintética,
+> pausa e retomada) → chunks C# → OpenAI → resumo Codex → incorporação humana →
+> encerramento → finalização → correção → próxima consulta com plano anterior.
+> A consulta fictícia #4 manteve o texto humano enquanto o resultado técnico
+> chegava; a saga #3 concluiu sem finalizar o prontuário. A incorporação foi
+> explícita. Foram verificadas duas revisões, conflito HTTP 409, acesso recusado
+> a consulta indisponível e bloqueio de escrita pelo CRUD legado. Nenhum erro
+> JavaScript no percurso final; layout conferido em desktop e 1024 px.
+> Há 101 verificações automatizadas aprovadas: Engine 52, integração/contratos
+> Clínica 38, persistência 3 e gravador 8. A prova no navegador é adicional.
+> Dados de demonstração são fictícios: profissional/usuário de homologação #1;
+> pacientes #1–#3; consulta anterior #3, consultas do dia #4–#6 e próxima #7.
+> A agenda de 28/10 e a próxima consulta de 04/11 estão disponíveis para mostrar.
+> Evidências locais: `.artifacts/clinica-live-result.json` e capturas
+> `.artifacts/clinica-live-*.png`. Recibo privado e logs de implantação na VPS:
+> `/root/YeshuaPrivate/production/operations/clinica-panel-20261027`.
+> Código está em commits locais e na VPS. O envio ao GitHub aguarda autenticação.
+> IDs operacionais persistidos usam N/32 caracteres; a correlação Guid da saga
+> usa D/36 e é normalizada no vínculo de leitura ao upload. Não trocar o contrato.
+> Front, API, Worker e migration têm alvos de compilação independentes, mantendo
+> os mesmos hosts e serviços; uma correção de tela não recompila APIs da Central.
+
+> Versão funcional implementada em 27/10/2026 e homologada na VPS em 28/10/2026.
 > Front Central: `Custon/Apps/Clinica/pages/atendimentos.*`. M000005 declara os
 > vínculos, horários reais, versão, revisão e Commands do painel. A saga continua
 > exclusivamente técnica. O resultado de IA é sugestão; não conclui o prontuário.
