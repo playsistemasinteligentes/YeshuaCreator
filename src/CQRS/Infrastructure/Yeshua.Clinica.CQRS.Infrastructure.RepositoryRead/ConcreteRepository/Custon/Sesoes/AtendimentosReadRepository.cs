@@ -8,8 +8,6 @@ public partial class SesoesReadRepository
         JOIN Paciente p ON p.Id=s.PacienteId AND p.TenantID=s.TenantID AND p.Deleted=0
         WHERE s.TenantID=@Tenant AND s.Deleted=0 AND f.UsuarioAcessoId=@Actor ";
     private const string SessionFields = @"SELECT s.Id,s.PacienteId,p.Nome Paciente,
-        ISNULL(s.ServicoId,0) ServicoId,ISNULL(s.ServicoNome,'') ServicoNome,
-        ISNULL(NULLIF(s.ModeloConsulta,0),1) ModeloConsulta,ISNULL(NULLIF(s.VersaoModeloConsulta,0),1) VersaoModeloConsulta,
         ISNULL(CONVERT(varchar(33),p.DataNascimento,126),'') DataNascimento,
         CONVERT(varchar(33),s.DataInicio,126)+'Z' DataInicio,CONVERT(varchar(33),s.DataFim,126)+'Z' DataFim,
         ISNULL(s.StatusAgendamento,0) StatusAgendamento,ISNULL(s.StatusProntuario,2) StatusProntuario,
@@ -20,7 +18,9 @@ public partial class SesoesReadRepository
         ISNULL(s.ObjetivosCurtoPrazo,'') ObjetivosCurtoPrazo,ISNULL(s.ObjetivosLongoPrazo,'') ObjetivosLongoPrazo,
         ISNULL(s.ExerciciosTarefasSugeridas,'') ExerciciosTarefasSugeridas,ISNULL(s.EncaminhamentoOutrosProfissionais,'') EncaminhamentoOutrosProfissionais,
         ISNULL(s.FrequenciaSugeridaSessooes,'') FrequenciaSugeridaSessooes,
-        ISNULL(s.InformacoesRelevantesFuturasConsultas,'') InformacoesRelevantesFuturasConsultas,ISNULL(s.SugestoesIncorporadas,'') SugestoesIncorporadas ";
+        ISNULL(s.InformacoesRelevantesFuturasConsultas,'') InformacoesRelevantesFuturasConsultas,ISNULL(s.SugestoesIncorporadas,'') SugestoesIncorporadas,
+        ISNULL(s.ServicoId,0) ServicoId,ISNULL(s.ServicoNome,'') ServicoNome,
+        ISNULL(NULLIF(s.ModeloConsulta,0),1) ModeloConsulta,ISNULL(NULLIF(s.VersaoModeloConsulta,0),1) VersaoModeloConsulta ";
     public RegistroAtendimentoInfo ExigirAtendimento(int sessaoId) =>
         _unitOfWork.Query<RegistroAtendimentoInfo>(SessionFields+OwnedSession+" AND s.Id=@Id",PainelParameters(sessaoId)).SingleOrDefault()
         ?? throw new AtendimentoException("Atendimento indisponível para este profissional.",403);
