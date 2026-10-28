@@ -980,3 +980,12 @@ body.yeshua-auth-active #alertContainer {
         transform: none;
     }
 }
+
+/* Contextual help uses the shared shell without changing the current screen. */
+.yeshua-help-button{display:inline-flex;min-width:var(--y-control-height);min-height:var(--y-control-height);align-items:center;justify-content:center;gap:8px;border:1px solid rgb(255 255 255 / 22%);border-radius:var(--y-radius-small);padding:0 10px;color:white;white-space:nowrap}
+.yeshua-help-button:hover{background:rgb(255 255 255 / 12%)}
+.yeshua-help-dialog{width:min(720px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;margin:auto;border:1px solid var(--y-line);border-radius:var(--y-radius);padding:22px;color:var(--y-ink);background:white}
+.yeshua-help-dialog::backdrop{background:rgb(16 36 30 / 50%)}
+.yeshua-help-dialog h2{font-size:20px;font-weight:700;margin:0 0 12px}.yeshua-help-dialog p{margin:0 0 16px}.yeshua-help-dialog label{display:block;margin-bottom:6px;font-weight:600}.yeshua-help-dialog textarea{width:100%;border:1px solid var(--y-line-strong);padding:10px;font-size:13px;resize:vertical}.yeshua-help-dialog button{margin-top:12px;border:1px solid var(--y-line-strong);border-radius:var(--y-radius-small);padding:10px 16px}
+@media(max-width:900px){.yeshua-help-button{padding:0}.yeshua-help-button span{display:none}}
+@media(max-width:360px){#help-prompt-copy{display:none}}

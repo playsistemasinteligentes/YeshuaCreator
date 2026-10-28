@@ -1,4 +1,7 @@
+import { bindHelpPrompt } from './help-prompt.js?v=20261028-help01';
+
 export function bindUserArea() {
+    bindHelpPrompt();
     const toggle = document.getElementById('user-menu-toggle');
     const panel = document.getElementById('user-menu-panel');
     if (!toggle || !panel) return;

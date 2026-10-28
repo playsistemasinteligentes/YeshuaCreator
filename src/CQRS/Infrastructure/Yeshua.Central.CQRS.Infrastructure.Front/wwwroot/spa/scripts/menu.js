@@ -174,6 +174,8 @@ async function openCustomPage(item) {
     }
 
     await handler({ item });
+    const host = document.getElementById('custom-page-container');
+    if (host) { host.dataset.helpScreen = String(pageKey).replace(/^#/, ''); host.dataset.helpTitle = item.description || pageKey; }
 }
 
 function closeCustomPage() {
@@ -181,6 +183,8 @@ function closeCustomPage() {
     if (customPage) {
         customPage.classList.add('hidden');
         customPage.innerHTML = '';
+        delete customPage.dataset.helpScreen;
+        delete customPage.dataset.helpTitle;
     }
 }
 

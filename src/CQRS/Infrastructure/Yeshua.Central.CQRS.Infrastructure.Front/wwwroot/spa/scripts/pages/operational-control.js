@@ -41,7 +41,7 @@ async function renderOperationalControl() {
 }
 
 function pageHtml() {
-    return `<main class="mx-auto max-w-7xl px-4 py-6">
+    return `<main class="mx-auto max-w-7xl px-4 py-6" data-help-screen="operational-control" data-help-title="Controle operacional">
         <div class="mb-5 flex flex-wrap items-center justify-between gap-3">
             <div><p class="text-xs font-semibold uppercase text-gray-500">Operacao</p><h1 class="text-2xl font-bold text-gray-900">Controle operacional</h1><p id="operational-application" class="mt-1 text-sm text-gray-600"></p></div>
             <div class="flex gap-2"><button id="operational-reload" class="border border-gray-300 bg-white px-4 py-2 font-semibold hover:bg-gray-50">Atualizar</button><button id="operational-save" class="bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800">Aplicar</button></div>

@@ -914,6 +914,15 @@ Regra resumida:
   Front Central, nao funcionalidades exclusivas de Clinica.
 - Configuracoes de banco, certificados e outros dados de um aplicativo nao
   pertencem ao Front Central.
+- A ajuda contextual e unica no cabecalho e no menu da conta de todos os
+  aplicativos. `help-prompt.js` copia um prompt para o GPT com metadata de
+  navegacao, IDs tecnicos de tenant/usuario/registro e horario, orientando o uso
+  autorizado do conector Yeshua Inteligencia Operacional. Paginas customizadas
+  identificam a tela por `data-help-screen`/`data-help-title` ou pela metadata
+  do menu; nunca obter contexto varrendo textos ou valores dos formularios.
+  A copia e local, sem consultar APIs, criar tarefas, recarregar a tela ou
+  interromper gravacoes. Nao copiar tokens, senhas, query string nem conteudo
+  dos registros. Se a area de transferencia for bloqueada, oferecer copia manual.
 
 ## Smoke Tests De API Por Aplicativo
 
