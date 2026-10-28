@@ -48,7 +48,7 @@ public partial class SesoesReadRepository
         var rows=_unitOfWork.Query<AudioRow>(@"SELECT g.Id SagaId,g.Status,CONVERT(varchar(33),u.CreatedAt,126)+'Z' Data,
             CASE WHEN t.Status=5 THEN t.Payload ELSE NULL END Transcricao,CASE WHEN r.Status=5 THEN r.Payload ELSE NULL END Resumo,
             CASE WHEN t.Status=6 THEN t.Id WHEN r.Status=6 THEN r.Id ELSE 0 END StepFalhouId
-            FROM ySaga g JOIN yFileUpload u ON u.OperationalEntityId=g.CorrelationId AND u.TenantID=g.TenantID AND u.Deleted=0
+            FROM ySaga g JOIN yFileUpload u ON u.OperationalEntityId=REPLACE(g.CorrelationId,'-','') AND u.TenantID=g.TenantID AND u.Deleted=0
             LEFT JOIN ySagaStep t ON t.SagaId=g.Id AND t.StepKey='AudioTranscriptRequested' AND t.TenantID=g.TenantID AND t.Deleted=0
             LEFT JOIN ySagaStep r ON r.SagaId=g.Id AND r.StepKey='ReportEndProntuaryRequested' AND r.TenantID=g.TenantID AND r.Deleted=0
             WHERE g.TenantID=@Tenant AND g.Deleted=0 AND g.EntityType='Sesoes' AND g.EntityId=CONVERT(varchar(20),@Id)

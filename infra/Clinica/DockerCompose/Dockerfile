@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS source
 WORKDIR /src
 
 ARG YESHUA_COMMIT_SHA=UNSET
@@ -6,8 +6,14 @@ ARG YESHUA_COMMIT_SHA=UNSET
 COPY . .
 
 ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
+
+FROM source AS publish-migration
 RUN dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish/migration
+
+FROM source AS publish-api
 RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/api
+
+FROM source AS publish-worker
 RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/worker
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS aspnet-health
@@ -17,7 +23,7 @@ RUN apt-get update \
   && rm -rf /var/lib/apt/lists/*
 
 FROM aspnet-health AS api
-COPY --from=publish /app/publish/api .
+COPY --from=publish-api /app/publish/api .
 ENV ASPNETCORE_URLS=http://0.0.0.0:7214
 EXPOSE 7214
 HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
@@ -29,7 +35,7 @@ RUN apt-get update \
   && apt-get install -y --no-install-recommends ffmpeg \
   && /usr/bin/ffmpeg -version > /dev/null \
   && rm -rf /var/lib/apt/lists/*
-COPY --from=publish /app/publish/worker .
+COPY --from=publish-worker /app/publish/worker .
 ENV ASPNETCORE_URLS=http://0.0.0.0:7215
 EXPOSE 7215
 HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
@@ -38,5 +44,5 @@ ENTRYPOINT ["dotnet", "Yeshua.Clinica.CQRS.Infrastructure.Worker.dll"]
 
 FROM mcr.microsoft.com/dotnet/runtime:8.0 AS migration
 WORKDIR /app
-COPY --from=publish /app/publish/migration .
+COPY --from=publish-migration /app/publish/migration .
 ENTRYPOINT ["dotnet", "Yeshua.Studio.AppClinicas.dll", "--database-only"]
