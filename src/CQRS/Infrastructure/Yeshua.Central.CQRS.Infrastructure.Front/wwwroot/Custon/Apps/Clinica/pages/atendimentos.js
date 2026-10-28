@@ -1,7 +1,7 @@
 import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
 import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261028-modelos01';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-modelos02';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -65,6 +65,7 @@ class ClinicPanel{
         if(environments.urlApi.replace(/\/$/,'')!==this.apiBase)throw new Error('O aplicativo ativo mudou. Volte ao Clínica para continuar.');
         if(actorIdentity()!==this.actor)throw new Error('O usuário ou a clínica mudou. Reabra o painel para continuar.');
         const response=await apiFetch(this.apiBase+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),payload=normalize(await response.json().catch(()=>({})));
+        if(this.disposed||actorIdentity()!==this.actor||environments.urlApi.replace(/\/$/,'')!==this.apiBase)throw new Error('O contexto mudou. Reabra o painel para continuar.');
         if(!response.ok||payload.statusCode>=400){const e=new Error(payload.message||payload.mensagem||'Não foi possível concluir esta ação.');e.status=response.status;throw e;}
         return payload.data??payload;
     }
@@ -126,6 +127,7 @@ class ClinicPanel{
     }
     isFinal(){return Boolean(this.current?.registroFinalizadoEm||this.current?.statusProntuario===3);}
     controls(){
+        if(this.disposed)return;
         const s=this.current;if(!s)return;const started=Boolean(s.atendimentoIniciadoEm)||s.statusAgendamento===2,ended=Boolean(s.atendimentoEncerradoEm)||s.statusAgendamento===2,final=this.isFinal(),capturing=Boolean(this.recorder?.active),pending=Boolean(this.recorder?.pending),editable=(started&&!final)||this.correcting;
         for(const id of ['iniciar','cancelar','falta'])this.el(id).disabled=this.busy||started||final||![0,1].includes(s.statusAgendamento);
         this.host.querySelectorAll('[data-field]').forEach(input=>input.disabled=!editable||this.busy);this.el('salvar').disabled=this.busy||!editable||this.correcting;this.el('encerrar').disabled=this.busy||!started||ended||final||capturing||pending;this.el('gravar').disabled=this.busy||!started||ended||final||capturing||pending;
@@ -148,6 +150,7 @@ class ClinicPanel{
         const habitual={id:this.data.servicoHabitualId,nome:this.data.servicoHabitualNome,modeloConsulta:this.data.modeloConsultaHabitual,versaoModeloConsulta:this.data.versaoModeloConsultaHabitual};
         this.scheduledService=habitual.id&&supportedModel(habitual)?habitual:null;this.text('agendar-servico-status','');this.text('agendar-servico-alterar','Alterar serviço');
         if(!this.scheduledService){await this.loadServices();if(this.servicos.length===1)this.scheduledService=this.servicos[0];}
+        if(this.disposed||actorIdentity()!==this.actor)return;
         this.renderScheduleService(!this.scheduledService);
         const start=new Date();start.setDate(start.getDate()+7);start.setMinutes(0,0,0);const value=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);this.el('agendar-inicio').value=value(start);this.el('agendar-fim').value=value(new Date(start.getTime()+50*60000));this.text('agendar-erro','');this.el('agendar-dialog').showModal();
     }
