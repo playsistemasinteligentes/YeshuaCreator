@@ -85,7 +85,8 @@ async function copyText(text) {
     if (window.isSecureContext && navigator.clipboard?.writeText) {
         try { await navigator.clipboard.writeText(text); return true; } catch { /* Use the existing browser copy fallback. */ }
     }
-    const focus = document.activeElement, selection = focus && 'selectionStart' in focus ? [focus.selectionStart, focus.selectionEnd] : null;
+    const focus = document.activeElement;
+    const selection = typeof focus?.selectionStart === 'number' && typeof focus?.selectionEnd === 'number' ? [focus.selectionStart, focus.selectionEnd] : null;
     const scroll = { x: window.scrollX, y: window.scrollY }, field = document.createElement('textarea');
     field.value = text; field.readOnly = true; field.style.cssText = 'position:fixed;left:-10000px;top:0;opacity:0';
     document.body.append(field); field.select();

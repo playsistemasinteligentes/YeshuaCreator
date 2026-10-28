@@ -64,6 +64,8 @@ async function main() {
             document.execCommand=command=>{if(command!=='copy')return false;window.copiedPrompts.push(document.activeElement.value);return true;};
         });
         await page.locator('#private-editor').focus();await page.locator('#help-prompt-copy').click();assert((await page.evaluate(()=>window.copiedPrompts.at(-1))).includes('Entidade: Paciente'));assert(await page.locator('#private-editor').evaluate(e=>e===document.activeElement));
+        await page.evaluate(()=>{const input=document.createElement('input');input.id='numeric-editor';input.type='number';input.value='123';document.getElementById('crud-container').append(input);});
+        await page.locator('#numeric-editor').focus();const copies=await page.evaluate(()=>window.copiedPrompts.length);await page.locator('#help-prompt-copy').click();assert.equal(await page.evaluate(()=>window.copiedPrompts.length),copies+1);assert(await page.locator('#numeric-editor').evaluate(e=>e===document.activeElement));assert((await page.locator('#alertContainer > div').last().textContent()).includes('Prompt de ajuda copiado'));assert.equal(await page.locator('#help-prompt-dialog').count(),0);
         await page.evaluate(()=>document.execCommand=()=>false);await page.locator('#help-prompt-copy').click();await page.locator('#help-prompt-dialog').waitFor();assert((await page.locator('#help-prompt-text').inputValue()).includes('Yeshua Inteligência Operacional'));assert(await page.locator('#help-prompt-text').evaluate(e=>e.readOnly));await page.keyboard.press('Escape');
         for(const width of [390,320]) {
             await page.setViewportSize({width,height:844});await page.evaluate(()=>window.scrollTo(0,0));
