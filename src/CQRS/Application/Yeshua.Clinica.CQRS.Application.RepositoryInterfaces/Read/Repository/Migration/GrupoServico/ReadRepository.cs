@@ -45,6 +45,7 @@ namespace IRepository.Read
         public IEnumerable<GrupoServicoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<GrupoServicoDTO> GetAllByUserId(int value );
         public IEnumerable<GrupoServicoDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<GrupoServicoStandardDTO> GetGrupoServicoGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

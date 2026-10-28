@@ -3,11 +3,20 @@ import { Actions } from './crudEnumerator.js';
 import { showAlert } from './alerts.js';
 import { showConfirm } from './menssagensConfirm.js';
 import { showFkModal, hideFkModal } from './components/fk-modal.js';
-import { apiFetch } from './ServicesGlobal/apiFetch.js';
+import { apiFetch, getApiErrorMessage } from './ServicesGlobal/apiFetch.js';
 import { runCrudExtension } from './extensions.js';
 import { setupCrudActions } from "./components/crudActions.js";
 
+let formLayoutIsMobile = null;
+let resizeListenerBound = false;
 export function buildCrud() {
+    if (!resizeListenerBound) {
+        resizeListenerBound = true;
+        window.addEventListener('resize', () => {
+            const visible = document.getElementById('crud-container');
+            if (crudState.metadata && visible && visible.style.display !== 'none' && formLayoutIsMobile !== (innerWidth < 768)) renderFormCrud(true);
+        });
+    }
 
     const btnTogglePesquisa = document.getElementById('btn-toggle-pesquisa');
     const areaPesquisa = document.getElementById('area-pesquisa');
@@ -29,8 +38,11 @@ export function buildCrud() {
         }
     });
 
-    document.getElementById('btn-save')?.addEventListener('click', () => {
-        crudCreateOrUpdate();
+    document.getElementById('btn-save')?.addEventListener('click', async event => {
+        const button = event.currentTarget;
+        if (button.disabled) return;
+        button.disabled = true;
+        try { await crudCreateOrUpdate(); } finally { button.disabled = false; }
     });
 
     document.getElementById('btn-new')?.addEventListener('click', () => {
@@ -117,14 +129,15 @@ function togglePaginationControls(metadata = crudState.metadata, modoFk = false)
 
     container.innerHTML = '';
 
-    const { page, hasNext, total, PageWhithCount } = crudState.pagination;
+    const pagination = modoFk ? crudState.fkContext.pagination : crudState.pagination;
+    const { page, hasNext, total, PageWhithCount } = pagination;
 
     const btnPrev = document.createElement('button');
     btnPrev.textContent = '⬅ Anterior';
     btnPrev.className = 'px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50';
     btnPrev.disabled = page <= 1;
     btnPrev.onclick = () => {
-        crudState.pagination.page--;
+        pagination.page--;
         fetchSearchResults(metadata, modoFk);
     };
 
@@ -133,15 +146,15 @@ function togglePaginationControls(metadata = crudState.metadata, modoFk = false)
     btnNext.className = 'px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50';
     btnNext.disabled = !hasNext;
     btnNext.onclick = () => {
-        crudState.pagination.page++;
+        pagination.page++;
         fetchSearchResults(metadata, modoFk);
     };
 
     const info = document.createElement('span');
     info.className = 'mx-4 text-sm';
     if (PageWhithCount && total !== undefined) {
-        const start = (page - 1) * crudState.pagination.pageSize + 1;
-        const end = Math.min(start + crudState.pagination.pageSize - 1, total);
+        const start = (page - 1) * pagination.pageSize + 1;
+        const end = Math.min(start + pagination.pageSize - 1, total);
         info.textContent = `Exibindo ${start} a ${end} de ${total}`;
     } else {
         info.textContent = `Página ${page}`;
@@ -156,11 +169,12 @@ export async function loadDataCrud(fullUrl, type) {
 
     document.getElementById('table-container').innerHTML = '';
     const crudContainer = document.getElementById('crud-container');
+    crudContainer.classList.remove('hidden');
     document.getElementById('crud-container').style.display = 'block';
 
     const token = localStorage.getItem('token');
     try {
-        beforeRequest();
+        if (!beforeRequest()) return;
         const response = await fetch(fullUrl, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -169,6 +183,8 @@ export async function loadDataCrud(fullUrl, type) {
             crudState.metadata = await response.json();
             crudState.fullUrl = fullUrl;
             crudState.currentRecord = null;
+            crudState.currentAction = Actions.CREATE;
+            crudState.pagination.page = 1;
             applyCrudCapabilities(crudState.metadata);
             renderSearch(crudState.metadata);
             renderFormCrud();
@@ -193,13 +209,17 @@ function setStateCreate() {
 async function crudSearch(metadata = crudState.metadata, modoFk = false) {
     await startProcess({ async: true, withProgress: false });
     const currentSearch = metadata.search?.[0]
-    await resetPagination(currentSearch.endpoint);
+    await resetPagination(currentSearch.endpoint, modoFk);
     await fetchSearchResults(metadata, modoFk);
     await endProcess();
 }
-async function resetPagination(endpoint) {
-    crudState.fullUrl = `${environments.urlApi}${endpoint}`;
-    crudState.pagination.page = 1;
+async function resetPagination(endpoint, modoFk = false) {
+    if (modoFk) {
+        crudState.fkContext.pagination.page = 1;
+    } else {
+        crudState.fullUrl = `${environments.urlApi}${endpoint}`;
+        crudState.pagination.page = 1;
+    }
 }
 function renderQuickSearches(quickSearches) {
     const container = document.getElementById("quick-search-container");
@@ -234,17 +254,19 @@ function getCurrentFormData() {
 }
 async function fetchSearchResults(metadata = crudState.metadata, modoFk = false) {
     const token = localStorage.getItem('token');
+    const pagination = modoFk ? crudState.fkContext.pagination : crudState.pagination;
+    const searchRoot = document.getElementById(modoFk ? 'modal-conteudo-fk' : 'filtros-simples');
 
     const searchFilters = {};
     const currentSearch = metadata.search?.[0];
     (currentSearch?.filterFields || []).forEach(field => {
 
-        const input = document.getElementById(`search-${field.id}`);
+        const input = searchRoot?.querySelector(`[id="search-${field.id}"]`);
         if (!input) return;
 
         if (field.isFk) {
             if (input.dataset.id) {
-                searchFilters[field.id] = input.dataset.id;
+                searchFilters[field.id] = Number(input.dataset.id);
             } else {
                 input.value = "";
             }
@@ -256,7 +278,7 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
             }
         } else {
             if (input.value !== "") {
-                searchFilters[field.id] = input.value;
+                searchFilters[field.id] = ['int','decimal','float'].includes(field.type.toLowerCase()) ? Number(input.value) : input.value;
             }
         }
     });
@@ -265,15 +287,16 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
     const payload = {
         ...searchFilters,
         paginacao: {
-            page: crudState.pagination.page || 1,
-            pageSize: crudState.pagination.pageSize || 5,
-            pageWhithCount: crudState.pagination.PageWhithCount || false
+            page: pagination.page || 1,
+            pageSize: pagination.pageSize || 5,
+            pageWhithCount: pagination.PageWhithCount || false
         }
     };
 
     try {
-        beforeRequest();
-        const response = await fetch(`${crudState.fullUrl}`, {
+        if (!beforeRequest()) return;
+        const url = modoFk ? `${environments.urlApi}${currentSearch.endpoint}` : crudState.fullUrl;
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -286,14 +309,14 @@ async function fetchSearchResults(metadata = crudState.metadata, modoFk = false)
         if (response.ok) {
             const responseJson = await response.json();
             const paginatedData = responseJson.data || {};
-            const items = paginatedData.items || [];
+            const items = (paginatedData.items || []).map(lowerRecordKeys);
 
-            crudState.pagination.page = paginatedData.page || 1;
-            crudState.pagination.pageSize = paginatedData.pageSize || 5;
-            crudState.pagination.total = paginatedData.totalItems || 0;
-            crudState.pagination.hasNext = paginatedData.totalItems
+            pagination.page = paginatedData.page || 1;
+            pagination.pageSize = paginatedData.pageSize || 5;
+            pagination.total = paginatedData.totalItems || 0;
+            pagination.hasNext = paginatedData.totalItems
                 ? (paginatedData.page * paginatedData.pageSize < paginatedData.totalItems)
-                : (items.length === crudState.pagination.pageSize);
+                : (items.length === pagination.pageSize);
 
             renderTableSearch(items, modoFk, metadata);
             togglePaginationControls(metadata, modoFk);
@@ -374,6 +397,7 @@ function renderSearch(metadata, modoFk = false) {
             input.dataset.description = '';
             input.dataset.id = '';
             input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+            input.addEventListener('input', () => { input.dataset.id = ''; });
 
             input.type = "text";
             input.step = "";
@@ -404,6 +428,7 @@ function renderSearch(metadata, modoFk = false) {
             wrapper.appendChild(input);
         }
 
+        input.setAttribute('aria-label', field.label);
         formGroup.appendChild(wrapper);
     });
 
@@ -482,7 +507,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                 const cell = document.createElement('td');
                 cell.className = 'px-4 py-2 border text-sm text-gray-800';
 
-                let value = item[field.id.toLowerCase()] || '';
+                let value = item[field.id.toLowerCase()] ?? '';
 
                 if (field.type?.toLowerCase() === "enum" && field.options) {
                     const opt = field.options.find(o => o.value == value);
@@ -587,7 +612,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             card.dataset.id = item.id; // ADICIONADO
 
             currentSearch?.resultFields.forEach(field => {
-                let value = item[field.id.toLowerCase()] || '';
+                let value = item[field.id.toLowerCase()] ?? '';
 
                 if (field.type?.toLowerCase() === "enum" && field.options) {
                     const opt = field.options.find(o => o.value == value);
@@ -605,7 +630,9 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
                 }
 
                 const p = document.createElement('p');
-                p.innerHTML = `<strong>${field.label}:</strong> ${value}`;
+                const label = document.createElement('strong');
+                label.textContent = `${field.label}: `;
+                p.append(label, document.createTextNode(String(value)));
 
                 if (modoFk) {
                     p.classList.add('cursor-pointer', 'hover:text-green-600');
@@ -624,7 +651,18 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             const actions = document.createElement('div');
             actions.className = 'mt-3 flex gap-2';
 
-            if (!modoFk) {
+            if (modoFk) {
+                const select = document.createElement('button');
+                select.type = 'button'; select.textContent = 'Selecionar';
+                select.className = 'text-green-600 hover:underline';
+                select.onclick = () => {
+                    const input = document.getElementById(crudState.fkContext.campoDestino);
+                    input.value = item.nome || item.descricao || item.id || '';
+                    input.dataset.id = item.id;
+                    hideFkModal();
+                };
+                actions.appendChild(select);
+            } else {
                 const editBtn = document.createElement('button');
                 editBtn.innerHTML = `
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
@@ -695,6 +733,7 @@ function createFieldInput(field, tipo = 'insert') {
         input.dataset.description = '';
         input.dataset.id = '';
         input.dataset.endPontGetMetadata = field.endPontGetMetadata;
+        input.addEventListener('input', () => { input.dataset.id = ''; });
 
         input.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
@@ -750,6 +789,11 @@ function createFieldInput(field, tipo = 'insert') {
         wrapper.appendChild(input);
     }
 
+    input.required = Boolean(field.required) && field.editable !== false;
+    input.disabled = field.editable === false;
+    if (field.maxLength > 0 && ['text', 'tel', 'textarea'].includes(input.type)) input.maxLength = field.maxLength;
+    input.addEventListener('input', () => input.setCustomValidity(''));
+    if (input.required) label.textContent += ' *';
     return wrapper;
 }
 function buildTabsDesktop(tabsMap) {
@@ -855,7 +899,11 @@ function scrollToElement(element) {
         behavior: 'smooth'
     });
 }
-export function renderFormCrud() {
+export function renderFormCrud(preserveValues = false) {
+    const previous = preserveValues ? (crudState.metadata?.formFields || []).map(field => {
+        const input = document.getElementById(`insert-${field.id}`);
+        return input ? { id: input.id, value: input.value, reference: input.dataset.id } : null;
+    }).filter(Boolean) : [];
     const formGroup = document.getElementById('form-group');
     formGroup.innerHTML = '';
 
@@ -869,12 +917,7 @@ export function renderFormCrud() {
     const layout = isMobile ? buildAccordionMobile(tabsMap) : buildTabsDesktop(tabsMap);
     formGroup.appendChild(layout);
 
-    window.addEventListener('resize', () => {
-        const isMobileResize = window.innerWidth < 768;
-        if ((isMobile && !isMobileResize) || (!isMobile && isMobileResize)) {
-            renderFormCrud();
-        }
-    });
+    formLayoutIsMobile = isMobile;
     atualizarFormName();
     renderEntityTabs(formGroup);
     runCrudExtension('afterRenderForm', createExtensionPayload({
@@ -883,6 +926,10 @@ export function renderFormCrud() {
         tabsMap,
         currentAction: crudState.currentAction
     }));
+    for (const value of previous) {
+        const input = document.getElementById(value.id);
+        if (input) { input.value = value.value; if (value.reference !== undefined) input.dataset.id = value.reference; }
+    }
 }
 
 function renderEntityTabs(formGroup) {
@@ -965,7 +1012,7 @@ async function loadRelationTab(tab, pane) {
     };
 
     try {
-        beforeRequest();
+        if (!beforeRequest()) return;
         const response = await fetch(`${environments.urlApi}${tab.endpoint}`, {
             method: 'POST',
             headers: {
@@ -1040,7 +1087,7 @@ async function buildSearchFK(tipo, campoId, valor) {
 
     try {
         const token = localStorage.getItem('token');
-        beforeRequest();
+        if (!beforeRequest()) return;
         const response = await fetch(`${environments.urlApi}${input.dataset.endPontGetMetadata}`, {
             headers: { 'Authorization': `Bearer ${token}` }
         });
@@ -1051,7 +1098,7 @@ async function buildSearchFK(tipo, campoId, valor) {
                 showAlert('Não foi possível carregar os dados da pesquisa.', 'error');
                 return;
             }
-            openSearchFK(metadata, inputId);
+            openSearchFK(metadata, inputId, input.value);
 
         } else {
             trataErroResponse('buildSearchFK', response);
@@ -1060,25 +1107,30 @@ async function buildSearchFK(tipo, campoId, valor) {
         erroRequestResponse(error);
     }
 }
-function openSearchFK(metadataFk, campoDestino) {
+function openSearchFK(metadataFk, campoDestino, searchText = '') {
     const container = document.getElementById('modal-conteudo-fk');
+    const title = document.getElementById('fk-modal-title');
+    if (title) title.textContent = `Selecionar ${metadataFk.entityDescription || metadataFk.entityName}`;
     showFkModal();
-    console.log('aqui');
     crudState.fkContext = {
         metadata: metadataFk,
-        campoDestino: campoDestino
+        campoDestino: campoDestino,
+        pagination: { page: 1, pageSize: 5, PageWhithCount: false }
     };
 
     renderSearch(metadataFk, true); // true = modo FK
+    const firstText = metadataFk.search?.[0]?.filterFields?.find(field => !field.isFk && ['varchar','string'].includes(field.type.toLowerCase()));
+    if (firstText) container.querySelector(`[id="search-${firstText.id}"]`).value = searchText;
     crudSearch(metadataFk, true);
 }
 async function crudCreateOrUpdate() {
+    if (!validateCrudForm()) return;
     if (crudState.currentAction == Actions.UPDATE) {
         if (!canCapability('update')) return;
-        crudUpdate();
+        await crudUpdate();
     } else {
         if (!canCapability('create')) return;
-        crudCreate();
+        await crudCreate();
     }
 }
 async function crudCreate() {
@@ -1088,22 +1140,23 @@ async function crudCreate() {
     const newRecord = {};
     crudState.metadata.formFields.forEach(field => {
         var input = document.getElementById(`insert-${field.id}`);
+        if (!input || (field.editable === false && field.id !== 'id')) return;
         if (input.value != "") {
             if (field.isFk) {
                 if (input.dataset.id) {
-                    newRecord[field.id] = input.dataset.id;
+                    newRecord[field.id] = Number(input.dataset.id);
                 } else {
                     input.value = "";
                 }
             } else {
-                newRecord[field.id] = input.value;
+                newRecord[field.id] = ['int','decimal','float','enum','list'].includes(field.type.toLowerCase()) ? Number(input.value) : input.value;
             }
         }
     });
 
 
     try {
-        beforeRequest();
+        if (!beforeRequest()) return;
         const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.create}`, {
             method: 'POST',
             headers: {
@@ -1114,6 +1167,14 @@ async function crudCreate() {
         });
 
         if (response.ok) {
+            const payload = await response.json().catch(() => ({}));
+            const record = payload.data ? lowerRecordKeys(payload.data) : null;
+            if (record?.id) {
+                crudState.currentAction = Actions.UPDATE;
+                crudState.currentRecord = record;
+                const id = document.getElementById('insert-id');
+                if (id) id.value = record.id;
+            }
             showAlert('Registro inserido com sucesso!', 'success');
         } else {
             trataErroResponse('crudCreate', response);
@@ -1126,25 +1187,26 @@ async function crudUpdate() {
     if (!canCapability('update')) return;
 
     const token = localStorage.getItem('token');
-    const updatedRecord = {};
+    const updatedRecord = { id: crudState.currentRecord?.id };
     crudState.metadata.formFields.forEach(field => {
         var input = document.getElementById(`insert-${field.id}`);
+        if (!input || (field.editable === false && field.id !== 'id')) return;
         if (input.value != "") {
             if (field.isFk) {
                 if (input.dataset.id) {
-                    updatedRecord[field.id] = input.dataset.id;
+                    updatedRecord[field.id] = Number(input.dataset.id);
                 } else {
                     input.value = "";
                 }
             } else {
-                updatedRecord[field.id] = input.value;
+                updatedRecord[field.id] = ['int','decimal','float','enum','list'].includes(field.type.toLowerCase()) ? Number(input.value) : input.value;
             }
         }
     });
 
 
     try {
-        beforeRequest();
+        if (!beforeRequest()) return;
         const response = await fetch(`${environments.urlApi}${crudState.metadata.endpoints.update}`, {
             method: 'PUT',
             headers: {
@@ -1181,7 +1243,7 @@ async function editRecord(item) {
     };
 
     try {
-        beforeRequest();
+        if (!beforeRequest()) return;
         const response = await fetch(url, {
             method: "POST",
             headers: {
@@ -1199,7 +1261,8 @@ async function editRecord(item) {
         const responseJson = await response.json();
 
         // Extrai o registro completo do retorno
-        const fullRecord = responseJson.data?.items?.[0] || responseJson.results?.[0] || null;
+        const rawRecord = responseJson.data?.items?.[0] || responseJson.results?.[0] || null;
+        const fullRecord = rawRecord ? lowerRecordKeys(rawRecord) : null;
 
         if (!fullRecord) {
             showAlert("Registro não encontrado.", "warning");
@@ -1214,9 +1277,19 @@ async function editRecord(item) {
             if (!input) return;
 
             if (field.isFk) {
-                input.dataset.id = fullRecord[field.id] || '';
+                const value = fullRecord[field.id];
+                const reference = value && typeof value === 'object' ? lowerRecordKeys(value) : null;
+                input.dataset.id = reference?.id ?? value ?? '';
+                input.value = reference?.nome || reference?.descricao || input.dataset.id;
+            } else if (input.type === 'datetime-local' && fullRecord[field.id]) {
+                const value = new Date(fullRecord[field.id]);
+                input.value = Number.isNaN(value.getTime()) ? '' : new Date(value.getTime()-value.getTimezoneOffset()*60000).toISOString().slice(0,16);
+            } else if (input.type === 'date') {
+                const value = String(fullRecord[field.id] || '');
+                input.value = value && Number(value.slice(0,4)) >= 1800 ? value.slice(0,10) : '';
+            } else {
+                input.value = fullRecord[field.id] ?? '';
             }
-            input.value = fullRecord[field.id] ?? '';
         });
 
         runCrudExtension('afterFillForm', createExtensionPayload({ record: fullRecord }));
@@ -1242,7 +1315,7 @@ async function deleteRecord(item) {
         const deleteEndpoint = `${environments.urlApi}${crudState.metadata.endpoints.delete.replace("{entidade.EntityName}", crudState.metadata.entityName)}`;
 
         try {
-            beforeRequest();
+            if (!beforeRequest()) return;
             const response = await fetch(deleteEndpoint, {
                 method: 'DELETE',
                 headers: {
@@ -1351,53 +1424,41 @@ function updateProgress(percent) {
     document.getElementById("process-bar").style.width = `${percent}%`;
 }
 async function endProcess() {
-    setInterval(() => {
+    setTimeout(() => {
         document.getElementById("process-overlay").classList.add("hidden");
         document.getElementById("process-status").classList.add("hidden");
 
     }, 500);
 }
 async function trataErroResponse(metodo, response) {
-
-    showAlert('ERRO não tratao', 'error');
-
-
-    /*trataErroResponse('deleteRecord', response);
-    showAlert(responseJson.data?.message, 'error');
-
-    trataErroResponse('editRecord', response);
-    showAlert("Erro ao carregar detalhes do registro.", "error");
-
-    trataErroResponse('crudUpdate', response);
-    showAlert(responseJson.message, 'error');//data.messageList
-
-
-    trataErroResponse('crudCreate', response);
-
-    const responseJson = await response.json();
-
-    if (responseJson.messageList && Array.isArray(responseJson.messageList)) {
-        responseJson.messageList.forEach(msg => {
-            showAlert(msg, 'error');
-        });
-    } else {
-        showAlert("Erro: " + responseJson.status, 'error');
-        console.log(responseJson.detail)
+    const payload = await response.json().catch(() => ({}));
+    showAlert(getApiErrorMessage(payload, response.status, crudState.metadata?.formFields || []), 'error', 10000);
+}
+function erroRequestResponse() {
+    showAlert('Não foi possível comunicar com o sistema. Verifique sua conexão e tente novamente. Os dados preenchidos foram mantidos.', 'error', 10000);
+}
+function lowerRecordKeys(record) {
+    return Object.fromEntries(Object.entries(record).map(([key, value]) => [key.toLowerCase(), value]));
+}
+function validateCrudForm() {
+    for (const field of crudState.metadata?.formFields || []) {
+        const input = document.getElementById(`insert-${field.id}`);
+        if (!input || input.disabled) continue;
+        input.setCustomValidity('');
+        if (input.required && !input.value.trim()) input.setCustomValidity(`Informe ${field.label}.`);
+        else if (field.isFk && input.value.trim() && !input.dataset.id) input.setCustomValidity(`Selecione ${field.label} pela pesquisa.`);
+        if (!input.checkValidity()) {
+            showAlert(input.validationMessage, 'warning', 10000);
+            const pane = input.closest('.tab-pane');
+            if (pane) { pane.classList.remove('hidden'); pane.style.display = 'grid'; pane.style.maxHeight = 'none'; }
+            if (input.getClientRects().length) input.reportValidity();
+            return false;
+        }
     }
-
-
-
-    trataErroResponse('buildSearchFK', response);
-    showAlert('Erro ao carregar os dados.', 'error');
-
-
-    trataErroResponse('fetchSearchResults', response);
-    showAlert(responseJson.data?.message || "Erro na pesquisa", 'error');
-    */
+    return true;
 }
 
 function beforeRequest() {
-    console.log('lllll');
     const token = localStorage.getItem('token');
     const tokenExp = localStorage.getItem('tokenExp');
 

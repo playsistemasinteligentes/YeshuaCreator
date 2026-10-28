@@ -15,12 +15,17 @@
     ${typeStyles[type] || typeStyles.info}
     opacity-0 -translate-y-2
   `;
-    alert.innerHTML = `
-    <div class="flex justify-between items-center">
-      <span>${message}</span>
-      <button class="ml-4 font-bold text-xl leading-none hover:text-gray-800" onclick="this.closest('div').remove()">×</button>
-    </div>
-  `;
+    const row = document.createElement('div');
+    row.className = 'flex justify-between items-center';
+    const text = document.createElement('span');
+    text.textContent = message;
+    text.style.whiteSpace = 'pre-line';
+    const close = document.createElement('button');
+    close.type = 'button'; close.textContent = '×';
+    close.className = 'ml-4 font-bold text-xl leading-none';
+    close.setAttribute('aria-label', 'Fechar mensagem');
+    close.onclick = () => alert.remove();
+    row.append(text, close); alert.append(row);
 
     container.appendChild(alert);
 

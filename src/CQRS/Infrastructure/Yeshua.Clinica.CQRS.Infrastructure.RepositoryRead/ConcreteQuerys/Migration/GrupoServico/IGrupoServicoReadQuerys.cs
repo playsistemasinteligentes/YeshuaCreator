@@ -30,6 +30,7 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+    public QueryModel GrupoServicoGeralQuery(Command.Read.GrupoServicoGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

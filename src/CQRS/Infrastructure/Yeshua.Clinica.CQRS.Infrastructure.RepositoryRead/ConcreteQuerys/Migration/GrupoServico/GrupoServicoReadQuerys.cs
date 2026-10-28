@@ -356,6 +356,34 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
+        public QueryModel GrupoServicoGeralQuery(Command.Read.GrupoServicoGeralCommand Command )
+        {
+            this.Query = "SELECT t0.Id, t0.Descricao FROM GrupoServico t0";
+            var whereClauses = new List<string>();
+            dynamic parameters = new ExpandoObject();
+            var dict = (IDictionary<string, object>)parameters;
+
+            if (Command.Descricao != null)
+            {
+                dict["Descricao_0"] = $"%{Command.Descricao}%";
+                whereClauses.Add("t0.Descricao LIKE @Descricao_0");//08
+            }
+
+            dict["Deleted"] = 0;
+            dict["TenantID"] = _executionContext.TenantID;
+
+            whereClauses.Add("t0.TenantID = @TenantID");
+            whereClauses.Add("t0.Deleted = @Deleted");
+            if (whereClauses.Any()) this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            int page = Command.Paginacao?.Page ?? 1;
+            int pageSize = Command.Paginacao?.PageSize ?? 20;
+            int offset = (page - 1) * pageSize;
+            dict["Offset"] = offset;
+            dict["PageSize"] = pageSize;
+            Query += " ORDER BY Id OFFSET @Offset ROWS FETCH NEXT @PageSize ROWS ONLY"; 
+            this.Parameters = parameters;
+            return new QueryModel(this.Query, this.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

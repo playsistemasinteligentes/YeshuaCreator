@@ -1,6 +1,24 @@
 ﻿let isRefreshing = false;
 let refreshQueue = [];
 
+export function getApiErrorMessage(payload, status, fields = []) {
+    const code = Number(payload?.statusCode ?? payload?.StatusCode ?? status);
+    if (status === 401) return 'Sua sessão expirou. Entre novamente para continuar.';
+    if (status === 403) return 'Seu usuário não tem permissão para realizar esta ação.';
+    if (status === 404) return 'O registro não foi encontrado. Atualize a pesquisa e tente novamente.';
+    if (status >= 500 || code >= 500) return 'Não foi possível concluir a ação agora. Seus dados foram mantidos na tela. Tente novamente.';
+    const messages = payload?.messageList ?? payload?.MessageList;
+    if (Array.isArray(messages) && messages.some(m => typeof m === 'string' && m.trim()))
+        return [...new Set(messages.filter(m => typeof m === 'string' && m.trim()))].join('\n');
+    const errors = payload?.errors ?? payload?.Errors;
+    if (errors && typeof errors === 'object') {
+        const labels = Object.keys(errors).map(key => fields.find(field => field.id.toLowerCase() === key.replace(/^\$\./, '').toLowerCase())?.label).filter(Boolean);
+        return labels.length ? `Revise os campos: ${[...new Set(labels)].join(', ')}.` : 'Revise os campos informados e tente novamente.';
+    }
+    return payload?.message || payload?.Message || payload?.mensagem || (status === 409
+        ? 'Os dados foram alterados. Atualize e tente novamente.' : 'Não foi possível concluir esta ação. Revise os dados e tente novamente.');
+}
+
 // Função para tentar refresh
 async function tryRefreshToken() {
     if (isRefreshing) {

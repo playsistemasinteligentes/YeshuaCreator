@@ -1,8 +1,8 @@
-import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
+import { apiFetch, getApiErrorMessage } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20261028-cadastros01';
 import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
 import { ClinicSetup } from './configuracao.js?v=20261028-config01';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261028-help02';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-cadastros01';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -67,7 +67,7 @@ class ClinicPanel{
         if(actorIdentity()!==this.actor)throw new Error('O usuário ou a clínica mudou. Reabra o painel para continuar.');
         const response=await apiFetch(this.apiBase+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}),payload=normalize(await response.json().catch(()=>({})));
         if(this.disposed||actorIdentity()!==this.actor||environments.urlApi.replace(/\/$/,'')!==this.apiBase)throw new Error('O contexto mudou. Reabra o painel para continuar.');
-        if(!response.ok||payload.statusCode>=400){const e=new Error(payload.message||payload.mensagem||'Não foi possível concluir esta ação.');e.status=response.status;throw e;}
+        if(!response.ok||payload.statusCode>=400){const e=new Error(getApiErrorMessage(payload,response.status));e.status=payload.statusCode||response.status;throw e;}
         return payload.data??payload;
     }
     bind(){
@@ -80,6 +80,10 @@ class ClinicPanel{
         this.host.querySelectorAll('[data-field]').forEach(input=>input.addEventListener('input',()=>{this.dirty=true;this.edits++;this.text('save-status','Alterações por salvar');clearTimeout(this.saveTimer);if(!this.isFinal())this.saveTimer=setTimeout(()=>this.save().catch(e=>this.feedback(e.message,true)),1800);},{signal:this.controller.signal}));
         on('novo',async()=>{await this.leaveCurrent();await this.openSchedule();});on('proxima',async()=>{await this.leaveCurrent();await this.openSchedule(this.current?.pacienteId);});on('dialog-fechar',async()=>this.el('agendar-dialog').close());
         this.el('agendar-form').addEventListener('submit',e=>{e.preventDefault();this.run(()=>this.schedule());},{signal:this.controller.signal});
+        on('paciente-novo',async()=>this.toggleNewPatient(true));
+        on('paciente-cancelar',async()=>this.toggleNewPatient(false));
+        on('paciente-salvar',()=>this.createPatient());
+        this.el('agendar-dialog').addEventListener('cancel',e=>{if(this.busy)e.preventDefault();},{signal:this.controller.signal});
         on('agendar-servico-alterar',()=>this.chooseScheduleService());on('agendar-servico-habitual',()=>this.defineHabitualService());on('agendar-servico-limpar',()=>this.defineHabitualService(true));
         this.el('agendar-servico').addEventListener('change',()=>{this.scheduledService=this.servicos?.find(s=>s.id===Number(this.el('agendar-servico').value))||null;this.renderScheduleService(true);},{signal:this.controller.signal});
         on('iniciar',()=>this.transition('IniciarAtendimento','atender'));
@@ -149,7 +153,8 @@ class ClinicPanel{
     async finalize(){this.requireAudioDone();if(!this.el('revisado').checked)throw new Error('Confirme a revisão do registro antes de finalizar.');await this.save();const result=await this.request(this.correcting?'CorrigirRegistro':'FinalizarRegistro',this.recordPayload());this.dirty=false;this.current.versao=result.versao;await this.load(this.current.id);this.setMode('fechar');this.feedback('Registro revisado e salvo. A versão foi preservada no histórico de revisões.');}
     async openSchedule(patient=0){
         if(actorIdentity()!==this.actor)throw new Error('O usuário ou a clínica mudou. Reabra o painel para continuar.');
-        this.el('agendar-paciente').innerHTML=this.data.pacientes.map(p=>`<option value="${p.id}">${escape(p.nome)}</option>`).join('');if(patient)this.el('agendar-paciente').value=patient;
+        this.renderPatients(patient);
+        this.toggleNewPatient(false);
         const habitual={id:this.data.servicoHabitualId,nome:this.data.servicoHabitualNome,modeloConsulta:this.data.modeloConsultaHabitual,versaoModeloConsulta:this.data.versaoModeloConsultaHabitual};
         this.scheduledService=habitual.id&&supportedModel(habitual)?habitual:null;this.text('agendar-servico-status','');this.text('agendar-servico-alterar','Alterar serviço');
         if(!this.scheduledService){await this.loadServices();if(this.servicos.length===1)this.scheduledService=this.servicos[0];}
@@ -158,10 +163,43 @@ class ClinicPanel{
         const start=new Date();start.setDate(start.getDate()+7);start.setMinutes(0,0,0);const value=d=>new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);this.el('agendar-inicio').value=value(start);this.el('agendar-fim').value=value(new Date(start.getTime()+50*60000));this.text('agendar-erro','');this.el('agendar-dialog').showModal();
     }
     async schedule(){try{
+        if(this.el('paciente-cadastro').hidden===false)throw new Error('Salve o novo paciente ou volte à seleção antes de confirmar o agendamento.');
+        if(!Number(this.el('agendar-paciente').value))throw new Error('Selecione um paciente ou use Novo paciente.');
         const service=this.scheduledService;if(!service||!supportedModel(service))throw new Error('Selecione um serviço para a consulta.');
+        if(!this.el('agendar-form').reportValidity())return;
+        const inicio=new Date(this.el('agendar-inicio').value),fim=new Date(this.el('agendar-fim').value);
+        if(!Number.isFinite(inicio.getTime())||!Number.isFinite(fim.getTime())||fim<=inicio)throw new Error('O fim da consulta deve ser posterior ao início.');
         const start=new Date(this.el('agendar-inicio').value),end=new Date(this.el('agendar-fim').value),result=await this.request('AgendarAtendimento',{pacienteId:Number(this.el('agendar-paciente').value),dataInicio:start.toISOString(),dataFim:end.toISOString(),servicoId:service.id,modeloConsulta:service.modeloConsulta,versaoModeloConsulta:service.versaoModeloConsulta});
         this.el('agendar-dialog').close();this.el('data').value=day(start);await this.load(result.sessaoId);this.feedback('Consulta agendada. Histórico e plano anterior já estão disponíveis.');
     }catch(e){if(e.status===409){this.servicos=null;this.text('agendar-servico-alterar','Atualizar serviços');this.show('agendar-servico-alterar',true);}this.text('agendar-erro',e.message);throw e;}}
+    renderPatients(selected=0){
+        const patients=this.data.pacientes;
+        this.el('agendar-paciente').innerHTML='<option value="">'+(patients.length?'Selecione o paciente':'Cadastre um paciente para continuar')+'</option>'+patients.map(p=>`<option value="${p.id}">${escape(p.nome)}</option>`).join('');
+        this.el('agendar-paciente').value=String(selected||(patients.length===1?patients[0].id:''));
+    }
+    toggleNewPatient(visible){
+        this.show('paciente-cadastro',visible);
+        this.el('paciente-cadastro').disabled=!visible;
+        this.el('paciente-novo').setAttribute('aria-expanded',String(visible));
+        this.text('paciente-erro','');
+        if(visible){this.el('paciente-nascimento').max=new Date(Date.now()-new Date().getTimezoneOffset()*60000).toISOString().slice(0,10);this.el('paciente-nome').focus();}
+    }
+    async createPatient(){
+        const name=this.el('paciente-nome'),phone=this.el('paciente-telefone'),birth=this.el('paciente-nascimento');
+        name.value=name.value.trim();phone.value=phone.value.trim();
+        if(![name,phone,birth].every(input=>input.reportValidity()))return;
+        this.text('paciente-erro','');
+        const button=this.el('paciente-salvar');button.disabled=true;this.text('paciente-salvar','Salvando paciente…');
+        try{
+            const payload={nome:name.value,telefone:phone.value};if(birth.value)payload.dataNascimento=birth.value+'T00:00:00';
+            const result=await this.post('/Paciente/PostPaciente',payload);
+            if(!Number(result.id))throw new Error('O cadastro foi recebido sem identificação. Use Atualizar para conferir os pacientes antes de tentar novamente.');
+            this.data.pacientes.push({id:result.id,nome:result.nome});this.data.pacientes.sort((a,b)=>a.nome.localeCompare(b.nome,'pt-BR'));
+            this.renderPatients(result.id);this.toggleNewPatient(false);name.value='';phone.value='';birth.value='';
+            this.text('agendar-erro','Paciente cadastrado e selecionado. Confira os horários e confirme o agendamento.');
+        }catch(e){this.text('paciente-erro',e.message);throw e;}
+        finally{button.disabled=false;this.text('paciente-salvar','Salvar paciente');}
+    }
     async loadServices(){
         if(this.servicos)return this.servicos;
         if(!this.servicosPromise)this.servicosPromise=this.request('ConsultarServicosAgendamento',{}).then(data=>{this.servicos=data.servicos.filter(s=>supportedModel(s));return this.servicos;}).finally(()=>{this.servicosPromise=null;});

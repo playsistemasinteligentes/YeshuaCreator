@@ -357,6 +357,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<ServicoStandardDTO> GetServicoGeral(ICommandRead command )
+        {
+            if (command is Command.Read.ServicoGeralCommand c)
+             {
+                var query = _query.ServicoGeralQuery(c );
+
+                var itens = _unitOfWork.Query<ServicoStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<ServicoStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

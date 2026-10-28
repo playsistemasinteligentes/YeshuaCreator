@@ -62,6 +62,7 @@ namespace IRepository.Read
         public IEnumerable<RevisaoRegistroSessaoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<RevisaoRegistroSessaoDTO> GetAllByUserId(int value );
         public IEnumerable<RevisaoRegistroSessaoDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<RevisaoRegistroSessaoStandardDTO> GetRevisaoRegistroSessaoGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

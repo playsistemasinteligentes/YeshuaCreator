@@ -84,6 +84,14 @@ namespace Dominio
 
         internal void CopyMetadataFrom(Entity entity)
         {
+            if (!ReferenceEquals(this, entity))
+            {
+                foreach (var query in entity.Queries)
+                {
+                    Queries.RemoveAll(existing => existing.Name == query.Name);
+                    Queries.Add(query);
+                }
+            }
             if (entity.IsGlobal)
                 Global();
             if (entity.InternalOwner is { } owner)

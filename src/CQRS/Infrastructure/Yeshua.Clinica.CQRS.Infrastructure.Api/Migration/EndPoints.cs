@@ -172,14 +172,14 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Id", title = "ID", classification = "Internal" },
                     new { name = "Nome", title = "Nome do Paciente", classification = "Confidential" },
                     new { name = "Telefone", title = "Telefone de Contato", classification = "Confidential" },
-                    new { name = "DataNascimento", title = "Data Nascimento", classification = "Internal" },
+                    new { name = "DataNascimento", title = "Data de nascimento", classification = "Internal" },
                     new { name = "Genero", title = "Gênero", classification = "Internal" },
                     new { name = "Escolaridade", title = "Escolaridade", classification = "Internal" },
                     new { name = "Profissao", title = "Profissão", classification = "Internal" },
                     new { name = "Endereco", title = "Endereço", classification = "Confidential" },
-                    new { name = "NomeResponsavel", title = "Nome Responsavel", classification = "Confidential" },
-                    new { name = "TelefoneResponsavel", title = "Telefone Responsavel", classification = "Confidential" },
-                    new { name = "Observacao", title = "Observacao", classification = "Internal" },
+                    new { name = "NomeResponsavel", title = "Nome do responsável", classification = "Confidential" },
+                    new { name = "TelefoneResponsavel", title = "Telefone do responsável", classification = "Confidential" },
+                    new { name = "Observacao", title = "Observações", classification = "Internal" },
                     new { name = "TenantID", title = "TenantID", classification = "Internal" },
                     new { name = "Deleted", title = "Deleted", classification = "Internal" },
                     new { name = "Changed", title = "Changed", classification = "Internal" },
@@ -1924,6 +1924,114 @@ app.MapPost("/yapi/yUserGrant/ReadyUserGrant", async ([FromServices] Command.Rec
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/Clinica/ReadClinicaGeral", async ([FromServices] Command.Receivers.Read.ClinicaReadQueryGeralReceiver receiver, [FromBody] Command.Read.ClinicaGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ClinicaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Especialidade/ReadEspecialidadeGeral", async ([FromServices] Command.Receivers.Read.EspecialidadeReadQueryGeralReceiver receiver, [FromBody] Command.Read.EspecialidadeGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.EspecialidadeEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Profissional/ReadProfissionalGeral", async ([FromServices] Command.Receivers.Read.ProfissionalReadQueryGeralReceiver receiver, [FromBody] Command.Read.ProfissionalGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ProfissionalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/DisponibilidadeAgenda/ReadDisponibilidadeAgendaGeral", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadQueryGeralReceiver receiver, [FromBody] Command.Read.DisponibilidadeAgendaGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.DisponibilidadeAgendaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/GrupoServico/ReadGrupoServicoGeral", async ([FromServices] Command.Receivers.Read.GrupoServicoReadQueryGeralReceiver receiver, [FromBody] Command.Read.GrupoServicoGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.GrupoServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Servico/ReadServicoGeral", async ([FromServices] Command.Receivers.Read.ServicoReadQueryGeralReceiver receiver, [FromBody] Command.Read.ServicoGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.ServicoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Paciente/ReadPacienteGeral", async ([FromServices] Command.Receivers.Read.PacienteReadQueryGeralReceiver receiver, [FromBody] Command.Read.PacienteGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PacienteEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentacaoFinanceira/ReadMovimentacaoFinanceiraGeral", async ([FromServices] Command.Receivers.Read.MovimentacaoFinanceiraReadQueryGeralReceiver receiver, [FromBody] Command.Read.MovimentacaoFinanceiraGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentacaoFinanceiraEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/Sesoes/ReadSesoesGeral", async ([FromServices] Command.Receivers.Read.SesoesReadQueryGeralReceiver receiver, [FromBody] Command.Read.SesoesGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.SesoesEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/PlanoConta/ReadPlanoContaGeral", async ([FromServices] Command.Receivers.Read.PlanoContaReadQueryGeralReceiver receiver, [FromBody] Command.Read.PlanoContaGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.PlanoContaEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/MovimentoFinanceiro/ReadMovimentoFinanceiroGeral", async ([FromServices] Command.Receivers.Read.MovimentoFinanceiroReadQueryGeralReceiver receiver, [FromBody] Command.Read.MovimentoFinanceiroGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.MovimentoFinanceiroEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapPost("/yapi/RevisaoRegistroSessao/ReadRevisaoRegistroSessaoGeral", async ([FromServices] Command.Receivers.Read.RevisaoRegistroSessaoReadQueryGeralReceiver receiver, [FromBody] Command.Read.RevisaoRegistroSessaoGeralCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.RevisaoRegistroSessaoEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/yOutbox/ReadyOutboxProximaPendente", async ([FromServices] Command.Receivers.Read.yOutboxReadQueryProximaPendenteReceiver receiver, [FromBody] Command.Read.yOutboxProximaPendenteCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -3658,36 +3766,30 @@ app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Clinica/ReadClinica",
+                endpoint = "/Clinica/ReadClinicaGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "endereco", label = "Endereço da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome da Clínica", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "endereco", label = "Endereço da Clínica", type = "string", required = true, editable = true, maxLength = 250, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone de Contato", type = "string", required = true, editable = true, maxLength = 20, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3726,7 +3828,7 @@ app.MapGet("/yapi/getMetaDataEspecialidade", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Especialidade/ReadEspecialidade",
+                endpoint = "/Especialidade/ReadEspecialidadeGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3734,19 +3836,18 @@ app.MapGet("/yapi/getMetaDataEspecialidade", (HttpContext context) =>
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "descricao", label = "Descrição da Especialidade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "descricao", label = "Descrição da Especialidade", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "descricao", label = "Descrição da Especialidade", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3785,25 +3886,19 @@ app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Profissional/ReadProfissional",
+                endpoint = "/Profissional/ReadProfissionalGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "servicohabitualid", label = "Serviço habitual", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "servicohabitualid", label = "Serviço habitual", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
                 servicohabitualid = "/Profissional/ProfissionalReadFKServicoHabitualId",
@@ -3812,11 +3907,11 @@ app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome do Profissional", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "telefone", label = "Telefone do Profissional", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "servicohabitualid", label = "Serviço habitual", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome do Profissional", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone do Profissional", type = "string", required = true, editable = true, maxLength = 20, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "servicohabitualid", label = "Serviço habitual", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3857,7 +3952,7 @@ app.MapGet("/yapi/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/DisponibilidadeAgenda/ReadDisponibilidadeAgenda",
+                endpoint = "/DisponibilidadeAgenda/ReadDisponibilidadeAgendaGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3866,12 +3961,11 @@ app.MapGet("/yapi/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datahora", label = "Horário Disponível", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 profissionalid = "/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId",
             }
@@ -3879,9 +3973,9 @@ app.MapGet("/yapi/getMetaDataDisponibilidadeAgenda", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "profissionalid", label = "Profissional", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datahora", label = "Horário Disponível", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "profissionalid", label = "Profissional", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datahora", label = "Horário Disponível", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3921,7 +4015,7 @@ app.MapGet("/yapi/getMetaDataGrupoServico", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/GrupoServico/ReadGrupoServico",
+                endpoint = "/GrupoServico/ReadGrupoServicoGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -3929,19 +4023,18 @@ app.MapGet("/yapi/getMetaDataGrupoServico", (HttpContext context) =>
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "descricao", label = "Descrição do Grupo de Serviços", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3980,25 +4073,20 @@ app.MapGet("/yapi/getMetaDataServico", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Servico/ReadServico",
+                endpoint = "/Servico/ReadServicoGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 gruposervicoid = "/Servico/ServicoReadFKGrupoServicoId",
             }
@@ -4006,11 +4094,11 @@ app.MapGet("/yapi/getMetaDataServico", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome do Serviço", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valor", label = "Valor do Serviço", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome do Serviço", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor do Serviço", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4050,54 +4138,38 @@ app.MapGet("/yapi/getMetaDataPaciente", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Paciente/ReadPaciente",
+                endpoint = "/Paciente/ReadPacienteGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "genero", label = "Gênero", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Mascolino" }, new { value = 2, display = "Feminino" }, new { value = 3, display = "Outros" },}, },
-                new { id = "escolaridade", label = "Escolaridade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "profissao", label = "Profissão", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "endereco", label = "Endereço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "observacao", label = "Observacao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "datanascimento", label = "Data de nascimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Paciente", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "genero", label = "Gênero", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Mascolino" }, new { value = 2, display = "Feminino" }, new { value = 3, display = "Outros" },}, },
-                new { id = "escolaridade", label = "Escolaridade", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "profissao", label = "Profissão", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "endereco", label = "Endereço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "observacao", label = "Observacao", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome do Paciente", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datanascimento", label = "Data Nascimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "genero", label = "Gênero", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Mascolino" }, new { value = 2, display = "Feminino" }, new { value = 3, display = "Outros" },}, },
-            new { id = "escolaridade", label = "Escolaridade", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "profissao", label = "Profissão", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "endereco", label = "Endereço", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nomeresponsavel", label = "Nome Responsavel", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "telefoneresponsavel", label = "Telefone Responsavel", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "observacao", label = "Observacao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome do Paciente", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefone", label = "Telefone de Contato", type = "string", required = true, editable = true, maxLength = 20, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datanascimento", label = "Data de nascimento", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "genero", label = "Gênero", type = "enum", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Masculino" }, new { value = 2, display = "Feminino" }, new { value = 3, display = "Outros" },}, },
+            new { id = "escolaridade", label = "Escolaridade", type = "string", required = false, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "profissao", label = "Profissão", type = "string", required = false, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "endereco", label = "Endereço", type = "string", required = false, editable = true, maxLength = 250, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nomeresponsavel", label = "Nome do responsável", type = "string", required = false, editable = true, maxLength = 250, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "telefoneresponsavel", label = "Telefone do responsável", type = "string", required = false, editable = true, maxLength = 15, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "observacao", label = "Observações", type = "memo", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4136,29 +4208,22 @@ app.MapGet("/yapi/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceira",
+                endpoint = "/MovimentacaoFinanceira/ReadMovimentacaoFinanceiraGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "valor", label = "Valor da Transação", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
                 new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "valor", label = "Valor da Transação", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
                 new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 pacienteid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKPacienteId",
                 servicoid = "/MovimentacaoFinanceira/MovimentacaoFinanceiraReadFKServicoId",
@@ -4167,13 +4232,13 @@ app.MapGet("/yapi/getMetaDataMovimentacaoFinanceira", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pacienteid", label = "Paciente", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "servicoid", label = "Serviço", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valor", label = "Valor da Transação", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
-            new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pacienteid", label = "Paciente", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "servicoid", label = "Serviço", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor da Transação", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipomovimentacao", label = "Tipo de Movimentação", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebimento" }, new { value = 2, display = "Pagamento" },}, },
+            new { id = "datamovimentacao", label = "Data da Movimentação", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "saldoatual", label = "Saldo Atual", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4214,89 +4279,22 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/Sesoes/ReadSesoes",
+                endpoint = "/Sesoes/ReadSesoesGeral",
             resultFields = new[]
             {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
-                new { id = "statusprontuario", label = "Status Prontuario", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
-                new { id = "prontuario", label = "Prontuario", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registrodocumental", label = "Registro Documental", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "sintomasrelatados", label = "Sintomas relatados", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Menteve" }, new { value = 2, display = "Melhora" }, new { value = 3, display = "Piora" }, new { value = 4, display = "Eventos novos" },}, },
-                new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "usomedicacao", label = "Uso de Medicação", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "versaoatendimento", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "serviconome", label = "Serviço no agendamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
                 new { id = "pacienteid", label = "Paciente", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datainicio", label = "Data Inicio", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datafim", label = "Data Fim", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
-                new { id = "statusprontuario", label = "Status Prontuario", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
-                new { id = "prontuario", label = "Prontuario", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registrodocumental", label = "Registro Documental", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "sintomasrelatados", label = "Sintomas relatados", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Menteve" }, new { value = 2, display = "Melhora" }, new { value = 3, display = "Piora" }, new { value = 4, display = "Eventos novos" },}, },
-                new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "usomedicacao", label = "Uso de Medicação", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "servicoid", label = "Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "profissionalid", label = "Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "versaoatendimento", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "serviconome", label = "Serviço no agendamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 pacienteid = "/Sesoes/SesoesReadFKPacienteId",
                 servicoid = "/Sesoes/SesoesReadFKServicoId",
@@ -4308,43 +4306,43 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "pacienteid", label = "Paciente", type = "int", required = false, displaygroup = "Agenda", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datainicio", label = "Data Inicio", type = "DateTime", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datafim", label = "Data Fim", type = "DateTime", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
-            new { id = "statusprontuario", label = "Status Prontuario", type = "enum", required = false, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
-            new { id = "prontuario", label = "Prontuario", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "registrodocumental", label = "Registro Documental", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sintomasrelatados", label = "Sintomas relatados", type = "memo", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", type = "enum", required = false, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Menteve" }, new { value = 2, display = "Melhora" }, new { value = 3, display = "Piora" }, new { value = 4, display = "Eventos novos" },}, },
-            new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "usomedicacao", label = "Uso de Medicação", type = "memo", required = false, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "memo", required = false, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "memo", required = false, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "memo", required = false, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "memo", required = false, displaygroup = "Diagnóstico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "memo", required = false, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "memo", required = false, displaygroup = "Anotações Extras", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", required = false, displaygroup = "Anotações Extras", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "IDs", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "servicoid", label = "Serviço", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "profissionalid", label = "Profissional", type = "int", required = false, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "versaoatendimento", label = "Versão", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serviconome", label = "Serviço no agendamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pacienteid", label = "Paciente", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Agenda", isFk = true, endPontGetMetadata = "/getMetaDataPaciente", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datainicio", label = "Data Inicio", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datafim", label = "Data Fim", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "statusagendamento", label = "Status do Agendamento", type = "enum", required = false, editable = true, maxLength = 0, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "EmConciliacaoDeHorarios" }, new { value = 1, display = "Confirmada" }, new { value = 2, display = "Realizada" }, new { value = 3, display = "Cancelada" }, new { value = 4, display = "NaoCompareceu" },}, },
+            new { id = "statusprontuario", label = "Status Prontuario", type = "enum", required = false, editable = true, maxLength = 0, displaygroup = "Agenda", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Cancelou" }, new { value = 1, display = "Nao Compareceu" }, new { value = 2, display = "Pendente" }, new { value = 3, display = "Concluido" },}, },
+            new { id = "prontuario", label = "Prontuario", type = "memo", required = false, editable = true, maxLength = 8000, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "queixaprincipal", label = "Queixa Principal", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registrodocumental", label = "Registro Documental", type = "memo", required = false, editable = true, maxLength = 8000, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sintomasrelatados", label = "Sintomas relatados", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mudancasdesdeultimasessaao", label = "Mudanças desde a última sessão", type = "enum", required = false, editable = true, maxLength = 0, displaygroup = "Atendimento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Menteve" }, new { value = 2, display = "Melhora" }, new { value = 3, display = "Piora" }, new { value = 4, display = "Eventos novos" },}, },
+            new { id = "comportamentoobservado", label = "Comportamento observado durante a sessão", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "estadoemocionalgeral", label = "Estado emocional geral", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "discursopensamentos", label = "Discurso e pensamentos", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "usomedicacao", label = "Uso de Medicação", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Observações Clínicas", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tecnicasutilizadas", label = "Técnicas utilizadas", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "questionamentosreflexoesabordadas", label = "Questionamentos e reflexões abordadas", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "exerciciostarefassugeridas", label = "Exercícios ou tarefas de casa sugeridas", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Estratégias", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "diagnoosticohipotesediagnoostica", label = "Diagnóstico ou Hipótese Diagnóstica", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Diagnóstico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "objetivoscurtoprazo", label = "Objetivos a curto prazo", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "objetivoslongoprazo", label = "Objetivos a longo prazo", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "frequenciasugeridasessooes", label = "Frequência sugerida das sessões", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "encaminhamentooutrosprofissionais", label = "Encaminhamento para outros profissionais", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Plano Terapêutico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "informacoesrelevantesfuturasconsultas", label = "Informações relevantes que podem ser úteis em futuras consultas", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Anotações Extras", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "feedbackpacientesobreprocessoterapeeutico", label = "Feedback do paciente sobre o processo terapêutico", type = "memo", required = false, editable = true, maxLength = 1000, displaygroup = "Anotações Extras", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "IDs", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "servicoid", label = "Serviço", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "movimentacaofinanceiraid", label = "Financeiro", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataMovimentacaoFinanceira", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "profissionalid", label = "Profissional", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "IDs", isFk = true, endPontGetMetadata = "/getMetaDataProfissional", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atendimentoiniciadoem", label = "Início real", type = "DateTime", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atendimentoencerradoem", label = "Fim real", type = "DateTime", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versaoatendimento", label = "Versão", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serviconome", label = "Serviço no agendamento", type = "string", required = false, editable = false, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4388,7 +4386,7 @@ app.MapGet("/yapi/getMetaDataPlanoConta", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/PlanoConta/ReadPlanoConta",
+                endpoint = "/PlanoConta/ReadPlanoContaGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
@@ -4398,23 +4396,21 @@ app.MapGet("/yapi/getMetaDataPlanoConta", (HttpContext context) =>
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "tipo", label = "Tipo da Conta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+                new { id = "codigo", label = "Código da Conta", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigo", label = "Código da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome da Conta", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipo", label = "Tipo da Conta", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigo", label = "Código da Conta", type = "string", required = true, editable = true, maxLength = 20, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome da Conta", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipo", label = "Tipo da Conta", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Ativo" }, new { value = 2, display = "Passivo" }, new { value = 3, display = "Receita" }, new { value = 4, display = "Despesa" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4453,29 +4449,22 @@ app.MapGet("/yapi/getMetaDataMovimentoFinanceiro", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/MovimentoFinanceiro/ReadMovimentoFinanceiro",
+                endpoint = "/MovimentoFinanceiro/ReadMovimentoFinanceiroGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "idorigem", label = "Identificador de Origem", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "contadebitoid", label = "Conta Débito", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "valor", label = "Valor do Movimento", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "status", label = "Status do Movimento", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 contadebitoid = "/MovimentoFinanceiro/MovimentoFinanceiroReadFKContaDebitoId",
             }
@@ -4483,13 +4472,13 @@ app.MapGet("/yapi/getMetaDataMovimentoFinanceiro", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "idorigem", label = "Identificador de Origem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "contadebitoid", label = "Conta Débito", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valor", label = "Valor do Movimento", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status do Movimento", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "idorigem", label = "Identificador de Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "contadebitoid", label = "Conta Débito", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataPlanoConta", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valor", label = "Valor do Movimento", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datamovimento", label = "Data do Movimento", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "datavencimento", label = "Data de Vencimento", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status do Movimento", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Liquidado" }, new { value = 3, display = "Estornado" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4529,29 +4518,20 @@ app.MapGet("/yapi/getMetaDataRevisaoRegistroSessao", (HttpContext context) =>
             new {
                 id = "Standard",
                 description = "Standard",
-                endpoint = "/RevisaoRegistroSessao/ReadRevisaoRegistroSessao",
+                endpoint = "/RevisaoRegistroSessao/ReadRevisaoRegistroSessaoGeral",
             resultFields = new[]
             {
                 new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "sessaoid", label = "Sessão", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "versao", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "autoruserid", label = "Autor", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "revisadoem", label = "Revisado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "motivo", label = "Motivo da correção", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registro", label = "Registro revisado", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
-                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "sessaoid", label = "Sessão", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "versao", label = "Versão", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "autoruserid", label = "Autor", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "revisadoem", label = "Revisado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "motivo", label = "Motivo da correção", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-                new { id = "registro", label = "Registro revisado", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 sessaoid = "/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKSessaoId",
                 autoruserid = "/RevisaoRegistroSessao/RevisaoRegistroSessaoReadFKAutorUserId",
@@ -4560,13 +4540,13 @@ app.MapGet("/yapi/getMetaDataRevisaoRegistroSessao", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sessaoid", label = "Sessão", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "versao", label = "Versão", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autoruserid", label = "Autor", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "revisadoem", label = "Revisado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "motivo", label = "Motivo da correção", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "registro", label = "Registro revisado", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sessaoid", label = "Sessão", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataSesoes", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versao", label = "Versão", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "autoruserid", label = "Autor", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "revisadoem", label = "Revisado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "motivo", label = "Motivo da correção", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "registro", label = "Registro revisado", type = "memo", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4640,15 +4620,15 @@ app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Tipo do Arquivo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status do Upload", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Completed" }, new { value = 2, display = "Failed" },}, },
-            new { id = "filepath", label = "Caminho do Arquivo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "filesize", label = "Tamanho do Arquivo", type = "long", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Tipo do Arquivo", type = "string", required = true, editable = true, maxLength = 50, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status do Upload", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Completed" }, new { value = 2, display = "Failed" },}, },
+            new { id = "filepath", label = "Caminho do Arquivo", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "filesize", label = "Tamanho do Arquivo", type = "long", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4726,18 +4706,18 @@ app.MapGet("/yapi/getMetaDataySaga", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "NotStarted" }, new { value = 1, display = "InProgress" }, new { value = 2, display = "Completed" }, new { value = 3, display = "Failed" },}, },
-            new { id = "keycurrentstep", label = "Key Step Atual", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nextexecutionat", label = "Proxima execucao", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lockedat", label = "LockedAt", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lockedby", label = "LockedBy", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Type", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "NotStarted" }, new { value = 1, display = "InProgress" }, new { value = 2, display = "Completed" }, new { value = 3, display = "Failed" },}, },
+            new { id = "keycurrentstep", label = "Key Step Atual", type = "string", required = false, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nextexecutionat", label = "Proxima execucao", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lockedat", label = "LockedAt", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lockedby", label = "LockedBy", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4816,18 +4796,18 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagaid", label = "Saga", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "stepkey", label = "Step Key", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "indexorder", label = "Index Order", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Created" }, new { value = 1, display = "Pending" }, new { value = 2, display = "InProgress" }, new { value = 3, display = "WaitingResponse" }, new { value = 4, display = "PendingApply" }, new { value = 5, display = "Completed" }, new { value = 6, display = "Failed" },}, },
-            new { id = "executioncount", label = "Execuções", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "errormessage", label = "Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagaid", label = "Saga", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "stepkey", label = "Step Key", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "indexorder", label = "Index Order", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Created" }, new { value = 1, display = "Pending" }, new { value = 2, display = "InProgress" }, new { value = 3, display = "WaitingResponse" }, new { value = 4, display = "PendingApply" }, new { value = 5, display = "Completed" }, new { value = 6, display = "Failed" },}, },
+            new { id = "executioncount", label = "Execuções", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "errormessage", label = "Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "retrycount", label = "Tentativas", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4888,24 +4868,24 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "messageid", label = "Message Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Tipo da Mensagem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
-            new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
-            new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sentat", label = "Enviado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lasterror", label = "Último Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagaid", label = "SagaId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "messageid", label = "Message Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Tipo da Mensagem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = true, editable = true, maxLength = 0, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
+            new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
+            new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, editable = true, maxLength = 8000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sentat", label = "Enviado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "retrycount", label = "Tentativas", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lasterror", label = "Último Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagaid", label = "SagaId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4993,21 +4973,21 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "messageid", label = "Message Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Tipo da Mensagem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lasterror", label = "Último Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagaid", label = "SagaId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "messageid", label = "Message Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Tipo da Mensagem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = true, editable = true, maxLength = 0, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "retrycount", label = "Tentativas", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lasterror", label = "Último Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagaid", label = "SagaId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5079,14 +5059,14 @@ app.MapGet("/yapi/getMetaDatayToken", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tokenhash", label = "Hash do Token", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descricao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "connectorkey", label = "Conector", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "active", label = "Ativo", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tokenhash", label = "Hash do Token", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descricao", type = "string", required = false, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "connectorkey", label = "Conector", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "active", label = "Ativo", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5149,10 +5129,10 @@ app.MapGet("/yapi/getMetaDatayTenantApplication", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "applicationkey", label = "Aplicativo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "applicationkey", label = "Aplicativo", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5213,9 +5193,9 @@ app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "userid", label = "User ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string", required = true, editable = true, maxLength = 14, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "userid", label = "User ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5275,9 +5255,9 @@ app.MapGet("/yapi/getMetaDatayUser", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "nome", label = "Nome Usuario", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "email", label = "Email", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "senha", label = "Senha", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome Usuario", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "email", label = "Email", type = "string", required = true, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "senha", label = "Senha", type = "string", required = false, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5337,9 +5317,9 @@ app.MapGet("/yapi/getMetaDatayConfigArcteture", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5406,12 +5386,12 @@ app.MapGet("/yapi/getMetaDatayConfigNotification", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailport", label = "EmailPort", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailusername", label = "EmailUserName", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailpassword", label = "EmailPassword", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailport", label = "EmailPort", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailusername", label = "EmailUserName", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailpassword", label = "EmailPassword", type = "string", required = false, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5470,8 +5450,8 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5529,8 +5509,8 @@ app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5594,10 +5574,10 @@ app.MapGet("/yapi/getMetaDatayTenantModule", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5663,10 +5643,10 @@ app.MapGet("/yapi/getMetaDatayUserModule", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "userid", label = "User ID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "userid", label = "User ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5726,8 +5706,8 @@ app.MapGet("/yapi/getMetaDatayGrant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5801,15 +5781,15 @@ app.MapGet("/yapi/getMetaDatayPerfilGrant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "grantid", label = "ID Permição", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canread", label = "Permite Ler", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "grantid", label = "ID Permição", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canread", label = "Permite Ler", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5885,15 +5865,15 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "grantid", label = "ID Permição", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canread", label = "Permite Ler", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "grantid", label = "ID Permição", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canread", label = "Permite Ler", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),

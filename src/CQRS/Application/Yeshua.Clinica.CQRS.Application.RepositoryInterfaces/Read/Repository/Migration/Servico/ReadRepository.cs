@@ -55,6 +55,7 @@ namespace IRepository.Read
         public IEnumerable<ServicoDTO> GetAllByUserId(int value );
         public IEnumerable<ServicoDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ServicoDTO> GetAllByModeloConsulta(int value );
+        public DataPagination<ServicoStandardDTO> GetServicoGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

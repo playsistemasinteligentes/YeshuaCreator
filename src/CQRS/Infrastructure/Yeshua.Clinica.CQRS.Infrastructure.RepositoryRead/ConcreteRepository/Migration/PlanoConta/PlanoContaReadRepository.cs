@@ -316,6 +316,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<PlanoContaStandardDTO> GetPlanoContaGeral(ICommandRead command )
+        {
+            if (command is Command.Read.PlanoContaGeralCommand c)
+             {
+                var query = _query.PlanoContaGeralQuery(c );
+
+                var itens = _unitOfWork.Query<PlanoContaStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<PlanoContaStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

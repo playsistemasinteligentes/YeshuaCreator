@@ -36,6 +36,7 @@ namespace IQuery.Read
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByTipoEstruturaQuery(int value );
+    public QueryModel ClinicaGeralQuery(Command.Read.ClinicaGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

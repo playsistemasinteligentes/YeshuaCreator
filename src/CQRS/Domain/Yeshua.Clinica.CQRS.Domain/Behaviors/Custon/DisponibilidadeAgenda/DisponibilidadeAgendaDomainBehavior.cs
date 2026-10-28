@@ -16,6 +16,11 @@ namespace Dominio.Behaviors
 {
     public static partial class DisponibilidadeAgendaDomainBehavior
     {
+        static partial void ValidateCustom(IDisponibilidadeAgendaEntity entity, DomainOperationContext context, List<string> errors)
+        {
+            if (!ValidacaoCadastro.Escrita(context)) return;
+            if (entity.ProfissionalId.GetValueOrDefault()<=0) errors.Add("Selecione o profissional deste horário.");
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

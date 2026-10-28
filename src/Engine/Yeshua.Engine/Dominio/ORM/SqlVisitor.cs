@@ -210,6 +210,17 @@ namespace MyApp.QueryBuilder
             {
                 var memberSql = VisitValueExpression(m.Object!, currentAlias, forSelect: false);
                 var value = (string?)Eval(m.Arguments[0]) ?? string.Empty;
+                if (m.Method.Name == nameof(string.Contains) && m.Object is MemberExpression member
+                    && member.Member is PropertyInfo property)
+                {
+                    var resolved = ResolveMemberChain(member, forSelect: false);
+                    conditions.Add(new QueryCondition
+                    {
+                        Prefix = resolved.Alias, Field = property.Name, Operator = "LIKE",
+                        RightExpression = "\"" + value + "\"", RightExpressionValue = value,
+                        FieldType = property.PropertyType, EntityName = property.DeclaringType!.Name
+                    });
+                }
                 return m.Method.Name switch
                 {
                     nameof(string.Contains) => $"{memberSql} LIKE {AddParameter($"%{value}%")}",

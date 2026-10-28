@@ -16,6 +16,10 @@ namespace Dominio.Behaviors
 {
     public static partial class EspecialidadeDomainBehavior
     {
+        static partial void PrepareCustom(IEspecialidadeEntity entity, DomainOperationContext context)
+        { if (ValidacaoCadastro.Escrita(context)) entity.Descricao=entity.Descricao?.Trim()??""; }
+        static partial void ValidateCustom(IEspecialidadeEntity entity, DomainOperationContext context, List<string> errors)
+        { if (ValidacaoCadastro.Escrita(context)) ValidacaoCadastro.Texto(entity.Descricao,"Descrição da especialidade",100,errors); }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

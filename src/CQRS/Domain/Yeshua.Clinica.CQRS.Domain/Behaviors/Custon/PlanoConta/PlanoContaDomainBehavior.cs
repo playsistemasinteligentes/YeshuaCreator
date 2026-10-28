@@ -16,6 +16,18 @@ namespace Dominio.Behaviors
 {
     public static partial class PlanoContaDomainBehavior
     {
+        static partial void PrepareCustom(IPlanoContaEntity entity, DomainOperationContext context)
+        {
+            if (!ValidacaoCadastro.Escrita(context)) return;
+            entity.Nome=entity.Nome?.Trim()??""; entity.Codigo=entity.Codigo?.Trim()??"";
+        }
+        static partial void ValidateCustom(IPlanoContaEntity entity, DomainOperationContext context, List<string> errors)
+        {
+            if (!ValidacaoCadastro.Escrita(context)) return;
+            ValidacaoCadastro.Texto(entity.Nome,"Nome da conta",150,errors);
+            ValidacaoCadastro.Texto(entity.Codigo,"Código da conta",20,errors);
+            ValidacaoCadastro.Opcao(entity.Tipo,1,4,"Tipo da conta",errors);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

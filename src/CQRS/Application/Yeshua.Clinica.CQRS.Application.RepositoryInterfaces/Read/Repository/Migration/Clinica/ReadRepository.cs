@@ -54,6 +54,7 @@ namespace IRepository.Read
         public IEnumerable<ClinicaDTO> GetAllByUserId(int value );
         public IEnumerable<ClinicaDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ClinicaDTO> GetAllByTipoEstrutura(int value );
+        public DataPagination<ClinicaStandardDTO> GetClinicaGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

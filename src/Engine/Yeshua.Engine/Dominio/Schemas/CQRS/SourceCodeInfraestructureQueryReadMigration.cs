@@ -380,10 +380,10 @@ namespace Dominio.Schemas.CQRS
                                 sb.AppendLine($"                dict[\"{param}\"] = $\"%{{Command.{cond.Field}}}%\";");
                                 sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} LIKE @{param}\");//08");
                             }
-                            else if (Type.GetTypeCode(cond.FieldType) == TypeCode.DateTime)
+                            else if (Type.GetTypeCode(Nullable.GetUnderlyingType(cond.FieldType) ?? cond.FieldType) == TypeCode.DateTime)
                             {
 
-                                sb.AppendLine($"            if (Command.{cond.Field} != null  && Command.DataFim > (DateTime)SqlDateTime.MinValue)");
+                                sb.AppendLine($"            if (Command.{cond.Field} != null && Command.{cond.Field} > (DateTime)SqlDateTime.MinValue)");
                                 sb.AppendLine("            {");
                                 sb.AppendLine($"                dict[\"{param}\"] = Command.{cond.Field};");
                                 sb.AppendLine($"                whereClauses.Add(\"{cond.Prefix}.{cond.Field} {cond.Operator} @{param}\");//08");

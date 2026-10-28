@@ -33,6 +33,7 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+    public QueryModel DisponibilidadeAgendaGeralQuery(Command.Read.DisponibilidadeAgendaGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

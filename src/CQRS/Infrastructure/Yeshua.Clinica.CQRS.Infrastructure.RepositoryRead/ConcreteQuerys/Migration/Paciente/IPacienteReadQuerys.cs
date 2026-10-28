@@ -48,6 +48,7 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+    public QueryModel PacienteGeralQuery(Command.Read.PacienteGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

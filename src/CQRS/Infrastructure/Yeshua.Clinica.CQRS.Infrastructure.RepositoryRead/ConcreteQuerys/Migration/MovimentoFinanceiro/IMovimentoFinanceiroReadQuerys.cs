@@ -41,6 +41,7 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+    public QueryModel MovimentoFinanceiroGeralQuery(Command.Read.MovimentoFinanceiroGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

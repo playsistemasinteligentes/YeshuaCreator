@@ -19,23 +19,25 @@ const session=()=>({id:42,pacienteId:7,paciente:'Paciente fictício',dataInicio:
  try{
   browser=await chromium.launch({channel:'msedge',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']});
   const cases=[];
-  async function fixture({habitual=services[0],catalog=services,current=session(),delayOptions=0}={}){
+  async function fixture({habitual=services[0],catalog=services,current=session(),delayOptions=0,patients=null}={}){
    const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['microphone']});await context.addInitScript(t=>localStorage.setItem('token',t),token(7));
+   patients=patients??[{id:7,nome:current.paciente}];
    const page=await context.newPage(),calls=[],errors=[],writes=[],uploads=[];
    page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(e.message));
    await page.route('**/apps/clinica/yapi/**',async route=>{
-    const req=route.request(),url=req.url();calls.push(url);let data;
-    if(url.includes('ConsultarAtendimentos')){const body=req.postDataJSON();data={profissionalId:3,profissionalNome:'Profissional fictício',servicoHabitualId:habitual?.id||0,servicoHabitualNome:habitual?.nome||'',modeloConsultaHabitual:habitual?.modeloConsulta||0,versaoModeloConsultaHabitual:habitual?.versaoModeloConsulta||0,agenda:[current],pacientes:[{id:7,nome:current.paciente}],atual:body.sessaoId?[current]:[],historico:[],audios:[{sagaId:55,data:new Date().toISOString(),status:'Concluído',prontuario:'Sugestão de evolução',queixaPrincipal:'Sugestão de queixa',registroDocumental:'Sugestão documental'}]};}
+    const req=route.request(),url=req.url();calls.push(url);let data,status=200;
+    if(url.includes('ConsultarAtendimentos')){const body=req.postDataJSON();data={profissionalId:3,profissionalNome:'Profissional fictício',servicoHabitualId:habitual?.id||0,servicoHabitualNome:habitual?.nome||'',modeloConsultaHabitual:habitual?.modeloConsulta||0,versaoModeloConsultaHabitual:habitual?.versaoModeloConsulta||0,agenda:[current],pacientes:patients,atual:body.sessaoId?[current]:[],historico:[],audios:[{sagaId:55,data:new Date().toISOString(),status:'Concluído',prontuario:'Sugestão de evolução',queixaPrincipal:'Sugestão de queixa',registroDocumental:'Sugestão documental'}]};}
     else if(url.includes('ConsultarServicosAgendamento')){if(delayOptions)await new Promise(resolve=>setTimeout(resolve,delayOptions));data={servicos:catalog};}
     else if(url.includes('DefinirServicoHabitual')){const id=req.postDataJSON().servicoId;habitual=catalog.find(s=>s.id===id)||null;data=habitual||{id:0,nome:'',modeloConsulta:0,versaoModeloConsulta:0};}
-    else if(url.includes('AgendarAtendimento')){const body=req.postDataJSON();writes.push(body);current={...session(),id:43,atendimentoIniciadoEm:'',prontuario:'',informacoesRelevantesFuturasConsultas:'',...body};current.servicoNome=catalog.find(s=>s.id===body.servicoId).nome;data={sessaoId:43,versao:0};}
+    else if(url.includes('/Paciente/PostPaciente')){const body=req.postDataJSON();writes.push(body);if(body.telefone==='123'){status=400;data={statusCode:400,message:'Dados inválidos',messageList:['Telefone de contato: informe um número válido.','Confira o DDD.']};}else{data={id:88,nome:body.nome};patients.push(data);}}
+    else if(url.includes('AgendarAtendimento')){const body=req.postDataJSON();writes.push(body);current={...session(),id:43,atendimentoIniciadoEm:'',prontuario:'',informacoesRelevantesFuturasConsultas:'',...body};current.paciente=patients.find(p=>p.id===body.pacienteId)?.nome||current.paciente;current.servicoNome=catalog.find(s=>s.id===body.servicoId).nome;data={sessaoId:43,versao:0};}
     else if(url.includes('SalvarRegistro')){const body=req.postDataJSON();writes.push(body);Object.assign(current,body,{versao:current.versao+1});data={sessaoId:current.id,versao:current.versao};}
     else if(url.includes('EncerrarAtendimento')){current.atendimentoEncerradoEm=new Date().toISOString();current.statusAgendamento=2;current.versao++;data={sessaoId:current.id,versao:current.versao};}
     else if(url.includes('FinalizarRegistro')){const body=req.postDataJSON();writes.push(body);current.registroFinalizadoEm=new Date().toISOString();current.statusProntuario=3;current.versao++;data={sessaoId:current.id,versao:current.versao};}
     else if(url.includes('StarSessionUpload'))data={uploadToken:'fixture-upload'};
     else if(url.includes('SendFileUseCase2')){const bytes=req.postDataBuffer().toString('latin1'),final=/name="isFinalChunk"\r\n\r\ntrue/.test(bytes);uploads.push({final,bytes:bytes.length});data={success:true,isFinalized:final,sagaId:final?56:0};}
     else throw new Error('Unexpected API '+new URL(url).pathname);
-    await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify(data)});
+    await route.fulfill({status,contentType:'application/json',body:JSON.stringify(data)});
    });
    await page.goto(`http://127.0.0.1:${server.address().port}/test`);await page.waitForFunction(()=>window.ready);
    return{page,context,calls,errors,writes,uploads,current,options:()=>calls.filter(x=>x.includes('ConsultarServicosAgendamento')).length};
@@ -66,6 +68,17 @@ const session=()=>({id:42,pacienteId:7,paciente:'Paciente fictício',dataInicio:
   await f.page.setViewportSize({width:390,height:844});await f.page.locator('#cli-proxima').click();assert(await f.page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   fs.mkdirSync(path.join(__dirname,'artifacts'),{recursive:true});await f.page.screenshot({path:path.join(__dirname,'artifacts/appointment-models-mobile.png'),fullPage:true});assert.equal(f.errors.length,0,f.errors.join('\n'));await f.context.close();cases.push('simple model: snapshot, two fields, human review, AI adoption, recording, stable refresh, mobile');
   f=await fixture({current:{...session(),modeloConsulta:1,servicoId:10,servicoNome:services[0].nome}});await f.page.locator('#cli-agenda-lista [data-id="42"]').click();assert(!(await f.page.locator('#cli-modelo-completo').evaluate(e=>e.hidden)));assert(!(await f.page.locator('#cli-plano-details').evaluate(e=>e.hidden)));await f.context.close();cases.push('complete psychology form remains available');
+
+  f=await fixture({patients:[]});await f.page.locator('#cli-novo').click();await f.page.locator('#cli-agendar-dialog').waitFor();
+  const initialTimes=await f.page.locator('#cli-agendar-inicio').inputValue(),initialReads=f.calls.length;
+  await f.page.locator('#cli-paciente-novo').click();await f.page.locator('#cli-paciente-nome').fill('Paciente novo fictício');await f.page.locator('#cli-paciente-telefone').fill('123');
+  await f.page.locator('#cli-paciente-salvar').click();await f.page.locator('#cli-paciente-erro').filter({hasText:'Confira o DDD.'}).waitFor();
+  assert.equal(await f.page.locator('#cli-paciente-nome').inputValue(),'Paciente novo fictício');assert.equal(await f.page.locator('#cli-agendar-inicio').inputValue(),initialTimes);
+  await f.page.locator('#cli-paciente-telefone').fill('11999990000');await f.page.locator('#cli-paciente-salvar').click();await f.page.waitForFunction(()=>document.getElementById('cli-agendar-paciente').value==='88');
+  assert(await f.page.locator('#cli-paciente-cadastro').isHidden());assert.equal(await f.page.locator('#cli-agendar-inicio').inputValue(),initialTimes);assert.equal(f.calls.length,initialReads+2,'Patient creation must not refresh the panel or service catalog');
+  assert.deepEqual(Object.keys(f.writes.at(-1)).sort(),['nome','telefone']);assert.equal(f.writes.filter(x=>x.telefone==='11999990000').length,1);
+  await f.page.locator('#cli-agendar-confirmar').click();await f.page.getByText('Consulta agendada. Histórico e plano anterior já estão disponíveis.',{exact:true}).waitFor();assert.equal(f.writes.at(-1).pacienteId,88);assert.equal(f.writes.at(-1).servicoId,10);
+  assert.equal(f.errors.length,0,f.errors.join('\n'));await f.context.close();cases.push('quick patient: existing CRUD, actionable errors, draft and schedule preserved, selected automatically, appointment completed');
   console.log(JSON.stringify({passed:true,cases}));
  }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(e=>{console.error(e.stack||e.message);process.exitCode=1;});

@@ -155,6 +155,7 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByServicoNome(string value );
         public IEnumerable<SesoesDTO> GetAllByModeloConsulta(int value );
         public IEnumerable<SesoesDTO> GetAllByVersaoModeloConsulta(int value );
+        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

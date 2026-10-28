@@ -706,4 +706,40 @@ Validação: 63 testes de backend, navegador com três fases e retomada após re
 reuso dos cadastros, atualização preservando campos, isolamento de contexto e
 orientação sem autorização. A regressão do painel e da gravação em partes passou.
 
+## Revisão dos cadastros e paciente no agendamento — 28/10/2026
+
+Foram revisados Clínica, Especialidade, Profissional, Disponibilidade da agenda,
+Grupo de serviços, Serviço, Paciente, Sessões, Revisões do registro, Movimentação
+financeira, Plano de contas e Movimento financeiro. M000008 declara projeções
+de pesquisa com até dois filtros e cinco colunas, usando as queries da DSL.
+Os formulários completos continuam disponíveis; especialidade, grupo e demais
+dados complementares preservam sua opcionalidade. Sessões e revisões mostram
+consulta e acesso ao painel, sem oferecer escrita genérica que o domínio rejeita.
+
+O cadastro padrão passa a mostrar as mensagens de validação retornadas pela API,
+identifica os campos obrigatórios e seus limites, mantém o formulário após uma
+rejeição, preserva a identidade na atualização e não perde dados ao mudar entre
+desktop e celular. Pesquisas de relacionamento preservam a pesquisa principal,
+possuem seleção explícita no celular e invalidam uma seleção quando seu texto é
+alterado. Erros e valores apresentados como texto não executam HTML recebido.
+
+O botão **Novo paciente**, dentro de Agendar consulta, pede nome, telefone e
+nascimento opcional. Ele chama o CRUD existente, recebe o ID e seleciona o novo
+paciente sem consultar novamente a agenda nem o catálogo de serviços. Serviço,
+modelo, início e fim permanecem preenchidos. A confirmação do agendamento é uma
+ação separada; falha nessa confirmação conserva o paciente já criado e selecionado.
+Campos do paciente ainda não salvos são mantidos após erro e podem ser corrigidos
+ou abandonados pela ação Voltar à seleção.
+
+O domínio valida comprimentos, campos vazios, telefone, nascimento futuro,
+opções e valores financeiros antes de persistir, tanto pelo cadastro padrão
+quanto pelo cadastro rápido e configuração inicial. Não foram criadas novas
+camadas, transporte, cache de login ou saga. O hook de dashboard existente abre
+Atendimentos; a troca de aplicativo volta a #dashboard para respeitar essa entrada.
+
+Verificações locais: 73 testes do Clínica, 53 de geração, regressão do painel com
+gravação em partes e cadastro rápido, e navegação pelos 12 cadastros usando os
+metadados efetivamente gerados. A publicação e a conferência autenticada devem
+seguir commit local, push e deploy padrão.
+
 

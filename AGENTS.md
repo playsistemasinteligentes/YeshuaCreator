@@ -2122,6 +2122,20 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   A saga de audio mantem seu contrato canonico de tres sugestoes. No modelo
   simples, a incorporacao humana une essas sugestoes no registro da sessao;
   nenhum retorno da IA finaliza ou altera automaticamente os campos humanos.
+- Os 12 cadastros de negocio do Clinica usam projecoes Standard pequenas
+  declaradas em M000008: filtros e colunas de pesquisa nao repetem o formulario
+  completo. Consultas declaradas em migration posterior devem ser consolidadas
+  pela Engine; Contains continua uma busca parametrizada, e filtros escalares
+  opcionais nao viram listas de enumeradores. Obrigatoriedade, tamanho e
+  editabilidade do formulario derivam dos campos da DSL.
+  O cadastro rapido de paciente no agendamento reutiliza Paciente/PostPaciente,
+  sua autorizacao, factory e DomainBehavior. Nao criar Command, endpoint ou saga
+  paralelos para esse cadastro. Nome e telefone sao obrigatorios; nascimento e
+  os demais dados continuam opcionais. A resposta seleciona o paciente no
+  estado local, conservando servico e horarios, sem recarregar o painel.
+  Atendimentos permanece o dashboard pelo hook existente; troca de aplicativo
+  entra em #dashboard. Sessoes e revisoes sao consultaveis no cadastro padrao,
+  mas sua escrita continua exclusivamente pelas acoes do painel.
 - Direcao arquitetural implementada localmente para transcricao:
   Saga -> Outbox -> execucao externa -> Inbox -> Saga, sempre.
   OpenAI e Codex sao ambos executores externos. A escolha de destino pertence

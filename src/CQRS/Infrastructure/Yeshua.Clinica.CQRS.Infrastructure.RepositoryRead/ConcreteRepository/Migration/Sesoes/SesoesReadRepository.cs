@@ -1193,6 +1193,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command )
+        {
+            if (command is Command.Read.SesoesGeralCommand c)
+             {
+                var query = _query.SesoesGeralQuery(c );
+
+                var itens = _unitOfWork.Query<SesoesStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<SesoesStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

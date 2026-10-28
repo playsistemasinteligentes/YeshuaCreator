@@ -18,7 +18,7 @@ namespace Repositorio.Outputs
 {
     public partial record yOutboxStandardDTO
     {
-    public Nullable<int> id { get; set; }//01
+    public int? id { get; set; }//01
     public string type { get; set; } = string.Empty;//01
     public string payload { get; set; } = string.Empty;//01
     }

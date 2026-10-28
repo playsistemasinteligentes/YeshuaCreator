@@ -72,6 +72,7 @@ namespace IRepository.Read
         public IEnumerable<PacienteDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PacienteDTO> GetAllByUserId(int value );
         public IEnumerable<PacienteDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<PacienteStandardDTO> GetPacienteGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

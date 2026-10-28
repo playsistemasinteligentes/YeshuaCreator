@@ -105,6 +105,7 @@ namespace IQuery.Read
         public QueryModel FirstByServicoNomeQuery(string value );
         public QueryModel FirstByModeloConsultaQuery(int value );
         public QueryModel FirstByVersaoModeloConsultaQuery(int value );
+    public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

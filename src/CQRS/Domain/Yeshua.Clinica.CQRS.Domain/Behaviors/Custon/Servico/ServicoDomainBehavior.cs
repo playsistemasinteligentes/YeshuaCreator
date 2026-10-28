@@ -18,11 +18,18 @@ namespace Dominio.Behaviors
     {
         static partial void PrepareCustom(IServicoEntity entity, DomainOperationContext context)
         {
+            if (ValidacaoCadastro.Escrita(context)) entity.Nome=entity.Nome?.Trim()??"";
             if(context.Operation==DomainOperation.Registro && entity.ModeloConsulta.GetValueOrDefault()==0)
                 entity.ModeloConsulta=Clinica.Modelos.ModelosConsulta.PsicologiaCompleta;
         }
         static partial void ValidateCustom(IServicoEntity entity, DomainOperationContext context, List<string> errors)
         {
+            if (ValidacaoCadastro.Escrita(context))
+            {
+                ValidacaoCadastro.Texto(entity.Nome,"Nome do serviço",150,errors);
+                ValidacaoCadastro.Valor(entity.Valor,"Valor do serviço",errors);
+                ValidacaoCadastro.Referencia(entity.GrupoServicoId,"o grupo de serviços",errors);
+            }
             if(context.Operation is DomainOperation.Registro or DomainOperation.Alteracao &&
                 !Clinica.Modelos.ModelosConsulta.Suporta(entity.ModeloConsulta.GetValueOrDefault()))
                 errors.Add("Escolha um modelo de consulta disponível.");

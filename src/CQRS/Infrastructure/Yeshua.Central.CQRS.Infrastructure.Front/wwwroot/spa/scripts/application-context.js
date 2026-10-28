@@ -57,6 +57,9 @@ export function bindApplicationSelector() {
     selector.classList.toggle('hidden', availableApplications.length <= 1);
     selector.addEventListener('change', () => {
         localStorage.setItem(storageKey, selector.value);
+        const url = new URL(location.href);
+        url.hash = 'dashboard';
+        history.replaceState(null, '', url);
         location.reload();
     });
 }

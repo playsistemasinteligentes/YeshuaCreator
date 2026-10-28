@@ -45,6 +45,7 @@ namespace IRepository.Read
         public IEnumerable<EspecialidadeDTO> GetAllByChanged(DateTime value );
         public IEnumerable<EspecialidadeDTO> GetAllByUserId(int value );
         public IEnumerable<EspecialidadeDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<EspecialidadeStandardDTO> GetEspecialidadeGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

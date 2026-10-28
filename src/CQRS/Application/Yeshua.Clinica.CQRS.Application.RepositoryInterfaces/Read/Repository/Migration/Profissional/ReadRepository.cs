@@ -60,6 +60,7 @@ namespace IRepository.Read
         public IEnumerable<ProfissionalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProfissionalDTO> GetAllByUsuarioAcessoId(int value );
         public IEnumerable<ProfissionalDTO> GetAllByServicoHabitualId(int value );
+        public DataPagination<ProfissionalStandardDTO> GetProfissionalGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

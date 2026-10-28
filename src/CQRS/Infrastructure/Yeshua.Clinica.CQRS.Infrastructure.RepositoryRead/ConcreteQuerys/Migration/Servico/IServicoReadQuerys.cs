@@ -37,6 +37,7 @@ namespace IQuery.Read
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByModeloConsultaQuery(int value );
+    public QueryModel ServicoGeralQuery(Command.Read.ServicoGeralCommand Command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

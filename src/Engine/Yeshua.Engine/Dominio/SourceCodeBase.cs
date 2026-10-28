@@ -91,15 +91,8 @@ namespace Migration.Dominio
 
         public string GetFriendlyTypeName(Type type, bool isDTO = false)
         {
-            // ✅ Tratar Nullable<int> como List<int>
-            if (!isDTO && type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-            {
-                var innerType = type.GetGenericArguments()[0];
-                if (innerType == typeof(int))
-                {
-                    return "List<int>";
-                }
-            }
+            if (Nullable.GetUnderlyingType(type) is { } underlying)
+                return $"{GetFriendlyTypeName(underlying)}?";
 
             if (type.IsGenericType)
             {

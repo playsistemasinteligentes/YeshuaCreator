@@ -51,6 +51,7 @@ namespace IRepository.Read
         public IEnumerable<PlanoContaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<PlanoContaDTO> GetAllByUserId(int value );
         public IEnumerable<PlanoContaDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<PlanoContaStandardDTO> GetPlanoContaGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

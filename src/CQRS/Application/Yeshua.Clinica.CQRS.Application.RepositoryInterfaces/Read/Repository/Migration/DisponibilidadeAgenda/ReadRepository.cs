@@ -49,6 +49,7 @@ namespace IRepository.Read
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByUserId(int value );
         public IEnumerable<DisponibilidadeAgendaDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<DisponibilidadeAgendaStandardDTO> GetDisponibilidadeAgendaGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

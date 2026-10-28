@@ -340,6 +340,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<ClinicaStandardDTO> GetClinicaGeral(ICommandRead command )
+        {
+            if (command is Command.Read.ClinicaGeralCommand c)
+             {
+                var query = _query.ClinicaGeralQuery(c );
+
+                var itens = _unitOfWork.Query<ClinicaStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<ClinicaStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration

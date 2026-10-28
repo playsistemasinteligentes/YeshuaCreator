@@ -451,11 +451,16 @@ namespace Dominio.Schemas.CQRS
                             sb.AppendLine("            },");
                         }
                         // quickSearches
-                        sb.AppendLine("            quickSearches = new[]");
-                        sb.AppendLine("            {");
-                        foreach (var wp in query.Meta.WhereContextParameters)
-                            sb.AppendLine($"                new {{ id = \"{wp.Key}\", label = \"{wp.Key}\", icon = \"calendar-day\", endpoint = \"/{entidade.EntityName}/Read{entidade.EntityName}{wp.Key}\" }},");
-                        sb.AppendLine("            },");
+                        if (query.Meta.WhereContextParameters.Count == 0)
+                            sb.AppendLine("            quickSearches = Array.Empty<object>(),");
+                        else
+                        {
+                            sb.AppendLine("            quickSearches = new[]");
+                            sb.AppendLine("            {");
+                            foreach (var wp in query.Meta.WhereContextParameters)
+                                sb.AppendLine($"                new {{ id = \"{wp.Key}\", label = \"{wp.Key}\", icon = \"calendar-day\", endpoint = \"/{entidade.EntityName}/Read{entidade.EntityName}{wp.Key}\" }},");
+                            sb.AppendLine("            },");
+                        }
 
                         // fkEndpoints
                         sb.AppendLine("            fkEndpoints = new");
@@ -1283,7 +1288,9 @@ namespace Dominio.Schemas.CQRS
 
             var options = BuildOptions(col);
 
-            var requiredPart = includeRequired ? $", required = {col.required.ToString().ToLower()}" : string.Empty;
+            var requiredPart = includeRequired
+                ? $", required = {(col.IsNotNull && !col.AutoIncremento && !col.IsValueDefault).ToString().ToLower()}, editable = {(col.FrontEdit && !col.AutoIncremento).ToString().ToLower()}, maxLength = {(col.GetSqlType() == "varchar" && col.Length > 0 ? (int)col.Length : 0)}"
+                : string.Empty;
             var groupPart = displayGroup != null ? $", displaygroup = \"{displayGroup}\"" : string.Empty;
 
             return

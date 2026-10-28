@@ -16,6 +16,15 @@ namespace Dominio.Behaviors
 {
     public static partial class MovimentacaoFinanceiraDomainBehavior
     {
+        static partial void ValidateCustom(IMovimentacaoFinanceiraEntity entity, DomainOperationContext context, List<string> errors)
+        {
+            if (!ValidacaoCadastro.Escrita(context)) return;
+            ValidacaoCadastro.Valor(entity.Valor,"Valor da transação",errors);
+            ValidacaoCadastro.Opcao(entity.TipoMovimentacao,1,2,"Tipo de movimentação",errors);
+            ValidacaoCadastro.Referencia(entity.PacienteId,"o paciente",errors);
+            ValidacaoCadastro.Referencia(entity.ServicoId,"o serviço",errors);
+            if (entity.SaldoAtual is < -99999999.99m or > 99999999.99m) errors.Add("Saldo atual excede o limite permitido.");
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeDomainBehaviorMigration

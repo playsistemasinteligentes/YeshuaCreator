@@ -104,7 +104,9 @@ namespace Dominio.Schemas.CQRS
                         foreach (var cond in wh.Value)
                         {
                             field = new Dominio.Schemas.CQRS.Abstraction.CommandField();
-                            field.TypeField = cond.FieldType;
+                            var scalarType = Nullable.GetUnderlyingType(cond.FieldType) ?? cond.FieldType;
+                            field.TypeField = cond.Column.Enum?.Count > 0 ? typeof(List<int>)
+                                : scalarType.IsValueType ? typeof(Nullable<>).MakeGenericType(scalarType) : scalarType;
                             field.Name = cond.Field;
                             command.Fields.Add(field);
                         }

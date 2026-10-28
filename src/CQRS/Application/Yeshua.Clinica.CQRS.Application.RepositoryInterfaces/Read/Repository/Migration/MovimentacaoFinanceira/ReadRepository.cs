@@ -62,6 +62,7 @@ namespace IRepository.Read
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByChanged(DateTime value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByUserId(int value );
         public IEnumerable<MovimentacaoFinanceiraDTO> GetAllByOperationalEntityId(string value );
+        public DataPagination<MovimentacaoFinanceiraStandardDTO> GetMovimentacaoFinanceiraGeral(ICommandRead command );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

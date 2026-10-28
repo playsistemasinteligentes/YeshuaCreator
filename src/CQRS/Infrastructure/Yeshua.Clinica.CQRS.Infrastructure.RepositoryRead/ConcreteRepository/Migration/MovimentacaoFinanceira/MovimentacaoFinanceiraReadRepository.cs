@@ -422,6 +422,22 @@ namespace Read.Repository
                 return result;
         }
 
+        public DataPagination<MovimentacaoFinanceiraStandardDTO> GetMovimentacaoFinanceiraGeral(ICommandRead command )
+        {
+            if (command is Command.Read.MovimentacaoFinanceiraGeralCommand c)
+             {
+                var query = _query.MovimentacaoFinanceiraGeralQuery(c );
+
+                var itens = _unitOfWork.Query<MovimentacaoFinanceiraStandardDTO>(query.Query,query.Parameters);
+                return new DataPagination<MovimentacaoFinanceiraStandardDTO>(
+                                itens,
+                command.Paginacao?.Page ?? 0,
+                command.Paginacao?.PageSize ?? 0,
+                command.Paginacao?.PageWhithCount ?? false ? itens.Count() : 0);
+             }
+            throw new NotImplementedException();
+        }
+
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureReadConcreteRepositoryMigration
