@@ -461,6 +461,58 @@ textarea:focus-visible {
 }
 
 /* Generated CRUD */
+.yeshua-row-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.yeshua-row-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    min-height: var(--y-control-height);
+    padding: 0 10px;
+    border: 1px solid var(--y-line-strong);
+    border-radius: var(--y-radius-small);
+    background: var(--y-surface);
+    font-size: 13px;
+    font-weight: 650;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.yeshua-row-action svg {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+}
+
+.yeshua-row-action-edit {
+    color: var(--y-brand);
+}
+
+.yeshua-row-action-edit:hover {
+    border-color: var(--y-brand);
+    background: var(--y-surface-subtle);
+}
+
+.yeshua-row-action-delete {
+    color: var(--y-danger);
+}
+
+.yeshua-row-action-delete:hover {
+    border-color: var(--y-danger);
+    background: var(--y-surface-subtle);
+}
+
+.yeshua-row-action:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
 #crud-container {
     width: 100%;
     max-width: 1480px;

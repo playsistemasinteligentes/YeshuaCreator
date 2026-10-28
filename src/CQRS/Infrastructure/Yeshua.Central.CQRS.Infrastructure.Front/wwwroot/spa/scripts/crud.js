@@ -544,7 +544,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             actionsCell.className = 'px-4 py-2 border text-sm';
 
             const actionsWrapper = document.createElement('div');
-            actionsWrapper.className = 'flex gap-2';
+            actionsWrapper.className = 'yeshua-row-actions';
 
             if (modoFk) {
                 const selectBtn = document.createElement('button');
@@ -561,25 +561,33 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             } else {
                 const editBtn = document.createElement('button');
                 editBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
                              viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" 
                                 d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
                                    1.5-4.5 12.362-12.326z" />
                         </svg>`;
-                editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
+                editBtn.className = 'yeshua-row-action yeshua-row-action-edit';
+                editBtn.type = 'button';
                 editBtn.title = canCapability('update') ? "Editar" : "Detalhar";
+                const editLabel = document.createElement('span');
+                editLabel.textContent = editBtn.title;
+                editBtn.appendChild(editLabel);
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
                              viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" 
                                 d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
                         </svg>`;
-                deleteBtn.className = 'p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600';
+                deleteBtn.className = 'yeshua-row-action yeshua-row-action-delete';
+                deleteBtn.type = 'button';
                 deleteBtn.title = "Excluir";
+                const deleteLabel = document.createElement('span');
+                deleteLabel.textContent = deleteBtn.title;
+                deleteBtn.appendChild(deleteLabel);
                 deleteBtn.onclick = () => deleteRecord(item);
 
                 actionsWrapper.appendChild(editBtn);
@@ -649,7 +657,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             });
 
             const actions = document.createElement('div');
-            actions.className = 'mt-3 flex gap-2';
+            actions.className = 'yeshua-row-actions mt-3';
 
             if (modoFk) {
                 const select = document.createElement('button');
@@ -665,25 +673,33 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             } else {
                 const editBtn = document.createElement('button');
                 editBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
                              viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" 
                                 d="M16.862 3.487a2.25 2.25 0 013.182 3.182L7.5 19.313l-4.5 1.5 
                                    1.5-4.5 12.362-12.326z" />
                         </svg>`;
-                editBtn.className = 'p-2 rounded-full bg-blue-100 hover:bg-blue-200 text-blue-600';
+                editBtn.className = 'yeshua-row-action yeshua-row-action-edit';
+                editBtn.type = 'button';
                 editBtn.title = canCapability('update') ? "Editar" : "Detalhar";
+                const editLabel = document.createElement('span');
+                editLabel.textContent = editBtn.title;
+                editBtn.appendChild(editLabel);
                 editBtn.onclick = () => editRecord(item);
 
                 const deleteBtn = document.createElement('button');
                 deleteBtn.innerHTML = `
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
+                        <svg aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" 
                              viewBox="0 0 24 24" stroke-width="1.8" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" 
                                 d="M6 7h12M9 7V4h6v3m-7 4v6m4-6v6m-9 2h14a2 2 0 002-2V7H3v10a2 2 0 002 2z" />
                         </svg>`;
-                deleteBtn.className = 'p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600';
+                deleteBtn.className = 'yeshua-row-action yeshua-row-action-delete';
+                deleteBtn.type = 'button';
                 deleteBtn.title = "Excluir";
+                const deleteLabel = document.createElement('span');
+                deleteLabel.textContent = deleteBtn.title;
+                deleteBtn.appendChild(deleteLabel);
                 deleteBtn.onclick = () => deleteRecord(item);
 
                 actions.appendChild(editBtn);
