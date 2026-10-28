@@ -1,4 +1,23 @@
-> Homologação concluída em 28/10/2026: navegador → MediaRecorder (voz sintética,
+> Revisão de gravação e estabilidade em 28/10/2026: o núcleo do gravador original
+> `spa/components/recording/audio.html` é compartilhado em `session-recorder.js`.
+> O áudio é persistido por parte e enviado durante a captura, com fila, backoff e
+> pausa quando a fila enche. Não acumular a consulta inteira nem regravar todos
+> os Blobs a cada parte. Preservar uma cauda confirmada para a finalização e
+> recuperação; limpar a pendência completa somente com IsFinalized + SagaId.
+> Falhas de envio não descartam partes. A versão acumuladora anterior tem
+> recuperação explícita compatível, sem apagar a origem antes da conversão local.
+> Agenda e resultados são consultados somente pelos botões Atualizar: sem polling,
+> consulta ao voltar à janela ou ao concluir o upload. A atualização preserva o
+> editor, a seleção, a rolagem e os detalhes abertos. Mensagens e controles têm
+> espaço estável; os resultados usam uma área de leitura com rolagem própria.
+> Validação desta revisão: 12 testes do gravador e ensaio de navegador com captura
+> real sintética, envio antes de parar, pausa/retomada, atualização manual e layout
+> móvel. Simulação acelerada de 360 partes de 64 KiB (uma hora em partes de 10 s)
+> reteve no máximo duas partes no IndexedDB com envio confirmado. Não representa
+> uma hora de captura física em celular. Evidência local:
+> `.artifacts/clinica-streaming-manual-refresh-result.json`.
+>
+> Homologação inicial concluída em 28/10/2026: navegador → MediaRecorder (voz sintética,
 > pausa e retomada) → chunks C# → OpenAI → resumo Codex → incorporação humana →
 > encerramento → finalização → correção → próxima consulta com plano anterior.
 > A consulta fictícia #4 manteve o texto humano enquanto o resultado técnico
@@ -37,7 +56,8 @@
 > Ações de falta usam StatusAgendamento=4; valores 0–3 mantêm seus significados.
 > O CRUD de sessões/revisões não pode contornar o painel; consultas clínicas e
 > revisões são filtradas por tenant e profissional vinculado.
-> O gravador mantém bytes no IndexedDB até receber IsFinalized e SagaId do C#.
+> O gravador mantém as partes pendentes e uma cauda confirmada no IndexedDB;
+> os metadados e a cauda final permanecem até receber IsFinalized e SagaId do C#.
 > A recuperação exige o mesmo usuário, tenant e consulta no mesmo navegador.
 > O teste automatizado de navegador usa voz sintética como fonte do microfone;
 > a validação do dispositivo físico e da autorização do navegador é um ensaio manual.

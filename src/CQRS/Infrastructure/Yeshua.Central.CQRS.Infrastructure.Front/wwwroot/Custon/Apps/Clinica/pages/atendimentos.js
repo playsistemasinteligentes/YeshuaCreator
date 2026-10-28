@@ -1,7 +1,7 @@
 import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
-import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica03';
+import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261028-clinica03';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-clinica04';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -46,10 +46,10 @@ class ClinicPanel{
                 e.stopImmediatePropagation();e.target.value='Clinica';this.feedback('Conclua o envio do áudio e salve o registro antes de trocar de aplicativo.',true);
             }
         },{capture:true,signal:this.controller.signal});
-        window.addEventListener('focus',()=>this.refreshResults().catch(()=>{}),{signal:this.controller.signal});this.bind();
+        this.bind();
     }
     el(id){return this.host.querySelector('#cli-'+id);}
-    text(id,value){this.el(id).textContent=value;}
+    text(id,value){const el=this.el(id);if(el.textContent!==String(value))el.textContent=value;}
     show(id,visible){this.el(id).hidden=!visible;}
     hasWork(){return this.dirty||this.correcting||Boolean(this.recorder?.active||this.recorder?.pending);}
     feedback(message,error=false){if(this.disposed)return;this.text('feedback',message);this.el('feedback').dataset.error=String(error);}
@@ -63,7 +63,7 @@ class ClinicPanel{
     }
     bind(){
         const on=(id,fn)=>this.el(id).addEventListener('click',()=>this.run(fn),{signal:this.controller.signal});
-        on('atualizar',async()=>{if(this.hasWork())throw new Error('Salve o registro e conclua o áudio antes de atualizar.');await this.load(this.current?.id||0);});
+        for(const id of ['atualizar','atualizar-resultados'])this.el(id).addEventListener('click',()=>this.refreshResults().catch(e=>this.feedback(e.message,true)),{signal:this.controller.signal});
         on('discreto',async()=>{const enabled=this.el('discreto').closest('.cli-panel').classList.toggle('cli-discreet');this.text('discreto',enabled?'Mostrar dados':'Ocultar dados');});
         this.el('data').addEventListener('change',()=>this.run(async()=>{await this.leaveCurrent();await this.load(0);}),{signal:this.controller.signal});
         this.host.querySelectorAll('[data-mode]').forEach(b=>b.addEventListener('click',()=>this.setMode(b.dataset.mode),{signal:this.controller.signal}));
@@ -76,13 +76,12 @@ class ClinicPanel{
         on('cancelar',()=>this.transition('CancelarAtendimento','preparar'));on('falta',()=>this.transition('RegistrarFalta','preparar'));on('salvar',()=>this.save());on('finalizar',()=>this.finalize());
         on('corrigir',async()=>{this.correcting=true;this.el('revisado').checked=false;this.setMode('fechar');this.feedback('Descreva o motivo e revise a correção. A versão anterior será preservada.');});
         on('gravar',async()=>{if(this.el('finalidade').value==='consulta'&&!this.el('consent').checked)throw new Error('Confirme a autorização do paciente antes de gravar a conversa.');await this.recorder.start({finalidade:this.el('finalidade').value,autorizado:this.el('consent').checked});});
-        on('pausar',async()=>this.recorder.state==='paused'?this.recorder.resume():this.recorder.pause());on('parar',async()=>{await this.recorder.stop();await this.refreshResults();});
-        on('reenviar',async()=>{await this.recorder.flush();await this.refreshResults();});
-        on('baixar',async()=>{const blob=await this.recorder.downloadPending(),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`audio-atendimento-${this.current.id}.webm`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+        on('pausar',async()=>this.recorder.state==='paused'?this.recorder.resume():this.recorder.pause());on('parar',()=>this.recorder.stop());
+        on('reenviar',()=>this.recorder.recover(this.recorder.pending.id));
         this.el('finalidade').addEventListener('change',()=>this.show('consent-label',this.el('finalidade').value==='consulta'),{signal:this.controller.signal});
         this.el('audios').addEventListener('click',e=>{const b=e.target.closest('[data-adopt],[data-retry]');if(b)this.run(()=>b.dataset.adopt?this.adopt(Number(b.dataset.adopt)):this.retry(Number(b.dataset.retry),Number(b.dataset.step)));},{signal:this.controller.signal});
     }
-    async initialize(){this.el('data').value=day();await this.load(0);this.poll=setInterval(()=>this.refreshResults().catch(()=>{}),7000);}
+    async initialize(){this.el('data').value=day();await this.load(0);}
     async load(id){
         const data=await this.request('ConsultarAtendimentos',{data:this.el('data').value,sessaoId:id});if(this.disposed)return;
         this.data=data;this.current=data.atual[0]||null;this.correcting=false;this.dirty=false;this.edits=0;this.incorporarSagaId=0;
@@ -120,7 +119,7 @@ class ClinicPanel{
         for(const id of ['iniciar','cancelar','falta'])this.el(id).disabled=this.busy||started||final||![0,1].includes(s.statusAgendamento);
         this.host.querySelectorAll('[data-field]').forEach(input=>input.disabled=!editable||this.busy);this.el('salvar').disabled=this.busy||!editable||this.correcting;this.el('encerrar').disabled=this.busy||!started||ended||final||capturing||pending;this.el('gravar').disabled=this.busy||!started||ended||final||capturing||pending;
         this.el('finalidade').disabled=capturing||pending;this.el('consent').disabled=capturing||pending;this.el('finalizar').disabled=this.busy||(!ended&&!this.correcting)||capturing||pending||(final&&!this.correcting);this.text('finalizar',this.correcting?'Salvar correção revisada':'Finalizar registro');this.show('corrigir',final&&!this.correcting);this.show('correcao-box',this.correcting);
-        this.show('pausar',['recording','paused'].includes(this.recorder?.state));this.show('parar',['recording','paused'].includes(this.recorder?.state));this.show('reenviar',pending&&!capturing);this.show('baixar',pending&&!capturing);this.text('pausar',this.recorder?.state==='paused'?'Retomar gravação':'Pausar');
+        this.el('pausar').disabled=!['recording','paused'].includes(this.recorder?.state);this.el('parar').disabled=!['recording','paused'].includes(this.recorder?.state);this.el('reenviar').disabled=!pending||capturing;this.text('pausar',this.recorder?.state==='paused'?'Retomar gravação':'Pausar');
     }
     requireAudioDone(){if(this.recorder?.active||this.recorder?.pending)throw new Error('Pare a gravação e confirme o envio do áudio antes de encerrar ou finalizar.');}
     async leaveCurrent(){this.requireAudioDone();if(this.correcting)throw new Error('Conclua a correção antes de trocar de consulta.');await this.save();}
@@ -147,17 +146,43 @@ class ClinicPanel{
             },changed:status=>{
                 if(this.disposed||this.current?.id!==sessionId)return;this.text('tempo',`${String(Math.floor(status.elapsed/60)).padStart(2,'0')}:${String(status.elapsed%60).padStart(2,'0')}`);
                 this.text('captura-status',({idle:'Microfone desligado',starting:'Abrindo microfone…',recording:'● Gravando',paused:'Gravação pausada',stopping:'Concluindo captura…',uploading:'Enviando áudio…',completed:'Áudio recebido · processando',error:'Envio precisa de atenção'})[status.state]||status.state);
-                if(status.error)this.feedback(status.error,true);if(status.state==='completed'){this.feedback('Áudio enviado. A transcrição e o resumo serão apresentados abaixo.');this.show('recuperar',false);this.refreshResults().catch(()=>{});}this.controls();
+                this.text('envio-status',status.state==='completed'?'Áudio recebido. Use Atualizar para consultar a transcrição e o resumo.':status.total?`${status.sent} de ${status.total} pedaços confirmados pelo servidor`:'O áudio é enviado em partes durante a gravação.');
+                if(status.error)this.feedback(status.error,true);if(status.state==='completed'){this.feedback('Áudio enviado. Use Atualizar quando quiser consultar o processamento.');this.el('recuperar').replaceChildren();}this.controls();
             }});
         const recoverable=await this.recorder.recoverable();this.show('recuperar',true);this.el('recuperar').innerHTML=recoverable.map(x=>`<p class="cli-alert">Existe áudio pendente desta consulta (${escape(date(x.created))}). <button data-recover="${escape(x.id)}">Recuperar e enviar</button></p>`).join('');
         this.el('recuperar').querySelectorAll('[data-recover]').forEach(b=>b.onclick=()=>this.run(()=>this.recorder.recover(b.dataset.recover)));if(recoverable.length)this.recorder.pending=recoverable[0];
     }
     async refreshResults(){
-        if(this.disposed||!this.current||this.refreshing||this.busy)return;this.refreshing=true;
-        try{const data=await this.request('ConsultarAtendimentos',{data:this.el('data').value,sessaoId:this.current.id});if(this.disposed)return;this.data.agenda=data.agenda;this.data.audios=data.audios;this.renderAgenda();this.renderAudios();if(data.atual[0].versao!==this.current.versao&&!this.savePromise)this.feedback('Este atendimento mudou em outra tela. Salve uma cópia do seu texto e atualize antes de continuar.',true);}finally{this.refreshing=false;}
+        if(this.disposed||this.refreshing||this.busy)return;this.refreshing=true;
+        for(const id of ['atualizar','atualizar-resultados'])this.el(id).disabled=true;
+        const sessionId=this.current?.id||0,selectedDay=this.el('data').value;
+        try{
+            const data=await this.request('ConsultarAtendimentos',{data:selectedDay,sessaoId:sessionId});
+            if(this.disposed||sessionId!==(this.current?.id||0)||selectedDay!==this.el('data').value)return;
+            const scroll={x:window.scrollX,y:window.scrollY},focus=document.activeElement;
+            if(JSON.stringify(this.data.agenda)!==JSON.stringify(data.agenda)){this.data.agenda=data.agenda;this.renderAgenda();}
+            this.data.audios=data.audios;this.renderAudios();
+            if(focus?.isConnected)focus.focus({preventScroll:true});window.scrollTo(scroll.x,scroll.y);
+            if(this.current&&data.atual[0]?.versao!==this.current.versao&&!this.savePromise)this.feedback('Este atendimento mudou em outra tela. Seu texto foi preservado; salve uma cópia e reabra a consulta para revisar a outra versão.',true);
+            else this.feedback('Agenda e processamento consultados. Suas anotações foram preservadas.');
+        }finally{this.refreshing=false;if(!this.disposed)for(const id of ['atualizar','atualizar-resultados'])this.el(id).disabled=false;}
     }
     renderAudios(){
-        const audios=this.data.audios;this.el('audios').innerHTML=audios.length?audios.map(a=>`<article class="cli-audio-item"><div class="cli-row cli-between"><strong>Áudio #${a.sagaId} · ${escape(a.status)}</strong><span class="cli-source">${escape(date(a.data))} · ${escape(time(a.data))}</span></div>${a.transcricao?`<details><summary>Ver transcrição</summary><pre>${escape(a.transcricao)}</pre></details>`:'<p class="cli-muted">Aguardando transcrição…</p>'}${a.prontuario?`<details><summary>Revisar sugestão de resumo</summary><h3>Prontuário</h3><pre>${escape(a.prontuario)}</pre><h3>Queixa principal</h3><pre>${escape(a.queixaPrincipal)}</pre><h3>Registro documental</h3><pre>${escape(a.registroDocumental)}</pre></details><button data-adopt="${a.sagaId}" ${this.isFinal()?'disabled':''}>Acrescentar ao rascunho</button>`:''}${a.stepFalhouId?`<p class="cli-alert">O processamento falhou. Seu registro manual permanece disponível.</p><button data-retry="${a.sagaId}" data-step="${a.stepFalhouId}">Tentar processamento novamente</button>`:''}</article>`).join(''):'<p class="cli-muted">Nenhum áudio enviado. Você pode registrar e concluir esta consulta manualmente.</p>';
+        const container=this.el('audios'),audios=this.data.audios;
+        if(!audios.length){if(!container.querySelector('[data-empty]'))container.innerHTML='<p class="cli-muted" data-empty>Nenhum áudio consultado. Use Atualizar para buscar novos resultados.</p>';return;}
+        container.querySelector('[data-empty]')?.remove();
+        for(const row of [...container.children])if(!audios.some(a=>String(a.sagaId)===row.dataset.saga))row.remove();
+        audios.forEach((a,index)=>{
+            let row=container.querySelector(`[data-saga="${a.sagaId}"]`);
+            if(!row){row=document.createElement('article');row.className='cli-audio-item';row.dataset.saga=a.sagaId;}
+            const markup=`<div class="cli-row cli-between"><strong>Áudio #${a.sagaId} · ${escape(a.status)}</strong><span class="cli-source">${escape(date(a.data))} · ${escape(time(a.data))}</span></div>${a.transcricao?`<details data-detail="transcricao"><summary>Ver transcrição</summary><pre>${escape(a.transcricao)}</pre></details>`:'<p class="cli-muted">Aguardando transcrição…</p>'}${a.prontuario?`<details data-detail="resumo"><summary>Revisar sugestão de resumo</summary><h3>Prontuário</h3><pre>${escape(a.prontuario)}</pre><h3>Queixa principal</h3><pre>${escape(a.queixaPrincipal)}</pre><h3>Registro documental</h3><pre>${escape(a.registroDocumental)}</pre></details><button data-adopt="${a.sagaId}" ${this.isFinal()?'disabled':''}>Acrescentar ao rascunho</button>`:''}${a.stepFalhouId?`<p class="cli-alert">O processamento falhou. Seu registro manual permanece disponível.</p><button data-retry="${a.sagaId}" data-step="${a.stepFalhouId}">Tentar processamento novamente</button>`:''}`;
+            if(row.audioMarkup!==markup){
+                const details=[...row.querySelectorAll('details')].map(d=>({key:d.dataset.detail,open:d.open,scroll:[...d.querySelectorAll('pre')].map(p=>p.scrollTop)}));
+                row.innerHTML=markup;row.audioMarkup=markup;
+                for(const previous of details){const detail=row.querySelector(`[data-detail="${previous.key}"]`);if(detail){detail.open=previous.open;detail.querySelectorAll('pre').forEach((p,i)=>p.scrollTop=previous.scroll[i]||0);}}
+            }
+            if(container.children[index]!==row)container.insertBefore(row,container.children[index]||null);
+        });
     }
     async adopt(id){
         if(this.isFinal())throw new Error('O registro está concluído.');await this.save();const audio=this.data.audios.find(a=>a.sagaId===id);if(!audio?.prontuario)throw new Error('Resumo ainda não disponível.');
@@ -166,6 +191,6 @@ class ClinicPanel{
         for(const key of ['prontuario','queixaPrincipal','registroDocumental'])if(audio[key])this.el(key).value+=(this.el(key).value?'\n\n':'')+audio[key];
         this.incorporarSagaId=id;this.dirty=true;this.edits++;await this.save();this.current.sugestoesIncorporadas+=`\nsaga:${id};`;this.feedback('Sugestão acrescentada ao rascunho. Revise antes de finalizar.');
     }
-    async retry(sagaId,stepId){await this.post('/Saga/OperacaoRetrySagaStepUseCase',{sagaId,sagaStepId:stepId});this.feedback('Nova tentativa solicitada.');await this.refreshResults();}
-    dispose(){if(this.disposed)return;this.disposed=true;clearInterval(this.poll);clearTimeout(this.saveTimer);this.recorder?.dispose();this.controller.abort();this.observer.disconnect();this.el('agendar-dialog')?.close();}
+    async retry(sagaId,stepId){await this.post('/Saga/OperacaoRetrySagaStepUseCase',{sagaId,sagaStepId:stepId});this.feedback('Nova tentativa solicitada. Use Atualizar para consultar o resultado.');}
+    dispose(){if(this.disposed)return;this.disposed=true;clearTimeout(this.saveTimer);this.recorder?.dispose();this.controller.abort();this.observer.disconnect();this.el('agendar-dialog')?.close();}
 }

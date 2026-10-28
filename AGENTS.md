@@ -2067,8 +2067,21 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   no prontuario e MarkInsightPending nao reabre registro; resultado validado
   permanece no payload do step como sugestao para incorporacao humana explicita.
   O gravador usa MediaRecorder WebM, chunks de dez segundos, pausa/retomada e
-  IndexedDB para recuperacao por tenant/usuario/sessao. Bytes locais somente sao
-  removidos apos IsFinalized com SagaId do C#. A API valida o profissional e a
+  IndexedDB para recuperacao por tenant/usuario/sessao. Por orientacao explicita
+  do usuario em 2026-10-28, reutilizar o mecanismo do gravador existente:
+  captura -> partes individuais no IndexedDB -> envio ordenado durante a gravacao,
+  com backoff e pausa por fila cheia. O nucleo de `audio.html` e compartilhado em
+  `session-recorder.js` pela pagina original e pelo painel; nao manter gravador
+  paralelo nem acumular a consulta inteira em arrays de Blobs. Partes confirmadas
+  deixam a fila, preservando uma cauda confirmada para finalizar/recuperar; somente
+  IsFinalized com SagaId remove os metadados e a cauda final. Falha de envio nunca
+  descarta partes por numero de tentativas. Audios da versao acumuladora anterior
+  continuam recuperaveis por migracao explicita da pendencia local.
+  Agenda/transcricao/resumo usam somente Atualizar: sem polling, consulta ao
+  recuperar foco ou consulta automatica ao parar/enviar o audio. Atualizar nao
+  recria o editor nem substitui texto; conserva selecao, rolagem e detalhes abertos.
+  Progresso local da captura e autosave de texto nao consultam essas projecoes.
+  A API valida o profissional e a
   finalidade/autorizacao declarada; a chave OpenAI continua exclusivamente privada.
   Ver docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md para fluxo e limites.
 - Direcao arquitetural implementada localmente para transcricao:
