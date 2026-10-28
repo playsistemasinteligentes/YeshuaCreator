@@ -14,7 +14,10 @@
 > Evidências locais: `.artifacts/clinica-live-result.json` e capturas
 > `.artifacts/clinica-live-*.png`. Recibo privado e logs de implantação na VPS:
 > `/root/YeshuaPrivate/production/operations/clinica-panel-20261027`.
-> Código está em commits locais e na VPS. O envio ao GitHub aguarda autenticação.
+> Commits do painel enviados ao GitHub em 28/10/2026. A implantação descrita acima
+> usou transferência direta de commits para a VPS e não comprova o deploy padrão.
+> Esse desvio foi rejeitado pelo usuário. O roteiro obrigatório permanece:
+> commit local → envio ao GitHub → deploy padrão por `infra/docker/deploy.sh`.
 > IDs operacionais persistidos usam N/32 caracteres; a correlação Guid da saga
 > usa D/36 e é normalizada no vínculo de leitura ao upload. Não trocar o contrato.
 > Front, API, Worker e migration têm alvos de compilação independentes, mantendo
