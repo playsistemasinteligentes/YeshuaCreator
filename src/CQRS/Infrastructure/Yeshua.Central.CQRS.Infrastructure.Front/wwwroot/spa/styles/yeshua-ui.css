@@ -513,6 +513,27 @@ textarea:focus-visible {
     outline-offset: 2px;
 }
 
+@media (min-width: 768px) {
+    .yeshua-row-action {
+        min-height: 28px;
+        padding: 0 8px;
+        gap: 5px;
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .yeshua-row-action svg {
+        width: 14px;
+        height: 14px;
+        flex-basis: 14px;
+    }
+
+    #table-container td.yeshua-row-actions-cell {
+        padding-top: 6px !important;
+        padding-bottom: 6px !important;
+    }
+}
+
 #crud-container {
     width: 100%;
     max-width: 1480px;

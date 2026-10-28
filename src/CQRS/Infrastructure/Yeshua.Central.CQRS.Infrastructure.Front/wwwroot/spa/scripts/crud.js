@@ -541,7 +541,7 @@ function renderTableSearch(data, modoFk = false, metadata = crudState.metadata) 
             });
 
             const actionsCell = document.createElement('td');
-            actionsCell.className = 'px-4 py-2 border text-sm';
+            actionsCell.className = 'yeshua-row-actions-cell px-4 py-2 border text-sm';
 
             const actionsWrapper = document.createElement('div');
             actionsWrapper.className = 'yeshua-row-actions';
