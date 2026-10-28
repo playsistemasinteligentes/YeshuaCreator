@@ -91,6 +91,11 @@ namespace Input.Repository.Clinica
             var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateTipoEstrutura(int id, int value)
+        {
+            var query = _query.UpdateTipoEstrutura(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

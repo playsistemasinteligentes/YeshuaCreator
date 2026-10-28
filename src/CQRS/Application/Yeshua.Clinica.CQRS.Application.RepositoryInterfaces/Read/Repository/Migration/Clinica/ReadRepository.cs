@@ -33,6 +33,7 @@ namespace IRepository.Read
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
+        public bool ExistsByTipoEstrutura(int value );
         public ClinicaDTO FirstById(int value );
         public ClinicaDTO FirstByNome(string value );
         public ClinicaDTO FirstByEndereco(string value );
@@ -42,6 +43,7 @@ namespace IRepository.Read
         public ClinicaDTO FirstByChanged(DateTime value );
         public ClinicaDTO FirstByUserId(int value );
         public ClinicaDTO FirstByOperationalEntityId(string value );
+        public ClinicaDTO FirstByTipoEstrutura(int value );
         public IEnumerable<ClinicaDTO> GetAllById(int value );
         public IEnumerable<ClinicaDTO> GetAllByNome(string value );
         public IEnumerable<ClinicaDTO> GetAllByEndereco(string value );
@@ -51,6 +53,7 @@ namespace IRepository.Read
         public IEnumerable<ClinicaDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ClinicaDTO> GetAllByUserId(int value );
         public IEnumerable<ClinicaDTO> GetAllByOperationalEntityId(string value );
+        public IEnumerable<ClinicaDTO> GetAllByTipoEstrutura(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

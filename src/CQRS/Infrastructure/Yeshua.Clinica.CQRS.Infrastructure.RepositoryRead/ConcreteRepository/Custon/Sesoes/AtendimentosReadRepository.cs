@@ -32,11 +32,15 @@ public partial class SesoesReadRepository
     public PainelOutput ConsultarPainel(DateTime dia, int sessaoId)
     {
         var profile=_unitOfWork.Query<PerfilAgenda>(@"SELECT f.Id,f.Nome,ISNULL(v.Id,0) ServicoHabitualId,ISNULL(v.Nome,'') ServicoHabitualNome,
-            ISNULL(NULLIF(v.ModeloConsulta,0),1) ModeloConsultaHabitual,1 VersaoModeloConsultaHabitual
+            ISNULL(NULLIF(v.ModeloConsulta,0),1) ModeloConsultaHabitual,1 VersaoModeloConsultaHabitual,
+            CAST(CASE WHEN EXISTS(SELECT 1 FROM Clinica WHERE TenantID=@Tenant AND Deleted=0)
+                AND EXISTS(SELECT 1 FROM Servico WHERE TenantID=@Tenant AND Deleted=0 AND ISNULL(NULLIF(ModeloConsulta,0),1) IN(1,2)) THEN 1 ELSE 0 END AS bit) EstruturaPronta
             FROM Profissional f LEFT JOIN Servico v ON v.Id=f.ServicoHabitualId AND v.TenantID=f.TenantID AND v.Deleted=0
                 AND ISNULL(NULLIF(v.ModeloConsulta,0),1) IN(1,2)
             WHERE f.TenantID=@Tenant AND f.UsuarioAcessoId=@Actor AND f.Deleted=0",PainelParameters()).ToList();
-        if(profile.Count!=1) throw new AtendimentoException("Seu usuário precisa estar vinculado a um único profissional. Solicite o vínculo ao administrador.",403);
+        if(profile.Count==0)return new PainelOutput{ConfiguracaoNecessaria=true,ConfiguracaoMotivo="Vamos configurar a clínica e vincular seu usuário ao profissional para liberar sua agenda."};
+        if(profile.Count!=1) throw new AtendimentoException("Há mais de um profissional vinculado ao seu usuário. Solicite a revisão dos vínculos ao administrador.",409);
+        if(!profile[0].EstruturaPronta)return new PainelOutput{ConfiguracaoNecessaria=true,ConfiguracaoMotivo="Complete os dados da clínica e do serviço para começar a agendar."};
         var args=new { Tenant=_executionContext.TenantID,Actor=_executionContext.UserId,Start=dia,End=dia.AddDays(1) };
         var result=new PainelOutput { ProfissionalId=profile[0].Id,ProfissionalNome=profile[0].Nome,
             ServicoHabitualId=profile[0].ServicoHabitualId,ServicoHabitualNome=profile[0].ServicoHabitualNome,
@@ -82,6 +86,7 @@ public partial class SesoesReadRepository
     }
     private sealed class PerfilAgenda
     {
+        public bool EstruturaPronta {get;set;}
         public int Id {get;set;} public string Nome {get;set;}="";
         public int ServicoHabitualId {get;set;} public string ServicoHabitualNome {get;set;}="";
         public int ModeloConsultaHabitual {get;set;} public int VersaoModeloConsultaHabitual {get;set;}

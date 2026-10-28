@@ -11,6 +11,8 @@ public sealed record RegistroInput(int SessaoId = 0, int Versao = 0, string Pron
     bool Revisado = false, string Motivo = "", int IncorporarSagaId = 0);
 public sealed class PainelOutput
 {
+    public bool ConfiguracaoNecessaria { get; set; }
+    public string ConfiguracaoMotivo { get; set; } = "";
     public int ProfissionalId { get; set; }
     public string ProfissionalNome { get; set; } = "";
     public int ServicoHabitualId { get; set; }

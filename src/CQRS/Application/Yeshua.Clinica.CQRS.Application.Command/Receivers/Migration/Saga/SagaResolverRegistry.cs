@@ -23,16 +23,18 @@ namespace Command.Receivers.Migration.Saga
         private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;
         private readonly Dictionary<string, Func<SagaBase>> _factoryMap;
 
-        public SagaResolverRegistry(PsychologySessionInsightSagaHandlerResolver PsychologySessionInsightResolver)
+        public SagaResolverRegistry(PsychologySessionInsightSagaHandlerResolver PsychologySessionInsightResolver, ConfiguracaoInicialClinicaSagaHandlerResolver ConfiguracaoInicialClinicaResolver)
         {
             _resolverMap = new Dictionary<string, ISagaHandlerResolver>
             {
                 { nameof(PsychologySessionInsightSaga), PsychologySessionInsightResolver },
+                { nameof(ConfiguracaoInicialClinicaSaga), ConfiguracaoInicialClinicaResolver },
             };
 
             _factoryMap = new Dictionary<string, Func<SagaBase>>
             {
                 { nameof(PsychologySessionInsightSaga), () => new PsychologySessionInsightSaga() },
+                { nameof(ConfiguracaoInicialClinicaSaga), () => new ConfiguracaoInicialClinicaSaga() },
             };
         }
 

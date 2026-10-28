@@ -23,7 +23,7 @@ public partial class ConsultarAtendimentosHandler
             // A data representa o dia de São Paulo; os registros de horário são UTC.
             var zone=TimeZoneInfo.FindSystemTimeZoneById("America/Sao_Paulo");
             var p=_read.ConsultarPainel(TimeZoneInfo.ConvertTimeToUtc(dia,zone),comand.SessaoId);
-            var result=new ConsultarAtendimentosOutputCommand { ProfissionalId=p.ProfissionalId,ProfissionalNome=p.ProfissionalNome,
+            var result=new ConsultarAtendimentosOutputCommand { ConfiguracaoNecessaria=p.ConfiguracaoNecessaria,ConfiguracaoMotivo=p.ConfiguracaoMotivo,ProfissionalId=p.ProfissionalId,ProfissionalNome=p.ProfissionalNome,
             ServicoHabitualId=p.ServicoHabitualId,ServicoHabitualNome=p.ServicoHabitualNome,ModeloConsultaHabitual=p.ModeloConsultaHabitual,VersaoModeloConsultaHabitual=p.VersaoModeloConsultaHabitual,
             Agenda=p.Agenda.Select(x=>new Command.UseCase.AgendaAtendimentoInfo { Id=x.Id,Paciente=x.Paciente,DataInicio=x.DataInicio,DataFim=x.DataFim,StatusAgendamento=x.StatusAgendamento,StatusProntuario=x.StatusProntuario,Pendente=x.Pendente }).ToList(),
             Pacientes=p.Pacientes.Select(x=>new Command.UseCase.PacienteAtendimentoInfo { Id=x.Id,Nome=x.Nome }).ToList(),

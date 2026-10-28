@@ -2093,6 +2093,19 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   A API valida o profissional e a
   finalidade/autorizacao declarada; a chave OpenAI continua exclusivamente privada.
   Ver docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md para fluxo e limites.
+- A configuracao inicial do Clinica foi declarada em M000007:
+  ConfiguracaoInicialClinica coordena tres StepWait.HttpApi.Immediate para
+  estabelecimento, profissional do proprio usuario e servico habitual. O painel
+  devolve ConfiguracaoNecessaria na leitura existente quando falta profissional,
+  clinica ou servico, e abre o assistente em vez de falhar o aplicativo.
+  A saga e retomavel por tenant/usuario/ProcessingScope; cadastros existentes
+  exigem escolha explicita e somente profissionais sem vinculo ou do proprio
+  ator sao elegiveis. Cada Command grava cadastro e fato na mesma transacao;
+  a Inbox e o ISagaStepInvoker existentes aplicam e continuam. Confirmacoes
+  repetidas usam hash do input por step, sem duplicar cadastros ou fatos.
+  Individual/equipe pertence a Clinica.TipoEstrutura. Especialidade e grupo de
+  servicos continuam opcionais; outras modalidades clinicas nao foram criadas.
+  Configuracao nao grava paciente, consulta, audio nem dados reais por inferencia.
 - Modelos de consulta do Clinica sao um catalogo fixo do aplicativo, nao um
   construtor de formularios. IDs/version inicial: 1/1 Psicologia completa e
   2/1 Registro simplificado (registro da sessao e proximos passos). Servico

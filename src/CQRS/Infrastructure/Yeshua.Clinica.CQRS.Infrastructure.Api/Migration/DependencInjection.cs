@@ -462,6 +462,11 @@ builder.Services.AddTransient<Dominio.Saga.PsychologySessionInsightSaga>();
 builder.Services.AddTransient<Command.Receivers.PsychologySessionInsightSagaHandlerResolver>();
 builder.Services.AddTransient<AudioTranscriptRequestedHandler>();
 builder.Services.AddTransient<ReportEndProntuaryRequestedHandler>();
+builder.Services.AddTransient<Dominio.Saga.ConfiguracaoInicialClinicaSaga>();
+builder.Services.AddTransient<Command.Receivers.ConfiguracaoInicialClinicaSagaHandlerResolver>();
+builder.Services.AddTransient<ConfigurarEstabelecimentoHandler>();
+builder.Services.AddTransient<VincularProfissionalInicialHandler>();
+builder.Services.AddTransient<DefinirServicoInicialHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarAtendimentosHandler>();
 
@@ -486,6 +491,14 @@ builder.Services.AddTransient<Command.Receivers.UseCase.VincularProfissionalHand
 builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarServicosAgendamentoHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.DefinirServicoHabitualHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AbrirConfiguracaoClinicaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarEstabelecimentoClinicaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarProfissionalClinicaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarServicoClinicaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

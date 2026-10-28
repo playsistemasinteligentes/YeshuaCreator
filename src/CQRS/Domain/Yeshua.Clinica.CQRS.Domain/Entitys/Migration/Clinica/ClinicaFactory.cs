@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IClinicaEntity Create(int? id, string nome, string endereco, string telefone )
+                                    } public IClinicaEntity Create(int? id, string nome, string endereco, string telefone, int? tipoestrutura )
                             {
-                                return Create(null, id, nome, endereco, telefone);
+                                return Create(null, id, nome, endereco, telefone, tipoestrutura);
                             }
 
                             public IClinicaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string endereco, string telefone, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, string endereco, string telefone, int? tipoestrutura, ulong? trackingMask = null )
                             {
-                            var entity = new ClinicaEntity(id, nome, endereco, telefone );
+                            var entity = new ClinicaEntity(id, nome, endereco, telefone, tipoestrutura );
 
 
                             var effectiveTrackingMask = trackingMask ??

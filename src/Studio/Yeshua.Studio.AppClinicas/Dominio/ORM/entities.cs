@@ -25,6 +25,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? TipoEstrutura { get; set; }
 
         public static MyApp.QueryBuilder.Query<Clinica> Query() => new MyApp.QueryBuilder.Query<Clinica>();
     }

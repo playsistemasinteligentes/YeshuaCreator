@@ -54,7 +54,7 @@ namespace Command.Receivers.Write
                  if (!hasExecutionIdentity && trackingMask != 0UL)
                      executionIdentity = _executionContext.OperationalIdentity;
                  var context = DomainOperationContext.Create(DomainOperation.Registro, DomainEntryPoint.Crud, "InsertClinica", _executionContext.TenantID, _executionContext.UserId, traceId: _executionContext.TraceId, receiverName: nameof(InsertClinicaReceiver), commandName: "Command.Write.ClinicaCrudCommand", rootOperationId: executionIdentity.RootOperationId, operationId: executionIdentity.OperationId, executionId: executionIdentity.ExecutionId, causationId: executionIdentity.CausationId);
-                 var clinica = new ClinicaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Endereco, c.Telefone, trackingMask: trackingMask);
+                 var clinica = new ClinicaFactory(_logger, _domainTrackingPolicy).Create(context, c.Id, c.Nome, c.Endereco, c.Telefone, c.TipoEstrutura, trackingMask: trackingMask);
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", clinica.OperationalEntityId);
                  var domainResult = ClinicaDomainBehavior.Apply(clinica, context);
                  if (!domainResult.IsValid)

@@ -670,6 +670,40 @@ incorporação explícita reúne o texto no registro da sessão, respeitando o l
 do campo e preservando o texto humano. A IA não finaliza o registro.
 
 Esta entrega usa os cadastros existentes e a configuração do habitual no painel.
-A saga de configuração inicial discutida anteriormente permanece uma evolução
-separada; ela poderá chamar os mesmos Commands para configurar cada profissional.
+A saga de configuração inicial discutida anteriormente foi implementada em M000007;
+o detalhamento abaixo substitui a pendência registrada na entrega dos modelos.
+
+## Configuração inicial — correção de 28/10/2026
+
+O painel identifica na leitura existente a falta de profissional vinculado,
+clínica ou serviço e apresenta o assistente, sem tratar esse estado de cadastro
+como falha de abertura do aplicativo. Mais de um profissional para o mesmo acesso
+exige correção administrativa, sem escolha automática ou troca de tenant.
+
+`ConfiguracaoInicialClinica` tem três intenções com espera por confirmação humana:
+
+1. Confirmar o estabelecimento e estrutura individual/equipe.
+2. Confirmar/criar o profissional e vinculá-lo ao próprio usuário autenticado.
+3. Confirmar/criar o serviço, seu modelo e o habitual; validar os vínculos antes
+   de concluir e abrir a agenda.
+
+Cada fase é um `StepWait.HttpApi.Immediate`, usa Command normal e o invocador
+compartilhado. O fato `clinica.configuracao.confirmada.v1` fica na Inbox na mesma
+transação do cadastro. A saga continua pelo executor existente; nenhum novo
+worker, transporte, cache no login ou runner foi criado. Reabertura retoma a saga
+do tenant/usuário/escopo. Repetir o mesmo input da etapa não duplica cadastro/fato;
+alterar uma etapa já confirmada exige voltar aos cadastros normais.
+
+O assistente reaproveita escolhas existentes e não adivinha qual profissional é
+do usuário. O escopo administrativo `clinica.atendimentos.configurar` controla
+as confirmações. Quem não o possui recebe orientação para pedir o vínculo ao
+administrador, sem falhar todo o aplicativo. Especialidade e grupo de serviço
+são opcionais. Psicologia é a modalidade disponível; odontologia e medicina não
+ganham formulários fictícios nesta entrega. A expansão da equipe usa os cadastros
+existentes; uma saga específica de expansão continua uma evolução futura.
+
+Validação: 62 testes de backend, navegador com três fases e retomada após reload,
+reuso dos cadastros, atualização preservando campos, isolamento de contexto e
+orientação sem autorização. A regressão do painel e da gravação em partes passou.
+
 

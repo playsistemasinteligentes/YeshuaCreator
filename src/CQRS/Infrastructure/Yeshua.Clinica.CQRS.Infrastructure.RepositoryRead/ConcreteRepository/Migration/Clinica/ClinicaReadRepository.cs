@@ -172,6 +172,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByTipoEstrutura(int value )
+        {
+            var query = _query.ExistsByTipoEstruturaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public ClinicaDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -244,6 +252,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public ClinicaDTO FirstByTipoEstrutura(int value )
+        {
+            var query = _query.FirstByTipoEstruturaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ClinicaDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<ClinicaDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -311,6 +327,14 @@ namespace Read.Repository
         public IEnumerable<ClinicaDTO> GetAllByOperationalEntityId(string value )
         {
             var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ClinicaDTO> GetAllByTipoEstrutura(int value )
+        {
+            var query = _query.FirstByTipoEstruturaQuery(value );
 
                 var result = _unitOfWork.Query<ClinicaDTO>(query.Query,query.Parameters).ToList();
                 return result;

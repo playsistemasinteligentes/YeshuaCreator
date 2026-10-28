@@ -157,6 +157,9 @@ public sealed class ApiSmokeCrudSuiteTests
             var step30 = new Saga.PsychologySessionInsight.PsychologySessionInsightSagaApiSmokeTests();
             await step30.PsychologySessionInsight_saga_should_run_with_real_api_and_infrastructure();
 
+            var step31 = new Saga.ConfiguracaoInicialClinica.ConfiguracaoInicialClinicaSagaApiSmokeTests();
+            await step31.ConfiguracaoInicialClinica_saga_should_run_with_real_api_and_infrastructure();
+
         }
         catch (Exception ex)
         {

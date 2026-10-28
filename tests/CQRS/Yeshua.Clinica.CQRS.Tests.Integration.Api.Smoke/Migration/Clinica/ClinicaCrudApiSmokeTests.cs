@@ -81,6 +81,7 @@ public partial class ClinicaCrudApiSmokeTests : ApiIntegrationTestBase
             ["Nome"] = ApiTestData.Text("Clinica Nome", 80),
             ["Endereco"] = ApiTestData.Text("Clinica Endereco", 80),
             ["Telefone"] = ApiTestData.Text("Clinica Telefone", 20),
+            ["TipoEstrutura"] = 1,
         };
     }
 
@@ -100,6 +101,7 @@ public partial class ClinicaCrudApiSmokeTests : ApiIntegrationTestBase
         payload["Nome"] = ApiTestData.Text("Clinica Nome Update", 80);
         payload["Endereco"] = ApiTestData.Text("Clinica Endereco Update", 80);
         payload["Telefone"] = ApiTestData.Text("Clinica Telefone Update", 20);
+        payload["TipoEstrutura"] = 1;
         return payload;
     }
 

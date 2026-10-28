@@ -384,6 +384,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ClinicaTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "Clinica", operation, recordId, "OperationalEntityId"))
                         mask |= ClinicaTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "Clinica", operation, recordId, "TipoEstrutura"))
+                        mask |= ClinicaTrackingFields.TipoEstrutura;
                     return mask;
                 }
 

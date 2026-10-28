@@ -1,7 +1,8 @@
 import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
 import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
+import { ClinicSetup } from './configuracao.js?v=20261028-config01';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261028-modelos02';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-config01';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -57,7 +58,7 @@ class ClinicPanel{
     el(id){return this.host.querySelector('#cli-'+id);}
     text(id,value){const el=this.el(id);if(el.textContent!==String(value))el.textContent=value;}
     show(id,visible){this.el(id).hidden=!visible;}
-    hasWork(){return this.dirty||this.correcting||Boolean(this.recorder?.active||this.recorder?.pending);}
+    hasWork(){return this.dirty||this.correcting||this.setup?.dirty||Boolean(this.recorder?.active||this.recorder?.pending);}
     feedback(message,error=false){if(this.disposed)return;this.text('feedback',message);this.el('feedback').dataset.error=String(error);}
     async run(action){if(this.busy)return;this.busy=true;this.controls();try{await action();}catch(e){this.feedback(e.message,true);}finally{this.busy=false;this.controls();}}
     async request(name,body){return this.post('/Clinica/Atendimentos'+name+'UseCase',body);}
@@ -94,6 +95,8 @@ class ClinicPanel{
     async initialize(){this.el('data').value=day();await this.load(0);}
     async load(id){
         const data=await this.request('ConsultarAtendimentos',{data:this.el('data').value,sessaoId:id});if(this.disposed)return;
+        if(data.configuracaoNecessaria){this.data=data;this.current=null;this.show('layout',false);this.show('configuracao',true);this.text('profissional',data.configuracaoMotivo);if(!this.setup)this.setup=new ClinicSetup(this.el('configuracao'),(path,body)=>this.post(path,body),async()=>{this.setup=null;this.show('configuracao',false);await this.load(0);this.feedback('Configuração concluída. Sua agenda está pronta para receber consultas.');},this.controller.signal);await this.setup.refresh();return;}
+        this.show('configuracao',false);this.show('layout',true);
         if(this.data?.profissionalId!==data.profissionalId)this.servicos=null;
         this.data=data;this.current=data.atual[0]||null;this.correcting=false;this.dirty=false;this.edits=0;this.incorporarSagaId=0;
         this.text('profissional',data.profissionalNome+' · Agenda e continuidade do cuidado');this.renderAgenda();this.renderPatient();this.show('vazio',!this.current);this.show('consulta',Boolean(this.current));
@@ -213,6 +216,7 @@ class ClinicPanel{
         this.el('recuperar').querySelectorAll('[data-recover]').forEach(b=>b.onclick=()=>this.run(()=>this.recorder.recover(b.dataset.recover)));if(recoverable.length)this.recorder.pending=recoverable[0];
     }
     async refreshResults(){
+        if(this.setup){await this.setup.refresh();return;}
         if(this.disposed||this.refreshing||this.busy)return;this.refreshing=true;
         for(const id of ['atualizar','atualizar-resultados'])this.el(id).disabled=true;
         const sessionId=this.current?.id||0,selectedDay=this.el('data').value;

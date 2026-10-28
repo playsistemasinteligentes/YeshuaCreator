@@ -22,6 +22,7 @@ namespace Command.Read
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string? OperationalEntityId { get; set; }
+        public int? TipoEstrutura { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Clinica";
  public string? OperationalRecordId => OperationalEntityId;

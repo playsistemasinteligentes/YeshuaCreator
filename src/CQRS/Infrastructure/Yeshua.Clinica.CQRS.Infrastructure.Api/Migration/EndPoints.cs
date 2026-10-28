@@ -74,6 +74,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "TipoEstrutura", title = "Estrutura da clínica", classification = "Internal" },
                 }
             },
             new
@@ -3664,6 +3665,7 @@ app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
                 new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
             },
             filterFields = new[]
             {
@@ -3671,6 +3673,7 @@ app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
                 new { id = "nome", label = "Nome da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "endereco", label = "Endereço da Clínica", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone de Contato", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -3684,6 +3687,7 @@ app.MapGet("/yapi/getMetaDataClinica", (HttpContext context) =>
             new { id = "nome", label = "Nome da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "endereco", label = "Endereço da Clínica", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "telefone", label = "Telefone de Contato", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipoestrutura", label = "Estrutura da clínica", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Individual" }, new { value = 2, display = "Equipe" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6139,6 +6143,90 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Clinica/AtendimentosDefinirServicoHabitualUseCase", async ([FromServices] Command.Receivers.UseCase.DefinirServicoHabitualHandler receiver, [FromBody] Command.UseCase.DefinirServicoHabitualInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/ConfiguracaoAbrirConfiguracaoClinicaUseCase", async ([FromServices] Command.Receivers.UseCase.AbrirConfiguracaoClinicaHandler receiver, [FromBody] Command.UseCase.AbrirConfiguracaoClinicaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/ConfiguracaoConfirmarEstabelecimentoClinicaUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarEstabelecimentoClinicaHandler receiver, [FromBody] Command.UseCase.ConfirmarEstabelecimentoClinicaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/ConfiguracaoConfirmarProfissionalClinicaUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarProfissionalClinicaHandler receiver, [FromBody] Command.UseCase.ConfirmarProfissionalClinicaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/ConfiguracaoConfirmarServicoClinicaUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarServicoClinicaHandler receiver, [FromBody] Command.UseCase.ConfirmarServicoClinicaInputCommand command) =>
 {
 try
 {

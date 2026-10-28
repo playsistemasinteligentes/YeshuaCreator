@@ -29,12 +29,14 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public int? TipoEstrutura { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal ClinicaEntity(int? id, string nome, string endereco, string telefone ){
+ internal ClinicaEntity(int? id, string nome, string endereco, string telefone, int? tipoestrutura ){
  Id = id; 
  Nome = nome; 
  Endereco = endereco; 
  Telefone = telefone; 
+ TipoEstrutura = tipoestrutura; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

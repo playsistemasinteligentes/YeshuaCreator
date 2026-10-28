@@ -86,5 +86,30 @@ public partial record ServicoAgendamentoInfo : ICommand
     public int VersaoModeloConsulta { get; set; }
 }
 
+public partial record ClinicaInicialInfo : ICommand
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Endereco { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
+    public int TipoEstrutura { get; set; }
+}
+
+public partial record ProfissionalInicialInfo : ICommand
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public string Telefone { get; set; } = string.Empty;
+    public bool Vinculado { get; set; }
+}
+
+public partial record ServicoInicialInfo : ICommand
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public decimal Valor { get; set; }
+    public int ModeloConsulta { get; set; }
+}
+
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

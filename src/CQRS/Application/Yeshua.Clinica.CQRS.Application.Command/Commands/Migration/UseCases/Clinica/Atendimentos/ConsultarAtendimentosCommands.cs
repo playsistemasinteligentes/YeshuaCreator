@@ -23,6 +23,8 @@ public partial record ConsultarAtendimentosInputCommand : ICommand
 
 public partial record ConsultarAtendimentosOutputCommand : ICommand
 {
+    public bool ConfiguracaoNecessaria { get; set; }
+    public string ConfiguracaoMotivo { get; set; } = string.Empty;
     public int ProfissionalId { get; set; }
     public string ProfissionalNome { get; set; } = string.Empty;
     public int ServicoHabitualId { get; set; }
