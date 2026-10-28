@@ -35,13 +35,13 @@ export async function renderMemoriasStudio() {
 async function prepareShell() {
     if (document.getElementById('crud-container')) return;
     const app = document.getElementById('app');
-    const response = await fetch('/spa/views/dashboard.html');
+    const response = await fetch('/spa/views/dashboard.html?v=20261028-help02', { cache: 'no-cache' });
     if (!app || !response.ok) throw new Error('Painel indisponivel.');
     app.innerHTML = await response.text();
     const menu = await import('/spa/scripts/menu.js?v=20260926-userarea01');
     const crud = await import('/spa/scripts/crud.js?v=20260926-userarea01');
     const applications = await import('/spa/scripts/application-context.js');
-    const userArea = await import('/spa/scripts/user-area.js');
+    const userArea = await import('/spa/scripts/user-area.js?v=20261028-help02');
     applications.bindApplicationSelector(); userArea.bindUserArea(); crud.buildCrud(); menu.buildMenu();
     await menu.loadDataMenu();
 }

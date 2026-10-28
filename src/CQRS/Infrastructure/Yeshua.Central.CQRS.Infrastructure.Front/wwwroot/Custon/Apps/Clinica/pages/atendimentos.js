@@ -2,7 +2,7 @@ import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-par
 import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
 import { ClinicSetup } from './configuracao.js?v=20261028-config01';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261028-config01';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-help02';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -22,8 +22,8 @@ export async function renderClinicaAtendimentos(){
     if(active?.hasWork()){active.feedback('Conclua o envio do áudio e salve o registro antes de reabrir o painel.',true);return;}
     active?.dispose();
     if(!document.getElementById('crud-container')){
-        const response=await fetch('/spa/views/dashboard.html');document.getElementById('app').innerHTML=await response.text();
-        const menu=await import('/spa/scripts/menu.js?v=20260926-userarea01'),crud=await import('/spa/scripts/crud.js?v=20260926-userarea01'),apps=await import('/spa/scripts/application-context.js'),user=await import('/spa/scripts/user-area.js');
+        const response=await fetch('/spa/views/dashboard.html?v=20261028-help02',{cache:'no-cache'});document.getElementById('app').innerHTML=await response.text();
+        const menu=await import('/spa/scripts/menu.js?v=20260926-userarea01'),crud=await import('/spa/scripts/crud.js?v=20260926-userarea01'),apps=await import('/spa/scripts/application-context.js'),user=await import('/spa/scripts/user-area.js?v=20261028-help02');
         apps.bindApplicationSelector();user.bindUserArea();crud.buildCrud();menu.buildMenu();await menu.loadDataMenu();
     }
     let host=document.getElementById('custom-page-container');

@@ -7,7 +7,7 @@ import {
     getAuthenticationApi,
     initializeApplicationContext
 } from './application-context.js';
-import { bindUserArea } from './user-area.js';
+import { bindUserArea } from './user-area.js?v=20261028-help02';
 
 
 export async function handleRouting(hash) {
@@ -34,8 +34,8 @@ export async function handleRouting(hash) {
 
     let pageRendered = false;
     try {
-        const viewVersion = publicRoutes.includes(route) ? '?v=20261016-auth-layout01' : '';
-        const res = await fetch(`views/${route.replace('#', '')}.html${viewVersion}`);
+        const viewVersion = publicRoutes.includes(route) ? '?v=20261016-auth-layout01' : '?v=20261028-help02';
+        const res = await fetch(`views/${route.replace('#', '')}.html${viewVersion}`, { cache: 'no-cache' });
         if (!res.ok) throw new Error('Página não encontrada...');
 
         const html = await res.text();

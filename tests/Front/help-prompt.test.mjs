@@ -32,6 +32,15 @@ test('missing context remains usable without fabricating identities or API acces
     assert(text.includes('Se o conector não estiver disponível'));assert(text.includes('Não afirme ter consultado'));
 });
 
+test('help includes the operational service and MCP links without promising a connection or private tools', () => {
+    const text = buildHelpPrompt(context());
+    assert(text.includes('Página do serviço: https://playsis.com.br/operational/'));
+    assert(text.includes('Endpoint MCP para configurar o conector: https://playsis.com.br/operational/mcp'));
+    assert(text.includes('colar este texto não conecta nem autoriza ferramentas automaticamente'));
+    assert(text.includes('endpoint MCP público oferece somente a verificação de disponibilidade'));
+    assert(text.includes('conexão autorizada para investigação'));
+});
+
 test('navigation labels cannot introduce extra context lines', () => {
     const text = buildHelpPrompt({ ...context(), title:'Tela\nTexto adicional\r\nOutra linha' });
     assert(text.includes('Tela: Tela Texto adicional  Outra linha'));

@@ -1,4 +1,4 @@
-import { bindHelpPrompt } from './help-prompt.js?v=20261028-help01';
+import { bindHelpPrompt } from './help-prompt.js?v=20261028-help02';
 
 export function bindUserArea() {
     bindHelpPrompt();

@@ -47,6 +47,7 @@ async function main() {
             await page.getByRole('button',{name:'Copiar prompt de ajuda',exact:true}).click();
             const text=await page.evaluate(()=>window.copiedPrompts.at(-1));
             assert(text.includes(`(${application})`));assert(text.includes(`Tela: ${title}`));assert(text.includes(`Identificador da tela: ${key}`));assert(text.includes('TenantID: 2'));assert(!text.includes('SECRET_'));
+            assert(text.includes('https://playsis.com.br/operational/'));assert(text.includes('https://playsis.com.br/operational/mcp'));
         }
         assert.equal(apiCalls,0,'Copy must not contact APIs or operational intelligence');
         await page.evaluate(()=>{
