@@ -34,7 +34,9 @@ public partial class SesoesReadRepository
         var profile=_unitOfWork.Query<PerfilAgenda>(@"SELECT f.Id,f.Nome,ISNULL(v.Id,0) ServicoHabitualId,ISNULL(v.Nome,'') ServicoHabitualNome,
             ISNULL(NULLIF(v.ModeloConsulta,0),1) ModeloConsultaHabitual,1 VersaoModeloConsultaHabitual,
             CAST(CASE WHEN EXISTS(SELECT 1 FROM Clinica WHERE TenantID=@Tenant AND Deleted=0)
-                AND EXISTS(SELECT 1 FROM Servico WHERE TenantID=@Tenant AND Deleted=0 AND ISNULL(NULLIF(ModeloConsulta,0),1) IN(1,2)) THEN 1 ELSE 0 END AS bit) EstruturaPronta
+                AND EXISTS(SELECT 1 FROM Servico WHERE TenantID=@Tenant AND Deleted=0 AND ISNULL(NULLIF(ModeloConsulta,0),1) IN(1,2))
+                AND NOT EXISTS(SELECT 1 FROM ySaga WHERE TenantID=@Tenant AND EntityType='yUser' AND EntityId=CONVERT(varchar(20),@Actor)
+                    AND Type='ConfiguracaoInicialClinicaSaga' AND ProcessingScope=@Scope AND Deleted=0 AND Status=1) THEN 1 ELSE 0 END AS bit) EstruturaPronta
             FROM Profissional f LEFT JOIN Servico v ON v.Id=f.ServicoHabitualId AND v.TenantID=f.TenantID AND v.Deleted=0
                 AND ISNULL(NULLIF(v.ModeloConsulta,0),1) IN(1,2)
             WHERE f.TenantID=@Tenant AND f.UsuarioAcessoId=@Actor AND f.Deleted=0",PainelParameters()).ToList();

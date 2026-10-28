@@ -38,5 +38,6 @@
     <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.CQRS.Infrastructure.Shared\Yeshua.CQRS.Infrastructure.Shared.csproj" />
     <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.Clinica.CQRS.Infrastructure.Shared\Yeshua.Clinica.CQRS.Infrastructure.Shared.csproj" />
     <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite\Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite.csproj" />
+    <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead\Yeshua.Clinica.CQRS.Infrastructure.RepositoryRead.csproj" />
   </ItemGroup>
 </Project>

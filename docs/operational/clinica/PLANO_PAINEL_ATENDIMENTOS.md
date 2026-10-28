@@ -702,7 +702,7 @@ são opcionais. Psicologia é a modalidade disponível; odontologia e medicina n
 ganham formulários fictícios nesta entrega. A expansão da equipe usa os cadastros
 existentes; uma saga específica de expansão continua uma evolução futura.
 
-Validação: 62 testes de backend, navegador com três fases e retomada após reload,
+Validação: 63 testes de backend, navegador com três fases e retomada após reload,
 reuso dos cadastros, atualização preservando campos, isolamento de contexto e
 orientação sem autorização. A regressão do painel e da gravação em partes passou.
 

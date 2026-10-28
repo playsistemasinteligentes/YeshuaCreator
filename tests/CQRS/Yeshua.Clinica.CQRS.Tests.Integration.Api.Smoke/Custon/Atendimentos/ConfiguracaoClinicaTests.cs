@@ -14,6 +14,22 @@ using static Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Custon.Saga.Session
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Custon.Atendimentos;
 public class ConfiguracaoClinicaTests
 {
+    [Fact] public void An_unfinished_setup_returns_guidance_without_loading_the_agenda_or_failing_the_application()
+    {
+        var calls=0;
+        var work=AtendimentoPersistenceTestsProxy((method,args)=>{
+            Assert.Equal("Query",method.Name);calls++;
+            var type=method.GetGenericArguments()[0];var item=Activator.CreateInstance(type,true)!;
+            type.GetProperty("Id")!.SetValue(item,3);type.GetProperty("Nome")!.SetValue(item,"Profissional");
+            type.GetProperty("EstruturaPronta")!.SetValue(item,false);
+            var list=Array.CreateInstance(type,1);list.SetValue(item,0);return list;
+        });
+        var repo=new Read.Repository.SesoesReadRepository(work,Context(),Fake<IQuery.Read.ISesoesQueryRead>((_,_)=>null));
+        var panel=repo.ConsultarPainel(DateTime.UtcNow.Date,0);
+        Assert.True(panel.ConfiguracaoNecessaria);Assert.Empty(panel.Agenda);Assert.Equal(1,calls);
+    }
+    private static IUnitOfWork AtendimentoPersistenceTestsProxy(Func<MethodInfo,object?[]?,object?> call)
+    {var proxy=DispatchProxy.Create<IUnitOfWork,AtendimentoPersistenceTests.Proxy>();((AtendimentoPersistenceTests.Proxy)(object)proxy).Call=call;return proxy;}
     [Fact] public void Setup_waits_for_each_confirmation_and_finishes_only_after_the_third_fact()
     {
         var saga=new ConfiguracaoInicialClinicaSaga();saga.Start("13","yUser");
