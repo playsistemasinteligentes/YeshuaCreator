@@ -1,7 +1,7 @@
 import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
-import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica02';
+import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica03';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261028-clinica02';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-clinica03';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;

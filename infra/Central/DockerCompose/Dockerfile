@@ -8,7 +8,12 @@ COPY . .
 RUN dotnet publish src/Studio/Yeshua.Studio.Central/Yeshua.Studio.Central.csproj -c Release -o /app/publish/migration
 RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj -c Release -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/api
 RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Worker/Yeshua.Central.CQRS.Infrastructure.Worker.csproj -c Release -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/worker
-RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj -c Release -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/front
+
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish-front
+WORKDIR /src
+ARG YESHUA_COMMIT_SHA=UNSET
+COPY . .
+RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/front
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS aspnet-health
 WORKDIR /app
@@ -33,7 +38,7 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
 ENTRYPOINT ["dotnet", "Yeshua.Central.CQRS.Infrastructure.Worker.dll"]
 
 FROM aspnet-health AS front
-COPY --from=publish /app/publish/front .
+COPY --from=publish-front /app/publish/front .
 ENV ASPNETCORE_URLS=http://0.0.0.0:8080
 EXPOSE 8080
 HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \

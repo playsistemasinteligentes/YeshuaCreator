@@ -53,3 +53,10 @@ test('denied microphone permission never creates an upload session',async()=>{
 test('closing the page while permission is pending releases a late media stream',async()=>{
     const {r,tracks}=fixture();let grant;r.mediaDevices={getUserMedia:()=>new Promise(resolve=>grant=resolve)};const start=r.start();r.dispose();grant({getTracks:()=>[tracks]});await assert.rejects(start,/fechada/);assert.equal(tracks.stopped,true);
 });
+test('a local storage failure stops the physical capture and retains bytes for download',async()=>{
+    const {r,tracks}=fixture();let writes=0;const put=r.store.put.bind(r.store);
+    r.store.put=async value=>{if(++writes>1)throw new Error('quota exceeded');return put(value);};
+    await r.start();r.recorder.part('captured');await delay(40);
+    assert.equal(tracks.stopped,true);assert.equal(r.recorder.state,'inactive');assert.equal(r.state,'error');
+    assert((await (await r.downloadPending()).text()).includes('captured'));
+});

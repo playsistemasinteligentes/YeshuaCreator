@@ -51,7 +51,11 @@ export class SessionRecorder {
                 this.writeChain = this.writeChain.then(async () => {
                     this.pending.chunks.push(e.data); this.pending.elapsed = this.duration();
                     await this.store.put(this.pending);
-                }).catch(error => { this.failure = error; this.notify('error', 'Não foi possível guardar o áudio neste navegador. Mantenha esta página aberta e tente reenviar.'); });
+                }).catch(error => {
+                    this.failure = error;
+                    this.notify('error', 'Não foi possível guardar o áudio neste navegador. Mantenha esta página aberta para guardar uma cópia ou reenviar.');
+                    if (this.recorder.state !== 'inactive') this.stop().catch(() => {});
+                });
             };
             this.recorder.onerror = () => { this.failure = new Error('A captura de áudio foi interrompida.'); this.stop().catch(() => {}); };
             this.recorder.onstop = () => this.completeCapture();

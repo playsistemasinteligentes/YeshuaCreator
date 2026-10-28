@@ -1,7 +1,7 @@
 window.yeshuaExtensions = window.yeshuaExtensions || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
 window.yeshuaExtensions.pages['clinica-atendimentos'] = async () => {
-    const page = await import('/Custon/Apps/Clinica/pages/atendimentos.js?v=20261028-clinica02');
+    const page = await import('/Custon/Apps/Clinica/pages/atendimentos.js?v=20261028-clinica03');
     await page.renderClinicaAtendimentos();
 };
 window.yeshuaExtensions.dashboard = window.yeshuaExtensions.pages['clinica-atendimentos'];
