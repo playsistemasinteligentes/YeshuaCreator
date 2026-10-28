@@ -1,7 +1,7 @@
 import { apiFetch } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20260919-parametros01';
-import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261027-clinica01';
+import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica02';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261027-clinica01';
+const assets='/Custon/Apps/Clinica/pages',version='20261028-clinica02';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -36,12 +36,22 @@ class ClinicPanel{
         this.observer=new MutationObserver(()=>{if(!host.isConnected||!host.firstElementChild||host.classList.contains('hidden'))this.dispose();});
         this.observer.observe(host,{childList:true,attributes:true,attributeFilter:['class']});this.observer.observe(host.parentElement,{childList:true});
         window.addEventListener('beforeunload',e=>{if(this.hasWork()){e.preventDefault();e.returnValue='';}},{signal:this.controller.signal});
+        document.addEventListener('click',e=>{
+            if(this.hasWork()&&e.target.closest('#menu a,#logout-header,#user-operational-control')){
+                e.preventDefault();e.stopImmediatePropagation();this.feedback('Conclua o envio do áudio e salve o registro antes de sair deste atendimento.',true);
+            }
+        },{capture:true,signal:this.controller.signal});
+        document.addEventListener('change',e=>{
+            if(this.hasWork()&&e.target.id==='application-selector'){
+                e.stopImmediatePropagation();e.target.value='Clinica';this.feedback('Conclua o envio do áudio e salve o registro antes de trocar de aplicativo.',true);
+            }
+        },{capture:true,signal:this.controller.signal});
         window.addEventListener('focus',()=>this.refreshResults().catch(()=>{}),{signal:this.controller.signal});this.bind();
     }
     el(id){return this.host.querySelector('#cli-'+id);}
     text(id,value){this.el(id).textContent=value;}
     show(id,visible){this.el(id).hidden=!visible;}
-    hasWork(){return this.dirty||Boolean(this.recorder?.active||this.recorder?.pending);}
+    hasWork(){return this.dirty||this.correcting||Boolean(this.recorder?.active||this.recorder?.pending);}
     feedback(message,error=false){if(this.disposed)return;this.text('feedback',message);this.el('feedback').dataset.error=String(error);}
     async run(action){if(this.busy)return;this.busy=true;this.controls();try{await action();}catch(e){this.feedback(e.message,true);}finally{this.busy=false;this.controls();}}
     async request(name,body){return this.post('/Clinica/Atendimentos'+name+'UseCase',body);}
@@ -113,7 +123,7 @@ class ClinicPanel{
         this.show('pausar',['recording','paused'].includes(this.recorder?.state));this.show('parar',['recording','paused'].includes(this.recorder?.state));this.show('reenviar',pending&&!capturing);this.show('baixar',pending&&!capturing);this.text('pausar',this.recorder?.state==='paused'?'Retomar gravação':'Pausar');
     }
     requireAudioDone(){if(this.recorder?.active||this.recorder?.pending)throw new Error('Pare a gravação e confirme o envio do áudio antes de encerrar ou finalizar.');}
-    async leaveCurrent(){this.requireAudioDone();if(this.correcting&&this.dirty)throw new Error('Conclua a correção antes de trocar de consulta.');await this.save();}
+    async leaveCurrent(){this.requireAudioDone();if(this.correcting)throw new Error('Conclua a correção antes de trocar de consulta.');await this.save();}
     recordPayload(){const result={sessaoId:this.current.id,versao:this.current.versao,revisado:this.el('revisado').checked,motivo:this.el('motivo').value,incorporarSagaId:this.incorporarSagaId||0};fields.forEach(f=>result[f]=this.el(f).value);return result;}
     async save(){
         clearTimeout(this.saveTimer);if(this.savePromise)await this.savePromise;if(!this.dirty||this.correcting||!this.current)return;const edit=this.edits,payload=this.recordPayload();this.text('save-status','Salvando…');

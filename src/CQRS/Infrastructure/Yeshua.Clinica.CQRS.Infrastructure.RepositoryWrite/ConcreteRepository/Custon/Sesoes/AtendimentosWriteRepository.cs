@@ -14,7 +14,7 @@ public partial class SesoesWriteRepository
             AND f.TenantID=@Tenant AND f.Deleted=0 AND f.UsuarioAcessoId=@Actor
             AND NOT EXISTS(SELECT 1 FROM Sesoes s WITH(UPDLOCK,HOLDLOCK) WHERE s.ProfissionalId=f.Id AND s.TenantID=@Tenant
                 AND s.Deleted=0 AND s.StatusAgendamento IN(0,1) AND s.DataInicio<@Fim AND s.DataFim>@Inicio)",
-            new{Paciente=pacienteId,Inicio=inicio,Fim=fim,Tenant=_insightContext.TenantID,Actor=_insightContext.UserId,OperationalId=Guid.NewGuid().ToString("D")}).SingleOrDefault()
+            new{Paciente=pacienteId,Inicio=inicio,Fim=fim,Tenant=_insightContext.TenantID,Actor=_insightContext.UserId,OperationalId=Guid.NewGuid().ToString("N")}).SingleOrDefault()
             is var id && id>0?id:throw new AtendimentoException("Não foi possível agendar. Verifique o paciente, vínculo e conflito de horário.",409);
     }
     public void TransicionarAtendimento(int sessaoId,int versao,string acao)
@@ -56,7 +56,7 @@ public partial class SesoesWriteRepository
         if(finalizar) _UnitOfWork.Execute(@"INSERT INTO RevisaoRegistroSessao(SessaoId,Versao,AutorUserId,RevisadoEm,Motivo,Registro,TenantID,Deleted,Changed,UserId,OperationalEntityId)
             VALUES(@Id,@Versao,@Actor,SYSUTCDATETIME(),@Motivo,@Registro,@Tenant,0,SYSUTCDATETIME(),@Actor,@OperationalId)",
             new{Id=r.SessaoId,Versao=r.Versao+1,Actor=_insightContext.UserId,Tenant=_insightContext.TenantID,Motivo=corrigir?r.Motivo:"Finalização inicial",
-                Registro=JsonSerializer.Serialize(r),OperationalId=Guid.NewGuid().ToString("D")});
+                Registro=JsonSerializer.Serialize(r),OperationalId=Guid.NewGuid().ToString("N")});
     }
     public void VincularProfissional(int profissionalId,int usuarioId)
     {
