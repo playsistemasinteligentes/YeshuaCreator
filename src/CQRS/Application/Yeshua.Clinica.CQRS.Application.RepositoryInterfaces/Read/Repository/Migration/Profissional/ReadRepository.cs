@@ -26,6 +26,7 @@ namespace IRepository.Read
         public IEnumerable<ProfissionalTenantIDDTO> getProfissionalReadFKTenantID(object command );
         public IEnumerable<ProfissionalUserIdDTO> getProfissionalReadFKUserId(object command );
         public IEnumerable<ProfissionalUsuarioAcessoIdDTO> getProfissionalReadFKUsuarioAcessoId(object command );
+        public IEnumerable<ProfissionalServicoHabitualIdDTO> getProfissionalReadFKServicoHabitualId(object command );
         public bool ExistsById(int value );
         public bool ExistsByNome(string value );
         public bool ExistsByEspecialidadeId(int value );
@@ -36,6 +37,7 @@ namespace IRepository.Read
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
         public bool ExistsByUsuarioAcessoId(int value );
+        public bool ExistsByServicoHabitualId(int value );
         public ProfissionalDTO FirstById(int value );
         public ProfissionalDTO FirstByNome(string value );
         public ProfissionalDTO FirstByEspecialidadeId(int value );
@@ -46,6 +48,7 @@ namespace IRepository.Read
         public ProfissionalDTO FirstByUserId(int value );
         public ProfissionalDTO FirstByOperationalEntityId(string value );
         public ProfissionalDTO FirstByUsuarioAcessoId(int value );
+        public ProfissionalDTO FirstByServicoHabitualId(int value );
         public IEnumerable<ProfissionalDTO> GetAllById(int value );
         public IEnumerable<ProfissionalDTO> GetAllByNome(string value );
         public IEnumerable<ProfissionalDTO> GetAllByEspecialidadeId(int value );
@@ -56,6 +59,7 @@ namespace IRepository.Read
         public IEnumerable<ProfissionalDTO> GetAllByUserId(int value );
         public IEnumerable<ProfissionalDTO> GetAllByOperationalEntityId(string value );
         public IEnumerable<ProfissionalDTO> GetAllByUsuarioAcessoId(int value );
+        public IEnumerable<ProfissionalDTO> GetAllByServicoHabitualId(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

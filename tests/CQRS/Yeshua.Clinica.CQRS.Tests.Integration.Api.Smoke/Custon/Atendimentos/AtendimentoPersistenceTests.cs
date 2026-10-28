@@ -14,9 +14,24 @@ public class AtendimentoPersistenceTests
         object? args=null;
         var work=Fake<IUnitOfWork>((m,a)=>{if(m.Name=="Query"){args=a![1];return new[]{123};}return null;});
         var repo=new SesoesWriteRepository(work,Fake<ISesoesQueryWrite>((_,_)=>null),Context());
-        Assert.Equal(123,repo.AgendarAtendimento(42,DateTime.UtcNow,DateTime.UtcNow.AddHours(1)));
+        Assert.Equal(123,repo.AgendarAtendimento(42,DateTime.UtcNow,DateTime.UtcNow.AddHours(1),5,2,1));
         Assert.True(Guid.TryParseExact((string)Property(args!,"OperationalId"),"N",out _));
         Assert.Equal(7,Property(args!,"Tenant"));Assert.Equal(13,Property(args!,"Actor"));
+        Assert.Equal(5,Property(args!,"Servico"));Assert.Equal(2,Property(args!,"Modelo"));Assert.Equal(1,Property(args!,"ModeloVersao"));
+    }
+    [Fact] public void Appointment_validation_and_snapshot_use_one_database_round_trip()
+    {
+        var calls=0;
+        var work=Fake<IUnitOfWork>((m,_)=>{if(m.Name=="Query"){calls++;return new[]{125};}throw new InvalidOperationException("Unexpected database operation");});
+        var repo=new SesoesWriteRepository(work,Fake<ISesoesQueryWrite>((_,_)=>null),Context());
+        Assert.Equal(125,repo.AgendarAtendimento(42,DateTime.UtcNow,DateTime.UtcNow.AddHours(1),5,1,1));
+        Assert.Equal(1,calls);
+    }
+    [Fact] public void A_rejected_service_or_changed_model_does_not_return_an_appointment()
+    {
+        var work=Fake<IUnitOfWork>((m,_)=>m.Name=="Query"?Array.Empty<int>():null);
+        var repo=new SesoesWriteRepository(work,Fake<ISesoesQueryWrite>((_,_)=>null),Context());
+        Assert.Equal(409,Assert.Throws<AtendimentoException>(()=>repo.AgendarAtendimento(42,DateTime.UtcNow,DateTime.UtcNow.AddHours(1),5,2,1)).Status);
     }
     [Fact] public void Optimistic_conflict_never_inserts_a_revision_snapshot()
     {

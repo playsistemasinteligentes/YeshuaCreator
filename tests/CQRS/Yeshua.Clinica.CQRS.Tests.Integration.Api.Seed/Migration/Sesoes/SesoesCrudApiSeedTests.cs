@@ -88,6 +88,9 @@ public partial class SesoesCrudApiSeedTests : ApiIntegrationTestBase
             ["RegistroFinalizadoEm"] = DateTime.UtcNow,
             ["RegistroFinalizadoPorUserId"] = ApiSeedTestContext.GetRequiredCreatedId("yUser", "RegistroFinalizadoPorUserId"),
             ["SugestoesIncorporadas"] = ApiTestData.Text("Sesoes SugestoesIncorporadas", 80),
+            ["ServicoNome"] = ApiTestData.Text("Sesoes ServicoNome", 80),
+            ["ModeloConsulta"] = 1,
+            ["VersaoModeloConsulta"] = 1,
         };
     }
 
@@ -136,6 +139,9 @@ public partial class SesoesCrudApiSeedTests : ApiIntegrationTestBase
         payload["RegistroFinalizadoEm"] = DateTime.UtcNow.AddMinutes(1);
         payload["RegistroFinalizadoPorUserId"] = ApiSeedTestContext.GetRequiredCreatedId("yUser", "RegistroFinalizadoPorUserId");
         payload["SugestoesIncorporadas"] = ApiTestData.Text("Sesoes SugestoesIncorporadas Update", 80);
+        payload["ServicoNome"] = ApiTestData.Text("Sesoes ServicoNome Update", 80);
+        payload["ModeloConsulta"] = 2;
+        payload["VersaoModeloConsulta"] = 2;
         return payload;
     }
 

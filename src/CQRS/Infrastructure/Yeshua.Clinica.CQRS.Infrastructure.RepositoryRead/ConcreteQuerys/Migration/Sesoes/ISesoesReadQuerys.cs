@@ -60,6 +60,9 @@ namespace IQuery.Read
         public QueryModel ExistsByRegistroFinalizadoEmQuery(DateTime value );
         public QueryModel ExistsByRegistroFinalizadoPorUserIdQuery(int value );
         public QueryModel ExistsBySugestoesIncorporadasQuery(string value );
+        public QueryModel ExistsByServicoNomeQuery(string value );
+        public QueryModel ExistsByModeloConsultaQuery(int value );
+        public QueryModel ExistsByVersaoModeloConsultaQuery(int value );
         public QueryModel FirstByPacienteIdQuery(int value );
         public QueryModel FirstByDataInicioQuery(DateTime value );
         public QueryModel FirstByDataFimQuery(DateTime value );
@@ -99,6 +102,9 @@ namespace IQuery.Read
         public QueryModel FirstByRegistroFinalizadoEmQuery(DateTime value );
         public QueryModel FirstByRegistroFinalizadoPorUserIdQuery(int value );
         public QueryModel FirstBySugestoesIncorporadasQuery(string value );
+        public QueryModel FirstByServicoNomeQuery(string value );
+        public QueryModel FirstByModeloConsultaQuery(int value );
+        public QueryModel FirstByVersaoModeloConsultaQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

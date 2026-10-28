@@ -18,6 +18,7 @@ namespace IQuery.Read
         public QueryModel ProfissionalTenantIDQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ProfissionalUserIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ProfissionalUsuarioAcessoIdQuery(Command.Patterns.Command.SearchFKCommand Command );
+        public QueryModel ProfissionalServicoHabitualIdQuery(Command.Patterns.Command.SearchFKCommand Command );
         public QueryModel ExistsByIdQuery(int value );
         public QueryModel ExistsByNomeQuery(string value );
         public QueryModel ExistsByEspecialidadeIdQuery(int value );
@@ -28,6 +29,7 @@ namespace IQuery.Read
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel ExistsByOperationalEntityIdQuery(string value );
         public QueryModel ExistsByUsuarioAcessoIdQuery(int value );
+        public QueryModel ExistsByServicoHabitualIdQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByNomeQuery(string value );
         public QueryModel FirstByEspecialidadeIdQuery(int value );
@@ -38,6 +40,7 @@ namespace IQuery.Read
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
         public QueryModel FirstByUsuarioAcessoIdQuery(int value );
+        public QueryModel FirstByServicoHabitualIdQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

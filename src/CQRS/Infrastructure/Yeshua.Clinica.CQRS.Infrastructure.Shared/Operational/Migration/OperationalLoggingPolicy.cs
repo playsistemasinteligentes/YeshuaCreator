@@ -436,6 +436,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ProfissionalTrackingFields.OperationalEntityId;
                     if (DomainFieldTracked(policy, "Profissional", operation, recordId, "UsuarioAcessoId"))
                         mask |= ProfissionalTrackingFields.UsuarioAcessoId;
+                    if (DomainFieldTracked(policy, "Profissional", operation, recordId, "ServicoHabitualId"))
+                        mask |= ProfissionalTrackingFields.ServicoHabitualId;
                     return mask;
                 }
 
@@ -511,6 +513,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ServicoTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "Servico", operation, recordId, "OperationalEntityId"))
                         mask |= ServicoTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "Servico", operation, recordId, "ModeloConsulta"))
+                        mask |= ServicoTrackingFields.ModeloConsulta;
                     return mask;
                 }
 
@@ -672,6 +676,12 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SesoesTrackingFields.RegistroFinalizadoPorUserId;
                     if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "SugestoesIncorporadas"))
                         mask |= SesoesTrackingFields.SugestoesIncorporadas;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "ServicoNome"))
+                        mask |= SesoesTrackingFields.ServicoNome;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "ModeloConsulta"))
+                        mask |= SesoesTrackingFields.ModeloConsulta;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "VersaoModeloConsulta"))
+                        mask |= SesoesTrackingFields.VersaoModeloConsulta;
                     return mask;
                 }
 

@@ -59,8 +59,11 @@
     public DateTime? RegistroFinalizadoEm { get; set; }
     public int? RegistroFinalizadoPorUserId { get; set; }
     public string? SugestoesIncorporadas { get; set; }
+    public string? ServicoNome { get; set; }
+    public int? ModeloConsulta { get; set; }
+    public int? VersaoModeloConsulta { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal SesoesEntity(int? pacienteid, DateTime datainicio, DateTime datafim, int? statusagendamento, int? statusprontuario, string? prontuario, string? queixaprincipal, string? registrodocumental, string? sintomasrelatados, int? mudancasdesdeultimasessaao, string? comportamentoobservado, string? estadoemocionalgeral, string? discursopensamentos, string? usomedicacao, string? tecnicasutilizadas, string? questionamentosreflexoesabordadas, string? exerciciostarefassugeridas, string? diagnoosticohipotesediagnoostica, string? objetivoscurtoprazo, string? objetivoslongoprazo, string? frequenciasugeridasessooes, string? encaminhamentooutrosprofissionais, string? informacoesrelevantesfuturasconsultas, string? feedbackpacientesobreprocessoterapeeutico, int? id, int? servicoid, int? movimentacaofinanceiraid, int? profissionalid, DateTime? atendimentoiniciadoem, DateTime? atendimentoencerradoem, DateTime? registrofinalizadoem, int? registrofinalizadoporuserid, string? sugestoesincorporadas ){
+ internal SesoesEntity(int? pacienteid, DateTime datainicio, DateTime datafim, int? statusagendamento, int? statusprontuario, string? prontuario, string? queixaprincipal, string? registrodocumental, string? sintomasrelatados, int? mudancasdesdeultimasessaao, string? comportamentoobservado, string? estadoemocionalgeral, string? discursopensamentos, string? usomedicacao, string? tecnicasutilizadas, string? questionamentosreflexoesabordadas, string? exerciciostarefassugeridas, string? diagnoosticohipotesediagnoostica, string? objetivoscurtoprazo, string? objetivoslongoprazo, string? frequenciasugeridasessooes, string? encaminhamentooutrosprofissionais, string? informacoesrelevantesfuturasconsultas, string? feedbackpacientesobreprocessoterapeeutico, int? id, int? servicoid, int? movimentacaofinanceiraid, int? profissionalid, DateTime? atendimentoiniciadoem, DateTime? atendimentoencerradoem, DateTime? registrofinalizadoem, int? registrofinalizadoporuserid, string? sugestoesincorporadas, string? serviconome, int? modeloconsulta, int? versaomodeloconsulta ){
  PacienteId = pacienteid; 
  DataInicio = (datainicio < (new DateTime(1800, 1, 1))) ? DateTime.Now : datainicio; 
  DataFim = (datafim < (new DateTime(1800, 1, 1))) ? DateTime.Now : datafim; 
@@ -94,6 +97,9 @@
  RegistroFinalizadoEm = registrofinalizadoem.HasValue && registrofinalizadoem.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : registrofinalizadoem; 
  RegistroFinalizadoPorUserId = registrofinalizadoporuserid; 
  SugestoesIncorporadas = sugestoesincorporadas; 
+ ServicoNome = serviconome; 
+ ModeloConsulta = modeloconsulta; 
+ VersaoModeloConsulta = versaomodeloconsulta; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

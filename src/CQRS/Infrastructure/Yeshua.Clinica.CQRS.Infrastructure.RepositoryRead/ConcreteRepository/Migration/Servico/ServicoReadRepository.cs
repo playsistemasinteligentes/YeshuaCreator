@@ -189,6 +189,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByModeloConsulta(int value )
+        {
+            var query = _query.ExistsByModeloConsultaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public ServicoDTO FirstById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -261,6 +269,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public ServicoDTO FirstByModeloConsulta(int value )
+        {
+            var query = _query.FirstByModeloConsultaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ServicoDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<ServicoDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -328,6 +344,14 @@ namespace Read.Repository
         public IEnumerable<ServicoDTO> GetAllByOperationalEntityId(string value )
         {
             var query = _query.FirstByOperationalEntityIdQuery(value );
+
+                var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ServicoDTO> GetAllByModeloConsulta(int value )
+        {
+            var query = _query.FirstByModeloConsultaQuery(value );
 
                 var result = _unitOfWork.Query<ServicoDTO>(query.Query,query.Parameters).ToList();
                 return result;

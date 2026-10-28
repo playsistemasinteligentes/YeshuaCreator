@@ -31,4 +31,24 @@ public class AtendimentoRulesTests
     { var s=new RegistroAtendimentoInfo(StatusAgendamento:3,StatusProntuario:1);Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,0,"iniciar"));Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,0,"salvar",new())); }
     [Fact] public void Oversized_notes_are_rejected_before_persistence()
     { Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(Session(),3,"salvar",new(Prontuario:new string('x',8001)))); }
+    [Fact] public void Simple_model_has_two_fields_and_still_requires_end_and_human_review()
+    {
+        var s=Session() with {ModeloConsulta=2,VersaoModeloConsulta=1};
+        var r=new RegistroInput(Prontuario:"Registro revisto",InformacoesRelevantesFuturasConsultas:"Retomar os combinados.",Revisado:true);
+        Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,3,"finalizar",r));
+        s=s with {AtendimentoEncerradoEm="2026-10-28T13:00:00Z",StatusAgendamento=2};
+        AtendimentoRules.Validate(s,3,"finalizar",r);
+        Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,3,"finalizar",r with {Revisado=false}));
+        Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,3,"finalizar",r with {Prontuario=""}));
+        Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,3,"salvar",r with {QueixaPrincipal="Campo de outro modelo"}));
+    }
+    [Theory] [InlineData(3,1)] [InlineData(1,2)] [InlineData(2,2)]
+    public void Unknown_models_and_versions_cannot_silently_use_the_current_form(int modelo,int versao)
+    { Assert.Equal(409,Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(Session() with {ModeloConsulta=modelo,VersaoModeloConsulta=versao},3,"salvar",new())).Status); }
+    [Fact] public void Legacy_records_keep_the_complete_psychology_rules()
+    {
+        var s=Session() with {ModeloConsulta=0,VersaoModeloConsulta=0,AtendimentoEncerradoEm="2026-10-28T13:00:00Z"};
+        Assert.Throws<AtendimentoException>(()=>AtendimentoRules.Validate(s,3,"finalizar",new(Prontuario:"Registro",Revisado:true)));
+        AtendimentoRules.Validate(s,3,"finalizar",new(Prontuario:"Registro",RegistroDocumental:"Fatos",Revisado:true));
+    }
 }

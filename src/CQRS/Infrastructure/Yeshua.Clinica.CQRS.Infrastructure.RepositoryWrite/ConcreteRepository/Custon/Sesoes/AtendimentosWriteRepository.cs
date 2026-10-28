@@ -6,16 +6,34 @@ public partial class SesoesWriteRepository
     private object ActorArgs(int id=0,int versao=0) => new{Id=id,Versao=versao,Tenant=_insightContext.TenantID,Actor=_insightContext.UserId};
     private const string Own = @" s.TenantID=@Tenant AND s.Deleted=0 AND EXISTS(SELECT 1 FROM Profissional f
         WHERE f.Id=s.ProfissionalId AND f.TenantID=@Tenant AND f.Deleted=0 AND f.UsuarioAcessoId=@Actor) ";
-    public int AgendarAtendimento(int pacienteId,DateTime inicio,DateTime fim)
+    public int AgendarAtendimento(int pacienteId,DateTime inicio,DateTime fim,int servicoId,int modeloConsulta,int versaoModeloConsulta)
     {
-        return _UnitOfWork.Query<int>(@"INSERT INTO Sesoes(PacienteId,ProfissionalId,DataInicio,DataFim,StatusAgendamento,StatusProntuario,VersaoAtendimento,TenantID,Deleted,Changed,UserId,OperationalEntityId)
-            OUTPUT inserted.Id SELECT p.Id,f.Id,@Inicio,@Fim,1,2,0,@Tenant,0,SYSUTCDATETIME(),@Actor,@OperationalId
-            FROM Paciente p,Profissional f WITH(UPDLOCK,HOLDLOCK) WHERE p.Id=@Paciente AND p.TenantID=@Tenant AND p.Deleted=0
+        return _UnitOfWork.Query<int>(@"INSERT INTO Sesoes(PacienteId,ProfissionalId,ServicoId,ServicoNome,ModeloConsulta,VersaoModeloConsulta,
+                DataInicio,DataFim,StatusAgendamento,StatusProntuario,VersaoAtendimento,TenantID,Deleted,Changed,UserId,OperationalEntityId)
+            OUTPUT inserted.Id SELECT p.Id,f.Id,v.Id,v.Nome,@Modelo,@ModeloVersao,@Inicio,@Fim,1,2,0,@Tenant,0,SYSUTCDATETIME(),@Actor,@OperationalId
+            FROM Paciente p,Profissional f WITH(UPDLOCK,HOLDLOCK),Servico v WITH(HOLDLOCK)
+            WHERE p.Id=@Paciente AND p.TenantID=@Tenant AND p.Deleted=0
+            AND v.Id=@Servico AND v.TenantID=@Tenant AND v.Deleted=0
+            AND ISNULL(NULLIF(v.ModeloConsulta,0),1)=@Modelo AND @Modelo IN(1,2) AND @ModeloVersao=1
             AND f.TenantID=@Tenant AND f.Deleted=0 AND f.UsuarioAcessoId=@Actor
             AND NOT EXISTS(SELECT 1 FROM Sesoes s WITH(UPDLOCK,HOLDLOCK) WHERE s.ProfissionalId=f.Id AND s.TenantID=@Tenant
                 AND s.Deleted=0 AND s.StatusAgendamento IN(0,1) AND s.DataInicio<@Fim AND s.DataFim>@Inicio)",
-            new{Paciente=pacienteId,Inicio=inicio,Fim=fim,Tenant=_insightContext.TenantID,Actor=_insightContext.UserId,OperationalId=Guid.NewGuid().ToString("N")}).SingleOrDefault()
-            is var id && id>0?id:throw new AtendimentoException("Não foi possível agendar. Verifique o paciente, vínculo e conflito de horário.",409);
+            new{Paciente=pacienteId,Inicio=inicio,Fim=fim,Servico=servicoId,Modelo=modeloConsulta,ModeloVersao=versaoModeloConsulta,
+                Tenant=_insightContext.TenantID,Actor=_insightContext.UserId,OperationalId=Guid.NewGuid().ToString("N")}).SingleOrDefault()
+            is var id && id>0?id:throw new AtendimentoException("Não foi possível agendar. Atualize o serviço e verifique o paciente, vínculo e conflito de horário.",409);
+    }
+    public ServicoAgendamentoInfo DefinirServicoHabitual(int servicoId)
+    {
+        var query=servicoId==0?@"UPDATE Profissional WITH(UPDLOCK,HOLDLOCK) SET ServicoHabitualId=NULL,Changed=SYSUTCDATETIME(),UserId=@Actor
+            OUTPUT 0 Id,'' Nome,0 ModeloConsulta,0 VersaoModeloConsulta
+            WHERE TenantID=@Tenant AND UsuarioAcessoId=@Actor AND Deleted=0":@"UPDATE f SET ServicoHabitualId=v.Id,Changed=SYSUTCDATETIME(),UserId=@Actor
+            OUTPUT v.Id,v.Nome,ISNULL(NULLIF(v.ModeloConsulta,0),1) ModeloConsulta,1 VersaoModeloConsulta
+            FROM Profissional f WITH(UPDLOCK,HOLDLOCK) JOIN Servico v WITH(HOLDLOCK) ON v.Id=@Servico AND v.TenantID=f.TenantID AND v.Deleted=0
+            WHERE f.TenantID=@Tenant AND f.UsuarioAcessoId=@Actor AND f.Deleted=0 AND ISNULL(NULLIF(v.ModeloConsulta,0),1) IN(1,2)";
+        var result=_UnitOfWork.Query<ServicoAgendamentoInfo>(query,
+            new{Servico=servicoId,Tenant=_insightContext.TenantID,Actor=_insightContext.UserId}).ToList();
+        if(result.Count!=1)throw new AtendimentoException("Não foi possível definir o serviço habitual desta agenda. Atualize e confira o vínculo e o serviço.",409);
+        return result[0];
     }
     public void TransicionarAtendimento(int sessaoId,int versao,string acao)
     {

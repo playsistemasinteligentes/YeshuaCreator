@@ -57,6 +57,9 @@ namespace Repositorio.Outputs
     public DateTime registrofinalizadoem { get; set; }
     public int registrofinalizadoporuserid { get; set; }
     public string sugestoesincorporadas { get; set; } = string.Empty;
+    public string serviconome { get; set; } = string.Empty;
+    public int modeloconsulta { get; set; }
+    public int versaomodeloconsulta { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

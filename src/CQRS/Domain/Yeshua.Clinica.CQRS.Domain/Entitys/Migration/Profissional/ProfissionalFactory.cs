@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IProfissionalEntity Create(int? id, string nome, int? especialidadeid, string telefone, int? usuarioacessoid )
+                                    } public IProfissionalEntity Create(int? id, string nome, int? especialidadeid, string telefone, int? usuarioacessoid, int? servicohabitualid )
                             {
-                                return Create(null, id, nome, especialidadeid, telefone, usuarioacessoid);
+                                return Create(null, id, nome, especialidadeid, telefone, usuarioacessoid, servicohabitualid);
                             }
 
                             public IProfissionalEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, int? especialidadeid, string telefone, int? usuarioacessoid, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, string nome, int? especialidadeid, string telefone, int? usuarioacessoid, int? servicohabitualid, ulong? trackingMask = null )
                             {
-                            var entity = new ProfissionalEntity(id, nome, especialidadeid, telefone, usuarioacessoid );
+                            var entity = new ProfissionalEntity(id, nome, especialidadeid, telefone, usuarioacessoid, servicohabitualid );
 
 
                             var effectiveTrackingMask = trackingMask ??

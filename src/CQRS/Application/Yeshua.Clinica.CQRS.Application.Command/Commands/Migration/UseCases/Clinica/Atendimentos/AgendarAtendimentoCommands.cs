@@ -20,6 +20,9 @@ public partial record AgendarAtendimentoInputCommand : ICommand
     public int PacienteId { get; set; }
     public string DataInicio { get; set; } = string.Empty;
     public string DataFim { get; set; } = string.Empty;
+    public int ServicoId { get; set; }
+    public int ModeloConsulta { get; set; }
+    public int VersaoModeloConsulta { get; set; }
 }
 
 public partial record AgendarAtendimentoOutputCommand : ICommand

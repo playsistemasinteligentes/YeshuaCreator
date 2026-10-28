@@ -26,6 +26,7 @@ namespace IQuery.Read
         public QueryModel ExistsByChangedQuery(DateTime value );
         public QueryModel ExistsByUserIdQuery(int value );
         public QueryModel ExistsByOperationalEntityIdQuery(string value );
+        public QueryModel ExistsByModeloConsultaQuery(int value );
         public QueryModel FirstByIdQuery(int value );
         public QueryModel FirstByGrupoServicoIdQuery(int value );
         public QueryModel FirstByNomeQuery(string value );
@@ -35,6 +36,7 @@ namespace IQuery.Read
         public QueryModel FirstByChangedQuery(DateTime value );
         public QueryModel FirstByUserIdQuery(int value );
         public QueryModel FirstByOperationalEntityIdQuery(string value );
+        public QueryModel FirstByModeloConsultaQuery(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryReadMigration

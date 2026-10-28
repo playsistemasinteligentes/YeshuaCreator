@@ -81,6 +81,7 @@ public partial class ServicoCrudApiSmokeTests : ApiIntegrationTestBase
             ["GrupoServicoId"] = ApiSmokeTestContext.GetRequiredCreatedId("GrupoServico", "GrupoServicoId"),
             ["Nome"] = ApiTestData.Text("Servico Nome", 80),
             ["Valor"] = 10.5m,
+            ["ModeloConsulta"] = 1,
         };
     }
 
@@ -100,6 +101,7 @@ public partial class ServicoCrudApiSmokeTests : ApiIntegrationTestBase
         payload["GrupoServicoId"] = ApiSmokeTestContext.GetRequiredCreatedId("GrupoServico", "GrupoServicoId");
         payload["Nome"] = ApiTestData.Text("Servico Nome Update", 80);
         payload["Valor"] = 20.5m;
+        payload["ModeloConsulta"] = 1;
         return payload;
     }
 

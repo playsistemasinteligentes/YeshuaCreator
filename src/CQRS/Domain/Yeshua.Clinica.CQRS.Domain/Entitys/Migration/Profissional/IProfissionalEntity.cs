@@ -30,6 +30,7 @@
     int? UserId { get; set; }
     string OperationalEntityId { get; }
     int? UsuarioAcessoId { get; }
+    int? ServicoHabitualId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

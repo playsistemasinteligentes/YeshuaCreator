@@ -8,6 +8,8 @@ public partial class SesoesReadRepository
         JOIN Paciente p ON p.Id=s.PacienteId AND p.TenantID=s.TenantID AND p.Deleted=0
         WHERE s.TenantID=@Tenant AND s.Deleted=0 AND f.UsuarioAcessoId=@Actor ";
     private const string SessionFields = @"SELECT s.Id,s.PacienteId,p.Nome Paciente,
+        ISNULL(s.ServicoId,0) ServicoId,ISNULL(s.ServicoNome,'') ServicoNome,
+        ISNULL(NULLIF(s.ModeloConsulta,0),1) ModeloConsulta,ISNULL(NULLIF(s.VersaoModeloConsulta,0),1) VersaoModeloConsulta,
         ISNULL(CONVERT(varchar(33),p.DataNascimento,126),'') DataNascimento,
         CONVERT(varchar(33),s.DataInicio,126)+'Z' DataInicio,CONVERT(varchar(33),s.DataFim,126)+'Z' DataFim,
         ISNULL(s.StatusAgendamento,0) StatusAgendamento,ISNULL(s.StatusProntuario,2) StatusProntuario,
@@ -29,10 +31,16 @@ public partial class SesoesReadRepository
     }
     public PainelOutput ConsultarPainel(DateTime dia, int sessaoId)
     {
-        var profile=_unitOfWork.Query<PacienteAtendimentoInfo>("SELECT Id,Nome FROM Profissional WHERE TenantID=@Tenant AND UsuarioAcessoId=@Actor AND Deleted=0",PainelParameters()).ToList();
+        var profile=_unitOfWork.Query<PerfilAgenda>(@"SELECT f.Id,f.Nome,ISNULL(v.Id,0) ServicoHabitualId,ISNULL(v.Nome,'') ServicoHabitualNome,
+            ISNULL(NULLIF(v.ModeloConsulta,0),1) ModeloConsultaHabitual,1 VersaoModeloConsultaHabitual
+            FROM Profissional f LEFT JOIN Servico v ON v.Id=f.ServicoHabitualId AND v.TenantID=f.TenantID AND v.Deleted=0
+                AND ISNULL(NULLIF(v.ModeloConsulta,0),1) IN(1,2)
+            WHERE f.TenantID=@Tenant AND f.UsuarioAcessoId=@Actor AND f.Deleted=0",PainelParameters()).ToList();
         if(profile.Count!=1) throw new AtendimentoException("Seu usuário precisa estar vinculado a um único profissional. Solicite o vínculo ao administrador.",403);
         var args=new { Tenant=_executionContext.TenantID,Actor=_executionContext.UserId,Start=dia,End=dia.AddDays(1) };
         var result=new PainelOutput { ProfissionalId=profile[0].Id,ProfissionalNome=profile[0].Nome,
+            ServicoHabitualId=profile[0].ServicoHabitualId,ServicoHabitualNome=profile[0].ServicoHabitualNome,
+            ModeloConsultaHabitual=profile[0].ModeloConsultaHabitual,VersaoModeloConsultaHabitual=profile[0].VersaoModeloConsultaHabitual,
             Agenda=_unitOfWork.Query<AgendaAtendimentoInfo>(@"SELECT TOP(200) s.Id,p.Nome Paciente,
             CONVERT(varchar(33),s.DataInicio,126)+'Z' DataInicio,CONVERT(varchar(33),s.DataFim,126)+'Z' DataFim,
             ISNULL(s.StatusAgendamento,0) StatusAgendamento,ISNULL(s.StatusProntuario,2) StatusProntuario,
@@ -61,6 +69,22 @@ public partial class SesoesReadRepository
             result.Audios.Add(new(row.SagaId,row.Data,row.Status==2?"Concluído":row.Status==3?"Falha":"Processando",text,pront,queixa,registro,row.StepFalhouId));
         }
         return result;
+    }
+    public IReadOnlyList<ServicoAgendamentoInfo> ConsultarServicosAgendamento()
+    {
+        var result=_unitOfWork.Query<ServicoAgendamentoInfo>(@"SELECT TOP(501) v.Id,v.Nome,
+            ISNULL(NULLIF(v.ModeloConsulta,0),1) ModeloConsulta,1 VersaoModeloConsulta
+            FROM Servico v WHERE v.TenantID=@Tenant AND v.Deleted=0 AND ISNULL(NULLIF(v.ModeloConsulta,0),1) IN(1,2)
+            AND EXISTS(SELECT 1 FROM Profissional f WHERE f.TenantID=@Tenant AND f.UsuarioAcessoId=@Actor AND f.Deleted=0)
+            ORDER BY v.Nome,v.Id",PainelParameters()).ToList();
+        if(result.Count>500)throw new AtendimentoException("O catálogo de serviços excedeu o limite desta agenda.",409);
+        return result;
+    }
+    private sealed class PerfilAgenda
+    {
+        public int Id {get;set;} public string Nome {get;set;}="";
+        public int ServicoHabitualId {get;set;} public string ServicoHabitualNome {get;set;}="";
+        public int ModeloConsultaHabitual {get;set;} public int VersaoModeloConsultaHabitual {get;set;}
     }
     private static JsonElement Result(JsonElement root) => root.TryGetProperty("result",out var result)?result:root;
     private sealed class AudioRow { public int SagaId {get;set;} public int Status {get;set;} public string Data {get;set;}="";public string? Transcricao {get;set;}public string? Resumo {get;set;} public int StepFalhouId {get;set;} }

@@ -60,6 +60,7 @@ public partial class ProfissionalCrudApiSeedTests : ApiIntegrationTestBase
             ["EspecialidadeId"] = ApiSeedTestContext.GetRequiredCreatedId("Especialidade", "EspecialidadeId"),
             ["Telefone"] = ApiTestData.Text("Profissional Telefone", 20),
             ["UsuarioAcessoId"] = ApiSeedTestContext.GetRequiredCreatedId("yUser", "UsuarioAcessoId"),
+            ["ServicoHabitualId"] = ApiSeedTestContext.GetRequiredCreatedId("Servico", "ServicoHabitualId"),
         };
     }
 
@@ -80,6 +81,7 @@ public partial class ProfissionalCrudApiSeedTests : ApiIntegrationTestBase
         payload["EspecialidadeId"] = ApiSeedTestContext.GetRequiredCreatedId("Especialidade", "EspecialidadeId");
         payload["Telefone"] = ApiTestData.Text("Profissional Telefone Update", 20);
         payload["UsuarioAcessoId"] = ApiSeedTestContext.GetRequiredCreatedId("yUser", "UsuarioAcessoId");
+        payload["ServicoHabitualId"] = ApiSeedTestContext.GetRequiredCreatedId("Servico", "ServicoHabitualId");
         return payload;
     }
 

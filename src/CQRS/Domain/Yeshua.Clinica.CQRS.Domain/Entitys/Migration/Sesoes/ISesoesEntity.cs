@@ -59,6 +59,9 @@
     DateTime? RegistroFinalizadoEm { get; set; }
     int? RegistroFinalizadoPorUserId { get; set; }
     string? SugestoesIncorporadas { get; set; }
+    string? ServicoNome { get; }
+    int? ModeloConsulta { get; }
+    int? VersaoModeloConsulta { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

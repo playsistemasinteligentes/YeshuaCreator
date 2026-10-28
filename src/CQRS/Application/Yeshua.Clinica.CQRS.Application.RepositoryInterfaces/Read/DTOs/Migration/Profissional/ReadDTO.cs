@@ -28,6 +28,7 @@ namespace Repositorio.Outputs
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
     public int usuarioacessoid { get; set; }
+    public int servicohabitualid { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

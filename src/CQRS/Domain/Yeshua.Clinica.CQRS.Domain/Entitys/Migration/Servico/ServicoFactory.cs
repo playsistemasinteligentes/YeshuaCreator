@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IServicoEntity Create(int? id, int? gruposervicoid, string nome, Decimal valor )
+                                    } public IServicoEntity Create(int? id, int? gruposervicoid, string nome, Decimal valor, int? modeloconsulta )
                             {
-                                return Create(null, id, gruposervicoid, nome, valor);
+                                return Create(null, id, gruposervicoid, nome, valor, modeloconsulta);
                             }
 
                             public IServicoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? gruposervicoid, string nome, Decimal valor, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, int? id, int? gruposervicoid, string nome, Decimal valor, int? modeloconsulta, ulong? trackingMask = null )
                             {
-                            var entity = new ServicoEntity(id, gruposervicoid, nome, valor );
+                            var entity = new ServicoEntity(id, gruposervicoid, nome, valor, modeloconsulta );
 
 
                             var effectiveTrackingMask = trackingMask ??

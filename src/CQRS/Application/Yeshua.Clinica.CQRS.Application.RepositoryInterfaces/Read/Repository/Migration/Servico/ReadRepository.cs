@@ -34,6 +34,7 @@ namespace IRepository.Read
         public bool ExistsByChanged(DateTime value );
         public bool ExistsByUserId(int value );
         public bool ExistsByOperationalEntityId(string value );
+        public bool ExistsByModeloConsulta(int value );
         public ServicoDTO FirstById(int value );
         public ServicoDTO FirstByGrupoServicoId(int value );
         public ServicoDTO FirstByNome(string value );
@@ -43,6 +44,7 @@ namespace IRepository.Read
         public ServicoDTO FirstByChanged(DateTime value );
         public ServicoDTO FirstByUserId(int value );
         public ServicoDTO FirstByOperationalEntityId(string value );
+        public ServicoDTO FirstByModeloConsulta(int value );
         public IEnumerable<ServicoDTO> GetAllById(int value );
         public IEnumerable<ServicoDTO> GetAllByGrupoServicoId(int value );
         public IEnumerable<ServicoDTO> GetAllByNome(string value );
@@ -52,6 +54,7 @@ namespace IRepository.Read
         public IEnumerable<ServicoDTO> GetAllByChanged(DateTime value );
         public IEnumerable<ServicoDTO> GetAllByUserId(int value );
         public IEnumerable<ServicoDTO> GetAllByOperationalEntityId(string value );
+        public IEnumerable<ServicoDTO> GetAllByModeloConsulta(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

@@ -637,3 +637,39 @@ ação; o menu e o estado do navegador não concedem acesso.
 - Receber a transcrição e o resumo separadamente; o resumo não finaliza sozinho.
 - Preservar edição humana e registro final quando chegar um resultado atrasado.
 
+## Modelos e serviço habitual — implementação de 28/10/2026
+
+`M000006` acrescenta o modelo ao serviço e o serviço habitual opcional ao
+profissional. Os modelos implementados são Psicologia completa (ID 1, versão 1)
+e Registro simplificado (ID 2, versão 1). O segundo apresenta registro da sessão
+e próximos passos; a finalização exige registro preenchido, atendimento encerrado
+e revisão humana. Consultas legadas sem modelo preservam o comportamento 1/1.
+
+O modelo não é perguntado no agendamento. `ConsultarAtendimentos` traz ID/nome do
+serviço habitual e modelo/versão pela consulta existente do profissional. Abrir
+o agendamento com esse contexto não chama APIs nem conta serviços. Sem habitual,
+ou ao solicitar Alterar serviço, `ConsultarServicosAgendamento` consulta as opções
+uma vez e o painel as mantém em memória. Uma opção é escolhida automaticamente;
+várias exigem seleção. Catálogo vazio impede confirmação e orienta o cadastro.
+
+Usar como habitual chama `DefinirServicoHabitual`, limitado ao profissional do
+usuário autenticado no mesmo tenant. Escolher a cada agendamento remove essa
+preferência. O vínculo é protegido no CRUD; não pertence ao token nem a uma
+configuração genérica do login. O botão Atualizar renova o habitual e invalida
+as opções sem recriar o editor. Troca de identidade exige reabrir o painel.
+
+`AgendarAtendimento` recebe serviço e modelo/versão apresentados pela tela. Um
+único INSERT/SELECT valida tenant, paciente, profissional, serviço, modelo e
+conflito de horário e captura o nome e o modelo da consulta. Serviço excluído ou
+modelo alterado entre leitura e confirmação exige atualizar; não há substituição
+silenciosa. Alterações posteriores no serviço não reinterpretam a consulta.
+
+Gravação em partes, transcrição, resumo e saga continuam pelo mecanismo existente.
+O resumo mantém o contrato canônico das três sugestões; no modelo simples, sua
+incorporação explícita reúne o texto no registro da sessão, respeitando o limite
+do campo e preservando o texto humano. A IA não finaliza o registro.
+
+Esta entrega usa os cadastros existentes e a configuração do habitual no painel.
+A saga de configuração inicial discutida anteriormente permanece uma evolução
+separada; ela poderá chamar os mesmos Commands para configurar cada profissional.
+

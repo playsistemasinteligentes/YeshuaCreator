@@ -60,6 +60,8 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string OperationalEntityId { get; set; }
         public int? UsuarioAcessoId { get; set; }
         public yUser yUser_UsuarioAcessoId { get; set; }
+        public int? ServicoHabitualId { get; set; }
+        public Servico Servico { get; set; }
 
         public static MyApp.QueryBuilder.Query<Profissional> Query() => new MyApp.QueryBuilder.Query<Profissional>();
     }
@@ -110,6 +112,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? ModeloConsulta { get; set; }
 
         public static MyApp.QueryBuilder.Query<Servico> Query() => new MyApp.QueryBuilder.Query<Servico>();
     }
@@ -208,6 +211,9 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public int? RegistroFinalizadoPorUserId { get; set; }
         public yUser yUser_RegistroFinalizadoPorUserId { get; set; }
         public string? SugestoesIncorporadas { get; set; }
+        public string? ServicoNome { get; set; }
+        public int? ModeloConsulta { get; set; }
+        public int? VersaoModeloConsulta { get; set; }
 
         public static MyApp.QueryBuilder.Query<Sesoes> Query() => new MyApp.QueryBuilder.Query<Sesoes>();
     }

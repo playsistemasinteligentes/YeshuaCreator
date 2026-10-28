@@ -25,6 +25,10 @@ public partial record ConsultarAtendimentosOutputCommand : ICommand
 {
     public int ProfissionalId { get; set; }
     public string ProfissionalNome { get; set; } = string.Empty;
+    public int ServicoHabitualId { get; set; }
+    public string ServicoHabitualNome { get; set; } = string.Empty;
+    public int ModeloConsultaHabitual { get; set; }
+    public int VersaoModeloConsultaHabitual { get; set; }
     public List<AgendaAtendimentoInfo> Agenda { get; set; } = default!;
     public List<PacienteAtendimentoInfo> Pacientes { get; set; } = default!;
     public List<RegistroAtendimentoInfo> Atual { get; set; } = default!;

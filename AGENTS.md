@@ -2093,6 +2093,22 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   A API valida o profissional e a
   finalidade/autorizacao declarada; a chave OpenAI continua exclusivamente privada.
   Ver docs/operational/clinica/PLANO_PAINEL_ATENDIMENTOS.md para fluxo e limites.
+- Modelos de consulta do Clinica sao um catalogo fixo do aplicativo, nao um
+  construtor de formularios. IDs/version inicial: 1/1 Psicologia completa e
+  2/1 Registro simplificado (registro da sessao e proximos passos). Servico
+  escolhe ModeloConsulta; Sesoes captura ServicoId, ServicoNome, ModeloConsulta
+  e VersaoModeloConsulta no INSERT. NULL/zero legado continua como 1/1, sem
+  reinterpretar consultas antigas pelo cadastro atual do servico.
+  Profissional.ServicoHabitualId e opcional e alterado por Command proprio,
+  restrito ao tenant e profissional do ator. ConsultarAtendimentos traz o
+  habitual na consulta ja existente do profissional; abrir o agendamento com
+  habitual nao consulta APIs. Opcoes sao consultadas sob demanda uma vez por
+  painel e invalidadas por Atualizar; nao criar cache global, configs no token,
+  COUNT por agendamento ou polling. O INSERT valida e captura servico/modelo
+  na mesma ida ao banco; modelo alterado ou servico excluido exige atualizar.
+  A saga de audio mantem seu contrato canonico de tres sugestoes. No modelo
+  simples, a incorporacao humana une essas sugestoes no registro da sessao;
+  nenhum retorno da IA finaliza ou altera automaticamente os campos humanos.
 - Direcao arquitetural implementada localmente para transcricao:
   Saga -> Outbox -> execucao externa -> Inbox -> Saga, sempre.
   OpenAI e Codex sao ambos executores externos. A escolha de destino pertence

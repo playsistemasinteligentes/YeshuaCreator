@@ -29,12 +29,14 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public int? ModeloConsulta { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal valor ){
+ internal ServicoEntity(int? id, int? gruposervicoid, string nome, Decimal valor, int? modeloconsulta ){
  Id = id; 
  GrupoServicoId = gruposervicoid; 
  Nome = nome; 
  Valor = valor; 
+ ModeloConsulta = modeloconsulta; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

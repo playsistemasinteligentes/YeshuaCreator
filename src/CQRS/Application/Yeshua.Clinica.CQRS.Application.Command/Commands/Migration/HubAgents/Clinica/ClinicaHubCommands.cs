@@ -60,6 +60,10 @@ public partial record RegistroAtendimentoInfo : ICommand
     public string FrequenciaSugeridaSessooes { get; set; } = string.Empty;
     public string InformacoesRelevantesFuturasConsultas { get; set; } = string.Empty;
     public string SugestoesIncorporadas { get; set; } = string.Empty;
+    public int ServicoId { get; set; }
+    public string ServicoNome { get; set; } = string.Empty;
+    public int ModeloConsulta { get; set; }
+    public int VersaoModeloConsulta { get; set; }
 }
 
 public partial record AudioAtendimentoInfo : ICommand
@@ -72,6 +76,14 @@ public partial record AudioAtendimentoInfo : ICommand
     public string QueixaPrincipal { get; set; } = string.Empty;
     public string RegistroDocumental { get; set; } = string.Empty;
     public int StepFalhouId { get; set; }
+}
+
+public partial record ServicoAgendamentoInfo : ICommand
+{
+    public int Id { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public int ModeloConsulta { get; set; }
+    public int VersaoModeloConsulta { get; set; }
 }
 
 }

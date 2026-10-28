@@ -82,6 +82,7 @@ public partial class ProfissionalCrudApiSmokeTests : ApiIntegrationTestBase
             ["EspecialidadeId"] = ApiSmokeTestContext.GetRequiredCreatedId("Especialidade", "EspecialidadeId"),
             ["Telefone"] = ApiTestData.Text("Profissional Telefone", 20),
             ["UsuarioAcessoId"] = ApiSmokeTestContext.GetRequiredCreatedId("yUser", "UsuarioAcessoId"),
+            ["ServicoHabitualId"] = ApiSmokeTestContext.GetRequiredCreatedId("Servico", "ServicoHabitualId"),
         };
     }
 
@@ -102,6 +103,7 @@ public partial class ProfissionalCrudApiSmokeTests : ApiIntegrationTestBase
         payload["EspecialidadeId"] = ApiSmokeTestContext.GetRequiredCreatedId("Especialidade", "EspecialidadeId");
         payload["Telefone"] = ApiTestData.Text("Profissional Telefone Update", 20);
         payload["UsuarioAcessoId"] = ApiSmokeTestContext.GetRequiredCreatedId("yUser", "UsuarioAcessoId");
+        payload["ServicoHabitualId"] = ApiSmokeTestContext.GetRequiredCreatedId("Servico", "ServicoHabitualId");
         return payload;
     }
 

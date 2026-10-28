@@ -59,6 +59,9 @@
             public const ulong RegistroFinalizadoEm = 1UL << 36;
             public const ulong RegistroFinalizadoPorUserId = 1UL << 37;
             public const ulong SugestoesIncorporadas = 1UL << 38;
+            public const ulong ServicoNome = 1UL << 39;
+            public const ulong ModeloConsulta = 1UL << 40;
+            public const ulong VersaoModeloConsulta = 1UL << 41;
         }
 
         public static class SesoesOperationalFields
@@ -102,6 +105,9 @@
             public const Dominio.Operational.OperationalDataClassification RegistroFinalizadoEm = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification RegistroFinalizadoPorUserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification SugestoesIncorporadas = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification ServicoNome = Dominio.Operational.OperationalDataClassification.Confidential;
+            public const Dominio.Operational.OperationalDataClassification ModeloConsulta = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification VersaoModeloConsulta = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class SesoesDecorator : ISesoesEntity
@@ -671,6 +677,9 @@
                                             }
                                         }
                                     }
+    public string? ServicoNome => _inner.ServicoNome;
+    public int? ModeloConsulta => _inner.ModeloConsulta;
+    public int? VersaoModeloConsulta => _inner.VersaoModeloConsulta;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

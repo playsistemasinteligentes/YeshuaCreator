@@ -52,6 +52,9 @@ namespace Command.Read
         public DateTime? RegistroFinalizadoEm { get; set; }
         public int? RegistroFinalizadoPorUserId { get; set; }
         public string? SugestoesIncorporadas { get; set; }
+        public string? ServicoNome { get; set; }
+        public int? ModeloConsulta { get; set; }
+        public int? VersaoModeloConsulta { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Sesoes";
  public string? OperationalRecordId => OperationalEntityId;

@@ -497,6 +497,30 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByServicoNome(string value )
+        {
+            var query = _query.ExistsByServicoNomeQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByModeloConsulta(int value )
+        {
+            var query = _query.ExistsByModeloConsultaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByVersaoModeloConsulta(int value )
+        {
+            var query = _query.ExistsByVersaoModeloConsultaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public SesoesDTO FirstByPacienteId(int value )
         {
             var query = _query.FirstByPacienteIdQuery(value );
@@ -809,6 +833,30 @@ namespace Read.Repository
                 return result;
         }
 
+        public SesoesDTO FirstByServicoNome(string value )
+        {
+            var query = _query.FirstByServicoNomeQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public SesoesDTO FirstByModeloConsulta(int value )
+        {
+            var query = _query.FirstByModeloConsultaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public SesoesDTO FirstByVersaoModeloConsulta(int value )
+        {
+            var query = _query.FirstByVersaoModeloConsultaQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value )
         {
             var query = _query.FirstByPacienteIdQuery(value );
@@ -1116,6 +1164,30 @@ namespace Read.Repository
         public IEnumerable<SesoesDTO> GetAllBySugestoesIncorporadas(string value )
         {
             var query = _query.FirstBySugestoesIncorporadasQuery(value );
+
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllByServicoNome(string value )
+        {
+            var query = _query.FirstByServicoNomeQuery(value );
+
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllByModeloConsulta(int value )
+        {
+            var query = _query.FirstByModeloConsultaQuery(value );
+
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllByVersaoModeloConsulta(int value )
+        {
+            var query = _query.FirstByVersaoModeloConsultaQuery(value );
 
                 var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;

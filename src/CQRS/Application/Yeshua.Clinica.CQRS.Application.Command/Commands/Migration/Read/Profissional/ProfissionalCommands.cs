@@ -23,6 +23,7 @@ namespace Command.Read
         public int? UserId { get; set; }
         public string? OperationalEntityId { get; set; }
         public int? UsuarioAcessoId { get; set; }
+        public int? ServicoHabitualId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Profissional";
  public string? OperationalRecordId => OperationalEntityId;

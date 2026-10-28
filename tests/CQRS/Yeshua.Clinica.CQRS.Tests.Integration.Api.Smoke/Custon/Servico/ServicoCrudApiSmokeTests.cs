@@ -6,6 +6,7 @@ public partial class ServicoCrudApiSmokeTests
 {
     partial void CustomizeCreatePayload(JsonObject payload)
     {
+        payload["ModeloConsulta"] = 1;
     }
 
     partial void CustomizeReadPayload(JsonObject payload)

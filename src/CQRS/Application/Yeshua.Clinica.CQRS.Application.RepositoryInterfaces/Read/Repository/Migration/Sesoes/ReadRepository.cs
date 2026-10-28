@@ -68,6 +68,9 @@ namespace IRepository.Read
         public bool ExistsByRegistroFinalizadoEm(DateTime value );
         public bool ExistsByRegistroFinalizadoPorUserId(int value );
         public bool ExistsBySugestoesIncorporadas(string value );
+        public bool ExistsByServicoNome(string value );
+        public bool ExistsByModeloConsulta(int value );
+        public bool ExistsByVersaoModeloConsulta(int value );
         public SesoesDTO FirstByPacienteId(int value );
         public SesoesDTO FirstByDataInicio(DateTime value );
         public SesoesDTO FirstByDataFim(DateTime value );
@@ -107,6 +110,9 @@ namespace IRepository.Read
         public SesoesDTO FirstByRegistroFinalizadoEm(DateTime value );
         public SesoesDTO FirstByRegistroFinalizadoPorUserId(int value );
         public SesoesDTO FirstBySugestoesIncorporadas(string value );
+        public SesoesDTO FirstByServicoNome(string value );
+        public SesoesDTO FirstByModeloConsulta(int value );
+        public SesoesDTO FirstByVersaoModeloConsulta(int value );
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value );
         public IEnumerable<SesoesDTO> GetAllByDataInicio(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByDataFim(DateTime value );
@@ -146,6 +152,9 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByRegistroFinalizadoEm(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByRegistroFinalizadoPorUserId(int value );
         public IEnumerable<SesoesDTO> GetAllBySugestoesIncorporadas(string value );
+        public IEnumerable<SesoesDTO> GetAllByServicoNome(string value );
+        public IEnumerable<SesoesDTO> GetAllByModeloConsulta(int value );
+        public IEnumerable<SesoesDTO> GetAllByVersaoModeloConsulta(int value );
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

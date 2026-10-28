@@ -219,6 +219,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
                     new { name = "UsuarioAcessoId", title = "Usuário de acesso", classification = "Internal" },
+                    new { name = "ServicoHabitualId", title = "Serviço habitual", classification = "Internal" },
                 }
             },
             new
@@ -256,6 +257,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "ModeloConsulta", title = "Modelo da consulta", classification = "Internal" },
                 }
             },
             new
@@ -303,6 +305,9 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "RegistroFinalizadoEm", title = "Registro finalizado em", classification = "Internal" },
                     new { name = "RegistroFinalizadoPorUserId", title = "Revisado por", classification = "Internal" },
                     new { name = "SugestoesIncorporadas", title = "Origem das sugestões", classification = "Internal" },
+                    new { name = "ServicoNome", title = "Serviço no agendamento", classification = "Confidential" },
+                    new { name = "ModeloConsulta", title = "Modelo da consulta", classification = "Internal" },
+                    new { name = "VersaoModeloConsulta", title = "Versão do modelo", classification = "Internal" },
                 }
             },
             new
@@ -2095,6 +2100,27 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
+app.MapPost("/yapi/Profissional/ProfissionalReadFKServicoHabitualId", async ([FromServices] Command.Receivers.Read.ProfissionalReadFKServicoHabitualIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
 app.MapPost("/yapi/DisponibilidadeAgenda/DisponibilidadeAgendaReadFKProfissionalId", async ([FromServices] Command.Receivers.Read.DisponibilidadeAgendaReadFKProfissionalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
 {
 try
@@ -3762,6 +3788,7 @@ app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
                 new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "servicohabitualid", label = "Serviço habitual", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -3769,11 +3796,13 @@ app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
                 new { id = "nome", label = "Nome do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "telefone", label = "Telefone do Profissional", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "servicohabitualid", label = "Serviço habitual", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
             {
                 especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
+                servicohabitualid = "/Profissional/ProfissionalReadFKServicoHabitualId",
             }
             },
         },
@@ -3783,6 +3812,7 @@ app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
             new { id = "nome", label = "Nome do Profissional", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "especialidadeid", label = "Especialidade do Profissional", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataEspecialidade", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "telefone", label = "Telefone do Profissional", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "servicohabitualid", label = "Serviço habitual", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataServico", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -3790,6 +3820,7 @@ app.MapGet("/yapi/getMetaDataProfissional", (HttpContext context) =>
         endpoints = new
         {
                  especialidadeid = "/Profissional/ProfissionalReadFKEspecialidadeId",
+                 servicohabitualid = "/Profissional/ProfissionalReadFKServicoHabitualId",
             create = "/Profissional/PostProfissional",
             read = "/Profissional/ReadProfissional",
             update = "/Profissional/PutProfissional",
@@ -3952,6 +3983,7 @@ app.MapGet("/yapi/getMetaDataServico", (HttpContext context) =>
                 new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
             },
             filterFields = new[]
             {
@@ -3959,6 +3991,7 @@ app.MapGet("/yapi/getMetaDataServico", (HttpContext context) =>
                 new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "nome", label = "Nome do Serviço", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "valor", label = "Valor do Serviço", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -3973,6 +4006,7 @@ app.MapGet("/yapi/getMetaDataServico", (HttpContext context) =>
             new { id = "gruposervicoid", label = "Grupo de Serviço", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataGrupoServico", fksDisplayFields = new string[]{ "descricao" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "nome", label = "Nome do Serviço", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "valor", label = "Valor do Serviço", type = "Decimal", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "modeloconsulta", label = "Modelo da consulta", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Psicologia completa" }, new { value = 2, display = "Registro simplificado" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4213,6 +4247,9 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                 new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "serviconome", label = "Serviço no agendamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             filterFields = new[]
             {
@@ -4250,6 +4287,9 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
                 new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
                 new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "serviconome", label = "Serviço no agendamento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
             fkEndpoints = new 
@@ -4298,6 +4338,9 @@ app.MapGet("/yapi/getMetaDataSesoes", (HttpContext context) =>
             new { id = "registrofinalizadoem", label = "Registro finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             new { id = "registrofinalizadoporuserid", label = "Revisado por", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
             new { id = "sugestoesincorporadas", label = "Origem das sugestões", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serviconome", label = "Serviço no agendamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "modeloconsulta", label = "Modelo da consulta", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versaomodeloconsulta", label = "Versão do modelo", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6054,6 +6097,48 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Clinica/AtendimentosVincularProfissionalUseCase", async ([FromServices] Command.Receivers.UseCase.VincularProfissionalHandler receiver, [FromBody] Command.UseCase.VincularProfissionalInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosConsultarServicosAgendamentoUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarServicosAgendamentoHandler receiver, [FromBody] Command.UseCase.ConsultarServicosAgendamentoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosDefinirServicoHabitualUseCase", async ([FromServices] Command.Receivers.UseCase.DefinirServicoHabitualHandler receiver, [FromBody] Command.UseCase.DefinirServicoHabitualInputCommand command) =>
 {
 try
 {

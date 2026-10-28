@@ -96,6 +96,11 @@ namespace Input.Repository.Profissional
             var query = _query.UpdateUsuarioAcessoId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateServicoHabitualId(int id, int value)
+        {
+            var query = _query.UpdateServicoHabitualId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

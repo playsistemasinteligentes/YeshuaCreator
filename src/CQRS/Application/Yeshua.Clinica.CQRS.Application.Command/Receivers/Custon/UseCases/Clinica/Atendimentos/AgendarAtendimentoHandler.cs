@@ -6,6 +6,7 @@ using RepositoryInterfaces.Patterns.Command;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Command.UseCase;
 using Clinica.Atendimentos;
+using Clinica.Modelos;
 namespace Command.Receivers.UseCase;
 public partial class AgendarAtendimentoHandler
 {
@@ -23,7 +24,9 @@ public partial class AgendarAtendimentoHandler
                 || !DateTimeOffset.TryParse(comand.DataFim,System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.None,out var fim)
                 || fim<=inicio || fim-inicio>TimeSpan.FromHours(8) || comand.PacienteId<=0)
                 throw new AtendimentoException("Informe paciente e intervalo válido de até oito horas, com fuso horário.");
-            var id=_write.AgendarAtendimento(comand.PacienteId,inicio.UtcDateTime,fim.UtcDateTime);
+            if(comand.ServicoId<=0 || !ModelosConsulta.Suporta(comand.ModeloConsulta,comand.VersaoModeloConsulta))
+                throw new AtendimentoException("Selecione um serviço com modelo de consulta disponível.");
+            var id=_write.AgendarAtendimento(comand.PacienteId,inicio.UtcDateTime,fim.UtcDateTime,comand.ServicoId,comand.ModeloConsulta,comand.VersaoModeloConsulta);
             var result=new AgendarAtendimentoOutputCommand { SessaoId=id,Versao=0 };
             _uow.Commit();
             return Task.FromResult(Success("Operação concluída.",result));

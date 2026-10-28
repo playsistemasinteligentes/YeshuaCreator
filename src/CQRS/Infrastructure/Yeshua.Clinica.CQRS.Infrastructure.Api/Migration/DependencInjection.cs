@@ -107,6 +107,7 @@ builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKEspeciali
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKUserIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKUsuarioAcessoIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.ProfissionalReadFKServicoHabitualIdReceiver>();
 
 builder.Services.AddTransient<IRepository.Write.IDisponibilidadeAgendaWriteRepository, Input.Repository.DisponibilidadeAgenda.DisponibilidadeAgendaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IDisponibilidadeAgendaReadRepository, Read.Repository.DisponibilidadeAgendaReadRepository>();
@@ -481,6 +482,10 @@ builder.Services.AddTransient<Command.Receivers.UseCase.FinalizarRegistroHandler
 builder.Services.AddTransient<Command.Receivers.UseCase.CorrigirRegistroHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.VincularProfissionalHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarServicosAgendamentoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.DefinirServicoHabitualHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

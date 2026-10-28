@@ -22,6 +22,7 @@ namespace Command.Write
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? ModeloConsulta { get; set; }
  public string OperationalEntity => "Servico";
  public string? OperationalRecordId => OperationalEntityId;
     }

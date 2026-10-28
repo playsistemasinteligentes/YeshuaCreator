@@ -26,6 +26,7 @@ namespace IQuery.Write
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
         QueryModel UpdateUsuarioAcessoId(int id, int value);
+        QueryModel UpdateServicoHabitualId(int id, int value);
         public QueryModel DeleteProfissionalQuery(IProfissionalEntity Profissional);
     }
 }

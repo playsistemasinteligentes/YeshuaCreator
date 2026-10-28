@@ -60,6 +60,9 @@ namespace IRepository.Write
         void UpdateRegistroFinalizadoEm(int id, DateTime value);
         void UpdateRegistroFinalizadoPorUserId(int id, int value);
         void UpdateSugestoesIncorporadas(int id, string value);
+        void UpdateServicoNome(int id, string value);
+        void UpdateModeloConsulta(int id, int value);
+        void UpdateVersaoModeloConsulta(int id, int value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -30,13 +30,15 @@
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
     public int? UsuarioAcessoId { get; set; }
+    public int? ServicoHabitualId { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal ProfissionalEntity(int? id, string nome, int? especialidadeid, string telefone, int? usuarioacessoid ){
+ internal ProfissionalEntity(int? id, string nome, int? especialidadeid, string telefone, int? usuarioacessoid, int? servicohabitualid ){
  Id = id; 
  Nome = nome; 
  EspecialidadeId = especialidadeid; 
  Telefone = telefone; 
  UsuarioAcessoId = usuarioacessoid; 
+ ServicoHabitualId = servicohabitualid; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

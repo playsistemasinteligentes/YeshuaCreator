@@ -134,6 +134,23 @@ namespace Read.Repository
             throw new NotImplementedException();
         }
 
+        private IEnumerable<ProfissionalServicoHabitualIdDTO> getProfissionalReadFKServicoHabitualId(Command.Patterns.Command.SearchFKCommand command )
+        {
+            var query = _query.ProfissionalServicoHabitualIdQuery(command );
+
+                var lista = _unitOfWork.Query<ProfissionalServicoHabitualIdDTO>(query.Query,query.Parameters).ToList();
+            return lista;
+        }
+
+        public IEnumerable<ProfissionalServicoHabitualIdDTO> getProfissionalReadFKServicoHabitualId(object command )
+        {
+            if (command is Command.Patterns.Command.SearchFKCommand c)
+            {
+                return getProfissionalReadFKServicoHabitualId(c );
+            }
+            throw new NotImplementedException();
+        }
+
         public bool ExistsById(int value )
         {
             var query = _query.ExistsByIdQuery(value );
@@ -209,6 +226,14 @@ namespace Read.Repository
         public bool ExistsByUsuarioAcessoId(int value )
         {
             var query = _query.ExistsByUsuarioAcessoIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByServicoHabitualId(int value )
+        {
+            var query = _query.ExistsByServicoHabitualIdQuery(value );
 
                 var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
                 return result == 1;
@@ -294,6 +319,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public ProfissionalDTO FirstByServicoHabitualId(int value )
+        {
+            var query = _query.FirstByServicoHabitualIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<ProfissionalDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<ProfissionalDTO> GetAllById(int value )
         {
             var query = _query.FirstByIdQuery(value );
@@ -369,6 +402,14 @@ namespace Read.Repository
         public IEnumerable<ProfissionalDTO> GetAllByUsuarioAcessoId(int value )
         {
             var query = _query.FirstByUsuarioAcessoIdQuery(value );
+
+                var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ProfissionalDTO> GetAllByServicoHabitualId(int value )
+        {
+            var query = _query.FirstByServicoHabitualIdQuery(value );
 
                 var result = _unitOfWork.Query<ProfissionalDTO>(query.Query,query.Parameters).ToList();
                 return result;
