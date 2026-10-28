@@ -1755,6 +1755,16 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Containers de Migration executam o Studio com `--database-only`; geracao de codigo nunca acontece durante o deploy.
 - O nginx pertence ao Shared e possui arquivos de rota separados por aplicativo.
 - Deploys de aplicativo nao executam `docker compose down` e nao alteram containers de outros aplicativos.
+- Roteiro obrigatorio reafirmado pelo usuario em 2026-10-28: fazer commit no
+  computador local, enviar os commits ao GitHub e executar o deploy padrao na
+  VPS por `infra/docker/deploy.sh`, nessa ordem. Esse roteiro permanece ate
+  decisao explicita do usuario para muda-lo. Autorizacao para publicar nao
+  autoriza trocar o mecanismo de publicacao.
+- Se login, push ou outra etapa desse roteiro estiver bloqueada, informar o
+  bloqueio e aguardar sua resolucao. Nunca contornar com copia direta de fontes,
+  bundles Git, patches, sincronizacao alternativa do checkout ou build/subida
+  manual para substituir o deploy padrao. Nao repetir a transferencia direta
+  de commits usada indevidamente no painel da Clinica em 2026-10-28.
 - O deploy multiaplicativo preserva o fluxo conceitual historico da Clinica:
   `git reset --hard`, `git clean -fd`, `git pull`, build, migration, subida dos
   servicos e reconciliacao do Nginx ao final.
