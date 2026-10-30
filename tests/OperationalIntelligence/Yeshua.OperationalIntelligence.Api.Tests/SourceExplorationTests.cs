@@ -150,6 +150,9 @@ public sealed class SourceExplorationTests
         Assert.AreEqual(HttpStatusCode.OK, catalog.StatusCode);
         using var catalogJson = JsonDocument.Parse(await catalog.Content.ReadAsStringAsync());
         Assert.AreEqual("Memorias", catalogJson.RootElement.GetProperty("applications")[0].GetProperty("name").GetString());
+        using var attributed = await http.GetAsync("/api/source-context/search?kind=applications&utm_source=chatgpt.com&utm_content=not-a-filter");
+        Assert.AreEqual(HttpStatusCode.OK, attributed.StatusCode);
+        Assert.AreEqual(await catalog.Content.ReadAsStringAsync(), await attributed.Content.ReadAsStringAsync());
         var mcpCatalog = await mcp.CallToolAsync("yeshua_source_search");
         Assert.IsFalse(mcpCatalog.IsError ?? false);
         Assert.AreEqual("applications", mcpCatalog.StructuredContent!.Value.GetProperty("kind").GetString());

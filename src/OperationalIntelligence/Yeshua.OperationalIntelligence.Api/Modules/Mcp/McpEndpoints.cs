@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Yeshua.OperationalIntelligence.Api.Application;
+using Yeshua.OperationalIntelligence.Api.Endpoints;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.Mcp;
 
@@ -15,7 +16,8 @@ public static class McpEndpoints
             string? application, string? screen, CancellationToken cancellationToken) =>
         {
             context.Response.Headers.CacheControl = "no-store";
-            if (context.Request.Query.Any(pair => pair.Value.Count != 1 || pair.Key is not ("application" or "screen")))
+            if (context.Request.Query.Any(pair => !PublicReadQuery.IsAttribution(pair.Key) &&
+                (pair.Value.Count != 1 || pair.Key is not ("application" or "screen"))))
                 return Results.BadRequest(new { error = "Use apenas application e screen, com um valor cada." });
             try
             {
@@ -30,10 +32,11 @@ public static class McpEndpoints
         }).AllowAnonymous().WithName("ExplorePublicYeshuaApp");
         app.MapGet("/explorer", (HttpContext context, ExplorerDocument document) =>
         {
-            context.Response.Headers.CacheControl = "no-cache";
-            return context.Request.Query.Count == 0
+            context.Response.Headers.CacheControl = "no-store";
+            return context.Request.Query.All(pair => PublicReadQuery.IsAttribution(pair.Key) ||
+                (pair.Key == "refresh" && pair.Value.Count == 1 && pair.Value.ToString().Length <= 64))
                 ? Results.Text(document.Text, "text/plain; charset=utf-8")
-                : Results.BadRequest(new { error = "Explorer não recebe parâmetros nesta versão. Leia o guia para escolher a consulta seguinte." });
+                : Results.BadRequest(new { error = "Explorer aceita somente refresh (até 64 caracteres) e parâmetros utm de navegação. Consulte o guia para escolher a pesquisa seguinte." });
         }).AllowAnonymous().WithName("GetYeshuaExplorer");
         app.MapGet("/health", async (
             HttpContext context, McpToolRegistry tools, CancellationToken cancellationToken) =>

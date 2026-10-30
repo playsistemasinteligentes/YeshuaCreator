@@ -136,6 +136,7 @@ public static class OperationalIntelligenceEndpoints
                     var arguments = new JsonObject();
                     foreach (var pair in http.Request.Query)
                     {
+                        if (PublicReadQuery.IsAttribution(pair.Key)) continue;
                         if (pair.Value.Count != 1) throw new ArgumentException("Use um valor por filtro.");
                         var text = pair.Value.ToString();
                         if (pair.Key is "line" or "endLine" or "maxDepth" or "maxResults" or "offset" or "maxFiles" or "maxLines" or "maxContentChars")

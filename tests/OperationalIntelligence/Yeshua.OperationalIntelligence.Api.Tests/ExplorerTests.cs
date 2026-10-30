@@ -23,7 +23,7 @@ public sealed class ExplorerTests
         using var response = await host.Http.GetAsync("/explorer");
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.AreEqual("text/plain", response.Content.Headers.ContentType!.MediaType);
-        Assert.IsTrue(response.Headers.CacheControl!.NoCache);
+        Assert.IsTrue(response.Headers.CacheControl!.NoStore);
         var text = await response.Content.ReadAsStringAsync();
         Assert.AreEqual(host.Document.Text, text);
         await using var client = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
@@ -66,6 +66,21 @@ public sealed class ExplorerTests
         await using var host = await ExplorerHost.StartAsync(enabled: false);
         using var response = await host.Http.GetAsync("/explorer");
         Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode);
+    }
+
+    [TestMethod]
+    public async Task BrowserAttributionAndRefreshReturnCurrentGuideWithoutChangingToolArguments()
+    {
+        await using var host = await ExplorerHost.StartAsync();
+        using var response = await host.Http.GetAsync("/explorer?refresh=free-test-3&utm_source=chatgpt.com&utm_medium=web");
+        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+        Assert.IsTrue(response.Headers.CacheControl!.NoStore);
+        Assert.AreEqual(host.Document.Text, await response.Content.ReadAsStringAsync());
+        foreach (var query in new[] { "refresh=a&refresh=b", "refresh=" + new string('x', 65), "utm_tool=yeshua_task_send" })
+        {
+            using var invalid = await host.Http.GetAsync("/explorer?" + query);
+            Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode);
+        }
     }
 
     private sealed class ExplorerHost(WebApplication app, HttpClient http, ExplorerDocument document) : IAsyncDisposable

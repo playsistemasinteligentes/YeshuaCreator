@@ -64,6 +64,10 @@ public sealed class PublicAppExplorerTests
         using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
         Assert.AreEqual("public-ui", json.RootElement.GetProperty("scope").GetString());
         Assert.AreEqual(2, json.RootElement.GetProperty("sources").GetArrayLength());
+        using var attributed = await http.GetAsync("/explorer/apps?application=Memorias&screen=register&utm_source=chatgpt.com");
+        Assert.AreEqual(HttpStatusCode.OK, attributed.StatusCode);
+        using var attributedJson = JsonDocument.Parse(await attributed.Content.ReadAsStringAsync());
+        Assert.AreEqual(json.RootElement.GetProperty("sources").ToString(), attributedJson.RootElement.GetProperty("sources").ToString());
         await using var mcp = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
         {
             Endpoint = new Uri(http.BaseAddress, "/mcp"), TransportMode = HttpTransportMode.StreamableHttp
@@ -77,6 +81,8 @@ public sealed class PublicAppExplorerTests
         Assert.AreEqual(json.RootElement.GetProperty("sources").ToString(), result.StructuredContent.Value.GetProperty("sources").ToString());
         using var invalid = await http.GetAsync("/explorer/apps?url=https://internal.example");
         Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode);
+        using var duplicate = await http.GetAsync("/explorer/apps?application=Memorias&screen=register&screen=login&utm_source=chatgpt.com");
+        Assert.AreEqual(HttpStatusCode.BadRequest, duplicate.StatusCode);
         Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_app_explore", new Dictionary<string, object?> { ["url"] = "https://internal.example" })).IsError);
         Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_database_select")).IsError);
     }

@@ -24,7 +24,14 @@ Explorer completo. Não suponha que Explorer App, Business ou Arquiteto já exis
 ## 2. Entradas e descoberta das capacidades
 
 GET https://playsis.com.br/operational/explorer
-devolve este texto completo, sem parâmetros e sem login.
+devolve este texto completo, sem login. Confira a versão no início da resposta;
+não reutilize como atual uma versão de uma conversa ou leitura anterior.
+Para repetir a leitura com outro endereço de cache, use
+https://playsis.com.br/operational/explorer?refresh=teste-guia-3
+refresh só diferencia a URL: não seleciona versão histórica nem executa pesquisa.
+Os GET de Explorer, interface e pesquisa ignoram os parâmetros de atribuição
+utm_source, utm_medium, utm_campaign, utm_term, utm_content e utm_id, que o
+navegador pode acrescentar. Eles não viram argumentos da ferramenta.
 
 MCP https://playsis.com.br/operational/mcp
 oferece a ferramenta yeshua_explorer com argumentos {} e o mesmo texto.
