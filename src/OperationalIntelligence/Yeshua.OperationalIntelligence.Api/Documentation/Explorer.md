@@ -1,6 +1,6 @@
 # Explorer Yeshua
 
-Versão do guia: 1, revisada em 30/10/2026. Classificação: Public. Somente leitura.
+Versão do guia: 2, revisada em 30/10/2026. Classificação: Public. Somente leitura.
 
 ## 1. Comece aqui: como usar este guia
 
@@ -35,17 +35,54 @@ yeshua_health com {}. Isso não confirma o sucesso de uma operação de negócio
 
 Com uma conexão MCP disponível, consulte o catálogo de ferramentas e seus schemas
 antes de montar as chamadas. O nome da ferramenta não basta para deduzir parâmetros.
-O endpoint público oferece Explorer e saúde. Os métodos de investigação abaixo
-dependem de uma conexão administrativa autorizada e de sua disponibilidade nela.
+O endpoint público oferece Explorer, saúde e yeshua_app_explore. Os métodos de
+investigação interna descritos adiante dependem de conexão administrativa autorizada.
 
-Pela navegação web, neste momento só há GET público de Explorer e saúde.
+Pela navegação web, há GET público de Explorer, saúde e descoberta da interface:
+https://playsis.com.br/operational/explorer/apps
+
+### 2.1. Consulte antes de perguntar o que o sistema pode informar
+
+Essa consulta lê o applications.json público do Front naquele momento e devolve
+applications, com application, title, entryUrl, loginUrl, registerUrl, recoveryUrl
+e screens. O catálogo não comprova acesso de uma conta. Não peça ao usuário a URL
+da Central: ela já está na resposta. Para descobrir telas e acesso do Memórias:
+https://playsis.com.br/operational/explorer/apps?application=Memorias
+
+Para descobrir como se cadastrar para usar Memórias, leia:
+https://playsis.com.br/operational/explorer/apps?application=Memorias&screen=register
+
+login, register e forgot são telas compartilhadas da Central. A tela específica
+do Memórias também pode ser lida quando anunciada em screens:
+https://playsis.com.br/operational/explorer/apps?application=Memorias&screen=memorias-estudio
+
+No MCP, use yeshua_app_explore com {} ou, por exemplo:
+{"application":"Memorias","screen":"register"}
+
+sources contém url e content dos arquivos públicos HTML/JavaScript permitidos
+para a tela. Leia-os para descobrir títulos, campos, obrigatoriedade, ações,
+links e validações do cliente. São arquivos da interface publicada, não um manual
+pré-escrito. retrievedAtUtc identifica a leitura; não identifica o commit do
+backend nem garante leitura atômica durante um deploy.
+
+Para "como me cadastrar?", consulte register, identifique registerUrl e os campos
+reais e dê passos simples para preenchê-los NO SITE. Não peça no chat senhas,
+CPF/CNPJ, telefone ou valores desses campos. Não envie formulários. Não transforme
+uma dúvida simples de uso em investigação administrativa. Se o app já foi dado e
+a intenção aponta para uma tela disponível, consulte-a em vez de pedir nomes de
+classes, tela ou URL ao usuário. Pergunte só o que realmente depende dele.
+
+Esses arquivos não comprovam todas as regras do servidor, autorização, sucesso
+do cadastro ou estado de uma publicação. Se a tela não estiver anunciada, informe
+a lacuna; não tente caminhos arbitrários ou endpoints internos como alternativa.
+
 Os exemplos de investigação deste guia NÃO significam que exista uma URL GET
 equivalente para cada ferramenta. Não tente acessar rotas internas como alternativa
 a uma ferramenta negada. Se faltar uma consulta, registre essa lacuna.
 
 ## 3. Aplicativos: mapa inicial para orientar a investigação
 
-Este é um mapa dos módulos presentes no projeto, não um catálogo consultado em
+Consulte primeiro /explorer/apps. O mapa abaixo orienta sobre módulos do projeto, não é um catálogo consultado em
 produção. Não confirma instalação, autorização, builds indexados ou funções
 concluídas. Confirme a aplicação e a versão que a conexão realmente disponibiliza.
 
@@ -123,9 +160,11 @@ dos arquivos. Leia as advertências antes de tirar conclusões.
 Uma referência estática indica um caminho possível. Ela não prova que aquele
 caminho foi executado, nem qual ramo condicional um registro percorreu.
 
-LACUNA ATUAL: ainda não há um método público que receba aplicação + tela e reúna
-automaticamente seus campos, ações, DSL, handlers e fontes relacionados. Também
-não há GET público de busca de símbolos ou leitura de fontes. Se essa for a
+CAPACIDADE ATUAL: yeshua_app_explore reúne os arquivos públicos de telas anunciadas;
+a IA interpreta seus campos, ações e comportamento do cliente.
+LACUNA ATUAL: ainda não há resolução automática de DSL, handlers, regras e fontes
+internas a partir dessas telas. Não há GET público de busca de símbolos ou de
+leitura de fontes internas. Se essa for a
 próxima informação necessária, explique a lacuna; não finja ter consultado a tela.
 Esse é um candidato de evolução das capacidades, mantendo o mesmo núcleo e os
 controles de acesso para MCP e HTTP.
@@ -182,8 +221,9 @@ ExecutionId (tentativa), CausationId (execução causadora), OperationalEntityId
 3. Identifique a ação real e suas validações em evidências autorizadas.
 4. Se já houve pedido, procure a execução e a fase em que parou; confirme versão.
 5. Relacione erro, operação e fonte somente quando as evidências sustentarem o vínculo.
-6. Se só há acesso público ao Explorer, explique a investigação necessária e peça
-   apenas a mensagem ou contexto mínimo, sem afirmar que consultou a publicação.
+6. Com acesso público, leia antes a descoberta da interface do Memórias para
+   orientar os passos visíveis. Peça só o contexto mínimo que ainda faltar,
+   sem afirmar que consultou a publicação real.
 
 "Por que os CT-es não foram gerados?"
 1. Identifique se a pergunta se refere à preparação no APS ou à emissão no Fiscal.

@@ -33,7 +33,7 @@ public sealed class McpToolRegistry
                     ReadOnlyHint = tool.IsReadOnly,
                     DestructiveHint = !tool.IsReadOnly,
                     IdempotentHint = true,
-                    OpenWorldHint = !tool.IsReadOnly
+                    OpenWorldHint = tool.IsOpenWorld
                 }
             })
             .ToArray();

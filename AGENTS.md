@@ -1841,6 +1841,13 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   arquitetura, capacidades existentes e lacunas ficam separados no texto.
   MCP e GET compartilham o mesmo conteudo. Essa entrada nao concede acesso a
   fontes, registros ou logs, nem torna as ferramentas administrativas publicas.
+- A descoberta publica de interface usa `yeshua_app_explore` e GET
+  `/explorer/apps`, com um nucleo comum. Le o catalogo e arquivos HTML/JavaScript
+  ja publicos do Front, selecionados por application/screen permitidos; nunca
+  recebe URL, caminho de arquivo, SQL ou credenciais do chamador. Nao confundir
+  essa evidencia de interface com estado de conta, regras do backend ou fontes
+  privadas. O objetivo e permitir entendimento atualizado pela IA sem manter
+  manuais estaticos de cada aplicativo.
 
 - OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define os requisitos que fabricantes de software devem comprovar para utilizar o servico de suporte SRE.
 - YESHUA_SRE_IMPLEMENTATION_PLAN.md correlaciona cada requisito externo com a implementacao factual, as lacunas, os testes de aceite e a ordem de evolucao interna do Yeshua.

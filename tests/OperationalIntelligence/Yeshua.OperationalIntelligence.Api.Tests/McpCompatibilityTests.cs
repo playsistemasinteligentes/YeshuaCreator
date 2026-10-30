@@ -27,7 +27,7 @@ public sealed class McpCompatibilityTests
         await using var host = await McpHost.StartAsync(productionCatalog: true);
         await using var client = await ConnectAsync(host.PrivateUrl);
         var tools = await client.ListToolsAsync();
-        Assert.AreEqual(14, tools.Count);
+        Assert.AreEqual(15, tools.Count);
         foreach (var tool in tools)
         {
             Assert.IsFalse(tool.Name.Contains('.'));
@@ -45,7 +45,7 @@ public sealed class McpCompatibilityTests
         await using var host = await McpHost.StartAsync(productionCatalog: true);
         await using var client = await ConnectAsync(host.PublicUrl);
         var tools = await client.ListToolsAsync();
-        CollectionAssert.AreEquivalent(new[] { "yeshua_explorer", "yeshua_health" },
+        CollectionAssert.AreEquivalent(new[] { "yeshua_explorer", "yeshua_health", "yeshua_app_explore" },
             tools.Select(tool => tool.Name).ToArray());
         Assert.AreEqual(0, host.Repository.AcceptedCount);
     }

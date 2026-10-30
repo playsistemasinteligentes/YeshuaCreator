@@ -53,6 +53,12 @@ public static class McpServiceCollectionExtensions
         services.AddScoped<IMcpTool, HealthTool>();
         services.AddSingleton(new ExplorerDocument());
         services.AddScoped<IMcpTool, ExplorerTool>();
+        services.AddHttpClient<PublicAppExplorer>((sp, client) =>
+        {
+            client.BaseAddress = new Uri(sp.GetRequiredService<IConfiguration>()["Mcp:PublicSiteUrl"] ?? "https://playsis.com.br/");
+            client.Timeout = TimeSpan.FromSeconds(10);
+        }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
+        services.AddScoped<IMcpTool, PublicAppExploreTool>();
         services.AddScoped<IMcpTool, DatabaseSelectTool>();
         services.AddScoped<IMcpTool, ErrorsQueryTool>();
         services.AddScoped<IMcpTool, LogSourceContextTool>();

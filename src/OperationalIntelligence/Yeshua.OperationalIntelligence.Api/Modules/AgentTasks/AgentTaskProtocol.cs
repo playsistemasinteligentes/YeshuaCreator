@@ -4,7 +4,8 @@ public static class AgentTaskProtocol
 {
     public const string Instructions = """
         Comece por yeshua_explorer para conhecer o sistema e aprender a escolher consultas.
-        Use yeshua_health para verificar a conexao. Explorer e saude sao publicos; dados e fontes exigem acesso autorizado.
+        Use yeshua_app_explore para descobrir URLs e interfaces publicas antes de pedir esses dados ao usuario.
+        Use yeshua_health para verificar a conexao. Dados de contas, logs e fontes internas exigem acesso autorizado.
         Pelo tunel privado autorizado, yeshua_task_read sem taskId lista tarefas.
         Apresente selectionNumber, titulo e estado na ordem retornada e preserve numero -> taskId
         da lista exibida nesta conversa. 'Quero falar com a task 3' seleciona a taskId daquela

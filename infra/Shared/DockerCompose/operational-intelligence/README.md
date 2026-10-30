@@ -10,7 +10,8 @@ executa somente Codex. `yeshua-observability` permanece separado.
 
 | Entrada | Uso |
 | --- | --- |
-| `https://playsis.com.br/operational/mcp` | MCP publico: `yeshua_health` e `yeshua_explorer`. |
+| `https://playsis.com.br/operational/mcp` | MCP publico: `yeshua_health`, `yeshua_explorer` e `yeshua_app_explore`. |
+| `https://playsis.com.br/operational/explorer/apps` | Descoberta atual do Front; application e screen delimitam os arquivos publicos da tela. |
 | `https://playsis.com.br/operational/explorer` | GET publico, sem parametros: guia de exploracao para a IA, proposito e arquitetura. |
 | `https://playsis.com.br/operational/health?mensagem=teste-gpt-gratis` | GET publico de conectividade; devolve a mensagem de teste, confirmacao e horario UTC. |
 | `http://127.0.0.1:5729/mcp` dentro do container | MCP administrativo: consultas internas e tarefas. |
@@ -21,7 +22,7 @@ schemas e respostas tipadas. Clientes atuais e a inicializacao antiga
 `2025-06-18` sao exercitados pelos testes HTTP. Nomes anunciados usam underscores;
 nomes antigos com pontos continuam aceitos nas chamadas autorizadas.
 
-O endpoint publico nao anuncia nem executa SQL, fontes, logs ou tarefas.
+O endpoint publico nao anuncia nem executa SQL, fontes internas, logs ou tarefas.
 Esses recursos exigem loopback na porta privada, que nao e publicada pelo Docker
 nem pelo Nginx. Headers `X-Forwarded-*` nao concedem esse acesso.
 
@@ -31,8 +32,18 @@ carregada uma vez na inicializacao. Ela orienta consultas por escopo, explica os
 schemas existentes e marca lacunas, incluindo a futura resolucao tela -> campos
 -> fontes. O mapa de apps e orientativo, nao descoberta de runtime nem catalogo
 de builds indexados. O documento nao pesquisa apps, nao gera sinopses e nao
-substitui autorizacao. GETs de investigacao e variantes App/Business/Arquiteto
+substitui autorizacao. GETs de investigacao privada e variantes Business/Arquiteto
 continuam futuros. Alteracoes no documento exigem nova compilacao/publicacao.
+
+`yeshua_app_explore` compartilha o nucleo com GET `/explorer/apps`. Sem parametros,
+le o `applications.json` publico; application filtra um app desse catalogo e screen
+le os arquivos publicos permitidos para a tela. Os links de cadastro/login sao da
+Central. HTML/JavaScript sao lidos a cada pedido, nao copiados para um manual nem
+extraidos de Git ou banco. `Mcp:PublicSiteUrl` configura a origem HTTPS publica
+(padrao `https://playsis.com.br/`), sem caminho, credenciais, query ou fragmento.
+Nao ha encaminhamento de cookies/headers nem redirects; cada fonte tem limite de
+128 mil caracteres/bytes declarados e timeout de 10 segundos. A resposta informa
+origem, horario e limites da evidencia; nao garante build atomico ou regras backend.
 
 O GET `/health` chama a mesma ferramenta `yeshua_health`, sem login, e devolve
 somente uma confirmacao de conectividade. Nao representa a saude dos aplicativos
@@ -162,7 +173,7 @@ Referencias oficiais:
    `004_agent_tasks.sql` pelo mecanismo de migrations existente do banco operacional.
 2. Para testar a URL publica, em ChatGPT Plugins adicione um MCP personalizado,
    escolha `Server URL`, informe o endereco publico da tabela e selecione
-   `No authentication`. A descoberta deve retornar `yeshua_health` e `yeshua_explorer`.
+   `No authentication`. A descoberta deve retornar saude, Explorer e descoberta publica de apps.
 3. Crie um Secure MCP Tunnel na organizacao administrativa correta e associe o
    workspace do ChatGPT. Configure as permissoes de uso do tunel para o operador.
    Mantenha o plugin privado para operadores autorizados; esta versao nao possui

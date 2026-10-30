@@ -35,5 +35,6 @@ public interface IMcpTool
     object InputSchema { get; }
     bool IsPublic => false;
     bool IsReadOnly => true;
+    bool IsOpenWorld => !IsReadOnly;
     Task<McpToolResult> CallAsync(JsonElement arguments, CancellationToken cancellationToken);
 }
