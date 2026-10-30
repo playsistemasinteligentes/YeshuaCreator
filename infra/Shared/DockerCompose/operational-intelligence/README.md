@@ -11,6 +11,7 @@ executa somente Codex. `yeshua-observability` permanece separado.
 | Entrada | Uso |
 | --- | --- |
 | `https://playsis.com.br/operational/mcp` | MCP publico, somente `yeshua_health`. |
+| `https://playsis.com.br/operational/health?mensagem=teste-gpt-gratis` | GET publico de conectividade; devolve a mensagem de teste, confirmacao e horario UTC. |
 | `http://127.0.0.1:5729/mcp` dentro do container | MCP administrativo: consultas internas e tarefas. |
 | `http://127.0.0.1:5730/readyz` dentro do container | Prontidao do cliente de tunel, quando configurado. |
 
@@ -22,6 +23,15 @@ nomes antigos com pontos continuam aceitos nas chamadas autorizadas.
 O endpoint publico nao anuncia nem executa SQL, fontes, logs ou tarefas.
 Esses recursos exigem loopback na porta privada, que nao e publicada pelo Docker
 nem pelo Nginx. Headers `X-Forwarded-*` nao concedem esse acesso.
+
+O GET `/health` chama a mesma ferramenta `yeshua_health`, sem login, e devolve
+somente uma confirmacao de conectividade. Nao representa a saude dos aplicativos
+nem publica os diagnosticos dos backends. `mensagem` e opcional, aceita um unico
+valor de ate 200 caracteres e deve conter apenas um marcador de teste, nunca
+senhas, tokens ou dados de clientes. A resposta JSON usa `Cache-Control: no-store`;
+o marcador e devolvido em `received`, acompanhado de `checkedAtUtc`. Esse acesso
+por navegador e independente da instalacao de plugin ou do protocolo MCP e ainda
+precisa ser testado na conta gratuita. Nao ha comandos de escrita via GET.
 
 ## Agentes E Credenciais
 
