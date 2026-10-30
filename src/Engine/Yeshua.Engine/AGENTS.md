@@ -154,6 +154,10 @@ Para mudancas de codigo da engine:
 - `CSharpCQRS.cs` concentra muita orquestracao; refatorar com cuidado e em passos pequenos.
 - A trilha Roslyn/templates existe, mas grande parte esta comentada; nao assumir que e o caminho ativo.
 - `Contexto.txt` pode conter artefato gerado e conteudo volumoso; nao tratar como especificacao primaria.
+- A escrita acumulativa de Contexto.txt foi desativada em 2026-10-30. O metodo
+  legado WriteContexto e inerte para compatibilidade; nunca ler/gravar/apagar
+  os TXT antigos durante geracao. Contexto de exploracao usa a DSL/fontes
+  indexados e os metadados existentes, sem um segundo grafo ou manual.
 - Existem nomes historicos e typos como `Custon`; preservar ate haver uma migracao intencional de nomenclatura.
 - Mudancas em paths de geracao podem tocar muitos arquivos de saida; validar antes de regenerar em massa.
 

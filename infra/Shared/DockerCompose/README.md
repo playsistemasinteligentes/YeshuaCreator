@@ -13,7 +13,10 @@ o Codex em processo filho no workspace proprio. Claude tambem esta instalado.
 O socket Docker nao e montado. Seu controle HTTP permanece em `127.0.0.1:5728`
 no servidor e `/operational/` no gateway.
 
-O MCP publico `/operational/mcp` expoe somente `yeshua_health`. O mesmo `/mcp`
+O MCP publico `/operational/mcp` expoe `yeshua_health`, `yeshua_explorer`,
+`yeshua_app_explore` e a leitura de trechos indexados por `yeshua_source_search`.
+GET/POST `/operational/api/source-context/search` usa o mesmo nucleo da pesquisa.
+O mesmo `/mcp`
 na porta 5729, loopback dentro do container e nao publicada, expoe consultas e
 duas operacoes de tarefas. O cliente oficial de tunel opcional conecta o ChatGPT
 a essa porta. Veja `operational-intelligence/README.md` para ativacao e teste.

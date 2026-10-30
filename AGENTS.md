@@ -1977,6 +1977,25 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   o prefixo `YESHUA_TELEMETRY_*`. Deploy/backup/importacao reconhecem a transicao.
 - Um sistema ou fluxo somente deve ser aceito no suporte normal apos comprovar os requisitos G1 a G7 para o escopo declarado; sistemas incompletos permanecem em adequacao.
 - `Yeshua.Engine.AIContextBuilder` produz o indice estatico e versionado do codigo-fonte.
+- A exploracao funcional reaproveita a DSL original indexada, os metadados ja
+  gerados e as consultas existentes. Nao manter outro grafo/manual paralelo para
+  reescrever regras que ja estao na DSL ou nos miolos. A DSL descreve as bordas;
+  os fontes Custon explicam a implementacao. Migrations originais nao equivalem
+  automaticamente ao modelo consolidado que a Engine usa na geracao.
+- Por decisao explicita de 2026-10-30, trechos dos fontes/DSL indexados podem ser
+  entregues ao agente externo do usuario. Selecao, paginacao e limites controlam
+  pertinencia/volume, nao criam niveis de permissao para ler codigo. Um futuro
+  bloqueio de funcao exige marcador explicito. A leitura nunca autoriza escrita
+  no Git, envio de tarefas, autenticacao de agentes ou operacoes de deploy.
+- `yeshua_source_search` e GET/POST `/api/source-context/search` usam o mesmo
+  `SourceSearch` e repository. A descoberta de aplicativo/build precede a busca
+  por DSL, tela/acao/metadados, arquivo ou simbolo. Respostas de continuacao
+  preservam application/version/buildId. Ocorrencias textuais sao candidatos;
+  referencias estaticas nao comprovam execucao. Nao buscar automaticamente no
+  Git/disco quando faltar snapshot. O runtime conserva seus provedores atuais.
+- A escrita acumulativa de `Contexto.txt` na Engine foi desativada. Chamadas
+  antigas de WriteContexto sao inertes e o argumento legado context nao grava
+  arquivos. Preservar os TXT antigos; nao recriar esse mecanismo como mapa.
 - O indice operacional usa atualmente o database proprio `Context_CLINICA`.
 - Esse database pode compartilhar a instancia SQL da Clinica e do MDF-e, mas nunca os catalogos dos aplicativos.
 - `Yeshua.OperationalIntelligence.Api` consulta o indice e nao referencia a Engine nem projetos de aplicativos.
@@ -2000,8 +2019,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   Streamable HTTP. Schemas, negociacao e anotacoes usam os tipos do SDK.
   Nomes anunciados usam underscores; nomes antigos com pontos sao aliases de
   chamada sujeitos ao mesmo acesso. O endpoint publico `/operational/mcp`
-  anuncia e executa somente `yeshua_health`.
-- Ferramentas internas de leitura e a ponte administrativa de tarefas exigem
+  anuncia as leituras publicas `yeshua_health`, `yeshua_explorer`,
+  `yeshua_app_explore` e `yeshua_source_search`.
+- Ferramentas de dados runtime/banco e a ponte administrativa de tarefas exigem
   loopback na porta privada 5729 do mesmo processo. Nao publicar essa porta no
   host nem no Nginx; headers de proxy nao concedem acesso. Secure MCP Tunnel
   autentica a conexao do workspace administrativo autorizado. O cliente oficial
@@ -2010,13 +2030,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   imagem, Git ou payloads de ferramentas. Sem configuracao, nao inicia tunel.
   Instalar o plugin e testar voz na conta/celular ainda exige homologacao real.
 - `DEBITO TECNICO CRITICO`: definir o conceito formal de controle de acesso
-  para ferramentas MCP que leem banco de dados, codigo-fonte, bundles,
-  historico Git, logs e telemetria. O modelo atual deve ser tratado apenas como
+  para ferramentas MCP que leem banco de dados, bundles completos,
+  historico Git, logs e telemetria. A leitura de trechos indexados pela pesquisa
+  publica segue a decisao explicita acima; dados runtime devem ser tratados como
   recurso interno/confiavel. Antes de expor para usuarios, tenants, clientes ou
   agentes externos, e obrigatorio definir autorizacao por usuario, tenant,
   aplicativo, ambiente, escopo, finalidade, tabelas/colunas permitidas,
   mascaramento de dados sensiveis, auditoria e limites operacionais. Acesso a
-  banco e fontes nunca pode ser livre ou implicito.
+  banco transacional nunca pode ser livre ou implicito.
 - O gate R05 roda no Console transitorio `Yeshua.OperationalIntelligence.PostBuild`; a API Central nao executa builds ou testes e futuramente apenas recebera os relatorios.
 - A Engine gera `PostBuildManifest.json` por aplicativo junto ao projeto de smoke tests. O runner confere identidade, versao, saude de API e Worker, executa o smoke CRUD e retorna exit code de gate.
 - Identificadores como R05 e R06 representam requisitos/etapas do plano, nunca classificacoes de codigo, namespaces ou projetos. Testes usam categorias funcionais como `TechnicalSmoke` e `BusinessSmoke` e sao mapeados documentalmente aos requisitos que comprovam.

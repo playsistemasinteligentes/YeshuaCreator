@@ -47,6 +47,8 @@ GET  /api/applications/{application}/builds
 POST /api/source-context/field
 POST /api/source-context/class
 POST /api/source-context/function
+GET  /api/source-context/search
+POST /api/source-context/search
 POST /api/investigations
 POST /api/investigations/context
 POST /api/investigations/context/bundle
@@ -54,6 +56,16 @@ POST /mcp
 ```
 
 Exemplo de investigacao:
+
+Para exploracao incremental, use `yeshua_source_search` ou GET/POST
+`/api/source-context/search`. Comece com `kind=applications`, siga `next.arguments`
+para builds/DSL, e refine `screen`, `action`, `metadata`, `file`, `field`, `class`
+ou `function`. Cada continuacao conserva o buildId exato; includeContent habilita
+trechos limitados por maxFiles/maxLines e um maxContentChars global. O corpo dos
+fontes vem do banco indexado, nunca de fallback para Git/disco. Leia o guia unico
+em `Documentation/Explorer.md` (GET `/explorer`) para contratos e exemplos.
+
+O exemplo abaixo e do orquestrador legado de investigacao:
 
 ```json
 {
@@ -119,8 +131,10 @@ devera ser movida para um Worker separado.
 ## MCP
 
 O endpoint `/mcp` usa o SDK oficial `ModelContextProtocol.AspNetCore` com
-Streamable HTTP e negociacao de protocolo. A URL publica anuncia somente
-`yeshua_health`. Consultas internas e tarefas exigem loopback na porta
+Streamable HTTP e negociacao de protocolo. A URL publica anuncia
+`yeshua_health`, `yeshua_explorer`, `yeshua_app_explore` e `yeshua_source_search`.
+A pesquisa de fontes indexados e publica e somente leitura por decisao explicita
+do produto; nao autoriza alteracoes no Git. Dados runtime e tarefas mantem loopback na porta
 `Mcp:PrivatePort` (5729), normalmente pelo Secure MCP Tunnel. Nginx encaminha
 apenas para 5728; headers de proxy nao autorizam acesso privado.
 
@@ -169,12 +183,13 @@ As consultas SQL via MCP usam apenas aliases configurados no servidor em
 rejeita comandos de escrita/DDL/execucao, aplica timeout e trunca o retorno no
 limite configurado.
 
-ATENCAO / DEBITO TECNICO CRITICO: acesso MCP a banco de dados, fontes, logs,
-bundles e historico Git ainda precisa de um modelo formal de autorizacao antes
+ATENCAO / DEBITO TECNICO CRITICO: acesso MCP a banco de dados, logs,
+bundles completos e historico Git ainda precisa de um modelo formal de autorizacao antes
 de exposicao ampla. Definir controle por usuario, tenant, aplicativo, ambiente,
 escopo, finalidade, tabela/coluna, mascaramento de dados sensiveis, auditoria e
 limites operacionais. Esse recurso deve ser tratado como interno/confiavel ate
-esse controle existir.
+esse controle existir. A leitura publica de trechos indexados por SourceSearch
+segue a decisao explicita descrita acima; nao depende de outro papel de leitura.
 
 Exemplo de descoberta:
 

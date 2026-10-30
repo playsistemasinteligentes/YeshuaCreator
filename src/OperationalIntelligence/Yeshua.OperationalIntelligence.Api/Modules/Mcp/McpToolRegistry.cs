@@ -62,6 +62,10 @@ public sealed class McpToolRegistry
         {
             return Error(exception.Message);
         }
+        catch (KeyNotFoundException exception)
+        {
+            return Error(exception.Message);
+        }
         catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             throw;

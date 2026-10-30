@@ -108,16 +108,24 @@ public static class McpToolSchemas
         type = "object",
         properties = new Dictionary<string, object>
         {
-            ["application"] = String("Indexed application name."),
-            ["version"] = String("Optional indexed build version."),
-            ["kind"] = Enum("Search kind.", "field", "class", "function"),
-            ["query"] = String("Symbol, field, class, or function name."),
-            ["file"] = String("Optional source file filter for function search."),
-            ["line"] = Integer("Optional line filter for function search."),
-            ["maxDepth"] = Integer("Maximum call/reference depth."),
-            ["maxResults"] = Integer("Maximum number of results.")
+            ["application"] = String("Indexed application; required except for applications discovery."),
+            ["version"] = String("Indexed version. Reuse the version/buildId returned by the search."),
+            ["buildId"] = String("Exact snapshot UUID; next.arguments preserves it."),
+            ["kind"] = Enum("Progressive search, defaults to applications.", "applications", "builds", "dsl", "metadata", "screen", "action", "file", "field", "class", "function"),
+            ["query"] = String("Label/path/text clue, or required symbol for field/class/function. Text matches are candidates."),
+            ["file"] = String("Indexed relative path. Exact for file discovery; narrows function search."),
+            ["line"] = Integer("Start line (requires file)."),
+            ["endLine"] = Integer("Optional inclusive end line."),
+            ["maxDepth"] = new { type = "integer", minimum = 0, maximum = 3, description = "Relations depth; defaults to zero. Increase only when needed." },
+            ["direction"] = Enum("Function relations direction, default both.", "both", "upstream", "downstream"),
+            ["maxResults"] = Integer("Results per list/page, 1..50, default 10."),
+            ["offset"] = new { type = "integer", minimum = 0, maximum = 10000, description = "Catalog/file page offset; use next.arguments." },
+            ["includeContent"] = Boolean("Return bounded source excerpts, default false."),
+            ["maxFiles"] = Integer("Files with excerpts, 1..5, default 3."),
+            ["maxLines"] = Integer("Lines per excerpt, 1..400, default 100."),
+            ["maxContentChars"] = Integer("Shared content budget for all excerpts, 100..50000, default 12000.")
         },
-        required = new[] { "application", "kind", "query" },
+        required = Array.Empty<string>(),
         additionalProperties = false
     };
 

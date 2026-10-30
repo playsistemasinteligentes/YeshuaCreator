@@ -421,11 +421,8 @@ namespace Dominio.Schemas.CQRS
                             };
                             List<CodigoGerado> CodigoGerado = new List<CodigoGerado>();
                             SourceCodeAplicationHandlesAndResolvers strategys = new SourceCodeAplicationHandlesAndResolvers(useCase, strategy, paths, ref CodigoGerado, CommandType.UseCaseCommandHandler);
-                            bool contexto = false;
-                            if (strategy.Type.Name == "INotification")
-                                contexto = true;
                             foreach (var code in CodigoGerado.Where(x => x.CommandType != CommandType.DependencyIngection))
-                                strategys.WriteCode(code.Conteudo, code.CaminhoArquivo, code.Custom, contexto);
+                                strategys.WriteCode(code.Conteudo, code.CaminhoArquivo, code.Custom, false);
                         }
                     }
                 }

@@ -6,8 +6,8 @@ para aplicativos Yeshua e sistemas legados.
 Tambem hospeda a ponte administrativa `AgentTasks`, autorizada em 2026-10-23,
 no mesmo processo/container dos agentes. Entradas MCP usam o SDK oficial e
 ficam em Modules/Mcp. O endpoint publico anuncia yeshua_health, yeshua_explorer
-e yeshua_app_explore;
-consultas internas e yeshua_task_send/yeshua_task_read exigem loopback na porta
+e yeshua_app_explore, alem de yeshua_source_search;
+consultas runtime/banco e yeshua_task_send/yeshua_task_read exigem loopback na porta
 privada, acessada pelo Secure MCP Tunnel do workspace autorizado. Headers de
 proxy nao autorizam acesso. O protocolo registra pedidos/respostas pelo
 repository no banco operacional; sessoes/tokens internos das CLIs nao vao para
@@ -17,6 +17,13 @@ nao e um manual pre-resumido de cada app nem executa investigacoes. O texto publ
 unico fica em Documentation/Explorer.md, embutido no binario e compartilhado por
 GET /explorer e MCP. Nao incluir fontes privadas, dados ou configuracoes nesse
 documento. Distinguir ferramentas existentes, lacunas e planos futuros.
+Por decisao explicita de 2026-10-30, SourceSearch entrega trechos de fontes/DSL
+indexados ao agente externo, sem nova camada de permissao por papel. O mesmo
+core atende MCP e GET/POST /api/source-context/search. next.arguments conserva
+application/version/buildId e filtros. Comecar por applications/builds, depois
+DSL/metadados e fontes; screen/action sao pistas textuais, nao um grafo funcional.
+Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
+Alteracoes Git e tarefas continuam no caminho administrativo autorizado.
 `yeshua_app_explore`/GET `/explorer/apps` leem somente o catalogo do Front e
 arquivos publicos de telas explicitamente permitidas. Nao sao proxy de URLs ou
 endpoints: sem cookies, headers do chamador ou redirects. Fontes de interface
@@ -70,8 +77,10 @@ Fluxo padrao:
    GET /api/applications e GET /api/applications/{application}/builds.
 3. Para diagnostico estruturado, usar POST /api/investigations.
 4. Para contexto compacto, usar POST /api/investigations/context.
-5. Para analisar os fontes completos, preferir
-   POST /api/investigations/context/bundle.
+5. Para explorar fontes, preferir yeshua_source_search ou GET/POST
+   /api/source-context/search, preservando o snapshot e lendo snippets/next.
+   POST /api/investigations/context/bundle permanece como compatibilidade para
+   pacotes completos; nao e o caminho padrao da exploracao incremental.
 6. Para agentes compativeis com MCP, usar POST /mcp com `tools/list` e
    `tools/call`. As tools iniciais sao `yeshua.health`,
    `yeshua.errors.query`, `yeshua.logs.query`, `yeshua.traces.query`,
@@ -111,12 +120,12 @@ concreto que impedir a chamada.
   ordem ativa, processamento local em serie e respostas. Nao repetir ordens em andamento
   apos falha/reinicio. Nao adicionar assinatura operacional, especialistas,
   runner paralelo ou acesso de tenants por essa ponte.
-- DEBITO TECNICO CRITICO: acesso MCP a banco de dados e fontes indexados ainda
+- DEBITO TECNICO CRITICO: acesso MCP a banco de dados/runtime ainda
   nao possui modelo formal de autorizacao. Antes de expor fora de ambiente
   interno/confiavel, definir controle por usuario, tenant, aplicativo, ambiente,
   escopo, finalidade, tabela/coluna, mascaramento, auditoria e limites. Nunca
-  tratar acesso a banco, codigo-fonte, logs ou bundles como livre para qualquer
-  agente.
+  tratar acesso a banco transacional, logs ou bundles completos como livre para
+  qualquer agente. A leitura publica de trechos indexados segue a decisao acima.
 
 O Swagger permanece disponivel para exploracao humana, mas nao e uma etapa
 obrigatoria quando o agente foi solicitado a executar a consulta.

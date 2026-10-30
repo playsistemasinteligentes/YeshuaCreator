@@ -60,7 +60,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         FieldSearchRequest request,
         CancellationToken cancellationToken)
     {
-        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken);
+        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken, request.BuildId);
         var maxDepth = NormalizeMaxDepth(request.MaxDepth);
         var maxResults = NormalizeMaxResults(request.MaxResults);
 
@@ -88,7 +88,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         ClassSearchRequest request,
         CancellationToken cancellationToken)
     {
-        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken);
+        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken, request.BuildId);
         var maxDepth = NormalizeMaxDepth(request.MaxDepth);
         var maxResults = NormalizeMaxResults(request.MaxResults);
 
@@ -116,7 +116,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         FunctionSearchRequest request,
         CancellationToken cancellationToken)
     {
-        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken);
+        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken, request.BuildId);
         var maxDepth = NormalizeMaxDepth(request.MaxDepth);
         var maxResults = NormalizeMaxResults(request.MaxResults);
 
@@ -127,6 +127,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
             {
                 build.BuildId,
                 FunctionSearch = request.Function,
+                Direction = request.Direction?.ToUpperInvariant() ?? "BOTH",
                 FilePath = request.File,
                 request.Line,
                 MaxDepth = maxDepth,
@@ -145,7 +146,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         FileSearchRequest request,
         CancellationToken cancellationToken)
     {
-        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken);
+        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken, request.BuildId);
         var maxResults = NormalizeMaxResults(request.MaxResults);
         var fileHints = request.Files
             .Where(file => !string.IsNullOrWhiteSpace(file))
@@ -190,6 +191,66 @@ public sealed class SourceContextRepository : ISourceContextRepository
 
         return Response(build, [], [], [], distinctFiles);
     }
+
+    public async Task<SourceContextResponse> DiscoverFilesAsync(
+        SourceDiscoveryRequest request, CancellationToken cancellationToken)
+    {
+        var build = await ResolveBuildAsync(request.Application, request.Version, cancellationToken, request.BuildId);
+        var limit = NormalizeMaxResults(request.MaxResults);
+        const string sql = """
+            SELECT f.RelativePath AS [File], f.ArtifactKind, f.SourceRole, f.Ownership,
+                   f.Editable, f.SourceOfTruth, hit.Line AS MatchLine
+            FROM OI_Files f
+            OUTER APPLY
+            (
+                SELECT TOP (1) tr.Line
+                FROM OI_TextReferences tr
+                WHERE tr.BuildId = f.BuildId AND tr.FileId = f.FileId
+                  AND @Search IS NOT NULL
+                  AND (tr.Token COLLATE Latin1_General_100_CI_AI LIKE @Search ESCAPE '\'
+                    OR tr.ContextSnippet COLLATE Latin1_General_100_CI_AI LIKE @Search ESCAPE '\')
+                ORDER BY tr.Line, tr.ColumnNumber
+            ) hit
+            WHERE f.BuildId = @BuildId
+              AND (@File IS NULL OR REPLACE(f.RelativePath, '\', '/') = @File)
+              AND (@Search IS NULL OR hit.Line IS NOT NULL
+                   OR f.RelativePath COLLATE Latin1_General_100_CI_AI LIKE @Search ESCAPE '\')
+              AND (@Kind = 'file'
+                OR (@Kind = 'dsl' AND f.ArtifactKind = 'DSL_SPECIFICATION')
+                OR (@Kind = 'screen' AND (f.SourceRole = 'FRONTEND_SOURCE' OR f.ArtifactKind = 'DSL_SPECIFICATION'))
+                OR (@Kind = 'action' AND (f.SourceRole IN ('USE_CASE', 'FRONTEND_SOURCE', 'ARCHITECTURE_BORDER')
+                     OR f.ArtifactKind = 'DSL_SPECIFICATION'))
+                OR (@Kind = 'metadata' AND f.SourceRole = 'ARCHITECTURE_BORDER'
+                     AND (f.RelativePath LIKE '%EndPoints%' OR f.RelativePath LIKE '%Modules%')))
+            ORDER BY CASE WHEN hit.Line IS NOT NULL THEN 0 ELSE 1 END, f.RelativePath, f.FileId
+            OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
+            """;
+        await using var connection = await _database.OpenConnectionAsync(cancellationToken);
+        var rows = (await connection.QueryAsync<DiscoveryFileRow>(Command(sql, new
+        {
+            build.BuildId, request.Kind,
+            Search = string.IsNullOrWhiteSpace(request.Query) ? null : "%" + EscapeLike(request.Query.Trim()) + "%",
+            File = string.IsNullOrWhiteSpace(request.File) ? null : NormalizePathHint(request.File),
+            request.Offset, Limit = limit + 1
+        }, cancellationToken))).ToArray();
+        var selected = rows.Take(limit).ToArray();
+        var files = selected.Select(row => new SourceFileCandidate
+        {
+            File = row.File, ArtifactKind = row.ArtifactKind, SourceRole = row.SourceRole,
+            Ownership = row.Ownership, Editable = row.Editable, SourceOfTruth = row.SourceOfTruth,
+            Reason = row.MatchLine.HasValue ? "TEXT_REFERENCE" : "FILE_DISCOVERY"
+        }).ToArray();
+        var references = selected.Where(row => row.MatchLine.HasValue)
+            .Select(row => new ReferenceEvidence("TEXT_REFERENCE", request.Query!, null, null,
+                row.File, row.MatchLine!.Value, 0)).ToArray();
+        return Response(build, [], references, [], files) with
+        {
+            NextOffset = rows.Length > limit ? request.Offset + limit : null
+        };
+    }
+
+    private sealed record DiscoveryFileRow(string File, string ArtifactKind, string SourceRole,
+        string Ownership, bool Editable, string SourceOfTruth, int? MatchLine);
 
     public async Task<IReadOnlyList<SourceFileContent>> GetSourceContentsAsync(
         Guid buildId,
@@ -272,7 +333,8 @@ public sealed class SourceContextRepository : ISourceContextRepository
     private async Task<BuildSummary> ResolveBuildAsync(
         string application,
         string? version,
-        CancellationToken cancellationToken)
+        CancellationToken cancellationToken,
+        Guid? buildId = null)
     {
         const string sql = """
             SELECT TOP (1) b.BuildId, a.Name AS Application, b.Version, b.CommitSha,
@@ -281,12 +343,13 @@ public sealed class SourceContextRepository : ISourceContextRepository
             JOIN OI_Applications a ON a.ApplicationId = b.ApplicationId
             WHERE a.Name = @Application
               AND (@Version IS NULL OR b.Version = @Version)
-            ORDER BY b.GeneratedAtUtc DESC;
+              AND (@BuildId IS NULL OR b.BuildId = @BuildId)
+            ORDER BY b.GeneratedAtUtc DESC, b.BuildId;
             """;
 
         await using var connection = await _database.OpenConnectionAsync(cancellationToken);
         return await connection.QuerySingleOrDefaultAsync<BuildSummary>(
-                   Command(sql, new { Application = application, Version = version }, cancellationToken))
+                   Command(sql, new { Application = application, Version = version, BuildId = buildId }, cancellationToken))
                ?? throw new KeyNotFoundException(
                    $"No indexed build was found for application '{application}' and version '{version ?? "latest"}'.");
     }
@@ -344,6 +407,32 @@ public sealed class SourceContextRepository : ISourceContextRepository
             .Replace("%", @"\%", StringComparison.Ordinal)
             .Replace("_", @"\_", StringComparison.Ordinal)
             .Replace("[", @"\[", StringComparison.Ordinal);
+
+    private const string BoundedCallersSql = """
+
+        DECLARE @Level INT = 0, @Remaining INT;
+        WHILE @Level < @MaxDepth
+        BEGIN
+            SET @Remaining = @MaxResults - (SELECT COUNT(*) FROM #Chains);
+            IF @Remaining <= 0 BREAK;
+            ;WITH Neighbors AS
+            (
+                SELECT c.ReferenceId, fc.CallerFunctionId AS FunctionId, caller.QualifiedName,
+                       caller.QualifiedName + N' -> ' + c.FunctionPath AS FunctionPath,
+                       ROW_NUMBER() OVER (PARTITION BY fc.CallerFunctionId ORDER BY c.FunctionId, fc.FunctionCallId) AS Choice
+                FROM #Chains c
+                JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CalledFunctionId = c.FunctionId
+                JOIN OI_Symbols caller ON caller.SymbolId = fc.CallerFunctionId
+                WHERE c.Depth = @Level
+                  AND NOT EXISTS (SELECT 1 FROM #Chains visited WHERE visited.FunctionId = fc.CallerFunctionId)
+            )
+            INSERT INTO #Chains
+            SELECT TOP (@Remaining) ReferenceId, FunctionId, @Level + 1, FunctionPath, ''
+            FROM Neighbors WHERE Choice = 1 ORDER BY QualifiedName, FunctionId;
+            SET @Level = @Level + 1;
+        END;
+
+        """;
 
     private const string FieldSql = """
         DECLARE @FieldName NVARCHAR(500) = RIGHT(@FieldSearch, CHARINDEX('.', REVERSE(@FieldSearch) + '.') - 1);
@@ -409,30 +498,21 @@ public sealed class SourceContextRepository : ISourceContextRepository
             VisitedIds VARCHAR(MAX) NOT NULL
         );
 
-        ;WITH CallerChain AS
+        ;WITH Seeds AS
         (
             SELECT r.FieldReferenceId AS ReferenceId, r.ContainingFunctionId AS FunctionId, 0 AS Depth,
                    CAST(fn.QualifiedName AS NVARCHAR(MAX)) AS FunctionPath,
-                   CAST('|' + CONVERT(VARCHAR(36), r.ContainingFunctionId) + '|' AS VARCHAR(MAX)) AS VisitedIds
+                   ROW_NUMBER() OVER (PARTITION BY r.ContainingFunctionId ORDER BY r.FileId, r.Line, r.FieldReferenceId) AS Choice
             FROM OI_FieldReferences r
             JOIN #Targets t ON t.SymbolId = r.FieldSymbolId
             JOIN OI_Symbols fn ON fn.SymbolId = r.ContainingFunctionId
             WHERE r.BuildId = @BuildId AND r.ContainingFunctionId IS NOT NULL
 
-            UNION ALL
-
-            SELECT c.ReferenceId, fc.CallerFunctionId, c.Depth + 1,
-                   CAST(caller.QualifiedName + N' -> ' + c.FunctionPath AS NVARCHAR(MAX)),
-                   CAST(c.VisitedIds + CONVERT(VARCHAR(36), fc.CallerFunctionId) + '|' AS VARCHAR(MAX))
-            FROM CallerChain c
-            JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CalledFunctionId = c.FunctionId
-            JOIN OI_Symbols caller ON caller.SymbolId = fc.CallerFunctionId
-            WHERE c.Depth < @MaxDepth
-              AND CHARINDEX('|' + CONVERT(VARCHAR(36), fc.CallerFunctionId) + '|', c.VisitedIds) = 0
         )
         INSERT INTO #Chains
-        SELECT ReferenceId, FunctionId, Depth, FunctionPath, VisitedIds FROM CallerChain
-        OPTION (MAXRECURSION 32767);
+        SELECT TOP (@MaxResults) ReferenceId, FunctionId, Depth, FunctionPath, '' FROM Seeds
+        WHERE Choice = 1 ORDER BY FunctionId;
+        """ + BoundedCallersSql + """
 
         SELECT TOP (@MaxResults) N'UPSTREAM' AS Direction, c.Depth, c.FunctionPath AS [Path],
                f.RelativePath AS ReferenceFile, r.Line AS ReferenceLine,
@@ -527,30 +607,21 @@ public sealed class SourceContextRepository : ISourceContextRepository
             VisitedIds VARCHAR(MAX) NOT NULL
         );
 
-        ;WITH CallerChain AS
+        ;WITH Seeds AS
         (
             SELECT i.InstantiationId AS ReferenceId, i.ContainingFunctionId AS FunctionId, 0 AS Depth,
                    CAST(fn.QualifiedName AS NVARCHAR(MAX)) AS FunctionPath,
-                   CAST('|' + CONVERT(VARCHAR(36), i.ContainingFunctionId) + '|' AS VARCHAR(MAX)) AS VisitedIds
+                   ROW_NUMBER() OVER (PARTITION BY i.ContainingFunctionId ORDER BY i.FileId, i.Line, i.InstantiationId) AS Choice
             FROM OI_ClassInstantiations i
             JOIN #Targets t ON t.SymbolId = i.ClassSymbolId
             JOIN OI_Symbols fn ON fn.SymbolId = i.ContainingFunctionId
             WHERE i.BuildId = @BuildId AND i.ContainingFunctionId IS NOT NULL
 
-            UNION ALL
-
-            SELECT c.ReferenceId, fc.CallerFunctionId, c.Depth + 1,
-                   CAST(caller.QualifiedName + N' -> ' + c.FunctionPath AS NVARCHAR(MAX)),
-                   CAST(c.VisitedIds + CONVERT(VARCHAR(36), fc.CallerFunctionId) + '|' AS VARCHAR(MAX))
-            FROM CallerChain c
-            JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CalledFunctionId = c.FunctionId
-            JOIN OI_Symbols caller ON caller.SymbolId = fc.CallerFunctionId
-            WHERE c.Depth < @MaxDepth
-              AND CHARINDEX('|' + CONVERT(VARCHAR(36), fc.CallerFunctionId) + '|', c.VisitedIds) = 0
         )
         INSERT INTO #Chains
-        SELECT ReferenceId, FunctionId, Depth, FunctionPath, VisitedIds FROM CallerChain
-        OPTION (MAXRECURSION 32767);
+        SELECT TOP (@MaxResults) ReferenceId, FunctionId, Depth, FunctionPath, '' FROM Seeds
+        WHERE Choice = 1 ORDER BY FunctionId;
+        """ + BoundedCallersSql + """
 
         SELECT TOP (@MaxResults) N'UPSTREAM' AS Direction, c.Depth, c.FunctionPath AS [Path],
                f.RelativePath AS ReferenceFile, i.Line AS ReferenceLine,
@@ -601,7 +672,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
         LEFT JOIN OI_Files f ON f.FileId = d.FileId
         WHERE s.BuildId = @BuildId
           AND s.Kind IN (N'METHOD', N'CONSTRUCTOR', N'ACCESSOR', N'LOCAL_FUNCTION', N'LAMBDA')
-          AND (s.QualifiedName = @FunctionSearch OR s.Name = @FunctionName)
+          AND (s.QualifiedName = @FunctionSearch OR (CHARINDEX('.', @FunctionSearch) = 0 AND s.Name = @FunctionName))
           AND (@FilePath IS NULL OR REPLACE(f.RelativePath, '\', '/') LIKE N'%' + REPLACE(@FilePath, '\', '/') + N'%')
           AND (@Line IS NULL OR @Line BETWEEN d.StartLine AND d.EndLine);
 
@@ -642,45 +713,51 @@ public sealed class SourceContextRepository : ISourceContextRepository
             VisitedIds VARCHAR(MAX) NOT NULL
         );
 
-        ;WITH Upstream AS
-        (
-            SELECT t.SymbolId AS FunctionId, 0 AS Depth,
-                   CAST(s.QualifiedName AS NVARCHAR(MAX)) AS FunctionPath,
-                   CAST('|' + CONVERT(VARCHAR(36), t.SymbolId) + '|' AS VARCHAR(MAX)) AS VisitedIds
-            FROM #Targets t JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
-            UNION ALL
-            SELECT fc.CallerFunctionId, u.Depth + 1,
-                   CAST(caller.QualifiedName + N' -> ' + u.FunctionPath AS NVARCHAR(MAX)),
-                   CAST(u.VisitedIds + CONVERT(VARCHAR(36), fc.CallerFunctionId) + '|' AS VARCHAR(MAX))
-            FROM Upstream u
-            JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CalledFunctionId = u.FunctionId
-            JOIN OI_Symbols caller ON caller.SymbolId = fc.CallerFunctionId
-            WHERE u.Depth < @MaxDepth
-              AND CHARINDEX('|' + CONVERT(VARCHAR(36), fc.CallerFunctionId) + '|', u.VisitedIds) = 0
-        )
         INSERT INTO #Closure
-        SELECT N'UPSTREAM', FunctionId, Depth, FunctionPath, VisitedIds FROM Upstream
-        OPTION (MAXRECURSION 32767);
+        SELECT TOP (@MaxResults) N'UPSTREAM', t.SymbolId, 0, s.QualifiedName, ''
+        FROM #Targets t JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
+        ORDER BY t.MatchKind, s.QualifiedName, s.SymbolId;
+        INSERT INTO #Closure
+        SELECT N'DOWNSTREAM', FunctionId, Depth, FunctionPath, VisitedIds FROM #Closure;
 
-        ;WITH Downstream AS
-        (
-            SELECT t.SymbolId AS FunctionId, 0 AS Depth,
-                   CAST(s.QualifiedName AS NVARCHAR(MAX)) AS FunctionPath,
-                   CAST('|' + CONVERT(VARCHAR(36), t.SymbolId) + '|' AS VARCHAR(MAX)) AS VisitedIds
-            FROM #Targets t JOIN OI_Symbols s ON s.SymbolId = t.SymbolId
-            UNION ALL
-            SELECT fc.CalledFunctionId, d.Depth + 1,
-                   CAST(d.FunctionPath + N' -> ' + called.QualifiedName AS NVARCHAR(MAX)),
-                   CAST(d.VisitedIds + CONVERT(VARCHAR(36), fc.CalledFunctionId) + '|' AS VARCHAR(MAX))
-            FROM Downstream d
-            JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CallerFunctionId = d.FunctionId
-            JOIN OI_Symbols called ON called.SymbolId = fc.CalledFunctionId
-            WHERE d.Depth < @MaxDepth
-              AND CHARINDEX('|' + CONVERT(VARCHAR(36), fc.CalledFunctionId) + '|', d.VisitedIds) = 0
-        )
-        INSERT INTO #Closure
-        SELECT N'DOWNSTREAM', FunctionId, Depth, FunctionPath, VisitedIds FROM Downstream
-        OPTION (MAXRECURSION 32767);
+        -- Breadth-first, one representative path per node/direction. Budget applies
+        -- during expansion, rather than after enumerating every possible path.
+        DECLARE @Level INT = 0, @Remaining INT;
+        WHILE @Level < @MaxDepth
+        BEGIN
+            SET @Remaining = @MaxResults - (SELECT COUNT(*) FROM #Closure WHERE Direction = 'UPSTREAM');
+            ;WITH Neighbors AS
+            (
+                SELECT fc.CallerFunctionId AS FunctionId, caller.QualifiedName,
+                       caller.QualifiedName + N' -> ' + c.FunctionPath AS FunctionPath,
+                       ROW_NUMBER() OVER (PARTITION BY fc.CallerFunctionId ORDER BY c.FunctionId, fc.FunctionCallId) AS Choice
+                FROM #Closure c
+                JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CalledFunctionId = c.FunctionId
+                JOIN OI_Symbols caller ON caller.SymbolId = fc.CallerFunctionId
+                WHERE c.Direction = 'UPSTREAM' AND c.Depth = @Level
+                  AND NOT EXISTS (SELECT 1 FROM #Closure visited WHERE visited.Direction = 'UPSTREAM' AND visited.FunctionId = fc.CallerFunctionId)
+            )
+            INSERT INTO #Closure
+            SELECT TOP (@Remaining) 'UPSTREAM', FunctionId, @Level + 1, FunctionPath, ''
+            FROM Neighbors WHERE Choice = 1 ORDER BY QualifiedName, FunctionId;
+
+            SET @Remaining = @MaxResults - (SELECT COUNT(*) FROM #Closure WHERE Direction = 'DOWNSTREAM');
+            ;WITH Neighbors AS
+            (
+                SELECT fc.CalledFunctionId AS FunctionId, called.QualifiedName,
+                       c.FunctionPath + N' -> ' + called.QualifiedName AS FunctionPath,
+                       ROW_NUMBER() OVER (PARTITION BY fc.CalledFunctionId ORDER BY c.FunctionId, fc.FunctionCallId) AS Choice
+                FROM #Closure c
+                JOIN OI_FunctionCalls fc ON fc.BuildId = @BuildId AND fc.CallerFunctionId = c.FunctionId
+                JOIN OI_Symbols called ON called.SymbolId = fc.CalledFunctionId
+                WHERE c.Direction = 'DOWNSTREAM' AND c.Depth = @Level
+                  AND NOT EXISTS (SELECT 1 FROM #Closure visited WHERE visited.Direction = 'DOWNSTREAM' AND visited.FunctionId = fc.CalledFunctionId)
+            )
+            INSERT INTO #Closure
+            SELECT TOP (@Remaining) 'DOWNSTREAM', FunctionId, @Level + 1, FunctionPath, ''
+            FROM Neighbors WHERE Choice = 1 ORDER BY QualifiedName, FunctionId;
+            SET @Level = @Level + 1;
+        END;
 
         SELECT TOP (@MaxResults) c.Direction, c.Depth, c.FunctionPath AS [Path],
                CAST(NULL AS NVARCHAR(2000)) AS ReferenceFile,
@@ -691,7 +768,8 @@ public sealed class SourceContextRepository : ISourceContextRepository
                    WHERE parent.BuildId = @BuildId AND parent.CalledFunctionId = c.FunctionId
                ) THEN 1 ELSE 0 END) AS IsRoot
         FROM #Closure c
-        ORDER BY c.Direction, c.Depth, c.FunctionPath;
+        WHERE @Direction = 'BOTH' OR c.Direction = @Direction
+        ORDER BY c.Depth, c.Direction, c.FunctionPath;
 
         ;WITH RelevantFiles AS
         (
@@ -699,6 +777,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
                    CASE c.Direction WHEN N'UPSTREAM' THEN N'UPSTREAM_CALL_CHAIN' ELSE N'DOWNSTREAM_CALL_CHAIN' END AS Reason
             FROM #Closure c
             JOIN OI_Declarations d ON d.BuildId = @BuildId AND d.SymbolId = c.FunctionId
+            WHERE @Direction = 'BOTH' OR c.Direction = @Direction
             UNION
             SELECT tr.FileId, N'TEXT_REFERENCE'
             FROM OI_TextReferences tr

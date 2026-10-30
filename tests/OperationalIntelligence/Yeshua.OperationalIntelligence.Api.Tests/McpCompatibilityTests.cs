@@ -40,12 +40,12 @@ public sealed class McpCompatibilityTests
     }
 
     [TestMethod]
-    public async Task ProductionPublicCatalogExposesOnlyExplorerAndHealth()
+    public async Task ProductionPublicCatalogIncludesReadOnlyIndexedSources()
     {
         await using var host = await McpHost.StartAsync(productionCatalog: true);
         await using var client = await ConnectAsync(host.PublicUrl);
         var tools = await client.ListToolsAsync();
-        CollectionAssert.AreEquivalent(new[] { "yeshua_explorer", "yeshua_health", "yeshua_app_explore" },
+        CollectionAssert.AreEquivalent(new[] { "yeshua_explorer", "yeshua_health", "yeshua_app_explore", "yeshua_source_search" },
             tools.Select(tool => tool.Name).ToArray());
         Assert.AreEqual(0, host.Repository.AcceptedCount);
     }

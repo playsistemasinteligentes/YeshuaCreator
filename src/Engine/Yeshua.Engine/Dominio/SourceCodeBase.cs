@@ -38,56 +38,10 @@ namespace Migration.Dominio
         // Método abstrato para definir a lógica específica de geração de código
         protected abstract StringBuilder GenerateCode();
         protected abstract StringBuilder GenerateCustonCode();
-        public void WriteContexto(string content)
-        {
-            try
-            {
-                string baseDir = AppDomain.CurrentDomain.BaseDirectory;
-                string projectDir = Directory.GetParent(baseDir).Parent.Parent.Parent.FullName;
-                string filePath = Path.Combine(projectDir, "Contexto.txt");
-
-                var novoSB = new StringBuilder();
-
-                //novoSB.AppendLine("Assunto fabrica de software.");
-                //novoSB.AppendLine("Criei uma meta linguagem para definições dos modelos ");
-                //novoSB.AppendLine("Criei um motor para gerar codigo baseado na meta linguagem ");
-                //novoSB.AppendLine("O motor implementa uma arquitetura com artefatos conhecidos respeitando alguns principios DDD e SOLID");
-                //novoSB.AppendLine("Tenho principios tais como? O codigo gerado pelo motor deve evitar reflection para entregar o maximo de performance posivel.");
-                ////novoSB.AppendLine("Enviarei meus modelos em tres partes, Modelo de Meta linguagem, artefatos da arquitetura divididos em duas etapas  ");
-                //novoSB.AppendLine("Enviarei os artefatos da arquitetura em duas partes.");
-                //novoSB.AppendLine("Pedirei para voce me ajudar a implementar usecases");
-
-                //novoSB.AppendLine("");
-                //novoSB.AppendLine("");
-                //novoSB.AppendLine("");
-
-                string[] linhas = content.Split(Environment.NewLine);
-                string prefixoParaRemover = "using";
-                foreach (var linha in linhas)
-                {
-                    var linhaTrimmed = linha.Trim();
-
-                    // Ignora linhas em branco ou que comecem com o prefixo
-                    if (string.IsNullOrWhiteSpace(linhaTrimmed)) continue;
-                    if (linhaTrimmed.StartsWith(prefixoParaRemover)) continue;
-
-                    novoSB.AppendLine(linha);
-                }
-
-                var bloco = novoSB.ToString();
-                if (File.Exists(filePath) && File.ReadAllText(filePath, Encoding.UTF8).Contains(bloco, StringComparison.Ordinal))
-                    return;
-
-                // Abre ou cria o arquivo com compartilhamento liberado para leitura
-                using var stream = new FileStream(filePath, FileMode.Append, FileAccess.Write, FileShare.Read);
-                using var writer = new StreamWriter(stream, Encoding.UTF8);
-                writer.WriteLine(bloco);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Erro ao escrever no arquivo: " + ex.Message);
-            }
-        }
+        // Compatibility entry point for old generators. Context now comes from indexed DSL/source,
+        // not an accumulating TXT. Do not read, append, truncate or delete existing Contexto.txt files.
+        [Obsolete("Contexto.txt generation is disabled. Use indexed DSL and source evidence.")]
+        public void WriteContexto(string content) { }
 
         public string GetFriendlyTypeName(Type type, bool isDTO = false)
         {
@@ -133,8 +87,7 @@ namespace Migration.Dominio
 
             WriteToFile(code, path);
 
-            if (context)
-                WriteContexto(code.ToString());
+            // The legacy context argument is retained for existing generator callers; no TXT is written.
         }
 
         private void AddOwnershipMarker(StringBuilder code, bool custon)
@@ -167,15 +120,12 @@ namespace Migration.Dominio
         public void WriteCode(Entity entity, string filePathMigration, string filePathCuston, UseCaseCommand useCase = null)
         {
             StringBuilder code = GenerateCode();
-            bool context = false;
-            if ((entity != null && entity.EntityName == "yTenant") || (useCase != null && (useCase.Name._value == "createConta" || useCase.Name._value == "RecoveryAccount")))
-                context = true;
-            WriteCode(code, filePathMigration, false, context);
+            WriteCode(code, filePathMigration, false, false);
 
             if (!File.Exists(filePathCuston))
             {
                 code = GenerateCustonCode();
-                WriteCode(code, filePathCuston, true, context);
+                WriteCode(code, filePathCuston, true, false);
             }
         }
     }

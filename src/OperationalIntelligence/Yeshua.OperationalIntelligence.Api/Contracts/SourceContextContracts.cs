@@ -14,6 +14,7 @@ public abstract class SourceSearchRequest
 {
     public string Application { get; init; } = string.Empty;
     public string? Version { get; init; }
+    public Guid? BuildId { get; init; }
     public int? MaxDepth { get; init; }
     public int? MaxResults { get; init; }
 }
@@ -32,6 +33,7 @@ public sealed class ClassSearchRequest : SourceSearchRequest
 
 public sealed class FunctionSearchRequest : SourceSearchRequest
 {
+    public string Direction { get; init; } = "both";
     public string Function { get; init; } = string.Empty;
     public string? File { get; init; }
     public int? Line { get; init; }
@@ -40,6 +42,14 @@ public sealed class FunctionSearchRequest : SourceSearchRequest
 public sealed class FileSearchRequest : SourceSearchRequest
 {
     public IReadOnlyList<string> Files { get; init; } = [];
+}
+
+public sealed class SourceDiscoveryRequest : SourceSearchRequest
+{
+    public string Kind { get; init; } = "file";
+    public string? Query { get; init; }
+    public string? File { get; init; }
+    public int Offset { get; init; }
 }
 
 public sealed record SymbolMatch(
@@ -102,4 +112,7 @@ public sealed record SourceContextResponse(
     IReadOnlyList<ReferenceEvidence> References,
     IReadOnlyList<FunctionChain> Chains,
     IReadOnlyList<SourceFileCandidate> SourceFiles,
-    IReadOnlyList<string> Warnings);
+    IReadOnlyList<string> Warnings)
+{
+    public int? NextOffset { get; init; }
+}

@@ -66,6 +66,7 @@ public static class McpServiceCollectionExtensions
         services.AddScoped<IMcpTool, TracesQueryTool>();
         services.AddScoped<IMcpTool, MetricsQueryTool>();
         services.AddScoped<IMcpTool, SourceSearchTool>();
+        services.AddScoped<SourceSearch>();
         services.AddScoped<McpToolArgumentReader>();
         services.AddScoped<LogSourceEvidenceExtractor>();
         services.AddScoped<LogKnowledgeReferenceResolver>();

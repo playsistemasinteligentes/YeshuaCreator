@@ -1,6 +1,6 @@
 # Explorer Yeshua
 
-Versão do guia: 2, revisada em 30/10/2026. Classificação: Public. Somente leitura.
+Versão do guia: 3, revisada em 30/10/2026. Classificação: Public. Somente leitura.
 
 ## 1. Comece aqui: como usar este guia
 
@@ -35,8 +35,68 @@ yeshua_health com {}. Isso não confirma o sucesso de uma operação de negócio
 
 Com uma conexão MCP disponível, consulte o catálogo de ferramentas e seus schemas
 antes de montar as chamadas. O nome da ferramenta não basta para deduzir parâmetros.
-O endpoint público oferece Explorer, saúde e yeshua_app_explore. Os métodos de
-investigação interna descritos adiante dependem de conexão administrativa autorizada.
+O endpoint público oferece Explorer, saúde, yeshua_app_explore e
+yeshua_source_search. A leitura de trechos do código indexado e da própria DSL
+faz parte da exploração. Isso não autoriza alteração no Git ou execução de tarefas.
+Os métodos de investigação de dados runtime descritos adiante conservam sua conexão atual.
+
+### Pesquisa progressiva: mesmo núcleo por MCP, POST e GET
+
+Comece por esta consulta, sem pedir ao usuário nomes técnicos que o índice pode informar:
+https://playsis.com.br/operational/api/source-context/search?kind=applications
+
+Ela corresponde a yeshua_source_search {"kind":"applications"} e a POST
+/operational/api/source-context/search com o mesmo objeto JSON. Os três caminhos
+usam o mesmo SourceSearch e o mesmo repositório; não existe outro grafo ou manual.
+
+1. kind=applications lista aplicativos INDEXADOS. query filtra o nome.
+2. kind=builds&application=NOME lista snapshots e seus buildId, version e commitSha.
+3. Siga next[].arguments para escolher um snapshot e ler kind=dsl. A DSL original
+   mostra entidades, campos, opções, comandos e sagas; as migrations não são um
+   novo manifesto consolidado. Confirme alterações posteriores ao interpretar.
+4. kind=screen, action ou metadata procura arquivos candidatos no mesmo índice.
+   query aceita pistas pequenas: título, identificador, botão, rota ou nome.
+   screen pesquisa interface/DSL; action pesquisa interface/DSL/use cases/bordas;
+   metadata localiza as definições geradas de metadados e menus. Não são chamadas
+   aos endpoints dos aplicativos e não consultam os valores dos usuários.
+5. kind=file lê um arquivo selecionado; kind=field, class ou function procura os
+   símbolos técnicos já identificados. Não substitua um símbolo por uma pergunta longa.
+
+Exemplo depois de confirmar NOME e SNAPSHOT no catálogo (substitua os placeholders):
+https://playsis.com.br/operational/api/source-context/search?application=NOME&buildId=SNAPSHOT&kind=screen&query=cadastro&includeContent=true
+
+Para continuar por GET, use a mesma rota e converta next[].arguments em query
+string, omitindo null e codificando os valores. Por MCP ou POST, envie diretamente
+aquele objeto. Preserve application, version e buildId: outra consulta sem eles
+pode mudar de snapshot durante a conversa. Não invente nomes nem IDs.
+
+includeContent=false (padrão) devolve referências sem carregar os corpos dos fontes.
+includeContent=true inclui snippets com file, startLine, endLine, totalLines,
+content e complete. complete indica que o intervalo solicitado foi entregue;
+não significa que o arquivo todo ou toda a regra foram examinados. Um trecho
+parcial precisa ser continuado antes de concluir sobre o restante do método.
+
+Os filtros são iguais nos três transportes: application, version, buildId, kind,
+query, file, line, endLine, maxDepth, maxResults, offset, includeContent, maxFiles,
+maxLines, maxContentChars e direction. file é caminho indexado, não URL nem caminho para ler
+o disco/Git. Para funções, file delimita a declaração; para campo/classe use query
+qualificada. line exige file. endLine é inclusiva e exige line.
+
+Comece com maxDepth=0, maxResults=10 e poucos fontes. Aprofunde relações apenas
+se necessário (maxDepth até 3). Catálogos/arquivos usam offset e next para paginar;
+buscas de símbolos pedem refinamento ou maxResults, não paginação fictícia.
+Para funções, direction=both (padrão), upstream ou downstream separa chamadores
+de chamadas. A expansão é limitada durante a consulta e retorna um caminho
+representativo por função/direção, sem enumerar todas as combinações de caminhos.
+maxFiles limita os arquivos com conteúdo (padrão 3, máximo 5); maxLines limita
+linhas por trecho (padrão 100, máximo 400); maxContentChars é o orçamento de texto
+somado de todos os trechos (padrão 12000, máximo 50000), não uma contagem de tokens.
+Limites e intervalos incompletos não comprovam inexistência de outras relações.
+
+Uma ocorrência textual é pista, não prova de que uma página chama um command ou
+que uma regra executou. Leia o trecho e suas dependências. Se o índice não tiver
+o Studio/Front/backend necessário, declare a lacuna; não apresente dado inventado.
+Use a origem/versão de cada evidência. O índice é do banco, não Git em tempo real.
 
 Pela navegação web, há GET público de Explorer, saúde e descoberta da interface:
 https://playsis.com.br/operational/explorer/apps
@@ -76,9 +136,9 @@ Esses arquivos não comprovam todas as regras do servidor, autorização, sucess
 do cadastro ou estado de uma publicação. Se a tela não estiver anunciada, informe
 a lacuna; não tente caminhos arbitrários ou endpoints internos como alternativa.
 
-Os exemplos de investigação deste guia NÃO significam que exista uma URL GET
-equivalente para cada ferramenta. Não tente acessar rotas internas como alternativa
-a uma ferramenta negada. Se faltar uma consulta, registre essa lacuna.
+Somente a pesquisa de fontes descrita acima tem o GET/POST equivalente nesta
+versão. Não transforme ferramentas de execução, SQL ou autenticação em chamadas
+GET. Se faltar uma consulta runtime, registre a lacuna.
 
 ## 3. Aplicativos: mapa inicial para orientar a investigação
 
@@ -135,9 +195,10 @@ origem das bordas. Use uma saída gerada representativa para conferir a geraçã
 Para regras específicas, procure os miolos Custon. HTML/JavaScript podem explicar
 uma tela customizada; o domínio e os receivers confirmam suas validações reais.
 
-Capacidade existente: yeshua_source_search pesquisa um snapshot indexado por
-field, class ou function. Ela não aceita kind=screen, busca genérica de páginas
-nem uma pergunta em linguagem natural no lugar de um símbolo confirmado.
+Capacidade existente: yeshua_source_search percorre os níveis descritos na seção 2
+no mesmo índice. screen/action são descoberta textual; field/class/function usam
+as referências semânticas existentes. Não há grafo funcional novo nem inferência
+automática confiável de toda ação customizada a partir do título de um botão.
 
 Exemplo de chamada, SOMENTE depois de confirmar os valores nas evidências:
 {
@@ -152,22 +213,20 @@ Para kind=field ou kind=class, query deve conter o campo ou classe identificado.
 Na busca de função, file e line podem delimitar um ponto já conhecido.
 Os valores em maiúsculas são placeholders, não nomes para executar literalmente.
 
-O resultado fornece Build, Matches, References, Chains, SourceFiles e Warnings
-(os nomes JSON usam camelCase). Build identifica a versão e o commit do snapshot.
-SourceFiles contém candidatos e sua propriedade; não equivale ao texto completo
-dos arquivos. Leia as advertências antes de tirar conclusões.
+O resultado fornece build, applications, builds, matches, references, chains,
+sourceFiles, snippets, next e warnings. build identifica a versão, commit e
+buildId do snapshot. sourceFiles contém candidatos e sua propriedade; snippets
+contém os trechos pedidos. next preserva os filtros para continuar.
 
 Uma referência estática indica um caminho possível. Ela não prova que aquele
 caminho foi executado, nem qual ramo condicional um registro percorreu.
 
 CAPACIDADE ATUAL: yeshua_app_explore reúne os arquivos públicos de telas anunciadas;
 a IA interpreta seus campos, ações e comportamento do cliente.
-LACUNA ATUAL: ainda não há resolução automática de DSL, handlers, regras e fontes
-internas a partir dessas telas. Não há GET público de busca de símbolos ou de
-leitura de fontes internas. Se essa for a
-próxima informação necessária, explique a lacuna; não finja ter consultado a tela.
-Esse é um candidato de evolução das capacidades, mantendo o mesmo núcleo e os
-controles de acesso para MCP e HTTP.
+Use a pesquisa indexada para relacionar pistas da interface com DSL, handlers e
+fontes. A associação textual ainda precisa ser confirmada no código. A interface
+publicada pode estar em outra versão; não misture sua leitura atual com um
+snapshot antigo sem apontar essa diferença.
 
 ## 6. Quando a pergunta envolve falha ou resultado de uma operação
 
@@ -310,6 +369,6 @@ campos e ações; reunir fontes relevantes ao escopo; relacionar execução e c�
 oferecer o mesmo resultado autorizado por MCP e HTTP quando a consulta for elegível.
 
 Só derive Explorer App, Business ou Arquiteto quando o tamanho e o uso justificarem.
-Não transforme este guia em acesso irrestrito a fontes, dados ou ações. Operações
+Trechos de fontes/DSL são evidências disponíveis na pesquisa. Operações
 que alteram estado, autenticam contas, enviam tarefas ou reiniciam agentes continuam
 fora do GET público e exigem autorização própria.

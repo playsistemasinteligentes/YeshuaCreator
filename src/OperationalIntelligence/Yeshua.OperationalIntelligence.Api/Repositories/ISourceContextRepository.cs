@@ -10,6 +10,7 @@ public interface ISourceContextRepository
     Task<SourceContextResponse> SearchClassAsync(ClassSearchRequest request, CancellationToken cancellationToken);
     Task<SourceContextResponse> SearchFunctionAsync(FunctionSearchRequest request, CancellationToken cancellationToken);
     Task<SourceContextResponse> SearchFilesAsync(FileSearchRequest request, CancellationToken cancellationToken);
+    Task<SourceContextResponse> DiscoverFilesAsync(SourceDiscoveryRequest request, CancellationToken cancellationToken);
     Task<IReadOnlyList<SourceFileContent>> GetSourceContentsAsync(
         Guid buildId,
         IReadOnlyList<string> files,

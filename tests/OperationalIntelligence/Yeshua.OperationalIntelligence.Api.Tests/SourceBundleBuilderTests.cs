@@ -70,6 +70,7 @@ public sealed class SourceBundleBuilderTests
 
     private sealed class UnusedRepository : ISourceContextRepository
     {
+        public Task<SourceContextResponse> DiscoverFilesAsync(SourceDiscoveryRequest request, CancellationToken cancellationToken) => throw new NotSupportedException();
         public Task<IReadOnlyList<ApplicationSummary>> GetApplicationsAsync(CancellationToken cancellationToken) => throw new NotSupportedException();
         public Task<IReadOnlyList<BuildSummary>> GetBuildsAsync(string application, CancellationToken cancellationToken) => throw new NotSupportedException();
         public Task<SourceContextResponse> SearchFieldAsync(FieldSearchRequest request, CancellationToken cancellationToken) => throw new NotSupportedException();

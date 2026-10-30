@@ -163,6 +163,7 @@ public sealed class RuntimeContextCollectorTests
 
     private sealed class CorrelationRepository : ISourceContextRepository
     {
+        public Task<SourceContextResponse> DiscoverFilesAsync(SourceDiscoveryRequest request, CancellationToken cancellationToken) => throw new NotSupportedException();
         public string? RequestedVersion { get; private set; }
 
         public Task<SourceContextResponse> SearchClassAsync(

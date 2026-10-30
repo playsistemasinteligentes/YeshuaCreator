@@ -10,7 +10,8 @@ executa somente Codex. `yeshua-observability` permanece separado.
 
 | Entrada | Uso |
 | --- | --- |
-| `https://playsis.com.br/operational/mcp` | MCP publico: `yeshua_health`, `yeshua_explorer` e `yeshua_app_explore`. |
+| `https://playsis.com.br/operational/mcp` | MCP publico: `yeshua_health`, `yeshua_explorer`, `yeshua_app_explore` e `yeshua_source_search`. |
+| `https://playsis.com.br/operational/api/source-context/search?kind=applications` | GET/POST da mesma pesquisa indexada do MCP; next.arguments preserva filtros e snapshot. |
 | `https://playsis.com.br/operational/explorer/apps` | Descoberta atual do Front; application e screen delimitam os arquivos publicos da tela. |
 | `https://playsis.com.br/operational/explorer` | GET publico, sem parametros: guia de exploracao para a IA, proposito e arquitetura. |
 | `https://playsis.com.br/operational/health?mensagem=teste-gpt-gratis` | GET publico de conectividade; devolve a mensagem de teste, confirmacao e horario UTC. |
@@ -22,15 +23,17 @@ schemas e respostas tipadas. Clientes atuais e a inicializacao antiga
 `2025-06-18` sao exercitados pelos testes HTTP. Nomes anunciados usam underscores;
 nomes antigos com pontos continuam aceitos nas chamadas autorizadas.
 
-O endpoint publico nao anuncia nem executa SQL, fontes internas, logs ou tarefas.
-Esses recursos exigem loopback na porta privada, que nao e publicada pelo Docker
+O endpoint publico permite trechos de fontes/DSL indexados por decisao explicita
+do produto. Nao anuncia nem executa SQL, logs ou tarefas. Esses recursos mantem
+loopback na porta privada, que nao e publicada pelo Docker
 nem pelo Nginx. Headers `X-Forwarded-*` nao concedem esse acesso.
 
 `yeshua_explorer` recebe `{}` e devolve exatamente o mesmo texto do GET, em
 `text/plain; charset=utf-8`. A fonte unica e `Documentation/Explorer.md` da API,
 carregada uma vez na inicializacao. Ela orienta consultas por escopo, explica os
-schemas existentes e marca lacunas, incluindo a futura resolucao tela -> campos
--> fontes. O mapa de apps e orientativo, nao descoberta de runtime nem catalogo
+schemas existentes e marca lacunas. A pesquisa encontra candidatos textuais de
+telas/acoes/DSL e simbolos tecnicos; nao comprova todo vinculo customizado.
+O mapa de apps do documento e orientativo, nao descoberta de runtime nem catalogo
 de builds indexados. O documento nao pesquisa apps, nao gera sinopses e nao
 substitui autorizacao. GETs de investigacao privada e variantes Business/Arquiteto
 continuam futuros. Alteracoes no documento exigem nova compilacao/publicacao.
@@ -173,7 +176,7 @@ Referencias oficiais:
    `004_agent_tasks.sql` pelo mecanismo de migrations existente do banco operacional.
 2. Para testar a URL publica, em ChatGPT Plugins adicione um MCP personalizado,
    escolha `Server URL`, informe o endereco publico da tabela e selecione
-   `No authentication`. A descoberta deve retornar saude, Explorer e descoberta publica de apps.
+   `No authentication`. A descoberta deve retornar saude, Explorer, descoberta publica de apps e pesquisa indexada de fontes.
 3. Crie um Secure MCP Tunnel na organizacao administrativa correta e associe o
    workspace do ChatGPT. Configure as permissoes de uso do tunel para o operador.
    Mantenha o plugin privado para operadores autorizados; esta versao nao possui
