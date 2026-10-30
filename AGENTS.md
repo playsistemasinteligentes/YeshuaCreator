@@ -1834,6 +1834,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Inteligencia Operacional
 
+- `yeshua_explorer` e a entrada publica de orientacao para agentes externos,
+  tambem disponivel por GET `/explorer`. Seu documento unico ensina a explorar
+  apps por tela/acao/simbolo e a relacionar fontes e evidencias autorizadas;
+  nao deve virar uma colecao de resumos fixos dos aplicativos. Proposito,
+  arquitetura, capacidades existentes e lacunas ficam separados no texto.
+  MCP e GET compartilham o mesmo conteudo. Essa entrada nao concede acesso a
+  fontes, registros ou logs, nem torna as ferramentas administrativas publicas.
+
 - OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md define os requisitos que fabricantes de software devem comprovar para utilizar o servico de suporte SRE.
 - YESHUA_SRE_IMPLEMENTATION_PLAN.md correlaciona cada requisito externo com a implementacao factual, as lacunas, os testes de aceite e a ordem de evolucao interna do Yeshua.
 - Toda entrega operacional deve possuir vinculo explicito com a taxonomia do documento externo: G, D, severidade, modo de execucao, classificacao de dados, identidades, outcomes ou suportabilidade, conforme aplicavel.

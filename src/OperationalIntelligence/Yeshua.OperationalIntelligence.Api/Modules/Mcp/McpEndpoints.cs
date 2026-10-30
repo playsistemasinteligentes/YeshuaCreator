@@ -1,4 +1,5 @@
 using System.Text.Json;
+using Yeshua.OperationalIntelligence.Api.Application;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.Mcp;
 
@@ -10,6 +11,13 @@ public static class McpEndpoints
             return;
 
         app.MapMcp("/mcp");
+        app.MapGet("/explorer", (HttpContext context, ExplorerDocument document) =>
+        {
+            context.Response.Headers.CacheControl = "no-cache";
+            return context.Request.Query.Count == 0
+                ? Results.Text(document.Text, "text/plain; charset=utf-8")
+                : Results.BadRequest(new { error = "Explorer não recebe parâmetros nesta versão. Leia o guia para escolher a consulta seguinte." });
+        }).AllowAnonymous().WithName("GetYeshuaExplorer");
         app.MapGet("/health", async (
             HttpContext context, McpToolRegistry tools, CancellationToken cancellationToken) =>
         {

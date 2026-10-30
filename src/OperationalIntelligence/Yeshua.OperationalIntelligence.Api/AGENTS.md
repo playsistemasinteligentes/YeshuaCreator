@@ -5,12 +5,17 @@ para aplicativos Yeshua e sistemas legados.
 
 Tambem hospeda a ponte administrativa `AgentTasks`, autorizada em 2026-10-23,
 no mesmo processo/container dos agentes. Entradas MCP usam o SDK oficial e
-ficam em Modules/Mcp. O endpoint publico anuncia somente yeshua_health;
+ficam em Modules/Mcp. O endpoint publico anuncia yeshua_health e yeshua_explorer;
 consultas internas e yeshua_task_send/yeshua_task_read exigem loopback na porta
 privada, acessada pelo Secure MCP Tunnel do workspace autorizado. Headers de
 proxy nao autorizam acesso. O protocolo registra pedidos/respostas pelo
 repository no banco operacional; sessoes/tokens internos das CLIs nao vao para
 SQL. Nao adicionar SQL aos receivers nem criar outro banco de estado.
+Explorer ensina a IA a escolher consultas e formar entendimento por evidencias;
+nao e um manual pre-resumido de cada app nem executa investigacoes. O texto publico
+unico fica em Documentation/Explorer.md, embutido no binario e compartilhado por
+GET /explorer e MCP. Nao incluir fontes privadas, dados ou configuracoes nesse
+documento. Distinguir ferramentas existentes, lacunas e planos futuros.
 `yeshua_task_read` inclui numeros validos somente para a lista apresentada e
 `activeExecution`; a selecao fica na conversa do cliente, nunca globalmente.
 `yeshua_agent_restart` e outra mutacao administrativa privada, explicitamente

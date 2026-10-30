@@ -3,7 +3,8 @@ namespace Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 public static class AgentTaskProtocol
 {
     public const string Instructions = """
-        Use yeshua_health para verificar a conexao. O endpoint publico expoe somente saude.
+        Comece por yeshua_explorer para conhecer o sistema e aprender a escolher consultas.
+        Use yeshua_health para verificar a conexao. Explorer e saude sao publicos; dados e fontes exigem acesso autorizado.
         Pelo tunel privado autorizado, yeshua_task_read sem taskId lista tarefas.
         Apresente selectionNumber, titulo e estado na ordem retornada e preserve numero -> taskId
         da lista exibida nesta conversa. 'Quero falar com a task 3' seleciona a taskId daquela

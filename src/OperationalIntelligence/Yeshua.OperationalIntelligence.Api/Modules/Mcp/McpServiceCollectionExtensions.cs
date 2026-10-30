@@ -5,6 +5,7 @@ using ModelContextProtocol.Protocol;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Clients;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Tools;
 using Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
+using Yeshua.OperationalIntelligence.Api.Application;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.Mcp;
 
@@ -50,6 +51,8 @@ public static class McpServiceCollectionExtensions
         });
 
         services.AddScoped<IMcpTool, HealthTool>();
+        services.AddSingleton(new ExplorerDocument());
+        services.AddScoped<IMcpTool, ExplorerTool>();
         services.AddScoped<IMcpTool, DatabaseSelectTool>();
         services.AddScoped<IMcpTool, ErrorsQueryTool>();
         services.AddScoped<IMcpTool, LogSourceContextTool>();

@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <EmbeddedResource Include="Database\Migrations\*.sql" />
+    <EmbeddedResource Include="Documentation\Explorer.md" />
   </ItemGroup>
 
 </Project>

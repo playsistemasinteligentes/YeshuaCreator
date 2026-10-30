@@ -27,7 +27,7 @@ public sealed class McpCompatibilityTests
         await using var host = await McpHost.StartAsync(productionCatalog: true);
         await using var client = await ConnectAsync(host.PrivateUrl);
         var tools = await client.ListToolsAsync();
-        Assert.AreEqual(13, tools.Count);
+        Assert.AreEqual(14, tools.Count);
         foreach (var tool in tools)
         {
             Assert.IsFalse(tool.Name.Contains('.'));
@@ -37,6 +37,17 @@ public sealed class McpCompatibilityTests
         Assert.AreEqual(0, host.Repository.AcceptedCount);
         Assert.IsTrue(client.ServerInstructions!.Contains("numero -> taskId"));
         Assert.IsTrue(client.ServerInstructions.Contains("yeshua_agent_restart"));
+    }
+
+    [TestMethod]
+    public async Task ProductionPublicCatalogExposesOnlyExplorerAndHealth()
+    {
+        await using var host = await McpHost.StartAsync(productionCatalog: true);
+        await using var client = await ConnectAsync(host.PublicUrl);
+        var tools = await client.ListToolsAsync();
+        CollectionAssert.AreEquivalent(new[] { "yeshua_explorer", "yeshua_health" },
+            tools.Select(tool => tool.Name).ToArray());
+        Assert.AreEqual(0, host.Repository.AcceptedCount);
     }
 
     [TestMethod]
