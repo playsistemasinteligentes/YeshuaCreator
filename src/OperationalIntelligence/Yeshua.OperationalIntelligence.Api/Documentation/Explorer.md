@@ -1,6 +1,6 @@
 # Explorer Yeshua
 
-Versão do guia: 3, revisada em 30/10/2026. Classificação: Public. Somente leitura.
+Guia público de exploração. Somente leitura.
 
 ## 1. Comece aqui: como usar este guia
 
@@ -18,17 +18,17 @@ As seções abaixo organizam três perspectivas no mesmo documento:
 - Business: propósito e direção do produto.
 - Arquitetura: como interpretar a construção do Yeshua e seus aplicativos.
 
-No futuro elas podem ganhar entradas próprias. Nesta versão, existe apenas o
+No futuro elas podem ganhar entradas próprias. Hoje existe apenas o
 Explorer completo. Não suponha que Explorer App, Business ou Arquiteto já existam.
 
 ## 2. Entradas e descoberta das capacidades
 
 GET https://playsis.com.br/operational/explorer
-devolve este texto completo, sem login. Confira a versão no início da resposta;
-não reutilize como atual uma versão de uma conversa ou leitura anterior.
+devolve este texto completo, sem login. Leia o conteúdo recebido nesta consulta;
+não reutilize como atual uma leitura de uma conversa anterior.
 Para repetir a leitura com outro endereço de cache, use
-https://playsis.com.br/operational/explorer?refresh=teste-guia-3
-refresh só diferencia a URL: não seleciona versão histórica nem executa pesquisa.
+https://playsis.com.br/operational/explorer?refresh=consulta-atual
+refresh só diferencia a URL: não altera o conteúdo nem executa pesquisa.
 Os GET de Explorer, interface e pesquisa ignoram os parâmetros de atribuição
 utm_source, utm_medium, utm_campaign, utm_term, utm_content e utm_id, que o
 navegador pode acrescentar. Eles não viram argumentos da ferramenta.
@@ -146,6 +146,13 @@ a lacuna; não tente caminhos arbitrários ou endpoints internos como alternativ
 Somente a pesquisa de fontes descrita acima tem o GET/POST equivalente nesta
 versão. Não transforme ferramentas de execução, SQL ou autenticação em chamadas
 GET. Se faltar uma consulta runtime, registre a lacuna.
+
+Falha da ferramenta de navegação, como "Internal Error", não é por si só uma
+resposta HTTP do Yeshua. Informe qual URL tentou ler e se recebeu status/corpo
+do servidor. Sem essa evidência, não conclua que precisa de login, que o app
+não existe ou que a rota está indisponível. A descoberta de interface acima lê
+o Front publicado e não depende da carga do índice de fontes. Um índice vazio
+limita a pesquisa de código, mas não explica falha de acesso a /explorer/apps.
 
 ## 3. Aplicativos: mapa inicial para orientar a investigação
 
