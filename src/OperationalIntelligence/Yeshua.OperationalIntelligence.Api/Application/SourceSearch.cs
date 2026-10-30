@@ -77,10 +77,28 @@ public sealed class SourceSearch(ISourceContextRepository repository, IOptions<O
             warnings.Add("DSL original das migrations; representa declarações e alterações, não um novo manifesto consolidado nem o estado runtime.");
         var files = context.SourceFiles.DistinctBy(file => file.File, StringComparer.OrdinalIgnoreCase)
             .Take(request.MaxResults).ToArray();
-        var nextSteps = files.Take(request.MaxFiles).Select(file => new SourceSearchNext("Ler trecho deste arquivo na mesma versão.",
-            request with { Kind = "file", Query = null, File = file.File, Line = FirstLine(context, file.File),
+        if (request.Kind == "screen" && files.Length > 1)
+            warnings.Add("Os arquivos podem atender telas ou fluxos diferentes. Confirme a entrada/roteamento nos links de início antes de combinar botões e instruções de arquivos distintos.");
+        var nextSteps = files.Take(request.MaxFiles).Select(file => new SourceSearchNext($"Ler contexto de {Path.GetFileName(file.File)} no mesmo snapshot.",
+            request with { Kind = "file", Query = null, File = file.File, Line = SnippetStart(context, request, file.File),
                 EndLine = context.Matches.FirstOrDefault(match => SameFile(match.File, file.File))?.EndLine,
                 IncludeContent = true, Offset = 0, MaxFiles = 1 })).ToList();
+        foreach (var file in files.Take(request.MaxFiles))
+        {
+            if ((request.Kind is "screen" or "action") && SnippetStart(context, request, file.File) > 1)
+                nextSteps.Add(new($"Ler início de {Path.GetFileName(file.File)} para identificar entrada, eventos e contexto anterior.",
+                    request with { Kind = "file", Query = null, File = file.File, Line = 1,
+                        EndLine = null, IncludeContent = true, Offset = 0, MaxFiles = 1 }));
+        }
+        if (files.Length == 0 && (request.Kind is "screen" or "action") && request.File is null && request.Offset == 0)
+        {
+            warnings.Add("Sem coincidência literal não significa que a função não exista. Use o próximo link para descobrir os termos declarados, sem inventar outra URL.");
+            var byApplication = request.Query is not null &&
+                !request.Query.Equals(request.Application, StringComparison.OrdinalIgnoreCase);
+            nextSteps.Add(new(byApplication ? "Explorar telas pelo nome do aplicativo." : "Consultar a DSL para descobrir telas e ações declaradas.",
+                request with { Kind = byApplication ? "screen" : "dsl", Query = byApplication ? request.Application : null,
+                    Line = null, EndLine = null, IncludeContent = true, Offset = 0 }));
+        }
         if (context.NextOffset.HasValue)
             nextSteps.Add(new("Próxima página, com os mesmos filtros e snapshot.", request with { Offset = context.NextOffset.Value }));
         if (request.Kind is "field" or "class" or "function")
@@ -103,8 +121,10 @@ public sealed class SourceSearch(ISourceContextRepository repository, IOptions<O
             var selected = files.Take(request.MaxFiles).ToArray();
             var contents = await repository.GetSourceContentsAsync(context.Build.BuildId, selected.Select(file => file.File).ToArray(), token);
             var remaining = request.MaxContentChars;
-            foreach (var file in selected)
+            for (var fileIndex = 0; fileIndex < selected.Length; fileIndex++)
             {
+                var file = selected[fileIndex];
+                var fileBudget = remaining / (selected.Length - fileIndex);
                 var source = contents.FirstOrDefault(item => item.File.Equals(file.File, StringComparison.OrdinalIgnoreCase));
                 if (source is null)
                 {
@@ -112,7 +132,7 @@ public sealed class SourceSearch(ISourceContextRepository repository, IOptions<O
                     continue;
                 }
                 var lines = source.Content.Replace("\r\n", "\n").Split('\n');
-                var start = request.Line ?? FirstLine(context, file.File);
+                var start = SnippetStart(context, request, file.File);
                 var declaration = context.Matches.FirstOrDefault(match => SameFile(match.File, file.File) && match.StartLine == start);
                 var targetEnd = request.EndLine ?? declaration?.EndLine ?? Math.Min(lines.Length, start + request.MaxLines - 1);
                 if (start > lines.Length)
@@ -128,14 +148,14 @@ public sealed class SourceSearch(ISourceContextRepository repository, IOptions<O
                 {
                     var hasPreviousLine = includedEnd >= start;
                     var cost = lines[line - 1].Length + (hasPreviousLine ? 1 : 0);
-                    if (cost > remaining - builder.Length) break;
+                    if (cost > fileBudget - builder.Length) break;
                     if (hasPreviousLine) builder.Append('\n');
                     builder.Append(lines[line - 1]);
                     includedEnd = line;
                 }
                 if (includedEnd < start)
                 {
-                    warnings.Add($"Orçamento de conteúdo insuficiente para a linha {start} de {file.File}; consulte esse arquivo separadamente ou aumente maxContentChars.");
+                    warnings.Add($"Orçamento de conteúdo insuficiente para a linha {start} de {file.File}; use o link desse arquivo com maxFiles=1 ou aumente maxContentChars.");
                     continue;
                 }
                 remaining -= builder.Length;
@@ -152,6 +172,16 @@ public sealed class SourceSearch(ISourceContextRepository repository, IOptions<O
         return new(request.Kind, context.Build, [], [], context.Matches.Take(request.MaxResults).ToArray(),
             context.References.Take(request.MaxResults).ToArray(), context.Chains.Take(request.MaxResults).ToArray(),
             files, snippets, WithUrls(nextSteps), warnings.Distinct(StringComparer.Ordinal).ToArray());
+    }
+
+    private static int SnippetStart(SourceContextResponse context, SourceExplorationRequest request, string file)
+    {
+        if (request.Line.HasValue) return request.Line.Value;
+        var match = FirstLine(context, file);
+        if (request.Kind is not ("screen" or "action")) return match;
+        var extension = Path.GetExtension(file).ToLowerInvariant();
+        if (extension is ".html" or ".htm" or ".cshtml" or ".razor" or ".vue") return 1;
+        return Math.Max(1, match - Math.Min(20, request.MaxLines / 4));
     }
 
     private SourceSearchNext[] WithUrls(List<SourceSearchNext> next)
