@@ -22,6 +22,8 @@ indexados ao agente externo, sem nova camada de permissao por papel. O mesmo
 core atende MCP e GET/POST /api/source-context/search. next.arguments conserva
 application/version/buildId e filtros. Comecar por applications/builds, depois
 DSL/metadados e fontes; screen/action sao pistas textuais, nao um grafo funcional.
+O mesmo next devolve url absoluta pronta para GET, montada com a base canonica
+OperationalIntelligence:PublicBaseUrl, nunca com Host/headers do chamador.
 Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
 Alteracoes Git e tarefas continuam no caminho administrativo autorizado.
 `yeshua_app_explore`/GET `/explorer/apps` leem somente o catalogo do Front e

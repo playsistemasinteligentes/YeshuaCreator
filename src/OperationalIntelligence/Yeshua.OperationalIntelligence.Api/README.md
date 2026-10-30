@@ -58,12 +58,16 @@ POST /mcp
 Exemplo de investigacao:
 
 Para exploracao incremental, use `yeshua_source_search` ou GET/POST
-`/api/source-context/search`. Comece com `kind=applications`, siga `next.arguments`
+`/api/source-context/search`. Comece com `kind=applications`, abra `next.url` no GET
+ou envie `next.arguments` no MCP/POST
 para builds/DSL, e refine `screen`, `action`, `metadata`, `file`, `field`, `class`
 ou `function`. Cada continuacao conserva o buildId exato; includeContent habilita
 trechos limitados por maxFiles/maxLines e um maxContentChars global. O corpo dos
 fontes vem do banco indexado, nunca de fallback para Git/disco. Leia o guia unico
 em `Documentation/Explorer.md` (GET `/explorer`) para contratos e exemplos.
+`OperationalIntelligence:PublicBaseUrl` configura a base pública desses links
+(padrão `https://playsis.com.br/operational/`). O endereço não vem de headers
+do chamador; cada URL preserva os argumentos e sua codificação.
 
 O exemplo abaixo e do orquestrador legado de investigacao:
 

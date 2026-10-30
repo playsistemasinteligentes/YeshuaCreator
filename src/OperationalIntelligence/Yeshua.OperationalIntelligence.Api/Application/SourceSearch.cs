@@ -1,11 +1,16 @@
 using Yeshua.OperationalIntelligence.Api.Contracts;
 using Yeshua.OperationalIntelligence.Api.Repositories;
+using Yeshua.OperationalIntelligence.Api.Configuration;
+using Microsoft.Extensions.Options;
+using System.Text.Json;
 
 namespace Yeshua.OperationalIntelligence.Api.Application;
 
 // Coordinates existing indexed evidence; no second index, graph or generated app manual.
-public sealed class SourceSearch(ISourceContextRepository repository)
+public sealed class SourceSearch(ISourceContextRepository repository, IOptions<OperationalIntelligenceOptions>? options = null)
 {
+    private readonly string _searchUrl = SearchUrl(options?.Value ?? new());
+
     public async Task<SourceExplorationResponse> SearchAsync(SourceExplorationRequest input, CancellationToken token)
     {
         var request = Normalize(input);
@@ -19,7 +24,7 @@ public sealed class SourceSearch(ISourceContextRepository repository)
             var next = page.Select(app => new SourceSearchNext("Consultar versões indexadas.",
                 request with { Kind = "builds", Application = app.Name, Query = null, Offset = 0 })).ToList();
             AddPage(next, request, all.Length);
-            return new(request.Kind, null, page, [], [], [], [], [], [], next,
+            return new(request.Kind, null, page, [], [], [], [], [], [], WithUrls(next),
                 page.Length == 0 ? ["Nenhum aplicativo indexado corresponde ao filtro. O catálogo não comprova acesso de uma conta."] : []);
         }
         if (request.Kind == "builds")
@@ -34,7 +39,7 @@ public sealed class SourceSearch(ISourceContextRepository repository)
                 request with { Kind = "dsl", Application = build.Application, Version = build.Version,
                     BuildId = build.BuildId, Query = null, Offset = 0, IncludeContent = true })).ToList();
             AddPage(next, request, all.Length);
-            return new(request.Kind, null, [], page, [], [], [], [], [], next,
+            return new(request.Kind, null, [], page, [], [], [], [], [], WithUrls(next),
                 page.Length == 0 ? ["Nenhum build indexado corresponde ao filtro; não há fonte confirmado para esta consulta."] : []);
         }
 
@@ -146,7 +151,34 @@ public sealed class SourceSearch(ISourceContextRepository repository)
         }
         return new(request.Kind, context.Build, [], [], context.Matches.Take(request.MaxResults).ToArray(),
             context.References.Take(request.MaxResults).ToArray(), context.Chains.Take(request.MaxResults).ToArray(),
-            files, snippets, nextSteps, warnings.Distinct(StringComparer.Ordinal).ToArray());
+            files, snippets, WithUrls(nextSteps), warnings.Distinct(StringComparer.Ordinal).ToArray());
+    }
+
+    private SourceSearchNext[] WithUrls(List<SourceSearchNext> next)
+    {
+        var linked = new SourceSearchNext[next.Count];
+        for (var index = 0; index < next.Count; index++)
+        {
+            var arguments = JsonSerializer.SerializeToElement(next[index].Arguments,
+                SourceExplorationJson.Default.SourceExplorationRequest);
+            var pairs = new List<string>();
+            foreach (var field in arguments.EnumerateObject())
+            {
+                if (field.Value.ValueKind == JsonValueKind.Null) continue;
+                var value = field.Value.ValueKind == JsonValueKind.String
+                    ? field.Value.GetString()! : field.Value.GetRawText();
+                pairs.Add(Uri.EscapeDataString(field.Name) + "=" + Uri.EscapeDataString(value));
+            }
+            linked[index] = next[index] with { Url = _searchUrl + "?" + string.Join("&", pairs) };
+        }
+        return linked;
+    }
+
+    private static string SearchUrl(OperationalIntelligenceOptions options)
+    {
+        if (!OperationalIntelligenceOptions.IsValidPublicBaseUrl(options.PublicBaseUrl))
+            throw new ArgumentException("Configure OperationalIntelligence:PublicBaseUrl com a URL pública da API.");
+        return new Uri(new Uri(options.PublicBaseUrl.TrimEnd('/') + "/"), "api/source-context/search").AbsoluteUri;
     }
 
     private static int FirstLine(SourceContextResponse context, string file) => Math.Max(1,

@@ -18,6 +18,8 @@ builder.Services
     .Validate(options => options.CommandTimeoutSeconds > 0, "Command timeout must be positive.")
     .Validate(options => options.MaximumMaxDepth > 0, "Maximum graph depth must be positive.")
     .Validate(options => options.MaximumMaxResults > 0, "Maximum result count must be positive.")
+    .Validate(options => OperationalIntelligenceOptions.IsValidPublicBaseUrl(options.PublicBaseUrl),
+        "Public base URL must be an absolute HTTP(S) URL without credentials, query or fragment.")
     .ValidateOnStart();
 
 builder.Services.AddSingleton<OperationalIntelligenceDatabase>();

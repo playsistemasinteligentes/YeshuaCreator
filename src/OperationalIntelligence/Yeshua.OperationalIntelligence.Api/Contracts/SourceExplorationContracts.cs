@@ -28,7 +28,10 @@ public sealed record SourceExplorationRequest
 public sealed record SourceSnippet(string File, int StartLine, int EndLine, int TotalLines,
     string Content, bool Complete);
 
-public sealed record SourceSearchNext(string Reason, SourceExplorationRequest Arguments);
+public sealed record SourceSearchNext(string Reason, SourceExplorationRequest Arguments)
+{
+    public string Url { get; init; } = string.Empty;
+}
 
 // Same evidence envelope for HTTP GET/POST and MCP. Existing symbol result fields remain at the root.
 public sealed record SourceExplorationResponse(string Kind, BuildSummary? Build,

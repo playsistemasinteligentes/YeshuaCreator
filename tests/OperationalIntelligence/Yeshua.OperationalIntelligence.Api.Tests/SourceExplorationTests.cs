@@ -14,12 +14,63 @@ using Yeshua.OperationalIntelligence.Api.Endpoints;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Tools;
 using Yeshua.OperationalIntelligence.Api.Repositories;
+using Yeshua.OperationalIntelligence.Api.Configuration;
+using Microsoft.Extensions.Options;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Yeshua.OperationalIntelligence.Api.Tests;
 
 [TestClass]
 public sealed class SourceExplorationTests
 {
+    [TestMethod]
+    public async Task AbsoluteNextUrlPreservesEncodedFiltersAndPinnedSnapshot()
+    {
+        var repository = new IndexedRepository();
+        var search = new SourceSearch(repository, Options.Create(new OperationalIntelligenceOptions
+        {
+            PublicBaseUrl = "https://help.example/nested/operational"
+        }));
+        const string query = "Publicar ação & x=1 + #?%";
+        const string file = "src/Pasta com espaço/Foto & vídeo.cs";
+        var result = await search.SearchAsync(new()
+        {
+            Application = "Memorias", Kind = "function", Query = query, File = file,
+            IncludeContent = true, MaxLines = 2, Direction = "upstream", MaxContentChars = 900
+        }, default);
+        foreach (var next in result.Next)
+        {
+            var url = new Uri(next.Url);
+            Assert.AreEqual("https", url.Scheme);
+            Assert.AreEqual("help.example", url.Host);
+            Assert.AreEqual("/nested/operational/api/source-context/search", url.AbsolutePath);
+            Assert.AreEqual(string.Empty, url.Fragment);
+            var fields = QueryHelpers.ParseQuery(url.Query);
+            Assert.AreEqual(next.Arguments.Kind, fields["kind"].ToString());
+            Assert.AreEqual(repository.Build.BuildId.ToString(), fields["buildId"].ToString());
+            Assert.AreEqual(repository.Build.Version, fields["version"].ToString());
+            Assert.AreEqual(next.Arguments.File, fields["file"].ToString());
+            Assert.AreEqual("true", fields["includeContent"].ToString());
+            Assert.AreEqual("2", fields["maxLines"].ToString());
+            Assert.AreEqual("900", fields["maxContentChars"].ToString());
+            Assert.AreEqual("upstream", fields["direction"].ToString());
+        }
+        var deeper = QueryHelpers.ParseQuery(new Uri(result.Next.Single(n => n.Arguments.MaxDepth == 1).Url).Query);
+        Assert.AreEqual(query, deeper["query"].ToString());
+        Assert.AreEqual(file, deeper["file"].ToString());
+        var continueRead = result.Next.Single(n => n.Arguments.Line == 5);
+        Assert.AreEqual("5", QueryHelpers.ParseQuery(new Uri(continueRead.Url).Query)["line"].ToString());
+        Assert.AreEqual("6", QueryHelpers.ParseQuery(new Uri(continueRead.Url).Query)["endLine"].ToString());
+    }
+
+    [TestMethod]
+    public void PublicLinkBaseRejectsCredentialsQueriesAndFragments()
+    {
+        foreach (var value in new[] { "relative/path", "ftp://help.example/", "https://user:secret@help.example/", "https://help.example/?token=x", "https://help.example/#fragment" })
+            Assert.ThrowsException<ArgumentException>(() => new SourceSearch(new IndexedRepository(),
+                Options.Create(new OperationalIntelligenceOptions { PublicBaseUrl = value })));
+    }
+
     [TestMethod]
     public async Task DiscoveryPreservesTheExactBuildAndPagesWithoutReadingWholeRepository()
     {
@@ -153,6 +204,14 @@ public sealed class SourceExplorationTests
         using var attributed = await http.GetAsync("/api/source-context/search?kind=applications&utm_source=chatgpt.com&utm_content=not-a-filter");
         Assert.AreEqual(HttpStatusCode.OK, attributed.StatusCode);
         Assert.AreEqual(await catalog.Content.ReadAsStringAsync(), await attributed.Content.ReadAsStringAsync());
+        var absoluteNext = new Uri(catalogJson.RootElement.GetProperty("next")[0].GetProperty("url").GetString()!);
+        Assert.AreEqual("playsis.com.br", absoluteNext.Host);
+        Assert.AreEqual("/operational/api/source-context/search", absoluteNext.AbsolutePath);
+        using var followNext = await http.GetAsync("/api/source-context/search" + absoluteNext.Query);
+        Assert.AreEqual(HttpStatusCode.OK, followNext.StatusCode);
+        using var followed = JsonDocument.Parse(await followNext.Content.ReadAsStringAsync());
+        Assert.AreEqual("builds", followed.RootElement.GetProperty("kind").GetString());
+        Assert.AreEqual(repository.Build.BuildId.ToString(), followed.RootElement.GetProperty("builds")[0].GetProperty("buildId").GetString());
         var mcpCatalog = await mcp.CallToolAsync("yeshua_source_search");
         Assert.IsFalse(mcpCatalog.IsError ?? false);
         Assert.AreEqual("applications", mcpCatalog.StructuredContent!.Value.GetProperty("kind").GetString());

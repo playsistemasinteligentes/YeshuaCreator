@@ -58,7 +58,7 @@ usam o mesmo SourceSearch e o mesmo repositório; não existe outro grafo ou man
 
 1. kind=applications lista aplicativos INDEXADOS. query filtra o nome.
 2. kind=builds&application=NOME lista snapshots e seus buildId, version e commitSha.
-3. Siga next[].arguments para escolher um snapshot e ler kind=dsl. A DSL original
+3. Abra next[].url para escolher um snapshot e ler kind=dsl. Pelo MCP, use next[].arguments. A DSL original
    mostra entidades, campos, opções, comandos e sagas; as migrations não são um
    novo manifesto consolidado. Confirme alterações posteriores ao interpretar.
 4. kind=screen, action ou metadata procura arquivos candidatos no mesmo índice.
@@ -72,10 +72,11 @@ usam o mesmo SourceSearch e o mesmo repositório; não existe outro grafo ou man
 Exemplo depois de confirmar NOME e SNAPSHOT no catálogo (substitua os placeholders):
 https://playsis.com.br/operational/api/source-context/search?application=NOME&buildId=SNAPSHOT&kind=screen&query=cadastro&includeContent=true
 
-Para continuar por GET, use a mesma rota e converta next[].arguments em query
-string, omitindo null e codificando os valores. Por MCP ou POST, envie diretamente
-aquele objeto. Preserve application, version e buildId: outra consulta sem eles
-pode mudar de snapshot durante a conversa. Não invente nomes nem IDs.
+Para continuar por GET, abra diretamente a URL absoluta de next[].url, sem
+remontar parâmetros. O servidor já codifica os valores e preserva os filtros,
+application, version e buildId quando disponíveis. Por MCP ou POST, envie
+next[].arguments. Leia a resposta antes de escolher a próxima consulta; não abra
+todos os links de next como um lote. Não invente nomes nem IDs.
 
 includeContent=false (padrão) devolve referências sem carregar os corpos dos fontes.
 includeContent=true inclui snippets com file, startLine, endLine, totalLines,
