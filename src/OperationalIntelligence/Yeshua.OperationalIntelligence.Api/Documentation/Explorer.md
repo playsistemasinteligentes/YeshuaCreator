@@ -56,6 +56,15 @@ Ela corresponde a yeshua_source_search {"kind":"applications"} e a POST
 /operational/api/source-context/search com o mesmo objeto JSON. Os três caminhos
 usam o mesmo SourceSearch e o mesmo repositório; não existe outro grafo ou manual.
 
+Os GETs públicos usam text/plain por padrão. Nas consultas estruturadas, o corpo
+mantém o mesmo envelope JSON e os mesmos dados; apenas a apresentação HTTP muda.
+format=json seleciona application/json, e format=text explicita o padrão.
+Links de continuação preservam JSON quando ele foi solicitado; sem format,
+continuam em texto. format é uma opção somente da borda GET: não faz parte dos
+filtros do índice nem dos argumentos MCP/POST, que continuam usando JSON.
+O próprio Explorer segue como guia em texto; format=json o representa como uma
+string JSON. Não é necessário escolher formato para navegar normalmente.
+
 1. kind=applications lista aplicativos INDEXADOS. query filtra o nome.
 2. kind=builds&application=NOME lista snapshots e seus buildId, version e commitSha.
 3. Abra next[].url para escolher um snapshot e ler kind=dsl. Pelo MCP, use next[].arguments. A DSL original

@@ -179,8 +179,30 @@ public sealed class SourceExplorationTests
         using var post = await http.PostAsJsonAsync("/api/source-context/search", request);
         var getText = await get.Content.ReadAsStringAsync();
         Assert.AreEqual(HttpStatusCode.OK, get.StatusCode, getText);
+        Assert.AreEqual("text/plain", get.Content.Headers.ContentType!.MediaType);
+        Assert.AreEqual("application/json", post.Content.Headers.ContentType!.MediaType);
         Assert.IsTrue(get.Headers.CacheControl!.NoStore);
         Assert.AreEqual(getText, await post.Content.ReadAsStringAsync());
+        using var explicitText = await http.GetAsync("/api/source-context/search?application=Memorias&kind=function&query=Publicar&includeContent=true&maxLines=2&format=text");
+        Assert.AreEqual(getText, await explicitText.Content.ReadAsStringAsync());
+        using var explicitJson = await http.GetAsync("/api/source-context/search?application=Memorias&kind=function&query=Publicar&includeContent=true&maxLines=2&format=json");
+        Assert.AreEqual("application/json", explicitJson.Content.Headers.ContentType!.MediaType);
+        using var jsonFormat = JsonDocument.Parse(await explicitJson.Content.ReadAsStringAsync());
+        using var plainFormat = JsonDocument.Parse(getText);
+        Assert.AreEqual(plainFormat.RootElement.GetProperty("snippets").ToString(), jsonFormat.RootElement.GetProperty("snippets").ToString());
+        Assert.AreEqual(plainFormat.RootElement.GetProperty("references").ToString(), jsonFormat.RootElement.GetProperty("references").ToString());
+        Assert.AreEqual(plainFormat.RootElement.GetProperty("build").ToString(), jsonFormat.RootElement.GetProperty("build").ToString());
+        foreach (var next in jsonFormat.RootElement.GetProperty("next").EnumerateArray())
+        {
+            var fields = QueryHelpers.ParseQuery(new Uri(next.GetProperty("url").GetString()!).Query);
+            Assert.AreEqual("json", fields["format"].ToString());
+            Assert.AreEqual(repository.Build.BuildId.ToString(), fields["buildId"].ToString());
+            Assert.IsFalse(next.GetProperty("arguments").TryGetProperty("format", out _));
+        }
+        var jsonNext = new Uri(jsonFormat.RootElement.GetProperty("next")[0].GetProperty("url").GetString()!);
+        using var followJson = await http.GetAsync("/api/source-context/search" + jsonNext.Query);
+        Assert.AreEqual(HttpStatusCode.OK, followJson.StatusCode);
+        Assert.AreEqual("application/json", followJson.Content.Headers.ContentType!.MediaType);
         await using var mcp = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
         {
             Endpoint = new Uri(http.BaseAddress, "/mcp"), TransportMode = HttpTransportMode.StreamableHttp
@@ -209,6 +231,7 @@ public sealed class SourceExplorationTests
         Assert.AreEqual("/operational/api/source-context/search", absoluteNext.AbsolutePath);
         using var followNext = await http.GetAsync("/api/source-context/search" + absoluteNext.Query);
         Assert.AreEqual(HttpStatusCode.OK, followNext.StatusCode);
+        Assert.AreEqual("text/plain", followNext.Content.Headers.ContentType!.MediaType);
         using var followed = JsonDocument.Parse(await followNext.Content.ReadAsStringAsync());
         Assert.AreEqual("builds", followed.RootElement.GetProperty("kind").GetString());
         Assert.AreEqual(repository.Build.BuildId.ToString(), followed.RootElement.GetProperty("builds")[0].GetProperty("buildId").GetString());
@@ -216,13 +239,17 @@ public sealed class SourceExplorationTests
         Assert.IsFalse(mcpCatalog.IsError ?? false);
         Assert.AreEqual("applications", mcpCatalog.StructuredContent!.Value.GetProperty("kind").GetString());
         var callsBefore = repository.Calls;
-        foreach (var query in new[] { "maxDepth=99", "maxDepth=no", "kind=unknown", "kind=function", "line=1", "maxResults=1&maxResults=2", "url=https://elsewhere", "buildId=bad", "includeContent=wrong", "direction=wrong" })
+        foreach (var query in new[] { "maxDepth=99", "maxDepth=no", "kind=unknown", "kind=function", "line=1", "maxResults=1&maxResults=2", "url=https://elsewhere", "buildId=bad", "includeContent=wrong", "direction=wrong", "format=html", "format=json&format=text", "format=" })
         {
             using var invalid = await http.GetAsync("/api/source-context/search?" + query);
             Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode, query);
         }
         using var invalidPost = await http.PostAsync("/api/source-context/search", new StringContent("{\"kind\":null}", Encoding.UTF8, "application/json"));
         Assert.AreEqual(HttpStatusCode.BadRequest, invalidPost.StatusCode);
+        using var formattedPost = await http.PostAsJsonAsync("/api/source-context/search?format=text", request);
+        Assert.AreEqual(HttpStatusCode.BadRequest, formattedPost.StatusCode);
+        Assert.AreEqual("application/json", formattedPost.Content.Headers.ContentType!.MediaType);
+        Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_source_search", new Dictionary<string, object?> { ["kind"] = "applications", ["format"] = "text" })).IsError);
         Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_source_search", new Dictionary<string, object?> { ["unexpected"] = true })).IsError);
         Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_task_send", new Dictionary<string, object?> { ["message"] = "não executar" })).IsError);
         Assert.AreEqual(callsBefore, repository.Calls);

@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Globalization;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace Yeshua.OperationalIntelligence.Api.Endpoints;
 
@@ -128,15 +129,18 @@ public static class OperationalIntelligenceEndpoints
             HttpContext http, SourceSearch search, CancellationToken token) =>
         {
             http.Response.Headers.CacheControl = "no-store";
+            var isGet = HttpMethods.IsGet(http.Request.Method);
+            var format = isGet ? "text" : "json";
             try
             {
                 SourceExplorationRequest request;
-                if (HttpMethods.IsGet(http.Request.Method))
+                if (isGet)
                 {
+                    format = PublicReadQuery.Format(http.Request.Query);
                     var arguments = new JsonObject();
                     foreach (var pair in http.Request.Query)
                     {
-                        if (PublicReadQuery.IsAttribution(pair.Key)) continue;
+                        if (PublicReadQuery.IsAttribution(pair.Key) || pair.Key == "format") continue;
                         if (pair.Value.Count != 1) throw new ArgumentException("Use um valor por filtro.");
                         var text = pair.Value.ToString();
                         if (pair.Key is "line" or "endLine" or "maxDepth" or "maxResults" or "offset" or "maxFiles" or "maxLines" or "maxContentChars")
@@ -162,14 +166,19 @@ public static class OperationalIntelligenceEndpoints
                         ?? throw new ArgumentException("Informe o objeto de filtros.");
                 }
                 var response = await search.SearchAsync(request, token);
-                return Results.Json(response, SourceExplorationJson.Default.SourceExplorationResponse);
+                if (isGet && format == "json")
+                    response = response with { Next = response.Next.Select(next => next with
+                    {
+                        Url = QueryHelpers.AddQueryString(next.Url, "format", "json")
+                    }).ToArray() };
+                return PublicReadQuery.Reply(JsonSerializer.Serialize(response, SourceExplorationJson.Default.SourceExplorationResponse), format);
             }
-            catch (JsonException) { return Results.BadRequest(new { error = "Filtros desconhecidos ou tipos inválidos. Consulte o Explorer/schema da pesquisa." }); }
-            catch (ArgumentException exception) { return Results.BadRequest(new { error = exception.Message }); }
-            catch (KeyNotFoundException exception) { return Results.NotFound(new { error = exception.Message }); }
+            catch (JsonException) { return PublicReadQuery.Error("Filtros desconhecidos ou tipos inválidos. Consulte o Explorer/schema da pesquisa.", format); }
+            catch (ArgumentException exception) { return PublicReadQuery.Error(exception.Message, format); }
+            catch (KeyNotFoundException exception) { return PublicReadQuery.Error(exception.Message, format, 404); }
             catch (System.Data.Common.DbException)
             {
-                return Results.Json(new { error = "O índice está indisponível. Isso não comprova ausência de aplicativos ou fontes." }, statusCode: 503);
+                return PublicReadQuery.Error("O índice está indisponível. Isso não comprova ausência de aplicativos ou fontes.", format, 503);
             }
         }).AllowAnonymous().WithName("ExploreIndexedSourceContext");
     }
