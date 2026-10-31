@@ -103,8 +103,9 @@ export async function runAcceptance(options) {
   });
   await check('public.explorer', async () => {
     const result = await client.call('yeshua_explorer');
-    requireEvidence(result.content.some(item => item.text?.includes('yeshua_source_search')), 'Guide lacks indexed search');
-    requireEvidence(result.content.some(item => item.text?.includes('next')), 'Guide lacks navigation');
+    requireEvidence(result.structuredContent.guide.includes('yeshua_source_search'), 'Guide lacks indexed search');
+    requireEvidence(result.structuredContent.guide.includes('next'), 'Guide lacks navigation');
+    requireEvidence(result.content.reduce((sum, item) => sum + (item.text?.length ?? 0), 0) < 200, 'Guide duplicated in text');
   });
   const app = options.application ?? 'Memorias';
   const catalog = (await client.call('yeshua_source_search', { kind: 'applications' })).structuredContent;

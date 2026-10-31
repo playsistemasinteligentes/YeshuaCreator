@@ -67,7 +67,7 @@ public static class McpToolSchemas
             ["maxSignals"] = Integer("Maximum extracted source clues to inspect."),
             ["maxFiles"] = Integer("Maximum ranked source files to return."),
             ["maxContentChars"] = Integer("Maximum characters returned per source file."),
-            ["maxDepth"] = Integer("Maximum call/reference depth."),
+            ["maxDepth"] = new { type = "integer", minimum = 0, description = "Maximum call/reference depth; zero avoids relation expansion." },
             ["maxResults"] = Integer("Maximum number of source index results per extracted clue.")
         },
         required = new[] { "application" },

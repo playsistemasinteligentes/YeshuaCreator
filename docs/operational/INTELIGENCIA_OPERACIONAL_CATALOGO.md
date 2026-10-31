@@ -43,7 +43,7 @@ Conexão pública: `https://playsis.com.br/operational/mcp`.
 | Ferramenta | Entrada | Entrega e alcance |
 | --- | --- | --- |
 | `yeshua_health` | `{}` | Estado da camada MCP e de Loki, Tempo e Prometheus. Não verifica todos os aplicativos, contas ou dados de negócio. |
-| `yeshua_explorer` | `{}` | Guia em texto: propósito, arquitetura, capacidades, exemplos e como escolher consultas. Não executa a investigação nem habilita ferramentas mencionadas no guia. |
+| `yeshua_explorer` | `{}` | Guia em `structuredContent.guide`: propósito, arquitetura, capacidades, exemplos e como escolher consultas. Não executa a investigação nem habilita ferramentas mencionadas no guia. |
 | `yeshua_app_explore` | `application`, `screen`, ambos opcionais; `screen` exige aplicativo | Catálogo atual do Front, endereços de acesso e telas anunciadas. Com tela, devolve seus arquivos públicos HTML/JavaScript completos, dentro do limite. |
 | `yeshua_source_search` | `kind`, escopo, pistas e limites descritos abaixo | Aplicativos e builds indexados, arquivos, símbolos, referências, relações, snippets, avisos e sugestões de continuação. |
 
@@ -400,6 +400,10 @@ consultas reais, cenários de fixtures e instalação do plugin ainda não ensai
 Foram corrigidas duas incompatibilidades de navegação: argumentos de continuação
 com nulos incompatíveis com o schema de entrada e resolução de nomes qualificados
 de stack traces sem a assinatura de parâmetros armazenada pelo índice.
+O schema de correlação de logs também aceita profundidade zero, como a
+implementação. No MCP, guia e fontes da interface seguem em dados estruturados,
+acompanhados de texto curto, sem repetir o conteúdo integral nos dois lugares.
+Os GETs continuam entregando o mesmo guia e as mesmas evidências.
 
 Próxima sequência proposta:
 

@@ -34,19 +34,23 @@ public sealed class McpOutputContractTests
             {
                 "yeshua_app_explore" => """{"application":"Memorias","screen":"register"}""",
                 "yeshua.traces.query" => """{"traceId":"00000000000000000000000000000000"}""",
-                "yeshua.metrics.query" => """{"query":"vector(1)"}""",
+                "yeshua.metrics.query" => """{"query":"vector(1)","fromUtc":"2026-10-31T10:00:00Z","toUtc":"2026-10-31T10:01:00Z"}""",
+                "yeshua.logs.query" or "yeshua.errors.query" => """{"fromUtc":"2026-10-31T10:00:00Z","toUtc":"2026-10-31T10:01:00Z"}""",
                 "yeshua.logs.source_context" => """{"application":"Memorias","log":"synthetic marker"}""",
                 _ => "{}"
             };
-            var result = await tool.CallAsync(JsonSerializer.Deserialize<JsonElement>(input), default);
+            var request = JsonSerializer.Deserialize<JsonElement>(input);
+            Validate(JsonSerializer.SerializeToElement(tool.InputSchema, JsonOptions), request);
+            var result = await tool.CallAsync(request, default);
             Assert.IsFalse(result.IsError, tool.Name);
             Validate(McpOutputSchemas.For(tool.Name), JsonSerializer.SerializeToElement(result.StructuredContent, JsonOptions));
         }
         var enriched = await tools.Single(tool => tool.Name == "yeshua.logs.query").CallAsync(
             JsonSerializer.Deserialize<JsonElement>("""{"application":"Memorias","includeKnowledgeReferences":true}"""), default);
         Validate(McpOutputSchemas.For("yeshua_logs_query"), JsonSerializer.SerializeToElement(enriched.StructuredContent, JsonOptions));
-        var syntheticStack = await tools.Single(tool => tool.Name == "yeshua.logs.source_context").CallAsync(
-            JsonSerializer.Deserialize<JsonElement>("""{"application":"Memorias","log":"at Example.Handler.Execute() in src/Handler.cs:line 3","includeContent":false}"""), default);
+        var syntheticArguments = JsonSerializer.Deserialize<JsonElement>("""{"application":"Memorias","log":"at Example.Handler.Execute() in src/Handler.cs:line 3","includeContent":false,"maxDepth":0}""");
+        Validate(JsonSerializer.SerializeToElement(McpToolSchemas.LogSourceContext(), JsonOptions), syntheticArguments);
+        var syntheticStack = await tools.Single(tool => tool.Name == "yeshua.logs.source_context").CallAsync(syntheticArguments, default);
         Validate(McpOutputSchemas.For("yeshua_logs_source_context"), JsonSerializer.SerializeToElement(syntheticStack.StructuredContent, JsonOptions));
         foreach (var input in new[] { new SourceExplorationRequest(), new() { Kind = "builds", Application = "Memorias" },
                      new() { Kind = "file", Application = "Memorias", File = "src/test.cs", IncludeContent = true } })

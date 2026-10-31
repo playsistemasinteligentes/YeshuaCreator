@@ -25,6 +25,14 @@ DSL/metadados e fontes; screen/action sao pistas textuais, nao um grafo funciona
 O mesmo next devolve url absoluta pronta para GET, montada com a base canonica
 OperationalIntelligence:PublicBaseUrl, nunca com Host/headers do chamador.
 Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
+Os quinze contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
+Os next.arguments omitindo filtros nulos devem ser validos no schema de entrada.
+Nomes qualificados de stack traces podem omitir a assinatura dos parametros;
+a busca deve reconhecer a declaracao sem confundir prefixos parciais.
+O ciclo de validacao em scripts/operational separa fixtures locais, consultas MCP
+reais e avaliacao por agente isolado. Mutacoes de tarefas/autenticacao nao sao
+executadas automaticamente na producao para validar uma consulta. Nao anunciar
+teste de plugin instalado ou de voz como homologado pelo ensaio isolado.
 Alteracoes Git e tarefas continuam no caminho administrativo autorizado.
 `yeshua_app_explore`/GET `/explorer/apps` leem somente o catalogo do Front e
 arquivos publicos de telas explicitamente permitidas. Nao sao proxy de URLs ou

@@ -21,6 +21,6 @@ public sealed class PublicAppExploreTool(PublicAppExplorer explorer) : IMcpTool
         try { request = arguments.Deserialize(PublicAppExplorerJson.Default.PublicAppExploreRequest) ?? new(); }
         catch (JsonException) { return McpToolResult.Error("Informe apenas application e screen como textos."); }
         var result = await explorer.Explore(request, cancellationToken);
-        return McpToolResult.Ok(JsonSerializer.Serialize(result, PublicAppExplorerJson.Default.PublicAppExploration), result);
+        return McpToolResult.Ok("Catalogo e evidencias da interface em structuredContent; leia applications e sources sem presumir execucao do servidor.", result);
     }
 }

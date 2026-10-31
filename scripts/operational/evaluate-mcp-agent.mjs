@@ -4,7 +4,7 @@ import { spawn } from 'node:child_process';
 import { createInterface } from 'node:readline';
 import { mkdtemp, mkdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { tmpdir, homedir } from 'node:os';
-import { join, resolve } from 'node:path';
+import { basename, join, resolve, sep } from 'node:path';
 import { McpClient } from './validate-mcp.mjs';
 
 const factNames = ['registration_fields', 'login_fields', 'new_album_control', 'manual_album_save_required',
@@ -115,7 +115,8 @@ async function evaluate(options, name, indexedOnly, question, runtimeQuestion = 
       + 'Nao conclua comportamento pela falta de um trecho. Diferencie a tela de estudio de CRUDs auxiliares. '
       + 'Fundamente fatos com requestId, file e linhas efetivamente recebidas. Nao invente evidencia. '
       + 'Nao envie cadastros, fotos ou publicacoes nem solicite senha/token. Responda em portugues. '
-      + (indexedOnly ? 'Obtenha as evidencias somente de fontes indexados; app_explore nao esta disponivel neste ensaio.' : '');
+      + (indexedOnly ? 'Obtenha as evidencias somente de fontes indexados; app_explore nao esta disponivel neste ensaio.' : '')
+      + '\nInstrucoes anunciadas pelo servidor MCP:\n' + (client.instructions ?? '');
     const thread = await request('thread/start', { cwd, sandbox: 'read-only', approvalPolicy: 'never', ephemeral: true,
       baseInstructions: instructions, dynamicTools: allowed.map(tool => ({ type: 'function', name: tool.name,
         description: tool.description, inputSchema: tool.inputSchema })) });
@@ -123,20 +124,27 @@ async function evaluate(options, name, indexedOnly, question, runtimeQuestion = 
       + (runtimeQuestion ? 'Use um fato chamado runtime_verified, booleano, para indicar se consultou o estado real.'
         : `Preencha facts para ${factNames.join(', ')}. Campos usam lista de IDs HTML; controle usa seu ID; *_required usa booleano; gatilhos usam descricao.`)
       + ' Use null quando faltar evidencia. Em evidence use requestId retornado e arquivo/URL e linhas reais do texto recebido.';
-    await request('turn/start', { threadId: thread.thread.id, input: [{ type: 'text', text: prompt }], outputSchema });
+    const scenarioSchema = structuredClone(outputSchema);
+    scenarioSchema.properties.facts.items.properties.name.enum = runtimeQuestion ? ['runtime_verified'] : factNames;
+    await request('turn/start', { threadId: thread.thread.id, input: [{ type: 'text', text: prompt }], outputSchema: scenarioSchema });
     const answer = JSON.parse(await completion);
     await writeFile(join(directory, 'answer.json'), JSON.stringify(answer, null, 2));
     await writeFile(join(directory, 'answer.md'), answer.answer + '\n\n' + answer.limitations.join('\n'));
     function check(label, passed) { report.checks.push({ name: label, passed: Boolean(passed) }); }
     const facts = new Map(answer.facts.map(fact => [fact.name, fact]));
+    function resolvedEvidence(citation) {
+      const data = observed.get(citation.requestId)?.structuredContent;
+      const candidates = [...(data?.snippets ?? []).map(snippet => ({ file: snippet.file, start: snippet.startLine, end: snippet.endLine })),
+        ...(data?.sources ?? []).map(source => ({ file: source.url, start: 1, end: source.content.split('\n').length }))]
+        .filter(item => item.file === citation.file || item.file.endsWith('/' + citation.file));
+      return candidates.length === 1 ? candidates[0] : null;
+    }
     check('answered', answer.answer.trim().length > 80);
     check('guide-and-health-used', report.calls.some(item => item.tool === 'yeshua_explorer') && report.calls.some(item => item.tool === 'yeshua_health'));
     for (const fact of answer.facts) for (const citation of fact.evidence) {
-      const data = observed.get(citation.requestId)?.structuredContent;
-      const covered = data?.snippets?.some(snippet => snippet.file === citation.file && citation.startLine >= snippet.startLine && citation.endLine <= snippet.endLine)
-        || data?.sources?.some(source => (source.url === citation.file || source.url.endsWith('/' + citation.file))
-          && citation.startLine >= 1 && citation.endLine <= source.content.split('\n').length);
-      check(`${fact.name}.citation.${citation.requestId}`, covered && citation.endLine >= citation.startLine);
+      const source = resolvedEvidence(citation);
+      check(`${fact.name}.citation.${citation.requestId}`, source && citation.startLine >= source.start
+        && citation.endLine <= source.end && citation.endLine >= citation.startLine);
     }
     if (runtimeQuestion) {
       check('runtime-not-fabricated', facts.get('runtime_verified')?.value === false);
@@ -149,12 +157,15 @@ async function evaluate(options, name, indexedOnly, question, runtimeQuestion = 
       check('no-required-manual-save', facts.get('manual_album_save_required')?.value === false);
       check('no-required-manual-upload', facts.get('manual_photo_send_required')?.value === false);
       for (const name of ['new_album_control', 'album_save_trigger', 'photo_send_trigger', 'manual_photo_send_required'])
-        check(name + '.studio-scope', facts.get(name)?.evidence?.every(citation => citation.file.includes('/Custon/Apps/Memorias/pages/estudio.')));
+        check(name + '.studio-scope', facts.get(name)?.evidence?.every(citation => resolvedEvidence(citation)?.file.includes('/Custon/Apps/Memorias/pages/estudio.')));
     }
     report.status = report.checks.every(item => item.passed) ? 'passed' : 'failed';
   } catch (error) { report.status = 'failed'; report.error = error.message; }
   finally {
-    clearTimeout(timer); child?.kill(); await rm(cwd, { recursive: true, force: true });
+    clearTimeout(timer); child?.kill();
+    if (!resolve(cwd).startsWith(resolve(tmpdir()) + sep) || !basename(cwd).startsWith('yeshua-mcp-eval-'))
+      throw new Error('Refusing to remove a directory outside the isolated evaluation temp area');
+    await rm(cwd, { recursive: true, force: true });
     report.transportCalls = client.calls; report.endedAtUtc = new Date().toISOString();
     await writeFile(join(directory, 'report.json'), JSON.stringify(report, null, 2));
   }

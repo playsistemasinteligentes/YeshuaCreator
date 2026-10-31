@@ -79,6 +79,8 @@ public sealed class PublicAppExplorerTests
         Assert.IsFalse(result.IsError ?? false);
         Assert.AreEqual(json.RootElement.GetProperty("applications").ToString(), result.StructuredContent!.Value.GetProperty("applications").ToString());
         Assert.AreEqual(json.RootElement.GetProperty("sources").ToString(), result.StructuredContent.Value.GetProperty("sources").ToString());
+        Assert.IsTrue(result.Content.OfType<ModelContextProtocol.Protocol.TextContentBlock>().Sum(item => item.Text.Length) < 200,
+            "Do not duplicate the complete source files in content and structuredContent.");
         using var invalid = await http.GetAsync("/explorer/apps?url=https://internal.example");
         Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode);
         using var duplicate = await http.GetAsync("/explorer/apps?application=Memorias&screen=register&screen=login&utm_source=chatgpt.com");

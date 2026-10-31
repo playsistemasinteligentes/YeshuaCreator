@@ -34,6 +34,15 @@ onde a porta privada está disponível, acrescentando:
 --private-url http://127.0.0.1:5729/mcp --sql-connection OperationalIntelligence
 ```
 
+O checkout montado em `/server` pode ter leitura restrita ao root do container.
+Nesse caso, copiar somente os auxiliares para `/tmp` e executá-los como `agent`.
+Não forçar sincronização do workspace, que pode conter trabalho em andamento:
+
+```sh
+docker cp /root/YeshuaCreator/scripts/operational yeshua-operational-intelligence:/tmp/yeshua-mcp-test-scripts
+docker exec -u agent yeshua-operational-intelligence node /tmp/yeshua-mcp-test-scripts/validate-mcp.mjs --private-url http://127.0.0.1:5729/mcp --output /tmp/yeshua-mcp-validation-live
+```
+
 A rodada confirma inicialização MCP, catálogo, schemas de respostas, saúde,
 as dez modalidades de busca, continuidade do snapshot, intervalos de fontes,
 telas de cadastro/login/estúdio, ausência de evidência e recusa das ferramentas

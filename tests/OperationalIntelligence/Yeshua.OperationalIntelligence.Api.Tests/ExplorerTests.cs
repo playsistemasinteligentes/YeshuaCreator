@@ -37,7 +37,8 @@ public sealed class ExplorerTests
         Assert.AreEqual(false, tool.ProtocolTool.Annotations.DestructiveHint);
         var result = await client.CallToolAsync("yeshua_explorer");
         Assert.IsFalse(result.IsError ?? false);
-        Assert.AreEqual(text, ((TextContentBlock)result.Content.Single()).Text);
+        Assert.AreEqual(text, result.StructuredContent!.Value.GetProperty("guide").GetString());
+        Assert.IsTrue(((TextContentBlock)result.Content.Single()).Text.Length < 200, "Do not duplicate the complete guide in content and structuredContent.");
     }
 
     [TestMethod]
