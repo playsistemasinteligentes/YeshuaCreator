@@ -123,9 +123,16 @@ async function evaluate(options, name, indexedOnly, question, runtimeQuestion = 
     const prompt = question + '\nComece por yeshua_explorer e confirme a conexao por yeshua_health. '
       + (runtimeQuestion ? 'Use um fato chamado runtime_verified, booleano, para indicar se consultou o estado real.'
         : `Preencha facts para ${factNames.join(', ')}. Campos usam lista de IDs HTML; controle usa seu ID; *_required usa booleano; gatilhos usam descricao.`)
-      + ' Use null quando faltar evidencia. Em evidence use requestId retornado e arquivo/URL e linhas reais do texto recebido.';
+      + (runtimeQuestion ? ' runtime_verified registra somente se voce executou uma consulta real ao estado, nao o status da publicacao; use booleano.'
+        : ' Use null quando faltar evidencia.')
+      + ' Em evidence use requestId retornado e arquivo/URL e linhas reais do texto recebido.';
     const scenarioSchema = structuredClone(outputSchema);
     scenarioSchema.properties.facts.items.properties.name.enum = runtimeQuestion ? ['runtime_verified'] : factNames;
+    if (runtimeQuestion) {
+      scenarioSchema.properties.facts.items.properties.value = { type: 'boolean' };
+      scenarioSchema.properties.facts.minItems = 1;
+      scenarioSchema.properties.facts.maxItems = 1;
+    }
     await request('turn/start', { threadId: thread.thread.id, input: [{ type: 'text', text: prompt }], outputSchema: scenarioSchema });
     const answer = JSON.parse(await completion);
     await writeFile(join(directory, 'answer.json'), JSON.stringify(answer, null, 2));
@@ -174,16 +181,18 @@ async function evaluate(options, name, indexedOnly, question, runtimeQuestion = 
 
 const options = { url: 'https://playsis.com.br/operational/mcp', codex: 'codex', output: 'artifacts/operational-mcp-validation/agent' };
 for (let index = 2; index < process.argv.length; index += 2) {
-  const key = { '--url': 'url', '--codex': 'codex', '--output': 'output' }[process.argv[index]];
+  const key = { '--url': 'url', '--codex': 'codex', '--output': 'output', '--scenario': 'scenario' }[process.argv[index]];
   if (!key || !process.argv[index + 1]) throw new Error('Unknown or missing argument');
   options[key] = process.argv[index + 1];
 }
 const results = [];
-for (const [name, indexed, question, runtime] of [
+const scenarios = [
   ['onboarding-public', false, 'Nunca usei o Memorias. Como me cadastro, entro, crio meu primeiro album e adiciono fotos?', false],
   ['onboarding-indexed', true, 'Como crio uma conta e meu primeiro album no estudio do Memorias? Preciso salvar e enviar as fotos manualmente?', false],
   ['runtime-boundary', false, 'A minha ultima publicacao do Memorias terminou com sucesso agora? Verifique o estado real ou explique o que falta para verificar.', true]
-]) {
+];
+if (options.scenario && !scenarios.some(item => item[0] === options.scenario)) throw new Error('Unknown scenario');
+for (const [name, indexed, question, runtime] of scenarios.filter(item => !options.scenario || item[0] === options.scenario)) {
   const result = await evaluate(options, name, indexed, question, runtime); results.push(result);
   console.log(JSON.stringify({ scenario: name, status: result.status, failed: result.checks.filter(item => !item.passed).map(item => item.name), error: result.error }));
 }

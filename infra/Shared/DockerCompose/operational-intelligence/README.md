@@ -28,8 +28,9 @@ do produto. Nao anuncia nem executa SQL, logs ou tarefas. Esses recursos mantem
 loopback na porta privada, que nao e publicada pelo Docker
 nem pelo Nginx. Headers `X-Forwarded-*` nao concedem esse acesso.
 
-`yeshua_explorer` recebe `{}` e devolve exatamente o mesmo texto do GET, em
-`text/plain; charset=utf-8`. A fonte unica e `Documentation/Explorer.md` da API,
+`yeshua_explorer` recebe `{}` e devolve o guia em `structuredContent.guide`,
+acompanhado de texto curto para nao duplicar o conteudo. O GET entrega o mesmo
+guia em `text/plain; charset=utf-8`. A fonte unica e `Documentation/Explorer.md` da API,
 carregada uma vez na inicializacao. Ela orienta consultas por escopo, explica os
 schemas existentes e marca lacunas. A pesquisa encontra candidatos textuais de
 telas/acoes/DSL e simbolos tecnicos; nao comprova todo vinculo customizado.

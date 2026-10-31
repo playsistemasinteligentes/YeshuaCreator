@@ -88,6 +88,12 @@ incluem resposta, fontes públicas realmente recebidas e relatório. Uso de toke
 é registrado quando a CLI o informa; ausência dessa informação não vira zero.
 Bytes de transporte e tokens não são a mesma medida.
 
+Para repetir somente um caso afetado, use `--scenario onboarding-public`,
+`--scenario onboarding-indexed` ou `--scenario runtime-boundary`, com outro
+diretório de saída. No último caso, `runtime_verified` é um booleano sobre a
+execução de uma consulta real, não o estado da publicação; ausência de acesso
+deve continuar explícita na resposta e nas limitações.
+
 Este ensaio valida um agente isolado usando MCP; não substitui instalar o plugin
 no ChatGPT e validar seleção de ferramentas, autenticação e experiência por voz.
 Depois de mudar contratos, atualizar os metadados da conexão e iniciar uma nova
@@ -105,3 +111,29 @@ O acesso administrativo continua pelo túnel/porta privada existente. Este ciclo
 não torna SQL, logs ou operações do agente anônimos. Autorização por identidade e
 tenant, bem como proteção dos endpoints HTTP administrativos, continuam
 pendências próprias e não devem ser inferidas do nome de um plugin.
+
+## Resultado da rodada de 31 de outubro de 2026
+
+API validada no commit `4ebb3d62c`, publicada pelo deploy padrão `shared`:
+
+| Camada | Resultado |
+| --- | --- |
+| Suíte .NET | 66 aprovados; dois testes opcionais não executados. |
+| Cliente MCP | Três testes de transporte e validação aprovados. |
+| MCP no servidor | 27 verificações aprovadas, 39 chamadas; inclui SQL parametrizado, correlação de stack e recusa de ferramentas privadas no canal público. |
+| IA e interface pública | Primeiro uso do Memórias aprovado com citações e revisão da resposta. |
+| IA e índice | Mesmo fluxo aprovado somente com evidências do snapshot. |
+| IA e ausência de runtime | Reteste aprovado: reconheceu que não consultou o estado real da publicação. |
+
+As rodadas anteriores foram preservadas. Elas revelaram argumentos nulos
+incompatíveis nas continuações, nomes de stack sem assinatura não resolvidos,
+schema de profundidade zero divergente e conteúdo integral duplicado no envelope
+MCP. Os dois primeiros foram corrigidos antes da publicação inicial; os demais,
+no reteste. Também foi corrigida uma ambiguidade do avaliador, que misturava
+ausência de evidência sobre a publicação com o indicador de execução de consulta.
+
+Relatórios completos ficam em `artifacts/operational-mcp-validation` no workspace
+e na área volátil privada de validação operacional do servidor. Não houve
+execução de mutações administrativas reais, instalação de novo plugin no ChatGPT
+ou ensaio de voz nessa rodada. Esses resultados não comprovam autorização por
+tenant, cobertura de todos os aplicativos ou instrumentação de todas as operações.
