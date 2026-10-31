@@ -60,7 +60,6 @@ public sealed class PublicAppExplorerTests
         using var http = new HttpClient { BaseAddress = new Uri(app.Urls.Single()) };
         using var response = await http.GetAsync("/explorer/apps?application=Memorias&screen=register");
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType!.MediaType);
         Assert.IsTrue(response.Headers.CacheControl!.NoStore);
         using var json = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
         Assert.AreEqual("public-ui", json.RootElement.GetProperty("scope").GetString());
@@ -69,13 +68,6 @@ public sealed class PublicAppExplorerTests
         Assert.AreEqual(HttpStatusCode.OK, attributed.StatusCode);
         using var attributedJson = JsonDocument.Parse(await attributed.Content.ReadAsStringAsync());
         Assert.AreEqual(json.RootElement.GetProperty("sources").ToString(), attributedJson.RootElement.GetProperty("sources").ToString());
-        using var explicitText = await http.GetAsync("/explorer/apps?application=Memorias&screen=register&format=text");
-        Assert.AreEqual("text/plain", explicitText.Content.Headers.ContentType!.MediaType);
-        using var explicitJson = await http.GetAsync("/explorer/apps?application=Memorias&screen=register&format=json");
-        Assert.AreEqual("application/json", explicitJson.Content.Headers.ContentType!.MediaType);
-        using var jsonFormat = JsonDocument.Parse(await explicitJson.Content.ReadAsStringAsync());
-        Assert.AreEqual(json.RootElement.GetProperty("applications").ToString(), jsonFormat.RootElement.GetProperty("applications").ToString());
-        Assert.AreEqual(json.RootElement.GetProperty("sources").ToString(), jsonFormat.RootElement.GetProperty("sources").ToString());
         await using var mcp = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
         {
             Endpoint = new Uri(http.BaseAddress, "/mcp"), TransportMode = HttpTransportMode.StreamableHttp
@@ -91,11 +83,6 @@ public sealed class PublicAppExplorerTests
         Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode);
         using var duplicate = await http.GetAsync("/explorer/apps?application=Memorias&screen=register&screen=login&utm_source=chatgpt.com");
         Assert.AreEqual(HttpStatusCode.BadRequest, duplicate.StatusCode);
-        foreach (var format in new[] { "format=html", "format=json&format=text", "format=" })
-        {
-            using var badFormat = await http.GetAsync("/explorer/apps?" + format);
-            Assert.AreEqual(HttpStatusCode.BadRequest, badFormat.StatusCode);
-        }
         Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_app_explore", new Dictionary<string, object?> { ["url"] = "https://internal.example" })).IsError);
         Assert.AreEqual(true, (await mcp.CallToolAsync("yeshua_database_select")).IsError);
     }

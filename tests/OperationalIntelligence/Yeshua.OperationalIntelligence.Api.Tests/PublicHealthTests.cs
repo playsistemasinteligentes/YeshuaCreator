@@ -20,7 +20,7 @@ public sealed class PublicHealthTests
         const string message = "teste gratis: acao & conexao <ok>";
         using var response = await host.Client.GetAsync("/health?mensagem=" + Uri.EscapeDataString(message));
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("text/plain", response.Content.Headers.ContentType!.MediaType);
+        Assert.AreEqual("application/json", response.Content.Headers.ContentType!.MediaType);
         Assert.IsTrue(response.Headers.CacheControl!.NoStore);
         using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
         Assert.AreEqual("yeshua_health", body.RootElement.GetProperty("tool").GetString());
@@ -48,27 +48,12 @@ public sealed class PublicHealthTests
     public async Task InvalidMessagesAreRejectedBeforeCallingTheTool()
     {
         await using var host = await HealthHost.StartAsync();
-        foreach (var query in new[] { "mensagem=" + new string('x', 201), "mensagem=one&mensagem=two", "format=html", "format=json&format=text", "format=" })
+        foreach (var query in new[] { "mensagem=" + new string('x', 201), "mensagem=one&mensagem=two" })
         {
             using var response = await host.Client.GetAsync("/health?" + query);
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode);
         }
         Assert.AreEqual(0, host.Tool.Calls);
-    }
-
-    [TestMethod]
-    public async Task JsonRemainsAvailableExplicitlyAndErrorsKeepTheRequestedFormat()
-    {
-        await using var host = await HealthHost.StartAsync();
-        using var response = await host.Client.GetAsync("/health?mensagem=check&format=json&utm_source=chatgpt.com");
-        Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
-        Assert.AreEqual("application/json", response.Content.Headers.ContentType!.MediaType);
-        using var body = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-        Assert.AreEqual("check", body.RootElement.GetProperty("received").GetString());
-        using var invalid = await host.Client.GetAsync("/health?mensagem=one&mensagem=two&format=json");
-        Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode);
-        Assert.AreEqual("application/json", invalid.Content.Headers.ContentType!.MediaType);
-        Assert.AreEqual(1, host.Tool.Calls);
     }
 
     [TestMethod]

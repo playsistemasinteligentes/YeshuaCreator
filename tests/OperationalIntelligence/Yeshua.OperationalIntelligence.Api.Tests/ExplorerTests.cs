@@ -76,13 +76,7 @@ public sealed class ExplorerTests
         Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         Assert.IsTrue(response.Headers.CacheControl!.NoStore);
         Assert.AreEqual(host.Document.Text, await response.Content.ReadAsStringAsync());
-        using var explicitText = await host.Http.GetAsync("/explorer?format=text");
-        Assert.AreEqual(host.Document.Text, await explicitText.Content.ReadAsStringAsync());
-        using var explicitJson = await host.Http.GetAsync("/explorer?format=json");
-        Assert.AreEqual("application/json", explicitJson.Content.Headers.ContentType!.MediaType);
-        using var json = System.Text.Json.JsonDocument.Parse(await explicitJson.Content.ReadAsStringAsync());
-        Assert.AreEqual(host.Document.Text, json.RootElement.GetString());
-        foreach (var query in new[] { "refresh=a&refresh=b", "refresh=" + new string('x', 65), "utm_tool=yeshua_task_send", "format=html", "format=json&format=text", "format=" })
+        foreach (var query in new[] { "refresh=a&refresh=b", "refresh=" + new string('x', 65), "utm_tool=yeshua_task_send" })
         {
             using var invalid = await host.Http.GetAsync("/explorer?" + query);
             Assert.AreEqual(HttpStatusCode.BadRequest, invalid.StatusCode);

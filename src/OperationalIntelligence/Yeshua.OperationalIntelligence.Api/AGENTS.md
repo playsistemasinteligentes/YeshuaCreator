@@ -24,10 +24,6 @@ application/version/buildId e filtros. Comecar por applications/builds, depois
 DSL/metadados e fontes; screen/action sao pistas textuais, nao um grafo funcional.
 O mesmo next devolve url absoluta pronta para GET, montada com a base canonica
 OperationalIntelligence:PublicBaseUrl, nunca com Host/headers do chamador.
-Os GETs publicos de Explorer, health, descoberta de interface e SourceSearch usam
-texto como apresentacao padrao. Consultas estruturadas conservam o envelope JSON,
-servido com text/plain; format=json e opt-in e e preservado nos proximos links
-da borda HTTP. Essa opcao nao entra na DSL, no indice nem nos argumentos MCP/POST.
 Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
 Alteracoes Git e tarefas continuam no caminho administrativo autorizado.
 `yeshua_app_explore`/GET `/explorer/apps` leem somente o catalogo do Front e

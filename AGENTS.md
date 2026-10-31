@@ -1834,6 +1834,11 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Inteligencia Operacional
 
+- A direcao atual prioriza MCP e plugins para entregar conhecimento aos agentes.
+  O experimento de consultas estruturadas em text/plain para navegacao no GPT
+  gratis foi interrompido. Esses GETs voltam a application/json; o guia Explorer
+  permanece texto. Os endpoints existentes continuam disponiveis, sem tratar
+  a navegacao da conta gratis como canal homologado.
 - `yeshua_explorer` e a entrada publica de orientacao para agentes externos,
   tambem disponivel por GET `/explorer`. Seu documento unico ensina a explorar
   apps por tela/acao/simbolo e a relacionar fontes e evidencias autorizadas;
