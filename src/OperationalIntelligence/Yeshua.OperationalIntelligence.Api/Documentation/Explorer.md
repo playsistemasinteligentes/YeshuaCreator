@@ -106,20 +106,6 @@ que uma regra executou. Leia o trecho e suas dependências. Se o índice não ti
 o Studio/Front/backend necessário, declare a lacuna; não apresente dado inventado.
 Use a origem/versão de cada evidência. O índice é do banco, não Git em tempo real.
 
-Na pesquisa de tela, a marcação é priorizada e começa pelo cabeçalho; scripts
-incluem contexto anterior à ocorrência. O orçamento de conteúdo é compartilhado
-entre os arquivos para que o primeiro não o consuma inteiro. Se um trecho estiver
-incompleto, siga sua continuação ou o link do arquivo sozinho antes de concluir
-que falta um campo, botão ou comportamento. Links de início permitem verificar
-como a tela é registrada e quais eventos acionam os controles. Arquivos diferentes
-podem atender telas distintas: não junte o botão de um CRUD com o fluxo de uma
-página personalizada sem confirmar a navegação. A ordem é pista de descoberta,
-não prova de que a tela está ativa.
-
-Uma busca textual sem resultados devolve um próximo link para explorar pelo nome
-do aplicativo e depois pela DSL. Siga esse link para descobrir os termos reais da
-interface, em vez de inventar sinônimos e montar outro endereço por conta própria.
-
 Pela navegação web, há GET público de Explorer, saúde e descoberta da interface:
 https://playsis.com.br/operational/explorer/apps
 

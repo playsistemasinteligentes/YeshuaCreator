@@ -222,15 +222,7 @@ public sealed class SourceContextRepository : ISourceContextRepository
                      OR f.ArtifactKind = 'DSL_SPECIFICATION'))
                 OR (@Kind = 'metadata' AND f.SourceRole = 'ARCHITECTURE_BORDER'
                      AND (f.RelativePath LIKE '%EndPoints%' OR f.RelativePath LIKE '%Modules%')))
-            ORDER BY
-                CASE WHEN @Kind = 'screen' THEN
-                    CASE WHEN f.RelativePath LIKE '%.html' OR f.RelativePath LIKE '%.htm'
-                               OR f.RelativePath LIKE '%.cshtml' OR f.RelativePath LIKE '%.razor'
-                               OR f.RelativePath LIKE '%.vue' THEN 0
-                         WHEN f.RelativePath LIKE '%/pages/%' OR f.RelativePath LIKE '%/views/%' THEN 1
-                         ELSE 2 END
-                    ELSE 0 END,
-                CASE WHEN hit.Line IS NOT NULL THEN 0 ELSE 1 END, f.RelativePath, f.FileId
+            ORDER BY CASE WHEN hit.Line IS NOT NULL THEN 0 ELSE 1 END, f.RelativePath, f.FileId
             OFFSET @Offset ROWS FETCH NEXT @Limit ROWS ONLY;
             """;
         await using var connection = await _database.OpenConnectionAsync(cancellationToken);
@@ -253,7 +245,6 @@ public sealed class SourceContextRepository : ISourceContextRepository
                 row.File, row.MatchLine!.Value, 0)).ToArray();
         return Response(build, [], references, [], files) with
         {
-            Warnings = files.Length == 0 ? ["Nenhum arquivo corresponde aos filtros desta pesquisa textual."] : [],
             NextOffset = rows.Length > limit ? request.Offset + limit : null
         };
     }

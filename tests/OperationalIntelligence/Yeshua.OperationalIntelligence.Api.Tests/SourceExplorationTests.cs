@@ -24,68 +24,6 @@ namespace Yeshua.OperationalIntelligence.Api.Tests;
 public sealed class SourceExplorationTests
 {
     [TestMethod]
-    public async Task ScreenSearchIncludesMarkupHeaderAndLinksToEarlierControllerContext()
-    {
-        var repository = new IndexedRepository
-        {
-            DiscoveryHitLine = 35,
-            CustomContent = string.Join('\n', Enumerable.Range(1, 95).Select(i => i == 16 ? "<button>Novo registro</button>" : $"linha {i}"))
-        };
-        var search = new SourceSearch(repository);
-        var markup = await search.SearchAsync(new()
-        {
-            Kind = "screen", Application = "Memorias", Query = "Selecionar", File = "src/Front/pages/screen.html", IncludeContent = true
-        }, default);
-        Assert.AreEqual(1, markup.Snippets.Single().StartLine);
-        StringAssert.Contains(markup.Snippets.Single().Content, "Novo registro");
-        repository.DiscoveryHitLine = 80;
-        var controller = await search.SearchAsync(new()
-        {
-            Kind = "screen", Application = "Memorias", Query = "Selecionar", File = "src/Front/pages/screen.js", IncludeContent = true
-        }, default);
-        Assert.IsTrue(controller.Snippets.Single().StartLine < 80);
-        Assert.IsTrue(controller.Snippets.Single().EndLine >= 80);
-        var beginning = controller.Next.Single(n => n.Arguments.Line == 1);
-        Assert.AreEqual(repository.Build.BuildId, beginning.Arguments.BuildId);
-        Assert.IsTrue(new Uri(beginning.Url).IsAbsoluteUri);
-        var firstPage = await search.SearchAsync(beginning.Arguments, default);
-        Assert.AreEqual(1, firstPage.Snippets.Single().StartLine);
-    }
-
-    [TestMethod]
-    public async Task SharedBudgetDoesNotStarveLaterFiles()
-    {
-        var result = await new SourceSearch(new IndexedRepository { LongLines = true }).SearchAsync(new()
-        {
-            Kind = "action", Application = "Memorias", Query = "Publicar", IncludeContent = true,
-            MaxFiles = 2, MaxContentChars = 200
-        }, default);
-        Assert.AreEqual(2, result.Snippets.Count);
-        Assert.IsTrue(result.Snippets.All(s => s.Content.Length > 0));
-        Assert.IsTrue(result.Snippets.Sum(s => s.Content.Length) <= 200);
-        Assert.AreEqual(2, result.Next.Count(n => n.Arguments.Line == 2 && n.Arguments.MaxFiles == 1));
-    }
-
-    [TestMethod]
-    public async Task MissingScreenTextReturnsPinnedDiscoveryLinksInsteadOfAnEmptyDeadEnd()
-    {
-        var repository = new IndexedRepository { NoDiscoveryFiles = true };
-        var search = new SourceSearch(repository);
-        var missing = await search.SearchAsync(new() { Application = "Memorias", Kind = "screen", Query = "criar álbum" }, default);
-        var next = missing.Next.Single();
-        Assert.AreEqual("Memorias", next.Arguments.Query);
-        Assert.AreEqual("screen", next.Arguments.Kind);
-        Assert.AreEqual(repository.Build.BuildId, next.Arguments.BuildId);
-        Assert.IsTrue(new Uri(next.Url).IsAbsoluteUri);
-        var broader = await search.SearchAsync(next.Arguments, default);
-        Assert.AreEqual("dsl", broader.Next.Single().Arguments.Kind);
-        Assert.IsNull(broader.Next.Single().Arguments.Query);
-        Assert.AreEqual(repository.Build.BuildId, broader.Next.Single().Arguments.BuildId);
-        var explicitFile = await search.SearchAsync(new() { Application = "Memorias", Kind = "screen", Query = "criar", File = "missing.html" }, default);
-        Assert.AreEqual(0, explicitFile.Next.Count);
-    }
-
-    [TestMethod]
     public async Task AbsoluteNextUrlPreservesEncodedFiltersAndPinnedSnapshot()
     {
         var repository = new IndexedRepository();
@@ -308,8 +246,6 @@ public sealed class SourceExplorationTests
         public Guid? ContentBuild;
         public IReadOnlyList<string> ContentFiles = [];
         public bool LongLines;
-        public bool NoDiscoveryFiles;
-        public int? DiscoveryHitLine;
         public string? CustomContent;
         public int Calls;
         private const string CodeFile = "src/Receivers/PublicarHandler.cs";
@@ -322,11 +258,8 @@ public sealed class SourceExplorationTests
             Calls++; Discovery = request;
             if (request.Application == "Missing") throw new KeyNotFoundException("No indexed build was found.");
             string[] files = request.File is not null ? [request.File] : ["src/Studio/Migrations/M000001.cs", "src/Studio/Migrations/M000002.cs"];
-            if (NoDiscoveryFiles) files = [];
             var selected = files.Skip(request.Offset).Take(request.MaxResults ?? 10).ToArray();
-            var references = DiscoveryHitLine.HasValue
-                ? selected.Select(file => new ReferenceEvidence("TEXT_REFERENCE", request.Query ?? "", null, null, file, DiscoveryHitLine.Value, 1)).ToArray() : [];
-            return Task.FromResult(new SourceContextResponse(Build, [], references, [], selected.Select(Candidate).ToArray(), [])
+            return Task.FromResult(new SourceContextResponse(Build, [], [], [], selected.Select(Candidate).ToArray(), [])
             {
                 NextOffset = request.Offset + selected.Length < files.Length ? request.Offset + selected.Length : null
             });
