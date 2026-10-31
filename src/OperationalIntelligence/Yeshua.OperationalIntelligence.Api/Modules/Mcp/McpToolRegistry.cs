@@ -27,7 +27,7 @@ public sealed class McpToolRegistry
                 Title = NormalizeName(tool.Name).Replace('_', ' '),
                 Description = tool.Description,
                 InputSchema = JsonSerializer.SerializeToElement(tool.InputSchema, JsonOptions),
-                OutputSchema = JsonSerializer.SerializeToElement(new { type = "object" }),
+                OutputSchema = McpOutputSchemas.For(tool.Name),
                 Annotations = new ToolAnnotations
                 {
                     ReadOnlyHint = tool.IsReadOnly,

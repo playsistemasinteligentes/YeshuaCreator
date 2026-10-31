@@ -672,7 +672,10 @@ public sealed class SourceContextRepository : ISourceContextRepository
         LEFT JOIN OI_Files f ON f.FileId = d.FileId
         WHERE s.BuildId = @BuildId
           AND s.Kind IN (N'METHOD', N'CONSTRUCTOR', N'ACCESSOR', N'LOCAL_FUNCTION', N'LAMBDA')
-          AND (s.QualifiedName = @FunctionSearch OR (CHARINDEX('.', @FunctionSearch) = 0 AND s.Name = @FunctionName))
+          AND (s.QualifiedName = @FunctionSearch
+            OR (CHARINDEX('.', @FunctionSearch) = 0 AND s.Name = @FunctionName)
+            OR (CHARINDEX('(', @FunctionSearch) = 0
+                AND LEFT(s.QualifiedName, CHARINDEX('(', s.QualifiedName + '(') - 1) = @FunctionSearch))
           AND (@FilePath IS NULL OR REPLACE(f.RelativePath, '\', '/') LIKE N'%' + REPLACE(@FilePath, '\', '/') + N'%')
           AND (@Line IS NULL OR @Line BETWEEN d.StartLine AND d.EndLine);
 

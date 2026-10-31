@@ -3,6 +3,10 @@
 API de consulta e orquestracao das evidencias operacionais do Yeshua e de
 sistemas legados.
 
+O [catalogo consolidado da Inteligencia Operacional](../../../docs/operational/INTELIGENCIA_OPERACIONAL_CATALOGO.md)
+relaciona as ferramentas MCP, operacoes HTTP, observabilidade, banco, agentes,
+indexacao e capacidades ainda pendentes para os plugins.
+
 ## Responsabilidades
 
 - Consultar o indice estatico produzido pelo `Yeshua.Engine.AIContextBuilder`.

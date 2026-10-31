@@ -7,8 +7,21 @@ public static class AgentTaskProtocol
         Use yeshua_app_explore para descobrir URLs e interfaces publicas antes de pedir esses dados ao usuario.
         Use yeshua_source_search para descobrir aplicativos/builds, ler DSL e trechos de fontes;
         siga next.arguments preservando application/version/buildId e amplie maxDepth somente se necessario.
+        Para perguntas de uso, comece pelo catalogo e pela tela pertinente; nao leia a DSL inteira
+        por obrigacao. Para regras do servidor, escolha um build e procure action/function/file.
+        query recebe pistas curtas encontradas na interface, nao a pergunta inteira do usuario.
+        Reconstrua controle -> evento -> validacao -> gravacao antes de explicar uma acao.
+        Se o trecho comeca no meio do fluxo, leia as linhas anteriores ou continue o arquivo.
+        Pare quando conseguir orientar o usuario com evidencias; nao siga todos os next.
+        Falta de resultado ou um limite atingido nao prova que a funcionalidade nao existe.
+        Diferencie o Front atual do snapshot indexado e dados runtime de inferencias do codigo.
         Ocorrencia textual e pista, nao prova de execucao. A leitura nao autoriza alterar Git ou enviar tarefas.
         Use yeshua_health para verificar a conexao. Dados de contas/logs mantem seu acesso proprio.
+        As ferramentas administrativas abaixo so existem quando anunciadas na conexao privada.
+        Logs/erros usam periodo e aplicativo; includeKnowledgeReferences relaciona-os aos fontes.
+        yeshua_logs_source_context parte de um log conhecido. Traces e metricas usam seus metodos proprios.
+        yeshua_database_select le apenas aliases configurados; use parametros, colunas necessarias e limite.
+        Nao use tarefas do Codex para contornar uma ferramenta privada ausente.
         Pelo tunel privado autorizado, yeshua_task_read sem taskId lista tarefas.
         Apresente selectionNumber, titulo e estado na ordem retornada e preserve numero -> taskId
         da lista exibida nesta conversa. 'Quero falar com a task 3' seleciona a taskId daquela

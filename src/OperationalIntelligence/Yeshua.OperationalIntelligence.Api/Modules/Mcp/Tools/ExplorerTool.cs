@@ -15,6 +15,6 @@ public sealed class ExplorerTool(ExplorerDocument document) : IMcpTool
         cancellationToken.ThrowIfCancellationRequested();
         if (arguments.ValueKind != JsonValueKind.Object || arguments.EnumerateObject().Any())
             return Task.FromResult(McpToolResult.Error("Explorer não recebe parâmetros nesta versão. Leia o guia para escolher a consulta seguinte."));
-        return Task.FromResult(McpToolResult.Ok(document.Text));
+        return Task.FromResult(McpToolResult.Ok(document.Text, new { guide = document.Text }));
     }
 }

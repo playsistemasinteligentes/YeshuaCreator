@@ -33,6 +33,8 @@ public sealed class McpCompatibilityTests
             Assert.IsFalse(tool.Name.Contains('.'));
             Assert.IsNotNull(tool.ProtocolTool.Annotations);
             Assert.AreEqual("object", tool.ProtocolTool.InputSchema.GetProperty("type").GetString());
+            var output = tool.ProtocolTool.OutputSchema!.Value;
+            Assert.IsTrue(output.TryGetProperty("properties", out _) || output.TryGetProperty("anyOf", out _), tool.Name);
         }
         Assert.AreEqual(0, host.Repository.AcceptedCount);
         Assert.IsTrue(client.ServerInstructions!.Contains("numero -> taskId"));

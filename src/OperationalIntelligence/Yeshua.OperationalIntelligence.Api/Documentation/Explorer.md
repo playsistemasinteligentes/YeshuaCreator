@@ -56,6 +56,11 @@ Ela corresponde a yeshua_source_search {"kind":"applications"} e a POST
 /operational/api/source-context/search com o mesmo objeto JSON. Os três caminhos
 usam o mesmo SourceSearch e o mesmo repositório; não existe outro grafo ou manual.
 
+Escolha o percurso conforme a pergunta. Para cadastro, login e uso de uma tela,
+comece por `yeshua_app_explore` e leia somente a tela pertinente. Para regras do
+servidor e investigacao tecnica, use a pesquisa indexada abaixo. Nao e obrigatorio
+ler toda a DSL antes de responder uma pergunta simples da interface.
+
 1. kind=applications lista aplicativos INDEXADOS. query filtra o nome.
 2. kind=builds&application=NOME lista snapshots e seus buildId, version e commitSha.
 3. Abra next[].url para escolher um snapshot e ler kind=dsl. Pelo MCP, use next[].arguments. A DSL original
@@ -68,6 +73,15 @@ usam o mesmo SourceSearch e o mesmo repositório; não existe outro grafo ou man
    aos endpoints dos aplicativos e não consultam os valores dos usuários.
 5. kind=file lê um arquivo selecionado; kind=field, class ou function procura os
    símbolos técnicos já identificados. Não substitua um símbolo por uma pergunta longa.
+
+Para explicar uma acao, encontre o controle e seus campos, o evento que o atende,
+as validacoes e a gravacao ou chamada correspondente. Uma ocorrencia do rotulo do
+botao so localiza uma pista. Se a leitura comecar no meio do fluxo, leia as linhas
+anteriores e siga a continuacao antes de concluir. Pare quando a pergunta estiver
+sustentada pelas evidencias; nao percorra todos os `next` nem carregue o aplicativo
+inteiro por rotina. Ausencia de um resultado ou corte por limite nao prova que a
+funcionalidade inexiste. Identifique lacunas e diferencas entre o Front atual e o
+snapshot, e nao descreva uma execucao real apenas pela leitura do codigo.
 
 Exemplo depois de confirmar NOME e SNAPSHOT no catálogo (substitua os placeholders):
 https://playsis.com.br/operational/api/source-context/search?application=NOME&buildId=SNAPSHOT&kind=screen&query=cadastro&includeContent=true

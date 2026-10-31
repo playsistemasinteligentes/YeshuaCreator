@@ -70,7 +70,8 @@ public sealed class SourceRepositorySqlTests
                     VALUES (@id,@build,@project,'METHOD',@symbol,@qualified,@qualified);
                     INSERT OI_Declarations(DeclarationId,BuildId,SymbolId,FileId,StartLine,StartColumn,EndLine,EndColumn)
                     VALUES (NEWID(),@build,@id,@codeFile,1,1,3,1);
-                    """, new { id, build, project, codeFile, symbol = index == 0 ? "Publicar" : "Step" + index, qualified = "App." + (index == 0 ? "Publicar" : "Step" + index) });
+                    """, new { id, build, project, codeFile, symbol = index == 0 ? "Publicar" : "Step" + index,
+                        qualified = "App." + (index == 0 ? "Publicar(System.Int32)" : "Step" + index) });
             }
             var fieldSymbol = Guid.NewGuid();
             var classSymbol = Guid.NewGuid();
@@ -121,6 +122,10 @@ public sealed class SourceRepositorySqlTests
             }
             var functions = await search.SearchAsync(request with { Kind = "function", Query = "App.Publicar", MaxDepth = 3, MaxResults = 5, IncludeContent = false }, default);
             Assert.AreEqual(1, functions.Matches.Count);
+            var exactSignature = await search.SearchAsync(request with { Kind = "function", Query = "App.Publicar(System.Int32)", IncludeContent = false }, default);
+            Assert.AreEqual(functions.Matches.Single().SymbolId, exactSignature.Matches.Single().SymbolId);
+            var wrongPrefix = await search.SearchAsync(request with { Kind = "function", Query = "App.Public", IncludeContent = false }, default);
+            Assert.AreEqual(0, wrongPrefix.Matches.Count);
             Assert.IsTrue(functions.Chains.Count <= 5);
             Assert.AreEqual(functions.Chains.Count, functions.Chains.DistinctBy(chain => (chain.Direction,
                 chain.Direction == "UPSTREAM" ? chain.Path.Split(" -> ").First() : chain.Path.Split(" -> ").Last())).Count());

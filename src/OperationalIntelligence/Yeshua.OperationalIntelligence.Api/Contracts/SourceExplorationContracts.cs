@@ -8,12 +8,19 @@ public sealed record SourceExplorationRequest
 {
     // Setters preserve omitted-property defaults in .NET 8's source-generated JSON reader.
     public string Kind { get; set; } = "applications";
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Application { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Version { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public Guid? BuildId { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? Query { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public string? File { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? Line { get; set; }
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public int? EndLine { get; set; }
     public int MaxDepth { get; set; }
     public string Direction { get; set; } = "both";
