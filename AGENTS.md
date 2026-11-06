@@ -325,9 +325,14 @@ Miolos que IA/dev devem preencher:
 - A decisao de ligar ou desligar observabilidade deve acontecer antes de criar
   `Activity`, `Stopwatch`, tags, payloads ou serializacoes. Com a politica
   desligada, nenhuma dessas estruturas pode ser criada para a operacao.
-- No nivel `Basic`, todo Command selecionado emite `Command.Started` e
-  `Command.Completed`; em `Off`, o retorno deve ocorrer antes de escopo,
-  cronometro, `Activity` ou publicacao operacional.
+- No nivel `Basic`, Commands de negocio selecionados emitem `Command.Started`
+  e `Command.Completed`. Ciclos de polling cujo contrato de resultado implementa
+  `IWorkerCycleResult` atualizam inicio, fim e contadores em memoria sem publicar
+  `Command.Started`; a conclusao so publica resumo quando encontrou/processou
+  itens ou houve falha/rejeicao. Ciclos vazios bem-sucedidos nao publicam logs.
+  Em `Off`, o retorno deve ocorrer antes de escopo, cronometro, `Activity` ou
+  publicacao operacional. Essa filtragem nao desliga traces nem cria heartbeat,
+  agregador ou politica de infraestrutura paralela.
 - A identidade imutavel de runtime deve ser resolvida uma unica vez pela
   injecao de dependencia e entregue ao logger/publicador, nunca reconstruida
   por evento no caminho quente.

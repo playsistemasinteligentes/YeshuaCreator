@@ -137,7 +137,8 @@ namespace Shered.Logger
             WorkerCycleTelemetry? workerCycle,
             OperationalTelemetryDecision telemetry,
             OperationalExecutionIdentity executionIdentity = default,
-            string? operationalEntityId = null)
+            string? operationalEntityId = null,
+            bool emitEvent = true)
         {
             var now = DateTimeOffset.UtcNow;
             var state = _commands.GetOrAdd(
@@ -168,6 +169,10 @@ namespace Shered.Logger
                     state.LastFailureAtUtc = now;
                 }
             }
+
+            // O ciclo ocioso continua no snapshot de saude, sem serializar um evento.
+            if (!emitEvent)
+                return;
 
             WriteCommand(
                 commandName,

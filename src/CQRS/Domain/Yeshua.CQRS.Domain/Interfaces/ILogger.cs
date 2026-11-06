@@ -180,7 +180,8 @@ namespace Dominio.Interfaces
             WorkerCycleTelemetry? workerCycle,
             OperationalTelemetryDecision telemetry,
             OperationalExecutionIdentity executionIdentity = default,
-            string? operationalEntityId = null);
+            string? operationalEntityId = null,
+            bool emitEvent = true);
         void CommandFailed(
             string commandName,
             string traceId,

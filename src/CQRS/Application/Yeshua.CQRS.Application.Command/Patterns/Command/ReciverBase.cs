@@ -15,6 +15,9 @@ namespace Command.Patterns.Command
     {
         private static readonly string CommandName =
             typeof(TCommand).FullName ?? typeof(TCommand).Name;
+        // Resolve o contrato uma vez por tipo, fora do caminho quente.
+        private static readonly bool IsWorkerCycle =
+            typeof(IWorkerCycleResult).IsAssignableFrom(typeof(TResponse));
 
         private readonly ILogger _logger;
         private readonly IExecutionContext _context;
@@ -67,12 +70,15 @@ namespace Command.Patterns.Command
             OperationalActivity.SetIdentity(activity, executionIdentity);
             OperationalActivity.SetDiagnosticSession(activity, telemetry.DiagnosticSessionId);
 
-            _logger.CommandStarted(
-                CommandName,
-                traceId,
-                telemetry,
-                executionIdentity,
-                recordId);
+            if (IsWorkerCycle)
+                _logger.CommandStarted(CommandName);
+            else
+                _logger.CommandStarted(
+                    CommandName,
+                    traceId,
+                    telemetry,
+                    executionIdentity,
+                    recordId);
 
             try
             {
@@ -88,16 +94,21 @@ namespace Command.Patterns.Command
                         progress.Failed);
                 }
 
+                var succeeded = result.StatusCode is >= 200 and < 300;
+                var emitEvent = !IsWorkerCycle || !succeeded ||
+                    workerCycle is not { Claimed: 0, Processed: 0, Failed: 0 };
+
                 _logger.CommandFinished(
                     CommandName,
                     traceId,
-                    result.StatusCode is >= 200 and < 300,
+                    succeeded,
                     ElapsedMilliseconds(startedAt),
                     result.StatusCode,
                     workerCycle,
                     telemetry,
                     executionIdentity,
-                    recordId);
+                    recordId,
+                    emitEvent: emitEvent);
 
                 activity?.SetTag("http.response.status_code", result.StatusCode);
                 activity?.SetTag(

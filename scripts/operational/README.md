@@ -94,6 +94,13 @@ diretório de saída. No último caso, `runtime_verified` é um booleano sobre a
 execução de uma consulta real, não o estado da publicação; ausência de acesso
 deve continuar explícita na resposta e nas limitações.
 
+Para investigar outro aplicativo, use `--question "Como funciona a contingencia
+do Fiscal?"`, com um diretório de saída próprio. Essa opção executa somente
+o cenário `custom-question`, salvo seleção explícita por `--scenario`. O relatório
+marca `insufficient-evidence` quando faltam evidências do fluxo e as demais
+verificações passaram; erros de transporte, citações ou contrato continuam como
+`failed`. Isso não indexa o aplicativo nem substitui a revisão da resposta.
+
 Este ensaio valida um agente isolado usando MCP; não substitui instalar o plugin
 no ChatGPT e validar seleção de ferramentas, autenticação e experiência por voz.
 Depois de mudar contratos, atualizar os metadados da conexão e iniciar uma nova
