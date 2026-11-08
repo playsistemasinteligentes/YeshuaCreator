@@ -52,6 +52,28 @@ processors:
     check_interval: 1s
     limit_mib: 128
     spike_limit_mib: 26
+  tail_sampling:
+    decision_wait: 10s
+    num_traces: 5000
+    expected_new_traces_per_sec: 100
+    policies:
+      - name: preserve-errors
+        type: status_code
+        status_code:
+          status_codes: [ERROR]
+      - name: preserve-operational-diagnostics
+        type: string_attribute
+        string_attribute:
+          key: yeshua.trace.retention
+          values: [required]
+      - name: preserve-slow-traces
+        type: latency
+        latency:
+          threshold_ms: 5000
+      - name: sample-healthy-traces
+        type: probabilistic
+        probabilistic:
+          sampling_percentage: 5
   batch:
     timeout: 2s
     send_batch_size: 512
@@ -85,7 +107,7 @@ service:
   pipelines:
     traces:
       receivers: [otlp]
-      processors: [memory_limiter, batch]
+      processors: [memory_limiter, tail_sampling, batch]
       exporters: [otlp_http/traces]
     metrics:
       receivers: [otlp, prometheus/collector, hostmetrics, docker_stats]

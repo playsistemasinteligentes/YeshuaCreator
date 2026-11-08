@@ -184,6 +184,41 @@ public sealed class OperationalMetricsTests
     }
 
     [TestMethod]
+    public void QueueItemHealth_ExportsOnlyAggregatedDiseaseCounts()
+    {
+        var queue = $"QueueItems-{Guid.NewGuid():N}";
+        var operation = $"OperationItems-{Guid.NewGuid():N}";
+        using var capture = new MetricCapture();
+
+        OperationalMetrics.SetQueueItemHealthSnapshot(
+            queue,
+            operation,
+            sickItems: 9,
+            excessiveWait: 2,
+            staleProcessing: 1,
+            recurrentExecution: 3,
+            repeatedFailure: 2,
+            terminalFailure: 1);
+        capture.CollectObservableInstruments();
+
+        Assert.AreEqual(
+            9L,
+            capture.SingleByQueueMetric("yeshua.queue.current", queue, "sick_items").LongValue);
+        Assert.AreEqual(
+            1L,
+            capture.SingleByQueueMetric(
+                "yeshua.queue.current",
+                queue,
+                "sick_item_terminal_failure").LongValue);
+        Assert.AreEqual(
+            3L,
+            capture.SingleByQueueMetric(
+                "yeshua.queue.current",
+                queue,
+                "sick_item_recurrent_execution").LongValue);
+    }
+
+    [TestMethod]
     public void SagaRetry_EmitsOneRetryAndMeasuresTheStepOutcome()
     {
         var saga = $"Saga-{Guid.NewGuid():N}";

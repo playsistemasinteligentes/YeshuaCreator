@@ -55,6 +55,8 @@ namespace Command.Patterns
             activity?.SetTag("yeshua.component", "Saga");
             activity?.SetTag("yeshua.saga", saga.Type);
             activity?.SetTag("yeshua.saga.step", step.Key);
+            activity?.SetTag("yeshua.item.type", "saga");
+            activity?.SetTag("yeshua.item.reference", saga.CorrelationId.ToString("D"));
             OperationalActivity.SetIdentity(activity, executionIdentity);
             OperationalActivity.SetDiagnosticSession(activity, telemetry.DiagnosticSessionId);
 
@@ -122,13 +124,22 @@ namespace Command.Patterns
 
                 activity?.SetTag("yeshua.saga.status", saga.Status.ToString());
                 activity?.SetTag("yeshua.saga.step.status", step.Status.ToString());
+                if (step.Status is SagaStepStatus.WaitingResponse or SagaStepStatus.Completed)
+                    OperationalActivity.RecordRecovery(activity, step.RetryCount);
                 activity?.SetStatus(ActivityStatusCode.Ok);
             }
             catch (SagaStepExecutionException e)
             {
                 activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
-                OperationalActivity.RecordException(activity, e, telemetry.DiagnosticDepth);
                 HandleFailure(saga, step, e, e.Retryable);
+                OperationalActivity.RecordFailure(
+                    activity,
+                    e,
+                    e.Classification,
+                    "Saga",
+                    $"{saga.Type}.{step.Key}",
+                    saga.Status == SagaStatus.Failed,
+                    telemetry.DiagnosticDepth);
                 if (telemetry.Enabled)
                     RecordFailure(
                         saga,
@@ -142,8 +153,19 @@ namespace Command.Patterns
             catch (Exception e)
             {
                 activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
-                OperationalActivity.RecordException(activity, e, telemetry.DiagnosticDepth);
                 HandleFailure(saga, step, e, retryable: true);
+                var classification = OperationalFailureClassification.Technical(
+                    e,
+                    retryable: true,
+                    OperationalFailureOrigin.Application);
+                OperationalActivity.RecordFailure(
+                    activity,
+                    e,
+                    classification,
+                    "Saga",
+                    $"{saga.Type}.{step.Key}",
+                    saga.Status == SagaStatus.Failed,
+                    telemetry.DiagnosticDepth);
                 if (telemetry.Enabled)
                 {
                     RecordFailure(

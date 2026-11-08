@@ -130,6 +130,12 @@ politica.
 - A Saga do Memorias e o primeiro probe de fila: o mesmo repository compartilha
   o predicado da captura `TOP 5` e do diagnostico, que retorna backlog elegivel
   e idade do mais antigo sem lock nem mudanca de estado.
+- O mesmo probe classifica itens por falha terminal, processamento travado,
+  falha repetida, execucao recorrente ou espera excessiva. Prometheus recebe
+  somente contagens agregadas; detalhes ficam em consulta limitada sob demanda.
+- O Collector aplica tail sampling: preserva erros, retries, falhas terminais,
+  recuperacoes, diagnosticos e traces lentos, mantendo 5% dos traces saudaveis
+  e rapidos. Metricas e logs nao passam por essa poda.
 - Dashboard, alertas e runbooks distinguem Worker ocioso, processando,
   degradado, travado ou indisponivel e fila ociosa, processando, degradada,
   bloqueada, indisponivel ou com estado desconhecido.
@@ -214,6 +220,8 @@ de assuntos durante R04.
    demonstrados.
 10. Homologar no ambiente publicado a saude da Saga do Memorias, medir o custo
     do probe com mais de uma replica e expandir somente para filas com SLA.
+11. Homologar a amostragem seletiva com quatro cenarios: saudavel rapido, erro,
+    retry e trace lento; confirmar que a reducao ocorre somente no Tempo.
 
 A ordem detalhada e os criterios de saida estao em
 `YESHUA_SRE_IMPLEMENTATION_PLAN.md`. R11 esta concluida para Commands do

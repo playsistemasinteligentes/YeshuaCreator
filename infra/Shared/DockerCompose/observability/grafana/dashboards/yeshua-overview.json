@@ -187,7 +187,7 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "Snapshot de baixa frequencia da fila, vazao agregada de todos os Workers e idade da coleta.",
+      "description": "Snapshot de baixa frequencia da fila e dos itens doentes, vazao agregada de todos os Workers e idade da coleta. IDs individuais permanecem fora das metricas.",
       "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [ { "matcher": { "id": "byFrameRefID", "options": "B" }, "properties": [ { "id": "unit", "value": "s" } ] }, { "matcher": { "id": "byFrameRefID", "options": "C" }, "properties": [ { "id": "unit", "value": "ops" } ] }, { "matcher": { "id": "byFrameRefID", "options": "D" }, "properties": [ { "id": "unit", "value": "s" } ] } ] },
       "gridPos": { "h": 8, "w": 8, "x": 16, "y": 21 },
       "id": 13,
@@ -196,9 +196,11 @@
         { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Backlog {{queue}}", "range": true, "refId": "A" },
         { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Mais antigo {{queue}}", "range": true, "refId": "B" },
         { "editorMode": "code", "expr": "sum by (service_name, operation) (rate({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Vazao {{operation}}", "range": true, "refId": "C" },
-        { "editorMode": "code", "expr": "time() - max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Idade da coleta {{queue}}", "range": true, "refId": "D" }
+        { "editorMode": "code", "expr": "time() - max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Idade da coleta {{queue}}", "range": true, "refId": "D" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Itens doentes {{queue}}", "range": true, "refId": "E" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "{{queue}} / {{metric}}", "range": true, "refId": "F" }
       ],
-      "title": "13. Saude das filas: backlog e vazao",
+      "title": "13. Saude das filas e dos itens",
       "type": "timeseries"
     },
     {

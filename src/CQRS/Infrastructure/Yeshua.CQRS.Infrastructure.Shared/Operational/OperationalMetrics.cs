@@ -300,6 +300,54 @@ public static class OperationalMetrics
         }
     }
 
+    public static void SetQueueItemHealthSnapshot(
+        string queue,
+        string operation,
+        long sickItems,
+        long excessiveWait,
+        long staleProcessing,
+        long recurrentExecution,
+        long repeatedFailure,
+        long terminalFailure)
+    {
+        if (!QueueCurrentValue.Enabled)
+            return;
+
+        try
+        {
+            SetQueueCurrentValue(queue, operation, "sick_items", Math.Max(0, sickItems));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "sick_item_excessive_wait",
+                Math.Max(0, excessiveWait));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "sick_item_stale_processing",
+                Math.Max(0, staleProcessing));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "sick_item_recurrent_execution",
+                Math.Max(0, recurrentExecution));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "sick_item_repeated_failure",
+                Math.Max(0, repeatedFailure));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "sick_item_terminal_failure",
+                Math.Max(0, terminalFailure));
+        }
+        catch
+        {
+            // A classificacao agregada nunca interrompe o Worker.
+        }
+    }
+
     public static void SetQueueHealthProbeFailure(string queue, string operation)
     {
         if (!QueueCurrentValue.Enabled)

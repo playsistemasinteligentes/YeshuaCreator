@@ -18,7 +18,10 @@ namespace IRepository.Read
     public partial interface IySagaReadRepository
     {
         IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
-        WorkerQueueHealthSnapshot GetRunnableSagaHealth();
+        WorkerQueueHealthSnapshot GetRunnableSagaHealth(WorkerQueueItemHealthThresholds thresholds);
+        IReadOnlyList<WorkerQueueSickItem> GetSickSagaItems(
+            WorkerQueueItemHealthThresholds thresholds,
+            int limit);
         bool TryClaimSagaForExecution(int sagaId, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
         void ReleaseLock(int sagaId, string workerId);
         ySagaDTO? GetByIdWithSteps(int sagaId);

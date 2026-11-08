@@ -214,6 +214,70 @@ public sealed class OperationalTelemetryTests
     }
 
     [Fact]
+    public void Operational_failure_marks_trace_for_retention_with_stable_classification()
+    {
+        using var listener = CreateOperationalListener(_ => { });
+        using var activity = Dominio.Operational.OperationalActivity.Source.StartActivity(
+            "Saga.EmitirDocumento");
+        var exception = new Dominio.Patterns.Saga.SagaStepExecutionException(
+            "Falha variavel que nao entra na assinatura.",
+            retryable: true,
+            stableCode: "document-provider-timeout");
+
+        Dominio.Operational.OperationalActivity.RecordFailure(
+            activity,
+            exception,
+            exception.Classification,
+            "Saga",
+            "EmitirDocumento",
+            terminal: false);
+
+        Assert.NotNull(activity);
+        Assert.Equal("required", activity.GetTagItem("yeshua.trace.retention"));
+        Assert.Equal("retry", activity.GetTagItem("yeshua.trace.retention.reason"));
+        Assert.Equal("technical", activity.GetTagItem("yeshua.failure.nature"));
+        Assert.Equal("transient", activity.GetTagItem("yeshua.failure.transience"));
+        Assert.Equal(true, activity.GetTagItem("yeshua.failure.retryable"));
+        Assert.Equal("document-provider-timeout", activity.GetTagItem("yeshua.failure.code"));
+        var firstSignature = activity.GetTagItem("yeshua.failure.signature")?.ToString();
+        Assert.Equal(24, firstSignature?.Length);
+
+        using var sameFailure = Dominio.Operational.OperationalActivity.Source.StartActivity(
+            "Saga.EmitirDocumento");
+        var sameClassificationWithAnotherMessage =
+            new Dominio.Patterns.Saga.SagaStepExecutionException(
+                "Outra mensagem variavel.",
+                retryable: true,
+                stableCode: "document-provider-timeout");
+        Dominio.Operational.OperationalActivity.RecordFailure(
+            sameFailure,
+            sameClassificationWithAnotherMessage,
+            sameClassificationWithAnotherMessage.Classification,
+            "Saga",
+            "EmitirDocumento",
+            terminal: false);
+
+        Assert.Equal(
+            firstSignature,
+            sameFailure?.GetTagItem("yeshua.failure.signature")?.ToString());
+    }
+
+    [Fact]
+    public void Diagnostic_session_always_marks_trace_for_retention()
+    {
+        using var listener = CreateOperationalListener(_ => { });
+        using var activity = Dominio.Operational.OperationalActivity.Source.StartActivity(
+            "Repository.Diagnostic");
+
+        Dominio.Operational.OperationalActivity.SetDiagnosticSession(activity, "diag-42");
+
+        Assert.NotNull(activity);
+        Assert.Equal("diag-42", activity.GetTagItem("yeshua.diagnostic_session_id"));
+        Assert.Equal("required", activity.GetTagItem("yeshua.trace.retention"));
+        Assert.Equal("diagnostic", activity.GetTagItem("yeshua.trace.retention.reason"));
+    }
+
+    [Fact]
     public void Export_mode_defaults_to_console_jsonl_without_endpoint()
     {
         var settings = OperationalTelemetryExportSettings.FromConfiguration(

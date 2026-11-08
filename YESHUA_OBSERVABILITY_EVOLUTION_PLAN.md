@@ -132,9 +132,11 @@ Os traces devem nascer de `ActivitySource` nas bordas geradas e compartilhadas.
 Cada item retirado por Worker inicia uma raiz tecnica independente. Lotes de
 polling nao devem ser pais dos itens processados em paralelo.
 
-A politica inicial deve combinar amostragem probabilistica com preservacao de
-erros e operacoes lentas. Tail sampling no Collector deve ser avaliado antes de
-qualquer mecanismo customizado de buffering no aplicativo.
+A politica inicial usa tail sampling no Collector. Erros, retries, falhas
+terminais, recuperacoes, sessoes diagnosticas e traces acima de cinco segundos
+sao preservados integralmente; traces saudaveis e rapidos usam amostragem de
+5%. A aplicacao somente gera e classifica spans. A decisao de armazenamento
+fica no Collector, sem buffering customizado nos aplicativos.
 
 Quando houver suporte integral, exemplars poderao relacionar observacoes de
 histogramas aos traces correspondentes.
@@ -203,7 +205,7 @@ O catalogo operacional versionado dos paineis esta em
 | Latencia P50, P95 e P99 | Prometheus | `yeshua.operation.duration` | Instrumentado |
 | Sagas e steps | Prometheus, Tempo e Loki | metricas e transicoes de Saga | Instrumentado |
 | Espera e execucao das filas | Prometheus | `yeshua.worker.current` | Heartbeat e estado atual instrumentados sem evento por ciclo vazio |
-| Backlog e vazao | Prometheus | `yeshua.queue.current` e `yeshua.worker.items` | Vazao generica; snapshot piloto da Saga do Memorias |
+| Saude da fila e dos itens | Prometheus | `yeshua.queue.current` e `yeshua.worker.items` | Backlog, vazao e doencas agregadas no piloto da Saga do Memorias |
 | Ciclos de Workers | Prometheus | `yeshua.worker.cycles` e `yeshua.worker.items` | Instrumentado; saude separada por instancia |
 | Saude do pipeline | Prometheus | metricas internas do Collector | Coleta configurada |
 
@@ -252,9 +254,11 @@ da regra de selecao.
 
 O metodo diagnostico pertence ao mesmo repository da captura operacional e
 reutiliza o mesmo predicado de elegibilidade. O limite do lote, como `TOP 5`,
-continua exclusivo da captura de trabalho; o diagnostico retorna somente a
-contagem global e a idade do registro elegivel mais antigo, sem lock e sem
-alteracao de estado. A coleta inicial ocorre a cada trinta segundos.
+continua exclusivo da captura de trabalho; o diagnostico retorna a contagem
+global, a idade do registro elegivel mais antigo e contagens agregadas de itens
+doentes, sem lock e sem alteracao de estado. A coleta inicial ocorre a cada
+trinta segundos. A lista individual e limitada a no maximo cem registros e so
+e consultada sob demanda.
 
 ### 8.4 Classificacao Inicial De Saude
 
@@ -282,6 +286,34 @@ failover imediato. O Grafana usa `max` por fila, operacao e ambiente, evitando
 multiplicar o backlog. A eleicao de um unico coletor entre replicas permanece
 uma otimizacao futura caso o numero de instancias torne a consulta diagnostica
 relevante.
+
+### 8.5 Saude Do Item Da Fila
+
+A saude do item e uma projecao operacional; nao adiciona `IsDoente` a entidade
+de negocio. Cada item recebe no maximo uma doenca primaria, nesta prioridade:
+
+1. falha terminal;
+2. processamento travado;
+3. falha repetida;
+4. execucao recorrente;
+5. espera excessiva.
+
+Os limites iniciais sao protecoes provisoriais: quinze minutos de espera, dois
+minutos de processamento, tres execucoes e dois retries. Eles sao configuraveis
+por ambiente e devem ser substituidos ou calibrados pela linha de base aprovada.
+
+Prometheus recebe apenas contagens por fila e doenca. Identificadores nunca
+entram em labels. O diagnostico sob demanda devolve referencia do item, tipo,
+idades, execucoes, retries, ultimo resultado, identidades operacionais e uma
+assinatura irreversivel do erro persistido. Logs e traces carregam a
+classificacao mais rica da falha: natureza, transiencia, origem, possibilidade
+de retry, severidade operacional e assinatura estavel.
+
+Itens saudaveis permanecem silenciosos. Retry, falha terminal, recuperacao e
+diagnostico marcam o trace para retencao integral. Doencas baseadas somente no
+tempo aparecem primeiro nas metricas agregadas; seus detalhes sao recuperados
+pela consulta limitada, pois um trace passado ja descartado nao pode ser
+reconstruido.
 
 ## 9. Retencao E Historico
 

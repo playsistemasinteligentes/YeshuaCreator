@@ -357,6 +357,11 @@ Miolos que IA/dev devem preencher:
   o SDK oficial do OpenTelemetry para processar/exportar spans. Nao usar
   reflection nem instrumentacao automatica no caminho quente enquanto ela nao
   respeitar a politica operacional do Yeshua.
+- A retencao seletiva de traces pertence ao OpenTelemetry Collector, por tail
+  sampling. Aplicacoes apenas classificam o span com atributos estaveis;
+  erros, retries, falhas terminais, recuperacoes, sessoes diagnosticas e traces
+  lentos devem ser preservados, enquanto traces saudaveis podem ser amostrados.
+  Metricas e logs nao passam por essa poda.
 - A saida de telemetria operacional e uma decisao estatica de implantacao por
   host, controlada por `OpenTelemetry:ExportMode`. `ConsoleJsonl` escreve spans
   e logs operacionais estruturados no stdout/Docker. `Otlp` envia spans e logs
@@ -404,6 +409,11 @@ Miolos que IA/dev devem preencher:
   serializar dados.
 - Toda instrumentacao de alta frequencia deve ter custo medido por benchmark;
   conveniencia arquitetural nao justifica degradar o caminho quente.
+- Saude de item de fila e uma projecao operacional, nunca um campo de negocio.
+  Prometheus recebe somente contagens agregadas por fila e classificacao, sem
+  identificadores. A lista individual deve ser limitada, consultada sob demanda
+  pelo mesmo repository que conhece o predicado real da fila e devolver apenas
+  identidades operacionais e assinaturas sanitizadas do erro.
 
 ## Codigo Gerado E Codigo Customizado
 

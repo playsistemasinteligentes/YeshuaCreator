@@ -2879,6 +2879,15 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
                 WorkerOperation,
                 snapshot.EligibleCount,
                 snapshot.OldestEligibleAgeSeconds);
+            OperationalMetrics.SetQueueItemHealthSnapshot(
+                probe.QueueName,
+                WorkerOperation,
+                snapshot.SickItemCount,
+                snapshot.ExcessiveWaitCount,
+                snapshot.StaleProcessingCount,
+                snapshot.RecurrentExecutionCount,
+                snapshot.RepeatedFailureCount,
+                snapshot.TerminalFailureCount);
         }
         catch
         {

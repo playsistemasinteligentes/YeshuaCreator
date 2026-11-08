@@ -182,6 +182,34 @@ groups:
           description: "O item elegivel mais antigo de {{ $labels.queue }} ultrapassou quinze minutos. O limite e inicial e deve evoluir com a linha de base."
           runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueueoldestitemhigh"
 
+      - alert: YeshuaQueueItemCritical
+        expr: |
+          max by (service_name, operation, queue, metric, deployment_environment_name) (
+            {__name__=~"yeshua_queue_current(_value)?", metric=~"sick_item_(stale_processing|terminal_failure)"}
+          ) > 0
+        for: 2m
+        labels:
+          severity: critical
+          yeshua_scope: queue_item
+        annotations:
+          summary: "Fila possui item em estado critico"
+          description: "A fila {{ $labels.queue }} possui item classificado como {{ $labels.metric }}. Consulte os piores itens pelo diagnostico limitado e correlacione a identidade com o Tempo e o Loki."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueueitemcritical"
+
+      - alert: YeshuaQueueItemDegraded
+        expr: |
+          max by (service_name, operation, queue, metric, deployment_environment_name) (
+            {__name__=~"yeshua_queue_current(_value)?", metric=~"sick_item_(excessive_wait|recurrent_execution|repeated_failure)"}
+          ) > 0
+        for: 5m
+        labels:
+          severity: warning
+          yeshua_scope: queue_item
+        annotations:
+          summary: "Fila possui item individual degradado"
+          description: "A fila {{ $labels.queue }} possui item classificado como {{ $labels.metric }}. A fila pode continuar saudavel enquanto o item exige investigacao."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueueitemdegraded"
+
       - alert: YeshuaQueueHealthSnapshotStale
         expr: |
           time() - max by (service_name, operation, queue, deployment_environment_name) (

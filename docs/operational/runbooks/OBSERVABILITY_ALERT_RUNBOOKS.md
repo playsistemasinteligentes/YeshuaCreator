@@ -64,6 +64,27 @@ versionada deve complementar, e nao substituir, os limites de seguranca.
 3. Verificar se poucos itens estao doentes ou se toda a fila esta degradada.
 4. Evoluir o limite fixo para a linha de base aprovada da fila.
 
+## YeshuaQueueItemCritical
+
+1. Identificar a doenca agregada: processamento travado ou falha terminal.
+2. Consultar somente os piores itens pelo metodo diagnostico limitado do mesmo
+   repository da fila; nao transformar identificadores em labels Prometheus.
+3. Correlacionar `OperationalEntityId`, `RootOperationId` ou `ExecutionId` com
+   o trace preservado no Tempo e os logs no Loki.
+4. Em falha terminal, distinguir natureza, transiencia, origem e assinatura.
+5. Em processamento travado, confirmar lock, dependencia e timeout antes de
+   liberar ou reprocessar o item.
+
+## YeshuaQueueItemDegraded
+
+1. Identificar a doenca agregada: espera excessiva, execucao recorrente ou
+   falha repetida.
+2. Confirmar que o snapshot e recente e que a fila continua com vazao.
+3. Consultar uma lista limitada dos piores itens e comparar tentativas, retries
+   e idade; nao varrer toda a tabela pelo painel.
+4. Abrir o trace preservado quando houver retry, erro ou recuperacao.
+5. Ajustar os limites somente depois de formar uma linha de base saudavel.
+
 ## YeshuaQueueHealthProbeFailed
 
 1. Verificar conectividade e permissao de leitura do repositorio.

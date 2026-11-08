@@ -25,7 +25,7 @@ Frequencias iniciais:
 | 10 | Latencia P50/P95/P99 | histograma `yeshua.operation.duration`, ms | calibrar depois da primeira amostra | buckets e precisao ainda serao homologados |
 | 11 | Sagas e steps | duracao, falhas e `yeshua.saga.retries` | falha tecnica participa da taxa geral | retry conta o agendamento oficial `RetryScheduled` |
 | 12 | Espera e execucao das filas | ultimo ciclo e gauges explicitos | falha de item do Worker | espera global depende de produtor oficial do fluxo |
-| 13 | Backlog e vazao | gauge do fluxo, itens/s e pressao de lote | mais de 80% dos ciclos saturados por 15 min | lote saturado indica pressao; nao substitui backlog global |
+| 13 | Saude da fila e dos itens | backlog, vazao e `yeshua.queue.current` por doenca | item critico por 2 min; degradado por 5 min | IDs individuais ficam no diagnostico limitado, logs e traces |
 | 14 | Ciclos de Workers | ciclos e itens/s | falha de item e pressao | um lote de polling nao vira pai dos itens processados |
 | 15 | Saude do pipeline | metricas internas do Collector | falha de exportacao por 2 min | ausencia de sinal nunca prova saude da aplicacao |
 
@@ -38,6 +38,10 @@ logs, exportacao e arquivos de containers.
 
 IDs de tenant, entidade, carga, documento, trace e execucao nao sao labels das
 metricas. O detalhamento individual continua em logs e traces autorizados.
+
+O Collector preserva integralmente traces com erro, retry, falha terminal,
+recuperacao, diagnostico ou duracao acima de cinco segundos. Traces saudaveis e
+rapidos usam amostragem inicial de 5%. Essa decisao nao reduz metricas nem logs.
 
 ## Linha De Base
 
