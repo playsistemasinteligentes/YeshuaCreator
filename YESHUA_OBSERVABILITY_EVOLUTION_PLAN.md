@@ -135,8 +135,9 @@ polling nao devem ser pais dos itens processados em paralelo.
 A politica inicial usa tail sampling no Collector. Erros, retries, falhas
 terminais, recuperacoes, sessoes diagnosticas e traces acima de cinco segundos
 sao preservados integralmente; traces saudaveis e rapidos usam amostragem de
-5%. A aplicacao somente gera e classifica spans. A decisao de armazenamento
-fica no Collector, sem buffering customizado nos aplicativos.
+5%. A janela inicial de decisao e de dez segundos, limitada a dois mil traces.
+A aplicacao somente gera e classifica spans. A decisao de armazenamento fica
+no Collector, sem buffering customizado nos aplicativos.
 
 Quando houver suporte integral, exemplars poderao relacionar observacoes de
 histogramas aos traces correspondentes.

@@ -54,7 +54,7 @@ processors:
     spike_limit_mib: 26
   tail_sampling:
     decision_wait: 10s
-    num_traces: 5000
+    num_traces: 2000
     expected_new_traces_per_sec: 100
     policies:
       - name: preserve-errors
