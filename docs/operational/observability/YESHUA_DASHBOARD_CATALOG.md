@@ -1,0 +1,47 @@
+# Catalogo Do Dashboard Operacional Do Yeshua
+
+Dashboard provisionado: `Yeshua - Visao Operacional`.
+
+Frequencias iniciais:
+
+- host e containers: coleta a cada 15 segundos;
+- metricas das aplicacoes em OTLP: exportacao a cada 15 segundos, configuravel
+  por `OpenTelemetry:Metrics:ExportIntervalMilliseconds` entre 5 segundos e
+  5 minutos;
+- regras Prometheus: avaliacao a cada 30 segundos;
+- dashboard: atualizacao a cada 30 segundos.
+
+| # | Visao | Fonte e unidade | Alerta inicial | Limitacao conhecida |
+| --- | --- | --- | --- | --- |
+| 1 | CPU do servidor | `hostmetrics`, percentual | acima de 90% por 15 min | homologar nome publicado no Linux |
+| 2 | Memoria do servidor | `hostmetrics`, percentual | acima de 90% por 15 min | cache e pressao real exigem correlacao |
+| 3 | Disco, espaco e I/O | `hostmetrics`, percentual e bytes | filesystem acima de 90% | separar capacidade de latencia de I/O na calibracao |
+| 4 | Carga do servidor | `hostmetrics`, load 1/5/15 min | sem alerta isolado | interpretar em conjunto com CPUs disponiveis |
+| 5 | Estado dos containers | `docker_stats`, estado/health | health `unhealthy` por 2 min | containers sem healthcheck nao possuem saude funcional |
+| 6 | Reinicios de containers | `docker_stats`, reinicios em 24 h | mais de 3 em 30 min | validar persistencia do contador apos recriacao |
+| 7 | CPU e memoria por container | `docker_stats`, percentual | correlacionado com host e restart | metricas dependem do cgroup do host Linux |
+| 8 | Requisicoes e operacoes por segundo | `yeshua.operation.executions`, execucoes/s | usado na taxa de erro | representa bordas instrumentadas, nao trafego bruto |
+| 9 | Erros e taxa de erros | outcome tecnico, percentual | acima de 5% por 10 min | rejeicao de negocio nao e erro tecnico |
+| 10 | Latencia P50/P95/P99 | histograma `yeshua.operation.duration`, ms | calibrar depois da primeira amostra | buckets e precisao ainda serao homologados |
+| 11 | Sagas e steps | duracao, falhas e `yeshua.saga.retries` | falha tecnica participa da taxa geral | retry conta o agendamento oficial `RetryScheduled` |
+| 12 | Espera e execucao das filas | ultimo ciclo e gauges explicitos | falha de item do Worker | espera global depende de produtor oficial do fluxo |
+| 13 | Backlog e vazao | gauge do fluxo, itens/s e pressao de lote | mais de 80% dos ciclos saturados por 15 min | lote saturado indica pressao; nao substitui backlog global |
+| 14 | Ciclos de Workers | ciclos e itens/s | falha de item e pressao | um lote de polling nao vira pai dos itens processados |
+| 15 | Saude do pipeline | metricas internas do Collector | falha de exportacao por 2 min | ausencia de sinal nunca prova saude da aplicacao |
+
+## Fronteiras De Seguranca
+
+O container principal de observabilidade nao recebe `docker.sock`. O proxy
+interno aceita somente leitura dos endpoints estritamente necessarios ao
+receiver `docker_stats`; nao publica porta no host e nega controle, execucao,
+logs, exportacao e arquivos de containers.
+
+IDs de tenant, entidade, carga, documento, trace e execucao nao sao labels das
+metricas. O detalhamento individual continua em logs e traces autorizados.
+
+## Linha De Base
+
+Os limites acima sao protecoes fixas iniciais. A comparacao dinamica com uma
+linha de base aprovada depende de amostra real, persistencia do snapshot e
+governanca da Inteligencia Operacional. Ela nao deve ser simulada antes da
+primeira janela comprovadamente saudavel.

@@ -104,6 +104,9 @@ namespace Shered.Logger
             string? operationalEntityId = null)
         {
             CommandStarted(commandName);
+            if (telemetry.Enabled)
+                OperationalMetrics.CommandStarted(commandName);
+
             var envelope = new OperationalEvidenceEnvelope(
                 "Command",
                 commandName,
@@ -170,7 +173,26 @@ namespace Shered.Logger
                 }
             }
 
-            // O ciclo ocioso continua no snapshot de saude, sem serializar um evento.
+            if (telemetry.Enabled)
+            {
+                var technicalOutcome = statusCode >= 500
+                    ? OperationalTechnicalOutcome.Failed
+                    : OperationalTechnicalOutcome.Succeeded;
+                var businessOutcome = statusCode switch
+                {
+                    >= 200 and < 400 => OperationalBusinessOutcome.Accepted,
+                    >= 400 and < 500 => OperationalBusinessOutcome.Rejected,
+                    _ => OperationalBusinessOutcome.NotEvaluated
+                };
+                OperationalMetrics.CommandCompleted(
+                    commandName,
+                    durationMs,
+                    technicalOutcome,
+                    businessOutcome,
+                    workerCycle);
+            }
+
+            // O ciclo ocioso continua no snapshot e nas metricas, sem serializar um evento.
             if (!emitEvent)
                 return;
 
@@ -210,6 +232,15 @@ namespace Shered.Logger
                 state.LastStatusCode = 500;
                 state.LastDurationMs = durationMs;
                 state.TotalDurationMs += durationMs;
+            }
+
+            if (telemetry.Enabled)
+            {
+                OperationalMetrics.CommandCompleted(
+                    commandName,
+                    durationMs,
+                    OperationalTechnicalOutcome.Failed,
+                    OperationalBusinessOutcome.NotEvaluated);
             }
 
             WriteCommand(
@@ -258,6 +289,16 @@ namespace Shered.Logger
                         state.LastFailureAtUtc = now;
                     }
                 }
+            }
+
+            if (captureCounter)
+            {
+                OperationalMetrics.RepositoryCompleted(
+                    operation,
+                    durationMs,
+                    succeeded
+                        ? OperationalTechnicalOutcome.Succeeded
+                        : OperationalTechnicalOutcome.Failed);
             }
 
             if (emitEvent)
@@ -318,6 +359,7 @@ namespace Shered.Logger
                 value,
                 DateTimeOffset.UtcNow);
             _metrics[$"{component}:{metric}"] = snapshot;
+            OperationalMetrics.SetCurrentValue(component, metric, value);
         }
 
         public void Saga(
@@ -393,6 +435,13 @@ namespace Shered.Logger
                 while (_sagas.Count > 512)
                     _sagas.TryDequeue(out _);
 
+                OperationalMetrics.SagaTransition(
+                    transition.Saga,
+                    transition.Step,
+                    transition.Phase,
+                    transition.DurationMs,
+                    transition.TechnicalOutcome,
+                    transition.BusinessOutcome);
                 WriteSaga(snapshot, transition.Telemetry);
             }
             catch
@@ -409,6 +458,8 @@ namespace Shered.Logger
             {
                 if (!telemetry.Enabled)
                     return;
+
+                OperationalMetrics.Transition(transition);
 
                 var failed = transition.TechnicalOutcome is OperationalTechnicalOutcome.Failed
                     or OperationalTechnicalOutcome.TimedOut

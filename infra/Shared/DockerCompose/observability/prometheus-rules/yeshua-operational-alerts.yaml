@@ -1,0 +1,146 @@
+groups:
+  - name: yeshua-operational
+    interval: 30s
+    rules:
+      - alert: YeshuaOperationalErrorRateHigh
+        expr: |
+          sum by (service_name, deployment_environment_name) (
+            rate({__name__=~"yeshua_operation_executions(_execution)?(_total)?", outcome=~"failed|timed_out|unavailable"}[5m])
+          )
+          /
+          clamp_min(
+            sum by (service_name, deployment_environment_name) (
+              rate({__name__=~"yeshua_operation_executions(_execution)?(_total)?"}[5m])
+            ),
+            0.000001
+          ) > 0.05
+        for: 10m
+        labels:
+          severity: warning
+          yeshua_scope: application
+        annotations:
+          summary: "Taxa de falha tecnica acima de 5%"
+          description: "O servico {{ $labels.service_name }} permaneceu acima do limite fixo inicial por 10 minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaoperationalerrorratehigh"
+
+      - alert: YeshuaWorkerFailureDetected
+        expr: |
+          sum by (service_name, operation, deployment_environment_name) (
+            increase({__name__=~"yeshua_worker_items(_item)?(_total)?", state="failed"}[5m])
+          ) > 0
+        for: 1m
+        labels:
+          severity: warning
+          yeshua_scope: worker
+        annotations:
+          summary: "Worker registrou item com falha"
+          description: "O Worker {{ $labels.operation }} registrou falha nos ultimos cinco minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaworkerfailuredetected"
+
+      - alert: YeshuaWorkerBatchPressureHigh
+        expr: |
+          sum by (service_name, operation, deployment_environment_name) (
+            rate({__name__=~"yeshua_worker_saturated_cycles(_cycle)?(_total)?"}[15m])
+          )
+          /
+          clamp_min(
+            sum by (service_name, operation, deployment_environment_name) (
+              rate({__name__=~"yeshua_worker_cycles(_cycle)?(_total)?"}[15m])
+            ),
+            0.000001
+          ) > 0.80
+        for: 15m
+        labels:
+          severity: warning
+          yeshua_scope: worker
+        annotations:
+          summary: "Worker opera continuamente no limite do lote"
+          description: "Mais de 80% dos ciclos de {{ $labels.operation }} atingiram o limite do lote. Isso indica pressao de backlog, nao prova a contagem global da fila."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaworkerbatchpressurehigh"
+
+      - alert: YeshuaTelemetryExporterFailure
+        expr: |
+          sum by (exporter) (
+            increase({__name__=~"otelcol_exporter_send_failed_(metric_points|spans|log_records).*"}[5m])
+          ) > 0
+        for: 2m
+        labels:
+          severity: critical
+          yeshua_scope: telemetry
+        annotations:
+          summary: "Collector nao consegue exportar telemetria"
+          description: "O exporter {{ $labels.exporter }} descartou ou deixou de enviar sinais."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuatelemetryexporterfailure"
+
+      - alert: YeshuaContainerUnhealthy
+        expr: |
+          sum by (container_name) (
+            {__name__=~"container_state_health_status.*", container_state_health_state="unhealthy"}
+          ) > 0
+        for: 2m
+        labels:
+          severity: critical
+          yeshua_scope: container
+        annotations:
+          summary: "Container marcado como unhealthy"
+          description: "O healthcheck do container {{ $labels.container_name }} permaneceu unhealthy por dois minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuacontainerunhealthy"
+
+      - alert: YeshuaContainerRestartLoop
+        expr: |
+          sum by (container_name) (
+            increase({__name__=~"container_restarts.*"}[30m])
+          ) > 3
+        for: 1m
+        labels:
+          severity: warning
+          yeshua_scope: container
+        annotations:
+          summary: "Container reiniciou repetidamente"
+          description: "O container {{ $labels.container_name }} reiniciou mais de tres vezes em trinta minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuacontainerrestartloop"
+
+      - alert: YeshuaHostCpuSaturated
+        expr: |
+          100 * avg without (cpu) (
+            sum without (state) ({__name__=~"system_cpu_utilization(_ratio)?", state!="idle"})
+          ) > 90
+        for: 15m
+        labels:
+          severity: warning
+          yeshua_scope: host
+        annotations:
+          summary: "CPU do servidor acima de 90%"
+          description: "A CPU permaneceu saturada por 15 minutos. Correlacione com vazao, latencia e filas antes de recomendar hardware."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuahostcpusaturated"
+
+      - alert: YeshuaHostMemorySaturated
+        expr: |
+          100 * sum({__name__=~"system_memory_usage(_bytes)?", state="used"})
+          /
+          clamp_min(sum({__name__=~"system_memory_usage(_bytes)?"}), 1) > 90
+        for: 15m
+        labels:
+          severity: warning
+          yeshua_scope: host
+        annotations:
+          summary: "Memoria do servidor acima de 90%"
+          description: "A memoria usada permaneceu acima do limite fixo inicial por 15 minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuahostmemorysaturated"
+
+      - alert: YeshuaHostDiskAlmostFull
+        expr: |
+          100 * sum by (device, mountpoint) ({__name__=~"system_filesystem_usage(_bytes)?", state="used"})
+          /
+          clamp_min(
+            sum by (device, mountpoint) ({__name__=~"system_filesystem_usage(_bytes)?"}),
+            1
+          ) > 90
+        for: 15m
+        labels:
+          severity: critical
+          yeshua_scope: host
+        annotations:
+          summary: "Filesystem acima de 90%"
+          description: "O filesystem {{ $labels.mountpoint }} esta proximo da capacidade."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuahostdiskalmostfull"

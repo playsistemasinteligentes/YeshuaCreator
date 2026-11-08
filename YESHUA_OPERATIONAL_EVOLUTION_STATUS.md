@@ -8,6 +8,8 @@ Documentos de referencia:
 
 - `OPERATIONAL_SUPPORT_ADOPTION_STANDARD.md`: requisitos do padrao para
   agentizacao da fabricacao, evolucao e manutencao de software.
+- `YESHUA_OBSERVABILITY_EVOLUTION_PLAN.md`: plano oficial de evolucao da
+  observabilidade do Yeshua e referencia conceitual para outros sistemas.
 - `YESHUA_SRE_IMPLEMENTATION_PLAN.md`: plano detalhado de implementacao.
 - Este arquivo: situacao resumida e ponto atual.
 
@@ -103,6 +105,27 @@ politica.
   `NeverCapture`, aplicada antes do sink.
 - Bloqueio de nomes proibidos tanto nos logs quanto nos spans antes dos
   exportadores JSONL ou OTLP.
+- `Meter` compartilhado `Yeshua.Operational` com contagem, duracao, atividade,
+  ciclos de Worker, itens de Worker e valores operacionais atuais.
+- Exportacao OTLP de metricas ativada no mesmo registro OpenTelemetry dos hosts;
+  o modo local `ConsoleJsonl` permanece exclusivo e nao duplica o envio OTLP.
+- Commands, repositories, sagas, transicoes e resultados `IWorkerCycleResult`
+  alimentam metricas nas bordas compartilhadas, sem IDs de alta cardinalidade.
+- Receiver `hostmetrics` configurado para CPU, memoria, disco, filesystem,
+  carga, rede, paginacao e processos do servidor.
+- Dashboard versionado `Yeshua - Visao Operacional` com os quinze topicos do
+  plano.
+- Receiver `docker_stats` configurado por um proxy interno de menor privilegio.
+  O container principal nao monta `docker.sock`; o proxy aceita somente as
+  leituras estritamente necessarias para estado, reinicios, CPU e memoria.
+- Regras Prometheus iniciais cobrem falha tecnica, Worker, pipeline, container,
+  CPU, memoria e disco, todas vinculadas a runbooks versionados.
+- Catalogo dos quinze paineis registra fonte, unidade, frequencia, alerta e
+  limitacao conhecida sem apresentar dado ainda nao homologado como capacidade.
+- Saturacao do lote de Worker e valores do ultimo ciclo fornecem pressao de
+  backlog e progresso sem duplicar a consulta oficial da fila.
+- Linha de base operacional definida no plano como snapshot versionado e
+  aprovado; persistencia e promocao dos snapshots ainda nao implementadas.
 
 ### Controle Operacional Antecipado
 
@@ -121,6 +144,11 @@ de assuntos durante R04.
 - Suites CRUD geradas por aplicativo.
 - Smoke CRUD da Clinica gerado e orquestrado pelo runner pos-build; execucao
   contra o ambiente publicado permanece pendente.
+- Testes unitarios das metricas validam counters, histogramas, gauge,
+  atividade, ciclo de Worker e conjunto limitado de labels.
+- Projeto compartilhado compilado e suas 37 verificacoes executadas localmente:
+  36 aprovadas e uma ignorada por depender de Linux.
+- Suite da Application executada sobre a `main` com 51 testes aprovados.
 
 ## 5.1 Avaliacao Dos Gates Externos
 

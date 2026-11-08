@@ -1979,6 +1979,24 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   unico, com retencao padrao de 5 dias e limites apertados de CPU/memoria; a
   separacao fisica dos componentes so deve ocorrer quando medicao real
   justificar.
+- Metricas operacionais nascem no `Meter` compartilhado `Yeshua.Operational`.
+  Commands, repositories, sagas, transicoes e resultados `IWorkerCycleResult`
+  alimentam counters, gauges e histogramas na mesma borda que ja decide a
+  telemetria. IDs de tenant, entidade, documento, trace, query ou execucao nao
+  sao labels de metricas; continuam em logs e traces para investigacao.
+- O Collector coleta CPU, memoria, disco, filesystem, carga, containers e a
+  propria saude do pipeline por receivers oficiais. O container principal de
+  observabilidade nao monta `docker.sock`. O receiver `docker_stats` acessa um
+  proxy isolado em rede interna, que permite apenas `GET`/`HEAD` para ping,
+  versao, listagem, inspecao e estatisticas; qualquer endpoint de controle,
+  logs ou arquivos e negado. Essa pequena borda de menor privilegio pertence ao
+  mesmo pacote operacional e nao autoriza acesso Docker para a Inteligencia
+  Operacional nem para agentes.
+- O Grafana provisiona os dashboards oficiais por arquivos versionados. Saude
+  dinamica compara o presente com uma linha de base operacional aprovada e
+  versionada por servico, operacao e ambiente, sem permitir que degradacao
+  gradual vire o novo normal. Prometheus preserva os fatos historicos; a
+  Inteligencia Operacional governa snapshots; Grafana somente consulta e exibe.
 - Na renomeacao para `yeshua-observability`, a pasta de configuracao passou a
   `infra/Shared/DockerCompose/observability`; o bind de dados continua em
   `/root/YeshuaStorage/volatile/infra/telemetry`, sem mover/apagar conteudo.

@@ -15,6 +15,32 @@ receivers:
           scrape_interval: 15s
           static_configs:
             - targets: ["127.0.0.1:8888"]
+  hostmetrics:
+    root_path: /hostfs
+    collection_interval: 15s
+    scrapers:
+      cpu:
+        metrics:
+          system.cpu.utilization:
+            enabled: true
+      load:
+      memory:
+      disk:
+      filesystem:
+      network:
+      paging:
+      processes:
+  docker_stats:
+    endpoint: http://docker-metrics-proxy:2375
+    collection_interval: 15s
+    timeout: 5s
+    metrics:
+      container.restarts:
+        enabled: true
+      container.state.health.status:
+        enabled: true
+      container.state.status:
+        enabled: true
 
 extensions:
   health_check:
@@ -30,6 +56,11 @@ processors:
     timeout: 2s
     send_batch_size: 512
     send_batch_max_size: 1024
+  resourcedetection/system:
+    detectors: [system]
+    override: false
+    system:
+      hostname_sources: [os]
 
 exporters:
   otlp_http/metrics:
@@ -57,8 +88,8 @@ service:
       processors: [memory_limiter, batch]
       exporters: [otlp_http/traces]
     metrics:
-      receivers: [otlp, prometheus/collector]
-      processors: [memory_limiter, batch]
+      receivers: [otlp, prometheus/collector, hostmetrics, docker_stats]
+      processors: [memory_limiter, resourcedetection/system, batch]
       exporters: [otlp_http/metrics]
     logs:
       receivers: [otlp]

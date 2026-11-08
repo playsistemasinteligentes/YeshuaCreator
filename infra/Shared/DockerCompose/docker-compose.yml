@@ -112,6 +112,7 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
       GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s/observability/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/otel-lgtm/grafana/conf/provisioning/dashboards/custom/yeshua-overview.json"
       ENABLE_LOGS_TEMPO: "${YESHUA_TELEMETRY_ENABLE_LOGS_TEMPO:-true}"
       LGTM_SHUTDOWN_TIMEOUT_SECONDS: "15"
       PROMETHEUS_EXTRA_ARGS: "--storage.tsdb.retention.time=5d --storage.tsdb.retention.size=${YESHUA_TELEMETRY_PROMETHEUS_RETENTION_SIZE:-2GB}"
@@ -128,7 +129,13 @@ services:
       - ./observability/loki-config.yaml:/otel-lgtm/loki-config.yaml:ro
       - ./observability/tempo-config.yaml:/otel-lgtm/tempo-config.yaml:ro
       - ./observability/prometheus.yaml:/otel-lgtm/prometheus.yaml:ro
+      - ./observability/prometheus-rules:/otel-lgtm/prometheus-rules:ro
+      - ./observability/grafana/dashboards-provisioning.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/yeshua.yaml:ro
+      - ./observability/grafana/dashboards:/otel-lgtm/grafana/conf/provisioning/dashboards/custom:ro
+      - /:/hostfs:ro
       - /root/YeshuaStorage/volatile/infra/telemetry:/data
+    depends_on:
+      - docker-metrics-proxy
     logging:
       driver: json-file
       options:
@@ -139,6 +146,29 @@ services:
       yeshua-net:
         aliases:
           - yeshua-telemetry
+      yeshua-observability-internal:
+
+  docker-metrics-proxy:
+    image: haproxy:3.2-alpine
+    container_name: yeshua-docker-metrics-proxy
+    expose:
+      - "2375"
+    volumes:
+      - ./observability/docker-metrics-proxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+    restart: unless-stopped
+    networks:
+      - yeshua-observability-internal
 
   nginx:
     image: nginx:1.27-alpine
@@ -158,6 +188,9 @@ services:
 networks:
   yeshua-net:
     name: yeshua-net
+  yeshua-observability-internal:
+    name: yeshua-observability-internal
+    internal: true
 
 volumes:
   operational-agent-workspace:

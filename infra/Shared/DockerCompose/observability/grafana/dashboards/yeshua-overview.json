@@ -1,0 +1,277 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Visao operacional oficial do Yeshua: infraestrutura, aplicacoes, sagas, filas, workers e pipeline de telemetria.",
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Utilizacao nao ociosa agregada do host. Fonte: receiver hostmetrics do Collector.",
+      "fieldConfig": { "defaults": { "max": 100, "min": 0, "unit": "percent" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "legend": { "displayMode": "hidden", "placement": "bottom" }, "tooltip": { "mode": "single", "sort": "none" } },
+      "targets": [
+        { "editorMode": "code", "expr": "100 * avg without (cpu) (sum without (state) ({__name__=~\"system_cpu_utilization(_ratio)?\", state!=\"idle\"}))", "legendFormat": "CPU", "range": true, "refId": "A" }
+      ],
+      "title": "1. CPU do servidor",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Percentual de memoria usada sobre os estados publicados pelo hostmetrics.",
+      "fieldConfig": { "defaults": { "max": 100, "min": 0, "unit": "percent" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 0 },
+      "id": 2,
+      "options": { "legend": { "displayMode": "hidden", "placement": "bottom" }, "tooltip": { "mode": "single", "sort": "none" } },
+      "targets": [
+        { "editorMode": "code", "expr": "100 * sum({__name__=~\"system_memory_usage(_bytes)?\", state=\"used\"}) / clamp_min(sum({__name__=~\"system_memory_usage(_bytes)?\"}), 1)", "legendFormat": "Memoria", "range": true, "refId": "A" }
+      ],
+      "title": "2. Memoria do servidor",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Ocupacao de filesystem e atividade de I/O por dispositivo.",
+      "fieldConfig": { "defaults": { "max": 100, "min": 0, "unit": "percent" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 12, "y": 0 },
+      "id": 3,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "100 * sum by (device, mountpoint) ({__name__=~\"system_filesystem_usage(_bytes)?\", state=\"used\"}) / clamp_min(sum by (device, mountpoint) ({__name__=~\"system_filesystem_usage(_bytes)?\"}), 1)", "legendFormat": "{{device}} {{mountpoint}}", "range": true, "refId": "A" }
+      ],
+      "title": "3. Disco, espaco e I/O",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Load average do servidor em 1, 5 e 15 minutos.",
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 18, "y": 0 },
+      "id": 4,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "{__name__=~\"system_cpu_load_average_(1m|5m|15m).*\"}", "legendFormat": "{{__name__}}", "range": true, "refId": "A" }
+      ],
+      "title": "4. Carga do servidor",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Estado informado pelo receiver docker_stats atraves do proxy interno restrito. O container principal nao monta docker.sock.",
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 7 },
+      "id": 5,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (container_name, container_state_status) ({__name__=~\"container_state_status.*\"})", "legendFormat": "Estado {{container_name}} - {{container_state_status}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "sum by (container_name, container_state_health_state) ({__name__=~\"container_state_health_status.*\"})", "legendFormat": "Health {{container_name}} - {{container_state_health_state}}", "range": true, "refId": "B" }
+      ],
+      "title": "5. Estado dos containers",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Reinicios nas ultimas 24 horas informados pelo receiver docker_stats atraves do proxy interno restrito.",
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 7 },
+      "id": 6,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (container_name) (increase({__name__=~\"container_restarts.*\"}[24h]))", "legendFormat": "{{container_name}}", "range": true, "refId": "A" }
+      ],
+      "title": "6. Reinicios de containers",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "CPU e memoria por container coletadas pelo receiver docker_stats sem expor endpoints de controle do daemon.",
+      "fieldConfig": { "defaults": { "unit": "percent" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 8, "x": 16, "y": 7 },
+      "id": 7,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "100 * avg by (container_name) ({__name__=~\"container_cpu_utilization.*\"})", "legendFormat": "CPU {{container_name}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "100 * avg by (container_name) ({__name__=~\"container_memory_percent.*\"})", "legendFormat": "RAM {{container_name}}", "range": true, "refId": "B" }
+      ],
+      "title": "7. CPU e memoria por container",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Taxa das operacoes Command concluidas nas bordas compartilhadas.",
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 14 },
+      "id": 8,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (service_name, operation) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", component=\"Command\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "{{service_name}} / {{operation}}", "range": true, "refId": "A" }
+      ],
+      "title": "8. Requisicoes e operacoes por segundo",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Percentual de resultados tecnicos falhos, expirados ou indisponiveis.",
+      "fieldConfig": { "defaults": { "max": 100, "min": 0, "unit": "percent" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 14 },
+      "id": 9,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "100 * sum by (service_name) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", outcome=~\"failed|timed_out|unavailable\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])) / clamp_min(sum by (service_name) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])), 0.000001)", "legendFormat": "{{service_name}}", "range": true, "refId": "A" }
+      ],
+      "title": "9. Erros e taxa de erros",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Percentis calculados a partir do histograma agregado de duracao.",
+      "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 14 },
+      "id": 10,
+      "options": { "legend": { "displayMode": "list", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "histogram_quantile(0.50, sum by (le) (rate({__name__=~\"yeshua_operation_duration(_milliseconds|_ms)?_bucket\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])))", "legendFormat": "P50", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "histogram_quantile(0.95, sum by (le) (rate({__name__=~\"yeshua_operation_duration(_milliseconds|_ms)?_bucket\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])))", "legendFormat": "P95", "range": true, "refId": "B" },
+        { "editorMode": "code", "expr": "histogram_quantile(0.99, sum by (le) (rate({__name__=~\"yeshua_operation_duration(_milliseconds|_ms)?_bucket\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])))", "legendFormat": "P99", "range": true, "refId": "C" }
+      ],
+      "title": "10. Latencia P50, P95 e P99",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Duracao e falhas por saga e step, com retries agendados publicados pela borda compartilhada.",
+      "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [ { "matcher": { "id": "byFrameRefID", "options": "B" }, "properties": [ { "id": "unit", "value": "ops" } ] }, { "matcher": { "id": "byFrameRefID", "options": "C" }, "properties": [ { "id": "unit", "value": "ops" } ] } ] },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 21 },
+      "id": 11,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "histogram_quantile(0.95, sum by (le, operation) (rate({__name__=~\"yeshua_operation_duration(_milliseconds|_ms)?_bucket\", component=\"Saga\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])))", "legendFormat": "P95 {{operation}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "sum by (operation) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", component=\"Saga\", outcome=\"failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Falhas {{operation}}", "range": true, "refId": "B" },
+        { "editorMode": "code", "expr": "sum by (saga, step) (rate({__name__=~\"yeshua_saga_retries(_retry)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Retries {{saga}}.{{step}}", "range": true, "refId": "C" }
+      ],
+      "title": "11. Sagas e steps",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Ultimo ciclo de cada Worker e esperas explicitas publicadas por filas, Inbox e Outbox.",
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [ { "matcher": { "id": "byFrameRefID", "options": "B" }, "properties": [ { "id": "unit", "value": "ms" } ] } ] },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 21 },
+      "id": 12,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "{__name__=~\"yeshua_worker_current(_item)?\", state=~\"claimed|processed|failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}", "legendFormat": "{{operation}} / {{state}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "{__name__=~\"yeshua_operational_current.*\", metric=~\".*(wait|waiting|execution|duration).*\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}", "legendFormat": "{{component}} / {{metric}}", "range": true, "refId": "B" }
+      ],
+      "title": "12. Espera e execucao das filas",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Backlog explicito quando o fluxo o publica, vazao e pressao de backlog inferida por lotes saturados.",
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [ { "matcher": { "id": "byFrameRefID", "options": "C" }, "properties": [ { "id": "unit", "value": "percent" }, { "id": "min", "value": 0 }, { "id": "max", "value": 100 } ] } ] },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 21 },
+      "id": 13,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "{__name__=~\"yeshua_operational_current.*\", metric=~\".*(backlog|pending|eligible|reserved|processing|failed).*\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}", "legendFormat": "Backlog {{component}} / {{metric}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "sum by (operation) (rate({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Vazao {{operation}}", "range": true, "refId": "B" },
+        { "editorMode": "code", "expr": "100 * sum by (operation) (rate({__name__=~\"yeshua_worker_saturated_cycles(_cycle)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])) / clamp_min(sum by (operation) (rate({__name__=~\"yeshua_worker_cycles(_cycle)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])), 0.000001)", "legendFormat": "Pressao % {{operation}}", "range": true, "refId": "C" }
+      ],
+      "title": "13. Backlog e vazao",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Ciclos concluidos e itens capturados, processados e falhos pelos resultados IWorkerCycleResult.",
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 29 },
+      "id": 14,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (operation, outcome) (rate({__name__=~\"yeshua_worker_cycles(_cycle)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Ciclos {{operation}} / {{outcome}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "sum by (operation, state) (rate({__name__=~\"yeshua_worker_items(_item)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Itens {{operation}} / {{state}}", "range": true, "refId": "B" }
+      ],
+      "title": "14. Ciclos de Workers",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "Recepcao, recusas e falhas de exportacao do proprio OpenTelemetry Collector.",
+      "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 29 },
+      "id": 15,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (receiver) (rate({__name__=~\"otelcol_receiver_accepted_(metric_points|spans|log_records).*\"}[$__rate_interval]))", "legendFormat": "Aceitos {{receiver}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "sum by (exporter) (rate({__name__=~\"otelcol_exporter_send_failed_(metric_points|spans|log_records).*\"}[$__rate_interval]))", "legendFormat": "Falhas {{exporter}}", "range": true, "refId": "B" },
+        { "editorMode": "code", "expr": "sum by (receiver) (rate({__name__=~\"otelcol_receiver_refused_(metric_points|spans|log_records).*\"}[$__rate_interval]))", "legendFormat": "Recusados {{receiver}}", "range": true, "refId": "C" }
+      ],
+      "title": "15. Saude do pipeline de observabilidade",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 41,
+  "tags": ["yeshua", "observabilidade", "opentelemetry"],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\"}, deployment_environment_name)",
+        "includeAll": true,
+        "label": "Ambiente",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\"}, deployment_environment_name)", "refId": "VariableQueryEditor-Environment" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", deployment_environment_name=~\"$environment\"}, service_name)",
+        "includeAll": true,
+        "label": "Servico",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", deployment_environment_name=~\"$environment\"}, service_name)", "refId": "VariableQueryEditor-Service" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Yeshua - Visao Operacional",
+  "uid": "yeshua-operational-overview",
+  "version": 1,
+  "weekStart": ""
+}

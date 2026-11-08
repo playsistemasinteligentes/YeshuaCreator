@@ -2,6 +2,7 @@ using Dominio.Operational;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
+using OpenTelemetry.Metrics;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
 
@@ -22,7 +23,7 @@ public static class OperationalTelemetryRegistration
                 sp.GetRequiredService<IRuntimeIdentityProvider>()));
         services.AddTransient<OperationalHttpTelemetryHandler>();
 
-        services
+        var openTelemetry = services
             .AddOpenTelemetry()
             .ConfigureResource(resource =>
             {
@@ -31,26 +32,46 @@ public static class OperationalTelemetryRegistration
                     new KeyValuePair<string, object>("deployment.environment.name", identity.Environment),
                     new KeyValuePair<string, object>("service.commit.sha", identity.CommitSha)
                 ]);
-            })
-            .WithTracing(tracing =>
-            {
-                tracing.AddSource(OperationalActivity.SourceName);
-                tracing.AddProcessor(new OperationalActivitySanitizingProcessor());
-                if (exportSettings.Mode == OperationalTelemetryExportMode.Otlp)
-                {
-                    var endpoint = exportSettings.OtlpEndpoint
-                        ?? throw new InvalidOperationException(
-                            "OpenTelemetry:Otlp:Endpoint deve estar configurado para o modo Otlp.");
-                    tracing.AddOtlpExporter(options => options.Endpoint = endpoint);
-                }
-                else
-                {
-                    tracing.AddProcessor(provider =>
-                        new BatchActivityExportProcessor(
-                            new YeshuaJsonlActivityExporter(
-                                provider.GetRequiredService<IRuntimeIdentityProvider>())));
-                }
             });
+
+        openTelemetry.WithTracing(tracing =>
+        {
+            tracing.AddSource(OperationalActivity.SourceName);
+            tracing.AddProcessor(new OperationalActivitySanitizingProcessor());
+            if (exportSettings.Mode == OperationalTelemetryExportMode.Otlp)
+            {
+                var endpoint = exportSettings.OtlpEndpoint
+                    ?? throw new InvalidOperationException(
+                        "OpenTelemetry:Otlp:Endpoint deve estar configurado para o modo Otlp.");
+                tracing.AddOtlpExporter(options => options.Endpoint = endpoint);
+            }
+            else
+            {
+                tracing.AddProcessor(provider =>
+                    new BatchActivityExportProcessor(
+                        new YeshuaJsonlActivityExporter(
+                            provider.GetRequiredService<IRuntimeIdentityProvider>())));
+            }
+        });
+
+        if (exportSettings.Mode == OperationalTelemetryExportMode.Otlp)
+        {
+            var metricExportIntervalMilliseconds = Math.Clamp(
+                configuration.GetValue<int?>("OpenTelemetry:Metrics:ExportIntervalMilliseconds") ?? 15_000,
+                5_000,
+                300_000);
+            openTelemetry.WithMetrics(metrics =>
+            {
+                metrics.AddMeter(OperationalMetrics.MeterName);
+                metrics.AddOtlpExporter(
+                    (exporterOptions, metricReaderOptions) =>
+                    {
+                        exporterOptions.Endpoint = exportSettings.OtlpEndpoint!;
+                        metricReaderOptions.PeriodicExportingMetricReaderOptions.ExportIntervalMilliseconds =
+                            metricExportIntervalMilliseconds;
+                    });
+            });
+        }
 
         return services;
     }
