@@ -992,7 +992,7 @@ namespace Dominio.Schemas.CQRS
 
             filePath = Path.Combine(GetPathAppInfraestructureGenerateWorker(), $"Migration\\WorkersBuilder{migration.MigrationName}.cs");
             filePathCuston = Path.Combine(GetPathAppInfraestructureGenerateWorker(), $"Custon\\WorkersBuilder{migration.MigrationName}.cs");
-            var SourceCodeInfraestructureWorker = new SourceCodeInfraestructureWorker(migration);
+            var SourceCodeInfraestructureWorker = new SourceCodeInfraestructureWorker(migration, GetApplicationName());
             SourceCodeInfraestructureWorker.WriteCode(null, filePath, filePathCuston);
             
         }

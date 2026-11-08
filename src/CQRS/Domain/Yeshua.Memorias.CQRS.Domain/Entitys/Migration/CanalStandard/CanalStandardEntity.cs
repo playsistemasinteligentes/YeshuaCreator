@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -33,16 +33,16 @@
     public string OperationalEntityId { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal CanalStandardEntity(int? id, string canalid, string conexaoyoutubeid, int credencialtenantid, bool ativo, long totalreservas, DateTime? ultimareservaemutc ){
- Id = id;
- CanalId = canalid;
- ConexaoYouTubeId = conexaoyoutubeid;
- CredencialTenantId = credencialtenantid;
- Ativo = ativo;
- TotalReservas = totalreservas;
- UltimaReservaEmUtc = ultimareservaemutc.HasValue && ultimareservaemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ultimareservaemutc;
- Deleted = false;
- Changed = DateTime.Now;
- OperationalEntityId = Guid.NewGuid().ToString("N");
+ Id = id; 
+ CanalId = canalid; 
+ ConexaoYouTubeId = conexaoyoutubeid; 
+ CredencialTenantId = credencialtenantid; 
+ Ativo = ativo; 
+ TotalReservas = totalreservas; 
+ UltimaReservaEmUtc = ultimareservaemutc.HasValue && ultimareservaemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : ultimareservaemutc; 
+ Deleted = false; 
+ Changed = DateTime.Now; 
+ OperationalEntityId = Guid.NewGuid().ToString("N"); 
 }
 public bool isValidData()
 {
@@ -58,6 +58,6 @@ return _erroMensagem.Count() <= 0;
                         public bool isValidUpdate() => isValidData();
                         public bool isValidDelete() => true;
                         public List<string> getErroMensagens() => _erroMensagem;
-
+                
                 }
             }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

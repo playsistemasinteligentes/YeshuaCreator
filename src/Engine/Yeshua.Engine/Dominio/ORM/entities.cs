@@ -12,523 +12,17 @@ using System;
 
 namespace MyApp.Domain.Entities
 {
-    public class DocumentoFiscal
+    public class Foto
     {
         public int? Id { get; set; }
-        public string CorrelationId { get; set; }
-        public int ProdutoFiscal { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public int? Serie { get; set; }
-        public int? Numero { get; set; }
-        public int Ambiente { get; set; }
-        public string? UFEmitente { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? DestinatarioDocumento { get; set; }
-        public string? XmlStorageKey { get; set; }
-        public string? XmlHash { get; set; }
-        public string? ProtocoloAutorizacao { get; set; }
-        public string? CodigoRetorno { get; set; }
-        public string? MensagemRetorno { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<DocumentoFiscal> Query() => new MyApp.QueryBuilder.Query<DocumentoFiscal>();
-    }
-
-    public class DocumentoFiscalOriginario
-    {
-        public int? Id { get; set; }
-        public int? DocumentoFiscalId { get; set; }
-        public DocumentoFiscal DocumentoFiscal { get; set; }
-        public string CorrelationId { get; set; }
-        public string SourceApplication { get; set; }
-        public string? SourceModule { get; set; }
-        public string SourceMessageId { get; set; }
-        public string TipoDocumento { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public string? Numero { get; set; }
-        public string? Serie { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? DestinatarioDocumento { get; set; }
-        public Decimal? ValorDocumento { get; set; }
-        public Decimal? PesoBruto { get; set; }
-        public Decimal? Volume { get; set; }
-        public string? SnapshotJson { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<DocumentoFiscalOriginario> Query() => new MyApp.QueryBuilder.Query<DocumentoFiscalOriginario>();
-    }
-
-    public class NFeProdutoSnapshot
-    {
-        public int? Id { get; set; }
-        public int? DocumentoFiscalOriginarioId { get; set; }
-        public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
-        public string CorrelationId { get; set; }
-        public string? CargaId { get; set; }
-        public string? PedidoId { get; set; }
-        public string ChaveAcesso { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? DestinatarioDocumento { get; set; }
-        public string? UFOrigem { get; set; }
-        public string? UFDestino { get; set; }
-        public string? MunicipioOrigemCodigoIbge { get; set; }
-        public string? MunicipioDestinoCodigoIbge { get; set; }
-        public Decimal? ValorDocumento { get; set; }
-        public Decimal? PesoBruto { get; set; }
-        public Decimal? Volume { get; set; }
-        public string? XmlStorageKey { get; set; }
-        public string? SnapshotJson { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<NFeProdutoSnapshot> Query() => new MyApp.QueryBuilder.Query<NFeProdutoSnapshot>();
-    }
-
-    public class CTeEntradaOficial
-    {
-        public int? Id { get; set; }
-        public string CorrelationId { get; set; }
-        public string SourceApplication { get; set; }
-        public string? SourceModule { get; set; }
-        public string SourceMessageId { get; set; }
-        public string MessageType { get; set; }
-        public string MessageVersion { get; set; }
-        public DateTime ReceivedAtUtc { get; set; }
-        public string PayloadHash { get; set; }
-        public string? PayloadStorageKey { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeEntradaOficial> Query() => new MyApp.QueryBuilder.Query<CTeEntradaOficial>();
-    }
-
-    public class CTeRomaneioConsolidado
-    {
-        public int? Id { get; set; }
-        public int EntradaOficialId { get; set; }
-        public CTeEntradaOficial CTeEntradaOficial { get; set; }
-        public string CorrelationId { get; set; }
-        public string RomaneioId { get; set; }
-        public string? CargaId { get; set; }
-        public DateTime ConsolidadoEmUtc { get; set; }
-        public string UFInicio { get; set; }
-        public string UFFim { get; set; }
-        public string? MunicipioInicioCodigoIbge { get; set; }
-        public string? MunicipioFimCodigoIbge { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? TomadorDocumento { get; set; }
-        public string? RotaSnapshotJson { get; set; }
-        public string? CargaSnapshotJson { get; set; }
-        public string? PreferenciasFiscaisJson { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeRomaneioConsolidado> Query() => new MyApp.QueryBuilder.Query<CTeRomaneioConsolidado>();
-    }
-
-    public class CTeSolicitacaoFiscal
-    {
-        public int? Id { get; set; }
-        public int? EntradaOficialId { get; set; }
-        public CTeEntradaOficial CTeEntradaOficial { get; set; }
-        public int? RomaneioConsolidadoId { get; set; }
-        public CTeRomaneioConsolidado CTeRomaneioConsolidado { get; set; }
-        public string CorrelationId { get; set; }
-        public int Ambiente { get; set; }
-        public string UFEmitente { get; set; }
-        public string EmitenteDocumento { get; set; }
-        public int ProdutoFiscal { get; set; }
-        public int TipoCTe { get; set; }
-        public int TipoServico { get; set; }
-        public int Modal { get; set; }
-        public int Globalizado { get; set; }
-        public string UFInicio { get; set; }
-        public string UFFim { get; set; }
-        public string? MunicipioInicioCodigoIbge { get; set; }
-        public string? MunicipioFimCodigoIbge { get; set; }
-        public Decimal? ValorServico { get; set; }
-        public Decimal? ValorCarga { get; set; }
-        public string? PreferenciasManifestoJson { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeSolicitacaoFiscal> Query() => new MyApp.QueryBuilder.Query<CTeSolicitacaoFiscal>();
-    }
-
-    public class CTeDocumentoOriginario
-    {
-        public int? Id { get; set; }
-        public int CTeSolicitacaoFiscalId { get; set; }
-        public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
-        public int? DocumentoFiscalOriginarioId { get; set; }
-        public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
-        public string TipoDocumento { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public string? Numero { get; set; }
-        public string? Serie { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? DestinatarioDocumento { get; set; }
-        public Decimal? ValorDocumento { get; set; }
-        public Decimal? PesoBruto { get; set; }
-        public string? SnapshotJson { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeDocumentoOriginario> Query() => new MyApp.QueryBuilder.Query<CTeDocumentoOriginario>();
-    }
-
-    public class CTeComplementoIcmsFiscal
-    {
-        public int? Id { get; set; }
-        public int CTeSolicitacaoFiscalId { get; set; }
-        public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
-        public Decimal ValorPrestacaoComplementar { get; set; }
-        public string CST { get; set; }
-        public Decimal ValorBaseCalculo { get; set; }
-        public Decimal AliquotaICMS { get; set; }
-        public Decimal ValorICMS { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeComplementoIcmsFiscal> Query() => new MyApp.QueryBuilder.Query<CTeComplementoIcmsFiscal>();
-    }
-
-    public class CTeParticipanteSnapshot
-    {
-        public int? Id { get; set; }
-        public int CTeSolicitacaoFiscalId { get; set; }
-        public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
-        public string Papel { get; set; }
-        public string Documento { get; set; }
-        public string? Nome { get; set; }
-        public string? InscricaoEstadual { get; set; }
-        public string? UF { get; set; }
-        public string? MunicipioCodigoIbge { get; set; }
-        public string? EnderecoJson { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeParticipanteSnapshot> Query() => new MyApp.QueryBuilder.Query<CTeParticipanteSnapshot>();
-    }
-
-    public class CTeTentativaEmissao
-    {
-        public int? Id { get; set; }
-        public int CTeSolicitacaoFiscalId { get; set; }
-        public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public int? Numero { get; set; }
-        public int? Serie { get; set; }
-        public int Tentativa { get; set; }
-        public string? XmlAssinadoStorageKey { get; set; }
-        public string? XmlProcStorageKey { get; set; }
-        public string? XmlHash { get; set; }
-        public string? CodigoRetorno { get; set; }
-        public string? MensagemRetorno { get; set; }
-        public string? ProtocoloAutorizacao { get; set; }
-        public DateTime? EnviadoEmUtc { get; set; }
-        public DateTime? AutorizadoEmUtc { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeTentativaEmissao> Query() => new MyApp.QueryBuilder.Query<CTeTentativaEmissao>();
-    }
-
-    public class CTeSaidaMDFe
-    {
-        public int? Id { get; set; }
-        public int CTeTentativaEmissaoId { get; set; }
-        public CTeTentativaEmissao CTeTentativaEmissao { get; set; }
-        public string CorrelationId { get; set; }
-        public string ChaveAcessoCTe { get; set; }
-        public string SnapshotHash { get; set; }
-        public string? OutboxMessageId { get; set; }
-        public DateTime? PublicadoEmUtc { get; set; }
-        public string? UltimoErro { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<CTeSaidaMDFe> Query() => new MyApp.QueryBuilder.Query<CTeSaidaMDFe>();
-    }
-
-    public class MDFe
-    {
-        public int? Id { get; set; }
-        public string ChaveAcesso { get; set; }
-        public int Serie { get; set; }
-        public int Numero { get; set; }
-        public string UfCarregamento { get; set; }
-        public string UfDescarregamento { get; set; }
-        public string PlacaVeiculo { get; set; }
-        public DateTime EmitidoEm { get; set; }
-        public DateTime? AutorizadoEm { get; set; }
-        public DateTime? IniciadoEm { get; set; }
-        public DateTime? EncerradoEm { get; set; }
-        public DateTime? CanceladoEm { get; set; }
-        public int Situacao { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFe> Query() => new MyApp.QueryBuilder.Query<MDFe>();
-    }
-
-    public class MDFeSolicitacaoFiscal
-    {
-        public int? Id { get; set; }
-        public string CorrelationId { get; set; }
-        public string? CargaId { get; set; }
-        public int Ambiente { get; set; }
-        public string UFCarregamento { get; set; }
-        public string UFDescarregamento { get; set; }
-        public string? PlacaVeiculo { get; set; }
-        public string? CondutorDocumento { get; set; }
-        public string? DocumentosOriginariosJson { get; set; }
-        public string? TransporteSnapshotJson { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFeSolicitacaoFiscal> Query() => new MyApp.QueryBuilder.Query<MDFeSolicitacaoFiscal>();
-    }
-
-    public class MDFeDocumentoOriginario
-    {
-        public int? Id { get; set; }
-        public int MDFeSolicitacaoFiscalId { get; set; }
-        public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
-        public int? DocumentoFiscalOriginarioId { get; set; }
-        public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
-        public string TipoDocumento { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public string? SnapshotJson { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFeDocumentoOriginario> Query() => new MyApp.QueryBuilder.Query<MDFeDocumentoOriginario>();
-    }
-
-    public class MDFePercurso
-    {
-        public int? Id { get; set; }
-        public int MDFeSolicitacaoFiscalId { get; set; }
-        public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
-        public string UF { get; set; }
-        public int Ordem { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFePercurso> Query() => new MyApp.QueryBuilder.Query<MDFePercurso>();
-    }
-
-    public class MDFeVeiculo
-    {
-        public int? Id { get; set; }
-        public int MDFeSolicitacaoFiscalId { get; set; }
-        public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
-        public string Placa { get; set; }
-        public string? Renavam { get; set; }
-        public Decimal? Tara { get; set; }
-        public Decimal? CapacidadeKg { get; set; }
-        public Decimal? CapacidadeM3 { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFeVeiculo> Query() => new MyApp.QueryBuilder.Query<MDFeVeiculo>();
-    }
-
-    public class MDFeCondutor
-    {
-        public int? Id { get; set; }
-        public int MDFeSolicitacaoFiscalId { get; set; }
-        public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
-        public string Nome { get; set; }
-        public string Documento { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFeCondutor> Query() => new MyApp.QueryBuilder.Query<MDFeCondutor>();
-    }
-
-    public class MDFeTentativaEmissao
-    {
-        public int? Id { get; set; }
-        public int MDFeSolicitacaoFiscalId { get; set; }
-        public MDFeSolicitacaoFiscal MDFeSolicitacaoFiscal { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public int? Numero { get; set; }
-        public int? Serie { get; set; }
-        public int Tentativa { get; set; }
-        public string? XmlAssinadoStorageKey { get; set; }
-        public string? XmlProcStorageKey { get; set; }
-        public string? XmlHash { get; set; }
-        public string? CodigoRetorno { get; set; }
-        public string? MensagemRetorno { get; set; }
-        public string? ProtocoloAutorizacao { get; set; }
-        public DateTime? EnviadoEmUtc { get; set; }
-        public DateTime? AutorizadoEmUtc { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFeTentativaEmissao> Query() => new MyApp.QueryBuilder.Query<MDFeTentativaEmissao>();
-    }
-
-    public class MDFeEncerramento
-    {
-        public int? Id { get; set; }
-        public int MDFeId { get; set; }
-        public MDFe MDFe { get; set; }
-        public string ChaveAcesso { get; set; }
-        public string UfCarregamento { get; set; }
-        public string UfDescarregamento { get; set; }
-        public string PlacaVeiculo { get; set; }
-        public DateTime SolicitadoEm { get; set; }
-        public DateTime? AutorizadoEm { get; set; }
-        public string? Protocolo { get; set; }
-        public string? CodigoRetorno { get; set; }
-        public string? MensagemRetorno { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<MDFeEncerramento> Query() => new MyApp.QueryBuilder.Query<MDFeEncerramento>();
-    }
-
-    public class SefazEndpoint
-    {
-        public int? Id { get; set; }
-        public int ProdutoFiscal { get; set; }
-        public string UF { get; set; }
-        public int Ambiente { get; set; }
-        public string Servico { get; set; }
-        public string Versao { get; set; }
-        public string Url { get; set; }
-        public int Ativo { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<SefazEndpoint> Query() => new MyApp.QueryBuilder.Query<SefazEndpoint>();
-    }
-
-    public class CertificadoDigital
-    {
-        public int? Id { get; set; }
-        public string Apelido { get; set; }
-        public string DocumentoTitular { get; set; }
         public string StorageKey { get; set; }
-        public string? Thumbprint { get; set; }
-        public DateTime? ValidoDe { get; set; }
-        public DateTime? ValidoAte { get; set; }
-        public int Ativo { get; set; }
+        public string NomeOriginal { get; set; }
+        public string ContentType { get; set; }
+        public string? HashArquivo { get; set; }
+        public DateTime? CapturadaEmUtc { get; set; }
+        public int? Largura { get; set; }
+        public int? Altura { get; set; }
+        public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
         public bool? Deleted { get; set; }
@@ -536,45 +30,76 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
-        public string? SenhaStorageKey { get; set; }
 
-        public static MyApp.QueryBuilder.Query<CertificadoDigital> Query() => new MyApp.QueryBuilder.Query<CertificadoDigital>();
+        public static MyApp.QueryBuilder.Query<Foto> Query() => new MyApp.QueryBuilder.Query<Foto>();
     }
 
-    public class EntradaFiscalContingencia
+    public class Album
     {
         public int? Id { get; set; }
+        public string Titulo { get; set; }
+        public string? Descricao { get; set; }
+        public int Privacidade { get; set; }
+        public int SegundosPorFoto { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<Album> Query() => new MyApp.QueryBuilder.Query<Album>();
+    }
+
+    public class AlbumFoto
+    {
+        public int? Id { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
+        public int FotoId { get; set; }
+        public Foto Foto { get; set; }
+        public int Ordem { get; set; }
+        public string? Legenda { get; set; }
+        public int? Rotacao { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<AlbumFoto> Query() => new MyApp.QueryBuilder.Query<AlbumFoto>();
+    }
+
+    public class PublicacaoAlbum
+    {
+        public int? Id { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
         public string CorrelationId { get; set; }
-        public string CargaId { get; set; }
-        public int TipoSolicitante { get; set; }
-        public int Ambiente { get; set; }
-        public string SourceApplication { get; set; }
-        public string? SourceModule { get; set; }
-        public string SourceMessageId { get; set; }
-        public string? EmitenteFiscalDocumento { get; set; }
-        public string? TomadorDocumento { get; set; }
-        public string? TransportadorDocumento { get; set; }
-        public string? RemetenteDocumento { get; set; }
-        public string? DestinatarioDocumento { get; set; }
-        public string? UFInicio { get; set; }
-        public string? UFFim { get; set; }
-        public string? MunicipioInicioCodigoIbge { get; set; }
-        public string? MunicipioFimCodigoIbge { get; set; }
-        public string? RNTRC { get; set; }
-        public string? PlacaVeiculo { get; set; }
-        public string? UFVeiculo { get; set; }
-        public string? CondutorDocumento { get; set; }
-        public string? CondutorNome { get; set; }
-        public int? QuantidadeDocumentos { get; set; }
-        public Decimal? ValorCarga { get; set; }
-        public Decimal? PesoBruto { get; set; }
-        public Decimal? Volume { get; set; }
-        public string? PendenciasJson { get; set; }
-        public string? SnapshotJson { get; set; }
-        public string? EmissaoFiscalCorrelationId { get; set; }
-        public int? EmissaoFiscalSagaId { get; set; }
-        public DateTime CriadoEmUtc { get; set; }
-        public DateTime? AtualizadoEmUtc { get; set; }
+        public string? ManifestStorageKey { get; set; }
+        public string? VideoStorageKey { get; set; }
+        public string? YouTubeVideoId { get; set; }
+        public string? YouTubeUrl { get; set; }
+        public string? ConexaoYouTubeId { get; set; }
+        public string? CanalYouTubeId { get; set; }
+        public int? YouTubeCredentialTenantId { get; set; }
+        public int? CanalStandardId { get; set; }
+        public int? PrivacidadeYouTube { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
+        public string? Mensagem { get; set; }
+        public DateTime SolicitadaEmUtc { get; set; }
+        public DateTime? PublicadaEmUtc { get; set; }
         public int Status { get; set; }
         public int? TenantID { get; set; }
         public yTenant yTenant { get; set; }
@@ -583,115 +108,26 @@ namespace MyApp.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
-        public int? CertificadoDigitalId { get; set; }
-        public CertificadoDigital CertificadoDigital { get; set; }
 
-        public static MyApp.QueryBuilder.Query<EntradaFiscalContingencia> Query() => new MyApp.QueryBuilder.Query<EntradaFiscalContingencia>();
+        public static MyApp.QueryBuilder.Query<PublicacaoAlbum> Query() => new MyApp.QueryBuilder.Query<PublicacaoAlbum>();
     }
 
-    public class EmissaoFiscalTransporte
+    public class CanalStandard
     {
         public int? Id { get; set; }
-        public string CorrelationId { get; set; }
-        public int OrigemFluxo { get; set; }
-        public string? CargaId { get; set; }
-        public string? RomaneioId { get; set; }
-        public int Ambiente { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? TomadorDocumento { get; set; }
-        public string? TransportadorDocumento { get; set; }
-        public string? UFInicio { get; set; }
-        public string? UFFim { get; set; }
-        public string? MunicipioInicioCodigoIbge { get; set; }
-        public string? MunicipioFimCodigoIbge { get; set; }
-        public int? QuantidadeNFe { get; set; }
-        public int? QuantidadeCTe { get; set; }
-        public int? QuantidadeMDFe { get; set; }
-        public Decimal? ValorCarga { get; set; }
-        public Decimal? PesoBruto { get; set; }
-        public Decimal? Volume { get; set; }
-        public string? UltimaMensagem { get; set; }
-        public DateTime CriadoEmUtc { get; set; }
-        public DateTime? AtualizadoEmUtc { get; set; }
-        public DateTime? ConcluidoEmUtc { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
+        public string CanalId { get; set; }
+        public string ConexaoYouTubeId { get; set; }
+        public int CredencialTenantId { get; set; }
+        public bool Ativo { get; set; }
+        public long TotalReservas { get; set; }
+        public DateTime? UltimaReservaEmUtc { get; set; }
         public bool? Deleted { get; set; }
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
 
-        public static MyApp.QueryBuilder.Query<EmissaoFiscalTransporte> Query() => new MyApp.QueryBuilder.Query<EmissaoFiscalTransporte>();
-    }
-
-    public class ContingenciaFiscal
-    {
-        public int? Id { get; set; }
-        public int? EmissaoFiscalTransporteId { get; set; }
-        public EmissaoFiscalTransporte EmissaoFiscalTransporte { get; set; }
-        public int? EntradaFiscalContingenciaId { get; set; }
-        public EntradaFiscalContingencia EntradaFiscalContingencia { get; set; }
-        public string CorrelationId { get; set; }
-        public string CargaId { get; set; }
-        public int TipoSolicitante { get; set; }
-        public int Ambiente { get; set; }
-        public string? EmitenteDocumento { get; set; }
-        public string? TomadorDocumento { get; set; }
-        public string? TransportadorDocumento { get; set; }
-        public int? QuantidadeDocumentos { get; set; }
-        public int? QuantidadeCTe { get; set; }
-        public int? QuantidadeMDFe { get; set; }
-        public Decimal? ValorCarga { get; set; }
-        public Decimal? PesoBruto { get; set; }
-        public string? UltimaMensagem { get; set; }
-        public DateTime CriadoEmUtc { get; set; }
-        public DateTime? AtualizadoEmUtc { get; set; }
-        public DateTime? ConcluidoEmUtc { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<ContingenciaFiscal> Query() => new MyApp.QueryBuilder.Query<ContingenciaFiscal>();
-    }
-
-    public class EmissaoFiscalTransporteDocumento
-    {
-        public int? Id { get; set; }
-        public int EmissaoFiscalTransporteId { get; set; }
-        public EmissaoFiscalTransporte EmissaoFiscalTransporte { get; set; }
-        public int? DocumentoFiscalId { get; set; }
-        public DocumentoFiscal DocumentoFiscal { get; set; }
-        public int? DocumentoFiscalOriginarioId { get; set; }
-        public DocumentoFiscalOriginario DocumentoFiscalOriginario { get; set; }
-        public int? NFeProdutoSnapshotId { get; set; }
-        public NFeProdutoSnapshot NFeProdutoSnapshot { get; set; }
-        public int ProdutoFiscal { get; set; }
-        public int Papel { get; set; }
-        public string? TipoEvento { get; set; }
-        public string? ChaveAcesso { get; set; }
-        public string? XmlStorageKey { get; set; }
-        public string? PdfStorageKey { get; set; }
-        public string? Protocolo { get; set; }
-        public string? CodigoRetorno { get; set; }
-        public string? MensagemRetorno { get; set; }
-        public DateTime CriadoEmUtc { get; set; }
-        public int Status { get; set; }
-        public int? TenantID { get; set; }
-        public yTenant yTenant { get; set; }
-        public bool? Deleted { get; set; }
-        public DateTime? Changed { get; set; }
-        public int? UserId { get; set; }
-        public yUser yUser { get; set; }
-        public string OperationalEntityId { get; set; }
-
-        public static MyApp.QueryBuilder.Query<EmissaoFiscalTransporteDocumento> Query() => new MyApp.QueryBuilder.Query<EmissaoFiscalTransporteDocumento>();
+        public static MyApp.QueryBuilder.Query<CanalStandard> Query() => new MyApp.QueryBuilder.Query<CanalStandard>();
     }
 
     public class yFileUpload

@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -228,6 +228,6 @@
                         public bool isValidUpdate() => _inner.isValidUpdate();
                         public bool isValidDelete() => _inner.isValidDelete();
                         public List<string> getErroMensagens() => _inner.getErroMensagens();
-
+                
                 }
             }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

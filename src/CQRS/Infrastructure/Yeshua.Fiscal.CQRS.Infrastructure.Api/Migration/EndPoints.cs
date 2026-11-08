@@ -5554,7 +5554,7 @@ app.MapGet("/yapi/getMetaDataDocumentoFiscalOriginario", (HttpContext context) =
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Vinculado" }, new { value = 3, display = "Rejeitado" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 documentofiscalid = "/DocumentoFiscalOriginario/DocumentoFiscalOriginarioReadFKDocumentoFiscalId",
             }
@@ -5662,7 +5662,7 @@ app.MapGet("/yapi/getMetaDataNFeProdutoSnapshot", (HttpContext context) =>
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DisponivelParaCTe" }, new { value = 3, display = "VinculadaAoCTe" }, new { value = 4, display = "Rejeitada" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 documentofiscaloriginarioid = "/NFeProdutoSnapshot/NFeProdutoSnapshotReadFKDocumentoFiscalOriginarioId",
             }
@@ -5757,7 +5757,7 @@ app.MapGet("/yapi/getMetaDataCTeEntradaOficial", (HttpContext context) =>
                 new { id = "status", label = "Status da Entrada", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "Normalizada" }, new { value = 3, display = "Rejeitada" }, new { value = 4, display = "Processada" }, new { value = 5, display = "Falha" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -5853,7 +5853,7 @@ app.MapGet("/yapi/getMetaDataCTeRomaneioConsolidado", (HttpContext context) =>
                 new { id = "status", label = "Status do Romaneio", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "SolicitacaoCriada" }, new { value = 3, display = "PendenteDados" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "Processado" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 entradaoficialid = "/CTeRomaneioConsolidado/CTeRomaneioConsolidadoReadFKEntradaOficialId",
             }
@@ -5964,7 +5964,7 @@ app.MapGet("/yapi/getMetaDataCTeSolicitacaoFiscal", (HttpContext context) =>
                 new { id = "status", label = "Status da Solicitacao", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "Classificada" }, new { value = 3, display = "ProntaParaEmissao" }, new { value = 4, display = "Autorizada" }, new { value = 5, display = "Rejeitada" }, new { value = 6, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 entradaoficialid = "/CTeSolicitacaoFiscal/CTeSolicitacaoFiscalReadFKEntradaOficialId",
                 romaneioconsolidadoid = "/CTeSolicitacaoFiscal/CTeSolicitacaoFiscalReadFKRomaneioConsolidadoId",
@@ -6065,7 +6065,7 @@ app.MapGet("/yapi/getMetaDataCTeDocumentoOriginario", (HttpContext context) =>
                 new { id = "snapshotjson", label = "Snapshot", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 ctesolicitacaofiscalid = "/CTeDocumentoOriginario/CTeDocumentoOriginarioReadFKCTeSolicitacaoFiscalId",
                 documentofiscaloriginarioid = "/CTeDocumentoOriginario/CTeDocumentoOriginarioReadFKDocumentoFiscalOriginarioId",
@@ -6228,7 +6228,7 @@ app.MapGet("/yapi/getMetaDataCTeParticipanteSnapshot", (HttpContext context) =>
                 new { id = "enderecojson", label = "Endereco", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 ctesolicitacaofiscalid = "/CTeParticipanteSnapshot/CTeParticipanteSnapshotReadFKCTeSolicitacaoFiscalId",
             }
@@ -6322,7 +6322,7 @@ app.MapGet("/yapi/getMetaDataCTeTentativaEmissao", (HttpContext context) =>
                 new { id = "status", label = "Status da Emissao", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Enviado" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 ctesolicitacaofiscalid = "/CTeTentativaEmissao/CTeTentativaEmissaoReadFKCTeSolicitacaoFiscalId",
             }
@@ -6410,7 +6410,7 @@ app.MapGet("/yapi/getMetaDataCTeSaidaMDFe", (HttpContext context) =>
                 new { id = "status", label = "Status da Saida", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "AguardandoPublicacao" }, new { value = 2, display = "PublicadoOutbox" }, new { value = 3, display = "EntregueInboxMDFe" }, new { value = 4, display = "ConsumidoPeloMDFe" }, new { value = 5, display = "FalhaNaEntrega" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 ctetentativaemissaoid = "/CTeSaidaMDFe/CTeSaidaMDFeReadFKCTeTentativaEmissaoId",
             }
@@ -6500,7 +6500,7 @@ app.MapGet("/yapi/getMetaDataMDFe", (HttpContext context) =>
                 new { id = "situacao", label = "Situacao do MDF-e", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -6588,7 +6588,7 @@ app.MapGet("/yapi/getMetaDataMDFeSolicitacaoFiscal", (HttpContext context) =>
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "ProntaParaEmissao" }, new { value = 3, display = "Autorizada" }, new { value = 4, display = "Rejeitada" }, new { value = 5, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -6664,7 +6664,7 @@ app.MapGet("/yapi/getMetaDataMDFeDocumentoOriginario", (HttpContext context) =>
                 new { id = "snapshotjson", label = "Snapshot", type = "memo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 mdfesolicitacaofiscalid = "/MDFeDocumentoOriginario/MDFeDocumentoOriginarioReadFKMDFeSolicitacaoFiscalId",
                 documentofiscaloriginarioid = "/MDFeDocumentoOriginario/MDFeDocumentoOriginarioReadFKDocumentoFiscalOriginarioId",
@@ -6735,7 +6735,7 @@ app.MapGet("/yapi/getMetaDataMDFePercurso", (HttpContext context) =>
                 new { id = "ordem", label = "Ordem", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 mdfesolicitacaofiscalid = "/MDFePercurso/MDFePercursoReadFKMDFeSolicitacaoFiscalId",
             }
@@ -6808,7 +6808,7 @@ app.MapGet("/yapi/getMetaDataMDFeVeiculo", (HttpContext context) =>
                 new { id = "capacidadem3", label = "Capacidade M3", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 mdfesolicitacaofiscalid = "/MDFeVeiculo/MDFeVeiculoReadFKMDFeSolicitacaoFiscalId",
             }
@@ -6878,7 +6878,7 @@ app.MapGet("/yapi/getMetaDataMDFeCondutor", (HttpContext context) =>
                 new { id = "documento", label = "Documento", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 mdfesolicitacaofiscalid = "/MDFeCondutor/MDFeCondutorReadFKMDFeSolicitacaoFiscalId",
             }
@@ -6967,7 +6967,7 @@ app.MapGet("/yapi/getMetaDataMDFeTentativaEmissao", (HttpContext context) =>
                 new { id = "status", label = "Status da Emissao", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Enviado" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 mdfesolicitacaofiscalid = "/MDFeTentativaEmissao/MDFeTentativaEmissaoReadFKMDFeSolicitacaoFiscalId",
             }
@@ -7059,7 +7059,7 @@ app.MapGet("/yapi/getMetaDataMDFeEncerramento", (HttpContext context) =>
                 new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 mdfeid = "/MDFeEncerramento/MDFeEncerramentoReadFKMDFeId",
             }
@@ -7141,7 +7141,7 @@ app.MapGet("/yapi/getMetaDataSefazEndpoint", (HttpContext context) =>
                 new { id = "ativo", label = "Ativo", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -7220,7 +7220,7 @@ app.MapGet("/yapi/getMetaDataCertificadoDigital", (HttpContext context) =>
                 new { id = "senhastoragekey", label = "Senha no Storage", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -7350,7 +7350,7 @@ app.MapGet("/yapi/getMetaDataEntradaFiscalContingencia", (HttpContext context) =
                 new { id = "certificadodigitalid", label = "Certificado Digital", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataCertificadoDigital", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 certificadodigitalid = "/EntradaFiscalContingencia/EntradaFiscalContingenciaReadFKCertificadoDigitalId",
             }
@@ -7487,7 +7487,7 @@ app.MapGet("/yapi/getMetaDataEmissaoFiscalTransporte", (HttpContext context) =>
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "RecebendoDocumentos" }, new { value = 3, display = "PreparandoEmissao" }, new { value = 4, display = "EmitindoCTe" }, new { value = 5, display = "EmitindoMDFe" }, new { value = 6, display = "Concluida" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -7624,7 +7624,7 @@ app.MapGet("/yapi/getMetaDataContingenciaFiscal", (HttpContext context) =>
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Iniciada" }, new { value = 2, display = "AguardandoUsuario" }, new { value = 3, display = "EmProcessamento" }, new { value = 4, display = "EmissaoFiscalSolicitada" }, new { value = 5, display = "Finalizada" }, new { value = 6, display = "Rejeitada" }, new { value = 7, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 emissaofiscaltransporteid = "/ContingenciaFiscal/ContingenciaFiscalReadFKEmissaoFiscalTransporteId",
                 entradafiscalcontingenciaid = "/ContingenciaFiscal/ContingenciaFiscalReadFKEntradaFiscalContingenciaId",
@@ -7733,7 +7733,7 @@ app.MapGet("/yapi/getMetaDataEmissaoFiscalTransporteDocumento", (HttpContext con
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Disponivel" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "Cancelado" }, new { value = 6, display = "Encerrado" }, new { value = 7, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 emissaofiscaltransporteid = "/EmissaoFiscalTransporteDocumento/EmissaoFiscalTransporteDocumentoReadFKEmissaoFiscalTransporteId",
                 documentofiscalid = "/EmissaoFiscalTransporteDocumento/EmissaoFiscalTransporteDocumentoReadFKDocumentoFiscalId",
@@ -7828,7 +7828,7 @@ app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
                 new { id = "completedat", label = "Finalizado em", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -7914,7 +7914,7 @@ app.MapGet("/yapi/getMetaDataySaga", (HttpContext context) =>
                 new { id = "lockedby", label = "LockedBy", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8003,7 +8003,7 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
                 new { id = "retrycount", label = "Tentativas", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 sagaid = "/ySagaStep/ySagaStepReadFKSagaId",
             }
@@ -8179,7 +8179,7 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
                 new { id = "sagastepid", label = "SagaStepId", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 sagaid = "/yInbox/yInboxReadFKSagaId",
                 sagastepid = "/yInbox/yInboxReadFKSagaStepId",
@@ -8267,7 +8267,7 @@ app.MapGet("/yapi/getMetaDatayToken", (HttpContext context) =>
                 new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8336,7 +8336,7 @@ app.MapGet("/yapi/getMetaDatayTenantApplication", (HttpContext context) =>
                 new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 tenantid = "/yTenantApplication/yTenantApplicationReadFKTenantID",
             }
@@ -8401,7 +8401,7 @@ app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
                 new { id = "userid", label = "User ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8463,7 +8463,7 @@ app.MapGet("/yapi/getMetaDatayUser", (HttpContext context) =>
                 new { id = "senha", label = "Senha", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8525,7 +8525,7 @@ app.MapGet("/yapi/getMetaDatayConfigArcteture", (HttpContext context) =>
                 new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8593,7 +8593,7 @@ app.MapGet("/yapi/getMetaDatayConfigNotification", (HttpContext context) =>
                 new { id = "emailpassword", label = "EmailPassword", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 tenantid = "/yConfigNotification/yConfigNotificationReadFKTenantID",
             }
@@ -8658,7 +8658,7 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
                 new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8717,7 +8717,7 @@ app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
                 new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8780,7 +8780,7 @@ app.MapGet("/yapi/getMetaDatayTenantModule", (HttpContext context) =>
                 new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 moduleid = "/yTenantModule/yTenantModuleReadFKModuleId",
                 tenantid = "/yTenantModule/yTenantModuleReadFKTenantID",
@@ -8849,7 +8849,7 @@ app.MapGet("/yapi/getMetaDatayUserModule", (HttpContext context) =>
                 new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 moduleid = "/yUserModule/yUserModuleReadFKModuleId",
                 userid = "/yUserModule/yUserModuleReadFKUserId",
@@ -8914,7 +8914,7 @@ app.MapGet("/yapi/getMetaDatayGrant", (HttpContext context) =>
                 new { id = "description", label = "Descrição", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
@@ -8987,7 +8987,7 @@ app.MapGet("/yapi/getMetaDatayPerfilGrant", (HttpContext context) =>
                 new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 perfilid = "/yPerfilGrant/yPerfilGrantReadFKPerfilId",
                 grantid = "/yPerfilGrant/yPerfilGrantReadFKGrantId",
@@ -9071,7 +9071,7 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
                 new { id = "validuntil", label = "Valido ate", type = "DateTime", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
                 perfilid = "/yUserGrant/yUserGrantReadFKPerfilId",
                 grantid = "/yUserGrant/yUserGrantReadFKGrantId",

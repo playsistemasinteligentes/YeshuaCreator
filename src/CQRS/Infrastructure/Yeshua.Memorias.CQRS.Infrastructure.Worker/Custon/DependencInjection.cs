@@ -4,10 +4,6 @@ public static class CustonDependenceInjection
 {
     public static void MapCustonDependenceInjection(WebApplicationBuilder builder)
     {
-        builder.Services.AddScoped<RepositoryInterfaces.Patterns.Worker.IWorkerQueueHealthProbe<
-            Command.Patterns.SagaWorkerCommandHandler,
-            Command.Patterns.InputCommand>, SagaQueueHealthProbe>();
-
         Memorias.YouTube.YouTubeRegistration.AddMemoriasYouTube(builder.Services, builder.Configuration);
         builder.Services.AddTransient<MediaOutboxTransportWorker>();
         builder.Services.AddHostedService(sp =>

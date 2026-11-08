@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -54,19 +54,19 @@
  VideoStorageKey = videostoragekey; 
  YouTubeVideoId = youtubevideoid; 
  YouTubeUrl = youtubeurl; 
- ConexaoYouTubeId = conexaoyoutubeid;
- CanalYouTubeId = canalyoutubeid;
- YouTubeCredentialTenantId = youtubecredentialtenantid;
- CanalStandardId = canalstandardid;
- PrivacidadeYouTube = privacidadeyoutube;
- QualidadeVideo = qualidadevideo;
- ModeloVideo = modelovideo;
- MusicaId = musicaid;
- VolumeMusica = volumemusica;
- Mensagem = mensagem;
- SolicitadaEmUtc = (solicitadaemutc < (new DateTime(1800, 1, 1))) ? DateTime.Now : solicitadaemutc;
- PublicadaEmUtc = publicadaemutc.HasValue && publicadaemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : publicadaemutc;
- Status = status;
+ ConexaoYouTubeId = conexaoyoutubeid; 
+ CanalYouTubeId = canalyoutubeid; 
+ YouTubeCredentialTenantId = youtubecredentialtenantid; 
+ CanalStandardId = canalstandardid; 
+ PrivacidadeYouTube = privacidadeyoutube; 
+ QualidadeVideo = qualidadevideo; 
+ ModeloVideo = modelovideo; 
+ MusicaId = musicaid; 
+ VolumeMusica = volumemusica; 
+ Mensagem = mensagem; 
+ SolicitadaEmUtc = (solicitadaemutc < (new DateTime(1800, 1, 1))) ? DateTime.Now : solicitadaemutc; 
+ PublicadaEmUtc = publicadaemutc.HasValue && publicadaemutc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : publicadaemutc; 
+ Status = status; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

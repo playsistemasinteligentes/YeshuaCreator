@@ -1,6 +1,6 @@
 # Plano Oficial De Evolucao Da Observabilidade Do Yeshua
 
-Versao consolidada em 07/11/2026.
+Versao consolidada em 08/11/2026.
 
 Estado: implementacao incremental em andamento. As capacidades somente passam
 ao resumo vivo depois de compilacao, testes e validacao proporcional ao risco.
@@ -206,7 +206,7 @@ O catalogo operacional versionado dos paineis esta em
 | Latencia P50, P95 e P99 | Prometheus | `yeshua.operation.duration` | Instrumentado |
 | Sagas e steps | Prometheus, Tempo e Loki | metricas e transicoes de Saga | Instrumentado |
 | Espera e execucao das filas | Prometheus | `yeshua.worker.current` | Heartbeat e estado atual instrumentados sem evento por ciclo vazio |
-| Saude da fila e dos itens | Prometheus | `yeshua.queue.current` e `yeshua.worker.items` | Backlog, vazao e doencas agregadas no piloto da Saga do Memorias |
+| Saude da fila e dos itens | Prometheus | `yeshua.queue.current` e `yeshua.worker.items` | Geracao padrao habilitada para toda saga declarada; homologacao em runtime pendente |
 | Ciclos de Workers | Prometheus | `yeshua.worker.cycles` e `yeshua.worker.items` | Instrumentado; saude separada por instancia |
 | Saude do pipeline | Prometheus | metricas internas do Collector | Coleta configurada |
 
@@ -283,11 +283,15 @@ geram logs, spans nem eventos repetitivos. O Prometheus le o ultimo valor no
 intervalo de exportacao e agrega as instancias; IDs de instancia nao entram na
 contagem global da fila.
 
-O piloto da Saga do Memorias publica o mesmo snapshot em cada replica para ter
-failover imediato. O Grafana usa `max` por fila, operacao e ambiente, evitando
-multiplicar o backlog. A eleicao de um unico coletor entre replicas permanece
-uma otimizacao futura caso o numero de instancias torne a consulta diagnostica
-relevante.
+Toda saga declarada na DSL recebe automaticamente o mesmo contrato de saude.
+A Engine gera o probe, o registro de injecao, o claim e as consultas de saude;
+claim e diagnostico reutilizam literalmente o mesmo predicado de elegibilidade.
+O aplicativo nao precisa nem pode manter uma copia desse SQL em `Custon`.
+
+Cada replica publica o mesmo snapshot para ter failover imediato. O Grafana usa
+`max` por fila, operacao e ambiente, evitando multiplicar o backlog. A eleicao
+de um unico coletor entre replicas permanece uma otimizacao futura caso o
+numero de instancias torne a consulta diagnostica relevante.
 
 ### 8.5 Saude Do Item Da Fila
 
@@ -455,8 +459,10 @@ Antes da homologacao, comprovar:
 2. Homologar no Linux o proxy Docker restrito e as series do `docker_stats`.
 3. Definir buckets e temporality dos histogramas com carga representativa.
 4. Testar metricas entre multiplas instancias.
-5. Homologar o snapshot da Saga do Memorias e medir o custo com multiplas replicas.
-6. Expandir o contrato de probe para as filas que possuem SLA.
+5. Homologar os snapshots gerados das sagas de APS ADM, Clinica, Fiscal e
+   Memorias e medir o custo com multiplas replicas.
+6. Expandir a geracao automatica para filas persistidas que nao sejam saga
+   somente quando sua DSL declarar o predicado real de elegibilidade.
 7. Definir orcamentos de cardinalidade, memoria, rede e armazenamento.
 8. Implementar a persistencia e aprovacao dos snapshots de linha de base.
 9. Calibrar alertas e runbooks depois da primeira amostra valida.

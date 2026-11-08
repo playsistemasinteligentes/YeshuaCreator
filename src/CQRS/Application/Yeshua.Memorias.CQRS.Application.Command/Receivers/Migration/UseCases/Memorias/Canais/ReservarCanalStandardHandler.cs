@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -8,7 +8,7 @@
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
 // </yeshua>
 
-// Escopo:
+// Escopo: 
 using Command.Write;
 using Command.Patterns.Command;
 using RepositoryInterfaces.Patterns.Command;

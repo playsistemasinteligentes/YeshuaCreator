@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -38,7 +38,7 @@
  FotoId = fotoid; 
  Ordem = ordem; 
  Legenda = legenda; 
- Rotacao = rotacao;
+ Rotacao = rotacao; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

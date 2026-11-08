@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -527,8 +527,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Status"] = value; //04
                       whereClauses.Add($" [Status] = @Status ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -544,8 +544,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TenantID"] = value; //04
                       whereClauses.Add($" [TenantID] = @TenantID ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -561,8 +561,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Deleted"] = value; //04
                       whereClauses.Add($" [Deleted] = @Deleted ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -578,8 +578,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Changed"] = value; //04
                       whereClauses.Add($" [Changed] = @Changed ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -595,8 +595,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //04
                       whereClauses.Add($" [UserId] = @UserId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -612,8 +612,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationalEntityId"] = value; //04
                       whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -952,8 +952,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Status"] = value; //06
                       whereClauses.Add($" [Status] = @Status ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -969,8 +969,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TenantID"] = value; //06
                       whereClauses.Add($" [TenantID] = @TenantID ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -986,8 +986,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Deleted"] = value; //06
                       whereClauses.Add($" [Deleted] = @Deleted ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1003,8 +1003,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Changed"] = value; //06
                       whereClauses.Add($" [Changed] = @Changed ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1020,8 +1020,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1037,8 +1037,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationalEntityId"] = value; //06
                       whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }

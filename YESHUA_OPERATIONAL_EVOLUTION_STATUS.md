@@ -127,10 +127,11 @@ politica.
 - Polling Workers publicam heartbeat, inicio/fim de ciclo, ultimo sucesso e
   sequencia de ciclos vazios como gauges atuais em memoria. O caminho ocioso
   nao gera log, span nem evento por ciclo.
-- A Saga do Memorias e o primeiro probe de fila: o mesmo repository compartilha
-  o predicado da captura `TOP 5` e do diagnostico, que retorna backlog elegivel
-  e idade do mais antigo sem lock nem mudanca de estado.
-- O mesmo probe classifica itens por falha terminal, processamento travado,
+- Toda saga declarada na DSL recebe probe de fila gerado pela Engine. O mesmo
+  predicado atende a captura `TOP 5` e o diagnostico, que retorna backlog
+  elegivel e idade do mais antigo sem lock nem mudanca de estado. APS ADM,
+  Clinica, Fiscal e Memorias foram regenerados e compilados com esse padrao.
+- O probe gerado classifica itens por falha terminal, processamento travado,
   falha repetida, execucao recorrente ou espera excessiva. Prometheus recebe
   somente contagens agregadas. Quando existe doenca, o Worker consulta no
   maximo os 25 piores itens e publica evidencia estruturada no Loki apenas na
@@ -221,8 +222,9 @@ de assuntos durante R04.
 8. Executar os cenarios publicados e alimentar o relatorio G1-G7 de R16.
 9. Manter D3, D4, replay e agentes fora do caminho critico ate G1-G7 estarem
    demonstrados.
-10. Homologar no ambiente publicado a saude da Saga do Memorias, medir o custo
-    do probe com mais de uma replica e expandir somente para filas com SLA.
+10. Homologar no ambiente publicado a saude das sagas de APS ADM, Clinica,
+    Fiscal e Memorias, medir o custo do probe com mais de uma replica e so
+    depois expandir a geracao para outros tipos de fila declarados na DSL.
 11. Homologar a amostragem seletiva com quatro cenarios: saudavel rapido, erro,
     retry e trace lento; confirmar que a reducao ocorre somente no Tempo.
 12. Manter a deteccao de item sem fila, ou limbo, fora desta rodada; ela exige

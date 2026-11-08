@@ -499,6 +499,22 @@ Regra resumida:
   topologia de Clinica no host de outro aplicativo.
 - `pendencia`: criar o Worker somente quando a DSL declarar fila, polling ou
   outro processamento em segundo plano.
+- Toda saga declarada na DSL gera automaticamente a saude operacional da sua
+  fila. A Engine deve gerar o mesmo predicado de elegibilidade para retirar
+  trabalho (`ClaimRunnableSagas`) e para diagnosticar backlog, idade do item
+  mais antigo e itens doentes; aplicativo nenhum deve copiar esse predicado em
+  `Custon` nem registrar manualmente um probe de saga.
+- A saude individual da fila de saga classifica somente evidencias tecnicas
+  objetivas: espera excessiva, processamento abandonado, execucao recorrente,
+  falha repetida e falha terminal. Prometheus recebe apenas contagens
+  agregadas; a evidencia individual e limitada, sanitizada, deduplicada e
+  publicada somente quando a doenca aparece ou muda. Mensagem de erro nao
+  atravessa essa borda: somente assinatura SHA-256 e identidades causais.
+- Filas particulares que nao nascem de saga declarada continuam usando
+  `IWorkerQueueHealthProbe` como ponto de extensao. Elas so podem virar geracao
+  automatica quando a DSL declarar de forma suficiente sua persistencia e seu
+  predicado real de elegibilidade; nao inferir SQL nem criar diagnostico
+  paralelo por convencao.
 - O controle operacional pertence a cada aplicativo. A tela do aplicativo
   atualiza o singleton da propria API; o Worker do mesmo aplicativo consulta
   periodicamente essa API e atualiza seu singleton. Esse fluxo nao depende de

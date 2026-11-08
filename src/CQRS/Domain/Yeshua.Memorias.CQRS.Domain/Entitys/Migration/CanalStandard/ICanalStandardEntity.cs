@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -31,12 +31,12 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
-
+    
                     bool isValidInsert();
                     bool isValidUpdate();
                     bool isValidDelete();
                     List<string> getErroMensagens();
-
+                
 
                 }
             }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

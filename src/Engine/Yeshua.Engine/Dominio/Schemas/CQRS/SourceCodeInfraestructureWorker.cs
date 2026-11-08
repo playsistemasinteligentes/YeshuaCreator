@@ -15,15 +15,18 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Migration.MigrationBase _migration;
         private readonly WorkerType _WorkerType;
+        private readonly string _applicationName;
 
-        public SourceCodeInfraestructureWorker(Migration.MigrationBase migration, WorkerType WorkerType) : base()
+        public SourceCodeInfraestructureWorker(Migration.MigrationBase migration, WorkerType WorkerType, string applicationName = "Application") : base()
         {
             _migration = migration;
             _WorkerType = WorkerType;
+            _applicationName = applicationName;
         }
-        public SourceCodeInfraestructureWorker(Migration.MigrationBase migration) : base()
+        public SourceCodeInfraestructureWorker(Migration.MigrationBase migration, string applicationName = "Application") : base()
         {
             _migration = migration;
+            _applicationName = applicationName;
         }
 
         protected override StringBuilder GenerateCode()
@@ -54,6 +57,10 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("}");
             sb.AppendLine("}");
+
+            if (HasSagas())
+                AppendSagaQueueHealthProbe(sb);
+
             sb.AppendLine("}");
 
             return sb;
@@ -76,6 +83,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine($@"
 builder.Services.AddTransient<Command.Patterns.SagaWorkerCommandHandler>();
 builder.Services.AddTransient<Command.Patterns.SagaInboxWorkerCommandHandler>();
+builder.Services.AddScoped<RepositoryInterfaces.Patterns.Worker.IWorkerQueueHealthProbe<
+    Command.Patterns.SagaWorkerCommandHandler,
+    Command.Patterns.InputCommand>, SagaQueueHealthProbe>();
 
 builder.Services.AddHostedService(sp =>
     new PollingWorker<Command.Patterns.SagaWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.OutputCommand>(
@@ -89,6 +99,54 @@ builder.Services.AddHostedService(sp =>
         sp.GetRequiredService<ILogger<PollingWorker<Command.Patterns.SagaInboxWorkerCommandHandler, Command.Patterns.InputCommand, Command.Patterns.InboxOutputCommand>>>(),
         TimeSpan.FromMilliseconds({loopMilliseconds})));
 ");
+        }
+
+        private void AppendSagaQueueHealthProbe(StringBuilder sb)
+        {
+            var queueName = System.Text.Json.JsonSerializer.Serialize($"{_applicationName}.Saga");
+            sb.AppendLine($$"""
+
+internal sealed class SagaQueueHealthProbe
+    : RepositoryInterfaces.Patterns.Worker.IWorkerQueueHealthProbe<
+        Command.Patterns.SagaWorkerCommandHandler,
+        Command.Patterns.InputCommand>
+{
+    private readonly IRepository.Read.IySagaReadRepository _repository;
+    private readonly RepositoryInterfaces.Patterns.Worker.WorkerQueueItemHealthThresholds _thresholds;
+
+    public SagaQueueHealthProbe(
+        IRepository.Read.IySagaReadRepository repository,
+        Microsoft.Extensions.Configuration.IConfiguration configuration)
+    {
+        _repository = repository;
+        _thresholds = new RepositoryInterfaces.Patterns.Worker.WorkerQueueItemHealthThresholds(
+            ExcessiveWaitSeconds: Math.Clamp(
+                configuration.GetValue<long?>("YeshuaQueueHealth:Item:ExcessiveWaitSeconds") ?? 900,
+                60,
+                86_400),
+            ProcessingStuckSeconds: Math.Clamp(
+                configuration.GetValue<long?>("YeshuaQueueHealth:Item:ProcessingStuckSeconds") ?? 120,
+                60,
+                3_600),
+            RecurrentExecutionCount: Math.Clamp(
+                configuration.GetValue<int?>("YeshuaQueueHealth:Item:RecurrentExecutionCount") ?? 3,
+                2,
+                100),
+            RepeatedFailureCount: Math.Clamp(
+                configuration.GetValue<int?>("YeshuaQueueHealth:Item:RepeatedFailureCount") ?? 2,
+                1,
+                100));
+    }
+
+    public string QueueName => {{queueName}};
+
+    public RepositoryInterfaces.Patterns.Worker.WorkerQueueHealthSnapshot Capture() =>
+        _repository.GetRunnableSagaHealth(_thresholds);
+
+    public IReadOnlyList<RepositoryInterfaces.Patterns.Worker.WorkerQueueSickItem> CaptureSickItems(int limit) =>
+        _repository.GetSickSagaItems(_thresholds, limit);
+}
+""");
         }
 
         private void AppendStandardQueueWorkers(StringBuilder sb)

@@ -84,6 +84,9 @@ namespace Dominio.Schemas.CQRS
                 }
             }
 
+            if (IsSagaEntity())
+                AppendSagaQueueOperations(sb);
+
 
 
 
@@ -95,6 +98,16 @@ namespace Dominio.Schemas.CQRS
         protected override StringBuilder GenerateCustonCode()
         {
             return new StringBuilder();
+        }
+
+        private bool IsSagaEntity() =>
+            _entity.EntityName.Equals("ySaga", StringComparison.OrdinalIgnoreCase);
+
+        private static void AppendSagaQueueOperations(StringBuilder sb)
+        {
+            sb.AppendLine("        public IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);");
+            sb.AppendLine("        public RepositoryInterfaces.Patterns.Worker.WorkerQueueHealthSnapshot GetRunnableSagaHealth(RepositoryInterfaces.Patterns.Worker.WorkerQueueItemHealthThresholds thresholds);");
+            sb.AppendLine("        public IReadOnlyList<RepositoryInterfaces.Patterns.Worker.WorkerQueueSickItem> GetSickSagaItems(RepositoryInterfaces.Patterns.Worker.WorkerQueueItemHealthThresholds thresholds, int limit);");
         }
     }
 }

@@ -1,6 +1,7 @@
 using Dominio;
 using Dominio.Migration;
 using Dominio.Schemas.CQRS;
+using Migration.Dominio;
 namespace TestMigration;
 
 [TestClass]
@@ -16,11 +17,16 @@ public sealed class SagaQueueGenerationTests
         try
         {
             var workers = Path.Combine(directory, "Workers.cs");
-            new SourceCodeInfraestructureWorker(migration).WriteCode(null, workers, Path.Combine(directory, "Workers.Custon.cs"));
+            new SourceCodeInfraestructureWorker(migration, "Tests").WriteCode(null, workers, Path.Combine(directory, "Workers.Custon.cs"));
             var result = File.ReadAllText(workers);
             StringAssert.Contains(result, "yOutBoxWorkerHandler");
             StringAssert.Contains(result, "InboxListenerHandler");
             StringAssert.Contains(result, "audio.transcribed.inbox");
+            StringAssert.Contains(result, "SagaQueueHealthProbe");
+            StringAssert.Contains(result, "IWorkerQueueHealthProbe");
+            StringAssert.Contains(result, "\"Tests.Saga\"");
+            StringAssert.Contains(result, "GetRunnableSagaHealth");
+            StringAssert.Contains(result, "GetSickSagaItems");
             Assert.IsFalse(result.Contains("text.summarized.inbox"));
             var listener = Path.Combine(directory, "InboxListener.cs");
             new SourceCodeApplicationSagaQueueWorkers(migration, true).WriteGeneratedCode(listener);
@@ -54,13 +60,49 @@ public sealed class SagaQueueGenerationTests
         try
         {
             var path = Path.Combine(directory, "Workers.cs");
-            new SourceCodeInfraestructureWorker(migration).WriteCode(null, path, Path.Combine(directory, "Custon.cs"));
+            new SourceCodeInfraestructureWorker(migration, "Tests").WriteCode(null, path, Path.Combine(directory, "Custon.cs"));
             var result = File.ReadAllText(path);
             StringAssert.Contains(result, "SagaWorkerCommandHandler");
+            StringAssert.Contains(result, "SagaQueueHealthProbe");
+            StringAssert.Contains(result, "\"Tests.Saga\"");
             Assert.IsFalse(result.Contains("yOutBoxWorkerHandler"));
             Assert.IsFalse(result.Contains("InboxListenerHandler"));
         }
         finally { Directory.Delete(directory, true); }
+    }
+
+    [TestMethod]
+    public void Saga_repository_generation_uses_one_predicate_for_claim_and_health()
+    {
+        var entity = new Entity("ySaga");
+        var contract = Generate(new SourceCodeAplicationRepositoryInterfacesReadMigration(entity));
+        var repository = Generate(new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, false));
+
+        StringAssert.Contains(contract, "ClaimRunnableSagas");
+        StringAssert.Contains(contract, "GetRunnableSagaHealth");
+        StringAssert.Contains(contract, "GetSickSagaItems");
+        StringAssert.Contains(repository, "RunnableSagaPredicate");
+        StringAssert.Contains(repository, "WHERE \" + RunnableSagaPredicate(\"[ySaga]\")");
+        StringAssert.Contains(repository, "CASE WHEN \" + RunnableSagaPredicate(\"s\")");
+        StringAssert.Contains(repository, "HASHBYTES('SHA2_256', [ErrorMessage])");
+        StringAssert.Contains(repository, "Math.Clamp(limit, 1, 100)");
+        StringAssert.Contains(repository, "COALESCE(NULLIF(s.[CorrelationId], ''), CONVERT(varchar(20), s.[Id]))");
+    }
+
+    private static string Generate(SourceCodeBase generator)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "yeshua-saga-generation-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(directory);
+        try
+        {
+            var generated = Path.Combine(directory, "Generated.cs");
+            generator.WriteCode(null, generated, Path.Combine(directory, "Custom.cs"));
+            return File.ReadAllText(generated);
+        }
+        finally
+        {
+            Directory.Delete(directory, true);
+        }
     }
 
     private sealed class QueueMigration : MigrationBase

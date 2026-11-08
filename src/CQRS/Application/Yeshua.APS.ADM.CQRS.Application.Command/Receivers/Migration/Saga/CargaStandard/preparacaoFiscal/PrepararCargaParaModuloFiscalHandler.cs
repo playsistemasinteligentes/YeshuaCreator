@@ -27,7 +27,6 @@ namespace Command.Receivers
             try
             {
                 // marca execução
-                step.SetInProgress();
 
                 // lógica de domínio
                 CustomExecute(saga, step);

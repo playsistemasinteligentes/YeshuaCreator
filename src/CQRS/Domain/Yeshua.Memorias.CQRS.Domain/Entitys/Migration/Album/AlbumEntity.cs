@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -42,11 +42,11 @@
  Descricao = descricao; 
  Privacidade = privacidade; 
  SegundosPorFoto = segundosporfoto; 
- QualidadeVideo = qualidadevideo;
- ModeloVideo = modelovideo;
- MusicaId = musicaid;
- VolumeMusica = volumemusica;
- Status = status;
+ QualidadeVideo = qualidadevideo; 
+ ModeloVideo = modelovideo; 
+ MusicaId = musicaid; 
+ VolumeMusica = volumemusica; 
+ Status = status; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

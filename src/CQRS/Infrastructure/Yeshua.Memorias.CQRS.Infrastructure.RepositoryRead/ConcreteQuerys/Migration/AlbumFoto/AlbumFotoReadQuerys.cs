@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -281,8 +281,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Rotacao"] = value; //04
                       whereClauses.Add($" [Rotacao] = @Rotacao ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -468,8 +468,8 @@ if (!string.IsNullOrEmpty(Command.OperationalEntityId)) whereClauses.Add($"[Oper
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Rotacao"] = value; //06
                       whereClauses.Add($" [Rotacao] = @Rotacao ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
