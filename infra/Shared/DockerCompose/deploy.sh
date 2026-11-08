@@ -14,6 +14,13 @@ if [[ ! -S /var/run/docker.sock ]]; then
   exit 1
 fi
 export YESHUA_DOCKER_SOCKET_GID="${YESHUA_DOCKER_SOCKET_GID:-$(stat -c '%g' /var/run/docker.sock)}"
+export YESHUA_OBSERVABILITY_CONFIG_HASH="$(
+  find "$COMPOSE_DIR/observability" -type f -print0 \
+    | sort -z \
+    | xargs -0 sha256sum \
+    | sha256sum \
+    | cut -d ' ' -f 1
+)"
 if [[ "${YESHUA_BUILD_SHARED:-0}" == "1" ]]; then
   docker compose build operational-intelligence
 fi

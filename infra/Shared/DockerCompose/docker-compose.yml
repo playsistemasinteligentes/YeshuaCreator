@@ -106,6 +106,8 @@ services:
     container_name: yeshua-observability
     mem_limit: "${YESHUA_TELEMETRY_MEMORY_LIMIT:-1536m}"
     cpus: "${YESHUA_TELEMETRY_CPUS:-0.75}"
+    labels:
+      yeshua.observability.config-hash: "${YESHUA_OBSERVABILITY_CONFIG_HASH:-not-calculated}"
     environment:
       GF_SECURITY_ADMIN_USER: "${YESHUA_TELEMETRY_GRAFANA_USER:?Configure credentials.json}"
       GF_SECURITY_ADMIN_PASSWORD: "${YESHUA_TELEMETRY_GRAFANA_PASSWORD:?Configure credentials.json}"
