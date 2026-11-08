@@ -51,6 +51,7 @@ test('root bootstrap copies restricted source then drops privileges before runni
   const entrypoint = readFileSync(resolve(directory, 'entrypoint.sh'), 'utf8');
   const sync = readFileSync(resolve(directory, 'yeshua-agent-sync.sh'), 'utf8');
   const deploy = readFileSync(resolve(shared, 'deploy.sh'), 'utf8');
+  const rootDeploy = readFileSync(resolve(root, 'infra/docker/deploy.sh'), 'utf8');
   assert.ok(dockerfile.includes('        gosu \\'));
   assert.ok(dockerfile.lastIndexOf('USER root') > dockerfile.lastIndexOf('USER agent'));
   assert.ok(entrypoint.includes('exec gosu agent "$@"'));
@@ -59,6 +60,8 @@ test('root bootstrap copies restricted source then drops privileges before runni
   assert.ok(sync.includes('--chown=agent:agent'));
   assert.ok(deploy.includes('up -d --wait --wait-timeout 180'));
   assert.ok(deploy.includes("stat -c '%g' /var/run/docker.sock"));
+  assert.ok(rootDeploy.includes("stat -c '%g' /var/run/docker.sock"));
+  assert.ok(rootDeploy.indexOf('export YESHUA_DOCKER_SOCKET_GID') < rootDeploy.indexOf('deploy_gateway'));
 });
 
 test('Docker build inputs exist and every application sends OTLP to the renamed observability service', () => {

@@ -25,6 +25,12 @@ case "${TARGET,,}" in
 esac
 source "$APP_DIR/infra/docker/load-deploy-env.sh" "${TARGET,,}"
 
+if [[ ! -S /var/run/docker.sock ]]; then
+  echo "Socket do Docker nao encontrado em /var/run/docker.sock." >&2
+  exit 1
+fi
+export YESHUA_DOCKER_SOCKET_GID="${YESHUA_DOCKER_SOCKET_GID:-$(stat -c '%g' /var/run/docker.sock)}"
+
 chmod +x \
   "$SHARED_DIR"/*.sh \
   "$CENTRAL_DIR"/*.sh \
