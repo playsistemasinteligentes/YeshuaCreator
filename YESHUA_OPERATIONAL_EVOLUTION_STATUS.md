@@ -124,6 +124,15 @@ politica.
   limitacao conhecida sem apresentar dado ainda nao homologado como capacidade.
 - Saturacao do lote de Worker e valores do ultimo ciclo fornecem pressao de
   backlog e progresso sem duplicar a consulta oficial da fila.
+- Polling Workers publicam heartbeat, inicio/fim de ciclo, ultimo sucesso e
+  sequencia de ciclos vazios como gauges atuais em memoria. O caminho ocioso
+  nao gera log, span nem evento por ciclo.
+- A Saga do Memorias e o primeiro probe de fila: o mesmo repository compartilha
+  o predicado da captura `TOP 5` e do diagnostico, que retorna backlog elegivel
+  e idade do mais antigo sem lock nem mudanca de estado.
+- Dashboard, alertas e runbooks distinguem Worker ocioso, processando,
+  degradado, travado ou indisponivel e fila ociosa, processando, degradada,
+  bloqueada, indisponivel ou com estado desconhecido.
 - Linha de base operacional definida no plano como snapshot versionado e
   aprovado; persistencia e promocao dos snapshots ainda nao implementadas.
 
@@ -146,8 +155,10 @@ de assuntos durante R04.
   contra o ambiente publicado permanece pendente.
 - Testes unitarios das metricas validam counters, histogramas, gauge,
   atividade, ciclo de Worker e conjunto limitado de labels.
-- Projeto compartilhado compilado e suas 37 verificacoes executadas localmente:
-  36 aprovadas e uma ignorada por depender de Linux.
+- Projeto compartilhado compilado e suas 41 verificacoes executadas localmente:
+  40 aprovadas e uma ignorada por depender de Linux.
+- Engine e os seis hosts Worker gerados compilaram localmente sem erros apos
+  a inclusao da saude por instancia e do contrato opcional de diagnostico de fila.
 - Suite da Application executada sobre a `main` com 51 testes aprovados.
 
 ## 5.1 Avaliacao Dos Gates Externos
@@ -201,6 +212,8 @@ de assuntos durante R04.
 8. Executar os cenarios publicados e alimentar o relatorio G1-G7 de R16.
 9. Manter D3, D4, replay e agentes fora do caminho critico ate G1-G7 estarem
    demonstrados.
+10. Homologar no ambiente publicado a saude da Saga do Memorias, medir o custo
+    do probe com mais de uma replica e expandir somente para filas com SLA.
 
 A ordem detalhada e os criterios de saida estao em
 `YESHUA_SRE_IMPLEMENTATION_PLAN.md`. R11 esta concluida para Commands do

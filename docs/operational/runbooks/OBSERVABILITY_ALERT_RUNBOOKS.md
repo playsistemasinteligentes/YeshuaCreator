@@ -27,6 +27,57 @@ versionada deve complementar, e nao substituir, os limites de seguranca.
 5. Recomendar concorrencia ou hardware somente depois de excluir bloqueio,
    erro repetitivo e dependencia lenta.
 
+## YeshuaWorkerLoopStale
+
+1. Confirmar se a instancia e o container continuam ativos.
+2. Verificar `cycle_in_progress` e a idade do ultimo ciclo iniciado.
+3. Se o ciclo nao esta em andamento, investigar encerramento do `BackgroundService`.
+4. Se o ciclo esta em andamento, seguir o runbook de ciclo travado.
+
+## YeshuaWorkerCycleStuck
+
+1. Correlacionar o inicio do ciclo com trace, dependencia SQL ou chamada externa.
+2. Confirmar timeout, lock e cancelamento antes de reiniciar o Worker.
+3. Preservar stack, trace e consulta ativa quando o diagnostico estiver autorizado.
+4. Corrigir a dependencia ou o limite; nao aumentar concorrencia cegamente.
+
+## YeshuaQueueBlocked
+
+1. Confirmar backlog elegivel positivo e snapshot recente.
+2. Confirmar que a vazao agregada de todas as instancias ficou em zero.
+3. Verificar Workers indisponiveis, ciclos travados, locks e predicado de elegibilidade.
+4. Comparar o metodo diagnostico com o metodo operacional do mesmo repositorio.
+5. Nao reprocessar itens manualmente antes de identificar por que nao avancam.
+
+## YeshuaQueueWorkersUnavailable
+
+1. Confirmar que o ultimo snapshot conhecido, preservado por ate quinze minutos,
+   ainda registrava backlog elegivel.
+2. Verificar estado, reinicios e healthcheck de todas as instancias do Worker.
+3. Confirmar configuracao de escopo e se alguma instancia foi removida do deploy.
+4. Restaurar pelo menos uma instancia antes de investigar desempenho da fila.
+
+## YeshuaQueueOldestItemHigh
+
+1. Confirmar se o item mais antigo permanece elegivel no snapshot seguinte.
+2. Comparar idade, backlog, vazao e taxa de falha do mesmo periodo.
+3. Verificar se poucos itens estao doentes ou se toda a fila esta degradada.
+4. Evoluir o limite fixo para a linha de base aprovada da fila.
+
+## YeshuaQueueHealthProbeFailed
+
+1. Verificar conectividade e permissao de leitura do repositorio.
+2. Confirmar que a consulta diagnostica usa o mesmo predicado da captura operacional.
+3. Medir duracao e plano da consulta antes de reduzir o intervalo de coleta.
+4. Ausencia de snapshot nao significa fila saudavel.
+
+## YeshuaQueueHealthSnapshotStale
+
+1. Verificar se o Worker continua vivo e exportando metricas.
+2. Confirmar se o probe foi registrado para a fila e se o Collector esta recebendo.
+3. Verificar falha de consulta, timeout e indisponibilidade do banco.
+4. Tratar a saude da fila como desconhecida ate a coleta voltar.
+
 ## YeshuaTelemetryExporterFailure
 
 1. Verificar readiness do Collector, Prometheus, Loki e Tempo.

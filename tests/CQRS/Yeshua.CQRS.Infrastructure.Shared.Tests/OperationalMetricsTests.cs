@@ -98,6 +98,92 @@ public sealed class OperationalMetricsTests
     }
 
     [TestMethod]
+    public void WorkerHealth_ExportsOnlyTheLatestRuntimeState()
+    {
+        var operation = $"WorkerHealth-{Guid.NewGuid():N}";
+        using var capture = new MetricCapture();
+
+        OperationalMetrics.WorkerCycleStarted(operation);
+        OperationalMetrics.WorkerCycleCompleted(operation, succeeded: true, claimed: 0);
+        OperationalMetrics.WorkerCycleStarted(operation);
+        OperationalMetrics.WorkerCycleCompleted(operation, succeeded: true, claimed: 0);
+        capture.CollectObservableInstruments();
+
+        Assert.AreEqual(
+            0L,
+            capture.SingleByState("yeshua.worker.current", operation, "cycle_in_progress").LongValue);
+        Assert.AreEqual(
+            2L,
+            capture.SingleByState("yeshua.worker.current", operation, "consecutive_empty_cycles").LongValue);
+        Assert.IsTrue(
+            capture.SingleByState("yeshua.worker.current", operation, "last_heartbeat_unix_seconds").LongValue > 0);
+        Assert.IsTrue(
+            capture.SingleByState("yeshua.worker.current", operation, "last_cycle_started_unix_seconds").LongValue > 0);
+        Assert.IsTrue(
+            capture.SingleByState("yeshua.worker.current", operation, "last_cycle_completed_unix_seconds").LongValue > 0);
+        Assert.IsTrue(
+            capture.SingleByState("yeshua.worker.current", operation, "last_success_unix_seconds").LongValue > 0);
+    }
+
+    [TestMethod]
+    public void WorkerHealth_WorkResetsConsecutiveEmptyCycles()
+    {
+        var operation = $"WorkerHealthReset-{Guid.NewGuid():N}";
+        using var capture = new MetricCapture();
+
+        OperationalMetrics.WorkerCycleStarted(operation);
+        OperationalMetrics.WorkerCycleCompleted(operation, succeeded: true, claimed: 0);
+        OperationalMetrics.WorkerCycleStarted(operation);
+        OperationalMetrics.WorkerCycleCompleted(operation, succeeded: true, claimed: 3);
+        capture.CollectObservableInstruments();
+
+        Assert.AreEqual(
+            0L,
+            capture.SingleByState("yeshua.worker.current", operation, "consecutive_empty_cycles").LongValue);
+    }
+
+    [TestMethod]
+    public void QueueHealth_ExportsOnlyTheLatestSnapshot()
+    {
+        var queue = $"Queue-{Guid.NewGuid():N}";
+        var operation = $"Operation-{Guid.NewGuid():N}";
+        using var capture = new MetricCapture();
+
+        OperationalMetrics.SetQueueHealthSnapshot(queue, operation, 12, 90);
+        OperationalMetrics.SetQueueHealthSnapshot(queue, operation, 7, 120);
+        capture.CollectObservableInstruments();
+
+        Assert.AreEqual(
+            7L,
+            capture.SingleByQueueMetric("yeshua.queue.current", queue, "eligible_backlog").LongValue);
+        Assert.AreEqual(
+            120L,
+            capture.SingleByQueueMetric("yeshua.queue.current", queue, "oldest_eligible_age_seconds").LongValue);
+        Assert.AreEqual(
+            0L,
+            capture.SingleByQueueMetric("yeshua.queue.current", queue, "sample_failed").LongValue);
+        Assert.AreEqual(
+            operation,
+            capture.SingleByQueueMetric("yeshua.queue.current", queue, "eligible_backlog").Tags["operation"]);
+    }
+
+    [TestMethod]
+    public void QueueHealth_SuccessfulSnapshotClearsPreviousProbeFailure()
+    {
+        var queue = $"QueueFailure-{Guid.NewGuid():N}";
+        var operation = $"OperationFailure-{Guid.NewGuid():N}";
+        using var capture = new MetricCapture();
+
+        OperationalMetrics.SetQueueHealthProbeFailure(queue, operation);
+        OperationalMetrics.SetQueueHealthSnapshot(queue, operation, 2, 30);
+        capture.CollectObservableInstruments();
+
+        Assert.AreEqual(
+            0L,
+            capture.SingleByQueueMetric("yeshua.queue.current", queue, "sample_failed").LongValue);
+    }
+
+    [TestMethod]
     public void SagaRetry_EmitsOneRetryAndMeasuresTheStepOutcome()
     {
         var saga = $"Saga-{Guid.NewGuid():N}";
@@ -195,6 +281,17 @@ public sealed class OperationalMetricsTests
                 capturedOperation == operation &&
                 value.Tags.TryGetValue("state", out var capturedState) &&
                 capturedState == state);
+
+        public CapturedMeasurement SingleByQueueMetric(
+            string instrument,
+            string queue,
+            string metric) =>
+            _measurements.Single(value =>
+                value.Instrument == instrument &&
+                value.Tags.TryGetValue("queue", out var capturedQueue) &&
+                capturedQueue == queue &&
+                value.Tags.TryGetValue("metric", out var capturedMetric) &&
+                capturedMetric == metric);
 
         public void Dispose() => _listener.Dispose();
 

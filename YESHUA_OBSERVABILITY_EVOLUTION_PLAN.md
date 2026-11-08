@@ -202,9 +202,9 @@ O catalogo operacional versionado dos paineis esta em
 | Erros e taxa de erros | Prometheus | `yeshua.operation.executions` + `outcome` | Instrumentado |
 | Latencia P50, P95 e P99 | Prometheus | `yeshua.operation.duration` | Instrumentado |
 | Sagas e steps | Prometheus, Tempo e Loki | metricas e transicoes de Saga | Instrumentado |
-| Espera e execucao das filas | Prometheus | `yeshua.operational.current` | Agregador pronto; produtores especificos incrementais |
-| Backlog e vazao | Prometheus | gauge operacional e `yeshua.worker.items` | Vazao instrumentada; backlog por fluxo |
-| Ciclos de Workers | Prometheus | `yeshua.worker.cycles` e `yeshua.worker.items` | Instrumentado |
+| Espera e execucao das filas | Prometheus | `yeshua.worker.current` | Heartbeat e estado atual instrumentados sem evento por ciclo vazio |
+| Backlog e vazao | Prometheus | `yeshua.queue.current` e `yeshua.worker.items` | Vazao generica; snapshot piloto da Saga do Memorias |
+| Ciclos de Workers | Prometheus | `yeshua.worker.cycles` e `yeshua.worker.items` | Instrumentado; saude separada por instancia |
 | Saude do pipeline | Prometheus | metricas internas do Collector | Coleta configurada |
 
 O container principal de observabilidade nao monta `docker.sock`. Um proxy
@@ -249,6 +249,39 @@ mesmo fluxo de negocio.
 Contagens globais devem ser executadas uma vez por fila e escopo. SQL permanece
 encapsulado nos repositories oficiais; Collector e Grafana nao recebem copias
 da regra de selecao.
+
+O metodo diagnostico pertence ao mesmo repository da captura operacional e
+reutiliza o mesmo predicado de elegibilidade. O limite do lote, como `TOP 5`,
+continua exclusivo da captura de trabalho; o diagnostico retorna somente a
+contagem global e a idade do registro elegivel mais antigo, sem lock e sem
+alteracao de estado. A coleta inicial ocorre a cada trinta segundos.
+
+### 8.4 Classificacao Inicial De Saude
+
+A classificacao combina fatos por instancia com fatos globais da fila:
+
+- Worker saudavel processando: heartbeat recente e itens concluidos;
+- Worker saudavel ocioso: heartbeat recente, ciclos vazios e backlog igual a zero;
+- Worker degradado: heartbeat recente com falhas ou saturacao recorrente;
+- Worker travado: ciclo marcado em andamento acima do limite de seguranca;
+- Worker indisponivel: heartbeat desatualizado;
+- fila ociosa saudavel: snapshot recente e backlog igual a zero;
+- fila processando: backlog positivo e vazao agregada positiva;
+- fila degradada: ainda possui vazao, mas o item mais antigo ultrapassa o limite;
+- fila bloqueada: backlog positivo, Workers vivos e vazao agregada igual a zero;
+- fila indisponivel: backlog positivo sem nenhuma instancia viva;
+- fila desconhecida: snapshot ausente, desatualizado ou com falha.
+
+Os valores de heartbeat e ciclo sao gauges atuais em memoria. Ciclos vazios nao
+geram logs, spans nem eventos repetitivos. O Prometheus le o ultimo valor no
+intervalo de exportacao e agrega as instancias; IDs de instancia nao entram na
+contagem global da fila.
+
+O piloto da Saga do Memorias publica o mesmo snapshot em cada replica para ter
+failover imediato. O Grafana usa `max` por fila, operacao e ambiente, evitando
+multiplicar o backlog. A eleicao de um unico coletor entre replicas permanece
+uma otimizacao futura caso o numero de instancias torne a consulta diagnostica
+relevante.
 
 ## 9. Retencao E Historico
 
@@ -383,8 +416,8 @@ Antes da homologacao, comprovar:
 2. Homologar no Linux o proxy Docker restrito e as series do `docker_stats`.
 3. Definir buckets e temporality dos histogramas com carga representativa.
 4. Testar metricas entre multiplas instancias.
-5. Definir a medicao global e o failover das filas.
-6. Concluir produtores de backlog e espera nos fluxos que possuem SLA.
+5. Homologar o snapshot da Saga do Memorias e medir o custo com multiplas replicas.
+6. Expandir o contrato de probe para as filas que possuem SLA.
 7. Definir orcamentos de cardinalidade, memoria, rede e armazenamento.
 8. Implementar a persistencia e aprovacao dos snapshots de linha de base.
 9. Calibrar alertas e runbooks depois da primeira amostra valida.

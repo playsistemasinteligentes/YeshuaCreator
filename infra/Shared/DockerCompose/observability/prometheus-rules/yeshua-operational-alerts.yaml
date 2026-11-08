@@ -58,6 +58,160 @@ groups:
           description: "Mais de 80% dos ciclos de {{ $labels.operation }} atingiram o limite do lote. Isso indica pressao de backlog, nao prova a contagem global da fila."
           runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaworkerbatchpressurehigh"
 
+      - alert: YeshuaWorkerLoopStale
+        expr: |
+          time() - max by (service_name, service_instance_id, operation, deployment_environment_name) (
+            last_over_time(
+              {__name__=~"yeshua_worker_current(_item)?", state="last_heartbeat_unix_seconds"}[15m]
+            )
+          ) > 120
+        for: 2m
+        labels:
+          severity: critical
+          yeshua_scope: worker
+        annotations:
+          summary: "Laco do Worker sem progresso observavel"
+          description: "O Worker {{ $labels.operation }} da instancia {{ $labels.service_instance_id }} nao atualiza seu estado ha mais de dois minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaworkerloopstale"
+
+      - alert: YeshuaWorkerCycleStuck
+        expr: |
+          max by (service_name, service_instance_id, operation, deployment_environment_name) (
+            {__name__=~"yeshua_worker_current(_item)?", state="cycle_in_progress"}
+          ) == 1
+          and on (service_name, service_instance_id, operation, deployment_environment_name)
+          (
+            time() - max by (service_name, service_instance_id, operation, deployment_environment_name) (
+              {__name__=~"yeshua_worker_current(_item)?", state="last_cycle_started_unix_seconds"}
+            ) > 300
+          )
+        for: 1m
+        labels:
+          severity: critical
+          yeshua_scope: worker
+        annotations:
+          summary: "Ciclo de Worker possivelmente travado"
+          description: "O ciclo de {{ $labels.operation }} permanece em andamento ha mais de cinco minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaworkercyclestuck"
+
+      - alert: YeshuaQueueBlocked
+        expr: |
+          (
+            max by (service_name, operation, queue, deployment_environment_name) (
+              {__name__=~"yeshua_queue_current(_value)?", metric="eligible_backlog"}
+            ) > 0
+            and on (service_name, operation, deployment_environment_name)
+            (
+              time() - max by (service_name, operation, deployment_environment_name) (
+                {__name__=~"yeshua_worker_current(_item)?", state="last_heartbeat_unix_seconds"}
+              ) < 120
+            )
+            and on (service_name, operation, deployment_environment_name)
+            (
+              time() - max by (service_name, operation, deployment_environment_name) (
+                {__name__=~"yeshua_queue_current(_value)?", metric="sampled_at_unix_seconds"}
+              ) < 120
+            )
+          )
+          unless on (service_name, operation, deployment_environment_name)
+          (
+            sum by (service_name, operation, deployment_environment_name) (
+              rate({__name__=~"yeshua_worker_items(_item)?(_total)?", state="processed"}[5m])
+            ) > 0
+          )
+        for: 5m
+        labels:
+          severity: critical
+          yeshua_scope: queue
+        annotations:
+          summary: "Fila possui itens elegiveis sem vazao"
+          description: "A fila {{ $labels.queue }} possui backlog elegivel, mas nenhum Worker concluiu itens nos ultimos cinco minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueueblocked"
+
+      - alert: YeshuaQueueWorkersUnavailable
+        expr: |
+          (
+            max by (service_name, operation, queue, deployment_environment_name) (
+              last_over_time(
+                {__name__=~"yeshua_queue_current(_value)?", metric="eligible_backlog"}[15m]
+              )
+            ) > 0
+          )
+          unless on (service_name, operation, deployment_environment_name)
+          (
+            time() - max by (service_name, operation, deployment_environment_name) (
+              last_over_time(
+                {__name__=~"yeshua_worker_current(_item)?", state="last_heartbeat_unix_seconds"}[15m]
+              )
+            ) < 120
+          )
+        for: 2m
+        labels:
+          severity: critical
+          yeshua_scope: queue
+        annotations:
+          summary: "Fila possui backlog sem Worker disponivel"
+          description: "A fila {{ $labels.queue }} possui itens elegiveis, mas nenhuma instancia do Worker atualiza heartbeat."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueueworkersunavailable"
+
+      - alert: YeshuaQueueOldestItemHigh
+        expr: |
+          (
+            max by (service_name, operation, queue, deployment_environment_name) (
+              {__name__=~"yeshua_queue_current(_value)?", metric="oldest_eligible_age_seconds"}
+            ) > 900
+            and on (service_name, operation, deployment_environment_name)
+            (
+              time() - max by (service_name, operation, deployment_environment_name) (
+                {__name__=~"yeshua_queue_current(_value)?", metric="sampled_at_unix_seconds"}
+              ) < 120
+            )
+            and on (service_name, operation, deployment_environment_name)
+            (
+              sum by (service_name, operation, deployment_environment_name) (
+                rate({__name__=~"yeshua_worker_items(_item)?(_total)?", state="processed"}[5m])
+              ) > 0
+            )
+          )
+        for: 5m
+        labels:
+          severity: warning
+          yeshua_scope: queue
+        annotations:
+          summary: "Item elegivel permanece antigo na fila"
+          description: "O item elegivel mais antigo de {{ $labels.queue }} ultrapassou quinze minutos. O limite e inicial e deve evoluir com a linha de base."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueueoldestitemhigh"
+
+      - alert: YeshuaQueueHealthSnapshotStale
+        expr: |
+          time() - max by (service_name, operation, queue, deployment_environment_name) (
+            last_over_time(
+              {__name__=~"yeshua_queue_current(_value)?", metric="sampled_at_unix_seconds"}[15m]
+            )
+          ) > 120
+        for: 2m
+        labels:
+          severity: warning
+          yeshua_scope: queue
+        annotations:
+          summary: "Snapshot de saude da fila ficou desatualizado"
+          description: "A fila {{ $labels.queue }} nao publica um snapshot diagnostico recente. O estado da fila e desconhecido."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueuehealthsnapshotstale"
+
+      - alert: YeshuaQueueHealthProbeFailed
+        expr: |
+          max by (service_name, operation, queue, deployment_environment_name) (
+            {__name__=~"yeshua_queue_current(_value)?", metric="sample_failed"}
+          ) > 0
+        for: 2m
+        labels:
+          severity: warning
+          yeshua_scope: queue
+        annotations:
+          summary: "Diagnostico da fila nao conseguiu consultar o repositorio"
+          description: "A coleta de saude da fila {{ $labels.queue }} falha ha pelo menos dois minutos."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaqueuehealthprobefailed"
+
       - alert: YeshuaTelemetryExporterFailure
         expr: |
           sum by (exporter) (

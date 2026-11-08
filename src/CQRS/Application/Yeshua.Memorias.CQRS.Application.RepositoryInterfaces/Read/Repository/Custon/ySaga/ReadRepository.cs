@@ -9,6 +9,7 @@
 // </yeshua>
 
 using Repositorio.Outputs;
+using RepositoryInterfaces.Patterns.Worker;
 using System;
 using System.Collections.Generic;
 
@@ -17,6 +18,7 @@ namespace IRepository.Read
     public partial interface IySagaReadRepository
     {
         IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
+        WorkerQueueHealthSnapshot GetRunnableSagaHealth();
         bool TryClaimSagaForExecution(int sagaId, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
         void ReleaseLock(int sagaId, string workerId);
         ySagaDTO? GetByIdWithSteps(int sagaId);

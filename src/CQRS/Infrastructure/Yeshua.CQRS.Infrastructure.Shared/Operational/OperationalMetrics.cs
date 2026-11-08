@@ -42,6 +42,7 @@ public static class OperationalMetrics
         "Quantidade de retries agendados por saga e step.");
     private static readonly ConcurrentDictionary<CurrentValueKey, long> CurrentValues = new();
     private static readonly ConcurrentDictionary<WorkerCurrentValueKey, long> WorkerCurrentValues = new();
+    private static readonly ConcurrentDictionary<QueueCurrentValueKey, long> QueueCurrentValues = new();
     private static readonly ObservableGauge<long> CurrentValue = Meter.CreateObservableGauge(
         "yeshua.operational.current",
         ObserveCurrentValues,
@@ -52,6 +53,13 @@ public static class OperationalMetrics
         ObserveWorkerCurrentValues,
         "{item}",
         "Valores do ultimo ciclo de cada Worker, sem multiplicar consultas de fila.");
+    private static readonly ObservableGauge<long> QueueCurrentValue = Meter.CreateObservableGauge(
+        "yeshua.queue.current",
+        ObserveQueueCurrentValues,
+        "{value}",
+        "Snapshot atual da fila coletado por diagnostico de baixa frequencia.");
+
+    public static bool QueueHealthEnabled => QueueCurrentValue.Enabled;
 
     public static void CommandStarted(string operation)
     {
@@ -187,6 +195,126 @@ public static class OperationalMetrics
         }
     }
 
+    public static void WorkerCycleStarted(string operation)
+    {
+        if (!WorkerCurrentValue.Enabled)
+            return;
+
+        try
+        {
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            SetWorkerCurrentValue(operation, "last_heartbeat_unix_seconds", now);
+            SetWorkerCurrentValue(operation, "last_cycle_started_unix_seconds", now);
+            SetWorkerCurrentValue(operation, "cycle_in_progress", 1);
+        }
+        catch
+        {
+            // Saude do Worker nunca interrompe o ciclo principal.
+        }
+    }
+
+    public static void WorkerCycleCompleted(
+        string operation,
+        bool succeeded,
+        int? claimed)
+    {
+        if (!WorkerCurrentValue.Enabled)
+            return;
+
+        try
+        {
+            var now = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            SetWorkerCurrentValue(operation, "last_heartbeat_unix_seconds", now);
+            SetWorkerCurrentValue(operation, "last_cycle_completed_unix_seconds", now);
+            SetWorkerCurrentValue(operation, "cycle_in_progress", 0);
+
+            if (succeeded)
+                SetWorkerCurrentValue(operation, "last_success_unix_seconds", now);
+
+            if (claimed.HasValue)
+            {
+                var emptyCyclesKey = new WorkerCurrentValueKey(
+                    operation,
+                    "consecutive_empty_cycles");
+                if (claimed.Value == 0)
+                {
+                    WorkerCurrentValues.AddOrUpdate(
+                        emptyCyclesKey,
+                        1,
+                        static (_, current) => current + 1);
+                }
+                else
+                {
+                    WorkerCurrentValues[emptyCyclesKey] = 0;
+                }
+            }
+        }
+        catch
+        {
+            // Saude do Worker nunca interrompe o ciclo principal.
+        }
+    }
+
+    public static void WorkerCycleAborted(string operation)
+    {
+        if (!WorkerCurrentValue.Enabled)
+            return;
+
+        try
+        {
+            SetWorkerCurrentValue(operation, "cycle_in_progress", 0);
+        }
+        catch
+        {
+            // Saude do Worker nunca interrompe o encerramento do host.
+        }
+    }
+
+    public static void SetQueueHealthSnapshot(
+        string queue,
+        string operation,
+        long eligibleBacklog,
+        long oldestEligibleAgeSeconds)
+    {
+        if (!QueueCurrentValue.Enabled)
+            return;
+
+        try
+        {
+            SetQueueCurrentValue(queue, operation, "eligible_backlog", Math.Max(0, eligibleBacklog));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "oldest_eligible_age_seconds",
+                Math.Max(0, oldestEligibleAgeSeconds));
+            SetQueueCurrentValue(
+                queue,
+                operation,
+                "sampled_at_unix_seconds",
+                DateTimeOffset.UtcNow.ToUnixTimeSeconds());
+            SetQueueCurrentValue(queue, operation, "sample_failed", 0);
+        }
+        catch
+        {
+            // Diagnostico da fila nunca interrompe o Worker.
+        }
+    }
+
+    public static void SetQueueHealthProbeFailure(string queue, string operation)
+    {
+        if (!QueueCurrentValue.Enabled)
+            return;
+
+        try
+        {
+            SetQueueCurrentValue(queue, operation, "sample_failed", 1);
+        }
+        catch
+        {
+            // Diagnostico da fila nunca interrompe o Worker.
+        }
+    }
+
     private static void RecordCompleted(
         string component,
         string operation,
@@ -248,6 +376,15 @@ public static class OperationalMetrics
     private static void SetWorkerCurrentValue(string operation, string state, long value)
     {
         WorkerCurrentValues[new WorkerCurrentValueKey(operation, state)] = value;
+    }
+
+    private static void SetQueueCurrentValue(
+        string queue,
+        string operation,
+        string metric,
+        long value)
+    {
+        QueueCurrentValues[new QueueCurrentValueKey(queue, operation, metric)] = value;
     }
 
     private static TagList CreateTags(
@@ -321,6 +458,22 @@ public static class OperationalMetrics
         }
     }
 
+    private static IEnumerable<Measurement<long>> ObserveQueueCurrentValues()
+    {
+        foreach (var item in QueueCurrentValues)
+        {
+            yield return new Measurement<long>(
+                item.Value,
+                new KeyValuePair<string, object?>("queue", item.Key.Queue),
+                new KeyValuePair<string, object?>("operation", item.Key.Operation),
+                new KeyValuePair<string, object?>("metric", item.Key.Metric));
+        }
+    }
+
     private readonly record struct CurrentValueKey(string Component, string Metric);
     private readonly record struct WorkerCurrentValueKey(string Operation, string State);
+    private readonly record struct QueueCurrentValueKey(
+        string Queue,
+        string Operation,
+        string Metric);
 }

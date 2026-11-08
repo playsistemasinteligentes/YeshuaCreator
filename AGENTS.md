@@ -1880,7 +1880,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - Docker, Kubernetes e ferramentas de monitoramento permanecem responsaveis
   pela saude de containers, SQL, Redis, RabbitMQ e demais recursos de infra.
 - Progresso de negocio somente deve ser monitorado em fluxos com backlog e SLA
-  definidos, sem criar heartbeat generico paralelo ao monitoramento de infra.
+  definidos. Polling Workers gerados publicam saude do proprio laco como gauges
+  de ultimo estado em memoria; nao criar servico paralelo, log, span ou evento
+  por ciclo vazio.
 - `ReciverBase.Execute` e o ponto unico da telemetria de Commands executados por
   API, Worker, fila ou outro host. Workers apenas agendam e chamam Receivers.
 - Resultados que implementam `IWorkerCycleResult` alimentam a mesma telemetria
@@ -1890,8 +1892,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   `RepositoryTelemetry`, que registra duracao, sucesso, falha e identificador
   seguro da consulta sem expor SQL ou parametros.
 - Metricas especificas de repositorio, como backlog, usam o mesmo agregador de
-  telemetria. O gatilho de coleta de backlog ainda deve ser definido; nao criar
-  sampler especifico antes dessa decisao.
+  telemetria. O gatilho aprovado e um probe opcional de baixa frequencia no
+  Polling Worker, habilitado somente quando existe listener da metrica e
+  resolvido pela DI do aplicativo.
+- O probe de fila pertence ao mesmo repository da captura operacional e deve
+  reutilizar o mesmo predicado de elegibilidade. Ele nao altera o `TOP` da
+  captura, nao adquire lock nem muda estado; devolve somente contagem elegivel
+  e idade do mais antigo. O Grafana agrega replicas com `max` por fila, operacao
+  e ambiente para nao multiplicar backlog.
 - O logger compartilhado e singleton e consolida Commands, repositories e
   metricas em memoria. Logs detalhados devem ser controlaveis e falhas sempre
   permanecem visiveis em formato estruturado. O detalhamento obedece a politica

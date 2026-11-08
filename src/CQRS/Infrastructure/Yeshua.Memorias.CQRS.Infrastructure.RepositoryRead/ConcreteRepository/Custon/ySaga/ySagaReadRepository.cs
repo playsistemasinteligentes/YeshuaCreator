@@ -11,6 +11,7 @@
 // pendencia: mover esta infraestrutura interna de saga para geracao padrao da Engine.
 using Dapper;
 using Repositorio.Outputs;
+using RepositoryInterfaces.Patterns.Worker;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,31 +20,34 @@ namespace Read.Repository
 {
     public partial class ySagaReadRepository
     {
+        private const string RunnableSagaPredicate = @"
+                    [Status] = 1
+                    AND [ProcessingScope] = @ProcessingScope
+                    AND ([LockedBy] IS NULL OR [LockedAt] < @StaleLockLimit)
+                    AND EXISTS (
+                        SELECT 1
+                          FROM [ySagaStep] st
+                         WHERE st.[SagaId] = [ySaga].[Id]
+                           AND st.[Status] IN (1, 4)
+                    )
+                    AND (
+                        [NextExecutionAt] IS NULL
+                        OR [NextExecutionAt] <= @Now
+                        OR EXISTS (
+                            SELECT 1
+                              FROM [ySagaStep] st
+                             WHERE st.[SagaId] = [ySaga].[Id]
+                               AND st.[Status] = 4
+                        )
+                    )";
+
         public IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt)
         {
             var sql = @"
                 WITH cte AS (
                     SELECT TOP (@Limit) *
                     FROM [ySaga] WITH (UPDLOCK, READPAST, ROWLOCK)
-                    WHERE [Status] = 1
-                      AND [ProcessingScope] = @ProcessingScope
-                      AND ([LockedBy] IS NULL OR [LockedAt] < @StaleLockLimit)
-                      AND EXISTS (
-                          SELECT 1
-                            FROM [ySagaStep] st
-                           WHERE st.[SagaId] = [ySaga].[Id]
-                             AND st.[Status] IN (1, 4)
-                      )
-                      AND (
-                          [NextExecutionAt] IS NULL
-                          OR [NextExecutionAt] <= @Now
-                          OR EXISTS (
-                              SELECT 1
-                                FROM [ySagaStep] st
-                               WHERE st.[SagaId] = [ySaga].[Id]
-                                 AND st.[Status] = 4
-                          )
-                      )
+                    WHERE " + RunnableSagaPredicate + @"
                     ORDER BY ISNULL([NextExecutionAt], '1900-01-01') ASC
                 )
                 UPDATE cte
@@ -82,6 +86,29 @@ namespace Read.Repository
             }
 
             return sagas;
+        }
+
+        public WorkerQueueHealthSnapshot GetRunnableSagaHealth()
+        {
+            var now = DateTime.UtcNow;
+            var snapshot = _unitOfWork.Query<RunnableSagaHealthRow>(@"
+                SELECT COUNT_BIG(1) AS EligibleCount,
+                       MIN([createdat]) AS OldestEligibleAtUtc
+                  FROM [ySaga]
+                 WHERE " + RunnableSagaPredicate + @";", new
+            {
+                ProcessingScope = _executionContext.ProcessingScope,
+                Now = now,
+                StaleLockLimit = now.AddMinutes(-1)
+            }).Single();
+
+            var oldestAgeSeconds = snapshot.OldestEligibleAtUtc.HasValue
+                ? Math.Max(0, (long)(now - snapshot.OldestEligibleAtUtc.Value).TotalSeconds)
+                : 0;
+
+            return new WorkerQueueHealthSnapshot(
+                snapshot.EligibleCount,
+                oldestAgeSeconds);
         }
 
         public bool TryClaimSagaForExecution(int sagaId, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt)
@@ -230,6 +257,12 @@ namespace Read.Repository
                 EntityId = entityId,
                 Status = status
             }).FirstOrDefault();
+        }
+
+        private sealed class RunnableSagaHealthRow
+        {
+            public long EligibleCount { get; init; }
+            public DateTime? OldestEligibleAtUtc { get; init; }
         }
     }
 }
