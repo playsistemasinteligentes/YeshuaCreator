@@ -80,6 +80,11 @@ namespace Command.Receivers
         public decimal ValorCarga { get; init; } = 1000m;
         public decimal PesoBruto { get; init; } = 100m;
         public IReadOnlyList<string> ChavesNFe { get; init; } = Array.Empty<string>();
+        public IReadOnlyList<string> ChavesCTeComplementado { get; init; } = Array.Empty<string>();
+        public string CstIcms { get; init; } = "00";
+        public decimal ValorBaseCalculoIcms { get; init; }
+        public decimal AliquotaIcms { get; init; }
+        public decimal ValorIcms { get; init; }
 
         public static CteRecepcaoSincV4Options FromEnvironment()
         {
@@ -165,8 +170,8 @@ namespace Command.Receivers
             if (Modal != 1)
                 throw new NotSupportedException("O prototipo atual de CT-e implementa somente o modal rodoviario.");
 
-            if (TipoCTe != 0)
-                throw new NotSupportedException("O prototipo atual de CT-e implementa somente CT-e normal.");
+            if (TipoCTe is not 0 and not 1)
+                throw new NotSupportedException("O montador atual implementa CT-e normal e CT-e complementar.");
 
             if (TipoServico != 0)
             {
@@ -188,11 +193,28 @@ namespace Command.Receivers
             if (ValorServico <= 0m)
                 throw new InvalidOperationException("O valor do servico do CT-e deve ser maior que zero.");
 
-            if (ValorCarga <= 0m)
-                throw new InvalidOperationException("O valor da carga do CT-e deve ser maior que zero.");
+            if (TipoCTe == 0)
+            {
+                if (ValorCarga <= 0m)
+                    throw new InvalidOperationException("O valor da carga do CT-e deve ser maior que zero.");
 
-            if (PesoBruto <= 0m)
-                throw new InvalidOperationException("O peso bruto do CT-e deve ser maior que zero.");
+                if (PesoBruto <= 0m)
+                    throw new InvalidOperationException("O peso bruto do CT-e deve ser maior que zero.");
+            }
+            else
+            {
+                if (ChavesCTeComplementado.Count is < 1 or > 10)
+                    throw new InvalidOperationException("O CT-e complementar deve referenciar entre 1 e 10 CT-e originais.");
+
+                if (ChavesCTeComplementado.Any(chave => chave.Length != 44 || chave.Any(character => character is < '0' or > '9')))
+                    throw new InvalidOperationException("Toda chave de CT-e complementado deve possuir exatamente 44 digitos.");
+
+                if (!string.Equals(CstIcms, "00", StringComparison.Ordinal))
+                    throw new NotSupportedException("O complemento de ICMS implementado inicialmente aceita CST 00.");
+
+                if (ValorBaseCalculoIcms <= 0m || AliquotaIcms <= 0m || ValorIcms <= 0m)
+                    throw new InvalidOperationException("Base de calculo, aliquota e valor do ICMS complementar devem ser maiores que zero.");
+            }
 
             if (string.IsNullOrWhiteSpace(TomadorDocumento))
                 throw new InvalidOperationException("O documento do tomador do CT-e deve ser informado.");
@@ -652,33 +674,42 @@ namespace Command.Receivers
             var icms = AppendElement(doc, imp, "ICMS");
             var icms00 = AppendElement(doc, icms, "ICMS00");
             AppendElement(doc, icms00, "CST", "00");
-            AppendElement(doc, icms00, "vBC", Money(options.ValorServico));
-            AppendElement(doc, icms00, "pICMS", "12.00");
-            AppendElement(doc, icms00, "vICMS", Money(options.ValorServico * 0.12m));
+            AppendElement(doc, icms00, "vBC", Money(options.TipoCTe == 1 ? options.ValorBaseCalculoIcms : options.ValorServico));
+            AppendElement(doc, icms00, "pICMS", Percentage(options.TipoCTe == 1 ? options.AliquotaIcms : 12m));
+            AppendElement(doc, icms00, "vICMS", Money(options.TipoCTe == 1 ? options.ValorIcms : options.ValorServico * 0.12m));
             AppendIbsCbsHomologacao(doc, imp);
             AppendElement(doc, imp, "vTotDFe", Money(options.ValorServico));
 
-            var infCteNorm = AppendElement(doc, infCte, "infCTeNorm");
-            var infCarga = AppendElement(doc, infCteNorm, "infCarga");
-            AppendElement(doc, infCarga, "vCarga", Money(options.ValorCarga));
-            AppendElement(doc, infCarga, "proPred", "MERCADORIA HOMOLOGACAO");
-            var infQ = AppendElement(doc, infCarga, "infQ");
-            AppendElement(doc, infQ, "cUnid", "01");
-            AppendElement(doc, infQ, "tpMed", "PESO BRUTO");
-            AppendElement(doc, infQ, "qCarga", Quantity(options.PesoBruto));
-
-            var infDoc = AppendElement(doc, infCteNorm, "infDoc");
-            var chavesNFe = options.ChavesNFe.Count > 0 ? options.ChavesNFe : new[] { chaveNfeMock };
-            foreach (var chaveNFe in chavesNFe)
+            if (options.TipoCTe == 1)
             {
-                var infNFe = AppendElement(doc, infDoc, "infNFe");
-                AppendElement(doc, infNFe, "chave", chaveNFe);
+                var infCteComp = AppendElement(doc, infCte, "infCteComp");
+                foreach (var chaveCTe in options.ChavesCTeComplementado.Distinct(StringComparer.Ordinal))
+                    AppendElement(doc, infCteComp, "chCTe", chaveCTe);
             }
+            else
+            {
+                var infCteNorm = AppendElement(doc, infCte, "infCTeNorm");
+                var infCarga = AppendElement(doc, infCteNorm, "infCarga");
+                AppendElement(doc, infCarga, "vCarga", Money(options.ValorCarga));
+                AppendElement(doc, infCarga, "proPred", "MERCADORIA HOMOLOGACAO");
+                var infQ = AppendElement(doc, infCarga, "infQ");
+                AppendElement(doc, infQ, "cUnid", "01");
+                AppendElement(doc, infQ, "tpMed", "PESO BRUTO");
+                AppendElement(doc, infQ, "qCarga", Quantity(options.PesoBruto));
 
-            var infModal = AppendElement(doc, infCteNorm, "infModal");
-            infModal.SetAttribute("versaoModal", "4.00");
-            var rodo = AppendElement(doc, infModal, "rodo");
-            AppendElement(doc, rodo, "RNTRC", options.Rntrc);
+                var infDoc = AppendElement(doc, infCteNorm, "infDoc");
+                var chavesNFe = options.ChavesNFe.Count > 0 ? options.ChavesNFe : new[] { chaveNfeMock };
+                foreach (var chaveNFe in chavesNFe)
+                {
+                    var infNFe = AppendElement(doc, infDoc, "infNFe");
+                    AppendElement(doc, infNFe, "chave", chaveNFe);
+                }
+
+                var infModal = AppendElement(doc, infCteNorm, "infModal");
+                infModal.SetAttribute("versaoModal", "4.00");
+                var rodo = AppendElement(doc, infModal, "rodo");
+                AppendElement(doc, rodo, "RNTRC", options.Rntrc);
+            }
 
             var infRespTec = AppendElement(doc, infCte, "infRespTec");
             AppendElement(doc, infRespTec, "CNPJ", options.CnpjEmitente);
@@ -824,6 +855,9 @@ namespace Command.Receivers
 
         private static string Money(decimal value)
             => value.ToString("0.00", CultureInfo.InvariantCulture);
+
+        private static string Percentage(decimal value)
+            => value.ToString("0.00##", CultureInfo.InvariantCulture);
 
         private static string Quantity(decimal value)
             => value.ToString("0.0000", CultureInfo.InvariantCulture);

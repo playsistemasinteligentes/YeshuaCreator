@@ -10,7 +10,7 @@ import {
 
 const cssId = 'fiscal-contingencia-css';
 const hostId = 'custom-page-container';
-const assetVersion = '20261006-paginacao-botoes04';
+const assetVersion = '20261029-cte-complementar01';
 
 const endpoints = {
     iniciar: '/Fiscal/ContingenciaIniciarContingenciaFiscalUseCase',
@@ -137,7 +137,15 @@ const pendingFieldMap = {
     CIOTResponsavelDocumento: ['fiscal-ciot-responsavel-documento'],
     CIOTResponsavelDocumentoInvalido: ['fiscal-ciot-responsavel-documento'],
     CertificadoDigital: ['fiscal-certificado-documento', 'fiscal-certificado-arquivo', 'fiscal-certificado-senha'],
-    CertificadoDigitalIncompativelComEmitente: ['fiscal-emitente', 'fiscal-certificado-documento']
+    CertificadoDigitalIncompativelComEmitente: ['fiscal-emitente', 'fiscal-certificado-documento'],
+    CTeOriginal: ['fiscal-cte-original-keys'],
+    ChavesCTeOriginal: ['fiscal-cte-original-keys'],
+    ValorPrestacaoComplementar: ['fiscal-complemento-valor-prestacao'],
+    CST: ['fiscal-complemento-cst'],
+    CstIcms: ['fiscal-complemento-cst'],
+    ValorBaseCalculoIcms: ['fiscal-complemento-base-calculo'],
+    AliquotaIcms: ['fiscal-complemento-aliquota'],
+    ValorIcms: ['fiscal-complemento-valor-icms']
 };
 
 const stageLabels = {
@@ -217,6 +225,10 @@ function bindEvents() {
     document.getElementById('fiscal-nfe-xmls')?.addEventListener('input', () => {
         invalidateXmls();
         renderXmlPreview();
+    });
+    document.getElementById('fiscal-tipo-cte')?.addEventListener('change', () => {
+        invalidateXmls();
+        updateCteTypeUi();
     });
     document.getElementById('fiscal-send-notas')?.addEventListener('click', enviarXmls);
     document.getElementById('fiscal-send-preview')?.addEventListener('click', enviarPreview);
@@ -477,6 +489,12 @@ function bindPreparationPreviewEvents() {
         'fiscal-tipo-servico',
         'fiscal-modal',
         'fiscal-globalizado',
+        'fiscal-cte-original-keys',
+        'fiscal-complemento-valor-prestacao',
+        'fiscal-complemento-cst',
+        'fiscal-complemento-base-calculo',
+        'fiscal-complemento-aliquota',
+        'fiscal-complemento-valor-icms',
         'fiscal-emitente-razao-social',
         'fiscal-emitente-nome-fantasia',
         'fiscal-emitente-inscricao-estadual',
@@ -596,6 +614,12 @@ function resetForm() {
     setValue('fiscal-tipo-servico', '0');
     setValue('fiscal-modal', '1');
     setValue('fiscal-globalizado', '0');
+    setValue('fiscal-cte-original-keys', '');
+    setValue('fiscal-complemento-valor-prestacao', '');
+    setValue('fiscal-complemento-cst', '00');
+    setValue('fiscal-complemento-base-calculo', '');
+    setValue('fiscal-complemento-aliquota', '');
+    setValue('fiscal-complemento-valor-icms', '');
     setValue('fiscal-emitente-razao-social', '');
     setValue('fiscal-emitente-nome-fantasia', '');
     setValue('fiscal-emitente-inscricao-estadual', '');
@@ -654,6 +678,7 @@ function resetForm() {
     const fileInput = document.getElementById('fiscal-nfe-files');
     if (fileInput) fileInput.value = '';
     renderXmlPreview();
+    updateCteTypeUi();
 
     renderResult('-', '-', '-');
     setText('fiscal-contingencia-status', 'pronto');
@@ -719,6 +744,23 @@ async function ensureProtocol(documentos = []) {
 }
 
 async function enviarXmls() {
+    if (isCteComplementar()) {
+        const protocoloJaExistia = hasProtocol();
+        const protocoloOk = await ensureProtocol([]);
+        if (!protocoloOk) return;
+
+        state.sectionStatus.xmls = 'sent';
+        invalidatePreview();
+        renderSectionStatus('xmls', 'sent');
+        setText('fiscal-contingencia-status', 'complemento aberto');
+        feedback(protocoloJaExistia
+            ? 'Protocolo do complemento ja esta aberto. Gere o Preview para validar os dados atuais.'
+            : 'Protocolo do complemento aberto. Preencha os dados, gere o Preview e confirme.');
+        notify(protocoloJaExistia ? 'Complemento pronto para novo Preview.' : 'Protocolo do complemento aberto.', 'success');
+        updateRequestUi();
+        return;
+    }
+
     let documentos = [];
     try {
         documentos = await readRequiredDocumentos();
@@ -833,8 +875,10 @@ async function enviarPreparacao(commandName, options = {}) {
 
 async function enviarPreview() {
     clearPendingFields();
-    if (!hasProtocol() || state.sectionStatus.xmls !== 'sent') {
-        const message = 'Envie os XMLs antes de gerar o preview.';
+    if (!hasProtocol() || (!isCteComplementar() && state.sectionStatus.xmls !== 'sent')) {
+        const message = isCteComplementar()
+            ? 'Abra o protocolo do complemento antes de gerar o Preview.'
+            : 'Envie os XMLs antes de gerar o preview.';
         setText('fiscal-contingencia-status', 'aguardando xmls');
         feedback(message);
         notify(message, 'warning');
@@ -1736,6 +1780,12 @@ function buildTransporteComplemento() {
         tipoServico: Number(getValue('fiscal-tipo-servico') || 0),
         modal: Number(getValue('fiscal-modal') || 1),
         globalizado: Number(getValue('fiscal-globalizado') || 0),
+        chavesCTeOriginais: readCteOriginalKeys(),
+        valorPrestacaoComplementar: parseDecimal(getValue('fiscal-complemento-valor-prestacao')),
+        cstIcms: getValue('fiscal-complemento-cst'),
+        valorBaseCalculoIcms: parseDecimal(getValue('fiscal-complemento-base-calculo')),
+        aliquotaIcms: parseDecimal(getValue('fiscal-complemento-aliquota')),
+        valorIcms: parseDecimal(getValue('fiscal-complemento-valor-icms')),
         emitenteRazaoSocial: getValue('fiscal-emitente-razao-social'),
         emitenteNomeFantasia: getValue('fiscal-emitente-nome-fantasia'),
         emitenteInscricaoEstadual: getValue('fiscal-emitente-inscricao-estadual'),
@@ -1769,6 +1819,11 @@ function applyEffectivePlanToForm(plano) {
         ['fiscal-tipo-servico', 'tipoServico'],
         ['fiscal-modal', 'modal'],
         ['fiscal-globalizado', 'globalizado'],
+        ['fiscal-complemento-valor-prestacao', 'valorPrestacaoComplementar'],
+        ['fiscal-complemento-cst', 'cstIcms'],
+        ['fiscal-complemento-base-calculo', 'valorBaseCalculoIcms'],
+        ['fiscal-complemento-aliquota', 'aliquotaIcms'],
+        ['fiscal-complemento-valor-icms', 'valorIcms'],
         ['fiscal-emitente-razao-social', 'emitenteRazaoSocial'],
         ['fiscal-emitente-nome-fantasia', 'emitenteNomeFantasia'],
         ['fiscal-emitente-inscricao-estadual', 'emitenteInscricaoEstadual'],
@@ -1801,7 +1856,45 @@ function applyEffectivePlanToForm(plano) {
         }
     }
 
+    const chavesCteOriginais = normalizeArray(readField(
+        parametros,
+        'chavesCTeOriginais',
+        'chavesCTeOriginal',
+        'chavesCteOriginais',
+        'ChavesCteOriginais',
+        'ChavesCTeOriginal'));
+    if (chavesCteOriginais.length > 0) {
+        setValue('fiscal-cte-original-keys', chavesCteOriginais.join('\n'));
+    }
+
     syncCertificadoTitularComEmitente();
+    updateCteTypeUi();
+}
+
+function isCteComplementar() {
+    return Number(getValue('fiscal-tipo-cte') || 0) === 1;
+}
+
+function readCteOriginalKeys() {
+    return getValue('fiscal-cte-original-keys')
+        .split(/[\s,;]+/)
+        .map(onlyDigits)
+        .filter(Boolean);
+}
+
+function updateCteTypeUi() {
+    const complementar = isCteComplementar();
+    const complementFields = document.getElementById('fiscal-cte-complementar-fields');
+    const nfeTitle = document.getElementById('fiscal-nfe-section-title');
+    const nfeFields = document.getElementById('fiscal-nfe-section-fields');
+    const nfePreview = document.getElementById('fiscal-documentos');
+    const sendButton = document.getElementById('fiscal-send-notas');
+
+    if (complementFields) complementFields.hidden = !complementar;
+    if (nfeTitle) nfeTitle.hidden = complementar;
+    if (nfeFields) nfeFields.hidden = complementar;
+    if (nfePreview) nfePreview.hidden = complementar;
+    if (sendButton) sendButton.textContent = complementar ? 'Abrir complemento' : 'Enviar XMLs';
 }
 
 function syncCertificadoTitularComEmitente() {
@@ -2124,10 +2217,25 @@ function renderBackendPlanPreview(host, plano) {
     const ufFim = readField(plano, 'uffim', 'ufFim', 'UFFim') || '-';
     const municipioFim = readField(plano, 'municipiofimcodigoibge', 'municipioFimCodigoIbge', 'MunicipioFimCodigoIbge') || '-';
     const rota = `${ufInicio}/${municipioInicio} -> ${ufFim}/${municipioFim}`;
+    const tipoCte = Number(readField(plano, 'tipoCTe', 'TipoCTe') || 0);
+    const chavesCteOriginal = normalizeArray(readField(
+        plano,
+        'chavesCTeOriginal',
+        'chavesCTeOriginais',
+        'ChavesCTeOriginal',
+        'chavesCteOriginais',
+        'ChavesCteOriginais'));
+    const complementoCards = tipoCte === 1 ? `
+            ${previewCard('CT-e originais', String(chavesCteOriginal.length))}
+            ${previewCard('Prestacao complementar', formatMoney(readField(plano, 'valorPrestacaoComplementar', 'ValorPrestacaoComplementar') || 0))}
+            ${previewCard('CST ICMS', readField(plano, 'cstIcms', 'CstIcms') || '-')}
+            ${previewCard('Base ICMS', formatMoney(readField(plano, 'valorBaseCalculoIcms', 'ValorBaseCalculoIcms') || 0))}
+            ${previewCard('Aliquota ICMS', `${formatDecimal(readField(plano, 'aliquotaIcms', 'AliquotaIcms') || 0)}%`)}
+            ${previewCard('Valor ICMS', formatMoney(readField(plano, 'valorIcms', 'ValorIcms') || 0))}` : '';
 
     host.innerHTML = `
         <div class="fiscal-preview-summary">
-            ${previewCard('NF-e', String(readField(plano, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0))}
+            ${previewCard(tipoCte === 1 ? 'Documentos originais' : 'NF-e', String(readField(plano, 'quantidadeDocumentos', 'QuantidadeDocumentos') || 0))}
             ${previewCard('CT-e previstos', String(grupos.length))}
             ${previewCard('MDF-e previstos', String(mdfes.length))}
             ${previewCard('Emitente fiscal', readField(plano, 'emitenteFiscalDocumento', 'EmitenteFiscalDocumento') || '-')}
@@ -2140,6 +2248,7 @@ function renderBackendPlanPreview(host, plano) {
             ${previewCard('Frete', formatMoney(readField(plano, 'valorFrete', 'ValorFrete') || 0))}
             ${previewCard('Peso bruto', formatDecimal(readField(plano, 'pesoBruto', 'PesoBruto') || 0))}
             ${previewCard('Rota', rota)}
+            ${complementoCards}
         </div>
         <div class="fiscal-preview-route">Plano calculado pelo backend. Agrupamento: ${escapeHtml(readField(plano, 'tipoAgrupamentoCTe', 'TipoAgrupamentoCTe') || '-')}.</div>
         ${pendencias.length > 0 ? renderPendenciasPreview(pendencias) : ''}
@@ -2336,7 +2445,7 @@ function updateRequestUi() {
     setButtonDisabled('fiscal-case-next', false);
     setButtonDisabled('fiscal-case-last', false);
     setButtonDisabled('fiscal-send-notas', requesting || emissaoSolicitada);
-    setButtonDisabled('fiscal-send-preview', requesting || emissaoSolicitada || !hasProtocol() || state.sectionStatus.xmls !== 'sent');
+    setButtonDisabled('fiscal-send-preview', requesting || emissaoSolicitada || !hasProtocol() || (!isCteComplementar() && state.sectionStatus.xmls !== 'sent'));
     setButtonDisabled('fiscal-confirmar-plano', requesting || emissaoSolicitada || !previewValida);
     setButtonDisabled('fiscal-vincular-certificado', requesting || emissaoSolicitada);
     setButtonDisabled('fiscal-consultar-processamento', requesting || !emissaoSolicitada);

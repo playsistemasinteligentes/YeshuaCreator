@@ -23,6 +23,7 @@ namespace Command.Receivers
     public partial class PublicarPlanoParaSagaFiscalHandler
     {
         private const string EventoIniciarSagaFiscal = "CargaProntaParaEmissaoFiscal.v1";
+        private const string EventoIniciarSagaCTeComplementar = "CTeComplementarProntoParaEmissaoFiscal.v1";
         private readonly IEntradaFiscalContingenciaReadRepository _entradaReadRepository = default!;
         private readonly IEntradaFiscalContingenciaWriteRepository _entradaWriteRepository = default!;
         private readonly INFeProdutoSnapshotReadRepository _nfeProdutoSnapshotReadRepository = default!;
@@ -72,16 +73,21 @@ namespace Command.Receivers
 
             var preferenciasFiscaisJson = FiscalContingenciaPayload.ComplementoJson(entrada);
             var planoEmissaoJson = compilacao.PlanJson;
+            var tipoCTe = FiscalContingenciaPayload.Int(planoEmissaoJson, "tipoCTe", "TipoCTe");
+            var eventoFiscal = tipoCTe == 1 ? EventoIniciarSagaCTeComplementar : EventoIniciarSagaFiscal;
+            var sagaDestino = tipoCTe == 1
+                ? nameof(EmissaoCTeComplementarStandardSaga)
+                : nameof(EmissaoFiscalCargaStandardSaga);
             var planoStorage = FiscalPayloadStore.SaveEmissionPlan(entrada.cargaid, planoEmissaoJson);
             var payload = JsonSerializer.Serialize(new
             {
-                type = EventoIniciarSagaFiscal,
+                type = eventoFiscal,
                 origem = "ContingenciaFiscal",
                 moduloOrigem = "Fiscal",
                 sagaOrigem = nameof(ContingenciaFiscalStandardSaga),
                 stepOrigem = nameof(PublicarPlanoParaSagaFiscalHandler),
                 moduloDestino = "Fiscal",
-                sagaDestino = nameof(EmissaoFiscalCargaStandardSaga),
+                sagaDestino,
                 entradaFiscalContingenciaId = entrada.id,
                 cargaId = entrada.cargaid,
                 sagaCorrelationId = fiscalCorrelationId,
@@ -102,7 +108,7 @@ namespace Command.Receivers
             var inbox = new yInboxFactory(_logger).Create(
                 null,
                 Guid.NewGuid().ToString(),
-                EventoIniciarSagaFiscal,
+                eventoFiscal,
                 "Carga",
                 entrada.cargaid,
                 fiscalCorrelationId,

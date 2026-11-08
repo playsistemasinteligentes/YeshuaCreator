@@ -23,11 +23,12 @@ namespace Command.Receivers.Migration.Saga
         private readonly Dictionary<string, ISagaHandlerResolver> _resolverMap;
         private readonly Dictionary<string, Func<SagaBase>> _factoryMap;
 
-        public SagaResolverRegistry(EmissaoFiscalCargaStandardSagaHandlerResolver EmissaoFiscalCargaStandardResolver, ContingenciaFiscalStandardSagaHandlerResolver ContingenciaFiscalStandardResolver, EncerramentoMDFeStandardSagaHandlerResolver EncerramentoMDFeStandardResolver, TesteSyncSagaHandlerResolver TesteSyncResolver)
+        public SagaResolverRegistry(EmissaoFiscalCargaStandardSagaHandlerResolver EmissaoFiscalCargaStandardResolver, EmissaoCTeComplementarStandardSagaHandlerResolver EmissaoCTeComplementarStandardResolver, ContingenciaFiscalStandardSagaHandlerResolver ContingenciaFiscalStandardResolver, EncerramentoMDFeStandardSagaHandlerResolver EncerramentoMDFeStandardResolver, TesteSyncSagaHandlerResolver TesteSyncResolver)
         {
             _resolverMap = new Dictionary<string, ISagaHandlerResolver>
             {
                 { nameof(EmissaoFiscalCargaStandardSaga), EmissaoFiscalCargaStandardResolver },
+                { nameof(EmissaoCTeComplementarStandardSaga), EmissaoCTeComplementarStandardResolver },
                 { nameof(ContingenciaFiscalStandardSaga), ContingenciaFiscalStandardResolver },
                 { nameof(EncerramentoMDFeStandardSaga), EncerramentoMDFeStandardResolver },
                 { nameof(TesteSyncSaga), TesteSyncResolver },
@@ -36,6 +37,7 @@ namespace Command.Receivers.Migration.Saga
             _factoryMap = new Dictionary<string, Func<SagaBase>>
             {
                 { nameof(EmissaoFiscalCargaStandardSaga), () => new EmissaoFiscalCargaStandardSaga() },
+                { nameof(EmissaoCTeComplementarStandardSaga), () => new EmissaoCTeComplementarStandardSaga() },
                 { nameof(ContingenciaFiscalStandardSaga), () => new ContingenciaFiscalStandardSaga() },
                 { nameof(EncerramentoMDFeStandardSaga), () => new EncerramentoMDFeStandardSaga() },
                 { nameof(TesteSyncSaga), () => new TesteSyncSaga() },
@@ -73,6 +75,7 @@ namespace Command.Receivers.Migration.Saga
             saga.CompletedAt = dto.completedat;
             saga.EntityType = dto.entitytype;
             saga.EntityId = dto.entityid;
+            saga.NextExecutionAt = dto.nextexecutionat;
             saga.HydrateOperationalIdentity(dto.rootoperationid, dto.operationid, dto.executionid, dto.causationid);
 
             if (dto.Steps != null && dto.Steps.Any())
@@ -84,7 +87,7 @@ namespace Command.Receivers.Migration.Saga
                     if (dtoStep == null)
                         continue;
 
-                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid);
+                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage);
                 }
             }
 

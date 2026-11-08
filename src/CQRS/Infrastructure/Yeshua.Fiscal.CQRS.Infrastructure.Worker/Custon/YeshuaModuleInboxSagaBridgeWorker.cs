@@ -21,7 +21,9 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
     private const int Applied = 1;
     private const int DeadLetter = 9;
     private const string StartFiscalSagaEvent = "CargaProntaParaEmissaoFiscal.v1";
+    private const string StartComplementaryCteSagaEvent = "CTeComplementarProntoParaEmissaoFiscal.v1";
     private const string FiscalSagaType = nameof(EmissaoFiscalCargaStandardSaga);
+    private const string ComplementaryCteSagaType = nameof(EmissaoCTeComplementarStandardSaga);
 
     private readonly IUnitOfWork _unitOfWork;
     private readonly IySagaReadRepository _sagaReadRepository;
@@ -99,12 +101,22 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
 
     private IEnumerable<yInboxDTO> ClaimStartEvents(int limit)
     {
-        return _inboxReadRepository.ClaimPendingByType(
+        var normal = _inboxReadRepository.ClaimPendingByType(
             StartFiscalSagaEvent,
             limit,
             Pending,
             Processing,
+            DateTime.UtcNow).ToArray();
+        if (normal.Length >= limit)
+            return normal;
+
+        var complementary = _inboxReadRepository.ClaimPendingByType(
+            StartComplementaryCteSagaEvent,
+            limit - normal.Length,
+            Pending,
+            Processing,
             DateTime.UtcNow);
+        return normal.Concat(complementary);
     }
 
     private void StartSagaFromInbox(
@@ -119,20 +131,21 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
         _unitOfWork.BeginTran();
         try
         {
-            if (FiscalSagaAlreadyStarted(correlationId))
+            var sagaType = ResolveSagaType(inbox.type);
+            if (FiscalSagaAlreadyStarted(sagaType, correlationId))
             {
                 MarkApplied(inbox.id, null, null);
                 _unitOfWork.Commit();
                 return;
             }
 
-            var saga = new EmissaoFiscalCargaStandardSaga
-            {
-                CreatedAt = DateTime.UtcNow,
-                NextExecutionAt = DateTime.UtcNow,
-                LockedAt = DateTime.MinValue,
-                LockedBy = null
-            };
+            SagaBase saga = sagaType == ComplementaryCteSagaType
+                ? new EmissaoCTeComplementarStandardSaga()
+                : new EmissaoFiscalCargaStandardSaga();
+            saga.CreatedAt = DateTime.UtcNow;
+            saga.NextExecutionAt = DateTime.UtcNow;
+            saga.LockedAt = DateTime.MinValue;
+            saga.LockedBy = null;
 
             saga.SetCorrelationId(correlationId);
             saga.Start(inbox.entityid, "Carga");
@@ -179,14 +192,21 @@ public sealed class YeshuaModuleInboxSagaBridgeWorker
     private static string? EmptyToNull(string? value) =>
         string.IsNullOrWhiteSpace(value) ? null : value;
 
-    private bool FiscalSagaAlreadyStarted(string correlationId)
+    private bool FiscalSagaAlreadyStarted(string sagaType, string correlationId)
     {
         return _sagaReadRepository.GetLatestByTypeEntity(
-            FiscalSagaType,
+            sagaType,
             "Carga",
             null,
             correlationId) != null;
     }
+
+    private static string ResolveSagaType(string eventType) => eventType switch
+    {
+        StartFiscalSagaEvent => FiscalSagaType,
+        StartComplementaryCteSagaEvent => ComplementaryCteSagaType,
+        _ => throw new InvalidOperationException($"Evento fiscal nao suportado pelo bridge: {eventType}.")
+    };
 
     private void MarkApplied(int inboxId, int? sagaId, int? sagaStepId)
     {

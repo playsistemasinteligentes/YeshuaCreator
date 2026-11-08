@@ -191,6 +191,15 @@ public class M000001 : MigrationBase
             .AddColumn("PesoBruto", "Peso Bruto").Decimal(18, 6).Group("Valores")
             .AddColumn("SnapshotJson", "Snapshot").VarcharMax().Group("Snapshot");
 
+        AddEntity("CTeComplementoIcmsFiscal", "Complemento de ICMS CT-e").AddModule("FIS")
+            .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
+            .AddColumn("CTeSolicitacaoFiscalId", "Solicitacao CT-e").FK("CTeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
+            .AddColumn("ValorPrestacaoComplementar", "Valor Prestacao Complementar").Decimal(18, 2).NotNull().Group("Valores")
+            .AddColumn("CST", "CST ICMS").Varchar(3).NotNull().Group("ICMS")
+            .AddColumn("ValorBaseCalculo", "Base de Calculo ICMS").Decimal(18, 2).NotNull().Group("ICMS")
+            .AddColumn("AliquotaICMS", "Aliquota ICMS").Decimal(9, 4).NotNull().Group("ICMS")
+            .AddColumn("ValorICMS", "Valor ICMS").Decimal(18, 2).NotNull().Group("ICMS");
+
         AddEntity("CTeParticipanteSnapshot", "Participante CT-e").AddModule("FIS")
             .AddColumn("Id", "ID").Int().Incremento().Key().Group("Identificacao")
             .AddColumn("CTeSolicitacaoFiscalId", "Solicitacao CT-e").FK("CTeSolicitacaoFiscal", "Id").Int().NotNull().Group("Vinculo")
@@ -666,6 +675,19 @@ public class M000001 : MigrationBase
                         1,
                         "CargaStandard")
                     .DeliverByYeshuaApi();
+
+        AddUsecaseGroup("Fiscal")
+            .AddUseCaseSubGrup("EmissaoFiscal")
+            .AddSaga("EmissaoCTeComplementarStandard")
+            .AddStepGroup("entrada")
+                .AddStep("receberCTeComplementarProntoParaEmissao")
+                .AddStep("validarCTeOriginalEComplemento")
+            .AddStepGroup("ctePreparacao")
+                .AddStep("prepararCTeComplementar")
+            .AddStepGroup("cteSefaz")
+                .AddStep("autorizarCTeComplementarNaSefaz")
+            .AddStepGroup("finalizacao")
+                .AddStep("finalizarCTeComplementar");
 
         AddUsecaseGroup("Fiscal")
             .AddUseCaseSubGrup("Contingencia")

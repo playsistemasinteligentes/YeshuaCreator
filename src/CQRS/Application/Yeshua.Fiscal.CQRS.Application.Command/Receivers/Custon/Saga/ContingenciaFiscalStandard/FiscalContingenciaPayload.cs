@@ -126,6 +126,8 @@ namespace Command.Receivers
         {
             var pendencias = new List<string>();
             var complemento = ComplementoJson(entrada);
+            var tipoCTe = Int(complemento, "tipoCTe", "TipoCTe");
+            var cteComplementar = tipoCTe == 1;
 
             Require(pendencias, entrada.cargaid, "CargaId");
             Require(pendencias, Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"), "EmitenteFiscalDocumento");
@@ -146,16 +148,19 @@ namespace Command.Receivers
                 pendencias.Add("TomadorOutrosRequerCadastroCompletoToma4");
             }
 
-            Require(pendencias, Value(entrada.rntrc, complemento, "rntrc", "RNTRC"), "RNTRC");
-            Require(pendencias, Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"), "PlacaVeiculo");
-            Require(pendencias, Value(entrada.ufveiculo, complemento, "ufVeiculo", "UFVeiculo"), "UFVeiculo");
-            Require(pendencias, Value(entrada.condutordocumento, complemento, "condutorDocumento", "cpfMotorista", "cpfCondutor"), "CondutorDocumento");
-            Require(pendencias, Value(entrada.condutornome, complemento, "condutorNome", "nomeMotorista", "nomeCondutor"), "CondutorNome");
+            if (!cteComplementar)
+            {
+                Require(pendencias, Value(entrada.rntrc, complemento, "rntrc", "RNTRC"), "RNTRC");
+                Require(pendencias, Value(entrada.placaveiculo, complemento, "placaVeiculo", "placa"), "PlacaVeiculo");
+                Require(pendencias, Value(entrada.ufveiculo, complemento, "ufVeiculo", "UFVeiculo"), "UFVeiculo");
+                Require(pendencias, Value(entrada.condutordocumento, complemento, "condutorDocumento", "cpfMotorista", "cpfCondutor"), "CondutorDocumento");
+                Require(pendencias, Value(entrada.condutornome, complemento, "condutorNome", "nomeMotorista", "nomeCondutor"), "CondutorNome");
+                ValidarCiotManual(pendencias, entrada, complemento);
+            }
             Require(pendencias, Value(entrada.ufinicio, complemento, "ufInicio", "UFInicio"), "UFInicio");
             Require(pendencias, Value(entrada.uffim, complemento, "ufFim", "UFFim"), "UFFim");
             Require(pendencias, Value(entrada.municipioiniciocodigoibge, complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"), "MunicipioInicioCodigoIbge");
             Require(pendencias, Value(entrada.municipiofimcodigoibge, complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"), "MunicipioFimCodigoIbge");
-            ValidarCiotManual(pendencias, entrada, complemento);
 
             if (entrada.certificadodigitalid <= 0)
                 pendencias.Add("CertificadoDigital");
@@ -200,11 +205,50 @@ namespace Command.Receivers
                 var ufFim = Value(entrada.uffim, complemento, "ufFim", "UFFim");
                 var cfop = FirstNonEmpty(Text(complemento, "cfop", "CFOP"), CteCfopPolicy.Resolve(ufEmitente, ufInicio, ufFim));
 
-                Require(pendencias, tipoAgrupamento, "TipoAgrupamentoCTe");
-                Require(pendencias, estrategiaRateio, "EstrategiaRateioFrete");
-                Require(pendencias, tipoCargaMdfe, "TipoCargaMDFe");
-                Require(pendencias, produtoPredominanteMdfe, "ProdutoPredominanteMDFe");
-                Require(pendencias, ncmProdutoPredominanteMdfe, "NcmProdutoPredominanteMDFe");
+                if (cteComplementar)
+                {
+                    var chavesOriginais = StringList(complemento, "chavesCTeOriginal", "chavesCTeComplementado", "chavesCTeOriginais");
+                    if (chavesOriginais.Count is < 1 or > 10)
+                        pendencias.Add("ChavesCTeOriginal");
+                    else if (chavesOriginais.Any(chave => Digits(chave).Length != 44))
+                        pendencias.Add("ChaveCTeOriginalInvalida");
+
+                    if (Number(complemento, "valorPrestacaoComplementar", "valorServicoComplementar") <= 0m)
+                        pendencias.Add("ValorPrestacaoComplementar");
+                    if (!string.Equals(Text(complemento, "cstIcms", "cstICMS", "CST"), "00", StringComparison.Ordinal))
+                        pendencias.Add("CstIcmsComplementarNaoSuportado");
+                    if (Number(complemento, "valorBaseCalculoIcms", "baseCalculoIcms") <= 0m)
+                        pendencias.Add("ValorBaseCalculoIcms");
+                    if (Number(complemento, "aliquotaIcms") <= 0m)
+                        pendencias.Add("AliquotaIcms");
+                    if (Number(complemento, "valorIcms") <= 0m)
+                        pendencias.Add("ValorIcms");
+                }
+                else
+                {
+                    Require(pendencias, tipoAgrupamento, "TipoAgrupamentoCTe");
+                    Require(pendencias, estrategiaRateio, "EstrategiaRateioFrete");
+                    Require(pendencias, tipoCargaMdfe, "TipoCargaMDFe");
+                    Require(pendencias, produtoPredominanteMdfe, "ProdutoPredominanteMDFe");
+                    Require(pendencias, ncmProdutoPredominanteMdfe, "NcmProdutoPredominanteMDFe");
+
+                    if (Number(complemento, "valorFrete", "valorServico") <= 0m)
+                        pendencias.Add("ValorFrete");
+
+                    if (!string.IsNullOrWhiteSpace(tipoCargaMdfe) &&
+                        (tipoCargaMdfe.Length != 2 || !tipoCargaMdfe.All(char.IsDigit)))
+                    {
+                        pendencias.Add("TipoCargaMDFeInvalido");
+                    }
+
+                    if (!string.IsNullOrWhiteSpace(ncmProdutoPredominanteMdfe) &&
+                        (ncmProdutoPredominanteMdfe.Length != 8 || !ncmProdutoPredominanteMdfe.All(char.IsDigit)))
+                    {
+                        pendencias.Add("NcmProdutoPredominanteMDFeInvalido");
+                    }
+
+                    ValidarParametrosDoPlano(pendencias, entrada, documentosLista, tipoAgrupamento, estrategiaRateio);
+                }
                 Require(pendencias, ufEmitente, "UFEmitente");
                 Require(pendencias, inscricaoEstadualEmitente, "InscricaoEstadualEmitente");
                 Require(pendencias, municipioEmitenteCodigoIbge, "MunicipioEmitenteCodigoIbge");
@@ -215,28 +259,11 @@ namespace Command.Receivers
                 else if (!CteUfPolicy.MunicipioPertenceAoEstado(municipioEmitenteCodigoIbge, ufEmitente))
                     pendencias.Add("UFEmitenteDivergeMunicipioEmitente");
 
-                if (Number(complemento, "valorFrete", "valorServico") <= 0m)
-                    pendencias.Add("ValorFrete");
-
-                if (!string.IsNullOrWhiteSpace(tipoCargaMdfe) &&
-                    (tipoCargaMdfe.Length != 2 || !tipoCargaMdfe.All(char.IsDigit)))
-                {
-                    pendencias.Add("TipoCargaMDFeInvalido");
-                }
-
-                if (!string.IsNullOrWhiteSpace(ncmProdutoPredominanteMdfe) &&
-                    (ncmProdutoPredominanteMdfe.Length != 8 || !ncmProdutoPredominanteMdfe.All(char.IsDigit)))
-                {
-                    pendencias.Add("NcmProdutoPredominanteMDFeInvalido");
-                }
-
                 if (cfop.Length != 4 || !cfop.All(char.IsDigit))
                     pendencias.Add("CFOPInvalido");
-
-                ValidarParametrosDoPlano(pendencias, entrada, documentosLista, tipoAgrupamento, estrategiaRateio);
             }
 
-            if (!documentosLista.Any())
+            if (!cteComplementar && !documentosLista.Any())
                 pendencias.Add("DocumentosOriginarios");
 
             return pendencias.Distinct(StringComparer.OrdinalIgnoreCase).ToList();
@@ -346,6 +373,12 @@ namespace Command.Receivers
             var numeroAverbacao = FirstNonEmpty(Text(complemento, "numeroAverbacao", "NumeroAverbacao"), defaultsMdfe.NumeroAverbacao);
             var ciotNumero = Digits(Text(complemento, "ciotNumero", "numeroCiot", "CIOT", "ciot"));
             var ciotResponsavelDocumento = Digits(Text(complemento, "ciotResponsavelDocumento", "documentoResponsavelCiot", "ciotDocumentoResponsavel"));
+            var chavesCteOriginais = StringList(complemento, "chavesCTeOriginal", "chavesCTeComplementado", "chavesCTeOriginais");
+            var valorPrestacaoComplementar = Number(complemento, "valorPrestacaoComplementar", "valorServicoComplementar");
+            var cstIcms = Text(complemento, "cstIcms", "cstICMS", "CST");
+            var valorBaseCalculoIcms = Number(complemento, "valorBaseCalculoIcms", "baseCalculoIcms");
+            var aliquotaIcms = Number(complemento, "aliquotaIcms");
+            var valorIcms = Number(complemento, "valorIcms");
             var preferenciasEfetivasJson = BuildEffectivePreferencesJson(complemento, new Dictionary<string, object?>
             {
                 ["emitenteUf"] = ufEmitente,
@@ -376,8 +409,71 @@ namespace Command.Receivers
                 ["numeroApolice"] = numeroApolice,
                 ["numeroAverbacao"] = numeroAverbacao,
                 ["ciotNumero"] = ciotNumero,
-                ["ciotResponsavelDocumento"] = ciotResponsavelDocumento
+                ["ciotResponsavelDocumento"] = ciotResponsavelDocumento,
+                ["chavesCTeOriginal"] = chavesCteOriginais,
+                ["valorPrestacaoComplementar"] = valorPrestacaoComplementar,
+                ["cstIcms"] = cstIcms,
+                ["valorBaseCalculoIcms"] = valorBaseCalculoIcms,
+                ["aliquotaIcms"] = aliquotaIcms,
+                ["valorIcms"] = valorIcms
             });
+
+            if (tipoCTe == 1)
+            {
+                return JsonSerializer.Serialize(new
+                {
+                    type = "fiscal.contingencia.plano-emissao",
+                    rulesVersion,
+                    entrada.id,
+                    entrada.correlationid,
+                    entrada.cargaid,
+                    entrada.tiposolicitante,
+                    entrada.ambiente,
+                    certificadoDigitalId = entrada.certificadodigitalid,
+                    emitenteFiscalDocumento = Value(entrada.emitentefiscaldocumento, complemento, "emitenteFiscalDocumento", "cnpjEmitente", "emitenteDocumento"),
+                    tomadorDocumento = Value(entrada.tomadordocumento, complemento, "tomadorDocumento", "cnpjTomador"),
+                    transportadorDocumento = Value(entrada.transportadordocumento, complemento, "transportadorDocumento", "cnpjTransportador"),
+                    remetenteDocumento = Value(entrada.remetentedocumento, complemento, "remetenteDocumento", "cnpjRemetente"),
+                    destinatarioDocumento = Value(entrada.destinatariodocumento, complemento, "destinatarioDocumento", "cnpjDestinatario"),
+                    ufinicio = Value(entrada.ufinicio, complemento, "ufInicio", "UFInicio"),
+                    uffim = Value(entrada.uffim, complemento, "ufFim", "UFFim"),
+                    municipioiniciocodigoibge = Value(entrada.municipioiniciocodigoibge, complemento, "municipioInicioCodigoIbge", "codigoMunicipioInicio"),
+                    municipiofimcodigoibge = Value(entrada.municipiofimcodigoibge, complemento, "municipioFimCodigoIbge", "codigoMunicipioFim"),
+                    quantidadeDocumentos = chavesCteOriginais.Count,
+                    valorFrete = valorPrestacaoComplementar,
+                    cfop,
+                    tipoCTe,
+                    tipoServico,
+                    modal,
+                    globalizado,
+                    chavesCTeOriginal = chavesCteOriginais,
+                    valorPrestacaoComplementar,
+                    cstIcms,
+                    valorBaseCalculoIcms,
+                    aliquotaIcms,
+                    valorIcms,
+                    observacaoFiscal = Text(complemento, "observacaoFiscal"),
+                    parametrosFiscaisEfetivos = JsonSerializer.Deserialize<JsonElement>(preferenciasEfetivasJson),
+                    dadosComplementaresJson = preferenciasEfetivasJson,
+                    preferenciasFiscaisJson = preferenciasEfetivasJson,
+                    pendencias,
+                    ctesPrevistos = new[]
+                    {
+                        new
+                        {
+                            tipo = "complemento_icms",
+                            chavesOriginais = chavesCteOriginais,
+                            valorPrestacaoComplementar,
+                            cstIcms,
+                            valorBaseCalculoIcms,
+                            aliquotaIcms,
+                            valorIcms
+                        }
+                    },
+                    mdfesPrevistos = Array.Empty<object>()
+                });
+            }
+
             var grupos = AgruparDocumentos(entrada, documentos, tipoAgrupamento);
             var totalBaseRateio = grupos.Sum(x => BaseRateio(x.Documentos, estrategiaRateio));
             var valorFreteRateado = 0m;
@@ -568,6 +664,47 @@ namespace Command.Receivers
             }
 
             return string.Empty;
+        }
+
+        private static IReadOnlyList<string> StringList(string? json, params string[] names)
+        {
+            if (string.IsNullOrWhiteSpace(json))
+                return Array.Empty<string>();
+
+            try
+            {
+                using var document = JsonDocument.Parse(json);
+                foreach (var name in names)
+                {
+                    if (!TryGetProperty(document.RootElement, name, out var value))
+                        continue;
+
+                    if (value.ValueKind == JsonValueKind.Array)
+                    {
+                        return value.EnumerateArray()
+                            .Select(item => item.ValueKind == JsonValueKind.String ? item.GetString() : item.ToString())
+                            .Where(item => !string.IsNullOrWhiteSpace(item))
+                            .Select(item => Digits(item!))
+                            .Distinct(StringComparer.Ordinal)
+                            .ToArray();
+                    }
+
+                    if (value.ValueKind == JsonValueKind.String)
+                    {
+                        return (value.GetString() ?? string.Empty)
+                            .Split(new[] { ',', ';', '\r', '\n', ' ' }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(Digits)
+                            .Where(item => item.Length > 0)
+                            .Distinct(StringComparer.Ordinal)
+                            .ToArray();
+                    }
+                }
+            }
+            catch (JsonException)
+            {
+            }
+
+            return Array.Empty<string>();
         }
 
         private static bool TryGetProperty(JsonElement item, string name, out JsonElement value)

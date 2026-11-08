@@ -494,7 +494,7 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine("            },");
 
                     sb.AppendLine("            quickSearches = Array.Empty<object>(),");
-                    sb.AppendLine("            fkEndpoints = new ");
+                    sb.AppendLine("            fkEndpoints = new");
                     sb.AppendLine("            {");
                     foreach (var column in entidade.AddColumns.Where(x => x.IsFK && x.FrontVisibol))
                         sb.AppendLine($"                {column.Name.ToLower()} = \"/{entidade.EntityName}/{entidade.EntityName}{CommandType.ReadFK}{column.Name}\",");

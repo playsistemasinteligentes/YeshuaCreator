@@ -146,6 +146,7 @@ public static class StaticModules
         menuGroup0_6.AddSubMenu(new SubMenu("EmissaoFiscalTransporteDocumento", "/getMetaDataEmissaoFiscalTransporteDocumento", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(menuGroup0_6);
         Modules[Modules.Count - 1].Menus.Add(new Menu("CTeDocumentoOriginario", "/getMetaDataCTeDocumentoOriginario", "crud", "", ""));
+        Modules[Modules.Count - 1].Menus.Add(new Menu("CTeComplementoIcmsFiscal", "/getMetaDataCTeComplementoIcmsFiscal", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("CTeParticipanteSnapshot", "/getMetaDataCTeParticipanteSnapshot", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("MDFeDocumentoOriginario", "/getMetaDataMDFeDocumentoOriginario", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("MDFePercurso", "/getMetaDataMDFePercurso", "crud", "", ""));

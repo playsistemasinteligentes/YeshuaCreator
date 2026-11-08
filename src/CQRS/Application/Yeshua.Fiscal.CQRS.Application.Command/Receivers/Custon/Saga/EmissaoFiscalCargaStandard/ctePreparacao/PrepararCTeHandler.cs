@@ -27,6 +27,7 @@ namespace Command.Receivers
         private readonly ICTeSolicitacaoFiscalWriteRepository _cteSolicitacaoFiscalWriteRepository = default!;
         private readonly ICTeDocumentoOriginarioReadRepository _cteDocumentoOriginarioReadRepository = default!;
         private readonly ICTeParticipanteSnapshotReadRepository _cteParticipanteSnapshotReadRepository = default!;
+        private readonly ICTeComplementoIcmsFiscalReadRepository _cteComplementoIcmsFiscalReadRepository = default!;
         private readonly ICTeTentativaEmissaoReadRepository _cteTentativaEmissaoReadRepository = default!;
         private readonly ICTeTentativaEmissaoWriteRepository _cteTentativaEmissaoWriteRepository = default!;
         private readonly IyInboxWriteRepository _inboxWriteRepository = default!;
@@ -40,6 +41,7 @@ namespace Command.Receivers
             ICTeSolicitacaoFiscalWriteRepository cteSolicitacaoFiscalWriteRepository,
             ICTeDocumentoOriginarioReadRepository cteDocumentoOriginarioReadRepository,
             ICTeParticipanteSnapshotReadRepository cteParticipanteSnapshotReadRepository,
+            ICTeComplementoIcmsFiscalReadRepository cteComplementoIcmsFiscalReadRepository,
             ICTeTentativaEmissaoReadRepository cteTentativaEmissaoReadRepository,
             ICTeTentativaEmissaoWriteRepository cteTentativaEmissaoWriteRepository,
             IyInboxWriteRepository inboxWriteRepository,
@@ -52,6 +54,7 @@ namespace Command.Receivers
             _cteSolicitacaoFiscalWriteRepository = cteSolicitacaoFiscalWriteRepository;
             _cteDocumentoOriginarioReadRepository = cteDocumentoOriginarioReadRepository;
             _cteParticipanteSnapshotReadRepository = cteParticipanteSnapshotReadRepository;
+            _cteComplementoIcmsFiscalReadRepository = cteComplementoIcmsFiscalReadRepository;
             _cteTentativaEmissaoReadRepository = cteTentativaEmissaoReadRepository;
             _cteTentativaEmissaoWriteRepository = cteTentativaEmissaoWriteRepository;
             _inboxWriteRepository = inboxWriteRepository;
@@ -114,19 +117,26 @@ namespace Command.Receivers
 
             if (tentativaId <= 0)
             {
+                var tipoDocumentoOriginario = solicitacao.tipocte == 1 ? "CTe" : "NFe";
                 var documentos = (_cteDocumentoOriginarioReadRepository.GetAllByCTeSolicitacaoFiscalId(solicitacao.id)
                         ?? Array.Empty<Repositorio.Outputs.CTeDocumentoOriginarioDTO>())
-                    .Where(x => string.Equals(x.tipodocumento, "NFe", StringComparison.OrdinalIgnoreCase))
+                    .Where(x => string.Equals(x.tipodocumento, tipoDocumentoOriginario, StringComparison.OrdinalIgnoreCase))
                     .OrderBy(x => x.id)
                     .ToList();
 
                 if (documentos.Count == 0)
-                    throw new InvalidOperationException($"Carga {cargaId}: solicitacao CT-e {solicitacao.id} nao possui NF-e originaria.");
+                {
+                    var descricao = solicitacao.tipocte == 1 ? "CT-e original" : "NF-e originaria";
+                    throw new InvalidOperationException($"Carga {cargaId}: solicitacao CT-e {solicitacao.id} nao possui {descricao}.");
+                }
 
                 var participantes = (_cteParticipanteSnapshotReadRepository.GetAllByCTeSolicitacaoFiscalId(solicitacao.id)
                         ?? Array.Empty<Repositorio.Outputs.CTeParticipanteSnapshotDTO>())
                     .ToList();
-                var options = BuildOptions(solicitacao, documentos, participantes, romaneio.tomadordocumento);
+                var complemento = solicitacao.tipocte == 1
+                    ? _cteComplementoIcmsFiscalReadRepository.FirstByCTeSolicitacaoFiscalId(solicitacao.id)
+                    : null;
+                var options = BuildOptions(solicitacao, documentos, participantes, romaneio.tomadordocumento, complemento);
                 if (certificado is not null)
                 {
                     FiscalCertificateResolver.ValidateIssuer(certificado, options.CnpjEmitente, $"Solicitacao CT-e {solicitacao.id}");
@@ -185,7 +195,8 @@ namespace Command.Receivers
             Repositorio.Outputs.CTeSolicitacaoFiscalDTO solicitacao,
             IReadOnlyCollection<Repositorio.Outputs.CTeDocumentoOriginarioDTO> documentos,
             IReadOnlyCollection<Repositorio.Outputs.CTeParticipanteSnapshotDTO> participantes,
-            string? tomadorDocumentoRomaneio)
+            string? tomadorDocumentoRomaneio,
+            Repositorio.Outputs.CTeComplementoIcmsFiscalDTO? complemento)
         {
             var defaults = CteRecepcaoSincV4Options.FromEnvironment();
             var planoConfirmado = string.Equals(
@@ -208,6 +219,10 @@ namespace Command.Receivers
                 .Select(x => OnlyDigits(x.chaveacesso ?? string.Empty))
                 .Distinct(StringComparer.Ordinal)
                 .ToArray();
+            var complementar = solicitacao.tipocte == 1;
+
+            if (complementar && complemento == null)
+                throw new InvalidOperationException($"Solicitacao CT-e {solicitacao.id}: dados do complemento de ICMS nao encontrados.");
 
             var municipioInicio = solicitacao.municipioiniciocodigoibge ?? string.Empty;
             var municipioFim = solicitacao.municipiofimcodigoibge ?? string.Empty;
@@ -259,10 +274,15 @@ namespace Command.Receivers
                 CrtEmitente = JsonInt(solicitacao.preferenciasmanifestojson, defaults.CrtEmitente, "emitenteCrt", "crtEmitente"),
                 ObservacaoFiscal = JsonText(solicitacao.preferenciasmanifestojson, "observacaoFiscal"),
                 Rntrc = FirstNotEmpty(JsonText(solicitacao.preferenciasmanifestojson, "rntrc", "RNTRC"), defaults.Rntrc),
-                ValorServico = solicitacao.valorservico,
-                ValorCarga = solicitacao.valorcarga,
-                PesoBruto = documentos.Sum(x => x.pesobruto),
-                ChavesNFe = chavesNFe
+                ValorServico = complementar ? complemento!.valorprestacaocomplementar : solicitacao.valorservico,
+                ValorCarga = complementar ? 0m : solicitacao.valorcarga,
+                PesoBruto = complementar ? 0m : documentos.Sum(x => x.pesobruto),
+                ChavesNFe = complementar ? Array.Empty<string>() : chavesNFe,
+                ChavesCTeComplementado = complementar ? chavesNFe : Array.Empty<string>(),
+                CstIcms = complementar ? complemento!.cst : "00",
+                ValorBaseCalculoIcms = complementar ? complemento!.valorbasecalculo : 0m,
+                AliquotaIcms = complementar ? complemento!.aliquotaicms : 0m,
+                ValorIcms = complementar ? complemento!.valoricms : 0m
             };
         }
 

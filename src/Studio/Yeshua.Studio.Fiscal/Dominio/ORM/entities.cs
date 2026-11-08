@@ -220,6 +220,27 @@ namespace Yeshua.Studio.Fiscal.Domain.Entities
         public static MyApp.QueryBuilder.Query<CTeDocumentoOriginario> Query() => new MyApp.QueryBuilder.Query<CTeDocumentoOriginario>();
     }
 
+    public class CTeComplementoIcmsFiscal
+    {
+        public int? Id { get; set; }
+        public int CTeSolicitacaoFiscalId { get; set; }
+        public CTeSolicitacaoFiscal CTeSolicitacaoFiscal { get; set; }
+        public Decimal ValorPrestacaoComplementar { get; set; }
+        public string CST { get; set; }
+        public Decimal ValorBaseCalculo { get; set; }
+        public Decimal AliquotaICMS { get; set; }
+        public Decimal ValorICMS { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<CTeComplementoIcmsFiscal> Query() => new MyApp.QueryBuilder.Query<CTeComplementoIcmsFiscal>();
+    }
+
     public class CTeParticipanteSnapshot
     {
         public int? Id { get; set; }

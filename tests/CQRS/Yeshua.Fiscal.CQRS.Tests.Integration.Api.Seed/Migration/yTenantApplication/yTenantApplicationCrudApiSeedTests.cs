@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Seed.Migration.yTenantApplication;
 
-[SeedTestOrder(31)]
+[SeedTestOrder(32)]
 public partial class yTenantApplicationCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/yTenantApplication/PostyTenantApplication";
@@ -23,6 +23,9 @@ public partial class yTenantApplicationCrudApiSeedTests : ApiIntegrationTestBase
     public async Task ExecuteAsync()
     {
         using var client = await CreateAuthenticatedClientAsync();
+        Task? customExecution = null;
+        CustomizeExecution(client, ref customExecution);
+        if (customExecution != null) { await customExecution; return; }
 
         var createPayload = BuildCreatePayload();
         CustomizeCreatePayload(createPayload);
@@ -77,6 +80,7 @@ public partial class yTenantApplicationCrudApiSeedTests : ApiIntegrationTestBase
     }
 
     partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeExecution(HttpClient client, ref Task? execution);
     partial void CustomizeReadPayload(JsonObject payload);
     partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);

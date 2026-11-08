@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Seed.Migration.MDFeSolicitacaoFiscal;
 
-[SeedTestOrder(12)]
+[SeedTestOrder(13)]
 public partial class MDFeSolicitacaoFiscalCrudApiSeedTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/MDFeSolicitacaoFiscal/PostMDFeSolicitacaoFiscal";
@@ -23,6 +23,9 @@ public partial class MDFeSolicitacaoFiscalCrudApiSeedTests : ApiIntegrationTestB
     public async Task ExecuteAsync()
     {
         using var client = await CreateAuthenticatedClientAsync();
+        Task? customExecution = null;
+        CustomizeExecution(client, ref customExecution);
+        if (customExecution != null) { await customExecution; return; }
 
         var createPayload = BuildCreatePayload();
         CustomizeCreatePayload(createPayload);
@@ -93,6 +96,7 @@ public partial class MDFeSolicitacaoFiscalCrudApiSeedTests : ApiIntegrationTestB
     }
 
     partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeExecution(HttpClient client, ref Task? execution);
     partial void CustomizeReadPayload(JsonObject payload);
     partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);

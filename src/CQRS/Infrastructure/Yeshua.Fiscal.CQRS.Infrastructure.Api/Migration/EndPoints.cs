@@ -136,6 +136,26 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
             },
             new
             {
+                name = "CTeComplementoIcmsFiscal",
+                title = "Complemento de ICMS CT-e",
+                fields = new[]
+                {
+                    new { name = "Id", title = "ID", classification = "Internal" },
+                    new { name = "CTeSolicitacaoFiscalId", title = "Solicitacao CT-e", classification = "Internal" },
+                    new { name = "ValorPrestacaoComplementar", title = "Valor Prestacao Complementar", classification = "Internal" },
+                    new { name = "CST", title = "CST ICMS", classification = "Internal" },
+                    new { name = "ValorBaseCalculo", title = "Base de Calculo ICMS", classification = "Internal" },
+                    new { name = "AliquotaICMS", title = "Aliquota ICMS", classification = "Internal" },
+                    new { name = "ValorICMS", title = "Valor ICMS", classification = "Internal" },
+                    new { name = "TenantID", title = "TenantID", classification = "Internal" },
+                    new { name = "Deleted", title = "Deleted", classification = "Internal" },
+                    new { name = "Changed", title = "Changed", classification = "Internal" },
+                    new { name = "UserId", title = "User ID", classification = "Internal" },
+                    new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                }
+            },
+            new
+            {
                 name = "CTeDocumentoOriginario",
                 title = "Documento Originario CT-e",
                 fields = new[]
@@ -1284,6 +1304,15 @@ app.MapPost("/yapi/CTeDocumentoOriginario/PostCTeDocumentoOriginario", async ([F
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/CTeComplementoIcmsFiscal/PostCTeComplementoIcmsFiscal", async ([FromServices] Command.Receivers.Write.InsertCTeComplementoIcmsFiscalReceiver receiver, [FromBody] Command.Write.CTeComplementoIcmsFiscalCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/CTeParticipanteSnapshot/PostCTeParticipanteSnapshot", async ([FromServices] Command.Receivers.Write.InsertCTeParticipanteSnapshotReceiver receiver, [FromBody] Command.Write.CTeParticipanteSnapshotCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -1662,6 +1691,15 @@ app.MapPut("/yapi/CTeDocumentoOriginario/PutCTeDocumentoOriginario", async ([Fro
 .RequireAuthorization();
 
 
+app.MapPut("/yapi/CTeComplementoIcmsFiscal/PutCTeComplementoIcmsFiscal", async ([FromServices] Command.Receivers.Write.UpdateCTeComplementoIcmsFiscalReceiver receiver, [FromBody] Command.Write.CTeComplementoIcmsFiscalCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPut("/yapi/CTeParticipanteSnapshot/PutCTeParticipanteSnapshot", async ([FromServices] Command.Receivers.Write.UpdateCTeParticipanteSnapshotReceiver receiver, [FromBody] Command.Write.CTeParticipanteSnapshotCrudCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2036,6 +2074,15 @@ app.MapDelete("/yapi/CTeDocumentoOriginario/DeleteCTeDocumentoOriginario", async
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
 }).Produces<State<Dominio.Entitys.CTeDocumentoOriginarioEntity>>(StatusCodes.Status200OK)
 .Produces<State<Dominio.Entitys.CTeDocumentoOriginarioEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
+app.MapDelete("/yapi/CTeComplementoIcmsFiscal/DeleteCTeComplementoIcmsFiscal", async ([FromServices] Command.Receivers.Write.DeleteCTeComplementoIcmsFiscalReceiver receiver, [FromBody] Command.Write.CTeComplementoIcmsFiscalCrudCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status400BadRequest)
 .Produces(StatusCodes.Status500InternalServerError)
 .RequireAuthorization();
 
@@ -2550,6 +2597,15 @@ app.MapPost("/yapi/CTeDocumentoOriginario/ReadCTeDocumentoOriginario", async ([F
 .RequireAuthorization();
 
 
+app.MapPost("/yapi/CTeComplementoIcmsFiscal/ReadCTeComplementoIcmsFiscal", async ([FromServices] Command.Receivers.Read.CTeComplementoIcmsFiscalReadReceiver receiver, [FromBody] Command.Read.CTeComplementoIcmsFiscalReadCommand command) =>
+{
+ return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
+}).Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status200OK)
+.Produces<State<Dominio.Entitys.CTeComplementoIcmsFiscalEntity>>(StatusCodes.Status400BadRequest)
+.Produces(StatusCodes.Status500InternalServerError)
+.RequireAuthorization();
+
+
 app.MapPost("/yapi/CTeParticipanteSnapshot/ReadCTeParticipanteSnapshot", async ([FromServices] Command.Receivers.Read.CTeParticipanteSnapshotReadReceiver receiver, [FromBody] Command.Read.CTeParticipanteSnapshotReadCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -2881,6 +2937,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2898,6 +2958,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2915,6 +2979,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2932,6 +3000,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2949,6 +3021,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2966,6 +3042,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -2983,6 +3063,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3000,6 +3084,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3017,6 +3105,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3034,6 +3126,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3051,6 +3147,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3068,6 +3168,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3085,6 +3189,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3102,6 +3210,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3119,6 +3231,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3136,6 +3252,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3153,6 +3273,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3170,6 +3294,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3187,6 +3315,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3204,6 +3336,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3221,6 +3357,73 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/CTeComplementoIcmsFiscal/CTeComplementoIcmsFiscalReadFKCTeSolicitacaoFiscalId", async ([FromServices] Command.Receivers.Read.CTeComplementoIcmsFiscalReadFKCTeSolicitacaoFiscalIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/CTeComplementoIcmsFiscal/CTeComplementoIcmsFiscalReadFKTenantID", async ([FromServices] Command.Receivers.Read.CTeComplementoIcmsFiscalReadFKTenantIDReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/CTeComplementoIcmsFiscal/CTeComplementoIcmsFiscalReadFKUserId", async ([FromServices] Command.Receivers.Read.CTeComplementoIcmsFiscalReadFKUserIdReceiver receiver, [FromBody] Command.Patterns.Command.SearchFKCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3238,6 +3441,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3255,6 +3462,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3272,6 +3483,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3289,6 +3504,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3306,6 +3525,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3323,6 +3546,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3340,6 +3567,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3357,6 +3588,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3374,6 +3609,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3391,6 +3630,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3408,6 +3651,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3425,6 +3672,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3442,6 +3693,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3459,6 +3714,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3476,6 +3735,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3493,6 +3756,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3510,6 +3777,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3527,6 +3798,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3544,6 +3819,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3561,6 +3840,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3578,6 +3861,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3595,6 +3882,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3612,6 +3903,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3629,6 +3924,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3646,6 +3945,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3663,6 +3966,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3680,6 +3987,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3697,6 +4008,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3714,6 +4029,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3731,6 +4050,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3748,6 +4071,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3765,6 +4092,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3782,6 +4113,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3799,6 +4134,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3816,6 +4155,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3833,6 +4176,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3850,6 +4197,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3867,6 +4218,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3884,6 +4239,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3901,6 +4260,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3918,6 +4281,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3935,6 +4302,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3952,6 +4323,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3969,6 +4344,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -3986,6 +4365,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4003,6 +4386,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4020,6 +4407,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4037,6 +4428,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4054,6 +4449,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4071,6 +4470,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4088,6 +4491,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4105,6 +4512,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4122,6 +4533,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4139,6 +4554,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4156,6 +4575,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4173,6 +4596,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4190,6 +4617,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4207,6 +4638,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4224,6 +4659,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4241,6 +4680,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4258,6 +4701,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4275,6 +4722,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4292,6 +4743,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4309,6 +4764,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4326,6 +4785,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4343,6 +4806,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4360,6 +4827,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4377,6 +4848,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4394,6 +4869,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4411,6 +4890,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4428,6 +4911,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4445,6 +4932,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4462,6 +4953,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4479,6 +4974,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4496,6 +4995,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4513,6 +5016,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4530,6 +5037,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4547,6 +5058,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4564,6 +5079,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4581,6 +5100,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4598,6 +5121,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4615,6 +5142,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4632,6 +5163,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4649,6 +5184,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4666,6 +5205,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4683,6 +5226,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4700,6 +5247,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4717,6 +5268,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4734,6 +5289,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4751,6 +5310,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4768,6 +5331,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4785,6 +5352,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4802,6 +5373,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -4876,29 +5451,29 @@ app.MapGet("/yapi/getMetaDataDocumentoFiscal", (HttpContext context) =>
                 new { id = "status", label = "Status", type = "enum", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Preparado" }, new { value = 3, display = "Enviado" }, new { value = 4, display = "Autorizado" }, new { value = 5, display = "Rejeitado" }, new { value = 6, display = "Cancelado" }, new { value = 7, display = "FalhaTecnica" },}, },
             },
             quickSearches = Array.Empty<object>(),
-            fkEndpoints = new 
+            fkEndpoints = new
             {
             }
             },
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 55, display = "NFe" }, new { value = 57, display = "CTe" }, new { value = 58, display = "MDFe" },}, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "ufemitente", label = "UF Emitente", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlstoragekey", label = "XML", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlhash", label = "Hash XML", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "protocoloautorizacao", label = "Protocolo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigoretorno", label = "cStat", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Preparado" }, new { value = 3, display = "Enviado" }, new { value = 4, display = "Autorizado" }, new { value = 5, display = "Rejeitado" }, new { value = 6, display = "Cancelado" }, new { value = 7, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 55, display = "NFe" }, new { value = 57, display = "CTe" }, new { value = 58, display = "MDFe" },}, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serie", label = "Serie", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "numero", label = "Numero", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "ufemitente", label = "UF Emitente", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlstoragekey", label = "XML", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlhash", label = "Hash XML", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "protocoloautorizacao", label = "Protocolo", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigoretorno", label = "cStat", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Preparado" }, new { value = 3, display = "Enviado" }, new { value = 4, display = "Autorizado" }, new { value = 5, display = "Rejeitado" }, new { value = 6, display = "Cancelado" }, new { value = 7, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -4987,23 +5562,23 @@ app.MapGet("/yapi/getMetaDataDocumentoFiscalOriginario", (HttpContext context) =
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentofiscalid", label = "Documento Fiscal", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipodocumento", label = "Tipo Documento", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valordocumento", label = "Valor Documento", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Vinculado" }, new { value = 3, display = "Rejeitado" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentofiscalid", label = "Documento Fiscal", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipodocumento", label = "Tipo Documento", type = "string", required = true, editable = true, maxLength = 30, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "numero", label = "Numero", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serie", label = "Serie", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valordocumento", label = "Valor Documento", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Vinculado" }, new { value = 3, display = "Rejeitado" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5095,24 +5670,24 @@ app.MapGet("/yapi/getMetaDataNFeProdutoSnapshot", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pedidoid", label = "Pedido", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uforigem", label = "UF Origem", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufdestino", label = "UF Destino", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipioorigemcodigoibge", label = "Municipio Origem", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipiodestinocodigoibge", label = "Municipio Destino", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valordocumento", label = "Valor Documento", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlstoragekey", label = "XML", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DisponivelParaCTe" }, new { value = 3, display = "VinculadaAoCTe" }, new { value = 4, display = "Rejeitada" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaid", label = "Carga", type = "string", required = false, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pedidoid", label = "Pedido", type = "string", required = false, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = true, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uforigem", label = "UF Origem", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufdestino", label = "UF Destino", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipioorigemcodigoibge", label = "Municipio Origem", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiodestinocodigoibge", label = "Municipio Destino", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valordocumento", label = "Valor Documento", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlstoragekey", label = "XML", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DisponivelParaCTe" }, new { value = 3, display = "VinculadaAoCTe" }, new { value = 4, display = "Rejeitada" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5189,17 +5764,17 @@ app.MapGet("/yapi/getMetaDataCTeEntradaOficial", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "messagetype", label = "Tipo da Mensagem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "messageversion", label = "Versao da Mensagem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "receivedatutc", label = "Recebido em UTC", type = "DateTime", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payloadhash", label = "Hash do Payload", type = "string", required = false, displaygroup = "Payload", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payloadstoragekey", label = "Storage do Payload", type = "string", required = false, displaygroup = "Payload", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status da Entrada", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "Normalizada" }, new { value = 3, display = "Rejeitada" }, new { value = 4, display = "Processada" }, new { value = 5, display = "Falha" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "messagetype", label = "Tipo da Mensagem", type = "string", required = true, editable = true, maxLength = 120, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "messageversion", label = "Versao da Mensagem", type = "string", required = true, editable = true, maxLength = 20, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "receivedatutc", label = "Recebido em UTC", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payloadhash", label = "Hash do Payload", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Payload", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payloadstoragekey", label = "Storage do Payload", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Payload", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status da Entrada", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "Normalizada" }, new { value = 3, display = "Rejeitada" }, new { value = 4, display = "Processada" }, new { value = 5, display = "Falha" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5286,22 +5861,22 @@ app.MapGet("/yapi/getMetaDataCTeRomaneioConsolidado", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entradaoficialid", label = "Entrada Oficial", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeEntradaOficial", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "romaneioid", label = "Romaneio", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "consolidadoemutc", label = "Consolidado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uffim", label = "UF Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tomadordocumento", label = "Tomador Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "rotasnapshotjson", label = "Snapshot da Rota", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cargasnapshotjson", label = "Snapshot da Carga", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "preferenciasfiscaisjson", label = "Preferencias Fiscais", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status do Romaneio", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "SolicitacaoCriada" }, new { value = 3, display = "PendenteDados" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "Processado" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entradaoficialid", label = "Entrada Oficial", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeEntradaOficial", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "romaneioid", label = "Romaneio", type = "string", required = true, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaid", label = "Carga", type = "string", required = false, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "consolidadoemutc", label = "Consolidado em UTC", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufinicio", label = "UF Inicio", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uffim", label = "UF Fim", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tomadordocumento", label = "Tomador Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "rotasnapshotjson", label = "Snapshot da Rota", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargasnapshotjson", label = "Snapshot da Carga", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "preferenciasfiscaisjson", label = "Preferencias Fiscais", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status do Romaneio", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "SolicitacaoCriada" }, new { value = 3, display = "PendenteDados" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "Processado" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5398,26 +5973,26 @@ app.MapGet("/yapi/getMetaDataCTeSolicitacaoFiscal", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entradaoficialid", label = "Entrada Oficial", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeEntradaOficial", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "romaneioconsolidadoid", label = "Romaneio Consolidado", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeRomaneioConsolidado", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "ufemitente", label = "UF Emitente", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 57, display = "CTe" },}, },
-            new { id = "tipocte", label = "Tipo CT-e", type = "enum", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Normal" }, new { value = 1, display = "Complementar" }, new { value = 2, display = "Anulacao" }, new { value = 3, display = "Substituicao" },}, },
-            new { id = "tiposervico", label = "Tipo Servico", type = "enum", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Normal" }, new { value = 1, display = "Subcontratacao" }, new { value = 2, display = "Redespacho" }, new { value = 3, display = "RedespachoIntermediario" }, new { value = 4, display = "Multimodal" },}, },
-            new { id = "modal", label = "Modal", type = "enum", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Rodoviario" }, new { value = 2, display = "Aereo" }, new { value = 3, display = "Aquaviario" }, new { value = 4, display = "Ferroviario" }, new { value = 5, display = "Dutoviario" }, new { value = 6, display = "Multimodal" },}, },
-            new { id = "globalizado", label = "Globalizado", type = "enum", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
-            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uffim", label = "UF Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valorservico", label = "Valor Servico", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "preferenciasmanifestojson", label = "Preferencias Manifesto", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status da Solicitacao", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "Classificada" }, new { value = 3, display = "ProntaParaEmissao" }, new { value = 4, display = "Autorizada" }, new { value = 5, display = "Rejeitada" }, new { value = 6, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entradaoficialid", label = "Entrada Oficial", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeEntradaOficial", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "romaneioconsolidadoid", label = "Romaneio Consolidado", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeRomaneioConsolidado", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "ufemitente", label = "UF Emitente", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = true, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 57, display = "CTe" },}, },
+            new { id = "tipocte", label = "Tipo CT-e", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Normal" }, new { value = 1, display = "Complementar" }, new { value = 2, display = "Anulacao" }, new { value = 3, display = "Substituicao" },}, },
+            new { id = "tiposervico", label = "Tipo Servico", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Normal" }, new { value = 1, display = "Subcontratacao" }, new { value = 2, display = "Redespacho" }, new { value = 3, display = "RedespachoIntermediario" }, new { value = 4, display = "Multimodal" },}, },
+            new { id = "modal", label = "Modal", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Rodoviario" }, new { value = 2, display = "Aereo" }, new { value = 3, display = "Aquaviario" }, new { value = 4, display = "Ferroviario" }, new { value = 5, display = "Dutoviario" }, new { value = 6, display = "Multimodal" },}, },
+            new { id = "globalizado", label = "Globalizado", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
+            new { id = "ufinicio", label = "UF Inicio", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uffim", label = "UF Fim", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorservico", label = "Valor Servico", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "preferenciasmanifestojson", label = "Preferencias Manifesto", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status da Solicitacao", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "Classificada" }, new { value = 3, display = "ProntaParaEmissao" }, new { value = 4, display = "Autorizada" }, new { value = 5, display = "Rejeitada" }, new { value = 6, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5499,18 +6074,18 @@ app.MapGet("/yapi/getMetaDataCTeDocumentoOriginario", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipodocumento", label = "Tipo Documento", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valordocumento", label = "Valor Documento", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipodocumento", label = "Tipo Documento", type = "string", required = true, editable = true, maxLength = 30, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "numero", label = "Numero", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serie", label = "Serie", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentedocumento", label = "Emitente Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "destinatariodocumento", label = "Destinatario Documento", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valordocumento", label = "Valor Documento", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5523,6 +6098,82 @@ app.MapGet("/yapi/getMetaDataCTeDocumentoOriginario", (HttpContext context) =>
             read = "/CTeDocumentoOriginario/ReadCTeDocumentoOriginario",
             update = "/CTeDocumentoOriginario/PutCTeDocumentoOriginario",
             delete = "/CTeDocumentoOriginario/DeleteCTeDocumentoOriginario"
+        }
+    };
+    return Results.Ok(metadatacrud);
+}).RequireAuthorization();
+app.MapGet("/yapi/getMetaDataCTeComplementoIcmsFiscal", (HttpContext context) =>
+{
+    var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    if (string.IsNullOrEmpty(userId))
+        return Results.Unauthorized();
+    var metadatacrud = new
+    {
+        entityName = "CTeComplementoIcmsFiscal",
+        entityDescription = "Complemento de ICMS CT-e",
+        source = new
+        {
+            kind = "table",
+            name = "CTeComplementoIcmsFiscal"
+        },
+        capabilities = new
+        {
+            create = true,
+            update = true,
+            delete = true
+        },
+        search = new[]{
+            new {
+                id = "Standard",
+                description = "Standard",
+                endpoint = "/CTeComplementoIcmsFiscal/ReadCTeComplementoIcmsFiscal",
+            resultFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valorprestacaocomplementar", label = "Valor Prestacao Complementar", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "cst", label = "CST ICMS", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valorbasecalculo", label = "Base de Calculo ICMS", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aliquotaicms", label = "Aliquota ICMS", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valoricms", label = "Valor ICMS", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            filterFields = new[]
+            {
+                new { id = "id", label = "ID", type = "int", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valorprestacaocomplementar", label = "Valor Prestacao Complementar", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "cst", label = "CST ICMS", type = "string", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valorbasecalculo", label = "Base de Calculo ICMS", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "aliquotaicms", label = "Aliquota ICMS", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+                new { id = "valoricms", label = "Valor ICMS", type = "Decimal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            },
+            quickSearches = Array.Empty<object>(),
+            fkEndpoints = new
+            {
+                ctesolicitacaofiscalid = "/CTeComplementoIcmsFiscal/CTeComplementoIcmsFiscalReadFKCTeSolicitacaoFiscalId",
+            }
+            },
+        },
+        formFields = new[]
+        {
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorprestacaocomplementar", label = "Valor Prestacao Complementar", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cst", label = "CST ICMS", type = "string", required = true, editable = true, maxLength = 3, displaygroup = "ICMS", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorbasecalculo", label = "Base de Calculo ICMS", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "ICMS", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "aliquotaicms", label = "Aliquota ICMS", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "ICMS", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valoricms", label = "Valor ICMS", type = "Decimal", required = true, editable = true, maxLength = 0, displaygroup = "ICMS", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+        },
+        relationTabs = Array.Empty<object>(),
+        customTabs = Array.Empty<object>(),
+        actions = Array.Empty<object>(),
+        endpoints = new
+        {
+                 ctesolicitacaofiscalid = "/CTeComplementoIcmsFiscal/CTeComplementoIcmsFiscalReadFKCTeSolicitacaoFiscalId",
+            create = "/CTeComplementoIcmsFiscal/PostCTeComplementoIcmsFiscal",
+            read = "/CTeComplementoIcmsFiscal/ReadCTeComplementoIcmsFiscal",
+            update = "/CTeComplementoIcmsFiscal/PutCTeComplementoIcmsFiscal",
+            delete = "/CTeComplementoIcmsFiscal/DeleteCTeComplementoIcmsFiscal"
         }
     };
     return Results.Ok(metadatacrud);
@@ -5585,15 +6236,15 @@ app.MapGet("/yapi/getMetaDataCTeParticipanteSnapshot", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "papel", label = "Papel", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documento", label = "Documento", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "inscricaoestadual", label = "Inscricao Estadual", type = "string", required = false, displaygroup = "Fiscal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uf", label = "UF", type = "string", required = false, displaygroup = "Endereco", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipiocodigoibge", label = "Municipio IBGE", type = "string", required = false, displaygroup = "Endereco", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "enderecojson", label = "Endereco", type = "memo", required = false, displaygroup = "Endereco", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "papel", label = "Papel", type = "string", required = true, editable = true, maxLength = 40, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documento", label = "Documento", type = "string", required = true, editable = true, maxLength = 14, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome", type = "string", required = false, editable = true, maxLength = 200, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "inscricaoestadual", label = "Inscricao Estadual", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "Fiscal", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uf", label = "UF", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Endereco", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiocodigoibge", label = "Municipio IBGE", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Endereco", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "enderecojson", label = "Endereco", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Endereco", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5679,21 +6330,21 @@ app.MapGet("/yapi/getMetaDataCTeTentativaEmissao", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tentativa", label = "Tentativa", type = "int", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlassinadostoragekey", label = "XML Assinado", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlprocstoragekey", label = "procCTe", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlhash", label = "Hash XML", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigoretorno", label = "cStat", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "protocoloautorizacao", label = "Protocolo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "enviadoemutc", label = "Enviado em UTC", type = "DateTime", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autorizadoemutc", label = "Autorizado em UTC", type = "DateTime", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status da Emissao", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Enviado" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ctesolicitacaofiscalid", label = "Solicitacao CT-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "numero", label = "Numero", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serie", label = "Serie", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tentativa", label = "Tentativa", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlassinadostoragekey", label = "XML Assinado", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlprocstoragekey", label = "procCTe", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlhash", label = "Hash XML", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigoretorno", label = "cStat", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "protocoloautorizacao", label = "Protocolo", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "enviadoemutc", label = "Enviado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "autorizadoemutc", label = "Autorizado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status da Emissao", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Enviado" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5767,15 +6418,15 @@ app.MapGet("/yapi/getMetaDataCTeSaidaMDFe", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ctetentativaemissaoid", label = "Tentativa CT-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeTentativaEmissao", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacessocte", label = "Chave CT-e", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "snapshothash", label = "Hash Snapshot", type = "string", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "outboxmessageid", label = "Mensagem Outbox", type = "string", required = false, displaygroup = "Entrega", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "publicadoemutc", label = "Publicado em UTC", type = "DateTime", required = false, displaygroup = "Entrega", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ultimoerro", label = "Ultimo Erro", type = "string", required = false, displaygroup = "Entrega", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status da Saida", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "AguardandoPublicacao" }, new { value = 2, display = "PublicadoOutbox" }, new { value = 3, display = "EntregueInboxMDFe" }, new { value = 4, display = "ConsumidoPeloMDFe" }, new { value = 5, display = "FalhaNaEntrega" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ctetentativaemissaoid", label = "Tentativa CT-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataCTeTentativaEmissao", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacessocte", label = "Chave CT-e", type = "string", required = true, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshothash", label = "Hash Snapshot", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "outboxmessageid", label = "Mensagem Outbox", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Entrega", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "publicadoemutc", label = "Publicado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Entrega", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ultimoerro", label = "Ultimo Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Entrega", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status da Saida", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "AguardandoPublicacao" }, new { value = 2, display = "PublicadoOutbox" }, new { value = 3, display = "EntregueInboxMDFe" }, new { value = 4, display = "ConsumidoPeloMDFe" }, new { value = 5, display = "FalhaNaEntrega" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5856,19 +6507,19 @@ app.MapGet("/yapi/getMetaDataMDFe", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitidoem", label = "Emitido em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "iniciadoem", label = "Inicio do Transporte", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "encerradoem", label = "Encerrado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canceladoem", label = "Cancelado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "situacao", label = "Situacao do MDF-e", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = true, editable = true, maxLength = 44, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serie", label = "Serie", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "numero", label = "Numero", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = true, editable = true, maxLength = 7, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitidoem", label = "Emitido em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "iniciadoem", label = "Inicio do Transporte", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "encerradoem", label = "Encerrado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canceladoem", label = "Cancelado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "situacao", label = "Situacao do MDF-e", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Autorizado" }, new { value = 2, display = "EmTransporte" }, new { value = 3, display = "Encerrado" }, new { value = 4, display = "Cancelado" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -5944,17 +6595,17 @@ app.MapGet("/yapi/getMetaDataMDFeSolicitacaoFiscal", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "condutordocumento", label = "Documento do Condutor", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentosoriginariosjson", label = "Documentos Originarios", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "transportesnapshotjson", label = "Snapshot Transporte", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "ProntaParaEmissao" }, new { value = 3, display = "Autorizada" }, new { value = 4, display = "Rejeitada" }, new { value = 5, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaid", label = "Carga", type = "string", required = false, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "condutordocumento", label = "Documento do Condutor", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentosoriginariosjson", label = "Documentos Originarios", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "transportesnapshotjson", label = "Snapshot Transporte", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "ProntaParaEmissao" }, new { value = 3, display = "Autorizada" }, new { value = 4, display = "Rejeitada" }, new { value = 5, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6022,12 +6673,12 @@ app.MapGet("/yapi/getMetaDataMDFeDocumentoOriginario", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tipodocumento", label = "Tipo Documento", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tipodocumento", label = "Tipo Documento", type = "string", required = true, editable = true, maxLength = 30, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6092,10 +6743,10 @@ app.MapGet("/yapi/getMetaDataMDFePercurso", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uf", label = "UF", type = "string", required = false, displaygroup = "Percurso", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ordem", label = "Ordem", type = "int", required = false, displaygroup = "Percurso", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uf", label = "UF", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Percurso", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ordem", label = "Ordem", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Percurso", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6165,13 +6816,13 @@ app.MapGet("/yapi/getMetaDataMDFeVeiculo", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placa", label = "Placa", type = "string", required = false, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "renavam", label = "Renavam", type = "string", required = false, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tara", label = "Tara", type = "Decimal", required = false, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "capacidadekg", label = "Capacidade KG", type = "Decimal", required = false, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "capacidadem3", label = "Capacidade M3", type = "Decimal", required = false, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "placa", label = "Placa", type = "string", required = true, editable = true, maxLength = 7, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "renavam", label = "Renavam", type = "string", required = false, editable = true, maxLength = 20, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tara", label = "Tara", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "capacidadekg", label = "Capacidade KG", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "capacidadem3", label = "Capacidade M3", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Veiculo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6235,10 +6886,10 @@ app.MapGet("/yapi/getMetaDataMDFeCondutor", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome", type = "string", required = false, displaygroup = "Condutor", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documento", label = "Documento", type = "string", required = false, displaygroup = "Condutor", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Condutor", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documento", label = "Documento", type = "string", required = true, editable = true, maxLength = 14, displaygroup = "Condutor", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6324,21 +6975,21 @@ app.MapGet("/yapi/getMetaDataMDFeTentativaEmissao", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "numero", label = "Numero", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "serie", label = "Serie", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tentativa", label = "Tentativa", type = "int", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlassinadostoragekey", label = "XML Assinado", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlprocstoragekey", label = "procMDFe", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlhash", label = "Hash XML", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigoretorno", label = "cStat", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "protocoloautorizacao", label = "Protocolo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "enviadoemutc", label = "Enviado em UTC", type = "DateTime", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autorizadoemutc", label = "Autorizado em UTC", type = "DateTime", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status da Emissao", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Enviado" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mdfesolicitacaofiscalid", label = "Solicitacao MDF-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataMDFeSolicitacaoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "numero", label = "Numero", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "serie", label = "Serie", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tentativa", label = "Tentativa", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlassinadostoragekey", label = "XML Assinado", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlprocstoragekey", label = "procMDFe", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlhash", label = "Hash XML", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigoretorno", label = "cStat", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "protocoloautorizacao", label = "Protocolo", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "enviadoemutc", label = "Enviado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "autorizadoemutc", label = "Autorizado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status da Emissao", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Pendente" }, new { value = 2, display = "Enviado" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6416,17 +7067,17 @@ app.MapGet("/yapi/getMetaDataMDFeEncerramento", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mdfeid", label = "MDF-e", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataMDFe", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "solicitadoem", label = "Solicitado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "protocolo", label = "Protocolo SEFAZ", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigoretorno", label = "Codigo de Retorno", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mdfeid", label = "MDF-e", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataMDFe", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = true, editable = true, maxLength = 44, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufcarregamento", label = "UF de Carregamento", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufdescarregamento", label = "UF de Descarregamento", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "placaveiculo", label = "Placa do Veiculo", type = "string", required = true, editable = true, maxLength = 7, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "solicitadoem", label = "Solicitado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "autorizadoem", label = "Autorizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "protocolo", label = "Protocolo SEFAZ", type = "string", required = false, editable = true, maxLength = 20, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigoretorno", label = "Codigo de Retorno", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mensagemretorno", label = "Mensagem de Retorno", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6497,14 +7148,14 @@ app.MapGet("/yapi/getMetaDataSefazEndpoint", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 55, display = "NFe" }, new { value = 57, display = "CTe" }, new { value = 58, display = "MDFe" },}, },
-            new { id = "uf", label = "UF", type = "string", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "servico", label = "Servico", type = "string", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "versao", label = "Versao", type = "string", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "url", label = "URL", type = "string", required = false, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ativo", label = "Ativo", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 55, display = "NFe" }, new { value = 57, display = "CTe" }, new { value = 58, display = "MDFe" },}, },
+            new { id = "uf", label = "UF", type = "string", required = true, editable = true, maxLength = 2, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "servico", label = "Servico", type = "string", required = true, editable = true, maxLength = 120, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "versao", label = "Versao", type = "string", required = true, editable = true, maxLength = 20, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "url", label = "URL", type = "string", required = true, editable = true, maxLength = 1000, displaygroup = "Servico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ativo", label = "Ativo", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6576,15 +7227,15 @@ app.MapGet("/yapi/getMetaDataCertificadoDigital", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "apelido", label = "Apelido", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentotitular", label = "Documento Titular", type = "string", required = false, displaygroup = "Titular", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "storagekey", label = "Arquivo", type = "string", required = false, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "thumbprint", label = "Thumbprint", type = "string", required = false, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validode", label = "Valido de", type = "DateTime", required = false, displaygroup = "Validade", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validoate", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Validade", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ativo", label = "Ativo", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
-            new { id = "senhastoragekey", label = "Senha no Storage", type = "string", required = false, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "apelido", label = "Apelido", type = "string", required = true, editable = true, maxLength = 120, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentotitular", label = "Documento Titular", type = "string", required = true, editable = true, maxLength = 14, displaygroup = "Titular", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "storagekey", label = "Arquivo", type = "string", required = true, editable = true, maxLength = 500, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "thumbprint", label = "Thumbprint", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validode", label = "Valido de", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Validade", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validoate", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Validade", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ativo", label = "Ativo", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Nao" }, new { value = 1, display = "Sim" },}, },
+            new { id = "senhastoragekey", label = "Senha no Storage", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivo", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6707,40 +7358,40 @@ app.MapGet("/yapi/getMetaDataEntradaFiscalContingencia", (HttpContext context) =
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", required = false, displaygroup = "Solicitante", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emitentefiscaldocumento", label = "Emitente Fiscal", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "remetentedocumento", label = "Remetente", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "destinatariodocumento", label = "Destinatario", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uffim", label = "UF Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "rntrc", label = "RNTRC", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "placaveiculo", label = "Placa Veiculo", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufveiculo", label = "UF Veiculo", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "condutordocumento", label = "CPF Condutor", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "condutornome", label = "Nome Condutor", type = "string", required = false, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pendenciasjson", label = "Pendencias", type = "memo", required = false, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emissaofiscalcorrelationid", label = "CorrelationId Emissao Fiscal", type = "string", required = false, displaygroup = "Emissao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emissaofiscalsagaid", label = "Saga Emissao Fiscal", type = "int", required = false, displaygroup = "Emissao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
-            new { id = "certificadodigitalid", label = "Certificado Digital", type = "int", required = false, displaygroup = "SEFAZ", isFk = true, endPontGetMetadata = "/getMetaDataCertificadoDigital", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaid", label = "Carga", type = "string", required = true, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Solicitante", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "sourceapplication", label = "Aplicacao Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemodule", label = "Modulo Origem", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sourcemessageid", label = "Mensagem Origem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emitentefiscaldocumento", label = "Emitente Fiscal", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "remetentedocumento", label = "Remetente", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "destinatariodocumento", label = "Destinatario", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uffim", label = "UF Fim", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "rntrc", label = "RNTRC", type = "string", required = false, editable = true, maxLength = 20, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "placaveiculo", label = "Placa Veiculo", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufveiculo", label = "UF Veiculo", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "condutordocumento", label = "CPF Condutor", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "condutornome", label = "Nome Condutor", type = "string", required = false, editable = true, maxLength = 120, displaygroup = "Transporte", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pendenciasjson", label = "Pendencias", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "snapshotjson", label = "Snapshot", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Snapshot", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emissaofiscalcorrelationid", label = "CorrelationId Emissao Fiscal", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Emissao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emissaofiscalsagaid", label = "Saga Emissao Fiscal", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Emissao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebida" }, new { value = 2, display = "DadosInferidos" }, new { value = 3, display = "PendenteComplemento" }, new { value = 4, display = "ProntaParaEmissao" }, new { value = 5, display = "EmissaoFiscalSolicitada" }, new { value = 6, display = "Finalizada" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+            new { id = "certificadodigitalid", label = "Certificado Digital", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = true, endPontGetMetadata = "/getMetaDataCertificadoDigital", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -6843,30 +7494,30 @@ app.MapGet("/yapi/getMetaDataEmissaoFiscalTransporte", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "origemfluxo", label = "Origem do Fluxo", type = "enum", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Contingencia" }, new { value = 2, display = "APS" }, new { value = 3, display = "IntegracaoExterna" },}, },
-            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "romaneioid", label = "Romaneio", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "emitentedocumento", label = "Emitente", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "uffim", label = "UF Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidadenfe", label = "Quantidade NF-e", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidadecte", label = "Quantidade CT-e", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidademdfe", label = "Quantidade MDF-e", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "volume", label = "Volume", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ultimamensagem", label = "Ultima Mensagem", type = "string", required = false, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "concluidoemutc", label = "Concluido em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "RecebendoDocumentos" }, new { value = 3, display = "PreparandoEmissao" }, new { value = 4, display = "EmitindoCTe" }, new { value = 5, display = "EmitindoMDFe" }, new { value = 6, display = "Concluida" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "origemfluxo", label = "Origem do Fluxo", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Contingencia" }, new { value = 2, display = "APS" }, new { value = 3, display = "IntegracaoExterna" },}, },
+            new { id = "cargaid", label = "Carga", type = "string", required = false, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "romaneioid", label = "Romaneio", type = "string", required = false, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "emitentedocumento", label = "Emitente", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ufinicio", label = "UF Inicio", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "uffim", label = "UF Fim", type = "string", required = false, editable = true, maxLength = 2, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipioiniciocodigoibge", label = "Municipio Inicio", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "municipiofimcodigoibge", label = "Municipio Fim", type = "string", required = false, editable = true, maxLength = 7, displaygroup = "Rota", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadenfe", label = "Quantidade NF-e", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadecte", label = "Quantidade CT-e", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidademdfe", label = "Quantidade MDF-e", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "volume", label = "Volume", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ultimamensagem", label = "Ultima Mensagem", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "concluidoemutc", label = "Concluido em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Aberta" }, new { value = 2, display = "RecebendoDocumentos" }, new { value = 3, display = "PreparandoEmissao" }, new { value = 4, display = "EmitindoCTe" }, new { value = 5, display = "EmitindoMDFe" }, new { value = 6, display = "Concluida" }, new { value = 7, display = "Rejeitada" }, new { value = 8, display = "FalhaTecnica" },}, },
         },
         relationTabs = new[]
         {
@@ -6982,26 +7633,26 @@ app.MapGet("/yapi/getMetaDataContingenciaFiscal", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emissaofiscaltransporteid", label = "Emissao Fiscal", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataEmissaoFiscalTransporte", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entradafiscalcontingenciaid", label = "Entrada Contingencia", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataEntradaFiscalContingencia", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cargaid", label = "Carga", type = "string", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", required = false, displaygroup = "Solicitante", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
-            new { id = "ambiente", label = "Ambiente", type = "enum", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
-            new { id = "emitentedocumento", label = "Emitente", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidadecte", label = "Quantidade CT-e", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "quantidademdfe", label = "Quantidade MDF-e", type = "int", required = false, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "ultimamensagem", label = "Ultima Mensagem", type = "string", required = false, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "concluidoemutc", label = "Concluido em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Iniciada" }, new { value = 2, display = "AguardandoUsuario" }, new { value = 3, display = "EmProcessamento" }, new { value = 4, display = "EmissaoFiscalSolicitada" }, new { value = 5, display = "Finalizada" }, new { value = 6, display = "Rejeitada" }, new { value = 7, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emissaofiscaltransporteid", label = "Emissao Fiscal", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataEmissaoFiscalTransporte", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entradafiscalcontingenciaid", label = "Entrada Contingencia", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataEntradaFiscalContingencia", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Origem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cargaid", label = "Carga", type = "string", required = true, editable = true, maxLength = 80, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tiposolicitante", label = "Tipo Solicitante", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Solicitante", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Transportador" }, new { value = 2, display = "Embarcador" }, new { value = 3, display = "CooperativaSubcontratante" },}, },
+            new { id = "ambiente", label = "Ambiente", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Producao" }, new { value = 2, display = "Homologacao" },}, },
+            new { id = "emitentedocumento", label = "Emitente", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tomadordocumento", label = "Tomador", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "transportadordocumento", label = "Transportador", type = "string", required = false, editable = true, maxLength = 14, displaygroup = "Participantes", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadedocumentos", label = "Quantidade Documentos", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidadecte", label = "Quantidade CT-e", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "quantidademdfe", label = "Quantidade MDF-e", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Documentos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "valorcarga", label = "Valor Carga", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pesobruto", label = "Peso Bruto", type = "Decimal", required = false, editable = true, maxLength = 0, displaygroup = "Valores", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "ultimamensagem", label = "Ultima Mensagem", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Diagnostico", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "atualizadoemutc", label = "Atualizado em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "concluidoemutc", label = "Concluido em UTC", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Iniciada" }, new { value = 2, display = "AguardandoUsuario" }, new { value = 3, display = "EmProcessamento" }, new { value = 4, display = "EmissaoFiscalSolicitada" }, new { value = 5, display = "Finalizada" }, new { value = 6, display = "Rejeitada" }, new { value = 7, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7093,22 +7744,22 @@ app.MapGet("/yapi/getMetaDataEmissaoFiscalTransporteDocumento", (HttpContext con
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emissaofiscaltransporteid", label = "Emissao Fiscal", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataEmissaoFiscalTransporte", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentofiscalid", label = "Documento Fiscal", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nfeprodutosnapshotid", label = "NF-e Produto", type = "int", required = false, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataNFeProdutoSnapshot", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 55, display = "NFe" }, new { value = 57, display = "CTe" }, new { value = 58, display = "MDFe" },}, },
-            new { id = "papel", label = "Papel", type = "enum", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Originario" }, new { value = 2, display = "Gerado" }, new { value = 3, display = "Evento" },}, },
-            new { id = "tipoevento", label = "Tipo Evento", type = "string", required = false, displaygroup = "Evento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "xmlstoragekey", label = "XML", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "pdfstoragekey", label = "PDF", type = "string", required = false, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "protocolo", label = "Protocolo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "codigoretorno", label = "cStat", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = false, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Disponivel" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "Cancelado" }, new { value = 6, display = "Encerrado" }, new { value = 7, display = "FalhaTecnica" },}, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emissaofiscaltransporteid", label = "Emissao Fiscal", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataEmissaoFiscalTransporte", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentofiscalid", label = "Documento Fiscal", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscal", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "documentofiscaloriginarioid", label = "Documento Originario", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataDocumentoFiscalOriginario", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nfeprodutosnapshotid", label = "NF-e Produto", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Vinculo", isFk = true, endPontGetMetadata = "/getMetaDataNFeProdutoSnapshot", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "produtofiscal", label = "Produto Fiscal", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 55, display = "NFe" }, new { value = 57, display = "CTe" }, new { value = 58, display = "MDFe" },}, },
+            new { id = "papel", label = "Papel", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Originario" }, new { value = 2, display = "Gerado" }, new { value = 3, display = "Evento" },}, },
+            new { id = "tipoevento", label = "Tipo Evento", type = "string", required = false, editable = true, maxLength = 40, displaygroup = "Evento", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "chaveacesso", label = "Chave de Acesso", type = "string", required = false, editable = true, maxLength = 44, displaygroup = "Identificacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "xmlstoragekey", label = "XML", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "pdfstoragekey", label = "PDF", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Arquivos", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "protocolo", label = "Protocolo", type = "string", required = false, editable = true, maxLength = 30, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "codigoretorno", label = "cStat", type = "string", required = false, editable = true, maxLength = 10, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "mensagemretorno", label = "xMotivo", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "SEFAZ", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "criadoemutc", label = "Criado em UTC", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Operacao", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Status", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Recebido" }, new { value = 2, display = "Disponivel" }, new { value = 3, display = "Autorizado" }, new { value = 4, display = "Rejeitado" }, new { value = 5, display = "Cancelado" }, new { value = 6, display = "Encerrado" }, new { value = 7, display = "FalhaTecnica" },}, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7184,15 +7835,15 @@ app.MapGet("/yapi/getMetaDatayFileUpload", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Tipo do Arquivo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status do Upload", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Completed" }, new { value = 2, display = "Failed" },}, },
-            new { id = "filepath", label = "Caminho do Arquivo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "filesize", label = "Tamanho do Arquivo", type = "long", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Tipo do Arquivo", type = "string", required = true, editable = true, maxLength = 50, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status do Upload", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Completed" }, new { value = 2, display = "Failed" },}, },
+            new { id = "filepath", label = "Caminho do Arquivo", type = "string", required = false, editable = true, maxLength = 500, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "filesize", label = "Tamanho do Arquivo", type = "long", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7270,18 +7921,18 @@ app.MapGet("/yapi/getMetaDataySaga", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "NotStarted" }, new { value = 1, display = "InProgress" }, new { value = 2, display = "Completed" }, new { value = 3, display = "Failed" },}, },
-            new { id = "keycurrentstep", label = "Key Step Atual", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nextexecutionat", label = "Proxima execucao", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lockedat", label = "LockedAt", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lockedby", label = "LockedBy", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Type", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "NotStarted" }, new { value = 1, display = "InProgress" }, new { value = 2, display = "Completed" }, new { value = 3, display = "Failed" },}, },
+            new { id = "keycurrentstep", label = "Key Step Atual", type = "string", required = false, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nextexecutionat", label = "Proxima execucao", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lockedat", label = "LockedAt", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lockedby", label = "LockedBy", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7360,18 +8011,18 @@ app.MapGet("/yapi/getMetaDataySagaStep", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagaid", label = "Saga", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "stepkey", label = "Step Key", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "indexorder", label = "Index Order", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "CorrelationId", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Created" }, new { value = 1, display = "Pending" }, new { value = 2, display = "InProgress" }, new { value = 3, display = "WaitingResponse" }, new { value = 4, display = "PendingApply" }, new { value = 5, display = "Completed" }, new { value = 6, display = "Failed" },}, },
-            new { id = "executioncount", label = "Execuções", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "errormessage", label = "Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagaid", label = "Saga", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "stepkey", label = "Step Key", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "indexorder", label = "Index Order", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "CorrelationId", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Created" }, new { value = 1, display = "Pending" }, new { value = 2, display = "InProgress" }, new { value = 3, display = "WaitingResponse" }, new { value = 4, display = "PendingApply" }, new { value = 5, display = "Completed" }, new { value = 6, display = "Failed" },}, },
+            new { id = "executioncount", label = "Execuções", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lastexecutionat", label = "Última Execução", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "completedat", label = "Finalizado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "errormessage", label = "Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = false, editable = true, maxLength = 0, displaygroup = "Saga", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "retrycount", label = "Tentativas", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7432,24 +8083,24 @@ app.MapGet("/yapi/getMetaDatayOutbox", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "messageid", label = "Message Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Tipo da Mensagem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
-            new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
-            new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sentat", label = "Enviado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lasterror", label = "Último Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagaid", label = "SagaId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "messageid", label = "Message Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Tipo da Mensagem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = true, editable = true, maxLength = 0, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
+            new { id = "transporttype", label = "Tipo de Transporte", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 1, display = "Queue" }, new { value = 2, display = "Http" }, new { value = 3, display = "Socket" },}, },
+            new { id = "transportdata", label = "Dados do transporte", type = "memo", required = false, editable = true, maxLength = 8000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sentat", label = "Enviado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "retrycount", label = "Tentativas", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lasterror", label = "Último Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagaid", label = "SagaId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7537,21 +8188,21 @@ app.MapGet("/yapi/getMetaDatayInbox", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "messageid", label = "Message Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "type", label = "Tipo da Mensagem", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entitytype", label = "Entity Type", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "entityid", label = "Entity Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "payload", label = "Payload", type = "memo", required = false, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "status", label = "Status", type = "enum", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "retrycount", label = "Tentativas", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lasterror", label = "Último Erro", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagaid", label = "SagaId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "messageid", label = "Message Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "type", label = "Tipo da Mensagem", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entitytype", label = "Entity Type", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "entityid", label = "Entity Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "correlationid", label = "Correlation Id", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "payload", label = "Payload", type = "memo", required = true, editable = true, maxLength = 0, displaygroup = "Mensagem", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "status", label = "Status", type = "enum", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[]{ new { value = 0, display = "Pending" }, new { value = 1, display = "Sent" }, new { value = 2, display = "Failed" }, new { value = 9, display = "Processing" },}, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "retrycount", label = "Tentativas", type = "int", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lasterror", label = "Último Erro", type = "string", required = false, editable = true, maxLength = 2000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "processingat", label = "Processando em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nextattemptat", label = "Próxima tentativa", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagaid", label = "SagaId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySaga", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "sagastepid", label = "SagaStepId", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDataySagaStep", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7623,14 +8274,14 @@ app.MapGet("/yapi/getMetaDatayToken", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tokenhash", label = "Hash do Token", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descricao", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "connectorkey", label = "Conector", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "active", label = "Ativo", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tokenhash", label = "Hash do Token", type = "string", required = true, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descricao", type = "string", required = false, editable = true, maxLength = 200, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "connectorkey", label = "Conector", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "active", label = "Ativo", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "createdat", label = "Criado em", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "lastusedat", label = "Ultimo uso", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7693,10 +8344,10 @@ app.MapGet("/yapi/getMetaDatayTenantApplication", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "applicationkey", label = "Aplicativo", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "applicationkey", label = "Aplicativo", type = "string", required = true, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = true, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7757,9 +8408,9 @@ app.MapGet("/yapi/getMetaDatayTenant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "nome", label = "Nome", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "userid", label = "User ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cnpjcpf", label = "Cnpj/Cpf", type = "string", required = true, editable = true, maxLength = 14, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "userid", label = "User ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7819,9 +8470,9 @@ app.MapGet("/yapi/getMetaDatayUser", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "nome", label = "Nome Usuario", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "email", label = "Email", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "senha", label = "Senha", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "nome", label = "Nome Usuario", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "email", label = "Email", type = "string", required = true, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "senha", label = "Senha", type = "string", required = false, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7881,9 +8532,9 @@ app.MapGet("/yapi/getMetaDatayConfigArcteture", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "audittrackeractived", label = "AuditTrackerActived", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "auditcrudactived", label = "AuditCRUDActived", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -7950,12 +8601,12 @@ app.MapGet("/yapi/getMetaDatayConfigNotification", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailport", label = "EmailPort", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailusername", label = "EmailUserName", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "emailpassword", label = "EmailPassword", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailsmtpclient", label = "EmailSmtpClient", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailport", label = "EmailPort", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailusername", label = "EmailUserName", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "emailpassword", label = "EmailPassword", type = "string", required = false, editable = true, maxLength = 60, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8014,8 +8665,8 @@ app.MapGet("/yapi/getMetaDatayPerfil", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = true, editable = true, maxLength = 150, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8073,8 +8724,8 @@ app.MapGet("/yapi/getMetaDatayModule", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8138,10 +8789,10 @@ app.MapGet("/yapi/getMetaDatayTenantModule", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "tenantid", label = "TenantID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "tenantid", label = "TenantID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayTenant", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8207,10 +8858,10 @@ app.MapGet("/yapi/getMetaDatayUserModule", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "userid", label = "User ID", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "moduleid", label = "ID Modulo", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayModule", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "userid", label = "User ID", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayUser", fksDisplayFields = new string[]{ "nome" }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8270,8 +8921,8 @@ app.MapGet("/yapi/getMetaDatayGrant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "description", label = "Descrição", type = "string", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "description", label = "Descrição", type = "string", required = false, editable = true, maxLength = 1000, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8345,15 +8996,15 @@ app.MapGet("/yapi/getMetaDatayPerfilGrant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "grantid", label = "ID Permição", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canread", label = "Permite Ler", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "grantid", label = "ID Permição", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canread", label = "Permite Ler", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8429,15 +9080,15 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
         },
         formFields = new[]
         {
-            new { id = "id", label = "ID", type = "int", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "grantid", label = "ID Permição", type = "string", required = false, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canread", label = "Permite Ler", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
-            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "id", label = "ID", type = "int", required = false, editable = false, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "perfilid", label = "ID Perfil", type = "int", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayPerfil", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "grantid", label = "ID Permição", type = "string", required = false, editable = true, maxLength = 100, displaygroup = "Geral", isFk = true, endPontGetMetadata = "/getMetaDatayGrant", fksDisplayFields = new string[]{  }, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cangrant", label = "Permite acessar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "cancreate", label = "Permite Criar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canread", label = "Permite Ler", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "canupdate", label = "Permite Atualizar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "candelete", label = "Permite Deletar", type = "bool", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
+            new { id = "validuntil", label = "Valido ate", type = "DateTime", required = false, editable = true, maxLength = 0, displaygroup = "Geral", isFk = false, endPontGetMetadata = "", fksDisplayFields = new string[]{}, options = new[] { new { value = 0, display = "" } }, },
         },
         relationTabs = Array.Empty<object>(),
         customTabs = Array.Empty<object>(),
@@ -8462,6 +9113,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8479,6 +9134,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8496,6 +9155,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8513,6 +9176,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8530,6 +9197,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8547,6 +9218,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8564,6 +9239,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8581,6 +9260,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8598,6 +9281,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8615,6 +9302,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8632,6 +9323,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8649,6 +9344,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8666,6 +9365,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8683,6 +9386,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8700,6 +9407,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8717,6 +9428,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8734,6 +9449,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8751,6 +9470,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8768,6 +9491,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8785,6 +9512,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8802,6 +9533,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8819,6 +9554,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8836,6 +9575,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8853,6 +9596,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8870,6 +9617,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8887,6 +9638,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8904,6 +9659,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8921,6 +9680,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8938,6 +9701,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8955,6 +9722,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8972,6 +9743,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -8989,6 +9764,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9006,6 +9785,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9023,6 +9806,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9040,6 +9827,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9050,13 +9841,17 @@ return Results.Problem(ex.Message);
 }).RequireAuthorization();
 
 
-app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.SendFileHandler receiver, [FromBody] Command.UseCase.SendFileInputCommand command) =>
+app.MapPost("/yapi/FileUpload/InfraSendFileUseCase", async ([FromServices] Command.Receivers.UseCase.SendFileHandler receiver, [FromForm] Command.UseCase.SendFileInputCommand command) =>
 {
 try
 {
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9064,7 +9859,9 @@ catch (Exception ex)
 {
 return Results.Problem(ex.Message);
 }
-}).RequireAuthorization();
+}).DisableAntiforgery()
+.Accepts<Command.UseCase.SendFileInputCommand>("multipart/form-data")
+.RequireAuthorization();
 
 
 app.MapPost("/yapi/Saga/OperacaoRetrySagaStepUseCase", async ([FromServices] Command.Receivers.UseCase.RetrySagaStepHandler receiver, [FromBody] Command.UseCase.RetrySagaStepInputCommand command) =>
@@ -9074,6 +9871,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9091,6 +9892,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9108,6 +9913,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9125,6 +9934,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }
@@ -9142,6 +9955,10 @@ try
 var result = await receiver.ExecuteAsync(command);
 if (result.StatusCode == 200)
     return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
 else
     return Results.BadRequest(result);
 }

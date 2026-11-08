@@ -333,6 +333,7 @@ private OperationalLoggingDecision Evaluate(
                         "CTeRomaneioConsolidado" => GetCTeRomaneioConsolidadoMask(policy, operation, recordId),
                         "CTeSolicitacaoFiscal" => GetCTeSolicitacaoFiscalMask(policy, operation, recordId),
                         "CTeDocumentoOriginario" => GetCTeDocumentoOriginarioMask(policy, operation, recordId),
+                        "CTeComplementoIcmsFiscal" => GetCTeComplementoIcmsFiscalMask(policy, operation, recordId),
                         "CTeParticipanteSnapshot" => GetCTeParticipanteSnapshotMask(policy, operation, recordId),
                         "CTeTentativaEmissao" => GetCTeTentativaEmissaoMask(policy, operation, recordId),
                         "CTeSaidaMDFe" => GetCTeSaidaMDFeMask(policy, operation, recordId),
@@ -722,6 +723,39 @@ private OperationalLoggingDecision Evaluate(
                         mask |= CTeDocumentoOriginarioTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "CTeDocumentoOriginario", operation, recordId, "OperationalEntityId"))
                         mask |= CTeDocumentoOriginarioTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetCTeComplementoIcmsFiscalMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "Id"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "CTeSolicitacaoFiscalId"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.CTeSolicitacaoFiscalId;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "ValorPrestacaoComplementar"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.ValorPrestacaoComplementar;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "CST"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.CST;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "ValorBaseCalculo"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.ValorBaseCalculo;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "AliquotaICMS"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.AliquotaICMS;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "ValorICMS"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.ValorICMS;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "TenantID"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "Deleted"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "Changed"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "UserId"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "CTeComplementoIcmsFiscal", operation, recordId, "OperationalEntityId"))
+                        mask |= CTeComplementoIcmsFiscalTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

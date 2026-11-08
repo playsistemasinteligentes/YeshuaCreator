@@ -3,6 +3,6 @@ window.yeshuaExtensions.menu = window.yeshuaExtensions.menu || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
 
 window.yeshuaExtensions.pages['contingencia-fiscal'] = async function openContingenciaFiscal() {
-    const page = await import('/Custon/Apps/Fiscal/pages/contingencia-fiscal.js?v=20261006-paginacao-botoes04');
+    const page = await import('/Custon/Apps/Fiscal/pages/contingencia-fiscal.js?v=20261029-cte-complementar01');
     await page.renderContingenciaFiscal();
 };

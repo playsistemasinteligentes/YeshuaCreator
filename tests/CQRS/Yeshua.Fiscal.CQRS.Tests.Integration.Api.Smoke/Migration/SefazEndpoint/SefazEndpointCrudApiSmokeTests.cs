@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.SefazEndpoint;
 
-[SmokeTestOrder(19)]
+[SmokeTestOrder(20)]
 public partial class SefazEndpointCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/SefazEndpoint/PostSefazEndpoint";
@@ -24,6 +24,9 @@ public partial class SefazEndpointCrudApiSmokeTests : ApiIntegrationTestBase
     public async Task ExecuteAsync()
     {
         using var client = await CreateAuthenticatedClientAsync();
+        Task? customExecution = null;
+        CustomizeExecution(client, ref customExecution);
+        if (customExecution != null) { await customExecution; return; }
 
         var createPayload = BuildCreatePayload();
         CustomizeCreatePayload(createPayload);
@@ -116,6 +119,7 @@ public partial class SefazEndpointCrudApiSmokeTests : ApiIntegrationTestBase
     }
 
     partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeExecution(HttpClient client, ref Task? execution);
     partial void CustomizeReadPayload(JsonObject payload);
     partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);

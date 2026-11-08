@@ -121,7 +121,7 @@
                 </label>
             </div>
 
-            <div class="fiscal-section-title">
+            <div id="fiscal-nfe-section-title" class="fiscal-section-title">
                 <div class="fiscal-section-heading">
                     <h3>XMLs Das NF-e</h3>
                     <span id="fiscal-status-xmls" class="fiscal-section-status pending">pendente</span>
@@ -130,7 +130,7 @@
                     <button id="fiscal-clear-xmls" type="button">Limpar XMLs</button>
                 </div>
             </div>
-            <div class="fiscal-xml-grid">
+            <div id="fiscal-nfe-section-fields" class="fiscal-xml-grid">
                 <label>
                     Arquivos
                     <input id="fiscal-nfe-files" type="file" multiple accept=".xml,text/xml,application/xml">
@@ -343,6 +343,46 @@
                     </select>
                 </label>
             </div>
+
+            <section id="fiscal-cte-complementar-fields" hidden>
+                <div class="fiscal-section-title">
+                    <div class="fiscal-section-heading">
+                        <h3>Complemento de ICMS do CT-e</h3>
+                    </div>
+                </div>
+                <p class="fiscal-stage-note">
+                    Informe os CT-e autorizados que serao complementados e somente os valores adicionais desta emissao.
+                    O complemento nao gera MDF-e.
+                </p>
+                <div class="fiscal-contingencia-grid">
+                    <label class="wide">
+                        Chaves dos CT-e originais
+                        <textarea id="fiscal-cte-original-keys" rows="4" placeholder="Uma chave de 44 digitos por linha, ate 10 CT-e"></textarea>
+                    </label>
+                    <label>
+                        Valor da prestacao complementar
+                        <input id="fiscal-complemento-valor-prestacao" type="text" inputmode="decimal">
+                    </label>
+                    <label>
+                        CST ICMS
+                        <select id="fiscal-complemento-cst">
+                            <option value="00">00 - Tributacao normal</option>
+                        </select>
+                    </label>
+                    <label>
+                        Base de calculo ICMS
+                        <input id="fiscal-complemento-base-calculo" type="text" inputmode="decimal">
+                    </label>
+                    <label>
+                        Aliquota ICMS (%)
+                        <input id="fiscal-complemento-aliquota" type="text" inputmode="decimal">
+                    </label>
+                    <label>
+                        Valor do ICMS
+                        <input id="fiscal-complemento-valor-icms" type="text" inputmode="decimal">
+                    </label>
+                </div>
+            </section>
 
             <details class="fiscal-effective-details">
                 <summary>Cadastro fiscal efetivo do emitente (CT-e/MDF-e)</summary>

@@ -32,7 +32,7 @@ public partial record EncerrarMDFeOutputCommand : ICommand
     public bool Encerrado { get; set; }
     public string Protocolo { get; set; } = string.Empty;
     public string Mensagem { get; set; } = string.Empty;
-    public Nullable<DateTime> EncerradoEm { get; set; }
+    public DateTime? EncerradoEm { get; set; }
 }
 
 }

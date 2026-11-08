@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.EmissaoFiscalTransporteDocumento;
 
-[SmokeTestOrder(24)]
+[SmokeTestOrder(25)]
 public partial class EmissaoFiscalTransporteDocumentoCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/EmissaoFiscalTransporteDocumento/PostEmissaoFiscalTransporteDocumento";
@@ -24,6 +24,9 @@ public partial class EmissaoFiscalTransporteDocumentoCrudApiSmokeTests : ApiInte
     public async Task ExecuteAsync()
     {
         using var client = await CreateAuthenticatedClientAsync();
+        Task? customExecution = null;
+        CustomizeExecution(client, ref customExecution);
+        if (customExecution != null) { await customExecution; return; }
 
         var createPayload = BuildCreatePayload();
         CustomizeCreatePayload(createPayload);
@@ -132,6 +135,7 @@ public partial class EmissaoFiscalTransporteDocumentoCrudApiSmokeTests : ApiInte
     }
 
     partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeExecution(HttpClient client, ref Task? execution);
     partial void CustomizeReadPayload(JsonObject payload);
     partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);

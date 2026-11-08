@@ -27,7 +27,7 @@ public partial record ValidarCertificadoDigitalOutputCommand : ICommand
 {
     public bool Valido { get; set; }
     public string Mensagem { get; set; } = string.Empty;
-    public Nullable<DateTime> ValidoAte { get; set; }
+    public DateTime? ValidoAte { get; set; }
 }
 
 }

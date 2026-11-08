@@ -13,7 +13,7 @@ using System.Text.Json.Nodes;
 
 namespace Yeshua.Fiscal.CQRS.Tests.Integration.Api.Smoke.Migration.MDFeDocumentoOriginario;
 
-[SmokeTestOrder(13)]
+[SmokeTestOrder(14)]
 public partial class MDFeDocumentoOriginarioCrudApiSmokeTests : ApiIntegrationTestBase
 {
     private const string CreateEndpoint = "yapi/MDFeDocumentoOriginario/PostMDFeDocumentoOriginario";
@@ -24,6 +24,9 @@ public partial class MDFeDocumentoOriginarioCrudApiSmokeTests : ApiIntegrationTe
     public async Task ExecuteAsync()
     {
         using var client = await CreateAuthenticatedClientAsync();
+        Task? customExecution = null;
+        CustomizeExecution(client, ref customExecution);
+        if (customExecution != null) { await customExecution; return; }
 
         var createPayload = BuildCreatePayload();
         CustomizeCreatePayload(createPayload);
@@ -112,6 +115,7 @@ public partial class MDFeDocumentoOriginarioCrudApiSmokeTests : ApiIntegrationTe
     }
 
     partial void CustomizeCreatePayload(JsonObject payload);
+    partial void CustomizeExecution(HttpClient client, ref Task? execution);
     partial void CustomizeReadPayload(JsonObject payload);
     partial void CustomizeReadAssertion(JsonObject readState, JsonNode id, ref bool handled);
     partial void CustomizeUpdatePayload(JsonObject payload);

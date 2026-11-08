@@ -162,6 +162,18 @@ builder.Services.AddTransient<Command.Receivers.Read.CTeDocumentoOriginarioReadF
 builder.Services.AddTransient<Command.Receivers.Read.CTeDocumentoOriginarioReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.CTeDocumentoOriginarioReadFKUserIdReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.ICTeComplementoIcmsFiscalWriteRepository, Input.Repository.CTeComplementoIcmsFiscal.CTeComplementoIcmsFiscalWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.ICTeComplementoIcmsFiscalReadRepository, Read.Repository.CTeComplementoIcmsFiscalReadRepository>();
+builder.Services.AddTransient<IQuery.Read.ICTeComplementoIcmsFiscalQueryRead, Query.Read.CTeComplementoIcmsFiscalQueryRead>();
+builder.Services.AddTransient<IQuery.Write.ICTeComplementoIcmsFiscalQueryWrite, Query.Write.CTeComplementoIcmsFiscalQueryWrite>();
+builder.Services.AddTransient<Command.Receivers.Write.InsertCTeComplementoIcmsFiscalReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.UpdateCTeComplementoIcmsFiscalReceiver>();
+builder.Services.AddTransient<Command.Receivers.Write.DeleteCTeComplementoIcmsFiscalReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.CTeComplementoIcmsFiscalReadReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.CTeComplementoIcmsFiscalReadFKCTeSolicitacaoFiscalIdReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.CTeComplementoIcmsFiscalReadFKTenantIDReceiver>();
+builder.Services.AddTransient<Command.Receivers.Read.CTeComplementoIcmsFiscalReadFKUserIdReceiver>();
+
 builder.Services.AddTransient<IRepository.Write.ICTeParticipanteSnapshotWriteRepository, Input.Repository.CTeParticipanteSnapshot.CTeParticipanteSnapshotWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.ICTeParticipanteSnapshotReadRepository, Read.Repository.CTeParticipanteSnapshotReadRepository>();
 builder.Services.AddTransient<IQuery.Read.ICTeParticipanteSnapshotQueryRead, Query.Read.CTeParticipanteSnapshotQueryRead>();
@@ -617,6 +629,13 @@ builder.Services.AddTransient<MontarSolicitacaoMDFeHandler>();
 builder.Services.AddTransient<PrepararMDFeHandler>();
 builder.Services.AddTransient<AutorizarMDFeNaSefazHandler>();
 builder.Services.AddTransient<PublicarDocumentosFiscaisDaCargaConcluidosHandler>();
+builder.Services.AddTransient<Dominio.Saga.EmissaoCTeComplementarStandardSaga>();
+builder.Services.AddTransient<Command.Receivers.EmissaoCTeComplementarStandardSagaHandlerResolver>();
+builder.Services.AddTransient<ReceberCTeComplementarProntoParaEmissaoHandler>();
+builder.Services.AddTransient<ValidarCTeOriginalEComplementoHandler>();
+builder.Services.AddTransient<PrepararCTeComplementarHandler>();
+builder.Services.AddTransient<AutorizarCTeComplementarNaSefazHandler>();
+builder.Services.AddTransient<FinalizarCTeComplementarHandler>();
 builder.Services.AddTransient<Dominio.Saga.ContingenciaFiscalStandardSaga>();
 builder.Services.AddTransient<Command.Receivers.ContingenciaFiscalStandardSagaHandlerResolver>();
 builder.Services.AddTransient<PrepararEntradaContingenciaHandler>();

@@ -32,8 +32,8 @@ public partial record RegistrarCertificadoDigitalContingenciaOutputCommand : ICo
     public int CertificadoDigitalId { get; set; }
     public string DocumentoTitular { get; set; } = string.Empty;
     public string Thumbprint { get; set; } = string.Empty;
-    public Nullable<DateTime> ValidoDe { get; set; }
-    public Nullable<DateTime> ValidoAte { get; set; }
+    public DateTime? ValidoDe { get; set; }
+    public DateTime? ValidoAte { get; set; }
     public bool Reutilizado { get; set; }
     public string Mensagem { get; set; } = string.Empty;
 }
