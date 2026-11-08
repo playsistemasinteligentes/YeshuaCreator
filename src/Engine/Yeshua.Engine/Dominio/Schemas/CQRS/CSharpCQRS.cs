@@ -2795,10 +2795,14 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
         typeof(TCommand).FullName ?? typeof(TCommand).Name;
     private static readonly long QueueHealthProbeIntervalMs =
         (long)TimeSpan.FromSeconds(30).TotalMilliseconds;
+    private const int SickItemEvidenceLimit = 25;
+    private const int ReportedSickItemCapacity = 100;
 
     private readonly IServiceProvider _serviceProvider;
     private readonly ILogger<PollingWorker<TReceiver, TCommand, TResponse>> _logger;
     private readonly TimeSpan _interval;
+    private readonly Dictionary<string, string> _reportedSickItems =
+        new(StringComparer.Ordinal);
     private long _nextQueueHealthProbeAt;
 
     public PollingWorker(
@@ -2888,11 +2892,102 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
                 snapshot.RecurrentExecutionCount,
                 snapshot.RepeatedFailureCount,
                 snapshot.TerminalFailureCount);
+            PublishSickItemEvidence(probe, snapshot.SickItemCount);
         }
         catch
         {
             OperationalMetrics.SetQueueHealthProbeFailure(probe.QueueName, WorkerOperation);
         }
+    }
+
+    private void PublishSickItemEvidence(
+        IWorkerQueueHealthProbe<TReceiver, TCommand> probe,
+        long sickItemCount)
+    {
+        if (sickItemCount <= 0)
+        {
+            _reportedSickItems.Clear();
+            return;
+        }
+
+        var items = probe.CaptureSickItems(SickItemEvidenceLimit);
+        if (items.Count == 0)
+            return;
+
+        HashSet<string>? currentItems = sickItemCount <= SickItemEvidenceLimit &&
+            items.Count == sickItemCount
+                ? new HashSet<string>(StringComparer.Ordinal)
+                : null;
+
+        foreach (var item in items)
+        {
+            var key = $""{probe.QueueName}|{item.ItemType}|{item.ItemReference}"";
+            currentItems?.Add(key);
+
+            var state = $""{(int)item.Disease}|{item.ExecutionCount}|{item.RetryCount}|"" +
+                $""{item.LastOutcome}|{item.ErrorSignature}"";
+            if (_reportedSickItems.TryGetValue(key, out var previousState) &&
+                string.Equals(previousState, state, StringComparison.Ordinal))
+            {
+                continue;
+            }
+
+            if (_reportedSickItems.Count >= ReportedSickItemCapacity &&
+                !_reportedSickItems.ContainsKey(key))
+            {
+                _reportedSickItems.Clear();
+            }
+
+            _reportedSickItems[key] = state;
+            var logLevel = string.Equals(
+                item.Severity,
+                ""Critical"",
+                StringComparison.OrdinalIgnoreCase)
+                    ? LogLevel.Error
+                    : LogLevel.Warning;
+
+            _logger.Log(
+                logLevel,
+                ""Queue item health changed. Queue={Queue}; ItemType={ItemType}; "" +
+                ""ItemReference={ItemReference}; Disease={Disease}; Severity={Severity}; "" +
+                ""EligibleAgeSeconds={EligibleAgeSeconds}; ProcessingAgeSeconds={ProcessingAgeSeconds}; "" +
+                ""ExecutionCount={ExecutionCount}; RetryCount={RetryCount}; LastOutcome={LastOutcome}; "" +
+                ""OperationalEntityId={OperationalEntityId}; RootOperationId={RootOperationId}; "" +
+                ""ExecutionId={ExecutionId}; ErrorSignature={ErrorSignature}"",
+                probe.QueueName,
+                item.ItemType,
+                item.ItemReference,
+                item.Disease,
+                item.Severity,
+                item.EligibleAgeSeconds,
+                item.ProcessingAgeSeconds,
+                item.ExecutionCount,
+                item.RetryCount,
+                item.LastOutcome,
+                item.OperationalEntityId,
+                item.RootOperationId,
+                item.ExecutionId,
+                item.ErrorSignature);
+        }
+
+        if (currentItems is null)
+            return;
+
+        List<string>? recoveredItems = null;
+        foreach (var key in _reportedSickItems.Keys)
+        {
+            if (currentItems.Contains(key))
+                continue;
+
+            recoveredItems ??= [];
+            recoveredItems.Add(key);
+        }
+
+        if (recoveredItems is null)
+            return;
+
+        foreach (var key in recoveredItems)
+            _reportedSickItems.Remove(key);
     }
 
 }");

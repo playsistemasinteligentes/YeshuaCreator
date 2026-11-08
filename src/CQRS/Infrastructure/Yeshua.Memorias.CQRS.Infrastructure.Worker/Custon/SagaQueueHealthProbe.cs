@@ -39,4 +39,7 @@ public sealed class SagaQueueHealthProbe
 
     public WorkerQueueHealthSnapshot Capture() =>
         _repository.GetRunnableSagaHealth(_thresholds);
+
+    public IReadOnlyList<WorkerQueueSickItem> CaptureSickItems(int limit) =>
+        _repository.GetSickSagaItems(_thresholds, limit);
 }

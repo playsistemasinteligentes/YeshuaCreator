@@ -411,9 +411,13 @@ Miolos que IA/dev devem preencher:
   conveniencia arquitetural nao justifica degradar o caminho quente.
 - Saude de item de fila e uma projecao operacional, nunca um campo de negocio.
   Prometheus recebe somente contagens agregadas por fila e classificacao, sem
-  identificadores. A lista individual deve ser limitada, consultada sob demanda
-  pelo mesmo repository que conhece o predicado real da fila e devolver apenas
-  identidades operacionais e assinaturas sanitizadas do erro.
+  identificadores. O mesmo repository que conhece o predicado real da fila
+  fornece a lista individual limitada. O Worker so consulta essa lista quando
+  a contagem agregada indicar doenca, publica no maximo os 25 piores itens e
+  somente quando a doenca ou seu estado mudar. A deduplicacao em memoria deve
+  ser limitada; itens saudaveis permanecem silenciosos. A evidencia individual
+  contem apenas identidades operacionais e assinatura sanitizada do erro, nunca
+  payload ou mensagem bruta.
 
 ## Codigo Gerado E Codigo Customizado
 

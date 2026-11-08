@@ -132,7 +132,10 @@ politica.
   e idade do mais antigo sem lock nem mudanca de estado.
 - O mesmo probe classifica itens por falha terminal, processamento travado,
   falha repetida, execucao recorrente ou espera excessiva. Prometheus recebe
-  somente contagens agregadas; detalhes ficam em consulta limitada sob demanda.
+  somente contagens agregadas. Quando existe doenca, o Worker consulta no
+  maximo os 25 piores itens e publica evidencia estruturada no Loki apenas na
+  entrada ou mudanca da doenca, com deduplicacao limitada em memoria e sem
+  mensagem de erro bruta.
 - O Collector aplica tail sampling: preserva erros, retries, falhas terminais,
   recuperacoes, diagnosticos e traces lentos, mantendo 5% dos traces saudaveis
   e rapidos. Metricas e logs nao passam por essa poda.
@@ -161,11 +164,11 @@ de assuntos durante R04.
   contra o ambiente publicado permanece pendente.
 - Testes unitarios das metricas validam counters, histogramas, gauge,
   atividade, ciclo de Worker e conjunto limitado de labels.
-- Projeto compartilhado compilado e suas 41 verificacoes executadas localmente:
-  40 aprovadas e uma ignorada por depender de Linux.
+- Projeto compartilhado compilado e suas 42 verificacoes executadas localmente:
+  41 aprovadas e uma ignorada por depender de Linux.
 - Engine e os seis hosts Worker gerados compilaram localmente sem erros apos
   a inclusao da saude por instancia e do contrato opcional de diagnostico de fila.
-- Suite da Application executada sobre a `main` com 51 testes aprovados.
+- Suite da Application executada sobre a `main` com 53 testes aprovados.
 
 ## 5.1 Avaliacao Dos Gates Externos
 
@@ -222,6 +225,8 @@ de assuntos durante R04.
     do probe com mais de uma replica e expandir somente para filas com SLA.
 11. Homologar a amostragem seletiva com quatro cenarios: saudavel rapido, erro,
     retry e trace lento; confirmar que a reducao ocorre somente no Tempo.
+12. Manter a deteccao de item sem fila, ou limbo, fora desta rodada; ela exige
+    uma fonte de expectativa de avanco diferente do diagnostico da fila atual.
 
 A ordem detalhada e os criterios de saida estao em
 `YESHUA_SRE_IMPLEMENTATION_PLAN.md`. R11 esta concluida para Commands do

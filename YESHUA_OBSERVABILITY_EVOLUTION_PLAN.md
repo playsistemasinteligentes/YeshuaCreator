@@ -258,8 +258,9 @@ reutiliza o mesmo predicado de elegibilidade. O limite do lote, como `TOP 5`,
 continua exclusivo da captura de trabalho; o diagnostico retorna a contagem
 global, a idade do registro elegivel mais antigo e contagens agregadas de itens
 doentes, sem lock e sem alteracao de estado. A coleta inicial ocorre a cada
-trinta segundos. A lista individual e limitada a no maximo cem registros e so
-e consultada sob demanda.
+trinta segundos. O contrato de diagnostico limita a lista individual a no
+maximo cem registros. No fluxo automatico, o Worker consulta no maximo os 25
+piores somente quando a contagem agregada indicar doenca.
 
 ### 8.4 Classificacao Inicial De Saude
 
@@ -304,17 +305,22 @@ minutos de processamento, tres execucoes e dois retries. Eles sao configuraveis
 por ambiente e devem ser substituidos ou calibrados pela linha de base aprovada.
 
 Prometheus recebe apenas contagens por fila e doenca. Identificadores nunca
-entram em labels. O diagnostico sob demanda devolve referencia do item, tipo,
-idades, execucoes, retries, ultimo resultado, identidades operacionais e uma
-assinatura irreversivel do erro persistido. Logs e traces carregam a
+entram em labels. Quando a contagem indicar doenca, o Worker consulta uma lista
+limitada dos piores itens e publica no Loki uma evidencia individual somente na
+entrada da doenca ou quando seu estado mudar. A deduplicacao fica em memoria,
+limitada a cem chaves por Worker; reinicio pode republicar o estado atual. A
+evidencia contem referencia do item, tipo, idades, execucoes, retries, ultimo
+resultado, identidades operacionais e uma assinatura irreversivel do erro
+persistido, sem payload ou mensagem bruta. Logs e traces carregam a
 classificacao mais rica da falha: natureza, transiencia, origem, possibilidade
 de retry, severidade operacional e assinatura estavel.
 
-Itens saudaveis permanecem silenciosos. Retry, falha terminal, recuperacao e
-diagnostico marcam o trace para retencao integral. Doencas baseadas somente no
-tempo aparecem primeiro nas metricas agregadas; seus detalhes sao recuperados
-pela consulta limitada, pois um trace passado ja descartado nao pode ser
-reconstruido.
+Itens saudaveis permanecem silenciosos. A recuperacao remove a chave da
+deduplicacao sem criar log repetitivo; uma recaida volta a produzir evidencia.
+Retry, falha terminal, recuperacao e diagnostico marcam o trace para retencao
+integral. Doencas baseadas somente no tempo aparecem primeiro nas metricas
+agregadas e produzem uma evidencia atual limitada no Loki, mas um trace passado
+ja descartado nao pode ser reconstruido.
 
 ## 9. Retencao E Historico
 

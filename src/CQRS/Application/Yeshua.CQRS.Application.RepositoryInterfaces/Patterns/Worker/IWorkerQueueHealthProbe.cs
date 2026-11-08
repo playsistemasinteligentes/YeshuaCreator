@@ -52,4 +52,7 @@ public interface IWorkerQueueHealthProbe<TReceiver, TCommand>
 {
     string QueueName { get; }
     WorkerQueueHealthSnapshot Capture();
+
+    IReadOnlyList<WorkerQueueSickItem> CaptureSickItems(int limit) =>
+        Array.Empty<WorkerQueueSickItem>();
 }

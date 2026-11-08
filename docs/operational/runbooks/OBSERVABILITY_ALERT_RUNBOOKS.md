@@ -67,8 +67,9 @@ versionada deve complementar, e nao substituir, os limites de seguranca.
 ## YeshuaQueueItemCritical
 
 1. Identificar a doenca agregada: processamento travado ou falha terminal.
-2. Consultar somente os piores itens pelo metodo diagnostico limitado do mesmo
-   repository da fila; nao transformar identificadores em labels Prometheus.
+2. No Loki, buscar `Queue item health changed` e filtrar pela fila e doenca. A
+   evidencia e emitida somente na entrada ou mudanca do estado e cobre no
+   maximo os 25 piores itens por coleta.
 3. Correlacionar `OperationalEntityId`, `RootOperationId` ou `ExecutionId` com
    o trace preservado no Tempo e os logs no Loki.
 4. Em falha terminal, distinguir natureza, transiencia, origem e assinatura.
@@ -80,8 +81,9 @@ versionada deve complementar, e nao substituir, os limites de seguranca.
 1. Identificar a doenca agregada: espera excessiva, execucao recorrente ou
    falha repetida.
 2. Confirmar que o snapshot e recente e que a fila continua com vazao.
-3. Consultar uma lista limitada dos piores itens e comparar tentativas, retries
-   e idade; nao varrer toda a tabela pelo painel.
+3. No Loki, buscar `Queue item health changed`, comparar tentativas, retries e
+   idade e usar o metodo diagnostico limitado apenas quando precisar do estado
+   atual completo; nao varrer toda a tabela pelo painel.
 4. Abrir o trace preservado quando houver retry, erro ou recuperacao.
 5. Ajustar os limites somente depois de formar uma linha de base saudavel.
 
