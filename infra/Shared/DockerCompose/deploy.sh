@@ -9,6 +9,11 @@ source "$APP_DIR/infra/docker/load-deploy-env.sh" shared
 
 cd "$COMPOSE_DIR"
 mkdir -p /root/YeshuaStorage/volatile/infra/telemetry
+if [[ ! -S /var/run/docker.sock ]]; then
+  echo "Socket do Docker nao encontrado em /var/run/docker.sock." >&2
+  exit 1
+fi
+export YESHUA_DOCKER_SOCKET_GID="${YESHUA_DOCKER_SOCKET_GID:-$(stat -c '%g' /var/run/docker.sock)}"
 if [[ "${YESHUA_BUILD_SHARED:-0}" == "1" ]]; then
   docker compose build operational-intelligence
 fi

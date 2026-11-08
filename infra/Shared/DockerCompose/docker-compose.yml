@@ -151,6 +151,8 @@ services:
   docker-metrics-proxy:
     image: haproxy:3.2-alpine
     container_name: yeshua-docker-metrics-proxy
+    group_add:
+      - "${YESHUA_DOCKER_SOCKET_GID:?Docker socket group must be configured by deploy.sh}"
     expose:
       - "2375"
     volumes:

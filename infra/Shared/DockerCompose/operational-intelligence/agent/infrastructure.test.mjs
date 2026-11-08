@@ -17,11 +17,13 @@ test('compose unifies API and agents and retains existing data and DNS aliases',
   assert.equal(compose.services['yeshua-telemetry'], undefined);
   const operations = compose.services['operational-intelligence'];
   const observability = compose.services['yeshua-observability'];
+  const dockerMetricsProxy = compose.services['docker-metrics-proxy'];
   assert.ok(operations.environment.AgentTasks__ChatGptAuthentication.includes(':-true'));
   assert.equal(operations.environment.AgentTasks__CodexHomePath, '/home/agent/.codex');
   assert.ok(operations.networks['yeshua-net'].aliases.includes('operational-intelligence-api'));
   assert.ok(observability.networks['yeshua-net'].aliases.includes('yeshua-telemetry'));
   assert.ok(observability.volumes.includes('/root/YeshuaStorage/volatile/infra/telemetry:/data'));
+  assert.deepEqual(dockerMetricsProxy.group_add, ['${YESHUA_DOCKER_SOCKET_GID:?Docker socket group must be configured by deploy.sh}']);
   for (const name of ['operational-agent-workspace', 'operational-agent-codex', 'operational-agent-claude']) {
     assert.ok(operations.volumes.some(binding => binding.startsWith(`${name}:`)));
     assert.ok(Object.hasOwn(compose.volumes, name));
@@ -56,6 +58,7 @@ test('root bootstrap copies restricted source then drops privileges before runni
   assert.ok(sync.includes('-L "$target_path"'));
   assert.ok(sync.includes('--chown=agent:agent'));
   assert.ok(deploy.includes('up -d --wait --wait-timeout 180'));
+  assert.ok(deploy.includes("stat -c '%g' /var/run/docker.sock"));
 });
 
 test('Docker build inputs exist and every application sends OTLP to the renamed observability service', () => {
@@ -65,7 +68,7 @@ test('Docker build inputs exist and every application sends OTLP to the renamed 
   assert.ok(existsSync(resolve(dirname(fileURLToPath(import.meta.url)), 'package-lock.json')));
   const observability = compose.services['yeshua-observability'];
   const configurationMounts = observability.volumes.filter(binding => binding.startsWith('./observability/'));
-  assert.equal(configurationMounts.length, 4);
+  assert.equal(configurationMounts.length, 7);
   for (const binding of configurationMounts) assert.ok(existsSync(resolve(shared, binding.split(':')[0])));
   for (const application of ['Central', 'Clinica', 'APS.ADM', 'Fiscal', 'Memorias']) {
     const app = parse(readFileSync(resolve(root, `infra/${application}/DockerCompose/docker-compose.yml`), 'utf8'));
