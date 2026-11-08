@@ -80,3 +80,20 @@ test('Docker build inputs exist and every application sends OTLP to the renamed 
     for (const destination of destinations) assert.ok(destination.includes('http://yeshua-observability:4317'), application);
   }
 });
+
+test('host CPU and memory dashboard cards reduce live hostmetrics into visible values', () => {
+  const dashboard = JSON.parse(readFileSync(
+    resolve(shared, 'observability/grafana/dashboards/yeshua-overview.json'),
+    'utf8'));
+  const cpu = dashboard.panels.find(panel => panel.id === 1);
+  const memory = dashboard.panels.find(panel => panel.id === 2);
+
+  for (const panel of [cpu, memory]) {
+    assert.equal(panel.type, 'stat');
+    assert.deepEqual(panel.options.reduceOptions.calcs, ['lastNotNull']);
+    assert.equal(panel.targets[0].format, 'time_series');
+    assert.equal(panel.targets[0].range, true);
+  }
+  assert.ok(cpu.targets[0].expr.includes('system_cpu_utilization_ratio'));
+  assert.ok(memory.targets[0].expr.includes('system_memory_usage_bytes'));
+});

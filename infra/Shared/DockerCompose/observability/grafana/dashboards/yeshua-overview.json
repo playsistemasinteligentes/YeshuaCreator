@@ -22,29 +22,29 @@
   "panels": [
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "Utilizacao nao ociosa agregada do host. Fonte: receiver hostmetrics do Collector.",
+      "description": "Utilizacao nao ociosa do host, com valor atual e historico. Fonte: receiver hostmetrics do Collector.",
       "fieldConfig": { "defaults": { "max": 100, "min": 0, "unit": "percent" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 6, "x": 0, "y": 0 },
       "id": 1,
-      "options": { "legend": { "displayMode": "hidden", "placement": "bottom" }, "tooltip": { "mode": "single", "sort": "none" } },
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto", "wideLayout": true },
       "targets": [
-        { "editorMode": "code", "expr": "100 * avg without (cpu) (sum without (state) ({__name__=~\"system_cpu_utilization(_ratio)?\", state!=\"idle\"}))", "legendFormat": "CPU", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "100 * (1 - avg(system_cpu_utilization_ratio{state=\"idle\"}))", "format": "time_series", "legendFormat": "CPU", "range": true, "refId": "A" }
       ],
       "title": "1. CPU do servidor",
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "Percentual de memoria usada sobre os estados publicados pelo hostmetrics.",
+      "description": "Percentual de memoria usada, com valor atual e historico, sobre os estados publicados pelo hostmetrics.",
       "fieldConfig": { "defaults": { "max": 100, "min": 0, "unit": "percent" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 6, "x": 6, "y": 0 },
       "id": 2,
-      "options": { "legend": { "displayMode": "hidden", "placement": "bottom" }, "tooltip": { "mode": "single", "sort": "none" } },
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "textMode": "auto", "wideLayout": true },
       "targets": [
-        { "editorMode": "code", "expr": "100 * sum({__name__=~\"system_memory_usage(_bytes)?\", state=\"used\"}) / clamp_min(sum({__name__=~\"system_memory_usage(_bytes)?\"}), 1)", "legendFormat": "Memoria", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "100 * sum(system_memory_usage_bytes{state=\"used\"}) / clamp_min(sum(system_memory_usage_bytes), 1)", "format": "time_series", "legendFormat": "Memoria", "range": true, "refId": "A" }
       ],
       "title": "2. Memoria do servidor",
-      "type": "timeseries"
+      "type": "stat"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
@@ -272,6 +272,6 @@
   "timezone": "browser",
   "title": "Yeshua - Visao Operacional",
   "uid": "yeshua-operational-overview",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
