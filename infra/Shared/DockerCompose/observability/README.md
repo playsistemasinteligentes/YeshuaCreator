@@ -57,3 +57,91 @@ Em execucao local, se essa variavel nao existir, o codigo continua em
 
 O controle runtime D0/D1 continua separado e volatil. Esta configuracao decide
 somente o destino de saida da telemetria habilitada.
+
+## Contrato De Manutencao Dos Dashboards
+
+O dashboard versionado em
+`grafana/dashboards/yeshua-overview.json` e codigo operacional. Uma alteracao
+nele pode mudar a interpretacao de saude do ambiente mesmo sem alterar a coleta.
+Por isso, nao basta a consulta produzir uma linha: o painel precisa explicar
+corretamente o que essa linha significa.
+
+Todo painel deve conter uma descricao acessivel pelo icone de informacao do
+Grafana, respondendo no minimo:
+
+1. **O que mede:** sinal, origem e unidade real recebida.
+2. **Como interpretar:** significado pratico de um valor e suas correlacoes.
+3. **Cuidado:** o que o painel nao permite concluir isoladamente.
+4. **Fonte:** receiver, metrica ou borda operacional responsavel, quando isso
+   ajudar no diagnostico.
+
+### Unidades E Conversoes
+
+Antes de aplicar qualquer conversao, confirmar a unidade produzida na origem e
+a unidade esperada pelo Grafana:
+
+- proporcao de `0` a `1`: multiplicar uma vez por `100` e usar `percent`;
+- percentual de `0` a `100`: nao multiplicar e usar `percent`;
+- bytes: manter o valor em bytes e selecionar uma unidade de dados no Grafana;
+- timestamp Unix em segundos: usar `time() - valor` para exibir idade em `s`;
+- contador acumulado: usar `rate()` para taxa ou `increase()` para janela;
+- gauge: consultar o valor atual sem transformar em taxa.
+
+Nunca corrigir uma unidade apenas pela aparencia do grafico. Exemplo concreto:
+`container.cpu.utilization` chega como proporcao e precisa de `100 *`, enquanto
+`container.memory.percent` ja chega em percentual e nao pode ser multiplicada
+novamente.
+
+### Significado Visual
+
+- Nao misturar no mesmo eixo percentuais, segundos, bytes e contagens.
+- Quando duas grandezas precisarem coexistir, usar eixos e unidades explicitos;
+  preferir paineis separados quando a leitura continuar ambigua.
+- Titulos devem dizer o objeto e a unidade ou janela quando isso nao for obvio.
+- Legendas devem identificar servico, operacao, fila ou container e mostrar
+  valor atual; media e maximo sao adicionados quando ajudarem na decisao.
+- `No data`, zero e ausencia de demanda sao estados diferentes e precisam ser
+  explicados na ajuda do painel.
+- Limites coloridos representam orientacao inicial. Eles nao substituem a linha
+  de base operacional nem devem transformar um pico isolado em incidente.
+
+### Cardinalidade E Agregacao
+
+- Prometheus recebe agregados; identificadores de entidade ou item nao podem
+  virar labels de alta cardinalidade.
+- Instancias de Worker podem mudar em deploy. Alertas de indisponibilidade devem
+  avaliar o conjunto ativo por servico e operacao, nao uma serie antiga isolada.
+- Fila, item doente e instancia de Worker sao conceitos diferentes. Backlog zero
+  pode coexistir com itens em falha terminal.
+- Consultas com varios servicos selecionados devem preservar o label necessario
+  para nao consolidar silenciosamente realidades diferentes.
+
+### Checklist Antes De Publicar
+
+1. Confirmar a unidade na metrica de origem e depois da exportacao Prometheus.
+2. Executar a PromQL com dado real e validar um valor conhecido.
+3. Testar zero, `No data`, pico, multiplos servicos e multiplas replicas.
+4. Conferir titulo, descricao, legenda, unidade, eixo, limites e tooltip.
+5. Verificar se a mudanca afeta regras de alerta, MCP, runbooks ou consultas da
+   Inteligencia Operacional.
+6. Validar o JSON e carregar o dashboard pelo provisionamento versionado.
+7. Nao manter melhoria apenas na interface do Grafana: toda alteracao oficial
+   precisa voltar para os arquivos deste diretorio.
+
+Se a metrica mudar na aplicacao, na Engine ou no Collector, revisar em conjunto
+o caminho completo: geracao do sinal -> exportacao OTLP -> transformacao no
+Collector -> nome/labels no Prometheus -> PromQL -> unidade e significado no
+Grafana -> regra de alerta e recomendacao operacional.
+
+### Validacao Local
+
+Antes de publicar o pacote, executar:
+
+```powershell
+./infra/Shared/DockerCompose/observability/validate-dashboard.ps1
+```
+
+O helper valida o JSON, IDs e referencias duplicadas, descricoes obrigatorias,
+consultas vazias, limites do grid, sobreposicao de paineis e conversoes de
+percentual conhecidas. Ele protege a estrutura; a semantica das consultas ainda
+deve ser confirmada com dados reais do Prometheus conforme o checklist acima.
