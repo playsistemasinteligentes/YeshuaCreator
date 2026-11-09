@@ -60,10 +60,8 @@ groups:
 
       - alert: YeshuaWorkerLoopStale
         expr: |
-          time() - max by (service_name, service_instance_id, operation, deployment_environment_name) (
-            last_over_time(
-              {__name__=~"yeshua_worker_current(_item)?", state="last_heartbeat_unix_seconds"}[15m]
-            )
+          time() - max by (service_name, operation, deployment_environment_name) (
+            {__name__=~"yeshua_worker_current(_item)?", state="last_heartbeat_unix_seconds"}
           ) > 120
         for: 2m
         labels:
@@ -71,7 +69,7 @@ groups:
           yeshua_scope: worker
         annotations:
           summary: "Laco do Worker sem progresso observavel"
-          description: "O Worker {{ $labels.operation }} da instancia {{ $labels.service_instance_id }} nao atualiza seu estado ha mais de dois minutos."
+          description: "Nenhuma instancia ativa do Worker {{ $labels.operation }} atualiza seu estado ha mais de dois minutos. A indisponibilidade de uma replica isolada e tratada pela saude do container."
           runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuaworkerloopstale"
 
       - alert: YeshuaWorkerCycleStuck

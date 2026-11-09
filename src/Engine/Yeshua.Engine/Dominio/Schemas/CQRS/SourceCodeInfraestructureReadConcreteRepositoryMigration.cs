@@ -14,12 +14,17 @@ namespace Dominio.Schemas.CQRS
     {
         private readonly Entity _entity;
         private readonly bool _cacheDecorator;
+        private readonly bool _hasSagas;
 
-        public SourceCodeInfraestructureReadConcreteRepositoryMigration(Entity entity, bool cacheDecorator)
+        public SourceCodeInfraestructureReadConcreteRepositoryMigration(
+            Entity entity,
+            bool cacheDecorator,
+            bool hasSagas)
             : base()
         {
             _entity = entity;
             _cacheDecorator = cacheDecorator;
+            _hasSagas = hasSagas;
         }
 
         protected override StringBuilder GenerateCode()
@@ -410,6 +415,7 @@ namespace Dominio.Schemas.CQRS
         }
 
         private bool IsSagaEntity() =>
+            _hasSagas &&
             _entity.EntityName.Equals("ySaga", StringComparison.OrdinalIgnoreCase);
 
         private static void AppendSagaQueueHealthMembers(StringBuilder sb)

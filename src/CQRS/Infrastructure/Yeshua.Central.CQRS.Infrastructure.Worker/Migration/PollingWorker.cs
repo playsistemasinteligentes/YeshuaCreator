@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Dominio.Operational;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepositoryInterfaces.Patterns.Command;
@@ -134,6 +135,7 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
         if (items.Count == 0)
             return;
 
+        OperationalEvidencePublisher? evidencePublisher = null;
         HashSet<string>? currentItems = sickItemCount <= SickItemEvidenceLimit &&
             items.Count == sickItemCount
                 ? new HashSet<string>(StringComparer.Ordinal)
@@ -159,35 +161,35 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             }
 
             _reportedSickItems[key] = state;
-            var logLevel = string.Equals(
-                item.Severity,
-                "Critical",
-                StringComparison.OrdinalIgnoreCase)
-                    ? LogLevel.Error
-                    : LogLevel.Warning;
+            evidencePublisher ??=
+                _serviceProvider.GetRequiredService<OperationalEvidencePublisher>();
 
-            _logger.Log(
-                logLevel,
-                "Queue item health changed. Queue={Queue}; ItemType={ItemType}; " +
-                "ItemReference={ItemReference}; Disease={Disease}; Severity={Severity}; " +
-                "EligibleAgeSeconds={EligibleAgeSeconds}; ProcessingAgeSeconds={ProcessingAgeSeconds}; " +
-                "ExecutionCount={ExecutionCount}; RetryCount={RetryCount}; LastOutcome={LastOutcome}; " +
-                "OperationalEntityId={OperationalEntityId}; RootOperationId={RootOperationId}; " +
-                "ExecutionId={ExecutionId}; ErrorSignature={ErrorSignature}",
-                probe.QueueName,
-                item.ItemType,
-                item.ItemReference,
-                item.Disease,
-                item.Severity,
-                item.EligibleAgeSeconds,
-                item.ProcessingAgeSeconds,
-                item.ExecutionCount,
-                item.RetryCount,
-                item.LastOutcome,
-                item.OperationalEntityId,
-                item.RootOperationId,
-                item.ExecutionId,
-                item.ErrorSignature);
+            var envelope = new OperationalEvidenceEnvelope(
+                "QueueItemHealth",
+                WorkerOperation,
+                OperationalEvidenceAxes.ParseSeverity(item.Severity),
+                OperationalDepth.D0,
+                OperationalTechnicalOutcome.Failed,
+                OperationalBusinessOutcome.NotEvaluated,
+                RootOperationId: item.RootOperationId,
+                ExecutionId: item.ExecutionId,
+                OperationalEntityId: item.OperationalEntityId);
+            OperationalEvidenceField[] fields =
+            [
+                new("EventName", "QueueItem.HealthChanged"),
+                new("Queue", probe.QueueName),
+                new("ItemType", item.ItemType),
+                new("ItemReference", item.ItemReference),
+                new("Disease", item.Disease.ToString()),
+                new("Severity", item.Severity),
+                new("EligibleAgeSeconds", item.EligibleAgeSeconds),
+                new("ProcessingAgeSeconds", item.ProcessingAgeSeconds),
+                new("ExecutionCount", item.ExecutionCount),
+                new("RetryCount", item.RetryCount),
+                new("LastOutcome", item.LastOutcome),
+                new("ErrorSignature", item.ErrorSignature)
+            ];
+            evidencePublisher.Publish(envelope, fields);
         }
 
         if (currentItems is null)

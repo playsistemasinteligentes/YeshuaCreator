@@ -518,11 +518,13 @@ namespace Dominio.Schemas.CQRS
 
         public void AppAplicationGenerateRepositoryInterfacesRead(Migration.MigrationBase migration)
         {
+            var hasSagas = GetSagas(migration).Any();
             foreach (var entity in migration.Entitys)
             {
                 var filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\Migration\\{entity.EntityName}\\ReadRepository.cs");
                 var filePathCuston = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"Repository\\Custon\\{entity.EntityName}\\ReadRepository.cs");
-                var sourceCodeMigration = new SourceCodeAplicationRepositoryInterfacesReadMigration(entity);
+                var sourceCodeMigration =
+                    new SourceCodeAplicationRepositoryInterfacesReadMigration(entity, hasSagas);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
                 filePath = Path.Combine(GetPathAppAplicationRepositoryInterfacesRead(), $"DTOs\\Migration\\{entity.EntityName}\\ReadDTO.cs");
@@ -1636,18 +1638,27 @@ namespace Dominio.Schemas.CQRS
 
         public void AppInfraestructureGenerateReadConcreteRepository(Migration.MigrationBase migration)
         {
+            var hasSagas = GetSagas(migration).Any();
             foreach (var entity in migration.Entitys)
             {
                 var filePath = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Migration\\{entity.EntityName}\\{entity.EntityName}ReadRepository.cs");
                 var filePathCuston = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Custon\\{entity.EntityName}\\{entity.EntityName}ReadRepository.cs");
-                var sourceCodeMigration = new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, false);
+                var sourceCodeMigration =
+                    new SourceCodeInfraestructureReadConcreteRepositoryMigration(
+                        entity,
+                        cacheDecorator: false,
+                        hasSagas: hasSagas);
                 sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
 
                 if (entity.CachedTable)
                 {
                     filePath = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Migration\\{entity.EntityName}\\{entity.EntityName}ReadRepositoryCacheDecorator.cs");
                     filePathCuston = Path.Combine(AppInfraestructureReadConcreteRepository(), $"Custon\\{entity.EntityName}\\{entity.EntityName}ReadRepositoryCacheDecorator.cs");
-                    sourceCodeMigration = new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, true);
+                    sourceCodeMigration =
+                        new SourceCodeInfraestructureReadConcreteRepositoryMigration(
+                            entity,
+                            cacheDecorator: true,
+                            hasSagas: hasSagas);
                     sourceCodeMigration.WriteCode(entity, filePath, filePathCuston);
                 }
 
@@ -2778,7 +2789,8 @@ public static class WorkerInfrastructure
 
             WriteText(
                 Path.Combine(projectDirectory, "Migration", "PollingWorker.cs"),
-                @"using Microsoft.Extensions.DependencyInjection;
+                @"using Dominio.Operational;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using RepositoryInterfaces.Patterns.Command;
@@ -2914,6 +2926,7 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
         if (items.Count == 0)
             return;
 
+        OperationalEvidencePublisher? evidencePublisher = null;
         HashSet<string>? currentItems = sickItemCount <= SickItemEvidenceLimit &&
             items.Count == sickItemCount
                 ? new HashSet<string>(StringComparer.Ordinal)
@@ -2939,35 +2952,35 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             }
 
             _reportedSickItems[key] = state;
-            var logLevel = string.Equals(
-                item.Severity,
-                ""Critical"",
-                StringComparison.OrdinalIgnoreCase)
-                    ? LogLevel.Error
-                    : LogLevel.Warning;
+            evidencePublisher ??=
+                _serviceProvider.GetRequiredService<OperationalEvidencePublisher>();
 
-            _logger.Log(
-                logLevel,
-                ""Queue item health changed. Queue={Queue}; ItemType={ItemType}; "" +
-                ""ItemReference={ItemReference}; Disease={Disease}; Severity={Severity}; "" +
-                ""EligibleAgeSeconds={EligibleAgeSeconds}; ProcessingAgeSeconds={ProcessingAgeSeconds}; "" +
-                ""ExecutionCount={ExecutionCount}; RetryCount={RetryCount}; LastOutcome={LastOutcome}; "" +
-                ""OperationalEntityId={OperationalEntityId}; RootOperationId={RootOperationId}; "" +
-                ""ExecutionId={ExecutionId}; ErrorSignature={ErrorSignature}"",
-                probe.QueueName,
-                item.ItemType,
-                item.ItemReference,
-                item.Disease,
-                item.Severity,
-                item.EligibleAgeSeconds,
-                item.ProcessingAgeSeconds,
-                item.ExecutionCount,
-                item.RetryCount,
-                item.LastOutcome,
-                item.OperationalEntityId,
-                item.RootOperationId,
-                item.ExecutionId,
-                item.ErrorSignature);
+            var envelope = new OperationalEvidenceEnvelope(
+                ""QueueItemHealth"",
+                WorkerOperation,
+                OperationalEvidenceAxes.ParseSeverity(item.Severity),
+                OperationalDepth.D0,
+                OperationalTechnicalOutcome.Failed,
+                OperationalBusinessOutcome.NotEvaluated,
+                RootOperationId: item.RootOperationId,
+                ExecutionId: item.ExecutionId,
+                OperationalEntityId: item.OperationalEntityId);
+            OperationalEvidenceField[] fields =
+            [
+                new(""EventName"", ""QueueItem.HealthChanged""),
+                new(""Queue"", probe.QueueName),
+                new(""ItemType"", item.ItemType),
+                new(""ItemReference"", item.ItemReference),
+                new(""Disease"", item.Disease.ToString()),
+                new(""Severity"", item.Severity),
+                new(""EligibleAgeSeconds"", item.EligibleAgeSeconds),
+                new(""ProcessingAgeSeconds"", item.ProcessingAgeSeconds),
+                new(""ExecutionCount"", item.ExecutionCount),
+                new(""RetryCount"", item.RetryCount),
+                new(""LastOutcome"", item.LastOutcome),
+                new(""ErrorSignature"", item.ErrorSignature)
+            ];
+            evidencePublisher.Publish(envelope, fields);
         }
 
         if (currentItems is null)

@@ -21,6 +21,10 @@ public static class OperationalTelemetryRegistration
             OperationalLogSinkFactory.Create(
                 exportSettings,
                 sp.GetRequiredService<IRuntimeIdentityProvider>()));
+        services.AddSingleton<OperationalEvidencePublisher>(sp =>
+            new OperationalEvidencePublisher(
+                sp.GetRequiredService<IOperationalLogSink>(),
+                sp.GetRequiredService<IRuntimeIdentityProvider>().Current));
         services.AddTransient<OperationalHttpTelemetryHandler>();
 
         var openTelemetry = services

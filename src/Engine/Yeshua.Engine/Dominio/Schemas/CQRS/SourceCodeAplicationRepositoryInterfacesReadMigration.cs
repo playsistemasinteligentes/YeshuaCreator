@@ -9,11 +9,13 @@ namespace Dominio.Schemas.CQRS
     public class SourceCodeAplicationRepositoryInterfacesReadMigration : SourceCodeBase
     {
         private readonly Entity _entity;
+        private readonly bool _hasSagas;
 
-        public SourceCodeAplicationRepositoryInterfacesReadMigration(Entity entity)
+        public SourceCodeAplicationRepositoryInterfacesReadMigration(Entity entity, bool hasSagas)
             : base()
         {
             _entity = entity;
+            _hasSagas = hasSagas;
         }
 
         protected override StringBuilder GenerateCode()
@@ -101,6 +103,7 @@ namespace Dominio.Schemas.CQRS
         }
 
         private bool IsSagaEntity() =>
+            _hasSagas &&
             _entity.EntityName.Equals("ySaga", StringComparison.OrdinalIgnoreCase);
 
         private static void AppendSagaQueueOperations(StringBuilder sb)

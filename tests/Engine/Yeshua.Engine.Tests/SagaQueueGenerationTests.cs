@@ -75,8 +75,13 @@ public sealed class SagaQueueGenerationTests
     public void Saga_repository_generation_uses_one_predicate_for_claim_and_health()
     {
         var entity = new Entity("ySaga");
-        var contract = Generate(new SourceCodeAplicationRepositoryInterfacesReadMigration(entity));
-        var repository = Generate(new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, false));
+        var contract = Generate(
+            new SourceCodeAplicationRepositoryInterfacesReadMigration(entity, hasSagas: true));
+        var repository = Generate(
+            new SourceCodeInfraestructureReadConcreteRepositoryMigration(
+                entity,
+                cacheDecorator: false,
+                hasSagas: true));
 
         StringAssert.Contains(contract, "ClaimRunnableSagas");
         StringAssert.Contains(contract, "GetRunnableSagaHealth");
@@ -87,6 +92,22 @@ public sealed class SagaQueueGenerationTests
         StringAssert.Contains(repository, "HASHBYTES('SHA2_256', [ErrorMessage])");
         StringAssert.Contains(repository, "Math.Clamp(limit, 1, 100)");
         StringAssert.Contains(repository, "COALESCE(NULLIF(s.[CorrelationId], ''), CONVERT(varchar(20), s.[Id]))");
+    }
+
+    [TestMethod]
+    public void Saga_repository_operations_are_not_generated_without_declared_sagas()
+    {
+        var entity = new Entity("ySaga");
+        var contract = Generate(
+            new SourceCodeAplicationRepositoryInterfacesReadMigration(entity, hasSagas: false));
+        var repository = Generate(
+            new SourceCodeInfraestructureReadConcreteRepositoryMigration(
+                entity,
+                cacheDecorator: false,
+                hasSagas: false));
+
+        Assert.IsFalse(contract.Contains("ClaimRunnableSagas", StringComparison.Ordinal));
+        Assert.IsFalse(repository.Contains("RunnableSagaPredicate", StringComparison.Ordinal));
     }
 
     private static string Generate(SourceCodeBase generator)

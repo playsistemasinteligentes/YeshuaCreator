@@ -418,6 +418,13 @@ Miolos que IA/dev devem preencher:
   ser limitada; itens saudaveis permanecem silenciosos. A evidencia individual
   contem apenas identidades operacionais e assinatura sanitizada do erro, nunca
   payload ou mensagem bruta.
+- Em exportacao OTLP por push, alertas de ausencia de heartbeat devem agregar
+  as instancias ativas por servico e operacao. Series de uma instancia retirada
+  por deploy permanecem temporariamente no Prometheus e nao podem, sozinhas,
+  declarar o Worker indisponivel. A tela pode manter o detalhamento por
+  `service_instance_id`; a indisponibilidade de uma replica concreta pertence
+  a saude do container, enquanto a saude operacional acusa quando nenhuma
+  instancia da operacao progride.
 
 ## Codigo Gerado E Codigo Customizado
 

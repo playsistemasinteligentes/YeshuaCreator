@@ -116,9 +116,12 @@ public class InternalEntityGenerationTests
     {
         var entity = Create().Entitys.Single(e => e.IsInternal);
         foreach (var generator in new SourceCodeBase[] {
-            new SourceCodeAplicationRepositoryInterfacesReadMigration(entity),
+            new SourceCodeAplicationRepositoryInterfacesReadMigration(entity, hasSagas: false),
             new SourceCodeAplicationRepositoryInterfacesWriteMigration(entity, "Memorias"),
-            new SourceCodeInfraestructureReadConcreteRepositoryMigration(entity, false),
+            new SourceCodeInfraestructureReadConcreteRepositoryMigration(
+                entity,
+                cacheDecorator: false,
+                hasSagas: false),
             new SourceCodeInfraestructureWriteConcreteRepositoryMigration(entity, "Memorias") })
         {
             var code = Generate(generator);
