@@ -9,7 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\CQRS\Application\Yeshua.Fiscal.CQRS.Application.Command\Yeshua.Fiscal.CQRS.Application.Command.csproj" />
-    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.4" />
+    <PackageReference Include="System.Security.Cryptography.Xml" Version="8.0.5" />
   </ItemGroup>
 
 </Project>

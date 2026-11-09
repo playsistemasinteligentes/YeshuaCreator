@@ -1369,7 +1369,7 @@ namespace Dominio.Schemas.CQRS
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include=""xunit"" Version=""2.5.3"" />
+    <PackageReference Include=""xunit"" Version=""2.9.3"" />
   </ItemGroup>
 
 </Project>");
@@ -1389,8 +1389,8 @@ namespace Dominio.Schemas.CQRS
   <ItemGroup>
     <PackageReference Include=""coverlet.collector"" Version=""6.0.0"" />
     <PackageReference Include=""Microsoft.NET.Test.Sdk"" Version=""17.8.0"" />
-    <PackageReference Include=""xunit"" Version=""2.5.3"" />
-    <PackageReference Include=""xunit.runner.visualstudio"" Version=""2.5.3"" />
+    <PackageReference Include=""xunit"" Version=""2.9.3"" />
+    <PackageReference Include=""xunit.runner.visualstudio"" Version=""3.1.5"" />
   </ItemGroup>
 
   <ItemGroup>
@@ -1427,8 +1427,8 @@ namespace Dominio.Schemas.CQRS
   <ItemGroup>
     <PackageReference Include=""coverlet.collector"" Version=""6.0.0"" />
     <PackageReference Include=""Microsoft.NET.Test.Sdk"" Version=""17.8.0"" />
-    <PackageReference Include=""xunit"" Version=""2.5.3"" />
-    <PackageReference Include=""xunit.runner.visualstudio"" Version=""2.5.3"" />
+    <PackageReference Include=""xunit"" Version=""2.9.3"" />
+    <PackageReference Include=""xunit.runner.visualstudio"" Version=""3.1.5"" />
   </ItemGroup>
 
   <ItemGroup>
