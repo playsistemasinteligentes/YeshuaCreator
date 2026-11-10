@@ -95,6 +95,12 @@ foreach ($panel in $dashboard.panels)
             $errors.Add("$prefix possui consulta vazia em $($target.refId).")
         }
 
+        if ($target.datasource.type -eq 'loki' -and
+            $target.expr -match '^\{\s*service_name=~"\$service"\s*\}')
+        {
+            $errors.Add("$prefix usa service_name variavel como unico seletor Loki; com 'All' ele vira '.*' e a consulta e rejeitada. Use um seletor literal '.+' e filtre a variavel no pipeline.")
+        }
+
         if ($target.expr -match 'container_memory_percent' -and
             $target.expr -match '100\s*\*')
         {

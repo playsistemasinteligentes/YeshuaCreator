@@ -227,7 +227,7 @@
       "id": 25,
       "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"QueueItem.HealthChanged\" |~ \"$queue\" | json environment=\"Environment\" | environment=~\"$environment\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\".+\"} | service_name=~\"$service\" |= \"QueueItem.HealthChanged\" |~ \"$queue\" | json environment=\"Environment\" | environment=~\"$environment\"", "queryType": "range", "refId": "A" }
       ],
       "timeFrom": "5d",
       "title": "12. Itens doentes: evidencias recentes",
