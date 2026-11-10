@@ -9,6 +9,7 @@ public sealed class McpOptions
     public string LokiBaseUrl { get; init; } = "http://localhost:3100";
     public string TempoBaseUrl { get; init; } = "http://localhost:3200";
     public string PrometheusBaseUrl { get; init; } = "http://localhost:9090";
+    public string DashboardCatalogPath { get; init; } = string.Empty;
     public int DefaultLimit { get; init; } = 100;
     public int MaxLimit { get; init; } = 1000;
     public int TimeoutSeconds { get; init; } = 10;

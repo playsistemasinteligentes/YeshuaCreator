@@ -103,6 +103,18 @@ public static class McpToolSchemas
         additionalProperties = false
     };
 
+    public static object ObservabilityDashboardGet() => new
+    {
+        type = "object",
+        properties = new Dictionary<string, object>
+        {
+            ["uid"] = String("Exact dashboard uid returned by yeshua_observability_dashboards_list."),
+            ["includeRaw"] = Boolean("When true, includes the original Grafana panel JSON after the normalized contract.")
+        },
+        required = new[] { "uid" },
+        additionalProperties = false
+    };
+
     public static object SourceSearch() => new
     {
         type = "object",

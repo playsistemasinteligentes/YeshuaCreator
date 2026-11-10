@@ -65,6 +65,9 @@ public static class McpServiceCollectionExtensions
         services.AddScoped<IMcpTool, LogsQueryTool>();
         services.AddScoped<IMcpTool, TracesQueryTool>();
         services.AddScoped<IMcpTool, MetricsQueryTool>();
+        services.AddSingleton<ObservabilityDashboardCatalog>();
+        services.AddScoped<IMcpTool, ObservabilityDashboardsListTool>();
+        services.AddScoped<IMcpTool, ObservabilityDashboardGetTool>();
         services.AddScoped<IMcpTool, SourceSearchTool>();
         services.AddScoped<SourceSearch>();
         services.AddScoped<McpToolArgumentReader>();

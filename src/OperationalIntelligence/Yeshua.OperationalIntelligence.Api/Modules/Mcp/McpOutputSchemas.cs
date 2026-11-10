@@ -47,6 +47,27 @@ public static class McpOutputSchemas
             ("evidence", Array(evidence)), ("warnings", strings));
         var telemetry = Object(("source", text), ("query", text), ("fromUtc", Nullable(text)),
             ("toUtc", Nullable(text)), ("httpStatusCode", Nullable(integer)), ("data", json), ("warnings", strings));
+        var dashboardSummary = Object(("uid", text), ("title", text), ("version", integer),
+            ("panelCount", integer), ("tags", strings), ("sourceFile", text));
+        var dashboardVariable = Object(("name", text), ("label", text), ("type", text),
+            ("query", Nullable(text)), ("includeAll", boolean), ("multi", boolean));
+        var threshold = Object(("color", text), ("value", Nullable(number)));
+        var fieldOverride = Object(("matcher", text), ("matchValue", Nullable(text)),
+            ("unit", Nullable(text)), ("minimum", Nullable(number)), ("maximum", Nullable(number)));
+        var queryTarget = Object(("refId", text), ("datasource", Nullable(text)), ("queryLanguage", text),
+            ("query", Nullable(text)), ("queryMode", text), ("legend", Nullable(text)), ("interval", Nullable(text)));
+        var panelTechnical = Object(("unit", Nullable(text)), ("minimum", Nullable(number)), ("maximum", Nullable(number)),
+            ("reducers", strings), ("thresholds", Array(threshold)), ("fieldOverrides", Array(fieldOverride)),
+            ("targets", Array(queryTarget)));
+        var panel = Object(("id", integer), ("title", text), ("type", text), ("description", text),
+            ("semanticSections", Map(text)), ("normalizationStatus", text),
+            ("layout", Object(("x", integer), ("y", integer), ("width", integer), ("height", integer))),
+            ("technical", panelTechnical), ("reviewHints", strings), ("rawConfiguration", Nullable(json)));
+        var dashboardCatalog = Object(("generatedAtUtc", text), ("dashboards", Array(dashboardSummary)), ("warnings", strings));
+        var dashboardContract = Object(("generatedAtUtc", text), ("uid", text), ("title", text),
+            ("description", text), ("version", integer), ("schemaVersion", integer), ("panelCount", integer),
+            ("tags", strings), ("sourceFile", text), ("variables", Array(dashboardVariable)),
+            ("panels", Array(panel)), ("warnings", strings));
         var logs = new JsonObject
         {
             ["type"] = "object",
@@ -83,6 +104,8 @@ public static class McpOutputSchemas
             ["yeshua_errors_query"] = logs,
             ["yeshua_traces_query"] = telemetry,
             ["yeshua_metrics_query"] = telemetry,
+            ["yeshua_observability_dashboards_list"] = dashboardCatalog,
+            ["yeshua_observability_dashboard_get"] = dashboardContract,
             ["yeshua_logs_source_context"] = logSource,
             ["yeshua_database_select"] = Object(("connection", text), ("executedAtUtc", text),
                 ("elapsedMilliseconds", integer), ("rowCount", integer), ("truncated", boolean),
@@ -106,6 +129,7 @@ public static class McpOutputSchemas
         ("windowDurationMins", Nullable(Type("integer"))), ("resetsAt", Nullable(Type("integer"))));
     private static JsonObject Type(string type) => new() { ["type"] = type };
     private static JsonObject Array(JsonNode item) => new() { ["type"] = "array", ["items"] = item.DeepClone() };
+    private static JsonObject Map(JsonNode item) => new() { ["type"] = "object", ["additionalProperties"] = item.DeepClone() };
     private static JsonObject Nullable(JsonNode item) => new() { ["anyOf"] = new JsonArray(item.DeepClone(), Type("null")) };
     private static JsonObject Object(params (string Name, JsonNode Schema)[] fields) => new()
     {

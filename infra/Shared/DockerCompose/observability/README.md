@@ -145,3 +145,28 @@ O helper valida o JSON, IDs e referencias duplicadas, descricoes obrigatorias,
 consultas vazias, limites do grid, sobreposicao de paineis e conversoes de
 percentual conhecidas. Ele protege a estrutura; a semantica das consultas ainda
 deve ser confirmada com dados reais do Prometheus conforme o checklist acima.
+
+## Catalogo Semantico De Observabilidade
+
+Os dashboards desta pasta sao convertidos automaticamente para um contrato
+estavel pelo MCP privado da Inteligencia Operacional:
+
+```text
+yeshua_observability_dashboards_list
+yeshua_observability_dashboard_get
+```
+
+O conversor percorre todos os paineis; nao existe codigo MCP especifico para
+cada grafico. As secoes em negrito da descricao (`O que mede`, `Como
+interpretar`, `Fonte`, `Cuidado`, `Categorias`, `Importante` e `Custo`) viram
+metadata semantica. Configuracoes do Grafana viram metadata tecnica: consultas,
+datasource, unidade, modo instant/range, reducer, thresholds, overrides e
+variaveis. Recursos ainda nao reconhecidos sao devolvidos como parciais e podem
+ser inspecionados com `includeRaw=true`.
+
+Para pedir a manutencao completa, use a expressao:
+
+> **Atualize o Catalogo Semantico de Observabilidade.**
+
+Ela significa revisar todos os dashboards, corrigir descricoes e configuracoes,
+executar a validacao local, confirmar a descoberta MCP e publicar o pacote.

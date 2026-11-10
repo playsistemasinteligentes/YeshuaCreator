@@ -268,6 +268,9 @@ Na conexão autorizada, as ferramentas existentes incluem:
 - yeshua_logs_source_context: relaciona pistas de um log a fontes indexados.
 - yeshua_traces_query: consulta um trace ou pesquisa traces no Tempo.
 - yeshua_metrics_query: consulta métricas no Prometheus.
+- yeshua_observability_dashboards_list: descobre os dashboards versionados.
+- yeshua_observability_dashboard_get: entrega o contrato semântico e técnico de
+  todos os painéis de um dashboard, com o JSON original opcional para auditoria.
 - yeshua_database_select: SELECT/CTE por alias configurado, exclusivamente administrativo.
 
 Confira o schema anunciado: fromUtc/toUtc são necessários para logs e erros;
@@ -290,7 +293,9 @@ ou logs; comece com includeContent=false e solicite só o conteúdo necessário,
 quando autorizado. Essa associação é uma pista, não uma prova de causalidade.
 
 Consultas de métricas e traces têm schemas próprios; não copie os argumentos de
-logs. SELECT somente leitura não implica permissão para consultar outro tenant.
+logs. Para criticar um gráfico, leia primeiro seu contrato pelo catálogo e use
+métricas, logs ou traces apenas para validar os dados observados. SELECT somente
+leitura não implica permissão para consultar outro tenant.
 Não coloque SQL, logs, credenciais ou identificadores privados em URLs públicas.
 
 A autorização por usuário/tenant para investigação de clientes continua uma

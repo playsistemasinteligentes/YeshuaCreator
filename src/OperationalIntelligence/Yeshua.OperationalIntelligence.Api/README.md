@@ -156,8 +156,19 @@ yeshua_logs_query
 yeshua_logs_source_context
 yeshua_traces_query
 yeshua_metrics_query
+yeshua_observability_dashboards_list
+yeshua_observability_dashboard_get
 yeshua_source_search
 ```
+
+As duas ferramentas `yeshua_observability_*` formam o **Catalogo Semantico de
+Observabilidade**. A listagem descobre os dashboards versionados e a consulta
+por `uid` devolve todos os paineis com descricoes, secoes semanticas, PromQL,
+unidades, reducers, thresholds, variaveis e alertas para revisao. Nao existe
+mapeamento por painel: novos graficos entram automaticamente quando o JSON
+versionado respeita o contrato de manutencao. `includeRaw=true` inclui a
+configuracao original do painel quando a analise exigir detalhes nao
+normalizados.
 
 Nomes antigos com pontos continuam aceitos em chamadas autorizadas.
 As ferramentas privadas `yeshua_task_send` e `yeshua_task_read` implementam

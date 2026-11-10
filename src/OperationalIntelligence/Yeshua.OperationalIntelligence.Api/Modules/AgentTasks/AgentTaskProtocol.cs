@@ -20,6 +20,9 @@ public static class AgentTaskProtocol
         As ferramentas administrativas abaixo so existem quando anunciadas na conexao privada.
         Logs/erros usam periodo e aplicativo; includeKnowledgeReferences relaciona-os aos fontes.
         yeshua_logs_source_context parte de um log conhecido. Traces e metricas usam seus metodos proprios.
+        Para avaliar dashboards, liste yeshua_observability_dashboards_list e leia o contrato
+        completo com yeshua_observability_dashboard_get. Critique semantica e configuracao
+        normalizada; use metricas/logs/traces somente quando precisar validar dados reais.
         yeshua_database_select le apenas aliases configurados; use parametros, colunas necessarias e limite.
         Nao use tarefas do Codex para contornar uma ferramenta privada ausente.
         Pelo tunel privado autorizado, yeshua_task_read sem taskId lista tarefas.

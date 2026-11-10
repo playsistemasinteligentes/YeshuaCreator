@@ -52,6 +52,7 @@ services:
       Mcp__LokiBaseUrl: "http://yeshua-observability:3100"
       Mcp__TempoBaseUrl: "http://yeshua-observability:3200"
       Mcp__PrometheusBaseUrl: "http://yeshua-observability:9090"
+      Mcp__DashboardCatalogPath: "/server/YeshuaCreator/infra/Shared/DockerCompose/observability/grafana/dashboards"
       Mcp__DatabaseQuery__Connections__OperationalIntelligence: "${YESHUA_SQL_MCP_OPERATIONAL_INTELLIGENCE:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Central: "${YESHUA_SQL_MCP_CENTRAL:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Clinica: "${YESHUA_SQL_MCP_CLINICA:?Configure credentials.json}"

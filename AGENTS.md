@@ -425,6 +425,14 @@ Miolos que IA/dev devem preencher:
   `service_instance_id`; a indisponibilidade de uma replica concreta pertence
   a saude do container, enquanto a saude operacional acusa quando nenhuma
   instancia da operacao progride.
+- Dashboards versionados do Grafana alimentam automaticamente o **Catalogo
+  Semantico de Observabilidade** exposto pelo MCP privado. O adaptador e unico
+  e generico: ele normaliza paineis, consultas, unidades, reducers, thresholds,
+  variaveis e secoes semanticas; nao criar conversao MCP por grafico. Novo
+  painel entra pelo JSON versionado e pelo contrato de descricao. Recurso nao
+  reconhecido permanece visivel como normalizacao parcial. A ordem **Atualize o
+  Catalogo Semantico de Observabilidade** cobre revisao integral, validacao,
+  descoberta MCP e publicacao do pacote.
 
 ## Codigo Gerado E Codigo Customizado
 

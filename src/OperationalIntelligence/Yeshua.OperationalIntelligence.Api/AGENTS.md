@@ -25,7 +25,7 @@ DSL/metadados e fontes; screen/action sao pistas textuais, nao um grafo funciona
 O mesmo next devolve url absoluta pronta para GET, montada com a base canonica
 OperationalIntelligence:PublicBaseUrl, nunca com Host/headers do chamador.
 Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
-Os quinze contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
+Os dezessete contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
 Os next.arguments omitindo filtros nulos devem ser validos no schema de entrada.
 Nomes qualificados de stack traces podem omitir a assinatura dos parametros;
 a busca deve reconhecer a declaracao sem confundir prefixos parciais.
@@ -94,8 +94,9 @@ Fluxo padrao:
 6. Para agentes compativeis com MCP, usar POST /mcp com `tools/list` e
    `tools/call`. As tools iniciais sao `yeshua.health`,
    `yeshua.errors.query`, `yeshua.logs.query`, `yeshua.traces.query`,
-   `yeshua.metrics.query`, `yeshua.source.search` e
-   `yeshua.logs.source_context`. Quando uma consulta SQL operacional for
+   `yeshua.metrics.query`, `yeshua.source.search`,
+   `yeshua.logs.source_context`, `yeshua.observability.dashboards.list` e
+   `yeshua.observability.dashboard.get`. Quando uma consulta SQL operacional for
    necessaria, usar `yeshua.database.select`, que aceita somente conexoes
    nomeadas configuradas no servidor e consultas SELECT/CTE.
    Quando o usuario pedir logs com contexto, preferir
@@ -136,6 +137,25 @@ concreto que impedir a chamada.
   escopo, finalidade, tabela/coluna, mascaramento, auditoria e limites. Nunca
   tratar acesso a banco transacional, logs ou bundles completos como livre para
   qualquer agente. A leitura publica de trechos indexados segue a decisao acima.
+
+## Catalogo Semantico De Observabilidade
+
+- Os dashboards versionados do Grafana sao a fonte de verdade do Catalogo
+  Semantico de Observabilidade. O MCP privado le os JSONs pelo bind somente
+  leitura do repositorio no servidor; nao duplica paineis em banco nem mantem
+  conversao manual por grafico.
+- `yeshua_observability_dashboards_list` descobre dashboards e
+  `yeshua_observability_dashboard_get` normaliza todos os paineis, consultas,
+  unidades, reducers, thresholds, variaveis, descricoes e alertas de revisao.
+- Novo painel que respeita o contrato de descricao entra automaticamente no
+  MCP. Tipo, query ou transformacao desconhecida deve aparecer como
+  normalizacao parcial, nunca ser ocultada.
+- O catalogo e privado e somente leitura porque expoe topologia e consultas
+  operacionais. Para validar dados reais, o agente combina o contrato com as
+  ferramentas existentes de metricas, logs e traces.
+- A expressao de manutencao **Atualize o Catalogo Semantico de Observabilidade**
+  significa revisar todos os dashboards, validar descricoes e configuracoes,
+  confirmar a descoberta MCP e publicar o pacote versionado.
 
 O Swagger permanece disponivel para exploracao humana, mas nao e uma etapa
 obrigatoria quando o agente foi solicitado a executar a consulta.
