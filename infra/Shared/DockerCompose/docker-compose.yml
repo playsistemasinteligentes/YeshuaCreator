@@ -108,6 +108,12 @@ services:
     container_name: yeshua-observability
     mem_limit: "${YESHUA_TELEMETRY_MEMORY_LIMIT:-1536m}"
     cpus: "${YESHUA_TELEMETRY_CPUS:-0.75}"
+    command:
+      - /bin/bash
+      - -lc
+      - |
+        /bin/sh /otel-lgtm/yeshua-watchdog.sh &
+        exec /otel-lgtm/run-all.sh
     labels:
       yeshua.observability.config-hash: "${YESHUA_OBSERVABILITY_CONFIG_HASH:-not-calculated}"
     environment:
@@ -119,6 +125,7 @@ services:
       GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/otel-lgtm/grafana/conf/provisioning/dashboards/custom/yeshua-overview.json"
       ENABLE_LOGS_TEMPO: "${YESHUA_TELEMETRY_ENABLE_LOGS_TEMPO:-true}"
       LGTM_SHUTDOWN_TIMEOUT_SECONDS: "15"
+      GOMEMLIMIT: "${YESHUA_TELEMETRY_GO_MEMORY_LIMIT:-320MiB}"
       PROMETHEUS_EXTRA_ARGS: "--storage.tsdb.retention.time=5d --storage.tsdb.retention.size=${YESHUA_TELEMETRY_PROMETHEUS_RETENTION_SIZE:-2GB}"
     ports:
       - "127.0.0.1:${YESHUA_TELEMETRY_GRAFANA_PORT:-3000}:3000"
@@ -136,6 +143,7 @@ services:
       - ./observability/prometheus-rules:/otel-lgtm/prometheus-rules:ro
       - ./observability/grafana/dashboards-provisioning.yaml:/otel-lgtm/grafana/conf/provisioning/dashboards/yeshua.yaml:ro
       - ./observability/grafana/dashboards:/otel-lgtm/grafana/conf/provisioning/dashboards/custom:ro
+      - ./observability/yeshua-watchdog.sh:/otel-lgtm/yeshua-watchdog.sh:ro
       - /:/hostfs:ro
       - /root/YeshuaStorage/volatile/infra/telemetry:/data
     depends_on:
@@ -146,6 +154,21 @@ services:
         max-size: "10m"
         max-file: "3"
     restart: unless-stopped
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          test -f /tmp/ready &&
+          curl -fsS http://127.0.0.1:3000/api/health >/dev/null &&
+          curl -fsS http://127.0.0.1:3100/ready >/dev/null &&
+          curl -fsS http://127.0.0.1:3200/ready >/dev/null &&
+          curl -fsS http://127.0.0.1:4040/ready >/dev/null &&
+          curl -fsS http://127.0.0.1:9090/-/ready >/dev/null &&
+          curl -fsS http://127.0.0.1:13133/ready >/dev/null
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
     networks:
       yeshua-net:
         aliases:
