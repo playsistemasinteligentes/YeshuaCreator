@@ -32,6 +32,7 @@ public sealed class QueueHealthQueryTool(
 
 public sealed record QueueItemHealthEvidence(
     DateTimeOffset? ObservedAtUtc,
+    int TenantId,
     string Queue,
     string ItemType,
     string ItemReference,
@@ -96,6 +97,9 @@ public sealed class QueueItemDiagnoseTool(
     {
         var queue = arguments.RequiredString(input, "queue").Trim();
         var itemReference = arguments.String(input, "itemReference")?.Trim();
+        var tenantId = arguments.Integer(input, "tenantId");
+        if (tenantId is <= 0)
+            return McpToolResult.Error("tenantId must be greater than zero when supplied.");
         var range = arguments.TimeRange(input, 24);
         if (range.Error is not null)
             return McpToolResult.Error(range.Error);
@@ -104,7 +108,8 @@ public sealed class QueueItemDiagnoseTool(
             arguments.String(input, "service"),
             arguments.String(input, "environment"),
             queue,
-            itemReference);
+            itemReference,
+            tenantId);
         var logs = await loki.QueryRangeAsync(
             logql,
             range.FromUtc,
@@ -115,6 +120,8 @@ public sealed class QueueItemDiagnoseTool(
         {
             var items = QueueItemEvidenceParser.List(logs.Data, queue, 25);
             var listWarnings = logs.Warnings.ToList();
+            if (!tenantId.HasValue)
+                listWarnings.Add("tenantId was omitted; results can include evidence from more than one tenant.");
             if (items.Count == 0)
                 listWarnings.Add("Nenhuma evidencia individual recente foi encontrada; a metrica agregada pode continuar positiva ate o proximo snapshot.");
             var list = new QueueSickItemsResult(
@@ -134,6 +141,8 @@ public sealed class QueueItemDiagnoseTool(
 
         var evidence = QueueItemEvidenceParser.Latest(logs.Data, queue, itemReference);
         var warnings = logs.Warnings.ToList();
+        if (!tenantId.HasValue)
+            warnings.Add("tenantId was omitted; the evidence was not isolated by tenant.");
         if (evidence is null)
         {
             warnings.Add("Nenhuma evidencia individual foi encontrada no periodo. Ela pode ter expirado, sido deduplicada ou o item pode nao estar doente.");
@@ -170,14 +179,17 @@ public sealed class QueueItemDiagnoseTool(
         (DateTimeOffset FromUtc, DateTimeOffset ToUtc, string? Error) range,
         CancellationToken cancellationToken)
     {
-        var attribute = !string.IsNullOrWhiteSpace(evidence.ExecutionId)
-            ? "yeshua.execution_id"
-            : !string.IsNullOrWhiteSpace(evidence.RootOperationId)
-                ? "yeshua.root_operation_id"
+        // Item-health snapshots are emitted outside the original Activity and may
+        // carry an older ExecutionId. RootOperationId is stable across retries and
+        // therefore is the primary macro-to-micro correlation key.
+        var attribute = !string.IsNullOrWhiteSpace(evidence.RootOperationId)
+            ? "yeshua.root_operation_id"
+            : !string.IsNullOrWhiteSpace(evidence.ExecutionId)
+                ? "yeshua.execution_id"
                 : null;
-        var value = !string.IsNullOrWhiteSpace(evidence.ExecutionId)
-            ? evidence.ExecutionId
-            : evidence.RootOperationId;
+        var value = !string.IsNullOrWhiteSpace(evidence.RootOperationId)
+            ? evidence.RootOperationId
+            : evidence.ExecutionId;
         if (attribute is null || string.IsNullOrWhiteSpace(value))
         {
             return new QueueItemTraceCorrelation(
@@ -225,7 +237,8 @@ public sealed class QueueItemDiagnoseTool(
         string? service,
         string? environment,
         string queue,
-        string? itemReference)
+        string? itemReference,
+        int? tenantId)
     {
         var selectors = new List<string>
         {
@@ -235,6 +248,9 @@ public sealed class QueueItemDiagnoseTool(
             selectors.Add($"deployment_environment_name=~\"^{EscapeLog(Regex.Escape(environment.Trim()))}$\"");
         return "{" + string.Join(',', selectors) + "}" +
                " |= \"QueueItem.HealthChanged\"" +
+               (tenantId.HasValue
+                   ? $" |= \"\\\"TenantId\\\":{tenantId.Value}\""
+                   : string.Empty) +
                $" |= \"{EscapeLog(queue)}\"" +
                (string.IsNullOrWhiteSpace(itemReference)
                    ? string.Empty
@@ -393,6 +409,7 @@ public static class QueueItemEvidenceParser
             {
                 return new QueueItemHealthEvidence(
                     observedAt,
+                    Integer(element, "TenantId"),
                     foundQueue!,
                     Text(element, "ItemType") ?? "unknown",
                     foundItem!,

@@ -2968,6 +2968,7 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             OperationalEvidenceField[] fields =
             [
                 new(""EventName"", ""QueueItem.HealthChanged""),
+                new(""TenantId"", item.TenantId),
                 new(""Queue"", probe.QueueName),
                 new(""ItemType"", item.ItemType),
                 new(""ItemReference"", item.ItemReference),

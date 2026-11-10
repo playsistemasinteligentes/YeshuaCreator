@@ -83,7 +83,7 @@ public static class McpOutputSchemas
                 ("degradedQueues", integer), ("sickQueues", integer),
                 ("unavailableQueues", integer), ("totalSickItems", integer))),
             ("queues", Array(queueHealth)), ("warnings", strings));
-        var queueItemEvidence = Object(("observedAtUtc", Nullable(text)), ("queue", text),
+        var queueItemEvidence = Object(("observedAtUtc", Nullable(text)), ("tenantId", integer), ("queue", text),
             ("itemType", text), ("itemReference", text), ("disease", text), ("severity", text),
             ("eligibleAgeSeconds", integer), ("processingAgeSeconds", integer),
             ("executionCount", integer), ("retryCount", integer), ("lastOutcome", text),

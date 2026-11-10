@@ -34,6 +34,7 @@ public readonly record struct WorkerQueueHealthSnapshot(
     long TerminalFailureCount = 0);
 
 public readonly record struct WorkerQueueSickItem(
+    int TenantId,
     string ItemReference,
     string ItemType,
     WorkerQueueItemDisease Disease,

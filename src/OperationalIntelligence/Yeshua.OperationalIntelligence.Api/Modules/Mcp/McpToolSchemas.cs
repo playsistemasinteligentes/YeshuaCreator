@@ -134,6 +134,7 @@ public static class McpToolSchemas
         {
             ["queue"] = String("Exact queue name returned by yeshua_queue_health_query."),
             ["itemReference"] = String("Optional exact sick item reference. Omit it to list the queue's recent sick items grouped by disease."),
+            ["tenantId"] = Integer("Optional exact tenant identifier. Supply it whenever the MCP is used on a multi-tenant environment."),
             ["service"] = String("Optional exact service name."),
             ["environment"] = String("Optional exact deployment environment."),
             ["fromUtc"] = DateTime("Optional range start in UTC; defaults to the last 24 hours."),

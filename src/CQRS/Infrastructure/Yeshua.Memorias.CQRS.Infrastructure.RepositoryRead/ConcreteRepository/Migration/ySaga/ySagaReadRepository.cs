@@ -628,6 +628,7 @@ namespace Read.Repository
         private static string ItemHealthProjection => @"
                 WITH ItemState AS (
                     SELECT s.[Id],
+                           s.[TenantID] AS TenantId,
                            COALESCE(NULLIF(s.[CorrelationId], ''), CONVERT(varchar(20), s.[Id])) AS ItemReference,
                            s.[Type] AS ItemType,
                            s.[Status] AS SagaStatus,
@@ -781,6 +782,7 @@ namespace Read.Repository
             var rows = _unitOfWork.Query<SickSagaItemRow>(
                 ItemHealthProjection + @"
                 SELECT TOP (@Limit)
+                       [TenantId],
                        [ItemReference],
                        [ItemType],
                        [Disease],
@@ -826,6 +828,7 @@ namespace Read.Repository
 
             return rows
                 .Select(row => new RepositoryInterfaces.Patterns.Worker.WorkerQueueSickItem(
+                    row.TenantId,
                     row.ItemReference,
                     row.ItemType,
                     (RepositoryInterfaces.Patterns.Worker.WorkerQueueItemDisease)row.Disease,
@@ -869,6 +872,7 @@ namespace Read.Repository
 
         private sealed class SickSagaItemRow
         {
+            public int TenantId { get; init; }
             public string ItemReference { get; init; } = string.Empty;
             public string ItemType { get; init; } = string.Empty;
             public int Disease { get; init; }
