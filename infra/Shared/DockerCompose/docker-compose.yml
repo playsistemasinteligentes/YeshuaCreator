@@ -116,7 +116,7 @@ services:
       GF_USERS_ALLOW_SIGN_UP: "false"
       GF_SERVER_ROOT_URL: "%(protocol)s://%(domain)s/observability/"
       GF_SERVER_SERVE_FROM_SUB_PATH: "true"
-      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/otel-lgtm/grafana/conf/provisioning/dashboards/custom/yeshua-queue-health.json"
+      GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH: "/otel-lgtm/grafana/conf/provisioning/dashboards/custom/yeshua-overview.json"
       ENABLE_LOGS_TEMPO: "${YESHUA_TELEMETRY_ENABLE_LOGS_TEMPO:-true}"
       LGTM_SHUTDOWN_TIMEOUT_SECONDS: "15"
       PROMETHEUS_EXTRA_ARGS: "--storage.tsdb.retention.time=5d --storage.tsdb.retention.size=${YESHUA_TELEMETRY_PROMETHEUS_RETENTION_SIZE:-2GB}"

@@ -14,7 +14,7 @@
       "targetBlank": false,
       "title": "Abrir visao tecnica completa",
       "type": "link",
-      "url": "/d/yeshua-operational-overview/yeshua-visao-operacional"
+      "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional"
     }
   ],
   "panels": [
@@ -40,7 +40,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((3 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sample_failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0)) or (3 * ((time() - {__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}) > bool 180)) or (2 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0) * on (deployment_environment_name, service_name, operation) group_left() (sum by (deployment_environment_name, service_name, operation) (increase({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[5m])) == bool 0) * on (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} >= bool 120)) or (0 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} >= bool 0)))",
+          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((3 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sample_failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0)) or (3 * ((time() - max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})) > bool 180)) or (2 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0) * on (deployment_environment_name, service_name, operation) group_left() (sum by (deployment_environment_name, service_name, operation) (increase({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[5m])) == bool 0) * on (deployment_environment_name, service_name, operation, queue) (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) >= bool 120)) or (0 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) >= bool 0)))",
           "legendFormat": "{{queue}}",
           "range": true,
           "refId": "A"
@@ -71,7 +71,7 @@
       "targets": [
         {
           "editorMode": "code",
-          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((2 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(terminal_failure|stale_processing)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0)) or (1 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0)) or (0 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} >= bool 0)))",
+          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((2 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(terminal_failure|stale_processing)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0)) or (1 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0)) or (0 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) >= bool 0)))",
           "legendFormat": "{{queue}}",
           "range": true,
           "refId": "A"
@@ -88,7 +88,7 @@
       "id": 3,
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
       "targets": [
-        { "editorMode": "code", "expr": "sum(max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}))", "legendFormat": "Itens doentes", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "sum(max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}))", "legendFormat": "Itens doentes", "range": true, "refId": "A" }
       ],
       "title": "3. Total de itens doentes",
       "type": "stat"
@@ -101,7 +101,7 @@
       "id": 4,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
       "targets": [
-        { "editorMode": "code", "expr": "sum by (metric) (max by (service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}))", "legendFormat": "{{metric}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "sum by (metric) (max by (service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}))", "legendFormat": "{{metric}}", "range": true, "refId": "A" }
       ],
       "title": "4. Qual e a doenca?",
       "type": "bargauge"
@@ -114,7 +114,7 @@
       "id": 5,
       "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{scope_name=\"Yeshua.Operational\", service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" |~ \"$queue\"", "queryType": "range", "refId": "A" }
       ],
       "title": "5. Quais itens estao doentes?",
       "type": "logs"
@@ -156,6 +156,22 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}, queue)",
+        "includeAll": true,
+        "label": "Fila",
+        "multi": true,
+        "name": "queue",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}, queue)", "refId": "VariableQueryEditor-Queue" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
@@ -164,6 +180,6 @@
   "timezone": "browser",
   "title": "Yeshua - Diagnostico de Filas",
   "uid": "yeshua-queue-health",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }

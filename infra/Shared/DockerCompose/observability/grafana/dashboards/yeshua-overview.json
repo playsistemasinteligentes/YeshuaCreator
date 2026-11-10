@@ -12,7 +12,7 @@
       }
     ]
   },
-  "description": "Visao operacional oficial do Yeshua. Use o icone de informacao de cada painel para entender o que ele mede, como interpretar e quais cuidados tomar. O contrato de manutencao das metricas e dos paineis esta no README do pacote de observabilidade.",
+  "description": "Visao operacional oficial do Yeshua. Comece pela infraestrutura, desca para o diagnostico macro das filas e use os graficos tecnicos seguintes somente para aprofundar a causa. Use o icone de informacao de cada painel para entender o que ele mede, como interpretar e quais cuidados tomar.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
@@ -127,35 +127,142 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** responde se cada fila consegue continuar avancando.\n\n**Como interpretar:** 0 = Saudavel, 1 = Degradada, 2 = Doente e 3 = Sem diagnostico. A classificacao considera falha da coleta, diagnostico desatualizado e backlog antigo sem vazao.\n\n**Navegacao:** clique em uma fila para abrir o grafico tecnico de backlog e itens doentes, mantendo periodo e filtros.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "links": [
+            { "targetBlank": false, "title": "Abrir detalhe tecnico desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=${__field.labels.queue}&viewPanel=13" }
+          ],
+          "max": 3,
+          "min": 0,
+          "mappings": [
+            { "options": { "0": { "color": "green", "index": 0, "text": "Saudavel" }, "1": { "color": "yellow", "index": 1, "text": "Degradada" }, "2": { "color": "red", "index": 2, "text": "Doente" }, "3": { "color": "purple", "index": 3, "text": "Sem diagnostico" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 2 }, { "color": "purple", "value": 3 } ] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "id": 21,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((3 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sample_failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0)) or (3 * ((time() - max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})) > bool 180)) or (2 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0) * on (deployment_environment_name, service_name, operation) group_left() (sum by (deployment_environment_name, service_name, operation) (increase({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[5m])) == bool 0) * on (deployment_environment_name, service_name, operation, queue) (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) >= bool 120)) or (0 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) >= bool 0)))",
+          "legendFormat": "{{queue}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "8. Diagnostico geral: a fila esta saudavel?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** responde se existem individuos doentes dentro de cada fila.\n\n**Como interpretar:** 0 = Sem doentes, 1 = Com atencao e 2 = Doenca critica. Uma fila pode continuar saudavel e ainda conter individuos doentes. Falha terminal e processamento abandonado sao criticos.\n\n**Navegacao:** clique em uma fila para abrir as evidencias individuais recentes.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "links": [
+            { "targetBlank": false, "title": "Abrir evidencias desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=${__field.labels.queue}&viewPanel=25" }
+          ],
+          "max": 2,
+          "min": 0,
+          "mappings": [
+            { "options": { "0": { "color": "green", "index": 0, "text": "Sem doentes" }, "1": { "color": "yellow", "index": 1, "text": "Com atencao" }, "2": { "color": "red", "index": 2, "text": "Doenca critica" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 2 } ] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
+      "id": 22,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((2 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(terminal_failure|stale_processing)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0)) or (1 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) > bool 0)) or (0 * (max by (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}) >= bool 0)))",
+          "legendFormat": "{{queue}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "9. Diagnostico geral: existem itens doentes?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** quantidade atual de itens classificados com doenca operacional nas filas selecionadas.\n\n**Como interpretar:** nao e backlog. Abra a composicao ao lado para saber se os individuos apresentam espera excessiva, processamento abandonado, execucao recorrente, falha repetida ou falha terminal.",
+      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 22 },
+      "id": 23,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "targets": [
+        { "editorMode": "code", "expr": "sum(max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}))", "legendFormat": "Itens doentes", "range": true, "refId": "A" }
+      ],
+      "title": "10. Itens doentes: total",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** composicao dos itens doentes entre espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal.\n\n**Como interpretar:** a categoria descreve o sintoma operacional mais grave do item, nao a causa raiz. Exception, SQL lento, dependencia, capacidade ou regra de negocio exigem abrir a evidencia e o trace.",
+      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 18, "x": 6, "y": 22 },
+      "id": 24,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (metric) (max by (service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}))", "legendFormat": "{{metric}}", "range": true, "refId": "A" }
+      ],
+      "title": "11. Itens doentes: qual e a doenca?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** cada linha identifica fila, item, doenca, severidade, idades, tentativas, assinatura sanitizada e identidades causais. Itens saudaveis permanecem silenciosos.\n\n**Proxima acao:** use Queue e ItemReference no metodo MCP `yeshua_queue_item_diagnose` para localizar a evidencia e o trace retido.",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 10, "w": 24, "x": 0, "y": 29 },
+      "id": 25,
+      "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
+      "targets": [
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{scope_name=\"Yeshua.Operational\", service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" |~ \"$queue\"", "queryType": "range", "refId": "A" }
+      ],
+      "title": "12. Itens doentes: evidencias recentes",
+      "type": "logs"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade de Commands concluidos por segundo, separada por servico e operacao.\n\n**Como interpretar:** mostra a demanda efetivamente atendida pela aplicacao. Queda para zero pode significar ausencia de demanda ou interrupcao; confirme com backlog, heartbeat e taxa de erros antes de concluir que existe falha. Aumento de demanda com latencia estavel indica capacidade saudavel.",
       "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
-      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 14 },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 39 },
       "id": 8,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         { "editorMode": "code", "expr": "sum by (service_name, operation) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", component=\"Command\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "{{service_name}} / {{operation}}", "range": true, "refId": "A" }
       ],
-      "title": "8. Commands concluidos por segundo",
+      "title": "13. Commands concluidos por segundo",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** percentual das operacoes que terminaram como falha tecnica, timeout ou indisponibilidade em relacao ao total executado por servico.\n\n**Como interpretar:** 2% significa que 2 de cada 100 operacoes falharam tecnicamente. `No data` normalmente significa que nao houve execucoes no periodo, nao que a taxa foi zero. Rejeicoes de negocio nao devem ser tratadas automaticamente como falha tecnica.",
       "fieldConfig": { "defaults": { "max": 100, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 5 } ] }, "unit": "percent" }, "overrides": [] },
-      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 14 },
+      "gridPos": { "h": 7, "w": 6, "x": 6, "y": 39 },
       "id": 9,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         { "editorMode": "code", "expr": "100 * sum by (service_name) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", outcome=~\"failed|timed_out|unavailable\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])) / clamp_min(sum by (service_name) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])), 0.000001)", "legendFormat": "{{service_name}}", "range": true, "refId": "A" }
       ],
-      "title": "9. Taxa de falhas tecnicas por servico",
+      "title": "14. Taxa de falhas tecnicas por servico",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** distribuicao da duracao das operacoes por servico. P50 e o comportamento tipico; P95 cobre 95% das execucoes; P99 destaca a cauda mais lenta.\n\n**Como interpretar:** P95 de 800 ms significa que 95% das operacoes terminaram em ate 800 ms e 5% demoraram mais. Compare a evolucao do mesmo servico; percentis altos com media normal revelam poucos casos muito lentos. Os valores sao calculados a partir de histogramas, sem armazenar cada medicao individual.",
       "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [] },
-      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 14 },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 39 },
       "id": 10,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
@@ -163,14 +270,14 @@
         { "editorMode": "code", "expr": "histogram_quantile(0.95, sum by (le, service_name) (rate({__name__=~\"yeshua_operation_duration(_milliseconds|_ms)?_bucket\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])))", "legendFormat": "P95 {{service_name}}", "range": true, "refId": "B" },
         { "editorMode": "code", "expr": "histogram_quantile(0.99, sum by (le, service_name) (rate({__name__=~\"yeshua_operation_duration(_milliseconds|_ms)?_bucket\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval])))", "legendFormat": "P99 {{service_name}}", "range": true, "refId": "C" }
       ],
-      "title": "10. Latencia P50, P95 e P99",
+      "title": "15. Latencia P50, P95 e P99",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** P95 da duracao das sagas, taxa de falhas e taxa de retries dos steps.\n\n**Como interpretar:** a duracao usa o eixo em milissegundos; falhas e retries usam o eixo de eventos por segundo. P95 crescente indica degradacao mesmo quando ainda existe sucesso. Retry isolado pode recuperar uma falha transitoria; retries e falhas crescendo juntos indicam instabilidade persistente.\n\n**Cuidado:** este painel combina duas escalas, identificadas na legenda e nos eixos.",
       "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [ { "matcher": { "id": "byFrameRefID", "options": "B" }, "properties": [ { "id": "unit", "value": "ops" }, { "id": "custom.axisPlacement", "value": "right" } ] }, { "matcher": { "id": "byFrameRefID", "options": "C" }, "properties": [ { "id": "unit", "value": "ops" }, { "id": "custom.axisPlacement", "value": "right" } ] } ] },
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 21 },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 46 },
       "id": 11,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
@@ -178,102 +285,102 @@
         { "editorMode": "code", "expr": "sum by (operation) (rate({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", component=\"Saga\", outcome=\"failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Falhas {{operation}}", "range": true, "refId": "B" },
         { "editorMode": "code", "expr": "sum by (saga, step) (rate({__name__=~\"yeshua_saga_retries(_retry)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Retries {{saga}}.{{step}}", "range": true, "refId": "C" }
       ],
-      "title": "11. Sagas: duracao P95, falhas e retries",
+      "title": "16. Sagas: duracao P95, falhas e retries",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** segundos desde o ultimo heartbeat e desde o ultimo ciclo concluido com sucesso, por instancia e operacao de Worker.\n\n**Como interpretar:** heartbeat baixo confirma que a instancia esta viva. Heartbeat crescendo continuamente indica processo parado ou sem conseguir publicar telemetria. O tempo desde o ultimo sucesso pode crescer em uma fila ociosa saudavel; so representa doenca quando existe backlog ou tentativas falhando.\n\n**Importante:** a indisponibilidade operacional pertence ao conjunto de replicas; uma instancia antiga de deploy pode permanecer temporariamente no Prometheus.",
       "fieldConfig": { "defaults": { "min": 0, "unit": "s" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 21 },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 46 },
       "id": 12,
       "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         { "editorMode": "code", "expr": "time() - max by (service_name, service_instance_id, operation) ({__name__=~\"yeshua_worker_current(_item)?\", state=\"last_heartbeat_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Heartbeat {{service_name}} / {{service_instance_id}} / {{operation}}", "range": true, "refId": "A" },
         { "editorMode": "code", "expr": "time() - max by (service_name, service_instance_id, operation) ({__name__=~\"yeshua_worker_current(_item)?\", state=\"last_success_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Ultimo sucesso {{service_name}} / {{service_instance_id}} / {{operation}}", "range": true, "refId": "B" }
       ],
-      "title": "12. Recencia das instancias de Worker",
+      "title": "17. Recencia das instancias de Worker",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade de itens elegiveis para processamento e quantidade de itens classificados com doenca operacional em cada fila.\n\n**Como interpretar:** backlog e trabalho aguardando. Item doente pode estar fora do backlog, como uma falha terminal que nao sera retomada automaticamente. As categorias sao mutuamente exclusivas e priorizam a doenca mais grave.\n\n**Categorias:** espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal. IDs individuais nao entram no Prometheus; a investigacao detalhada usa a evidencia sanitizada em logs/traces.",
       "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "short" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 21 },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 46 },
       "id": 13,
       "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Backlog elegivel {{queue}}", "range": true, "refId": "A" },
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Total doentes {{queue}}", "range": true, "refId": "B" },
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_excessive_wait\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Espera excessiva {{queue}}", "range": true, "refId": "C" },
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_stale_processing\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Processamento abandonado {{queue}}", "range": true, "refId": "D" },
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_recurrent_execution\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Execucao recorrente {{queue}}", "range": true, "refId": "E" },
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_repeated_failure\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Falha repetida {{queue}}", "range": true, "refId": "F" },
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_terminal_failure\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Falha terminal {{queue}}", "range": true, "refId": "G" }
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Backlog elegivel {{queue}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Total doentes {{queue}}", "range": true, "refId": "B" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_excessive_wait\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Espera excessiva {{queue}}", "range": true, "refId": "C" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_stale_processing\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Processamento abandonado {{queue}}", "range": true, "refId": "D" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_recurrent_execution\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Execucao recorrente {{queue}}", "range": true, "refId": "E" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_repeated_failure\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Falha repetida {{queue}}", "range": true, "refId": "F" },
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_item_terminal_failure\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Falha terminal {{queue}}", "range": true, "refId": "G" }
       ],
-      "title": "13. Backlog e itens doentes por fila",
+      "title": "18. Backlog e itens doentes por fila",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** estado leve mantido em memoria por cada instancia de Worker: quantidade de ciclos vazios consecutivos e indicador de ciclo em andamento.\n\n**Como interpretar:** ciclos vazios crescendo significam que o Worker esta vivo, mas nao encontrou trabalho; isso e saudavel quando o backlog e zero. `Em ciclo = 1` significa execucao em andamento e `0` significa fora de um ciclo. Ciclo em andamento por tempo excessivo deve ser analisado junto da recencia do heartbeat.\n\n**Custo:** ciclos vazios nao geram logs nem eventos repetitivos; apenas atualizam o valor atual em memoria.",
       "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "short" }, "overrides": [ { "matcher": { "id": "byFrameRefID", "options": "B" }, "properties": [ { "id": "max", "value": 1 } ] } ] },
-      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 29 },
+      "gridPos": { "h": 8, "w": 8, "x": 0, "y": 54 },
       "id": 19,
       "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         { "editorMode": "code", "expr": "max by (service_name, service_instance_id, operation) ({__name__=~\"yeshua_worker_current(_item)?\", state=\"consecutive_empty_cycles\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Ciclos vazios {{service_name}} / {{service_instance_id}} / {{operation}}", "range": true, "refId": "A" },
         { "editorMode": "code", "expr": "max by (service_name, service_instance_id, operation) ({__name__=~\"yeshua_worker_current(_item)?\", state=\"cycle_in_progress\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Em ciclo (1=sim) {{service_name}} / {{service_instance_id}} / {{operation}}", "range": true, "refId": "B" }
       ],
-      "title": "14. Atividade atual das instancias de Worker",
+      "title": "19. Atividade atual das instancias de Worker",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** idade do item elegivel mais antigo e segundos desde a ultima coleta diagnostica de cada fila.\n\n**Como interpretar:** `Mais antigo` crescendo indica trabalho aguardando e ajuda a distinguir um backlog novo de um backlog estagnado. `Idade da coleta` baixa confirma que o diagnostico esta atualizado; se ela crescer, os numeros da fila podem estar obsoletos. Quando o backlog e zero, a idade do mais antigo tambem deve ser zero.",
       "fieldConfig": { "defaults": { "min": 0, "unit": "s" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 29 },
+      "gridPos": { "h": 8, "w": 8, "x": 8, "y": 54 },
       "id": 17,
       "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Mais antigo {{queue}}", "range": true, "refId": "A" },
-        { "editorMode": "code", "expr": "time() - max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"})", "legendFormat": "Idade da coleta {{queue}}", "range": true, "refId": "B" }
+        { "editorMode": "code", "expr": "max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Mais antigo {{queue}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "time() - max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"})", "legendFormat": "Idade da coleta {{queue}}", "range": true, "refId": "B" }
       ],
-      "title": "15. Espera e atualizacao do diagnostico das filas",
+      "title": "20. Espera e atualizacao do diagnostico das filas",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade de itens processados por segundo pelo conjunto de todas as instancias que executam a mesma operacao.\n\n**Como interpretar:** vazao positiva com backlog significa que a fila esta avancando. Backlog crescendo com vazao zero indica bloqueio. Backlog crescendo com vazao positiva, mas menor que a entrada, indica capacidade insuficiente ou degradacao. Vazao zero com backlog zero representa fila ociosa saudavel.",
       "fieldConfig": { "defaults": { "min": 0, "unit": "ops" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 29 },
+      "gridPos": { "h": 8, "w": 8, "x": 16, "y": 54 },
       "id": 18,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         { "editorMode": "code", "expr": "sum by (service_name, operation) (rate({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "{{service_name}} / {{operation}}", "range": true, "refId": "A" }
       ],
-      "title": "16. Vazao agregada das filas",
+      "title": "21. Vazao agregada das filas",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** taxa de ciclos concluidos e taxa de itens capturados, processados ou falhos pelos Workers.\n\n**Como interpretar:** compara o trabalho do polling com o resultado sobre os itens. Muitos ciclos e poucos itens podem representar fila ociosa normal. Itens capturados sem crescimento equivalente de processados indicam lentidao, falha ou processamento ainda em andamento. A serie `failed` deve permanecer proxima de zero.",
       "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 37 },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 62 },
       "id": 14,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
         { "editorMode": "code", "expr": "sum by (operation, outcome) (rate({__name__=~\"yeshua_worker_cycles(_cycle)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Ciclos {{operation}} / {{outcome}}", "range": true, "refId": "A" },
         { "editorMode": "code", "expr": "sum by (operation, state) (rate({__name__=~\"yeshua_worker_items(_item)?(_total)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[$__rate_interval]))", "legendFormat": "Itens {{operation}} / {{state}}", "range": true, "refId": "B" }
       ],
-      "title": "17. Ritmo de ciclos e itens dos Workers",
+      "title": "22. Ritmo de ciclos e itens dos Workers",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade de pontos de metrica, spans e registros de log aceitos por segundo em cada receiver do OpenTelemetry Collector.\n\n**Como interpretar:** confirma que os sinais estao chegando ao Collector. Queda pode significar ausencia normal de trafego ou falha na origem; compare com aplicacoes e Workers ativos. Volume aceito nao prova que a exportacao foi concluida, por isso erros e recusas ficam em painel separado.",
       "fieldConfig": { "defaults": { "unit": "ops" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 37 },
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 62 },
       "id": 15,
       "options": { "legend": { "calcs": ["lastNotNull", "mean", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
@@ -281,14 +388,14 @@
         { "editorMode": "code", "expr": "sum by (receiver) (rate({__name__=~\"otelcol_receiver_accepted_spans.*\"}[$__rate_interval]))", "legendFormat": "Traces / {{receiver}}", "range": true, "refId": "B" },
         { "editorMode": "code", "expr": "sum by (receiver) (rate({__name__=~\"otelcol_receiver_accepted_log_records.*\"}[$__rate_interval]))", "legendFormat": "Logs / {{receiver}}", "range": true, "refId": "C" }
       ],
-      "title": "18. Sinais aceitos pelo Collector",
+      "title": "23. Sinais aceitos pelo Collector",
       "type": "timeseries"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** total de sinais recusados na entrada e falhas ao exportar dados do OpenTelemetry Collector para os armazenamentos, separado entre metricas, traces e logs.\n\n**Como interpretar:** o valor esperado e zero. `Recusados` significa que o Collector nao aceitou sinais recebidos. `Falhas de exportacao` significa que aceitou, mas nao conseguiu entregar ao destino. Qualquer valor persistente exige verificar capacidade, configuracao, rede e disponibilidade de Loki, Prometheus ou Tempo. Separar este painel do volume aceito impede que milhares de sucessos escondam poucas falhas importantes. Ausencia de serie e apresentada como zero neste painel.",
       "fieldConfig": { "defaults": { "min": 0, "unit": "ops" }, "overrides": [] },
-      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 37 },
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 62 },
       "id": 20,
       "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
@@ -299,7 +406,7 @@
         { "editorMode": "code", "expr": "sum(rate({__name__=~\"otelcol_receiver_refused_spans.*\"}[$__rate_interval])) or on() vector(0)", "legendFormat": "Recusa de traces", "range": true, "refId": "E" },
         { "editorMode": "code", "expr": "sum(rate({__name__=~\"otelcol_receiver_refused_log_records.*\"}[$__rate_interval])) or on() vector(0)", "legendFormat": "Recusa de logs", "range": true, "refId": "F" }
       ],
-      "title": "19. Falhas e recusas do Collector",
+      "title": "24. Falhas e recusas do Collector",
       "type": "timeseries"
     }
   ],
@@ -339,6 +446,22 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}, queue)",
+        "includeAll": true,
+        "label": "Fila",
+        "multi": true,
+        "name": "queue",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}, queue)", "refId": "VariableQueryEditor-Queue" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
       }
     ]
   },
@@ -347,6 +470,6 @@
   "timezone": "browser",
   "title": "Yeshua - Visao Operacional",
   "uid": "yeshua-operational-overview",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
