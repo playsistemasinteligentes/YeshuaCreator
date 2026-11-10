@@ -52,7 +52,7 @@ services:
       Mcp__LokiBaseUrl: "http://yeshua-observability:3100"
       Mcp__TempoBaseUrl: "http://yeshua-observability:3200"
       Mcp__PrometheusBaseUrl: "http://yeshua-observability:9090"
-      Mcp__DashboardCatalogPath: "/server/YeshuaCreator/infra/Shared/DockerCompose/observability/grafana/dashboards"
+      Mcp__DashboardCatalogPath: "/catalog/observability-dashboards"
       Mcp__DatabaseQuery__Connections__OperationalIntelligence: "${YESHUA_SQL_MCP_OPERATIONAL_INTELLIGENCE:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Central: "${YESHUA_SQL_MCP_CENTRAL:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Clinica: "${YESHUA_SQL_MCP_CLINICA:?Configure credentials.json}"
@@ -88,6 +88,7 @@ services:
       - "127.0.0.1:5728:5728"
     volumes:
       - /root/YeshuaCreator:/server/YeshuaCreator:ro
+      - /root/YeshuaCreator/infra/Shared/DockerCompose/observability/grafana/dashboards:/catalog/observability-dashboards:ro
       - /root/YeshuaStorage:/storage:ro
       - /root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output
       - operational-agent-workspace:/workspace
