@@ -60,8 +60,9 @@ somente o destino de saida da telemetria habilitada.
 
 ## Contrato De Manutencao Dos Dashboards
 
-Os dashboards versionados em `grafana/dashboards/yeshua-overview.json` e
-`grafana/dashboards/yeshua-queue-health.json` sao codigo operacional. Uma alteracao
+Os dashboards versionados em `grafana/dashboards/yeshua-overview.json`,
+`grafana/dashboards/yeshua-queue-health.json` e
+`grafana/dashboards/yeshua-queue-item.json` sao codigo operacional. Uma alteracao
 nele pode mudar a interpretacao de saude do ambiente mesmo sem alterar a coleta.
 Por isso, nao basta a consulta produzir uma linha: o painel precisa explicar
 corretamente o que essa linha significa.
@@ -173,6 +174,8 @@ executar a validacao local, confirmar a descoberta MCP e publicar o pacote.
 
 O dashboard `Yeshua - Diagnostico de Filas` e a entrada operacional para
 decisao. Ele separa saude da fila e saude dos itens, abre a composicao das
-doencas e so entao apresenta evidencias individuais. O dashboard de visao
+doencas e so entao apresenta evidencias individuais. Cada referencia abre
+`Yeshua - Detalhe do Item de Fila`, que consulta diretamente o Loki e permite
+navegar dos registros com `trace_id` para o Tempo. O dashboard de visao
 operacional permanece como aprofundamento tecnico; nao deve ser a primeira
 etapa de raciocinio para decidir se uma fila esta doente.

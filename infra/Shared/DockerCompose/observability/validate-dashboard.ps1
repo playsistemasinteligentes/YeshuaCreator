@@ -17,6 +17,20 @@ if (-not $dashboardPaths -or $dashboardPaths.Count -eq 0)
     throw 'Nenhum dashboard versionado foi encontrado.'
 }
 
+$dashboardUids = [System.Collections.Generic.HashSet[string]]::new([System.StringComparer]::OrdinalIgnoreCase)
+foreach ($path in $dashboardPaths)
+{
+    $candidate = Get-Content -Raw -LiteralPath $path | ConvertFrom-Json -Depth 100
+    if ([string]::IsNullOrWhiteSpace($candidate.uid))
+    {
+        throw "Dashboard sem UID: $path"
+    }
+    if (-not $dashboardUids.Add([string]$candidate.uid))
+    {
+        throw "UID de dashboard duplicado: $($candidate.uid)"
+    }
+}
+
 foreach ($currentDashboardPath in $dashboardPaths)
 {
 if (-not (Test-Path -LiteralPath $currentDashboardPath -PathType Leaf))
@@ -57,9 +71,14 @@ foreach ($panel in $dashboard.panels)
         $errors.Add("$prefix deve explicar 'O que mede' e 'Como interpretar'.")
     }
 
-    if (-not $panel.targets -or $panel.targets.Count -eq 0)
+    if (($panel.type -ne 'text') -and (-not $panel.targets -or $panel.targets.Count -eq 0))
     {
         $errors.Add("$prefix sem consulta.")
+        continue
+    }
+
+    if ($panel.type -eq 'text')
+    {
         continue
     }
 
@@ -90,6 +109,17 @@ foreach ($panel in $dashboard.panels)
         ($panel.gridPos.x + $panel.gridPos.w) -gt 24)
     {
         $errors.Add("$prefix possui gridPos invalido.")
+    }
+}
+
+$serializedDashboard = $dashboard | ConvertTo-Json -Depth 100 -Compress
+$dashboardLinkMatches = [regex]::Matches($serializedDashboard, '/observability/d/([^/"?]+)')
+foreach ($dashboardLinkMatch in $dashboardLinkMatches)
+{
+    $targetUid = $dashboardLinkMatch.Groups[1].Value
+    if (-not $dashboardUids.Contains($targetUid))
+    {
+        $errors.Add("Link aponta para dashboard inexistente: $targetUid.")
     }
 }
 

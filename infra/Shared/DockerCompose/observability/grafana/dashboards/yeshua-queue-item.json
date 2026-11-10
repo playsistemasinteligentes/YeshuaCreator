@@ -1,0 +1,148 @@
+{
+  "annotations": { "list": [] },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "arrow-left",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Voltar para as filas",
+      "type": "link",
+      "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas"
+    },
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Abrir visao tecnica completa",
+      "type": "link",
+      "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": { "type": "__expr__", "uid": "__expr__" },
+      "description": "**O que mede:** fixa a identidade operacional selecionada na lista de itens doentes.\n\n**Como interpretar:** item, fila, tenant e RootOperationId delimitam a investigacao apresentada abaixo. Este painel ainda nao classifica causa de negocio ou tecnica.",
+      "gridPos": { "h": 5, "w": 24, "x": 0, "y": 0 },
+      "id": 1,
+      "options": {
+        "code": { "language": "plaintext", "showLineNumbers": false, "showMiniMap": false },
+        "content": "# Item de fila\n\n**Item:** `$item`  \n**Fila:** `$queue`  \n**Tenant:** `$tenant`  \n**RootOperationId:** `$root`\n\nAbaixo aparecem a evidencia que declarou a doenca, o historico operacional do item e os registros que possuem `trace_id` navegavel para o Tempo.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "13.2.3",
+      "title": "1. Identidade do item",
+      "type": "text"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "description": "**O que mede:** todas as mudancas de saude publicadas para o item selecionado dentro da retencao de cinco dias.\n\n**Como interpretar:** a linha mais recente representa a ultima doenca observada. Repeticoes indicam nova tentativa, alteracao de contador ou mudanca de estado; nao representam itens diferentes.",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 5 },
+      "id": 2,
+      "options": { "cellHeight": "sm", "footer": { "countRows": false, "enablePagination": true, "fields": "", "reducer": ["sum"], "show": false }, "showHeader": true },
+      "targets": [
+        {
+          "datasource": { "type": "loki", "uid": "loki" },
+          "editorMode": "code",
+          "expr": "{scope_name=\"Yeshua.Operational\", service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" |= \"$item\" | json tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", execution_count=\"Data.ExecutionCount\", retry_count=\"Data.RetryCount\", last_outcome=\"Data.LastOutcome\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | line_format \"{{.tenant_id}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.execution_count}}|{{.retry_count}}|{{.last_outcome}}|{{.root_operation_id}}|{{.error_signature}}\"",
+          "queryType": "range",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": "5d",
+      "title": "2. Evidencias de saude deste item",
+      "transformations": [
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regexp": "(?<TenantId>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<ExecutionCount>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<LastOutcome>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)", "replace": true, "source": "Line" } }
+      ],
+      "type": "table"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "description": "**O que mede:** narrativa cronologica completa do item, incluindo Commands, Saga, Steps, Inbox, Outbox e a evidencia de saude que contenham a mesma referencia.\n\n**Como interpretar:** leia de baixo para cima quando a ordenacao estiver decrescente. Localize o ultimo `StepStarted` sem conclusao e o primeiro evento `Failed` ou `RetryScheduled`.",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 14, "w": 16, "x": 0, "y": 13 },
+      "id": 3,
+      "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": true, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
+      "targets": [
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{scope_name=\"Yeshua.Operational\", service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"$item\"", "queryType": "range", "refId": "A" }
+      ],
+      "timeFrom": "5d",
+      "title": "3. Historico operacional do item",
+      "type": "logs"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "description": "**O que mede:** somente registros do item que possuem `trace_id`.\n\n**Como interpretar:** cada registro representa uma tentativa tecnica rastreavel. Expanda o registro, localize o campo `trace_id` e use o link derivado **Trace** para abrir o trace correspondente no Tempo.",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 14, "w": 8, "x": 16, "y": 13 },
+      "id": 4,
+      "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": true, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
+      "targets": [
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{scope_name=\"Yeshua.Operational\", service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"$item\" | trace_id=~\".+\"", "queryType": "range", "refId": "A" }
+      ],
+      "timeFrom": "5d",
+      "title": "4. Tentativas com trace no Tempo",
+      "type": "logs"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 41,
+  "tags": ["yeshua", "observability", "queue-item", "macro-to-micro"],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": { "text": "Production", "value": "Production" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\"}, deployment_environment_name)",
+        "includeAll": false,
+        "label": "Ambiente",
+        "multi": false,
+        "name": "environment",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_queue_current(_value)?\"}, deployment_environment_name)", "refId": "VariableQueryEditor-Environment" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": { "text": "Fiscal", "value": "Fiscal" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\"}, service_name)",
+        "includeAll": false,
+        "label": "Servico",
+        "multi": false,
+        "name": "service",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\"}, service_name)", "refId": "VariableQueryEditor-Service" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      { "current": { "text": "", "value": "" }, "label": "Fila", "name": "queue", "options": [], "query": "", "type": "textbox" },
+      { "current": { "text": "", "value": "" }, "label": "Tenant", "name": "tenant", "options": [], "query": "", "type": "textbox" },
+      { "current": { "text": "", "value": "" }, "label": "Item", "name": "item", "options": [], "query": "", "type": "textbox" },
+      { "current": { "text": "", "value": "" }, "hide": 2, "label": "RootOperationId", "name": "root", "options": [], "query": "", "type": "textbox" }
+    ]
+  },
+  "time": { "from": "now-5d", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Yeshua - Detalhe do Item de Fila",
+  "uid": "yeshua-queue-item",
+  "version": 1,
+  "weekStart": ""
+}

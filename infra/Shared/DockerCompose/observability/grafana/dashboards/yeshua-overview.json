@@ -196,7 +196,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade atual de itens classificados com doenca operacional nas filas selecionadas.\n\n**Como interpretar:** nao e backlog. Abra a composicao ao lado para saber se os individuos apresentam espera excessiva, processamento abandonado, execucao recorrente, falha repetida ou falha terminal.",
-      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista dos itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 6, "x": 0, "y": 22 },
       "id": 23,
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
@@ -209,7 +209,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** composicao dos itens doentes entre espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal.\n\n**Como interpretar:** a categoria descreve o sintoma operacional mais grave do item, nao a causa raiz. Exception, SQL lento, dependencia, capacidade ou regra de negocio exigem abrir a evidencia e o trace.",
-      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta doenca", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 18, "x": 6, "y": 22 },
       "id": 24,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
@@ -221,7 +221,7 @@
     },
     {
       "datasource": { "type": "loki", "uid": "loki" },
-      "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** cada linha identifica fila, item, doenca, severidade, idades, tentativas, assinatura sanitizada e identidades causais. Itens saudaveis permanecem silenciosos.\n\n**Proxima acao:** use Queue e ItemReference no metodo MCP `yeshua_queue_item_diagnose` para localizar a evidencia e o trace retido.",
+      "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** cada linha identifica fila, item, doenca, severidade, idades, tentativas, assinatura sanitizada e identidades causais. Itens saudaveis permanecem silenciosos.\n\n**Proxima acao:** abra a lista de itens doentes pelo painel anterior e clique no ItemReference para navegar pelo historico e pelo trace.",
       "fieldConfig": { "defaults": {}, "overrides": [] },
       "gridPos": { "h": 10, "w": 24, "x": 0, "y": 29 },
       "id": 25,
@@ -229,6 +229,7 @@
       "targets": [
         { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{scope_name=\"Yeshua.Operational\", service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" |~ \"$queue\"", "queryType": "range", "refId": "A" }
       ],
+      "timeFrom": "5d",
       "title": "12. Itens doentes: evidencias recentes",
       "type": "logs"
     },
