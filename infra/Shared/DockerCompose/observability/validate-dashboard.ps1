@@ -1,15 +1,30 @@
-param(
-    [string]$DashboardPath = (Join-Path $PSScriptRoot 'grafana/dashboards/yeshua-overview.json')
-)
+param([string]$DashboardPath)
 
 $ErrorActionPreference = 'Stop'
 
-if (-not (Test-Path -LiteralPath $DashboardPath -PathType Leaf))
+if ([string]::IsNullOrWhiteSpace($DashboardPath))
 {
-    throw "Dashboard nao encontrado: $DashboardPath"
+    $dashboardPaths = Get-ChildItem -LiteralPath (Join-Path $PSScriptRoot 'grafana/dashboards') -Filter '*.json' -File |
+        Select-Object -ExpandProperty FullName
+}
+else
+{
+    $dashboardPaths = @($DashboardPath)
 }
 
-$dashboard = Get-Content -Raw -LiteralPath $DashboardPath | ConvertFrom-Json -Depth 100
+if (-not $dashboardPaths -or $dashboardPaths.Count -eq 0)
+{
+    throw 'Nenhum dashboard versionado foi encontrado.'
+}
+
+foreach ($currentDashboardPath in $dashboardPaths)
+{
+if (-not (Test-Path -LiteralPath $currentDashboardPath -PathType Leaf))
+{
+    throw "Dashboard nao encontrado: $currentDashboardPath"
+}
+
+$dashboard = Get-Content -Raw -LiteralPath $currentDashboardPath | ConvertFrom-Json -Depth 100
 $errors = [System.Collections.Generic.List[string]]::new()
 
 if (-not $dashboard.panels -or $dashboard.panels.Count -eq 0)
@@ -105,4 +120,5 @@ if ($errors.Count -gt 0)
     throw "Dashboard invalido:`n- $($errors -join "`n- ")"
 }
 
-Write-Host "Dashboard valido: $($dashboard.panels.Count) paineis com contrato operacional e layout consistente."
+Write-Host "Dashboard valido: $([System.IO.Path]::GetFileName($currentDashboardPath)) - $($dashboard.panels.Count) paineis com contrato operacional e layout consistente."
+}

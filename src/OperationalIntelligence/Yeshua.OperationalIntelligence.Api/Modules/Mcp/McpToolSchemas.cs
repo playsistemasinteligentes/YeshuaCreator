@@ -115,6 +115,35 @@ public static class McpToolSchemas
         additionalProperties = false
     };
 
+    public static object QueueHealthQuery() => new
+    {
+        type = "object",
+        properties = new Dictionary<string, object>
+        {
+            ["environment"] = String("Optional exact deployment environment."),
+            ["service"] = String("Optional exact service name."),
+            ["queue"] = String("Optional exact queue name.")
+        },
+        additionalProperties = false
+    };
+
+    public static object QueueItemDiagnose() => new
+    {
+        type = "object",
+        properties = new Dictionary<string, object>
+        {
+            ["queue"] = String("Exact queue name returned by yeshua_queue_health_query."),
+            ["itemReference"] = String("Optional exact sick item reference. Omit it to list the queue's recent sick items grouped by disease."),
+            ["service"] = String("Optional exact service name."),
+            ["environment"] = String("Optional exact deployment environment."),
+            ["fromUtc"] = DateTime("Optional range start in UTC; defaults to the last 24 hours."),
+            ["toUtc"] = DateTime("Optional range end in UTC."),
+            ["limit"] = Integer("Maximum number of health evidence log entries to inspect.")
+        },
+        required = new[] { "queue" },
+        additionalProperties = false
+    };
+
     public static object SourceSearch() => new
     {
         type = "object",

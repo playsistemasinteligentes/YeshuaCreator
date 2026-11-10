@@ -158,6 +158,8 @@ yeshua_traces_query
 yeshua_metrics_query
 yeshua_observability_dashboards_list
 yeshua_observability_dashboard_get
+yeshua_queue_health_query
+yeshua_queue_item_diagnose
 yeshua_source_search
 ```
 
@@ -169,6 +171,15 @@ mapeamento por painel: novos graficos entram automaticamente quando o JSON
 versionado respeita o contrato de manutencao. `includeRaw=true` inclui a
 configuracao original do painel quando a analise exigir detalhes nao
 normalizados.
+
+As ferramentas `yeshua_queue_*` aplicam o percurso de diagnostico do macro para
+o micro. `yeshua_queue_health_query` conclui separadamente a saude da progressao
+da fila e a saude dos seus itens, mostrando backlog, vazao recente, heartbeat e
+contagens por doenca. `yeshua_queue_item_diagnose` recebe primeiro `queue` para
+listar os individuos recentes agrupados por doenca. Repetida com
+`itemReference`, localiza a evidencia individual sanitizada e procura no Tempo
+o trace retido pelo `ExecutionId` ou `RootOperationId`. A doenca descreve o
+sintoma; causa raiz somente e informada quando logs ou traces a sustentarem.
 
 Nomes antigos com pontos continuam aceitos em chamadas autorizadas.
 As ferramentas privadas `yeshua_task_send` e `yeshua_task_read` implementam

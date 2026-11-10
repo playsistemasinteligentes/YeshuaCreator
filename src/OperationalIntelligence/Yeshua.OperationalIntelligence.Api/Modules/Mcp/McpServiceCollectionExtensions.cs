@@ -65,6 +65,9 @@ public static class McpServiceCollectionExtensions
         services.AddScoped<IMcpTool, LogsQueryTool>();
         services.AddScoped<IMcpTool, TracesQueryTool>();
         services.AddScoped<IMcpTool, MetricsQueryTool>();
+        services.AddScoped<QueueHealthProjection>();
+        services.AddScoped<IMcpTool, QueueHealthQueryTool>();
+        services.AddScoped<IMcpTool, QueueItemDiagnoseTool>();
         services.AddSingleton<ObservabilityDashboardCatalog>();
         services.AddScoped<IMcpTool, ObservabilityDashboardsListTool>();
         services.AddScoped<IMcpTool, ObservabilityDashboardGetTool>();

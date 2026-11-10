@@ -97,3 +97,14 @@ test('host CPU and memory dashboard cards reduce live hostmetrics into visible v
   assert.ok(cpu.targets[0].expr.includes('system_cpu_utilization_ratio'));
   assert.ok(memory.targets[0].expr.includes('system_memory_usage_bytes'));
 });
+
+test('queue diagnosis is the Grafana home and keeps the technical dashboard available', () => {
+  const observability = compose.services['yeshua-observability'];
+  assert.ok(observability.environment.GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH.endsWith('/yeshua-queue-health.json'));
+  const diagnosis = JSON.parse(readFileSync(
+    resolve(shared, 'observability/grafana/dashboards/yeshua-queue-health.json'),
+    'utf8'));
+  assert.equal(diagnosis.uid, 'yeshua-queue-health');
+  assert.deepEqual(diagnosis.panels.map(panel => panel.id), [1, 2, 3, 4, 5]);
+  assert.ok(diagnosis.links.some(link => link.url.includes('yeshua-operational-overview')));
+});

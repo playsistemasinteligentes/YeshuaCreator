@@ -68,6 +68,43 @@ public static class McpOutputSchemas
             ("description", text), ("version", integer), ("schemaVersion", integer), ("panelCount", integer),
             ("tags", strings), ("sourceFile", text), ("variables", Array(dashboardVariable)),
             ("panels", Array(panel)), ("warnings", strings));
+        var diseaseCounts = Object(("total", integer), ("excessiveWait", integer),
+            ("staleProcessing", integer), ("recurrentExecution", integer),
+            ("repeatedFailure", integer), ("terminalFailure", integer));
+        var queueHealth = Object(("environment", text), ("service", text), ("operation", text),
+            ("queue", text), ("overallStatus", text), ("overallLabel", text),
+            ("queueStatus", text), ("queueStatusLabel", text), ("itemStatus", text),
+            ("itemStatusLabel", text), ("reason", text), ("recommendedAction", text),
+            ("eligibleBacklog", integer), ("oldestEligibleAgeSeconds", integer),
+            ("sampleAgeSeconds", integer), ("heartbeatAgeSeconds", Nullable(integer)),
+            ("processedLastFiveMinutes", number), ("diseases", diseaseCounts));
+        var queueHealthResult = Object(("generatedAtUtc", text),
+            ("summary", Object(("totalQueues", integer), ("healthyQueues", integer),
+                ("degradedQueues", integer), ("sickQueues", integer),
+                ("unavailableQueues", integer), ("totalSickItems", integer))),
+            ("queues", Array(queueHealth)), ("warnings", strings));
+        var queueItemEvidence = Object(("observedAtUtc", Nullable(text)), ("queue", text),
+            ("itemType", text), ("itemReference", text), ("disease", text), ("severity", text),
+            ("eligibleAgeSeconds", integer), ("processingAgeSeconds", integer),
+            ("executionCount", integer), ("retryCount", integer), ("lastOutcome", text),
+            ("operationalEntityId", Nullable(text)), ("rootOperationId", Nullable(text)),
+            ("executionId", Nullable(text)), ("errorSignature", Nullable(text)));
+        var queueItemTrace = Object(("status", text), ("query", Nullable(text)),
+            ("matchCount", integer), ("executionId", Nullable(text)),
+            ("rootOperationId", Nullable(text)), ("data", Nullable(json)));
+        var queueItemDiagnosis = Object(("generatedAtUtc", text), ("queue", text),
+            ("itemReference", text), ("healthStatus", text), ("disease", text),
+            ("diseaseMeaning", text), ("causeClassification", text), ("causeConfidence", text),
+            ("explanation", text), ("latestEvidence", Nullable(queueItemEvidence)),
+            ("trace", queueItemTrace), ("recommendedActions", strings), ("warnings", strings));
+        var queueSickItems = Object(("generatedAtUtc", text), ("queue", text),
+            ("healthStatus", text), ("itemCount", integer), ("diseaseCounts", Map(integer)),
+            ("items", Array(queueItemEvidence)), ("recommendedNextStep", text), ("warnings", strings));
+        var queueItemDiagnosisOutput = new JsonObject
+        {
+            ["type"] = "object",
+            ["anyOf"] = new JsonArray(queueSickItems.DeepClone(), queueItemDiagnosis.DeepClone())
+        };
         var logs = new JsonObject
         {
             ["type"] = "object",
@@ -106,6 +143,8 @@ public static class McpOutputSchemas
             ["yeshua_metrics_query"] = telemetry,
             ["yeshua_observability_dashboards_list"] = dashboardCatalog,
             ["yeshua_observability_dashboard_get"] = dashboardContract,
+            ["yeshua_queue_health_query"] = queueHealthResult,
+            ["yeshua_queue_item_diagnose"] = queueItemDiagnosisOutput,
             ["yeshua_logs_source_context"] = logSource,
             ["yeshua_database_select"] = Object(("connection", text), ("executedAtUtc", text),
                 ("elapsedMilliseconds", integer), ("rowCount", integer), ("truncated", boolean),

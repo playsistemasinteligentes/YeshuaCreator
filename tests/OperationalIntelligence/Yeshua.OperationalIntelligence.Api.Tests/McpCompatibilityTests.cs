@@ -27,7 +27,7 @@ public sealed class McpCompatibilityTests
         await using var host = await McpHost.StartAsync(productionCatalog: true);
         await using var client = await ConnectAsync(host.PrivateUrl);
         var tools = await client.ListToolsAsync();
-        Assert.AreEqual(17, tools.Count);
+        Assert.AreEqual(19, tools.Count);
         foreach (var tool in tools)
         {
             Assert.IsFalse(tool.Name.Contains('.'));

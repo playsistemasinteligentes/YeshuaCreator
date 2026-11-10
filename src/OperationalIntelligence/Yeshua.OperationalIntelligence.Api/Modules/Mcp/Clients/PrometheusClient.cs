@@ -28,6 +28,24 @@ public sealed class PrometheusClient : McpHttpClientBase
             cancellationToken);
     }
 
+    public Task<RawTelemetryResult> QueryInstantAsync(
+        string promql,
+        DateTimeOffset atUtc,
+        CancellationToken cancellationToken)
+    {
+        var query = QueryString(
+            ("query", promql),
+            ("time", atUtc.ToUnixTimeSeconds().ToString()));
+
+        return GetJsonAsync(
+            "Prometheus",
+            promql,
+            $"/api/v1/query?{query}",
+            atUtc,
+            atUtc,
+            cancellationToken);
+    }
+
     public Task<string> CheckAsync(CancellationToken cancellationToken) =>
         CheckAsync("/-/ready", cancellationToken);
 }

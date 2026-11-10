@@ -23,6 +23,12 @@ public static class AgentTaskProtocol
         Para avaliar dashboards, liste yeshua_observability_dashboards_list e leia o contrato
         completo com yeshua_observability_dashboard_get. Critique semantica e configuracao
         normalizada; use metricas/logs/traces somente quando precisar validar dados reais.
+        Para saude de filas, comece por yeshua_queue_health_query: primeiro conclua se a fila
+        esta saudavel, degradada, doente ou sem diagnostico e separe isso da saude dos itens.
+        Somente quando houver item doente use yeshua_queue_item_diagnose primeiro com a fila
+        para listar os individuos por doenca; repita com itemReference para correlacionar
+        evidencia sanitizada e traces retidos. Doenca nao e causa: nao atribua
+        exception, SQL, infraestrutura ou regra de negocio sem evidencia que sustente a conclusao.
         yeshua_database_select le apenas aliases configurados; use parametros, colunas necessarias e limite.
         Nao use tarefas do Codex para contornar uma ferramenta privada ausente.
         Pelo tunel privado autorizado, yeshua_task_read sem taskId lista tarefas.

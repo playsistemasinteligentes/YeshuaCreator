@@ -25,7 +25,7 @@ DSL/metadados e fontes; screen/action sao pistas textuais, nao um grafo funciona
 O mesmo next devolve url absoluta pronta para GET, montada com a base canonica
 OperationalIntelligence:PublicBaseUrl, nunca com Host/headers do chamador.
 Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
-Os dezessete contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
+Os dezenove contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
 Os next.arguments omitindo filtros nulos devem ser validos no schema de entrada.
 Nomes qualificados de stack traces podem omitir a assinatura dos parametros;
 a busca deve reconhecer a declaracao sem confundir prefixos parciais.
@@ -156,6 +156,16 @@ concreto que impedir a chamada.
 - A expressao de manutencao **Atualize o Catalogo Semantico de Observabilidade**
   significa revisar todos os dashboards, validar descricoes e configuracoes,
   confirmar a descoberta MCP e publicar o pacote versionado.
+- O diagnostico de filas comeca em `yeshua_queue_health_query`, que projeta
+  separadamente saude da progressao e saude dos itens. Somente depois de uma
+  doenca individual ser confirmada, `yeshua_queue_item_diagnose` lista os itens
+  da fila e, repetida com `itemReference`, consulta a evidencia sanitizada e
+  procura o trace pela identidade causal. Ferramentas
+  cruas de metricas, logs e traces sao aprofundamento, nao a porta de entrada.
+- A classificacao nunca transforma sintoma em causa. Uma falha terminal ou
+  espera excessiva e uma doenca; exception, banco, dependencia, capacidade e
+  regra de negocio exigem evidencia propria antes de serem apresentadas como
+  explicacao.
 
 O Swagger permanece disponivel para exploracao humana, mas nao e uma etapa
 obrigatoria quando o agente foi solicitado a executar a consulta.

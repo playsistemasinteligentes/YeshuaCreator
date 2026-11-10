@@ -418,6 +418,16 @@ Miolos que IA/dev devem preencher:
   ser limitada; itens saudaveis permanecem silenciosos. A evidencia individual
   contem apenas identidades operacionais e assinatura sanitizada do erro, nunca
   payload ou mensagem bruta.
+- O diagnostico de filas deve seguir obrigatoriamente do macro para o micro:
+  primeiro classificar a progressao da fila, depois a saude dos itens, depois
+  a composicao das doencas e somente entao abrir evidencias, traces, logs e
+  fontes de um item. O operador ou agente nao deve receber graficos tecnicos
+  para correlacionar manualmente antes dessa conclusao.
+- Saude da fila e saude dos itens sao eixos diferentes. Uma fila pode estar
+  progredindo normalmente e conter itens com falha terminal; nesse caso a fila
+  continua saudavel, os itens estao doentes e a conclusao geral pede atencao.
+  Doenca tambem nao e causa: exception, SQL, dependencia, capacidade ou regra
+  de negocio so podem ser afirmados depois da evidencia correlacionada.
 - Em exportacao OTLP por push, alertas de ausencia de heartbeat devem agregar
   as instancias ativas por servico e operacao. Series de uma instancia retirada
   por deploy permanecem temporariamente no Prometheus e nao podem, sozinhas,

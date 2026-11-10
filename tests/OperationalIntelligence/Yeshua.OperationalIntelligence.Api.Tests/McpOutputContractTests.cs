@@ -27,6 +27,8 @@ public sealed class McpOutputContractTests
             new HealthTool(new LokiClient(http), new TempoClient(http), new PrometheusClient(http)),
             new LogsQueryTool(new LokiClient(http), arguments, enricher), new ErrorsQueryTool(new LokiClient(http), arguments, enricher),
             new TracesQueryTool(new TempoClient(http), arguments), new MetricsQueryTool(new PrometheusClient(http), arguments),
+            new QueueHealthQueryTool(new QueueHealthProjection(new PrometheusClient(http)), arguments),
+            new QueueItemDiagnoseTool(new LokiClient(http), new TempoClient(http), arguments),
             new LogSourceContextTool(resolver, arguments), new SourceSearchTool(new SourceSearch(new EmptySourceRepository()))];
         foreach (var tool in tools)
         {
@@ -35,6 +37,7 @@ public sealed class McpOutputContractTests
                 "yeshua_app_explore" => """{"application":"Memorias","screen":"register"}""",
                 "yeshua.traces.query" => """{"traceId":"00000000000000000000000000000000"}""",
                 "yeshua.metrics.query" => """{"query":"vector(1)","fromUtc":"2026-10-31T10:00:00Z","toUtc":"2026-10-31T10:01:00Z"}""",
+                "yeshua.queue.item.diagnose" => """{"queue":"Memorias.Saga","itemReference":"item-1"}""",
                 "yeshua.logs.query" or "yeshua.errors.query" => """{"fromUtc":"2026-10-31T10:00:00Z","toUtc":"2026-10-31T10:01:00Z"}""",
                 "yeshua.logs.source_context" => """{"application":"Memorias","log":"synthetic marker"}""",
                 _ => "{}"
@@ -52,6 +55,9 @@ public sealed class McpOutputContractTests
         Validate(JsonSerializer.SerializeToElement(McpToolSchemas.LogSourceContext(), JsonOptions), syntheticArguments);
         var syntheticStack = await tools.Single(tool => tool.Name == "yeshua.logs.source_context").CallAsync(syntheticArguments, default);
         Validate(McpOutputSchemas.For("yeshua_logs_source_context"), JsonSerializer.SerializeToElement(syntheticStack.StructuredContent, JsonOptions));
+        var sickItems = await tools.Single(tool => tool.Name == "yeshua.queue.item.diagnose").CallAsync(
+            JsonSerializer.Deserialize<JsonElement>("""{"queue":"Memorias.Saga"}"""), default);
+        Validate(McpOutputSchemas.For("yeshua_queue_item_diagnose"), JsonSerializer.SerializeToElement(sickItems.StructuredContent, JsonOptions));
         foreach (var input in new[] { new SourceExplorationRequest(), new() { Kind = "builds", Application = "Memorias" },
                      new() { Kind = "file", Application = "Memorias", File = "src/test.cs", IncludeContent = true } })
         {

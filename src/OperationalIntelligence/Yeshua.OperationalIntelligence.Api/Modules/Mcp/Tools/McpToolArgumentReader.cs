@@ -81,11 +81,15 @@ public sealed class McpToolArgumentReader
     }
 
     public (DateTimeOffset FromUtc, DateTimeOffset ToUtc, string? Error) TimeRange(
-        JsonElement arguments)
+        JsonElement arguments) => TimeRange(arguments, 1);
+
+    public (DateTimeOffset FromUtc, DateTimeOffset ToUtc, string? Error) TimeRange(
+        JsonElement arguments,
+        int defaultHours)
     {
         var toUtc = DateTime(arguments, "toUtc") ?? System.DateTimeOffset.UtcNow;
         var fromUtc = DateTime(arguments, "fromUtc") ??
-                      toUtc.AddHours(-Math.Min(1, _options.MaxTimeRangeHours));
+                      toUtc.AddHours(-Math.Min(Math.Max(1, defaultHours), _options.MaxTimeRangeHours));
 
         if (fromUtc > toUtc)
             return (fromUtc, toUtc, "fromUtc must be before toUtc.");

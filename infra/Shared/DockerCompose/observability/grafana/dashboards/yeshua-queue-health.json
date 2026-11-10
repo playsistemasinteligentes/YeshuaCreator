@@ -1,0 +1,169 @@
+{
+  "annotations": { "list": [] },
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": false,
+      "title": "Abrir visao tecnica completa",
+      "type": "link",
+      "url": "/d/yeshua-operational-overview/yeshua-visao-operacional"
+    }
+  ],
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** conclusao macro sobre a capacidade de cada fila continuar avancando. O valor 0 significa Saudavel, 1 Degradada, 2 Doente e 3 Sem diagnostico.\n\n**Como interpretar:** comece sempre aqui. Fila doente significa problema coletivo de progressao, como backlog sem vazao ou ausencia de evidencia recente. Uma fila saudavel ainda pode conter itens individualmente doentes; isso aparece no painel seguinte.\n\n**Proxima acao:** se a fila estiver doente, investigue Worker, banco, dependencia e capacidade antes de abrir itens individuais.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "max": 3,
+          "min": 0,
+          "mappings": [
+            { "options": { "0": { "color": "green", "index": 0, "text": "Saudavel" }, "1": { "color": "yellow", "index": 1, "text": "Degradada" }, "2": { "color": "red", "index": 2, "text": "Doente" }, "3": { "color": "purple", "index": 3, "text": "Sem diagnostico" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 2 }, { "color": "purple", "value": 3 } ] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((3 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sample_failed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0)) or (3 * ((time() - {__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}) > bool 180)) or (2 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"eligible_backlog\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0) * on (deployment_environment_name, service_name, operation) group_left() (sum by (deployment_environment_name, service_name, operation) (increase({__name__=~\"yeshua_worker_items(_item)?(_total)?\", state=\"processed\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}[5m])) == bool 0) * on (deployment_environment_name, service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"oldest_eligible_age_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} >= bool 120)) or (0 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} >= bool 0)))",
+          "legendFormat": "{{queue}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "1. A fila esta saudavel?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** conclusao separada sobre os itens de cada fila. O valor 0 significa Sem doentes, 1 Com atencao e 2 Com doenca critica.\n\n**Como interpretar:** este painel nao declara a fila inteira doente. Ele informa que existem individuos que exigem investigacao mesmo quando outros itens continuam avancando normalmente. Falha terminal e processamento abandonado sao tratados como criticos.\n\n**Proxima acao:** abra a composicao das doencas e depois consulte apenas os itens da categoria escolhida.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "max": 2,
+          "min": 0,
+          "mappings": [
+            { "options": { "0": { "color": "green", "index": 0, "text": "Sem doentes" }, "1": { "color": "yellow", "index": 1, "text": "Com atencao" }, "2": { "color": "red", "index": 2, "text": "Doenca critica" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 2 } ] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "max by (deployment_environment_name, service_name, operation, queue) ((2 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(terminal_failure|stale_processing)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0)) or (1 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} > bool 0)) or (0 * ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sampled_at_unix_seconds\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"} >= bool 0)))",
+          "legendFormat": "{{queue}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "2. Existem itens doentes?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** quantidade atual de itens doentes em todas as filas selecionadas.\n\n**Como interpretar:** zero significa que nenhum item foi classificado como doente no ultimo snapshot. Um valor positivo deve ser aberto por tipo no painel de composicao; ele nao deve ser confundido com backlog.\n\n**Proxima acao:** use o tipo de doenca para decidir quais itens merecem correlacao com evidencias e traces.",
+      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 6, "x": 0, "y": 9 },
+      "id": 3,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "targets": [
+        { "editorMode": "code", "expr": "sum(max by (service_name, operation, queue) ({__name__=~\"yeshua_queue_current(_value)?\", metric=\"sick_items\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}))", "legendFormat": "Itens doentes", "range": true, "refId": "A" }
+      ],
+      "title": "3. Total de itens doentes",
+      "type": "stat"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** distribui os itens doentes entre espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal.\n\n**Como interpretar:** as categorias sao mutuamente exclusivas e priorizam a doenca mais grave. A categoria descreve o sintoma operacional, nao prova a causa raiz. Exception, SQL lento, dependencia, capacidade e regra de negocio so podem ser afirmados depois da evidencia.\n\n**Proxima acao:** escolha a categoria dominante e diagnostique os itens correspondentes pelo MCP.",
+      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 7, "w": 18, "x": 6, "y": 9 },
+      "id": 4,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        { "editorMode": "code", "expr": "sum by (metric) (max by (service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\"}))", "legendFormat": "{{metric}}", "range": true, "refId": "A" }
+      ],
+      "title": "4. Qual e a doenca?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "loki", "uid": "loki" },
+      "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** cada linha identifica fila, item, doenca, severidade, idades, tentativas, assinatura sanitizada e identidades causais. A ausencia de linha nao invalida a metrica agregada: a evidencia pode ter expirado ou ter sido deduplicada.\n\n**Proxima acao:** copie Queue e ItemReference para yeshua_queue_item_diagnose; o metodo procura a evidencia mais recente e o trace retido pela identidade da execucao.",
+      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 16 },
+      "id": 5,
+      "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
+      "targets": [
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\"", "queryType": "range", "refId": "A" }
+      ],
+      "title": "5. Quais itens estao doentes?",
+      "type": "logs"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 41,
+  "tags": ["yeshua", "observability", "queue-health", "macro-to-micro"],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".*",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\"}, deployment_environment_name)",
+        "includeAll": true,
+        "label": "Ambiente",
+        "multi": true,
+        "name": "environment",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_queue_current(_value)?\"}, deployment_environment_name)", "refId": "VariableQueryEditor-Environment" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\"}, service_name)",
+        "includeAll": true,
+        "label": "Servico",
+        "multi": true,
+        "name": "service",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\"}, service_name)", "refId": "VariableQueryEditor-Service" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": { "from": "now-6h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Yeshua - Diagnostico de Filas",
+  "uid": "yeshua-queue-health",
+  "version": 1,
+  "weekStart": ""
+}
