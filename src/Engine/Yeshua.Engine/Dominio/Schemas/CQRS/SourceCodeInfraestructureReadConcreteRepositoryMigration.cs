@@ -461,6 +461,11 @@ namespace Dominio.Schemas.CQRS
                            COALESCE(currentStep.[RetryCount], 0) AS RetryCount,
                            currentStep.[LastExecutionAt],
                            currentStep.[ErrorMessage],
+                           currentStep.[FailureNature],
+                           currentStep.[FailureTransience],
+                           currentStep.[FailureOrigin],
+                           currentStep.[FailureRetryable],
+                           currentStep.[FailureCode],
                            CASE
                                WHEN currentStep.[Status] = 4
                                    THEN COALESCE(currentStep.[LastExecutionAt], s.[CreatedAt])
@@ -475,7 +480,12 @@ namespace Dominio.Schemas.CQRS
                                  st.[ExecutionCount],
                                  st.[RetryCount],
                                  st.[LastExecutionAt],
-                                 st.[ErrorMessage]
+                                 st.[ErrorMessage],
+                                 st.[FailureNature],
+                                 st.[FailureTransience],
+                                 st.[FailureOrigin],
+                                 st.[FailureRetryable],
+                                 st.[FailureCode]
                             FROM [ySagaStep] st
                            WHERE st.[SagaId] = s.[Id]
                              AND st.[Deleted] = 0
@@ -617,6 +627,11 @@ namespace Dominio.Schemas.CQRS
                        [OperationalEntityId],
                        [RootOperationId],
                        [ExecutionId],
+                       [FailureNature],
+                       [FailureTransience],
+                       [FailureOrigin],
+                       [FailureRetryable],
+                       [FailureCode],
                        CASE WHEN NULLIF([ErrorMessage], '') IS NULL THEN NULL
                             ELSE LOWER(CONVERT(varchar(64), HASHBYTES('SHA2_256', [ErrorMessage]), 2))
                        END AS ErrorSignature
@@ -658,7 +673,13 @@ namespace Dominio.Schemas.CQRS
                     row.OperationalEntityId,
                     row.RootOperationId,
                     row.ExecutionId,
-                    row.ErrorSignature))
+                    row.ErrorSignature,
+                    FailureCategory(row.FailureNature),
+                    row.FailureNature,
+                    row.FailureTransience,
+                    row.FailureOrigin,
+                    row.FailureRetryable,
+                    row.FailureCode))
                 .ToList();
         }
 
@@ -702,7 +723,19 @@ namespace Dominio.Schemas.CQRS
             public string? RootOperationId { get; init; }
             public string? ExecutionId { get; init; }
             public string? ErrorSignature { get; init; }
+            public string? FailureNature { get; init; }
+            public string? FailureTransience { get; init; }
+            public string? FailureOrigin { get; init; }
+            public bool? FailureRetryable { get; init; }
+            public string? FailureCode { get; init; }
         }
+
+        private static string FailureCategory(string? nature) => nature switch
+        {
+            "Technical" => "Technical",
+            "Business" or "ExternalRejection" => "Business",
+            _ => "Unknown"
+        };
 """);
         }
     }

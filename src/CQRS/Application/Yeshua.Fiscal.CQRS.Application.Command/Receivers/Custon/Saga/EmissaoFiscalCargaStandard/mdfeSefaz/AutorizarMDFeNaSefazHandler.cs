@@ -160,12 +160,18 @@ namespace Command.Receivers
                 if (!respostaEstruturada)
                     throw new SagaStepExecutionException(
                         $"Falha tecnica na autorizacao do MDF-e: SEFAZ nao retornou resposta fiscal estruturada. HTTP={result.HttpStatusCode}; chave={result.Chave}",
-                        retryable: true);
+                        retryable: true,
+                        nature: OperationalFailureNature.Technical,
+                        origin: OperationalFailureOrigin.ExternalProvider,
+                        stableCode: "SEFAZ_MDFE_UNSTRUCTURED_RESPONSE");
 
                 if (!result.Autorizado)
                     throw new SagaStepExecutionException(
                         $"Rejeicao fiscal do MDF-e: cStat={result.CodigoRetorno}; xMotivo={result.Motivo}; chave={result.Chave}",
-                        retryable: false);
+                        retryable: false,
+                        nature: OperationalFailureNature.ExternalRejection,
+                        origin: OperationalFailureOrigin.ExternalProvider,
+                        stableCode: $"SEFAZ_{result.CodigoRetorno}");
             }
             catch (SagaStepExecutionException)
             {
@@ -208,7 +214,10 @@ namespace Command.Receivers
                 throw new SagaStepExecutionException(
                     $"Falha tecnica na autorizacao do MDF-e: {ex.Message}",
                     retryable: true,
-                    ex);
+                    ex,
+                    OperationalFailureNature.Technical,
+                    OperationalFailureOrigin.ExternalProvider,
+                    "SEFAZ_MDFE_TECHNICAL_FAILURE");
             }
         }
 

@@ -39,6 +39,11 @@ namespace Repositorio.Outputs
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
+    public string failurenature { get; set; } = string.Empty;
+    public string failuretransience { get; set; } = string.Empty;
+    public string failureorigin { get; set; } = string.Empty;
+    public bool failureretryable { get; set; }
+    public string failurecode { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

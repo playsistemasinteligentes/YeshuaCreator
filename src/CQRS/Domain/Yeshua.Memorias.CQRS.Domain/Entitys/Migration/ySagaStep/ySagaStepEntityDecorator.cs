@@ -41,6 +41,11 @@
             public const ulong Changed = 1UL << 18;
             public const ulong UserId = 1UL << 19;
             public const ulong OperationalEntityId = 1UL << 20;
+            public const ulong FailureNature = 1UL << 21;
+            public const ulong FailureTransience = 1UL << 22;
+            public const ulong FailureOrigin = 1UL << 23;
+            public const ulong FailureRetryable = 1UL << 24;
+            public const ulong FailureCode = 1UL << 25;
         }
 
         public static class ySagaStepOperationalFields
@@ -66,6 +71,11 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FailureNature = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FailureTransience = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FailureOrigin = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FailureRetryable = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification FailureCode = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class ySagaStepDecorator : IySagaStepEntity
@@ -383,6 +393,76 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+
+                                    public string? FailureNature
+                                    {
+                                        get => _inner.FailureNature;
+                                        set
+                                        {
+                                            if (_inner.FailureNature != value)
+                                            {
+                                                _inner.FailureNature = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.FailureNature) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "FailureNature", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.FailureNature, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? FailureTransience
+                                    {
+                                        get => _inner.FailureTransience;
+                                        set
+                                        {
+                                            if (_inner.FailureTransience != value)
+                                            {
+                                                _inner.FailureTransience = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.FailureTransience) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "FailureTransience", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.FailureTransience, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? FailureOrigin
+                                    {
+                                        get => _inner.FailureOrigin;
+                                        set
+                                        {
+                                            if (_inner.FailureOrigin != value)
+                                            {
+                                                _inner.FailureOrigin = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.FailureOrigin) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "FailureOrigin", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.FailureOrigin, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public bool? FailureRetryable
+                                    {
+                                        get => _inner.FailureRetryable;
+                                        set
+                                        {
+                                            if (_inner.FailureRetryable != value)
+                                            {
+                                                _inner.FailureRetryable = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.FailureRetryable) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "FailureRetryable", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.FailureRetryable, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? FailureCode
+                                    {
+                                        get => _inner.FailureCode;
+                                        set
+                                        {
+                                            if (_inner.FailureCode != value)
+                                            {
+                                                _inner.FailureCode = value;
+                                                if ((_trackingMask & ySagaStepTrackingFields.FailureCode) != 0UL)
+                                                    _logger.DomainValueChanged("ySagaStep", "FailureCode", _trackingTraceId, _trackingOperation, _trackingRecordId, value, ySagaStepOperationalFields.FailureCode, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

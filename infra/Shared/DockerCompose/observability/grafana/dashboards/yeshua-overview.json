@@ -221,7 +221,7 @@
     },
     {
       "datasource": { "type": "loki", "uid": "loki" },
-      "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** cada linha identifica fila, item, doenca, severidade, idades, tentativas, assinatura sanitizada e identidades causais. Itens saudaveis permanecem silenciosos.\n\n**Proxima acao:** abra a lista de itens doentes pelo painel anterior e clique no ItemReference para navegar pelo historico e pelo trace.",
+      "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** `FailureCategory` separa `Technical`, `Business` e `Unknown`. A classificacao vem da borda da aplicacao que conhece o resultado; o Grafana apenas a apresenta. `FailureNature`, `FailureOrigin`, `FailureTransience`, `FailureRetryable` e `FailureCode` detalham a decisao. Registros antigos ou ainda nao classificados aparecem como `Unknown`.\n\n**Proxima acao:** clique no `ItemReference` para navegar pelo historico e pelo trace.",
       "fieldConfig": {
         "defaults": {},
         "overrides": [
@@ -242,11 +242,11 @@
       "id": 25,
       "options": { "cellHeight": "sm", "footer": { "countRows": false, "enablePagination": true, "fields": "", "reducer": ["sum"], "show": false }, "showHeader": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" | json tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | queue_name=~\"$queue\" | line_format \"{{.deployment_environment_name}}|{{.tenant_id}}|{{.service_name}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" | json tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", failure_category=\"Data.FailureCategory\", failure_nature=\"Data.FailureNature\", failure_transience=\"Data.FailureTransience\", failure_origin=\"Data.FailureOrigin\", failure_retryable=\"Data.FailureRetryable\", failure_code=\"Data.FailureCode\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | queue_name=~\"$queue\" | line_format \"{{.deployment_environment_name}}|{{.tenant_id}}|{{.service_name}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.failure_category}}|{{.failure_nature}}|{{.failure_transience}}|{{.failure_origin}}|{{.failure_retryable}}|{{.failure_code}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
       ],
       "title": "12. Itens doentes: evidencias recentes",
       "transformations": [
-        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<Environment>[^|]*)\\|(?<TenantId>[^|]*)\\|(?<Service>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<Environment>[^|]*)\\|(?<TenantId>[^|]*)\\|(?<Service>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<FailureCategory>[^|]*)\\|(?<FailureNature>[^|]*)\\|(?<FailureTransience>[^|]*)\\|(?<FailureOrigin>[^|]*)\\|(?<FailureRetryable>[^|]*)\\|(?<FailureCode>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
         {
           "id": "groupBy",
           "options": {
@@ -260,6 +260,12 @@
               "ItemReference": { "aggregations": [], "operation": "groupby" },
               "Disease": { "aggregations": [], "operation": "groupby" },
               "Severity": { "aggregations": [], "operation": "groupby" },
+              "FailureCategory": { "aggregations": [], "operation": "groupby" },
+              "FailureNature": { "aggregations": [], "operation": "groupby" },
+              "FailureTransience": { "aggregations": [], "operation": "groupby" },
+              "FailureOrigin": { "aggregations": [], "operation": "groupby" },
+              "FailureRetryable": { "aggregations": [], "operation": "groupby" },
+              "FailureCode": { "aggregations": [], "operation": "groupby" },
               "RetryCount": { "aggregations": [], "operation": "groupby" },
               "RootOperationId": { "aggregations": [], "operation": "groupby" },
               "ErrorSignature": { "aggregations": [], "operation": "groupby" }

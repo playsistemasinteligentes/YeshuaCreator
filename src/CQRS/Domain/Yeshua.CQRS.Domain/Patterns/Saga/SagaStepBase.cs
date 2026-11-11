@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dominio.Operational;
 
 namespace Dominio.Patterns.Saga
 {
@@ -16,6 +17,11 @@ namespace Dominio.Patterns.Saga
         public SagaStepStatus Status { get; protected set; }
         public DateTime? CompletedAt { get; protected set; }
         public string ErrorMessage { get; protected set; }
+        public OperationalFailureNature? FailureNature { get; private set; }
+        public OperationalFailureTransience? FailureTransience { get; private set; }
+        public OperationalFailureOrigin? FailureOrigin { get; private set; }
+        public bool? FailureRetryable { get; private set; }
+        public string? FailureCode { get; private set; }
         public string Payload { get; protected set; }
 
         public int ExecutionCount { get; protected set; }
@@ -82,10 +88,24 @@ namespace Dominio.Patterns.Saga
             MarkDirty();
         }
 
-        public void SetFailed(string menssage)
+        public void SetFailed(
+            string menssage,
+            OperationalFailureClassification? classification = null)
         {
             Status = SagaStepStatus.Failed;
             ErrorMessage = menssage;
+            if (classification.HasValue)
+                SetFailureClassification(classification.Value);
+            MarkDirty();
+        }
+
+        public void SetFailureClassification(OperationalFailureClassification classification)
+        {
+            FailureNature = classification.Nature;
+            FailureTransience = classification.Transience;
+            FailureOrigin = classification.Origin;
+            FailureRetryable = classification.Retryable;
+            FailureCode = classification.StableCode;
             MarkDirty();
         }
 
@@ -133,7 +153,12 @@ namespace Dominio.Patterns.Saga
             string? causationId = null,
             int executionCount = 0,
             DateTime? lastExecutionAt = null,
-            string? errorMessage = null)
+            string? errorMessage = null,
+            string? failureNature = null,
+            string? failureTransience = null,
+            string? failureOrigin = null,
+            bool? failureRetryable = null,
+            string? failureCode = null)
         {
             Id = id;
             Status = (SagaStepStatus)status;
@@ -143,6 +168,11 @@ namespace Dominio.Patterns.Saga
             ExecutionCount = executionCount;
             LastExecutionAt = lastExecutionAt;
             ErrorMessage = errorMessage ?? string.Empty;
+            FailureNature = ParseEnum<OperationalFailureNature>(failureNature);
+            FailureTransience = ParseEnum<OperationalFailureTransience>(failureTransience);
+            FailureOrigin = ParseEnum<OperationalFailureOrigin>(failureOrigin);
+            FailureRetryable = failureRetryable;
+            FailureCode = failureCode;
             //NextExecutionAt = nextExecutionAt;
             Payload = payload;
             RootOperationId = rootOperationId;
@@ -153,5 +183,11 @@ namespace Dominio.Patterns.Saga
             IsDirty = false;
         }
         public bool CanRetry() => RetryCount < MaxRetries;
+
+        private static TEnum? ParseEnum<TEnum>(string? value)
+            where TEnum : struct, Enum =>
+            Enum.TryParse<TEnum>(value, ignoreCase: true, out var parsed)
+                ? parsed
+                : null;
     }
 }

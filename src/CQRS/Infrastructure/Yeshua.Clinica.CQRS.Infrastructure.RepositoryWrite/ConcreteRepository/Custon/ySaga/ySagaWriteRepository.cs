@@ -110,6 +110,11 @@ namespace Input.Repository.ySaga
             entity.OperationId = step.OperationId;
             entity.ExecutionId = step.ExecutionId;
             entity.CausationId = step.CausationId;
+            entity.FailureNature = step.FailureNature?.ToString();
+            entity.FailureTransience = step.FailureTransience?.ToString();
+            entity.FailureOrigin = step.FailureOrigin?.ToString();
+            entity.FailureRetryable = step.FailureRetryable;
+            entity.FailureCode = step.FailureCode;
             return entity;
         }
 

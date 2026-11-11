@@ -121,7 +121,7 @@ namespace Input.Repository.ySaga
                 ? step.CompletedAt
                 : null;
 
-            return new ySagaStepFactory(_logger).Create(
+            var entity = new ySagaStepFactory(_logger).Create(
                 step.Id == 0 ? null : step.Id,
                 sagaId,
                 step.Key,
@@ -134,6 +134,12 @@ namespace Input.Repository.ySaga
                 step.ErrorMessage,
                 step.Payload,
                 step.RetryCount);
+            entity.FailureNature = step.FailureNature?.ToString();
+            entity.FailureTransience = step.FailureTransience?.ToString();
+            entity.FailureOrigin = step.FailureOrigin?.ToString();
+            entity.FailureRetryable = step.FailureRetryable;
+            entity.FailureCode = step.FailureCode;
+            return entity;
         }
     }
 }

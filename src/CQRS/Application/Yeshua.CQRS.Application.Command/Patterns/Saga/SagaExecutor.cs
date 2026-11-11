@@ -131,7 +131,7 @@ namespace Command.Patterns
             catch (SagaStepExecutionException e)
             {
                 activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
-                HandleFailure(saga, step, e, e.Retryable);
+                HandleFailure(saga, step, e, e.Classification);
                 OperationalActivity.RecordFailure(
                     activity,
                     e,
@@ -148,16 +148,17 @@ namespace Command.Patterns
                         telemetry,
                         executionIdentity,
                         startedTimestamp,
-                        e);
+                        e,
+                        e.Classification);
             }
             catch (Exception e)
             {
                 activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
-                HandleFailure(saga, step, e, retryable: true);
                 var classification = OperationalFailureClassification.Technical(
                     e,
                     retryable: true,
                     OperationalFailureOrigin.Application);
+                HandleFailure(saga, step, e, classification);
                 OperationalActivity.RecordFailure(
                     activity,
                     e,
@@ -177,7 +178,8 @@ namespace Command.Patterns
                         telemetry,
                         executionIdentity,
                         startedTimestamp,
-                        e);
+                        e,
+                        classification);
                 }
             }
         }
@@ -218,22 +220,28 @@ namespace Command.Patterns
             }
         }
 
-        private void HandleFailure(SagaBase saga, SagaStepBase step, Exception e, bool retryable)
+        private void HandleFailure(
+            SagaBase saga,
+            SagaStepBase step,
+            Exception e,
+            OperationalFailureClassification classification)
         {
             saga.MarkExecutionAttemptFailed();
-            if (retryable)
+            step.SetFailureClassification(classification);
+            if (classification.Retryable)
             {
                 step.IncrementRetry();
                 if (step.CanRetry())
                 {
                     var delay = TimeSpan.FromSeconds(5 * step.RetryCount);
-                    step.SetPending(DateTime.UtcNow.Add(delay));
-                    saga.NextExecutionAt = step.NextExecutionAt.Value;
+                    var nextExecutionAt = DateTime.UtcNow.Add(delay);
+                    step.SetPending(nextExecutionAt);
+                    saga.NextExecutionAt = nextExecutionAt;
                     return;
                 }
             }
 
-            step.SetFailed(e.Message);
+            step.SetFailed(e.Message, classification);
             saga.MarkFailed(e.Message);
         }
 
@@ -244,8 +252,12 @@ namespace Command.Patterns
             OperationalTelemetryDecision telemetry,
             OperationalExecutionIdentity executionIdentity,
             long startedTimestamp,
-            Exception exception)
+            Exception exception,
+            OperationalFailureClassification classification)
         {
+            var businessFailure = classification.Nature is
+                OperationalFailureNature.Business or
+                OperationalFailureNature.ExternalRejection;
             Record(
                 saga,
                 step,
@@ -253,8 +265,13 @@ namespace Command.Patterns
                 telemetry,
                 executionIdentity,
                 ElapsedMilliseconds(startedTimestamp),
-                OperationalTechnicalOutcome.Failed,
-                errorCode: exception.GetType().Name,
+                businessFailure
+                    ? OperationalTechnicalOutcome.Succeeded
+                    : OperationalTechnicalOutcome.Failed,
+                businessFailure
+                    ? OperationalBusinessOutcome.Rejected
+                    : OperationalBusinessOutcome.NotEvaluated,
+                errorCode: classification.StableCode,
                 errorSummary: $"Saga step failed with {exception.GetType().Name}.",
                 nextExecutionAtUtc: step.NextExecutionAt);
         }

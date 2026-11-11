@@ -285,6 +285,46 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByFailureNature(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByFailureNatureQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByFailureTransience(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByFailureTransienceQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByFailureOrigin(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByFailureOriginQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByFailureRetryable(bool value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByFailureRetryableQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
+        public bool ExistsByFailureCode(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.ExistsByFailureCodeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public ySagaStepDTO FirstById(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
@@ -453,6 +493,46 @@ namespace Read.Repository
                 return result;
         }
 
+        public ySagaStepDTO FirstByFailureNature(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureNatureQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaStepDTO FirstByFailureTransience(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureTransienceQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaStepDTO FirstByFailureOrigin(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureOriginQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaStepDTO FirstByFailureRetryable(bool value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureRetryableQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
+        public ySagaStepDTO FirstByFailureCode(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureCodeQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.QueryFirstOrDefault<ySagaStepDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<ySagaStepDTO> GetAllById(int value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByIdQuery(value , TakeOffTenantID);
@@ -616,6 +696,46 @@ namespace Read.Repository
         public IEnumerable<ySagaStepDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false)
         {
             var query = _query.FirstByOperationalEntityIdQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaStepDTO> GetAllByFailureNature(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureNatureQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaStepDTO> GetAllByFailureTransience(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureTransienceQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaStepDTO> GetAllByFailureOrigin(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureOriginQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaStepDTO> GetAllByFailureRetryable(bool value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureRetryableQuery(value , TakeOffTenantID);
+
+                var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<ySagaStepDTO> GetAllByFailureCode(string value , bool TakeOffTenantID = false)
+        {
+            var query = _query.FirstByFailureCodeQuery(value , TakeOffTenantID);
 
                 var result = _unitOfWork.Query<ySagaStepDTO>(query.Query,query.Parameters).ToList();
                 return result;

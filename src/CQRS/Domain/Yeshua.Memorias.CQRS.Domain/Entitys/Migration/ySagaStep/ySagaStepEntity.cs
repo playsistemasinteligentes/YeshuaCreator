@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -41,6 +41,11 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public string? FailureNature { get; set; }
+    public string? FailureTransience { get; set; }
+    public string? FailureOrigin { get; set; }
+    public bool? FailureRetryable { get; set; }
+    public string? FailureCode { get; set; }
     private List<string> _erroMensagem = new List<string>();
  internal ySagaStepEntity(int? id, int sagaid, string stepkey, int indexorder, string correlationid, int status, int executioncount, DateTime? lastexecutionat, DateTime? completedat, string? errormessage, string? payload, int retrycount ){
  Id = id; 
@@ -62,6 +67,11 @@
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 
+ FailureNature = null;
+ FailureTransience = null;
+ FailureOrigin = null;
+ FailureRetryable = null;
+ FailureCode = null;
 }
 public bool isValidData()
 {

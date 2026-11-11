@@ -44,9 +44,20 @@ Os limites sao configuraveis por ambiente. Quando mais de uma regra se aplica,
 cada item recebe somente a doenca mais grave nesta ordem: falha terminal,
 processamento travado, falha repetida, execucao recorrente e espera excessiva.
 
-Essas categorias representam sintomas operacionais. Elas ainda nao distinguem
-falha tecnica de rejeicao de negocio. Essa natureza deve vir explicitamente da
-borda que conhece o resultado, nunca de inferencia do dashboard ou do MCP.
+Essas categorias representam sintomas operacionais. A causa e classificada em
+uma segunda dimensao, informada explicitamente pela borda que conhece o
+resultado, nunca inferida pelo dashboard:
+
+| Categoria | Significado | Exemplo |
+| --- | --- | --- |
+| `Technical` | a operacao nao conseguiu ser concluida por falha tecnica | exception, timeout, banco ou dependencia indisponivel |
+| `Business` | a infraestrutura funcionou, mas o resultado foi rejeitado por regra de negocio ou provedor | rejeicao fiscal conhecida, validacao de dominio |
+| `Unknown` | registro legado ou borda que ainda nao informou classificacao confiavel | falha anterior a esta versao ou erro sem contexto suficiente |
+
+`FailureNature`, `FailureOrigin`, `FailureTransience`, `FailureRetryable` e
+`FailureCode` preservam o detalhe informado pela aplicacao. O Grafana apenas
+apresenta esses campos. `Unknown` e uma conclusao explicita de falta de
+evidencia; ele nao autoriza adivinhacao por texto, dashboard ou agente.
 
 ## Fronteiras De Seguranca
 

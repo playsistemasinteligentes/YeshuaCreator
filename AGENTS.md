@@ -428,6 +428,13 @@ Miolos que IA/dev devem preencher:
   continua saudavel, os itens estao doentes e a conclusao geral pede atencao.
   Doenca tambem nao e causa: exception, SQL, dependencia, capacidade ou regra
   de negocio so podem ser afirmados depois da evidencia correlacionada.
+- A classificacao causal minima de um item doente e `Technical`, `Business` ou
+  `Unknown`. Ela deve ser informada pela borda que conhece o resultado e
+  persistida no step da saga junto com natureza, origem, transitoriedade,
+  possibilidade de retry e codigo estavel. O diagnostico de fila apenas projeta
+  essa decisao e o Grafana apenas a apresenta; dashboard, Loki, MCP ou agente
+  nao podem inferir categoria pela mensagem. Registros antigos ou bordas sem
+  evidencia suficiente permanecem `Unknown`.
 - Em exportacao OTLP por push, alertas de ausencia de heartbeat devem agregar
   as instancias ativas por servico e operacao. Series de uma instancia retirada
   por deploy permanecem temporariamente no Prometheus e nao podem, sozinhas,

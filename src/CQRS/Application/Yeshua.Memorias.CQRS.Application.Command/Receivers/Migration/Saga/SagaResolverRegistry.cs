@@ -79,7 +79,7 @@ namespace Command.Receivers.Migration.Saga
                     if (dtoStep == null)
                         continue;
 
-                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage);
+                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage, dtoStep.failurenature, dtoStep.failuretransience, dtoStep.failureorigin, dtoStep.failureretryable, dtoStep.failurecode);
                 }
             }
 

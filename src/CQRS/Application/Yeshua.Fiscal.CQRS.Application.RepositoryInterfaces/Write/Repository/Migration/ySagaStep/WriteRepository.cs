@@ -42,6 +42,11 @@ namespace IRepository.Write
         void UpdateChanged(int id, DateTime value);
         void UpdateUserId(int id, int value);
         void UpdateOperationalEntityId(int id, string value);
+        void UpdateFailureNature(int id, string value);
+        void UpdateFailureTransience(int id, string value);
+        void UpdateFailureOrigin(int id, string value);
+        void UpdateFailureRetryable(int id, bool value);
+        void UpdateFailureCode(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

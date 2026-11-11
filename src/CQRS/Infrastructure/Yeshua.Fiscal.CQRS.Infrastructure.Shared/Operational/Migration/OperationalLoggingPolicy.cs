@@ -1650,6 +1650,16 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ySagaStepTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "OperationalEntityId"))
                         mask |= ySagaStepTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "FailureNature"))
+                        mask |= ySagaStepTrackingFields.FailureNature;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "FailureTransience"))
+                        mask |= ySagaStepTrackingFields.FailureTransience;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "FailureOrigin"))
+                        mask |= ySagaStepTrackingFields.FailureOrigin;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "FailureRetryable"))
+                        mask |= ySagaStepTrackingFields.FailureRetryable;
+                    if (DomainFieldTracked(policy, "ySagaStep", operation, recordId, "FailureCode"))
+                        mask |= ySagaStepTrackingFields.FailureCode;
                     return mask;
                 }
 

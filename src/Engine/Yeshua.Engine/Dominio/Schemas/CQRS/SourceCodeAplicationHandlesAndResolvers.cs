@@ -543,7 +543,7 @@ namespace Dominio.Schemas.CQRS
                 sb.AppendLine("                    if (dtoStep == null)");
                 sb.AppendLine("                        continue;");
                 sb.AppendLine();
-                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage);");
+                sb.AppendLine("                    step.Hydrate(dtoStep.id, dtoStep.status, dtoStep.correlationid, dtoStep.completedat, dtoStep.retrycount, dtoStep.payload, dtoStep.rootoperationid, dtoStep.operationid, dtoStep.executionid, dtoStep.causationid, dtoStep.executioncount, dtoStep.lastexecutionat, dtoStep.errormessage, dtoStep.failurenature, dtoStep.failuretransience, dtoStep.failureorigin, dtoStep.failureretryable, dtoStep.failurecode);");
                 sb.AppendLine("                }");
                 sb.AppendLine("            }");
                 sb.AppendLine();

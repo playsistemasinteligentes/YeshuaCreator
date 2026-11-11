@@ -147,7 +147,9 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             currentItems?.Add(key);
 
             var state = $"{(int)item.Disease}|{item.ExecutionCount}|{item.RetryCount}|" +
-                $"{item.LastOutcome}|{item.ErrorSignature}";
+                $"{item.LastOutcome}|{item.ErrorSignature}|{item.FailureCategory}|" +
+                $"{item.FailureNature}|{item.FailureTransience}|{item.FailureOrigin}|" +
+                $"{item.FailureRetryable}|{item.FailureCode}";
             if (_reportedSickItems.TryGetValue(key, out var previousState) &&
                 string.Equals(previousState, state, StringComparison.Ordinal))
             {
@@ -164,13 +166,23 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
             evidencePublisher ??=
                 _serviceProvider.GetRequiredService<OperationalEvidencePublisher>();
 
+            var technicalOutcome = item.FailureCategory switch
+            {
+                "Technical" => OperationalTechnicalOutcome.Failed,
+                "Business" => OperationalTechnicalOutcome.Succeeded,
+                _ => OperationalTechnicalOutcome.NotEvaluated
+            };
+            var businessOutcome = item.FailureCategory == "Business"
+                ? OperationalBusinessOutcome.Rejected
+                : OperationalBusinessOutcome.NotEvaluated;
+
             var envelope = new OperationalEvidenceEnvelope(
                 "QueueItemHealth",
                 WorkerOperation,
                 OperationalEvidenceAxes.ParseSeverity(item.Severity),
                 OperationalDepth.D0,
-                OperationalTechnicalOutcome.Failed,
-                OperationalBusinessOutcome.NotEvaluated,
+                technicalOutcome,
+                businessOutcome,
                 RootOperationId: item.RootOperationId,
                 ExecutionId: item.ExecutionId,
                 OperationalEntityId: item.OperationalEntityId);
@@ -188,6 +200,12 @@ public sealed class PollingWorker<TReceiver, TCommand, TResponse> : BackgroundSe
                 new("ExecutionCount", item.ExecutionCount),
                 new("RetryCount", item.RetryCount),
                 new("LastOutcome", item.LastOutcome),
+                new("FailureCategory", item.FailureCategory),
+                new("FailureNature", item.FailureNature),
+                new("FailureTransience", item.FailureTransience),
+                new("FailureOrigin", item.FailureOrigin),
+                new("FailureRetryable", item.FailureRetryable),
+                new("FailureCode", item.FailureCode),
                 new("ErrorSignature", item.ErrorSignature)
             ];
             evidencePublisher.Publish(envelope, fields);

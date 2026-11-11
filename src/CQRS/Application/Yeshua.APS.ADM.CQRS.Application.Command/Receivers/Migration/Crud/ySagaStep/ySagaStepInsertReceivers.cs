@@ -59,6 +59,11 @@ namespace Command.Receivers.Write
                  ysagastep.OperationId = hasExecutionIdentity ? executionIdentity.OperationId : c.OperationId;
                  ysagastep.ExecutionId = hasExecutionIdentity ? executionIdentity.ExecutionId : c.ExecutionId;
                  ysagastep.CausationId = hasExecutionIdentity ? executionIdentity.CausationId : c.CausationId;
+                 ysagastep.FailureNature = c.FailureNature;
+                 ysagastep.FailureTransience = c.FailureTransience;
+                 ysagastep.FailureOrigin = c.FailureOrigin;
+                 ysagastep.FailureRetryable = c.FailureRetryable;
+                 ysagastep.FailureCode = c.FailureCode;
                  System.Diagnostics.Activity.Current?.SetTag("yeshua.operational_entity_id", ysagastep.OperationalEntityId);
                  var domainResult = ySagaStepDomainBehavior.Apply(ysagastep, context);
                  if (!domainResult.IsValid)

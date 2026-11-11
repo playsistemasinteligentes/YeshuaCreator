@@ -151,6 +151,31 @@ namespace Input.Repository.ySagaStep
             var query = _query.UpdateOperationalEntityId(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateFailureNature(int id, string value)
+        {
+            var query = _query.UpdateFailureNature(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateFailureTransience(int id, string value)
+        {
+            var query = _query.UpdateFailureTransience(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateFailureOrigin(int id, string value)
+        {
+            var query = _query.UpdateFailureOrigin(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateFailureRetryable(int id, bool value)
+        {
+            var query = _query.UpdateFailureRetryable(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
+        public void UpdateFailureCode(int id, string value)
+        {
+            var query = _query.UpdateFailureCode(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

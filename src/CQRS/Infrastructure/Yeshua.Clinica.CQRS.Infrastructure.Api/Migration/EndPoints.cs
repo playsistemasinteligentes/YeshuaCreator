@@ -555,6 +555,11 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "Changed", title = "Changed", classification = "Internal" },
                     new { name = "UserId", title = "User ID", classification = "Internal" },
                     new { name = "OperationalEntityId", title = "Identificador operacional", classification = "Internal" },
+                    new { name = "FailureNature", title = "Natureza da falha", classification = "Internal" },
+                    new { name = "FailureTransience", title = "Transitoriedade da falha", classification = "Internal" },
+                    new { name = "FailureOrigin", title = "Origem da falha", classification = "Internal" },
+                    new { name = "FailureRetryable", title = "Falha permite retry", classification = "Internal" },
+                    new { name = "FailureCode", title = "Codigo estavel da falha", classification = "Internal" },
                 }
             },
             new

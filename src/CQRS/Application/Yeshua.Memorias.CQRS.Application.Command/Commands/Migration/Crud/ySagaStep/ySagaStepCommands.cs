@@ -34,6 +34,11 @@ namespace Command.Write
         public DateTime? Changed { get; set; }
         public int? UserId { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? FailureNature { get; set; }
+        public string? FailureTransience { get; set; }
+        public string? FailureOrigin { get; set; }
+        public bool? FailureRetryable { get; set; }
+        public string? FailureCode { get; set; }
  public string OperationalEntity => "ySagaStep";
  public string? OperationalRecordId => OperationalEntityId;
     }

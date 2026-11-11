@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep)
         {
-            this.Query = $@" INSERT INTO [ySagaStep] ([SagaId], [StepKey], [IndexOrder], [CorrelationId], [Status], [ExecutionCount], [LastExecutionAt], [CompletedAt], [ErrorMessage], [Payload], [RetryCount], [RootOperationId], [OperationId], [ExecutionId], [CausationId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId]) OUTPUT INSERTED.[Id] VALUES(@SagaId, @StepKey, @IndexOrder, @CorrelationId, @Status, @ExecutionCount, @LastExecutionAt, @CompletedAt, @ErrorMessage, @Payload, @RetryCount, @RootOperationId, @OperationId, @ExecutionId, @CausationId, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId) ";
+            this.Query = $@" INSERT INTO [ySagaStep] ([SagaId], [StepKey], [IndexOrder], [CorrelationId], [Status], [ExecutionCount], [LastExecutionAt], [CompletedAt], [ErrorMessage], [Payload], [RetryCount], [RootOperationId], [OperationId], [ExecutionId], [CausationId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [FailureNature], [FailureTransience], [FailureOrigin], [FailureRetryable], [FailureCode]) OUTPUT INSERTED.[Id] VALUES(@SagaId, @StepKey, @IndexOrder, @CorrelationId, @Status, @ExecutionCount, @LastExecutionAt, @CompletedAt, @ErrorMessage, @Payload, @RetryCount, @RootOperationId, @OperationId, @ExecutionId, @CausationId, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @FailureNature, @FailureTransience, @FailureOrigin, @FailureRetryable, @FailureCode) ";
             this.Parameters = new
             {
                 SagaId = ySagaStep.SagaId,
@@ -53,12 +53,17 @@ namespace Query.Write
                 Changed = DateTime.Now,
                 UserId = _executionContext.UserId,
                 OperationalEntityId = ySagaStep.OperationalEntityId,
+                FailureNature = ySagaStep.FailureNature,
+                FailureTransience = ySagaStep.FailureTransience,
+                FailureOrigin = ySagaStep.FailureOrigin,
+                FailureRetryable = ySagaStep.FailureRetryable,
+                FailureCode = ySagaStep.FailureCode,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
         public QueryModel UpdateySagaStepQuery(IySagaStepEntity ySagaStep)
         {
-            this.Query = $@" UPDATE [ySagaStep] SET [SagaId] = @SagaId, [StepKey] = @StepKey, [IndexOrder] = @IndexOrder, [CorrelationId] = @CorrelationId, [Status] = @Status, [ExecutionCount] = @ExecutionCount, [LastExecutionAt] = @LastExecutionAt, [CompletedAt] = @CompletedAt, [ErrorMessage] = @ErrorMessage, [Payload] = @Payload, [RetryCount] = @RetryCount, [RootOperationId] = @RootOperationId, [OperationId] = @OperationId, [ExecutionId] = @ExecutionId, [CausationId] = @CausationId, [Changed] = @Changed, [UserId] = @UserId WHERE [Id] = @Id ";
+            this.Query = $@" UPDATE [ySagaStep] SET [SagaId] = @SagaId, [StepKey] = @StepKey, [IndexOrder] = @IndexOrder, [CorrelationId] = @CorrelationId, [Status] = @Status, [ExecutionCount] = @ExecutionCount, [LastExecutionAt] = @LastExecutionAt, [CompletedAt] = @CompletedAt, [ErrorMessage] = @ErrorMessage, [Payload] = @Payload, [RetryCount] = @RetryCount, [RootOperationId] = @RootOperationId, [OperationId] = @OperationId, [ExecutionId] = @ExecutionId, [CausationId] = @CausationId, [Changed] = @Changed, [UserId] = @UserId, [FailureNature] = @FailureNature, [FailureTransience] = @FailureTransience, [FailureOrigin] = @FailureOrigin, [FailureRetryable] = @FailureRetryable, [FailureCode] = @FailureCode WHERE [Id] = @Id ";
             this.Parameters = new
             {
                 SagaId = ySagaStep.SagaId,
@@ -78,6 +83,11 @@ namespace Query.Write
                 CausationId = ySagaStep.CausationId,
                 Changed = ySagaStep.Changed,
                 UserId = _executionContext.UserId,
+                FailureNature = ySagaStep.FailureNature,
+                FailureTransience = ySagaStep.FailureTransience,
+                FailureOrigin = ySagaStep.FailureOrigin,
+                FailureRetryable = ySagaStep.FailureRetryable,
+                FailureCode = ySagaStep.FailureCode,
                 Id = ySagaStep.Id,
             };
             return new QueryModel(this.Query, this.Parameters);
@@ -278,6 +288,56 @@ namespace Query.Write
             this.Parameters = new
             {
                 OperationalEntityId = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateFailureNature(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySagaStep] SET [FailureNature] = @FailureNature WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                FailureNature = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateFailureTransience(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySagaStep] SET [FailureTransience] = @FailureTransience WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                FailureTransience = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateFailureOrigin(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySagaStep] SET [FailureOrigin] = @FailureOrigin WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                FailureOrigin = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateFailureRetryable(int id, bool value)
+        {
+            this.Query = $@" UPDATE [ySagaStep] SET [FailureRetryable] = @FailureRetryable WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                FailureRetryable = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateFailureCode(int id, string value)
+        {
+            this.Query = $@" UPDATE [ySagaStep] SET [FailureCode] = @FailureCode WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                FailureCode = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

@@ -4301,6 +4301,11 @@ namespace Yeshua.Studio.APS.ADM.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? FailureNature { get; set; }
+        public string? FailureTransience { get; set; }
+        public string? FailureOrigin { get; set; }
+        public bool? FailureRetryable { get; set; }
+        public string? FailureCode { get; set; }
 
         public static MyApp.QueryBuilder.Query<ySagaStep> Query() => new MyApp.QueryBuilder.Query<ySagaStep>();
     }

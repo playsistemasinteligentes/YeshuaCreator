@@ -90,6 +90,9 @@ public sealed class SagaQueueGenerationTests
         StringAssert.Contains(repository, "WHERE \" + RunnableSagaPredicate(\"[ySaga]\")");
         StringAssert.Contains(repository, "CASE WHEN \" + RunnableSagaPredicate(\"s\")");
         StringAssert.Contains(repository, "HASHBYTES('SHA2_256', [ErrorMessage])");
+        StringAssert.Contains(repository, "currentStep.[FailureNature]");
+        StringAssert.Contains(repository, "FailureCategory(row.FailureNature)");
+        StringAssert.Contains(repository, "\"Business\" or \"ExternalRejection\" => \"Business\"");
         StringAssert.Contains(repository, "Math.Clamp(limit, 1, 100)");
         StringAssert.Contains(repository, "COALESCE(NULLIF(s.[CorrelationId], ''), CONVERT(varchar(20), s.[Id]))");
     }

@@ -37,6 +37,11 @@ namespace IQuery.Write
         QueryModel UpdateChanged(int id, DateTime value);
         QueryModel UpdateUserId(int id, int value);
         QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateFailureNature(int id, string value);
+        QueryModel UpdateFailureTransience(int id, string value);
+        QueryModel UpdateFailureOrigin(int id, string value);
+        QueryModel UpdateFailureRetryable(int id, bool value);
+        QueryModel UpdateFailureCode(int id, string value);
         public QueryModel DeleteySagaStepQuery(IySagaStepEntity ySagaStep);
     }
 }

@@ -551,6 +551,12 @@ public sealed class OperationalTelemetryTests
             .Where(item => item.Phase == "RetryScheduled")
             .ToArray();
         Assert.Equal(2, retries.Length);
+        var failedStep = saga.GetCurrent()!;
+        Assert.Equal(OperationalFailureNature.Technical, failedStep.FailureNature);
+        Assert.Equal(OperationalFailureTransience.Transient, failedStep.FailureTransience);
+        Assert.Equal(OperationalFailureOrigin.Application, failedStep.FailureOrigin);
+        Assert.True(failedStep.FailureRetryable);
+        Assert.Equal(nameof(InvalidOperationException), failedStep.FailureCode);
         Assert.All(retries, item =>
         {
             Assert.Equal(OperationalTechnicalOutcome.Failed, item.TechnicalOutcome);
@@ -560,6 +566,34 @@ public sealed class OperationalTelemetryTests
                 item.ErrorSummary);
             Assert.NotNull(item.NextExecutionAtUtc);
         });
+    }
+
+    [Fact]
+    public void Saga_executor_preserves_business_failure_classification_for_queue_health()
+    {
+        var logger = new Shered.Logger.Logger(new SagaEnabledPolicy());
+        var executor = new SagaExecutor(logger);
+        var saga = new TestSaga();
+        saga.Start("fiscal-business-rejection", "EntradaFiscalContingencia");
+        var resolver = new TestSagaResolver(
+            new BusinessFailingSagaHandler("WaitStep"),
+            new TestSagaHandler("FinalStep", requiresExternalStimulus: false));
+
+        executor.Execute(saga, resolver);
+
+        var failedStep = saga.GetCurrent()!;
+        Assert.Equal(SagaStepStatus.Failed, failedStep.Status);
+        Assert.Equal(OperationalFailureNature.ExternalRejection, failedStep.FailureNature);
+        Assert.Equal(OperationalFailureTransience.Permanent, failedStep.FailureTransience);
+        Assert.Equal(OperationalFailureOrigin.ExternalProvider, failedStep.FailureOrigin);
+        Assert.False(failedStep.FailureRetryable);
+        Assert.Equal("SEFAZ_611", failedStep.FailureCode);
+
+        var failure = Assert.Single(
+            logger.Snapshot().Sagas.Where(item => item.Phase == "Failed"));
+        Assert.Equal(OperationalTechnicalOutcome.Succeeded, failure.TechnicalOutcome);
+        Assert.Equal(OperationalBusinessOutcome.Rejected, failure.BusinessOutcome);
+        Assert.Equal("SEFAZ_611", failure.ErrorCode);
     }
 
     [Fact]
@@ -679,6 +713,29 @@ public sealed class OperationalTelemetryTests
 
         public void Execute(SagaBase saga, SagaStepBase step) =>
             throw new InvalidOperationException("controlled retry");
+
+        public void ApplyResponse(SagaBase saga, SagaStepBase step, string payload)
+        {
+        }
+    }
+
+    private sealed class BusinessFailingSagaHandler : ISagaStepHandler
+    {
+        public BusinessFailingSagaHandler(string key)
+        {
+            Key = key;
+        }
+
+        public string Key { get; }
+        public bool RequiresExternalStimulus => false;
+
+        public void Execute(SagaBase saga, SagaStepBase step) =>
+            throw new SagaStepExecutionException(
+                "Rejeicao fiscal controlada.",
+                retryable: false,
+                nature: OperationalFailureNature.ExternalRejection,
+                origin: OperationalFailureOrigin.ExternalProvider,
+                stableCode: "SEFAZ_611");
 
         public void ApplyResponse(SagaBase saga, SagaStepBase step, string payload)
         {

@@ -226,7 +226,14 @@ namespace Command.Receivers
             {
                 throw new SagaStepExecutionException(
                     $"Carga {cargaId}: {autorizados} de {solicitacoes.Count} CT-e autorizados. Falhas: {string.Join(" | ", falhas)}",
-                    retryable: possuiFalhaTecnica);
+                    retryable: possuiFalhaTecnica,
+                    nature: possuiFalhaTecnica
+                        ? OperationalFailureNature.Technical
+                        : OperationalFailureNature.ExternalRejection,
+                    origin: OperationalFailureOrigin.ExternalProvider,
+                    stableCode: possuiFalhaTecnica
+                        ? "SEFAZ_CTE_TECHNICAL_FAILURE"
+                        : "SEFAZ_CTE_REJECTED");
             }
 
             _inboxWriteRepository.Insert(FiscalSagaPayloads.CreateInbox(

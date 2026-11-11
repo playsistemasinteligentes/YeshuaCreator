@@ -41,6 +41,11 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    string? FailureNature { get; set; }
+    string? FailureTransience { get; set; }
+    string? FailureOrigin { get; set; }
+    bool? FailureRetryable { get; set; }
+    string? FailureCode { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

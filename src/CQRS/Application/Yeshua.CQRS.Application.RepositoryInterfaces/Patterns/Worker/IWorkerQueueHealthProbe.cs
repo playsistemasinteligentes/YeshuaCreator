@@ -47,7 +47,13 @@ public readonly record struct WorkerQueueSickItem(
     string? OperationalEntityId,
     string? RootOperationId,
     string? ExecutionId,
-    string? ErrorSignature);
+    string? ErrorSignature,
+    string FailureCategory,
+    string? FailureNature,
+    string? FailureTransience,
+    string? FailureOrigin,
+    bool? FailureRetryable,
+    string? FailureCode);
 
 public interface IWorkerQueueHealthProbe<TReceiver, TCommand>
 {

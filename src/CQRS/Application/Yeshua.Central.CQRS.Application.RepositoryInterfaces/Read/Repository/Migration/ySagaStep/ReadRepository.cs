@@ -46,6 +46,11 @@ namespace IRepository.Read
         public bool ExistsByChanged(DateTime value , bool TakeOffTenantID = false);
         public bool ExistsByUserId(int value , bool TakeOffTenantID = false);
         public bool ExistsByOperationalEntityId(string value , bool TakeOffTenantID = false);
+        public bool ExistsByFailureNature(string value , bool TakeOffTenantID = false);
+        public bool ExistsByFailureTransience(string value , bool TakeOffTenantID = false);
+        public bool ExistsByFailureOrigin(string value , bool TakeOffTenantID = false);
+        public bool ExistsByFailureRetryable(bool value , bool TakeOffTenantID = false);
+        public bool ExistsByFailureCode(string value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstById(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstBySagaId(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByStepKey(string value , bool TakeOffTenantID = false);
@@ -67,6 +72,11 @@ namespace IRepository.Read
         public ySagaStepDTO FirstByChanged(DateTime value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByUserId(int value , bool TakeOffTenantID = false);
         public ySagaStepDTO FirstByOperationalEntityId(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByFailureNature(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByFailureTransience(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByFailureOrigin(string value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByFailureRetryable(bool value , bool TakeOffTenantID = false);
+        public ySagaStepDTO FirstByFailureCode(string value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllById(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllBySagaId(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByStepKey(string value , bool TakeOffTenantID = false);
@@ -88,6 +98,11 @@ namespace IRepository.Read
         public IEnumerable<ySagaStepDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaStepDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByFailureNature(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByFailureTransience(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByFailureOrigin(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByFailureRetryable(bool value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaStepDTO> GetAllByFailureCode(string value , bool TakeOffTenantID = false);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
