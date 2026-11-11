@@ -113,7 +113,12 @@ foreach ($panel in $dashboard.panels)
         if ($transformation.id -eq 'extractFields' -and
             $transformation.options.format -eq 'regexp')
         {
-            $regexp = [string]$transformation.options.regexp
+            if (@($transformation.options.PSObject.Properties.Name) -ccontains 'regexp')
+            {
+                $errors.Add("$prefix usa a propriedade invalida 'regexp'; o Grafana exige 'regExp'.")
+            }
+
+            $regexp = [string]$transformation.options.regExp
             if ($regexp.Length -lt 2 -or
                 -not $regexp.StartsWith('/') -or
                 -not $regexp.EndsWith('/'))

@@ -137,7 +137,7 @@
       "timeFrom": "5d",
       "title": "5. Quais itens estao doentes? Clique no ItemReference para investigar",
       "transformations": [
-        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regexp": "/(?<TenantId>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<TenantId>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
         {
           "id": "groupBy",
           "options": {
