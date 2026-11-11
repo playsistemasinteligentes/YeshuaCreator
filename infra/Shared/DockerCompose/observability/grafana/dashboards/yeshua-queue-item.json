@@ -54,7 +54,7 @@
         {
           "datasource": { "type": "loki", "uid": "loki" },
           "editorMode": "code",
-          "expr": "{service_name=~\"$service\"} |= \"QueueItem.HealthChanged\" |= \"$item\" | json environment=\"Environment\", tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", execution_count=\"Data.ExecutionCount\", retry_count=\"Data.RetryCount\", last_outcome=\"Data.LastOutcome\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | environment=~\"$environment\" | queue_name=~\"$queue\" | tenant_id=\"$tenant\" | item_reference=\"$item\" | line_format \"{{.tenant_id}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.execution_count}}|{{.retry_count}}|{{.last_outcome}}|{{.root_operation_id}}|{{.error_signature}}\"",
+          "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" |= \"$item\" | json tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", execution_count=\"Data.ExecutionCount\", retry_count=\"Data.RetryCount\", last_outcome=\"Data.LastOutcome\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | queue_name=~\"$queue\" | tenant_id=\"$tenant\" | item_reference=\"$item\" | line_format \"{{.tenant_id}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.execution_count}}|{{.retry_count}}|{{.last_outcome}}|{{.root_operation_id}}|{{.error_signature}}\"",
           "queryType": "range",
           "refId": "A"
         }
@@ -74,7 +74,7 @@
       "id": 3,
       "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": true, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"$item\" | json environment=\"Environment\" | environment=~\"$environment\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"$item\"", "queryType": "range", "refId": "A" }
       ],
       "timeFrom": "5d",
       "title": "3. Historico operacional do item",
@@ -88,7 +88,7 @@
       "id": 4,
       "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": true, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"$item\" | json environment=\"Environment\" | environment=~\"$environment\" | trace_id=~\".+\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"$item\" | trace_id=~\".+\"", "queryType": "range", "refId": "A" }
       ],
       "timeFrom": "5d",
       "title": "4. Tentativas com trace no Tempo",

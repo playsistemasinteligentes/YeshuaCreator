@@ -132,7 +132,7 @@
         "defaults": {
           "decimals": 0,
           "links": [
-            { "targetBlank": false, "title": "Abrir detalhe tecnico desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=$environment&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=13" }
+            { "targetBlank": false, "title": "Abrir detalhe tecnico desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=${__field.labels.deployment_environment_name}&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=13" }
           ],
           "max": 3,
           "min": 0,
@@ -166,7 +166,7 @@
         "defaults": {
           "decimals": 0,
           "links": [
-            { "targetBlank": false, "title": "Abrir evidencias desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" }
+            { "targetBlank": false, "title": "Abrir evidencias desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=${__field.labels.deployment_environment_name}&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" }
           ],
           "max": 2,
           "min": 0,
@@ -227,7 +227,7 @@
       "id": 25,
       "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"QueueItem.HealthChanged\" | json environment=\"Environment\", queue_name=\"Data.Queue\" | environment=~\"$environment\" | queue_name=~\"$queue\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" | json queue_name=\"Data.Queue\" | queue_name=~\"$queue\"", "queryType": "range", "refId": "A" }
       ],
       "title": "12. Itens doentes: evidencias recentes",
       "type": "logs"

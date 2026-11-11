@@ -56,7 +56,7 @@
         "defaults": {
           "decimals": 0,
           "links": [
-            { "targetBlank": false, "title": "Abrir itens desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" }
+            { "targetBlank": false, "title": "Abrir itens desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=${__field.labels.deployment_environment_name}&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" }
           ],
           "max": 2,
           "min": 0,
@@ -121,7 +121,7 @@
               {
                 "id": "links",
                 "value": [
-                  { "targetBlank": false, "title": "Abrir detalhe deste item", "url": "/observability/d/yeshua-queue-item/yeshua-detalhe-do-item-de-fila?from=now-5d&to=now&var-environment=$environment&var-service=${__data.fields[\"Service\"]}&var-queue=${__data.fields[\"Queue\"]}&var-tenant=${__data.fields[\"TenantId\"]}&var-item=${__value.raw}&var-root=${__data.fields[\"RootOperationId\"]}" }
+                  { "targetBlank": false, "title": "Abrir detalhe deste item", "url": "/observability/d/yeshua-queue-item/yeshua-detalhe-do-item-de-fila?from=now-5d&to=now&var-environment=${__data.fields[\"Environment\"]}&var-service=${__data.fields[\"Service\"]}&var-queue=${__data.fields[\"Queue\"]}&var-tenant=${__data.fields[\"TenantId\"]}&var-item=${__value.raw}&var-root=${__data.fields[\"RootOperationId\"]}" }
                 ]
               }
             ]
@@ -132,17 +132,18 @@
       "id": 5,
       "options": { "cellHeight": "sm", "footer": { "countRows": false, "enablePagination": true, "fields": "", "reducer": ["sum"], "show": false }, "showHeader": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"QueueItem.HealthChanged\" | json environment=\"Environment\", tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | environment=~\"$environment\" | queue_name=~\"$queue\" | line_format \"{{.tenant_id}}|{{.service_name}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" | json tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | queue_name=~\"$queue\" | line_format \"{{.deployment_environment_name}}|{{.tenant_id}}|{{.service_name}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
       ],
       "timeFrom": "5d",
       "title": "5. Quais itens estao doentes? Clique no ItemReference para investigar",
       "transformations": [
-        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<TenantId>[^|]*)\\|(?<Service>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<Environment>[^|]*)\\|(?<TenantId>[^|]*)\\|(?<Service>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
         {
           "id": "groupBy",
           "options": {
             "fields": {
               "Time": { "aggregations": ["max"], "operation": "aggregate" },
+              "Environment": { "aggregations": [], "operation": "groupby" },
               "TenantId": { "aggregations": [], "operation": "groupby" },
               "Service": { "aggregations": [], "operation": "groupby" },
               "Queue": { "aggregations": [], "operation": "groupby" },
