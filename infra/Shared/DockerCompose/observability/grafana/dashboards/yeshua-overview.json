@@ -209,12 +209,12 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** composicao dos itens doentes entre espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal.\n\n**Como interpretar:** a categoria descreve o sintoma operacional mais grave do item, nao a causa raiz. Exception, SQL lento, dependencia, capacidade ou regra de negocio exigem abrir a evidencia e o trace.",
-      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta doenca", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=${__field.labels.deployment_environment_name}&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 18, "x": 6, "y": 22 },
       "id": 24,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
       "targets": [
-        { "editorMode": "code", "expr": "sum by (metric) (max by (service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}))", "legendFormat": "{{metric}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "sum by (deployment_environment_name, service_name, queue, metric) (max by (deployment_environment_name, service_name, operation, queue, metric) ({__name__=~\"yeshua_queue_current(_value)?\", metric=~\"sick_item_(excessive_wait|stale_processing|recurrent_execution|repeated_failure|terminal_failure)\", deployment_environment_name=~\"$environment\", service_name=~\"$service\", queue=~\"$queue\"}))", "legendFormat": "{{queue}} / {{metric}}", "range": true, "refId": "A" }
       ],
       "title": "11. Itens doentes: qual e a doenca?",
       "type": "bargauge"
@@ -222,15 +222,52 @@
     {
       "datasource": { "type": "loki", "uid": "loki" },
       "description": "**O que mede:** evidencias individuais sanitizadas publicadas somente quando um item adoece ou muda de estado.\n\n**Como interpretar:** cada linha identifica fila, item, doenca, severidade, idades, tentativas, assinatura sanitizada e identidades causais. Itens saudaveis permanecem silenciosos.\n\n**Proxima acao:** abra a lista de itens doentes pelo painel anterior e clique no ItemReference para navegar pelo historico e pelo trace.",
-      "fieldConfig": { "defaults": {}, "overrides": [] },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "ItemReference" },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  { "targetBlank": false, "title": "Abrir detalhe deste item", "url": "/observability/d/yeshua-queue-item/yeshua-detalhe-do-item-de-fila?from=now-5d&to=now&var-environment=${__data.fields[\"Environment\"]}&var-service=${__data.fields[\"Service\"]}&var-queue=${__data.fields[\"Queue\"]}&var-tenant=${__data.fields[\"TenantId\"]}&var-item=${__value.raw}&var-root=${__data.fields[\"RootOperationId\"]}" }
+                ]
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": { "h": 10, "w": 24, "x": 0, "y": 29 },
       "id": 25,
-      "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
+      "options": { "cellHeight": "sm", "footer": { "countRows": false, "enablePagination": true, "fields": "", "reducer": ["sum"], "show": false }, "showHeader": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" | json queue_name=\"Data.Queue\" | queue_name=~\"$queue\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\", deployment_environment_name=~\"$environment\"} |= \"QueueItem.HealthChanged\" | json tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | queue_name=~\"$queue\" | line_format \"{{.deployment_environment_name}}|{{.tenant_id}}|{{.service_name}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
       ],
       "title": "12. Itens doentes: evidencias recentes",
-      "type": "logs"
+      "transformations": [
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<Environment>[^|]*)\\|(?<TenantId>[^|]*)\\|(?<Service>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
+        {
+          "id": "groupBy",
+          "options": {
+            "fields": {
+              "Time": { "aggregations": ["max"], "operation": "aggregate" },
+              "Environment": { "aggregations": [], "operation": "groupby" },
+              "TenantId": { "aggregations": [], "operation": "groupby" },
+              "Service": { "aggregations": [], "operation": "groupby" },
+              "Queue": { "aggregations": [], "operation": "groupby" },
+              "ItemType": { "aggregations": [], "operation": "groupby" },
+              "ItemReference": { "aggregations": [], "operation": "groupby" },
+              "Disease": { "aggregations": [], "operation": "groupby" },
+              "Severity": { "aggregations": [], "operation": "groupby" },
+              "RetryCount": { "aggregations": [], "operation": "groupby" },
+              "RootOperationId": { "aggregations": [], "operation": "groupby" },
+              "ErrorSignature": { "aggregations": [], "operation": "groupby" }
+            }
+          }
+        }
+      ],
+      "type": "table"
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
