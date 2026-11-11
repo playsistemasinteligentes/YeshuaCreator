@@ -40,6 +40,8 @@ if (-not (Test-Path -LiteralPath $currentDashboardPath -PathType Leaf))
 
 $dashboard = Get-Content -Raw -LiteralPath $currentDashboardPath | ConvertFrom-Json -Depth 100
 $errors = [System.Collections.Generic.List[string]]::new()
+$serviceVariable = @($dashboard.templating.list | Where-Object name -EQ 'service' | Select-Object -First 1)
+$serviceAllValue = if ($serviceVariable) { [string]$serviceVariable.allValue } else { '' }
 
 if (-not $dashboard.panels -or $dashboard.panels.Count -eq 0)
 {
@@ -96,9 +98,11 @@ foreach ($panel in $dashboard.panels)
         }
 
         if ($target.datasource.type -eq 'loki' -and
-            $target.expr -match '^\{\s*service_name=~"\$service"\s*\}')
+            $target.expr -match '^\{\s*service_name=~"\$service"\s*\}' -and
+            $serviceVariable.includeAll -and
+            $serviceAllValue -ne '.+')
         {
-            $errors.Add("$prefix usa service_name variavel como unico seletor Loki; com 'All' ele vira '.*' e a consulta e rejeitada. Use um seletor literal '.+' e filtre a variavel no pipeline.")
+            $errors.Add("$prefix usa service_name variavel como unico seletor Loki, mas o valor 'All' nao e '.+' e pode gerar consulta que aceita vazio.")
         }
 
         if ($target.expr -match 'container_memory_percent' -and

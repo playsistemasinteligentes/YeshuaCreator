@@ -132,7 +132,7 @@
         "defaults": {
           "decimals": 0,
           "links": [
-            { "targetBlank": false, "title": "Abrir detalhe tecnico desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=${__field.labels.queue}&viewPanel=13" }
+            { "targetBlank": false, "title": "Abrir detalhe tecnico desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=$environment&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=13" }
           ],
           "max": 3,
           "min": 0,
@@ -166,7 +166,7 @@
         "defaults": {
           "decimals": 0,
           "links": [
-            { "targetBlank": false, "title": "Abrir evidencias desta fila", "url": "/observability/d/yeshua-operational-overview/yeshua-visao-operacional?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=${__field.labels.queue}&viewPanel=25" }
+            { "targetBlank": false, "title": "Abrir evidencias desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" }
           ],
           "max": 2,
           "min": 0,
@@ -196,7 +196,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade atual de itens classificados com doenca operacional nas filas selecionadas.\n\n**Como interpretar:** nao e backlog. Abra a composicao ao lado para saber se os individuos apresentam espera excessiva, processamento abandonado, execucao recorrente, falha repetida ou falha terminal.",
-      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista dos itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista dos itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 6, "x": 0, "y": 22 },
       "id": 23,
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
@@ -209,7 +209,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** composicao dos itens doentes entre espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal.\n\n**Como interpretar:** a categoria descreve o sintoma operacional mais grave do item, nao a causa raiz. Exception, SQL lento, dependencia, capacidade ou regra de negocio exigem abrir a evidencia e o trace.",
-      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta doenca", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta doenca", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 18, "x": 6, "y": 22 },
       "id": 24,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
@@ -227,9 +227,8 @@
       "id": 25,
       "options": { "dedupStrategy": "none", "enableLogDetails": true, "prettifyLogMessage": true, "showCommonLabels": false, "showLabels": false, "showTime": true, "sortOrder": "Descending", "wrapLogMessage": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\".+\"} | service_name=~\"$service\" |= \"QueueItem.HealthChanged\" |~ \"$queue\" | json environment=\"Environment\" | environment=~\"$environment\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"QueueItem.HealthChanged\" | json environment=\"Environment\", queue_name=\"Data.Queue\" | environment=~\"$environment\" | queue_name=~\"$queue\"", "queryType": "range", "refId": "A" }
       ],
-      "timeFrom": "5d",
       "title": "12. Itens doentes: evidencias recentes",
       "type": "logs"
     },
@@ -433,7 +432,7 @@
         "type": "query"
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": { "text": "All", "value": "$__all" },
         "datasource": { "type": "prometheus", "uid": "prometheus" },
         "definition": "label_values({__name__=~\"yeshua_operation_executions(_execution)?(_total)?\", deployment_environment_name=~\"$environment\"}, service_name)",

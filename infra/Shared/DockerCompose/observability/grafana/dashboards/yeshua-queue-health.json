@@ -56,7 +56,7 @@
         "defaults": {
           "decimals": 0,
           "links": [
-            { "targetBlank": false, "title": "Abrir itens desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=${__field.labels.queue}&viewPanel=5" }
+            { "targetBlank": false, "title": "Abrir itens desta fila", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=${__field.labels.service_name}&var-queue=${__field.labels.queue}&viewPanel=5" }
           ],
           "max": 2,
           "min": 0,
@@ -86,7 +86,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade atual de itens doentes em todas as filas selecionadas.\n\n**Como interpretar:** zero significa que nenhum item foi classificado como doente no ultimo snapshot. Um valor positivo deve ser aberto por tipo no painel de composicao; ele nao deve ser confundido com backlog.\n\n**Proxima acao:** use o tipo de doenca para decidir quais itens merecem correlacao com evidencias e traces.",
-      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista de itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista de itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 6, "x": 0, "y": 9 },
       "id": 3,
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
@@ -99,7 +99,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** distribui os itens doentes entre espera excessiva, processamento abandonado, execucao recorrente, falha repetida e falha terminal.\n\n**Como interpretar:** as categorias sao mutuamente exclusivas e priorizam a doenca mais grave. A categoria descreve o sintoma operacional, nao prova a causa raiz. Exception, SQL lento, dependencia, capacidade e regra de negocio so podem ser afirmados depois da evidencia.\n\n**Proxima acao:** escolha a categoria dominante e abra as evidencias individuais abaixo.",
-      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta doenca", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir itens desta doenca", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 18, "x": 6, "y": 9 },
       "id": 4,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
@@ -111,7 +111,7 @@
     },
     {
       "datasource": { "type": "loki", "uid": "loki" },
-      "description": "**O que mede:** evidencias individuais sanitizadas publicadas quando um item adoece ou muda de estado. O painel cobre os cinco dias de retencao dos logs, independentemente da janela escolhida no restante do dashboard.\n\n**Como interpretar:** cada linha mostra tenant, fila, tipo, referencia, doenca, severidade, retries e identidade causal. Evidencias repetidas do mesmo item representam mudancas observadas em momentos diferentes.\n\n**Navegacao:** clique em `ItemReference` e escolha **Abrir detalhe deste item** para ver seu historico e chegar ao trace da tentativa.",
+      "description": "**O que mede:** evidencias individuais sanitizadas publicadas quando um item adoece ou muda de estado, limitadas ao ambiente, servico, fila e periodo selecionados.\n\n**Como interpretar:** cada linha mostra tenant, servico, fila, tipo, referencia, doenca, severidade, retries e identidade causal. Evidencias repetidas do mesmo item representam mudancas observadas em momentos diferentes.\n\n**Navegacao:** clique em `ItemReference` e escolha **Abrir detalhe deste item** para ver seu historico e chegar ao trace da tentativa.",
       "fieldConfig": {
         "defaults": {},
         "overrides": [
@@ -121,7 +121,7 @@
               {
                 "id": "links",
                 "value": [
-                  { "targetBlank": false, "title": "Abrir detalhe deste item", "url": "/observability/d/yeshua-queue-item/yeshua-detalhe-do-item-de-fila?from=now-5d&to=now&var-environment=$environment&var-service=$service&var-queue=${__data.fields[\"Queue\"]}&var-tenant=${__data.fields[\"TenantId\"]}&var-item=${__value.raw}&var-root=${__data.fields[\"RootOperationId\"]}" }
+                  { "targetBlank": false, "title": "Abrir detalhe deste item", "url": "/observability/d/yeshua-queue-item/yeshua-detalhe-do-item-de-fila?from=now-5d&to=now&var-environment=$environment&var-service=${__data.fields[\"Service\"]}&var-queue=${__data.fields[\"Queue\"]}&var-tenant=${__data.fields[\"TenantId\"]}&var-item=${__value.raw}&var-root=${__data.fields[\"RootOperationId\"]}" }
                 ]
               }
             ]
@@ -132,18 +132,19 @@
       "id": 5,
       "options": { "cellHeight": "sm", "footer": { "countRows": false, "enablePagination": true, "fields": "", "reducer": ["sum"], "show": false }, "showHeader": true },
       "targets": [
-        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\".+\"} | service_name=~\"$service\" |= \"QueueItem.HealthChanged\" |~ \"$queue\" | json environment=\"Environment\", tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | environment=~\"$environment\" | line_format \"{{.tenant_id}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
+        { "datasource": { "type": "loki", "uid": "loki" }, "editorMode": "code", "expr": "{service_name=~\"$service\"} |= \"QueueItem.HealthChanged\" | json environment=\"Environment\", tenant_id=\"Data.TenantId\", queue_name=\"Data.Queue\", item_type=\"Data.ItemType\", item_reference=\"Data.ItemReference\", disease=\"Data.Disease\", severity=\"Data.Severity\", retry_count=\"Data.RetryCount\", root_operation_id=\"Data.RootOperationId\", error_signature=\"Data.ErrorSignature\" | environment=~\"$environment\" | queue_name=~\"$queue\" | line_format \"{{.tenant_id}}|{{.service_name}}|{{.queue_name}}|{{.item_type}}|{{.item_reference}}|{{.disease}}|{{.severity}}|{{.retry_count}}|{{.root_operation_id}}|{{.error_signature}}\"", "queryType": "range", "refId": "A" }
       ],
       "timeFrom": "5d",
       "title": "5. Quais itens estao doentes? Clique no ItemReference para investigar",
       "transformations": [
-        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<TenantId>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regExp": "/(?<TenantId>[^|]*)\\|(?<Service>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } },
         {
           "id": "groupBy",
           "options": {
             "fields": {
               "Time": { "aggregations": ["max"], "operation": "aggregate" },
               "TenantId": { "aggregations": [], "operation": "groupby" },
+              "Service": { "aggregations": [], "operation": "groupby" },
               "Queue": { "aggregations": [], "operation": "groupby" },
               "ItemType": { "aggregations": [], "operation": "groupby" },
               "ItemReference": { "aggregations": [], "operation": "groupby" },
@@ -181,7 +182,7 @@
         "type": "query"
       },
       {
-        "allValue": ".*",
+        "allValue": ".+",
         "current": { "text": "All", "value": "$__all" },
         "datasource": { "type": "prometheus", "uid": "prometheus" },
         "definition": "label_values({__name__=~\"yeshua_queue_current(_value)?\", deployment_environment_name=~\"$environment\"}, service_name)",
