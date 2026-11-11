@@ -196,7 +196,7 @@
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
       "description": "**O que mede:** quantidade atual de itens classificados com doenca operacional nas filas selecionadas.\n\n**Como interpretar:** nao e backlog. Abra a composicao ao lado para saber se os individuos apresentam espera excessiva, processamento abandonado, execucao recorrente, falha repetida ou falha terminal.",
-      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista dos itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&var-environment=$environment&var-service=$service&var-queue=$queue&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
+      "fieldConfig": { "defaults": { "decimals": 0, "links": [ { "targetBlank": false, "title": "Abrir lista dos itens doentes", "url": "/observability/d/yeshua-queue-health/yeshua-diagnostico-de-filas?${__url_time_range}&${environment:queryparam}&${service:queryparam}&${queue:queryparam}&viewPanel=5" } ], "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 10 } ] }, "unit": "short" }, "overrides": [] },
       "gridPos": { "h": 7, "w": 6, "x": 0, "y": 22 },
       "id": 23,
       "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
@@ -513,6 +513,6 @@
   "timezone": "browser",
   "title": "Yeshua - Visao Operacional",
   "uid": "yeshua-operational-overview",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
