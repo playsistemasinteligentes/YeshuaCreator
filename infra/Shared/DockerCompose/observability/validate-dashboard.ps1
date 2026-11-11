@@ -108,6 +108,21 @@ foreach ($panel in $dashboard.panels)
         }
     }
 
+    foreach ($transformation in @($panel.transformations))
+    {
+        if ($transformation.id -eq 'extractFields' -and
+            $transformation.options.format -eq 'regexp')
+        {
+            $regexp = [string]$transformation.options.regexp
+            if ($regexp.Length -lt 2 -or
+                -not $regexp.StartsWith('/') -or
+                -not $regexp.EndsWith('/'))
+            {
+                $errors.Add("$prefix usa Extract fields com RegExp sem delimitadores '/.../'.")
+            }
+        }
+    }
+
     if ($null -eq $panel.gridPos -or
         $panel.gridPos.w -le 0 -or
         $panel.gridPos.h -le 0 -or

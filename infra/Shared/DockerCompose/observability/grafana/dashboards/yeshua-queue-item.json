@@ -62,7 +62,7 @@
       "timeFrom": "5d",
       "title": "2. Evidencias de saude deste item",
       "transformations": [
-        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regexp": "(?<TenantId>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<ExecutionCount>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<LastOutcome>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)", "replace": true, "source": "Line" } }
+        { "id": "extractFields", "options": { "format": "regexp", "keepTime": true, "regexp": "/(?<TenantId>[^|]*)\\|(?<Queue>[^|]*)\\|(?<ItemType>[^|]*)\\|(?<ItemReference>[^|]*)\\|(?<Disease>[^|]*)\\|(?<Severity>[^|]*)\\|(?<ExecutionCount>[^|]*)\\|(?<RetryCount>[^|]*)\\|(?<LastOutcome>[^|]*)\\|(?<RootOperationId>[^|]*)\\|(?<ErrorSignature>[^|]*)/", "replace": true, "source": "Line" } }
       ],
       "type": "table"
     },
