@@ -51,7 +51,7 @@
     },
     {
       "datasource": { "type": "prometheus", "uid": "prometheus" },
-      "description": "**O que mede:** conclusao separada sobre os itens de cada fila. O valor 0 significa Sem doentes, 1 Com atencao e 2 Com doenca critica.\n\n**Como interpretar:** este painel nao declara a fila inteira doente. Ele informa que existem individuos que exigem investigacao mesmo quando outros itens continuam avancando normalmente. Falha terminal e processamento abandonado sao tratados como criticos.\n\n**Proxima acao:** abra a composicao das doencas e depois consulte apenas os itens da categoria escolhida.",
+      "description": "**O que mede:** conclusao separada sobre os itens de cada fila.\n\n**Criterios:** 0 = nenhum item doente. 1 = Com atencao quando existe espera excessiva (padrao: 15 min), execucao recorrente (3 ou mais) ou falha repetida (2 ou mais retries), sem condicao critica. 2 = Doenca critica quando existe processamento abandonado (padrao: 2 min bloqueado) ou falha terminal. Os limites sao configuraveis.\n\n**Como interpretar:** este painel nao declara a fila inteira doente. A escala mede gravidade operacional, nao causa; falha terminal pode ser tecnica ou de negocio. Uma fila pode continuar saudavel enquanto alguns itens exigem investigacao.\n\n**Proxima acao:** abra a composicao das doencas e depois consulte apenas os itens da categoria escolhida.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,

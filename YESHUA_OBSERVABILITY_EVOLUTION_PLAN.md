@@ -308,6 +308,19 @@ Os limites iniciais sao protecoes provisoriais: quinze minutos de espera, dois
 minutos de processamento, tres execucoes e dois retries. Eles sao configuraveis
 por ambiente e devem ser substituidos ou calibrados pela linha de base aprovada.
 
+O diagnostico agregado da saude dos itens traduz essas doencas em tres niveis:
+
+- `0 - Sem doentes`: nenhum item classificado no snapshot atual;
+- `1 - Com atencao`: existe espera excessiva, execucao recorrente ou falha
+  repetida, sem processamento travado nem falha terminal;
+- `2 - Doenca critica`: existe pelo menos um item com processamento travado ou
+  falha terminal.
+
+Essa escala mede gravidade operacional, nao causa raiz. Uma falha terminal pode
+nascer de erro tecnico ou rejeicao de negocio. A natureza da falha ainda deve ser
+declarada explicitamente pela borda que conhece o resultado; Grafana, Loki,
+Prometheus e agentes nao devem tentar adivinha-la.
+
 Prometheus recebe apenas contagens por fila e doenca. Identificadores nunca
 entram em labels. Quando a contagem indicar doenca, o Worker consulta uma lista
 limitada dos piores itens e publica no Loki uma evidencia individual somente na

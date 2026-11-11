@@ -29,6 +29,25 @@ Frequencias iniciais:
 | 14 | Ciclos de Workers | ciclos e itens/s | falha de item e pressao | um lote de polling nao vira pai dos itens processados |
 | 15 | Saude do pipeline | metricas internas do Collector | falha de exportacao por 2 min | ausencia de sinal nunca prova saude da aplicacao |
 
+## Criterios Da Saude Dos Itens
+
+O diagnostico dos itens e separado da saude coletiva da fila. Sua escala atual
+e calculada a partir do snapshot mais recente:
+
+| Nivel | Significado | Criterios atuais |
+| --- | --- | --- |
+| `0 - Sem doentes` | nenhum individuo exige investigacao | nenhuma das cinco doencas foi encontrada |
+| `1 - Com atencao` | existem individuos degradados, sem condicao critica | espera excessiva acima de 15 minutos, 3 ou mais execucoes recorrentes, ou 2 ou mais retries/falhas repetidas |
+| `2 - Doenca critica` | existe individuo parado ou encerrado sem recuperacao automatica | processamento bloqueado por mais de 2 minutos ou falha terminal da saga/step |
+
+Os limites sao configuraveis por ambiente. Quando mais de uma regra se aplica,
+cada item recebe somente a doenca mais grave nesta ordem: falha terminal,
+processamento travado, falha repetida, execucao recorrente e espera excessiva.
+
+Essas categorias representam sintomas operacionais. Elas ainda nao distinguem
+falha tecnica de rejeicao de negocio. Essa natureza deve vir explicitamente da
+borda que conhece o resultado, nunca de inferencia do dashboard ou do MCP.
+
 ## Fronteiras De Seguranca
 
 O container principal de observabilidade nao recebe `docker.sock`. O proxy
