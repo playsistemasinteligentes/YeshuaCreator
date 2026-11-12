@@ -12,6 +12,124 @@ using System;
 
 namespace MyApp.Domain.Entities
 {
+    public class Foto
+    {
+        public int? Id { get; set; }
+        public string StorageKey { get; set; }
+        public string NomeOriginal { get; set; }
+        public string ContentType { get; set; }
+        public string? HashArquivo { get; set; }
+        public DateTime? CapturadaEmUtc { get; set; }
+        public int? Largura { get; set; }
+        public int? Altura { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<Foto> Query() => new MyApp.QueryBuilder.Query<Foto>();
+    }
+
+    public class Album
+    {
+        public int? Id { get; set; }
+        public string Titulo { get; set; }
+        public string? Descricao { get; set; }
+        public int Privacidade { get; set; }
+        public int SegundosPorFoto { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<Album> Query() => new MyApp.QueryBuilder.Query<Album>();
+    }
+
+    public class AlbumFoto
+    {
+        public int? Id { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
+        public int FotoId { get; set; }
+        public Foto Foto { get; set; }
+        public int Ordem { get; set; }
+        public string? Legenda { get; set; }
+        public int? Rotacao { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<AlbumFoto> Query() => new MyApp.QueryBuilder.Query<AlbumFoto>();
+    }
+
+    public class PublicacaoAlbum
+    {
+        public int? Id { get; set; }
+        public int AlbumId { get; set; }
+        public Album Album { get; set; }
+        public string CorrelationId { get; set; }
+        public string? ManifestStorageKey { get; set; }
+        public string? VideoStorageKey { get; set; }
+        public string? YouTubeVideoId { get; set; }
+        public string? YouTubeUrl { get; set; }
+        public string? ConexaoYouTubeId { get; set; }
+        public string? CanalYouTubeId { get; set; }
+        public int? YouTubeCredentialTenantId { get; set; }
+        public int? CanalStandardId { get; set; }
+        public int? PrivacidadeYouTube { get; set; }
+        public int? QualidadeVideo { get; set; }
+        public int? ModeloVideo { get; set; }
+        public int? MusicaId { get; set; }
+        public int? VolumeMusica { get; set; }
+        public string? Mensagem { get; set; }
+        public DateTime SolicitadaEmUtc { get; set; }
+        public DateTime? PublicadaEmUtc { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<PublicacaoAlbum> Query() => new MyApp.QueryBuilder.Query<PublicacaoAlbum>();
+    }
+
+    public class CanalStandard
+    {
+        public int? Id { get; set; }
+        public string CanalId { get; set; }
+        public string ConexaoYouTubeId { get; set; }
+        public int CredencialTenantId { get; set; }
+        public bool Ativo { get; set; }
+        public long TotalReservas { get; set; }
+        public DateTime? UltimaReservaEmUtc { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<CanalStandard> Query() => new MyApp.QueryBuilder.Query<CanalStandard>();
+    }
+
     public class yFileUpload
     {
         public int? Id { get; set; }

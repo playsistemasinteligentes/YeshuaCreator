@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -82,8 +82,8 @@ if (!string.IsNullOrEmpty(Command.FailureOrigin)) dict["FailureOrigin"] = $"%{Co
 if (!string.IsNullOrEmpty(Command.FailureOrigin)) whereClauses.Add($"[FailureOrigin] like @FailureOrigin");
 if (!string.IsNullOrEmpty(Command.FailureCode)) dict["FailureCode"] = $"%{Command.FailureCode}%";
 if (!string.IsNullOrEmpty(Command.FailureCode)) whereClauses.Add($"[FailureCode] like @FailureCode");
-            if (whereClauses.Any())
-                 this.Query += $" WHERE {string.Join(" AND ", whereClauses)}";
+            if (whereClauses.Any()) 
+                 this.Query += $" WHERE {string.Join(" AND ", whereClauses)}"; 
             int page = Command.Paginacao?.Page ?? 1;
             int pageSize = Command.Paginacao?.PageSize ?? 20;
             int offset = (page - 1) * pageSize;
@@ -118,8 +118,8 @@ if (!string.IsNullOrEmpty(Command.FailureCode)) whereClauses.Add($"[FailureCode]
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
         }
@@ -148,8 +148,8 @@ if (!string.IsNullOrEmpty(Command.FailureCode)) whereClauses.Add($"[FailureCode]
  whereClauses.Add($"[Id] = @Id");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
         }
@@ -178,8 +178,8 @@ if (!string.IsNullOrEmpty(Command.FailureCode)) whereClauses.Add($"[FailureCode]
  whereClauses.Add($"[TenantID] = @TenantID");
  dict["Deleted"] = 0;
  whereClauses.Add($"[Deleted] = @Deleted");
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, this.Parameters); 
         }
@@ -195,8 +195,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Id"] = value; //04
                       whereClauses.Add($" [Id] = @Id ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -212,8 +212,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["SagaId"] = value; //04
                       whereClauses.Add($" [SagaId] = @SagaId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -229,8 +229,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["StepKey"] = value; //04
                       whereClauses.Add($" [StepKey] = @StepKey ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -246,8 +246,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["IndexOrder"] = value; //04
                       whereClauses.Add($" [IndexOrder] = @IndexOrder ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -263,8 +263,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["CorrelationId"] = value; //04
                       whereClauses.Add($" [CorrelationId] = @CorrelationId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -280,8 +280,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Status"] = value; //04
                       whereClauses.Add($" [Status] = @Status ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -297,8 +297,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["ExecutionCount"] = value; //04
                       whereClauses.Add($" [ExecutionCount] = @ExecutionCount ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -314,8 +314,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["LastExecutionAt"] = value; //04
                       whereClauses.Add($" [LastExecutionAt] = @LastExecutionAt ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -331,8 +331,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["CompletedAt"] = value; //04
                       whereClauses.Add($" [CompletedAt] = @CompletedAt ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -348,8 +348,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["ErrorMessage"] = value; //04
                       whereClauses.Add($" [ErrorMessage] = @ErrorMessage ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -365,8 +365,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Payload"] = value; //04
                       whereClauses.Add($" [Payload] = @Payload ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -382,8 +382,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["RetryCount"] = value; //04
                       whereClauses.Add($" [RetryCount] = @RetryCount ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -399,8 +399,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["RootOperationId"] = value; //04
                       whereClauses.Add($" [RootOperationId] = @RootOperationId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -416,8 +416,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationId"] = value; //04
                       whereClauses.Add($" [OperationId] = @OperationId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -433,8 +433,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["ExecutionId"] = value; //04
                       whereClauses.Add($" [ExecutionId] = @ExecutionId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -450,8 +450,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["CausationId"] = value; //04
                       whereClauses.Add($" [CausationId] = @CausationId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -467,8 +467,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TenantID"] = value; //04
                       whereClauses.Add($" [TenantID] = @TenantID ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -484,8 +484,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Deleted"] = value; //04
                       whereClauses.Add($" [Deleted] = @Deleted ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -501,8 +501,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Changed"] = value; //04
                       whereClauses.Add($" [Changed] = @Changed ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -518,8 +518,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //04
                       whereClauses.Add($" [UserId] = @UserId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -535,8 +535,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationalEntityId"] = value; //04
                       whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -552,8 +552,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureNature"] = value; //04
                       whereClauses.Add($" [FailureNature] = @FailureNature ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -569,8 +569,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureTransience"] = value; //04
                       whereClauses.Add($" [FailureTransience] = @FailureTransience ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -586,8 +586,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureOrigin"] = value; //04
                       whereClauses.Add($" [FailureOrigin] = @FailureOrigin ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -603,8 +603,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureRetryable"] = value; //04
                       whereClauses.Add($" [FailureRetryable] = @FailureRetryable ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -620,8 +620,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureCode"] = value; //04
                       whereClauses.Add($" [FailureCode] = @FailureCode ");//04
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -637,8 +637,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Id"] = value; //06
                       whereClauses.Add($" [Id] = @Id ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -654,8 +654,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["SagaId"] = value; //06
                       whereClauses.Add($" [SagaId] = @SagaId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -671,8 +671,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["StepKey"] = value; //06
                       whereClauses.Add($" [StepKey] = @StepKey ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -688,8 +688,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["IndexOrder"] = value; //06
                       whereClauses.Add($" [IndexOrder] = @IndexOrder ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -705,8 +705,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["CorrelationId"] = value; //06
                       whereClauses.Add($" [CorrelationId] = @CorrelationId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -722,8 +722,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Status"] = value; //06
                       whereClauses.Add($" [Status] = @Status ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -739,8 +739,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["ExecutionCount"] = value; //06
                       whereClauses.Add($" [ExecutionCount] = @ExecutionCount ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -756,8 +756,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["LastExecutionAt"] = value; //06
                       whereClauses.Add($" [LastExecutionAt] = @LastExecutionAt ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -773,8 +773,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["CompletedAt"] = value; //06
                       whereClauses.Add($" [CompletedAt] = @CompletedAt ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -790,8 +790,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["ErrorMessage"] = value; //06
                       whereClauses.Add($" [ErrorMessage] = @ErrorMessage ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -807,8 +807,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Payload"] = value; //06
                       whereClauses.Add($" [Payload] = @Payload ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -824,8 +824,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["RetryCount"] = value; //06
                       whereClauses.Add($" [RetryCount] = @RetryCount ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -841,8 +841,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["RootOperationId"] = value; //06
                       whereClauses.Add($" [RootOperationId] = @RootOperationId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -858,8 +858,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationId"] = value; //06
                       whereClauses.Add($" [OperationId] = @OperationId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -875,8 +875,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["ExecutionId"] = value; //06
                       whereClauses.Add($" [ExecutionId] = @ExecutionId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -892,8 +892,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["CausationId"] = value; //06
                       whereClauses.Add($" [CausationId] = @CausationId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -909,8 +909,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["TenantID"] = value; //06
                       whereClauses.Add($" [TenantID] = @TenantID ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -926,8 +926,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Deleted"] = value; //06
                       whereClauses.Add($" [Deleted] = @Deleted ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -943,8 +943,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["Changed"] = value; //06
                       whereClauses.Add($" [Changed] = @Changed ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -960,8 +960,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["UserId"] = value; //06
                       whereClauses.Add($" [UserId] = @UserId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -977,8 +977,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["OperationalEntityId"] = value; //06
                       whereClauses.Add($" [OperationalEntityId] = @OperationalEntityId ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -994,8 +994,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureNature"] = value; //06
                       whereClauses.Add($" [FailureNature] = @FailureNature ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1011,8 +1011,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureTransience"] = value; //06
                       whereClauses.Add($" [FailureTransience] = @FailureTransience ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1028,8 +1028,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureOrigin"] = value; //06
                       whereClauses.Add($" [FailureOrigin] = @FailureOrigin ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1045,8 +1045,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureRetryable"] = value; //06
                       whereClauses.Add($" [FailureRetryable] = @FailureRetryable ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }
@@ -1062,8 +1062,8 @@ if (!TakeOffTenantID)  whereClauses.Add($"[TenantID] = @TenantID");
  whereClauses.Add($"[Deleted] = @Deleted");
                       dict["FailureCode"] = value; //06
                       whereClauses.Add($" [FailureCode] = @FailureCode ");//06
-            if (whereClauses.Any())
-            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})";
+            if (whereClauses.Any()) 
+            this.Query += $" WHERE ({string.Join(" AND ", whereClauses)})"; 
             this.Parameters = parameters;
             return new QueryModel(this.Query, parameters);
         }

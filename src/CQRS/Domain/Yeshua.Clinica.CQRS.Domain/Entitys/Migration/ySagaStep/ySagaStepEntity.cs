@@ -1,4 +1,4 @@
-// <yeshua>
+﻿// <yeshua>
 // artifact: GENERATED_REGENERABLE
 // createdBy: DSL
 // ownership: ENGINE
@@ -67,11 +67,11 @@
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 
- FailureNature = null;
- FailureTransience = null;
- FailureOrigin = null;
- FailureRetryable = null;
- FailureCode = null;
+ FailureNature = null; 
+ FailureTransience = null; 
+ FailureOrigin = null; 
+ FailureRetryable = null; 
+ FailureCode = null; 
 }
 public bool isValidData()
 {
