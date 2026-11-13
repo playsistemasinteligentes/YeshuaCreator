@@ -17,7 +17,12 @@ export async function executeTask(input, codex, emit) {
   const thread = input.threadId
     ? codex.resumeThread(input.threadId, options)
     : codex.startThread(options);
-  const { events } = await thread.runStreamed(input.message);
+  const { events } = await thread.runStreamed(input.message + '\n\nContexto do ambiente operacional: '
+    + 'para investigar consumo de disco do servidor, leia /host-diagnostics/disk-usage.json. '
+    + 'Esse relatorio de tamanhos e diretorios vem do host, e somente leitura e atualiza a cada 15 minutos. '
+    + 'Confira collectedAtUtc, status, timedOut e truncated antes de concluir. Os escopos se sobrepoem; nao some seus totais. '
+    + 'Use yeshua_metrics_query para ocupacao e tendencia atuais. df/du no container nao detalham automaticamente o host. '
+    + 'Se o relatorio estiver ausente, antigo ou parcial, informe a limitacao. Limpeza exige ordem explicita.');
   let response = '';
   let completed = false;
   let confirmedThread = false;

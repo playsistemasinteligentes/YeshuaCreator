@@ -90,6 +90,7 @@ services:
       - /root/YeshuaCreator:/server/YeshuaCreator:ro
       - /root/YeshuaCreator/infra/Shared/DockerCompose/observability/grafana/dashboards:/catalog/observability-dashboards:ro
       - /root/YeshuaStorage:/storage:ro
+      - /root/YeshuaStorage/volatile/operational-intelligence/host-diagnostics:/host-diagnostics:ro
       - /root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output
       - operational-agent-workspace:/workspace
       - operational-agent-codex:/home/agent/.codex

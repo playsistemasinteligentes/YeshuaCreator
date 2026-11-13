@@ -1982,6 +1982,12 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   `workspace-write` exige habilitacao de servidor e escolha explicita na ordem,
   limitada ao workspace. Nao montar `/var/run/docker.sock`, conceder deploy,
   reinicio de containers ou escrita nos bancos dos aplicativos ao agente.
+- O diagnostico de ocupacao por diretorio do host e entregue ao agente em
+  `/host-diagnostics/disk-usage.json`, por bind somente leitura. O deploy shared
+  instala coleta de metadados no host a cada 15 minutos, com baixa prioridade e
+  prazo limitado. Nao altera permissoes das pastas originais nem entrega socket
+  Docker ao agente. Escopos sobrepostos nao podem ser somados; horario e leituras
+  parciais devem ser explicitados. Metricas atuais continuam no MCP existente.
 - O agente operacional deve consumir a Operational Intelligence API, MCP local,
   telemetria e uma copia de trabalho do repositorio para autoconhecimento do
   servidor. Credenciais de agentes devem entrar somente por ambiente/segredo do

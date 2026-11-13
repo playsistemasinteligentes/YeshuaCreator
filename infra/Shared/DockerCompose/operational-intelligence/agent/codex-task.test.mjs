@@ -30,6 +30,9 @@ test('creates read-only conversation and emits bounded answer without command pa
   assert.equal(codex.calls[0].start.approvalPolicy, 'never');
   assert.equal(codex.calls[0].start.networkAccessEnabled, false);
   assert.equal(codex.calls[0].start.skipGitRepoCheck, false);
+  assert.ok(codex.calls[1].message.startsWith(input.message));
+  assert.ok(codex.calls[1].message.includes('/host-diagnostics/disk-usage.json'));
+  assert.ok(codex.calls[1].message.includes('nao some seus totais'));
   assert.equal(result.response.length, 100);
   assert.equal(emitted[0].threadId, 'thread-1');
   assert.equal(JSON.stringify(emitted).includes('sensitive-command'), false);

@@ -8,6 +8,18 @@ executa somente Codex. `yeshua-observability` permanece separado.
 
 ## Entradas
 
+Para investigar o uso de disco do host, o agente pode ler
+`/host-diagnostics/disk-usage.json`. O deploy shared instala um coletor de
+metadados no host e uma agenda systemd de 15 minutos. O relatorio separa
+ocupacao do filesystem, diretorios do host/storage/Git/logs e categorias Docker.
+Somente nomes de diretorios e tamanhos sao publicados; nenhum conteudo de arquivo.
+O bind e somente leitura e nao muda as permissoes das pastas originais.
+`collectedAtUtc`, `status`, `timedOut` e `truncated` delimitam a evidencia.
+Os escopos se sobrepoem e nao devem ser somados. Para tendencia/ocupacao recente,
+o agente continua usando `yeshua_metrics_query`. O coletor usa baixa prioridade,
+limite total de dois minutos e nao executa limpeza. No host, uma atualizacao
+imediata usa `systemctl start yeshua-host-disk-usage.service`.
+
 | Entrada | Uso |
 | --- | --- |
 | `https://playsis.com.br/operational/mcp` | MCP publico: `yeshua_health`, `yeshua_explorer`, `yeshua_app_explore` e `yeshua_source_search`. |

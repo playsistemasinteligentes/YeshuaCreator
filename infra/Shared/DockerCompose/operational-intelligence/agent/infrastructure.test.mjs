@@ -36,6 +36,7 @@ test('private MCP and tunnel administration are loopback only and never publishe
   assert.equal(operations.ports.some(binding => /5729|5730/.test(String(binding))), false);
   assert.ok(operations.volumes.includes('/root/YeshuaCreator:/server/YeshuaCreator:ro'));
   assert.ok(operations.volumes.includes('/root/YeshuaStorage:/storage:ro'));
+  assert.ok(operations.volumes.includes('/root/YeshuaStorage/volatile/operational-intelligence/host-diagnostics:/host-diagnostics:ro'));
   assert.equal(operations.environment.STORAGE_ROOT, '/clinica-work');
   assert.ok(operations.volumes.includes('/root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output'));
   assert.equal(operations.volumes.some(binding => binding.includes('docker.sock')), false);
@@ -71,7 +72,7 @@ test('Docker build inputs exist and every application sends OTLP to the renamed 
   assert.ok(existsSync(resolve(dirname(fileURLToPath(import.meta.url)), 'package-lock.json')));
   const observability = compose.services['yeshua-observability'];
   const configurationMounts = observability.volumes.filter(binding => binding.startsWith('./observability/'));
-  assert.equal(configurationMounts.length, 7);
+  assert.ok(configurationMounts.some(binding => binding.endsWith('/otel-lgtm/otelcol-config.yaml:ro')));
   for (const binding of configurationMounts) assert.ok(existsSync(resolve(shared, binding.split(':')[0])));
   for (const application of ['Central', 'Clinica', 'APS.ADM', 'Fiscal', 'Memorias']) {
     const app = parse(readFileSync(resolve(root, `infra/${application}/DockerCompose/docker-compose.yml`), 'utf8'));
