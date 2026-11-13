@@ -8,8 +8,11 @@ executa somente Codex. `yeshua-observability` permanece separado.
 
 ## Entradas
 
-Para investigar o uso de disco do host, o agente pode ler
-`/host-diagnostics/disk-usage.json`. O deploy shared instala um coletor de
+Para investigar o uso de disco do host, o agente chama `yeshua_storage_usage`
+com `{}` pelo MCP privado, que le `/host-diagnostics/disk-usage.json`.
+A consulta nao exige shell: o teste real encontrou o isolamento bwrap bloqueado
+no Docker desta VPS. As restricoes do Codex e do container foram preservadas.
+O deploy shared instala um coletor de
 metadados no host e uma agenda systemd de 15 minutos. O relatorio separa
 ocupacao do filesystem, diretorios do host/storage/Git/logs e categorias Docker.
 Somente nomes de diretorios e tamanhos sao publicados; nenhum conteudo de arquivo.

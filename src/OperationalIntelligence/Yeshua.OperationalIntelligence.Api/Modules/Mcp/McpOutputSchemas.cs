@@ -141,6 +141,8 @@ public static class McpOutputSchemas
             ["yeshua_errors_query"] = logs,
             ["yeshua_traces_query"] = telemetry,
             ["yeshua_metrics_query"] = telemetry,
+            ["yeshua_storage_usage"] = Object(("reportPath", text), ("retrievedAtUtc", text),
+                ("ageSeconds", number), ("isStale", boolean), ("report", json), ("warnings", strings)),
             ["yeshua_observability_dashboards_list"] = dashboardCatalog,
             ["yeshua_observability_dashboard_get"] = dashboardContract,
             ["yeshua_queue_health_query"] = queueHealthResult,

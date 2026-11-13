@@ -32,6 +32,7 @@ test('creates read-only conversation and emits bounded answer without command pa
   assert.equal(codex.calls[0].start.skipGitRepoCheck, false);
   assert.ok(codex.calls[1].message.startsWith(input.message));
   assert.ok(codex.calls[1].message.includes('/host-diagnostics/disk-usage.json'));
+  assert.ok(codex.calls[1].message.includes('yeshua_storage_usage'));
   assert.ok(codex.calls[1].message.includes('nao some seus totais'));
   assert.equal(result.response.length, 100);
   assert.equal(emitted[0].threadId, 'thread-1');
@@ -66,6 +67,7 @@ test('ChatGPT authentication is forced and the agent cannot invoke its own authe
   const config = codexConfiguration({ chatGptAuthentication: true }, { OPERATIONAL_INTELLIGENCE_MCP_URL: 'http://127.0.0.1:5729/mcp' });
   assert.equal(config.forced_login_method, 'chatgpt');
   assert.equal(config.cli_auth_credentials_store, 'file');
+  assert.ok(config.mcp_servers.yeshua_operational.enabled_tools.includes('yeshua_storage_usage'));
   assert.equal(config.mcp_servers.yeshua_operational.enabled_tools.some(name => /codex_auth|codex_status|task_send|restart/.test(name)), false);
 });
 

@@ -21,6 +21,7 @@ cada recurso em uma instalação.
 | Observabilidade de execução | Logs, erros, traces e métricas | MCP privado; painéis no Grafana |
 | Correlação entre logs e fontes | Extração de pistas e resolução no índice | MCP privado e coletor de investigação |
 | Dados operacionais | SELECT/CTE em conexões SQL nomeadas | MCP privado, condicionado à configuração |
+| Disco do host | Ocupação, tamanhos de diretórios e categorias Docker, com horário e avisos | MCP privado, somente leitura |
 | Investigação combinada | Coletores de fontes e runtime | HTTP; sem ferramenta MCP própria |
 | Contexto e histórico | Contexto compacto e bundle com fontes e histórico Git | HTTP; sem ferramenta MCP própria |
 | Controle da observabilidade | Consulta, substituição e restauração da política | HTTP; sem ferramenta MCP própria |
@@ -31,7 +32,7 @@ cada recurso em uma instalação.
 | Entrada pela interface | Botão Ajuda que copia contexto para uma conversa | Front; não conecta nem consulta o MCP |
 | Executor opcional do Clínica | Supervisor e worker de resumo de textos com Codex | Processo opcional no container; sem ferramenta MCP própria |
 
-O registro da API contém **15 ferramentas MCP: 4 públicas e 11 privadas**. Uma
+O registro da API contém **20 ferramentas MCP: 4 públicas e 16 privadas**. Uma
 conexão privada pode descobrir também as quatro públicas. Há **17 operações HTTP
 funcionais**, contadas separadamente por verbo, além do transporte `/mcp`, Swagger
 e redirecionamentos.
@@ -139,6 +140,7 @@ porque seu nome aparece no Explorer.
 | `yeshua_errors_query` | Aplicativo, ambiente, período, texto e limite | Consulta Loki com filtro de erros/falhas. Pode acrescentar referências de fontes. |
 | `yeshua_traces_query` | `traceId` ou `query` TraceQL com período; `limit` | Traces no Tempo. As relações retornadas são as registradas pela instrumentação. |
 | `yeshua_metrics_query` | `query` PromQL, `fromUtc`, `toUtc`, `step`, `limit` | Séries no Prometheus; `step` padrão de 60 segundos. |
+| `yeshua_storage_usage` | `{}` | Relatório do host atualizado a cada 15 minutos, com filesystem, diretórios e uso Docker. Informa idade, coleta parcial e escopos sobrepostos; não aceita caminhos/comandos e não limpa arquivos. |
 | `yeshua_logs_source_context` | `application`, `log` ou `logs`, `version` e limites | Extrai pistas de um log já obtido e localiza referências e fontes no índice. Não consulta o Loki nessa operação. |
 | `yeshua_database_select` | `connection`, `query`, `parameters`, `maxRows`, `timeoutSeconds` | Colunas, linhas, quantidade, truncamento, duração e avisos de uma consulta SQL operacional. |
 

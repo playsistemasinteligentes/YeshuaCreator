@@ -18,7 +18,8 @@ export async function executeTask(input, codex, emit) {
     ? codex.resumeThread(input.threadId, options)
     : codex.startThread(options);
   const { events } = await thread.runStreamed(input.message + '\n\nContexto do ambiente operacional: '
-    + 'para investigar consumo de disco do servidor, leia /host-diagnostics/disk-usage.json. '
+    + 'para investigar consumo de disco do servidor, chame yeshua_storage_usage com {} pelo MCP. '
+    + 'A ferramenta le /host-diagnostics/disk-usage.json sem exigir comandos de terminal. '
     + 'Esse relatorio de tamanhos e diretorios vem do host, e somente leitura e atualiza a cada 15 minutos. '
     + 'Confira collectedAtUtc, status, timedOut e truncated antes de concluir. Os escopos se sobrepoem; nao some seus totais. '
     + 'Use yeshua_metrics_query para ocupacao e tendencia atuais. df/du no container nao detalham automaticamente o host. '
@@ -64,6 +65,7 @@ export function codexConfiguration(input, environment = process.env) {
         enabled_tools: [
           'yeshua_health', 'yeshua_database_select', 'yeshua_errors_query', 'yeshua_logs_query',
           'yeshua_logs_source_context', 'yeshua_traces_query', 'yeshua_metrics_query', 'yeshua_source_search',
+          'yeshua_storage_usage',
         ],
       },
     };

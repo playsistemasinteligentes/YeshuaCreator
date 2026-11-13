@@ -65,6 +65,8 @@ public static class McpServiceCollectionExtensions
         services.AddScoped<IMcpTool, LogsQueryTool>();
         services.AddScoped<IMcpTool, TracesQueryTool>();
         services.AddScoped<IMcpTool, MetricsQueryTool>();
+        services.AddSingleton(new HostDiskUsageReader());
+        services.AddScoped<IMcpTool, HostDiskUsageTool>();
         services.AddScoped<QueueHealthProjection>();
         services.AddScoped<IMcpTool, QueueHealthQueryTool>();
         services.AddScoped<IMcpTool, QueueItemDiagnoseTool>();

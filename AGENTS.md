@@ -1983,7 +1983,8 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   limitada ao workspace. Nao montar `/var/run/docker.sock`, conceder deploy,
   reinicio de containers ou escrita nos bancos dos aplicativos ao agente.
 - O diagnostico de ocupacao por diretorio do host e entregue ao agente em
-  `/host-diagnostics/disk-usage.json`, por bind somente leitura. O deploy shared
+  `/host-diagnostics/disk-usage.json`, por bind somente leitura e pela ferramenta
+  privada `yeshua_storage_usage`, sem exigir shell dentro do sandbox Codex. O deploy shared
   instala coleta de metadados no host a cada 15 minutos, com baixa prioridade e
   prazo limitado. Nao altera permissoes das pastas originais nem entrega socket
   Docker ao agente. Escopos sobrepostos nao podem ser somados; horario e leituras

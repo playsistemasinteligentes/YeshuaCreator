@@ -268,6 +268,11 @@ Na conexão autorizada, as ferramentas existentes incluem:
 - yeshua_logs_source_context: relaciona pistas de um log a fontes indexados.
 - yeshua_traces_query: consulta um trace ou pesquisa traces no Tempo.
 - yeshua_metrics_query: consulta métricas no Prometheus.
+- yeshua_storage_usage: com `{}`, lê o diagnóstico de disco do host: ocupação,
+  tamanhos por diretório e uso de imagens, volumes e cache Docker. É uma consulta
+  privada, somente leitura, sem comandos de terminal nem parâmetros de caminho.
+  Confira `collectedAtUtc`, `isStale` e avisos de coleta parcial. O relatório é
+  atualizado a cada 15 minutos; escopos sobrepostos não devem ser somados.
 - yeshua_observability_dashboards_list: descobre os dashboards versionados.
 - yeshua_observability_dashboard_get: entrega o contrato semântico e técnico de
   todos os painéis de um dashboard, com o JSON original opcional para auditoria.
