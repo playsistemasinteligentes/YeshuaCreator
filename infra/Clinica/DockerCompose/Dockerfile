@@ -1,20 +1,29 @@
+# syntax=docker/dockerfile:1.20.0
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS source
 WORKDIR /src
 
-ARG YESHUA_COMMIT_SHA=UNSET
-
-COPY . .
-
 ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
+COPY Directory.Build.props ./
+COPY --parents src/**/*.csproj src/**/Directory.Build.targets ./
+RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked \
+    dotnet restore src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj --disable-parallel \
+    && dotnet restore src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj --disable-parallel \
+    && dotnet restore src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj --disable-parallel
+
+COPY --parents src/Engine/Yeshua.Engine/ src/Studio/Yeshua.Studio.AppClinicas/ src/CQRS/*/Yeshua.Clinica.CQRS.*/ \
+    src/CQRS/Application/Yeshua.CQRS.Application.Command/ src/CQRS/Application/Yeshua.CQRS.Application.RepositoryInterfaces/ \
+    src/CQRS/Domain/Yeshua.CQRS.Domain/ src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/ ./
 
 FROM source AS publish-migration
-RUN dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish/migration
+RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj -p:RestoreForce=true -p:RestoreDisableParallel=true -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish/migration
 
 FROM source AS publish-api
-RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/api
+ARG YESHUA_COMMIT_SHA=UNSET
+RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Api/Yeshua.Clinica.CQRS.Infrastructure.Api.csproj -p:RestoreForce=true -p:RestoreDisableParallel=true -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/api
 
 FROM source AS publish-worker
-RUN dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/worker
+ARG YESHUA_COMMIT_SHA=UNSET
+RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked dotnet publish src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj -p:RestoreForce=true -p:RestoreDisableParallel=true -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -p:YeshuaCommitSha="$YESHUA_COMMIT_SHA" -o /app/publish/worker
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS aspnet-health
 WORKDIR /app

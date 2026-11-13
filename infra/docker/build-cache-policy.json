@@ -1,0 +1,27 @@
+{
+  "enabled": true,
+  "policy": [
+    {
+      "keepDuration": "48h",
+      "maxUsedSpace": "2000000000",
+      "filter": ["type==source.local", "type==exec.cachemount", "type==source.git.checkout"]
+    },
+    {
+      "keepDuration": "168h",
+      "reservedSpace": "10000000000",
+      "maxUsedSpace": "30000000000",
+      "minFreeSpace": "30000000000"
+    },
+    {
+      "reservedSpace": "10000000000",
+      "maxUsedSpace": "30000000000",
+      "minFreeSpace": "30000000000"
+    },
+    {
+      "all": true,
+      "reservedSpace": "10000000000",
+      "maxUsedSpace": "30000000000",
+      "minFreeSpace": "30000000000"
+    }
+  ]
+}

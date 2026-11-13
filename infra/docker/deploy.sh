@@ -30,6 +30,7 @@ if [[ ! -S /var/run/docker.sock ]]; then
   exit 1
 fi
 export YESHUA_DOCKER_SOCKET_GID="${YESHUA_DOCKER_SOCKET_GID:-$(stat -c '%g' /var/run/docker.sock)}"
+python3 -B "$APP_DIR/infra/docker/configure-build-cache.py"
 
 chmod +x \
   "$SHARED_DIR"/*.sh \

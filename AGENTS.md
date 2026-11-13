@@ -1882,6 +1882,15 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 - A infraestrutura Fiscal fica em `infra/Fiscal/DockerCompose`.
 - A infraestrutura compartilhada fica em `infra/Shared/DockerCompose`.
 - `infra/docker/deploy.sh` permanece como a entrada operacional publica.
+- O cache de build usa o garbage collector nativo do Docker, configurado por
+  `infra/docker/build-cache-policy.json` no setup de aplicacoes e no deploy.
+  O alvo inicial e 30 GB, com 30 GB de disco livre desejado; nao e quota rigida.
+  A aplicacao valida o daemon.json, preserva outras configuracoes e confirma a
+  politica no builder. Reinicio do Docker, se necessario, ocorre somente na
+  ativacao da politica sob o lock do deploy. Cache nunca se confunde com imagens,
+  volumes, dados persistentes nem backup. Dockerfiles ativos pertencem aos apps:
+  manifests/dependencias antecedem fontes e copias de fontes respeitam o grafo
+  real de referencias para evitar invalidacao por outros aplicativos.
 - O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
 - `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
 - `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.

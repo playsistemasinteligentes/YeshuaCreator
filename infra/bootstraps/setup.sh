@@ -198,6 +198,9 @@ main() {
   systemctl enable docker
   systemctl start docker
 
+  # The normal deploy also reapplies this policy while holding the deploy lock.
+  flock /var/lock/yeshua-deploy.lock "$PYTHON" -B "$APP_DIR/infra/docker/configure-build-cache.py" || return 1
+
   echo "==== Instalando Docker Compose Plugin ===="
   if ! docker compose version >/dev/null 2>&1; then
     mkdir -p /usr/local/lib/docker/cli-plugins

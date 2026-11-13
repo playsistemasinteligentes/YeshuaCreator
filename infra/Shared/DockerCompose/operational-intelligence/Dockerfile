@@ -1,8 +1,15 @@
+# syntax=docker/dockerfile:1.20.0
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/ src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/
+COPY Directory.Build.props ./
+COPY src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Yeshua.OperationalIntelligence.Api.csproj src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/
 ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
-RUN dotnet publish src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Yeshua.OperationalIntelligence.Api.csproj -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish
+RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked \
+    dotnet restore src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Yeshua.OperationalIntelligence.Api.csproj --disable-parallel
+COPY src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/ src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/
+# A cached restore layer does not guarantee the disposable NuGet mount survived GC.
+RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked \
+    dotnet publish src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Yeshua.OperationalIntelligence.Api.csproj -p:RestoreForce=true -p:RestoreDisableParallel=true -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0
 
@@ -55,9 +62,6 @@ RUN useradd --create-home --shell /bin/bash agent \
     && mkdir -p /workspace /app/agent \
     && chown -R agent:agent /workspace /app
 
-COPY --from=build --chown=agent:agent /app/publish /app/
-COPY --chown=agent:agent infra/Shared/DockerCompose/operational-intelligence/agent/ /app/agent/
-
 USER agent
 WORKDIR /app
 
@@ -69,8 +73,11 @@ ENV HOME=/home/agent \
     PATH=/opt/yeshua-mcp-tunnel:/home/agent/.local/bin:/home/agent/.npm-global/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 RUN mkdir -p "$NPM_CONFIG_PREFIX" "$CODEX_INSTALL_DIR" "$CODEX_HOME" \
-    && npm install -g @anthropic-ai/claude-code @openai/codex@0.164.0 \
-    && npm ci --prefix /app/agent --omit=dev
+    && npm install -g @anthropic-ai/claude-code@2.1.323 @openai/codex@0.164.0 \
+    && npm cache clean --force
+
+COPY --chown=agent:agent infra/Shared/DockerCompose/operational-intelligence/agent/package.json infra/Shared/DockerCompose/operational-intelligence/agent/package-lock.json /app/agent/
+RUN npm ci --prefix /app/agent --omit=dev && npm cache clean --force
 
 USER root
 COPY infra/Shared/DockerCompose/operational-intelligence/entrypoint.sh /usr/local/bin/yeshua-agent-entrypoint
@@ -80,6 +87,9 @@ RUN chmod +x \
       /usr/local/bin/yeshua-agent-entrypoint \
       /usr/local/bin/yeshua-agent-health \
       /usr/local/bin/yeshua-agent-sync
+
+COPY --from=build --chown=agent:agent /app/publish /app/
+COPY --chown=agent:agent infra/Shared/DockerCompose/operational-intelligence/agent/ /app/agent/
 
 ENV ASPNETCORE_URLS="http://0.0.0.0:5728;http://127.0.0.1:5729"
 EXPOSE 5728
