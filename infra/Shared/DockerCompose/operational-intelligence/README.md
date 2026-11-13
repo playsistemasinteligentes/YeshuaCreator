@@ -23,6 +23,12 @@ o agente continua usando `yeshua_metrics_query`. O coletor usa baixa prioridade,
 limite total de dois minutos e nao executa limpeza. No host, uma atualizacao
 imediata usa `systemctl start yeshua-host-disk-usage.service`.
 
+Homologacao em 13/11/2026: o proprio Codex do container, em `observe` e com
+ambiente filtrado, chamou `yeshua_storage_usage` pelo MCP e retornou horario e
+valores conferidos contra o relatorio. O teste tambem confirmou a recusa da
+ferramenta no MCP publico. A varredura geral de `/` atingiu o prazo nesta VPS;
+Docker e os demais escopos foram entregues e a limitacao foi explicitada.
+
 | Entrada | Uso |
 | --- | --- |
 | `https://playsis.com.br/operational/mcp` | MCP publico: `yeshua_health`, `yeshua_explorer`, `yeshua_app_explore` e `yeshua_source_search`. |
