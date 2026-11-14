@@ -19,6 +19,8 @@ public static class AgentTaskServiceCollectionExtensions
             .ValidateOnStart();
         services.AddScoped<IAgentTaskRepository, AgentTaskRepository>();
         services.AddScoped<IAgentTaskExecutor, CodexTaskExecutor>();
+        services.AddHttpClient<AgentGitHubClient>(client => client.Timeout = TimeSpan.FromSeconds(30));
+        services.AddScoped<AgentGitWorkspace>();
         services.AddSingleton<AgentTaskExecutionControl>();
         services.AddSingleton<ICodexAccountClientFactory, CodexAccountClientFactory>();
         services.AddSingleton<CodexAccountReceiver>();

@@ -28,7 +28,9 @@ Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
 Os contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
 `yeshua_storage_usage` e privada e somente leitura: entrega metadados do relatorio
 fixo `/host-diagnostics/disk-usage.json`. Nao aceita caminhos/comandos e nao executa
-limpeza. A leitura pela API evita depender do bwrap do Codex, bloqueado nesta VPS.
+limpeza. A leitura pela API evita depender de shell. Comandos do agente usam o
+perfil especifico e o executor Codex nativo por stdio documentados em
+infra/Shared/DockerCompose/operational-intelligence/security/README.md.
 Os next.arguments omitindo filtros nulos devem ser validos no schema de entrada.
 Nomes qualificados de stack traces podem omitir a assinatura dos parametros;
 a busca deve reconhecer a declaracao sem confundir prefixos parciais.

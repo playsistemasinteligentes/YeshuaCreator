@@ -10,8 +10,9 @@ executa somente Codex. `yeshua-observability` permanece separado.
 
 Para investigar o uso de disco do host, o agente chama `yeshua_storage_usage`
 com `{}` pelo MCP privado, que le `/host-diagnostics/disk-usage.json`.
-A consulta nao exige shell: o teste real encontrou o isolamento bwrap bloqueado
-no Docker desta VPS. As restricoes do Codex e do container foram preservadas.
+A consulta nao exige shell. O bloqueio de comandos encontrado originalmente
+no Docker foi tratado pelo perfil especifico e pelo executor nativo descritos
+em [security](security/README.md); a consulta de disco continua pelo relatorio.
 O deploy shared instala um coletor de
 metadados no host e uma agenda systemd de 15 minutos. O relatorio separa
 ocupacao do filesystem, diretorios do host/storage/Git/logs e categorias Docker.
@@ -98,8 +99,10 @@ protegidos do host, sem abrir suas permissoes. A copia pertence a `agent`;
 antes de iniciar a API, `gosu` descarta os privilegios. API, Codex e cliente
 de tunel executam como `agent`, nunca como root. O deploy aguarda a saude
 dos servicos antes de reconciliar o gateway.
-`yeshua-agent-sync` substitui essa copia: antes de usa-lo, preserve alteracoes
-existentes no workspace. `yeshua-agent-health` confere as ferramentas e a API.
+Quando o commit publicado muda, `yeshua-agent-sync` cria uma copia Git limpa
+sem credenciais, preserva a pasta anterior com sufixo `.preserved-*` e so entao
+troca o workspace de consulta. As copias por task permanecem intactas.
+`yeshua-agent-health` confere as ferramentas e a API.
 
 No Compose, `YESHUA_AGENT_TASKS_ENABLED=true`. Cada ordem usa `observe` por padrao,
 com sandbox somente leitura. `workspace-write` exige
@@ -276,6 +279,50 @@ esta primeira versao exige uma unica instancia operacional. Limites iniciais:
 O ChatGPT pode responder por voz "pedido recebido" e consultar o resultado
 quando voce perguntar "como ficou?". O MCP nao inicia notificacao, conversa ou
 fala no celular. `taskId` pertence a esta API, nao a um chat do Codex desktop.
+
+## Git Do Agente
+
+A integracao de desenvolvimento usa uma conta GitHub dedicada, nao um GitHub App.
+A conta definida pelo operador e `agpsi0001-lgtm`, com email de autoria
+`agpsi0001@gmail.com`. A conta do Codex/ChatGPT e independente dessa identidade:
+trocar o login do Codex nao troca o autor dos commits nem a task.
+
+O fluxo preparado usa uma copia Git por task em `/workspace/tasks/<taskId>`,
+branch `codex/task-<taskId>`, commit e PR em rascunho para `main`. O aplicativo
+faz as operacoes Git depois da resposta do agente. O token nao e gravado no
+remote, no workspace ou na imagem, nem enviado ao modelo; somente as chamadas
+Git/GitHub feitas pelo aplicativo recebem a credencial. Antes de publicar,
+o aplicativo confere o login retornado pelo GitHub e o acesso ao repositorio.
+Nenhum metodo dessa integracao executa merge ou deploy.
+
+Preparacao da conta:
+
+1. Na conta proprietaria de `playsistemasinteligentes/YeshuaCreator`, adicionar
+   `agpsi0001-lgtm` em **Settings > Collaborators** com acesso de escrita.
+2. Entrar como `agpsi0001-lgtm` e aceitar o convite. Confirmar que
+   `agpsi0001@gmail.com` esta verificado nessa conta para atribuicao dos commits.
+3. Criar um token dessa conta em **Settings > Developer settings > Personal
+   access tokens**. O proprietario atual do repositorio e uma conta pessoal;
+   o GitHub ainda nao permite fine-grained PAT para colaborar no repositorio de
+   outra conta pessoal. Nesse caso, usar token **classic** com escopo `repo`
+   e validade definida. Nao usar token da conta pessoal do operador ou da empresa.
+4. Guardar o token somente no campo `AgentDevelopment.GitHub.Token` do arquivo
+   privado existente
+   `/root/YeshuaPrivate/production/shared/OperationalAgent/integracoes/providers.json`.
+   Mesclar o bloco `AgentDevelopment` do exemplo `infra/private/providers.example.json`,
+   preservando as configuracoes OpenAI/Anthropic/tunel. Nao enviar o token no chat.
+5. Depois da homologacao do isolamento de comandos, habilitar `Enabled` e
+   `PublishPullRequests`. `AllowNetwork` habilita rede somente nas tarefas de
+   desenvolvimento, por exemplo para restaurar pacotes .NET; `observe` continua
+   sem rede no terminal. O cofre e exportado pelo deploy padrao Shared.
+
+Sem esse bloco, desenvolvimento/envio permanecem desabilitados. Habilitar
+publicacao com credencial incompleta falha na validacao da configuracao.
+O contrato MCP continua sendo `yeshua_task_send`/`yeshua_task_read`, sem novos
+metodos Git. Uma continuacao reutiliza o workspace original; sua perda bloqueia
+o desenvolvimento naquela task, preservando as respostas ja gravadas em SQL.
+
+Referencia: [tokens e limitacoes documentadas pelo GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 ## Persistencia E Recuperacao
 

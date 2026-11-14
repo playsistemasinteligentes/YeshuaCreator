@@ -205,12 +205,18 @@ public sealed class CodexAccountReceiverTests
         start.Environment["OPENAI_API_KEY"] = "fixture";
         start.Environment["McpTunnel__ApiKey"] = "fixture";
         start.Environment["ConnectionStrings__OperationalIntelligence"] = "fixture";
+        start.Environment["AgentTasks__Git__Token"] = "fixture-git-token";
+        start.Environment["YESHUA_AGENT_GIT_TOKEN"] = "fixture-git-token";
+        start.Environment["GIT_CONFIG_VALUE_0"] = "fixture-git-header";
         var home = Path.Combine(Path.GetTempPath(), "codex-shared-fixture");
         CodexProcessEnvironment.Apply(start, new() { ChatGptAuthentication = true, CodexHomePath = home });
         Assert.AreEqual(home, start.Environment["CODEX_HOME"]);
         Assert.IsFalse(start.Environment.ContainsKey("OPENAI_API_KEY"));
         Assert.IsFalse(start.Environment.ContainsKey("McpTunnel__ApiKey"));
         Assert.IsFalse(start.Environment.ContainsKey("ConnectionStrings__OperationalIntelligence"));
+        Assert.IsFalse(start.Environment.ContainsKey("AgentTasks__Git__Token"));
+        Assert.IsFalse(start.Environment.ContainsKey("YESHUA_AGENT_GIT_TOKEN"));
+        Assert.IsFalse(start.Environment.ContainsKey("GIT_CONFIG_VALUE_0"));
     }
 
     private sealed class Fixture : IAsyncDisposable

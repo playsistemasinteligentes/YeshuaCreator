@@ -10,6 +10,7 @@ source "$APP_DIR/infra/docker/load-deploy-env.sh" shared
 cd "$COMPOSE_DIR"
 mkdir -p /root/YeshuaStorage/volatile/infra/telemetry
 bash "$COMPOSE_DIR/operational-intelligence/install-host-disk-diagnostics.sh"
+bash "$COMPOSE_DIR/operational-intelligence/security/install-agent-security.sh"
 if [[ ! -S /var/run/docker.sock ]]; then
   echo "Socket do Docker nao encontrado em /var/run/docker.sock." >&2
   exit 1

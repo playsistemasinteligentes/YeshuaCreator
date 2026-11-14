@@ -10,19 +10,19 @@ public sealed class CodexTaskExecutorTests
     [TestMethod]
     public async Task LostContinuationCannotStartANewConversation()
     {
-        var executor = new CodexTaskExecutor(Options.Create(new AgentTaskOptions { NodeExecutable = "must-not-run" }));
+        var executor = Create(new AgentTaskOptions { NodeExecutable = "must-not-run" });
         await Assert.ThrowsExceptionAsync<ArgumentException>(() => executor.ExecuteAsync(
             new() { TaskId = Guid.NewGuid(), IsContinuation = true }, (_, _) => Task.CompletedTask, default));
     }
     [TestMethod]
     public async Task CancellationStopsAdapterAndItsChildWithoutCallingAnyModel()
     {
-        var executor = new CodexTaskExecutor(Options.Create(new AgentTaskOptions
+        var executor = Create(new AgentTaskOptions
         {
             WorkspacePath = AppContext.BaseDirectory,
             RuntimeScript = Path.Combine(AppContext.BaseDirectory, "Fixtures", "agent-process.cjs"),
             NodeExecutable = "node"
-        }));
+        });
         var started = new TaskCompletionSource<string>(TaskCreationOptions.RunContinuationsAsynchronously);
         using var stop = new CancellationTokenSource(TimeSpan.FromSeconds(10));
         var work = executor.ExecuteAsync(new() { TaskId = Guid.NewGuid(), RequestId = "process-test", Message = "Fixture" },
@@ -60,5 +60,11 @@ public sealed class CodexTaskExecutorTests
     {
         try { using var process = Process.GetProcessById(pid); return !process.HasExited; }
         catch (ArgumentException) { return false; }
+    }
+
+    private static CodexTaskExecutor Create(AgentTaskOptions settings)
+    {
+        var options = Options.Create(settings);
+        return new(options, new AgentGitWorkspace(options, new AgentGitHubClient(new HttpClient(), options)));
     }
 }

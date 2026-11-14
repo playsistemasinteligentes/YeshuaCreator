@@ -14,8 +14,13 @@ fi
 
 if [[ "$sync_mode" == "force" ]]; then
   yeshua-agent-sync
-elif [[ "$sync_mode" == "auto" && ! -d "$workspace/.git" ]]; then
-  yeshua-agent-sync
+elif [[ "$sync_mode" == "auto" ]]; then
+  source_path="${YESHUA_AGENT_SOURCE:-/server/YeshuaCreator}"
+  source_commit="$(git -c safe.directory="$source_path" -C "$source_path" rev-parse HEAD)"
+  workspace_commit="$(git -c safe.directory="$workspace" -C "$workspace" rev-parse HEAD 2>/dev/null || true)"
+  if [[ "$source_commit" != "$workspace_commit" ]]; then
+    yeshua-agent-sync
+  fi
 fi
 
 echo "Yeshua Operational Intelligence API and agents ready."

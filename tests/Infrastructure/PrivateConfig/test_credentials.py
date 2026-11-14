@@ -54,6 +54,56 @@ class CredentialsTests(unittest.TestCase):
         self.assertEqual("", result["ANTHROPIC_API_KEY"])
         self.assertEqual("", result["YESHUA_MCP_TUNNEL_ID"])
         self.assertEqual("", result["YESHUA_MCP_TUNNEL_API_KEY"])
+        self.assertEqual("false", result["YESHUA_AGENT_ALLOW_WORKSPACE_WRITE"])
+        self.assertEqual("false", result["YESHUA_AGENT_GIT_PUBLISH_PULL_REQUESTS"])
+        self.assertEqual("", result["YESHUA_AGENT_GIT_TOKEN"])
+
+    def test_agent_git_uses_dedicated_identity_only_from_private_providers(self):
+        config = {"AgentDevelopment": {
+            "Enabled": True, "PublishPullRequests": True, "AllowNetwork": True,
+            "GitHub": {"UserName": "agpsi0001-lgtm", "Email": "agpsi0001@gmail.com", "Token": "fixture-git-token"},
+        }}
+        with patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+             patch.object(credentials, "read_json", return_value=config):
+            result = credentials.environment(configured(), Path("/private"), "shared")
+            self.assertEqual("agpsi0001-lgtm", result["YESHUA_AGENT_GIT_USERNAME"])
+            self.assertEqual("agpsi0001@gmail.com", result["YESHUA_AGENT_GIT_EMAIL"])
+            self.assertEqual("fixture-git-token", result["YESHUA_AGENT_GIT_TOKEN"])
+            self.assertEqual("true", result["YESHUA_AGENT_ALLOW_WORKSPACE_WRITE"])
+            self.assertEqual("true", result["YESHUA_AGENT_ALLOW_DEVELOPMENT_NETWORK"])
+            self.assertEqual("true", result["YESHUA_AGENT_GIT_PUBLISH_PULL_REQUESTS"])
+            central = credentials.environment(configured(), Path("/private"), "central")
+            self.assertEqual("", central["YESHUA_AGENT_GIT_TOKEN"])
+            self.assertEqual("false", central["YESHUA_AGENT_ALLOW_WORKSPACE_WRITE"])
+
+    def test_agent_git_rejects_incomplete_or_implicitly_enabled_publishing(self):
+        valid = {"AgentDevelopment": {
+            "Enabled": True, "PublishPullRequests": True,
+            "GitHub": {"UserName": "agpsi0001-lgtm", "Email": "agpsi0001@gmail.com", "Token": "fixture-git-token"},
+        }}
+        for key in ("UserName", "Email", "Token"):
+            invalid = copy.deepcopy(valid)
+            invalid["AgentDevelopment"]["GitHub"][key] = ""
+            with self.subTest(missing=key), \
+                 patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+                 patch.object(credentials, "read_json", return_value=invalid):
+                with self.assertRaises(credentials.ConfigurationError) as error:
+                    credentials.environment(configured(), Path("/private"), "shared")
+                self.assertNotIn("fixture-git-token", str(error.exception))
+        for name, value in (("Enabled", False), ("Enabled", "true"), ("AllowNetwork", "true"), ("PublishPullRequests", "true")):
+            invalid = copy.deepcopy(valid)
+            invalid["AgentDevelopment"][name] = value
+            with self.subTest(flag=name, value=value), \
+                 patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+                 patch.object(credentials, "read_json", return_value=invalid):
+                with self.assertRaises(credentials.ConfigurationError):
+                    credentials.environment(configured(), Path("/private"), "shared")
+
+    def test_agent_git_does_not_inherit_a_different_accounts_token(self):
+        with patch.dict(os.environ, YESHUA_AGENT_GIT_TOKEN="another-accounts-token", YESHUA_AGENT_ALLOW_WORKSPACE_WRITE="true"):
+            result = credentials.environment(configured(), Path("/path-that-does-not-exist"), "shared")
+        self.assertEqual("", result["YESHUA_AGENT_GIT_TOKEN"])
+        self.assertEqual("false", result["YESHUA_AGENT_ALLOW_WORKSPACE_WRITE"])
 
     def test_tunnel_configuration_uses_private_provider_file_only_for_shared(self):
         with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:

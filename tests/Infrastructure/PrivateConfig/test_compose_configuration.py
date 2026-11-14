@@ -19,6 +19,7 @@ class ComposeConfigurationTests(unittest.TestCase):
         # Models target Linux even when this parser-only test runs on Windows.
         values.update({key: value.replace("\\", "/") for key, value in values.items() if key.endswith("_ROOT")})
         environment.update(values)
+        environment["YESHUA_DOCKER_SOCKET_GID"] = "999"  # Parser fixture, never a real Docker socket.
         for application in ("Shared", "Central", "Clinica", "APS.ADM", "Fiscal", "Memorias"):
             with self.subTest(application=application):
                 source = ROOT / "infra" / application / "DockerCompose/docker-compose.yml"

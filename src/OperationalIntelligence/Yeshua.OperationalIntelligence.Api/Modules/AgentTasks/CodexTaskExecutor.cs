@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 
-public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options) : IAgentTaskExecutor
+public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options, AgentGitWorkspace git) : IAgentTaskExecutor
 {
     private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
 
@@ -17,6 +17,7 @@ public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options) : IAge
             throw new ArgumentException("A sessao original desta task nao esta disponivel. A continuacao foi bloqueada sem criar outra conversa. O historico e o workspace foram preservados.");
         if (!Directory.Exists(settings.WorkspacePath) || !File.Exists(settings.RuntimeScript))
             throw new ArgumentException("Workspace ou adaptador Codex indisponivel no servidor.");
+        var workspace = await git.PrepareAsync(item, cancellationToken);
         var start = new ProcessStartInfo(settings.NodeExecutable)
         {
             UseShellExecute = false,
@@ -24,10 +25,20 @@ public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options) : IAge
             RedirectStandardOutput = true,
             RedirectStandardError = true,
             CreateNoWindow = true,
-            WorkingDirectory = settings.WorkspacePath
+            WorkingDirectory = workspace
         };
         start.ArgumentList.Add(settings.RuntimeScript);
         CodexProcessEnvironment.Apply(start, settings);
+        var cache = Path.Combine(Path.GetTempPath(), "yeshua-agent", item.TaskId.ToString("N"));
+        Directory.CreateDirectory(cache);
+        var runtimeDirectory = Path.Combine(cache, "runtime");
+        Directory.CreateDirectory(runtimeDirectory);
+        if (!OperatingSystem.IsWindows())
+            File.SetUnixFileMode(runtimeDirectory, UnixFileMode.UserRead | UnixFileMode.UserWrite | UnixFileMode.UserExecute);
+        start.Environment["XDG_RUNTIME_DIR"] = runtimeDirectory;
+        start.Environment["DOTNET_CLI_HOME"] = Path.Combine(cache, "dotnet");
+        start.Environment["NUGET_PACKAGES"] = Path.Combine(cache, "nuget", "packages");
+        start.Environment["NUGET_HTTP_CACHE_PATH"] = Path.Combine(cache, "nuget", "http");
         using var process = new Process { StartInfo = start };
         if (!process.Start())
             throw new InvalidOperationException("Codex runtime did not start.");
@@ -37,7 +48,8 @@ public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options) : IAge
             var input = JsonSerializer.Serialize(new
             {
                 item.Message, item.ThreadId, item.Mode, item.IsContinuation,
-                settings.WorkspacePath, settings.MaxResponseChars, settings.ChatGptAuthentication
+                workspacePath = workspace, settings.MaxResponseChars, settings.ChatGptAuthentication,
+                settings.AllowDevelopmentNetwork
             }, JsonOptions);
             await process.StandardInput.WriteLineAsync(input.AsMemory(), cancellationToken);
             process.StandardInput.Close();
@@ -65,9 +77,15 @@ public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options) : IAge
             }
             await process.WaitForExitAsync(cancellationToken);
             await drainErrors;
-            return result is not null && process.ExitCode == 0
-                ? result
-                : new("O Codex nao concluiu a tarefa. Confira o login e a sessao original. Nao foi criada outra conversa nem repetido o pedido; historico e workspace continuam preservados.", false);
+            if (result is null || process.ExitCode != 0)
+                return new("O Codex nao concluiu a tarefa. Confira o login e a sessao original. Nao foi criada outra conversa nem repetido o pedido; historico e workspace continuam preservados.", false);
+            if (result.Success)
+            {
+                var publication = await git.PublishAsync(item, workspace, result.Response, cancellationToken);
+                if (publication.Length > 0)
+                    result = new(publication + "\n\n" + result.Response, true);
+            }
+            return result;
         }
         finally
         {
