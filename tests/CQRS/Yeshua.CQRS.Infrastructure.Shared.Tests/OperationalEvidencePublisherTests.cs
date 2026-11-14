@@ -106,6 +106,29 @@ public sealed class OperationalEvidencePublisherTests
     }
 
     [TestMethod]
+    public void Publish_IdentifiesDirectedTenantAndUserWithoutExposingProfileData()
+    {
+        var payload = Publish(
+            new OperationalEvidenceEnvelope(
+                "Command",
+                "SalvarEntrevista",
+                OperationalSeverity.Information,
+                OperationalDepth.D2,
+                OperationalTechnicalOutcome.Succeeded,
+                OperationalBusinessOutcome.Accepted,
+                TenantId: 42,
+                UserId: 7),
+            []);
+
+        using var document = JsonDocument.Parse(payload);
+        var data = document.RootElement.GetProperty("Data");
+        Assert.AreEqual(42, data.GetProperty("TenantId").GetInt32());
+        Assert.AreEqual(7, data.GetProperty("UserId").GetInt32());
+        Assert.IsFalse(payload.Contains("Email", StringComparison.OrdinalIgnoreCase));
+        Assert.IsFalse(payload.Contains("Password", StringComparison.OrdinalIgnoreCase));
+    }
+
+    [TestMethod]
     public void CommandBusinessRejection_IsNotTechnicalFailure()
     {
         var sink = new CapturingSink();
@@ -133,6 +156,51 @@ public sealed class OperationalEvidencePublisherTests
         Assert.AreEqual(
             "Operation was rejected by business validation.",
             root.GetProperty("Data").GetProperty("ErrorSummary").GetString());
+    }
+
+    [TestMethod]
+    public void CommandBusinessRejection_EmitsResultMessageOnlyWhenD2ExplicitlyAuthorizesIt()
+    {
+        var sink = new CapturingSink();
+        var telemetry = new OperationalTelemetryDecision(
+            true,
+            "Debug",
+            "D2",
+            AuthorizedFields: ["ResultMessage"]);
+        var logger = new Shered.Logger.Logger(new FixedPolicy(telemetry), sink);
+
+        logger.CommandStarted("SalvarRegistro");
+        logger.CommandFinished(
+            "SalvarRegistro",
+            "trace-2",
+            false,
+            12,
+            409,
+            null,
+            telemetry,
+            resultMessage: "O atendimento mudou em outra tela.");
+
+        using var document = JsonDocument.Parse(sink.SinglePayload);
+        Assert.AreEqual(
+            "O atendimento mudou em outra tela.",
+            document.RootElement.GetProperty("Data").GetProperty("ResultMessage").GetString());
+
+        var protectedSink = new CapturingSink();
+        var protectedTelemetry = new OperationalTelemetryDecision(true, "Debug", "D2");
+        var protectedLogger = new Shered.Logger.Logger(new FixedPolicy(protectedTelemetry), protectedSink);
+        protectedLogger.CommandStarted("SalvarRegistro");
+        protectedLogger.CommandFinished(
+            "SalvarRegistro",
+            "trace-3",
+            false,
+            10,
+            409,
+            null,
+            protectedTelemetry,
+            resultMessage: "Mensagem que nao foi autorizada.");
+
+        Assert.IsFalse(protectedSink.SinglePayload.Contains("ResultMessage", StringComparison.Ordinal));
+        Assert.IsFalse(protectedSink.SinglePayload.Contains("Mensagem que nao foi autorizada", StringComparison.Ordinal));
     }
 
     [TestMethod]

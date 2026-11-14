@@ -53,7 +53,16 @@ namespace Command.Patterns.OutBox
                 ? Guid.NewGuid().ToString()
                 : messageId;
             var identity = GetCurrentIdentity();
-            var telemetry = _logger.Evaluate("Outbox", type, entityType, entityId);
+            var tenantId = _executionContext.TenantID > 0 ? _executionContext.TenantID : (int?)null;
+            var userId = _executionContext.UserId > 0 ? _executionContext.UserId : (int?)null;
+            var telemetry = _logger.Evaluate(
+                "Outbox",
+                type,
+                entityType,
+                entityId,
+                identity.OperationId,
+                tenantId,
+                userId);
             var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
 
             try
@@ -131,7 +140,16 @@ namespace Command.Patterns.OutBox
                 ? Guid.NewGuid().ToString()
                 : messageId;
             var identity = GetCurrentIdentity();
-            var telemetry = _logger.Evaluate("Inbox", type, entityType, entityId);
+            var tenantId = _executionContext.TenantID > 0 ? _executionContext.TenantID : (int?)null;
+            var userId = _executionContext.UserId > 0 ? _executionContext.UserId : (int?)null;
+            var telemetry = _logger.Evaluate(
+                "Inbox",
+                type,
+                entityType,
+                entityId,
+                identity.OperationId,
+                tenantId,
+                userId);
             var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
 
             try

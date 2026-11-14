@@ -291,6 +291,21 @@ Miolos que IA/dev devem preencher:
   `DomainTracker` para nao herdar detalhamento generico por acidente. O modo
   usa o mesmo snapshot de politica, com valor padrao ou especifico por alvo, e
   e sincronizado da API para o Worker pelo mecanismo operacional existente.
+- O diagnostico direcionado D2 pode selecionar `TenantId` e `UserId` a partir
+  do `IExecutionContext` existente. O filtro deve ser avaliado nas bordas
+  geradas ou compartilhadas antes de criar `Activity`, cronometro, tags ou
+  payload; Command, repository, HTTP, Inbox, Outbox e execucao de saga devem
+  propagar a mesma identidade sem criar mecanismo paralelo. A evidencia leva
+  somente os IDs operacionais, nunca nome, e-mail, senha ou perfil do usuario.
+  A busca da tela de controle e autenticada, limitada e devolve apenas a
+  projecao minima necessaria para selecionar o alvo.
+- Mensagens finais de falha ou rejeicao de Command podem ser publicadas como
+  `ResultMessage` somente em D2 e quando esse campo restrito estiver
+  explicitamente autorizado. Payload, campos do formulario e conteudo clinico
+  nunca sao capturados por esse mecanismo.
+- D3 e D4 permanecem reservados no vocabulario, mas nao sao ativaveis enquanto
+  seus contratos de conteudo, autorizacao, custo e retencao nao forem definidos.
+  A tela deve oferecer somente D2 enquanto essa decisao permanecer pendente.
 - Quando desligado, o caminho quente deve pagar somente verificacoes baratas
   de politica/mascara: sem reflection, sem StackTrace, sem serializacao, sem
   interpolacao de strings e sem montagem de payload.

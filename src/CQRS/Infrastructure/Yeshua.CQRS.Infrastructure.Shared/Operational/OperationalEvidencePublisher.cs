@@ -53,6 +53,10 @@ public sealed class OperationalEvidencePublisher
             WriteOptional(writer, "OperationalEntityId", envelope.OperationalEntityId);
             WriteOptional(writer, "ErrorCode", envelope.ErrorCode);
             WriteOptional(writer, "DiagnosticSessionId", envelope.DiagnosticSessionId);
+            if (envelope.TenantId is { } tenantId)
+                writer.WriteNumber("TenantId", tenantId);
+            if (envelope.UserId is { } userId)
+                writer.WriteNumber("UserId", userId);
 
             foreach (ref readonly var field in fields)
             {

@@ -45,12 +45,17 @@ namespace Command.Patterns.Command
                 recordId = operationalCommand.OperationalRecordId;
             }
 
+            var tenantId = _context.TenantID > 0 ? _context.TenantID : (int?)null;
+            var userId = _context.UserId > 0 ? _context.UserId : (int?)null;
+
             var telemetry = _logger.Evaluate(
                 "Command",
                 CommandName,
                 entity,
                 recordId,
-                _context.OperationalIdentity.OperationId);
+                _context.OperationalIdentity.OperationId,
+                tenantId,
+                userId);
             if (!telemetry.Enabled)
                 return await ActionAsync(command, cancellationToken);
 
@@ -66,6 +71,8 @@ namespace Command.Patterns.Command
             activity?.SetTag("yeshua.trace_id", traceId);
             activity?.SetTag("yeshua.entity", entity);
             activity?.SetTag("yeshua.operational_entity_id", recordId);
+            activity?.SetTag("yeshua.tenant_id", tenantId);
+            activity?.SetTag("enduser.id", userId);
             activity?.SetTag("yeshua.depth", telemetry.DiagnosticDepth.ToString());
             OperationalActivity.SetIdentity(activity, executionIdentity);
             OperationalActivity.SetDiagnosticSession(activity, telemetry.DiagnosticSessionId);
@@ -108,7 +115,8 @@ namespace Command.Patterns.Command
                     telemetry,
                     executionIdentity,
                     recordId,
-                    emitEvent: emitEvent);
+                    emitEvent: emitEvent,
+                    resultMessage: result.StatusCode >= 400 ? result.Message : null);
 
                 activity?.SetTag("http.response.status_code", result.StatusCode);
                 activity?.SetTag(

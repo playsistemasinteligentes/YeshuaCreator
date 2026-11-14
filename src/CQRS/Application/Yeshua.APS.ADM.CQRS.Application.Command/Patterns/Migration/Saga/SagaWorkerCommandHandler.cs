@@ -83,7 +83,10 @@ namespace Command.Patterns
                     "Inbox",
                     operation,
                     "yInbox",
-                    stimulus.InboxId.ToString());
+                    stimulus.InboxId.ToString(),
+                    _executionContext.OperationalIdentity.OperationId,
+                    _executionContext.TenantID > 0 ? _executionContext.TenantID : (int?)null,
+                    _executionContext.UserId > 0 ? _executionContext.UserId : (int?)null);
                 var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
                 var executionIdentity = _executionContext.TryGetOperationalIdentity(out var currentIdentity)
                     ? currentIdentity
@@ -277,7 +280,10 @@ namespace Command.Patterns
                         "SagaWorkerRecord",
                         "Execute",
                         "ySaga",
-                        sagaDto.correlationid);
+                        sagaDto.correlationid,
+                        sagaDto.operationid,
+                        sagaDto.tenantid > 0 ? sagaDto.tenantid : (int?)null,
+                        sagaDto.userid > 0 ? sagaDto.userid : (int?)null);
                     var parentIdentity = new OperationalExecutionIdentity(
                         sagaDto.rootoperationid,
                         sagaDto.operationid,
@@ -294,6 +300,10 @@ namespace Command.Patterns
                     recordActivity?.SetTag("yeshua.component", "SagaWorkerRecord");
                     recordActivity?.SetTag("yeshua.entity", "ySaga");
                     recordActivity?.SetTag("yeshua.operational_entity_id", sagaDto.correlationid);
+                    if (sagaDto.tenantid > 0)
+                        recordActivity?.SetTag("yeshua.tenant_id", sagaDto.tenantid);
+                    if (sagaDto.userid > 0)
+                        recordActivity?.SetTag("enduser.id", sagaDto.userid);
                     if (_executionContext.TryGetOperationalIdentity(out var executionIdentity))
                         OperationalActivity.SetIdentity(recordActivity, executionIdentity);
 

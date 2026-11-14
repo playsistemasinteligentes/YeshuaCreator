@@ -52,13 +52,25 @@ namespace Shered.Logger
             string? entity,
             string? recordId,
             string? operationId)
+            => Evaluate(component, operation, entity, recordId, operationId, null, null);
+
+        public OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation,
+            string? entity,
+            string? recordId,
+            string? operationId,
+            int? tenantId,
+            int? userId)
         {
             if (_policy is null)
             {
                 return new OperationalTelemetryDecision(
                     true,
                     "Information",
-                    "D0");
+                    "D0",
+                    TenantId: tenantId,
+                    UserId: userId);
             }
 
             try
@@ -69,7 +81,9 @@ namespace Shered.Logger
                     entity,
                     recordId,
                     null,
-                    operationId);
+                    operationId,
+                    tenantId,
+                    userId);
             }
             catch
             {
@@ -121,7 +135,9 @@ namespace Shered.Logger
                 CausationId: executionIdentity.CausationId,
                 OperationalEntityId: operationalEntityId,
                 DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                AuthorizedFields: telemetry.AuthorizedFields);
+                AuthorizedFields: telemetry.AuthorizedFields,
+                TenantId: telemetry.TenantId,
+                UserId: telemetry.UserId);
             OperationalEvidenceField[] fields =
             [
                 new("EventName", "Command.Started"),
@@ -141,7 +157,8 @@ namespace Shered.Logger
             OperationalTelemetryDecision telemetry,
             OperationalExecutionIdentity executionIdentity = default,
             string? operationalEntityId = null,
-            bool emitEvent = true)
+            bool emitEvent = true,
+            string? resultMessage = null)
         {
             var now = DateTimeOffset.UtcNow;
             var state = _commands.GetOrAdd(
@@ -206,7 +223,8 @@ namespace Shered.Logger
                 null,
                 telemetry,
                 executionIdentity,
-                operationalEntityId);
+                operationalEntityId,
+                resultMessage);
         }
 
         public void CommandFailed(
@@ -253,7 +271,8 @@ namespace Shered.Logger
                 ex,
                 telemetry,
                 executionIdentity,
-                operationalEntityId);
+                operationalEntityId,
+                null);
         }
 
         public void Repository(
@@ -483,7 +502,9 @@ namespace Shered.Logger
                     OperationalEntityId: transition.OperationalEntityId,
                     ErrorCode: transition.ErrorCode,
                     DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                    AuthorizedFields: telemetry.AuthorizedFields);
+                    AuthorizedFields: telemetry.AuthorizedFields,
+                    TenantId: telemetry.TenantId,
+                    UserId: telemetry.UserId);
                 var fields = new List<OperationalEvidenceField>(16)
                 {
                     new("EventName", $"{transition.Component}.{transition.Phase}"),
@@ -558,7 +579,9 @@ namespace Shered.Logger
                 OperationalTechnicalOutcome.NotEvaluated,
                 OperationalBusinessOutcome.NotEvaluated,
                 DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                AuthorizedFields: telemetry.AuthorizedFields);
+                AuthorizedFields: telemetry.AuthorizedFields,
+                TenantId: telemetry.TenantId,
+                UserId: telemetry.UserId);
             OperationalEvidenceField[] fields =
             [
                 new("Message", message, OperationalDataClassification.Confidential)
@@ -576,7 +599,8 @@ namespace Shered.Logger
             Exception? exception,
             OperationalTelemetryDecision telemetry,
             OperationalExecutionIdentity executionIdentity,
-            string? operationalEntityId)
+            string? operationalEntityId,
+            string? resultMessage)
         {
             var technicalOutcome = exception is not null || statusCode >= 500
                 ? OperationalTechnicalOutcome.Failed
@@ -607,7 +631,9 @@ namespace Shered.Logger
                 OperationalEntityId: operationalEntityId,
                 ErrorCode: exception?.GetType().Name ?? (statusCode >= 400 ? statusCode.ToString() : null),
                 DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                AuthorizedFields: telemetry.AuthorizedFields);
+                AuthorizedFields: telemetry.AuthorizedFields,
+                TenantId: telemetry.TenantId,
+                UserId: telemetry.UserId);
 
             var fields = new List<OperationalEvidenceField>(12)
             {
@@ -644,6 +670,14 @@ namespace Shered.Logger
                 fields.Add(new(
                     "ErrorSummary",
                     SanitizedErrorSummary(exception, statusCode)));
+            }
+
+            if (statusCode >= 400 && !string.IsNullOrWhiteSpace(resultMessage))
+            {
+                fields.Add(new(
+                    "ResultMessage",
+                    resultMessage,
+                    OperationalDataClassification.Restricted));
             }
 
             _evidencePublisher.Publish(envelope, fields.ToArray());
@@ -695,7 +729,9 @@ namespace Shered.Logger
                 CausationId: executionIdentity.CausationId,
                 ErrorCode: exception?.GetType().Name,
                 DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                AuthorizedFields: telemetry.AuthorizedFields);
+                AuthorizedFields: telemetry.AuthorizedFields,
+                TenantId: telemetry.TenantId,
+                UserId: telemetry.UserId);
             var fields = new List<OperationalEvidenceField>(6)
             {
                 new("EventName", "Repository.Completed"),
@@ -740,7 +776,9 @@ namespace Shered.Logger
                 OperationalEntityId: snapshot.OperationalEntityId,
                 ErrorCode: snapshot.ErrorCode,
                 DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                AuthorizedFields: telemetry.AuthorizedFields);
+                AuthorizedFields: telemetry.AuthorizedFields,
+                TenantId: telemetry.TenantId,
+                UserId: telemetry.UserId);
             var fields = new List<OperationalEvidenceField>(12)
             {
                 new("EventName", $"Saga.{snapshot.Phase}"),
@@ -789,7 +827,9 @@ namespace Shered.Logger
                 CausationId: executionIdentity.CausationId,
                 OperationalEntityId: recordId,
                 DiagnosticSessionId: telemetry.DiagnosticSessionId,
-                AuthorizedFields: telemetry.AuthorizedFields);
+                AuthorizedFields: telemetry.AuthorizedFields,
+                TenantId: telemetry.TenantId,
+                UserId: telemetry.UserId);
             var valueClassification = OperationalEvidenceProtection.IsForbiddenName(field)
                 ? OperationalDataClassification.NeverCapture
                 : classification;

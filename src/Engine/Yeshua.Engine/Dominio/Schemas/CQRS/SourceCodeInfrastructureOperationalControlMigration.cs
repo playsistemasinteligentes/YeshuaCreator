@@ -70,6 +70,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 public DateTimeOffset? StartsAtUtc { get; init; }
                 public int? MaximumCaptures { get; init; }
                 public IReadOnlyList<string>? AuthorizedFields { get; init; }
+                public int? TenantId { get; init; }
+                public int? UserId { get; init; }
             }
 
             public readonly record struct OperationalLoggingContext(
@@ -80,6 +82,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
             {
                 public string? Field { get; init; }
                 public string? OperationId { get; init; }
+                public int? TenantId { get; init; }
+                public int? UserId { get; init; }
             }
 
             public readonly record struct OperationalLoggingDecision(
@@ -175,7 +179,9 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     context.Entity,
                     context.RecordId,
                     context.Field,
-                    context.OperationId);
+                    context.OperationId,
+                    context.TenantId,
+                    context.UserId);
             }
 
             private OperationalLoggingDecision Evaluate(
@@ -184,7 +190,9 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 string? entity,
                 string? recordId,
                 string? field = null,
-                string? operationId = null)
+                string? operationId = null,
+                int? tenantId = null,
+                int? userId = null)
             {
                 return Evaluate(
                     Current,
@@ -194,6 +202,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     recordId,
                     field,
                     operationId,
+                    tenantId,
+                    userId,
                     true,
                     true);
             }
@@ -206,6 +216,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 string? recordId,
                 string? field,
                 string? operationId,
+                int? tenantId,
+                int? userId,
                 bool useDefault,
                 bool consumeDiagnosticCapture)
             {
@@ -223,7 +235,9 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                             !Matches(candidate.OperationId, operationId) ||
                             !Matches(candidate.Entity, entity) ||
                             !Matches(candidate.RecordId, recordId) ||
-                            !Matches(candidate.Field, field))
+                            !Matches(candidate.Field, field) ||
+                            !Matches(candidate.TenantId, tenantId) ||
+                            !Matches(candidate.UserId, userId))
                         {
                             continue;
                         }
@@ -278,7 +292,9 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         decision.Level,
                         decision.Depth,
                         decision.MatchedTarget?.DiagnosticSessionId,
-                        decision.MatchedTarget?.AuthorizedFields);
+                        decision.MatchedTarget?.AuthorizedFields,
+                        null,
+                        null);
                 }
 
                 OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -299,7 +315,9 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         decision.Level,
                         decision.Depth,
                         decision.MatchedTarget?.DiagnosticSessionId,
-                        decision.MatchedTarget?.AuthorizedFields);
+                        decision.MatchedTarget?.AuthorizedFields,
+                        null,
+                        null);
                 }
 
                 OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -322,7 +340,38 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         decision.Level,
                         decision.Depth,
                         decision.MatchedTarget?.DiagnosticSessionId,
-                        decision.MatchedTarget?.AuthorizedFields);
+                        decision.MatchedTarget?.AuthorizedFields,
+                        null,
+                        null);
+                }
+
+                OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
+                    string component,
+                    string? operation,
+                    string? entity,
+                    string? recordId,
+                    string? field,
+                    string? operationId,
+                    int? tenantId,
+                    int? userId)
+                {
+                    var decision = Evaluate(
+                        component,
+                        operation,
+                        entity,
+                        recordId,
+                        field,
+                        operationId,
+                        tenantId,
+                        userId);
+                    return new OperationalTelemetryDecision(
+                        decision.Enabled,
+                        decision.Level,
+                        decision.Depth,
+                        decision.MatchedTarget?.DiagnosticSessionId,
+                        decision.MatchedTarget?.AuthorizedFields,
+                        tenantId,
+                        userId);
                 }
 
             {{domainTrackingMaskMethods}}
@@ -331,6 +380,11 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                 {
                     return string.IsNullOrWhiteSpace(expected) ||
                            string.Equals(expected, actual, StringComparison.OrdinalIgnoreCase);
+                }
+
+                private static bool Matches(int? expected, int? actual)
+                {
+                    return !expected.HasValue || expected == actual;
                 }
 
                 private static int Specificity(DiagnosticTarget target)
@@ -342,6 +396,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                     if (!string.IsNullOrWhiteSpace(target.Entity)) score += 8;
                     if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 16;
                     if (!string.IsNullOrWhiteSpace(target.Field)) score += 32;
+                    if (target.TenantId.HasValue) score += 64;
+                    if (target.UserId.HasValue) score += 128;
                     return score;
                 }
 
@@ -458,7 +514,9 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
                         string.IsNullOrWhiteSpace(target.OperationId) &&
                         string.IsNullOrWhiteSpace(target.Entity) &&
                         string.IsNullOrWhiteSpace(target.RecordId) &&
-                        string.IsNullOrWhiteSpace(target.Field))
+                        string.IsNullOrWhiteSpace(target.Field) &&
+                        !target.TenantId.HasValue &&
+                        !target.UserId.HasValue)
                     {
                         throw new ArgumentException("D2 requires at least one explicit target selector.");
                     }
@@ -684,6 +742,8 @@ public sealed class SourceCodeInfrastructureOperationalControlStateMigration : S
         sb.AppendLine("                        entity,");
         sb.AppendLine("                        recordId,");
         sb.AppendLine("                        field,");
+        sb.AppendLine("                        null,");
+        sb.AppendLine("                        null,");
         sb.AppendLine("                        null,");
         sb.AppendLine("                        false,");
         sb.AppendLine("                        false);");

@@ -27,10 +27,14 @@ public sealed class OperationalHttpTelemetryHandler : DelegatingHandler
 {
     private const string Component = "ExternalCallEvents";
     private readonly Dominio.Interfaces.ILogger _logger;
+    private readonly IExecutionContext? _context;
 
-    public OperationalHttpTelemetryHandler(Dominio.Interfaces.ILogger logger)
+    public OperationalHttpTelemetryHandler(
+        Dominio.Interfaces.ILogger logger,
+        IExecutionContext? context = null)
     {
         _logger = logger;
+        _context = context;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(
@@ -216,7 +220,20 @@ public sealed class OperationalHttpTelemetryHandler : DelegatingHandler
     {
         try
         {
-            return _logger.Evaluate(component, operation, entity, recordId, operationId);
+            var tenantId = _context is { TenantID: > 0 }
+                ? _context.TenantID
+                : (int?)null;
+            var userId = _context is { UserId: > 0 }
+                ? _context.UserId
+                : (int?)null;
+            return _logger.Evaluate(
+                component,
+                operation,
+                entity,
+                recordId,
+                operationId,
+                tenantId,
+                userId);
         }
         catch
         {

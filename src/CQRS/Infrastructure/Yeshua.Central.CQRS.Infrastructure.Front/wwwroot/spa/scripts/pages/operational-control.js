@@ -13,7 +13,13 @@ async function renderOperationalControl() {
     host.classList.remove('hidden');
     host.innerHTML = pageHtml();
 
-    const state = { catalog: null, policy: null };
+    const state = {
+        catalog: null,
+        policy: null,
+        actor: readCurrentActor(),
+        diagnosticUsers: new Map(),
+        userSearchTimer: null
+    };
     const reload = async () => {
         setBusy(true);
         try {
@@ -67,8 +73,12 @@ function pageHtml() {
             </label>
         </div></section>
         <section class="mt-4 border border-gray-200 bg-white p-4">
-            <div class="mb-4"><h2 class="text-lg font-bold text-gray-900">Diagnostico direcionado D2</h2><p class="text-sm text-gray-600">Captura profunda, temporaria, limitada e auditada para um alvo especifico.</p></div>
+            <div class="mb-4"><h2 class="text-lg font-bold text-gray-900">Diagnostico direcionado D2</h2><p class="text-sm text-gray-600">Captura profunda, temporaria, limitada e auditada para um alvo especifico. D3 e D4 permanecem reservados para evolucao futura e ainda nao podem ser ativados.</p></div>
             <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+                <label class="text-sm font-semibold">Tenant ID<input id="operational-d2-tenant-id" type="number" min="1" class="mt-1 w-full border p-2 font-normal" placeholder="Tenant que sera acompanhado" /></label>
+                <label class="text-sm font-semibold">Localizar usuario<input id="operational-d2-user-search" list="operational-d2-users" class="mt-1 w-full border p-2 font-normal" placeholder="Nome ou e-mail" autocomplete="off" /><datalist id="operational-d2-users"></datalist><span id="operational-d2-user-selected" class="mt-1 block text-xs font-normal text-gray-600">Opcional: escolha um usuario ou informe o ID.</span></label>
+                <label class="text-sm font-semibold">User ID<input id="operational-d2-user-id" type="number" min="1" class="mt-1 w-full border p-2 font-normal" placeholder="Usuario que sera acompanhado" /></label>
+                <div class="flex items-end"><button id="operational-d2-use-current" type="button" class="w-full border border-green-700 px-3 py-2 text-sm font-semibold text-green-800 hover:bg-green-50">Usar meu tenant e usuario</button></div>
                 <label class="text-sm font-semibold">Componente<input id="operational-d2-component" list="operational-d2-components" class="mt-1 w-full border p-2 font-normal" placeholder="Command" /><datalist id="operational-d2-components"></datalist></label>
                 <label class="text-sm font-semibold">Operacao<input id="operational-d2-operation" class="mt-1 w-full border p-2 font-normal" placeholder="Nome do command ou operacao" /></label>
                 <label class="text-sm font-semibold">OperationId<input id="operational-d2-operation-id" class="mt-1 w-full border p-2 font-normal" placeholder="Fluxo especifico, quando conhecido" /></label>
@@ -79,7 +89,7 @@ function pageHtml() {
                 <label class="text-sm font-semibold">Limite de capturas<input id="operational-d2-limit" type="number" min="1" max="1000000" value="500" class="mt-1 w-full border p-2 font-normal" /></label>
                 <label class="text-sm font-semibold">Solicitante<input id="operational-d2-requested-by" class="mt-1 w-full border p-2 font-normal" /></label>
                 <label class="text-sm font-semibold">Aprovador<input id="operational-d2-approved-by" class="mt-1 w-full border p-2 font-normal" /></label>
-                <label class="text-sm font-semibold md:col-span-2">Campos autorizados<input id="operational-d2-authorized-fields" class="mt-1 w-full border p-2 font-normal" placeholder="ExceptionMessage, StackTrace, Value" /><span class="mt-1 block text-xs font-normal text-gray-600">Somente estes campos restritos poderao entrar na evidencia D2.</span></label>
+                <label class="text-sm font-semibold md:col-span-2">Campos autorizados<input id="operational-d2-authorized-fields" value="ResultMessage, ExceptionMessage, StackTrace" class="mt-1 w-full border p-2 font-normal" placeholder="ResultMessage, ExceptionMessage, StackTrace" /><span class="mt-1 block text-xs font-normal text-gray-600">ResultMessage traz somente a mensagem final de falha ou rejeicao; conteudo do formulario nao e capturado. Somente estes campos restritos poderao entrar na evidencia D2.</span></label>
                 <label class="text-sm font-semibold md:col-span-2 lg:col-span-4">Justificativa<textarea id="operational-d2-justification" rows="2" class="mt-1 w-full border p-2 font-normal"></textarea></label>
             </div>
             <div class="mt-3 flex justify-end"><button id="operational-d2-activate" class="bg-green-700 px-4 py-2 font-semibold text-white hover:bg-green-800">Ativar sessao D2</button></div>
@@ -221,6 +231,9 @@ function renderDiagnosticControl(state) {
         .map(entity => `<option value="${html(entity.name)}">${html(entity.title)}</option>`)
         .join('');
 
+    initializeDiagnosticIdentity(state);
+    bindDiagnosticUserSearch(state);
+
     const active = (state.policy.targets || []).filter(target =>
         target.depth === 'D2' && (!target.expiresAtUtc || new Date(target.expiresAtUtc) > new Date()));
     document.getElementById('operational-d2-active').innerHTML = active.length
@@ -234,7 +247,16 @@ function renderDiagnosticControl(state) {
 }
 
 function diagnosticSessionHtml(target) {
-    const scope = [target.component, target.operation, target.operationId, target.entity, target.recordId, target.field]
+    const scope = [
+        target.tenantId ? `Tenant ${target.tenantId}` : '',
+        target.userId ? `Usuario ${target.userId}` : '',
+        target.component,
+        target.operation,
+        target.operationId,
+        target.entity,
+        target.recordId,
+        target.field
+    ]
         .filter(Boolean)
         .join(' / ');
     return `<div class="flex flex-wrap items-center justify-between gap-3 p-3"><div><strong class="block text-sm text-gray-900">${html(scope)}</strong><span class="text-xs text-gray-600">Ate ${html(formatDate(target.expiresAtUtc))} · limite ${html(target.maximumCaptures)} · ${html(target.requestedBy)} / ${html(target.approvedBy)}</span><span class="mt-1 block text-xs text-gray-500">${html(target.justification)}</span></div><button class="operational-d2-stop border border-red-700 px-3 py-1 text-sm font-semibold text-red-700 hover:bg-red-50" data-session-id="${html(target.diagnosticSessionId)}">Encerrar</button></div>`;
@@ -248,6 +270,8 @@ async function activateDiagnosticSession(state) {
     const entity = value('operational-d2-entity');
     const recordId = value('operational-d2-record-id');
     const field = value('operational-d2-field');
+    const tenantId = positiveNumber(value('operational-d2-tenant-id'));
+    const userId = positiveNumber(value('operational-d2-user-id'));
     const requestedBy = value('operational-d2-requested-by');
     const approvedBy = value('operational-d2-approved-by');
     const justification = value('operational-d2-justification');
@@ -258,7 +282,7 @@ async function activateDiagnosticSession(state) {
         .map(item => item.trim())
         .filter(Boolean);
 
-    if (![component, operation, operationId, entity, recordId, field].some(Boolean)) {
+    if (![component, operation, operationId, entity, recordId, field, tenantId, userId].some(Boolean)) {
         showAlert('Informe ao menos um alvo para o diagnostico D2.', 'error');
         return;
     }
@@ -274,6 +298,8 @@ async function activateDiagnosticSession(state) {
         entity: entity || null,
         recordId: recordId || null,
         field: field || null,
+        tenantId,
+        userId,
         level: 'Debug',
         depth: 'D2',
         startsAtUtc: new Date().toISOString(),
@@ -286,6 +312,81 @@ async function activateDiagnosticSession(state) {
     };
     state.policy.targets = [...(state.policy.targets || []), target];
     await persistPolicy(state, buildUpdate(state), 'Sessao D2 ativada.');
+}
+
+function initializeDiagnosticIdentity(state) {
+    const tenant = document.getElementById('operational-d2-tenant-id');
+    const user = document.getElementById('operational-d2-user-id');
+    const requestedBy = document.getElementById('operational-d2-requested-by');
+    if (!tenant.value && state.actor.tenantId) tenant.value = state.actor.tenantId;
+    if (!user.value && state.actor.userId) user.value = state.actor.userId;
+    if (!requestedBy.value && state.actor.label) requestedBy.value = state.actor.label;
+
+    document.getElementById('operational-d2-use-current').onclick = () => {
+        tenant.value = state.actor.tenantId || '';
+        user.value = state.actor.userId || '';
+        document.getElementById('operational-d2-user-search').value = state.actor.label || '';
+        document.getElementById('operational-d2-user-selected').textContent = state.actor.userId
+            ? `${state.actor.label || 'Usuario atual'} · ID ${state.actor.userId}`
+            : 'O token atual nao informa um usuario.';
+    };
+}
+
+function bindDiagnosticUserSearch(state) {
+    const search = document.getElementById('operational-d2-user-search');
+    search.oninput = () => {
+        clearTimeout(state.userSearchTimer);
+        state.userSearchTimer = setTimeout(() => loadDiagnosticUsers(state, search.value), 250);
+    };
+    search.onchange = () => selectDiagnosticUser(state, search.value);
+}
+
+async function loadDiagnosticUsers(state, search) {
+    const value = String(search || '').trim();
+    if (value.length < 2) return;
+    try {
+        const response = await apiFetch(`${environments.urlApi}/operational/users?search=${encodeURIComponent(value)}`);
+        if (!response.ok) return;
+        const users = await response.json();
+        state.diagnosticUsers.clear();
+        document.getElementById('operational-d2-users').innerHTML = (users || []).map(user => {
+            const label = `${user.name || user.email || 'Usuario'} · ${user.email || 'sem e-mail'} · ID ${user.id}`;
+            state.diagnosticUsers.set(label, user);
+            return `<option value="${html(label)}"></option>`;
+        }).join('');
+    } catch {
+        // A busca auxilia a selecao; IDs informados manualmente continuam validos.
+    }
+}
+
+function selectDiagnosticUser(state, label) {
+    const user = state.diagnosticUsers.get(String(label || ''));
+    if (!user) return;
+    document.getElementById('operational-d2-user-id').value = user.id || '';
+    document.getElementById('operational-d2-tenant-id').value = user.tenantId || '';
+    document.getElementById('operational-d2-user-selected').textContent =
+        `${user.name || user.email || 'Usuario'} · ID ${user.id} · Tenant ${user.tenantId}`;
+}
+
+function readCurrentActor() {
+    try {
+        const segment = (localStorage.getItem('token') || '').split('.')[1];
+        if (!segment) return {};
+        const normalized = segment.replace(/-/g, '+').replace(/_/g, '/');
+        const claims = JSON.parse(atob(normalized.padEnd(Math.ceil(normalized.length / 4) * 4, '=')));
+        return {
+            tenantId: positiveNumber(claims.tenantId ?? claims.tenantID ?? claims.TenantID),
+            userId: positiveNumber(claims.userId ?? claims.nameid ?? claims.sub ?? claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier']),
+            label: String(claims.name ?? claims.unique_name ?? claims.email ?? claims.sub ?? '').trim()
+        };
+    } catch {
+        return {};
+    }
+}
+
+function positiveNumber(value) {
+    const number = Number(value);
+    return Number.isInteger(number) && number > 0 ? number : null;
 }
 
 async function stopDiagnosticSession(state, sessionId) {

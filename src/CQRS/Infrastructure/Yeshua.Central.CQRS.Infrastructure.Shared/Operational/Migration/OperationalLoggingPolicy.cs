@@ -58,6 +58,8 @@ public sealed record DiagnosticTarget(
     public DateTimeOffset? StartsAtUtc { get; init; }
     public int? MaximumCaptures { get; init; }
     public IReadOnlyList<string>? AuthorizedFields { get; init; }
+    public int? TenantId { get; init; }
+    public int? UserId { get; init; }
 }
 
 public readonly record struct OperationalLoggingContext(
@@ -68,6 +70,8 @@ public readonly record struct OperationalLoggingContext(
 {
     public string? Field { get; init; }
     public string? OperationId { get; init; }
+    public int? TenantId { get; init; }
+    public int? UserId { get; init; }
 }
 
 public readonly record struct OperationalLoggingDecision(
@@ -163,7 +167,9 @@ public OperationalLoggingDecision Evaluate(OperationalLoggingContext context)
         context.Entity,
         context.RecordId,
         context.Field,
-        context.OperationId);
+        context.OperationId,
+        context.TenantId,
+        context.UserId);
 }
 
 private OperationalLoggingDecision Evaluate(
@@ -172,7 +178,9 @@ private OperationalLoggingDecision Evaluate(
     string? entity,
     string? recordId,
     string? field = null,
-    string? operationId = null)
+    string? operationId = null,
+    int? tenantId = null,
+    int? userId = null)
 {
     return Evaluate(
         Current,
@@ -182,6 +190,8 @@ private OperationalLoggingDecision Evaluate(
         recordId,
         field,
         operationId,
+        tenantId,
+        userId,
         true,
         true);
 }
@@ -194,6 +204,8 @@ private OperationalLoggingDecision Evaluate(
     string? recordId,
     string? field,
     string? operationId,
+    int? tenantId,
+    int? userId,
     bool useDefault,
     bool consumeDiagnosticCapture)
 {
@@ -211,7 +223,9 @@ private OperationalLoggingDecision Evaluate(
                 !Matches(candidate.OperationId, operationId) ||
                 !Matches(candidate.Entity, entity) ||
                 !Matches(candidate.RecordId, recordId) ||
-                !Matches(candidate.Field, field))
+                !Matches(candidate.Field, field) ||
+                !Matches(candidate.TenantId, tenantId) ||
+                !Matches(candidate.UserId, userId))
             {
                 continue;
             }
@@ -266,7 +280,9 @@ private OperationalLoggingDecision Evaluate(
             decision.Level,
             decision.Depth,
             decision.MatchedTarget?.DiagnosticSessionId,
-            decision.MatchedTarget?.AuthorizedFields);
+            decision.MatchedTarget?.AuthorizedFields,
+            null,
+            null);
     }
 
     OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -287,7 +303,9 @@ private OperationalLoggingDecision Evaluate(
             decision.Level,
             decision.Depth,
             decision.MatchedTarget?.DiagnosticSessionId,
-            decision.MatchedTarget?.AuthorizedFields);
+            decision.MatchedTarget?.AuthorizedFields,
+            null,
+            null);
     }
 
     OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
@@ -310,7 +328,38 @@ private OperationalLoggingDecision Evaluate(
             decision.Level,
             decision.Depth,
             decision.MatchedTarget?.DiagnosticSessionId,
-            decision.MatchedTarget?.AuthorizedFields);
+            decision.MatchedTarget?.AuthorizedFields,
+            null,
+            null);
+    }
+
+    OperationalTelemetryDecision IOperationalTelemetryPolicy.Evaluate(
+        string component,
+        string? operation,
+        string? entity,
+        string? recordId,
+        string? field,
+        string? operationId,
+        int? tenantId,
+        int? userId)
+    {
+        var decision = Evaluate(
+            component,
+            operation,
+            entity,
+            recordId,
+            field,
+            operationId,
+            tenantId,
+            userId);
+        return new OperationalTelemetryDecision(
+            decision.Enabled,
+            decision.Level,
+            decision.Depth,
+            decision.MatchedTarget?.DiagnosticSessionId,
+            decision.MatchedTarget?.AuthorizedFields,
+            tenantId,
+            userId);
     }
 
                 public ulong GetMask(
@@ -983,6 +1032,8 @@ private OperationalLoggingDecision Evaluate(
                         recordId,
                         field,
                         null,
+                        null,
+                        null,
                         false,
                         false);
 
@@ -1021,6 +1072,11 @@ private OperationalLoggingDecision Evaluate(
                string.Equals(expected, actual, StringComparison.OrdinalIgnoreCase);
     }
 
+    private static bool Matches(int? expected, int? actual)
+    {
+        return !expected.HasValue || expected == actual;
+    }
+
     private static int Specificity(DiagnosticTarget target)
     {
         var score = 0;
@@ -1030,6 +1086,8 @@ private OperationalLoggingDecision Evaluate(
         if (!string.IsNullOrWhiteSpace(target.Entity)) score += 8;
         if (!string.IsNullOrWhiteSpace(target.RecordId)) score += 16;
         if (!string.IsNullOrWhiteSpace(target.Field)) score += 32;
+        if (target.TenantId.HasValue) score += 64;
+        if (target.UserId.HasValue) score += 128;
         return score;
     }
 
@@ -1146,7 +1204,9 @@ private OperationalLoggingDecision Evaluate(
             string.IsNullOrWhiteSpace(target.OperationId) &&
             string.IsNullOrWhiteSpace(target.Entity) &&
             string.IsNullOrWhiteSpace(target.RecordId) &&
-            string.IsNullOrWhiteSpace(target.Field))
+            string.IsNullOrWhiteSpace(target.Field) &&
+            !target.TenantId.HasValue &&
+            !target.UserId.HasValue)
         {
             throw new ArgumentException("D2 requires at least one explicit target selector.");
         }

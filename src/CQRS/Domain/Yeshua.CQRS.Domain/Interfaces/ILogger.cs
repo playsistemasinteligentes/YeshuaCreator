@@ -87,7 +87,9 @@ namespace Dominio.Interfaces
         string Level,
         string Depth,
         string? DiagnosticSessionId = null,
-        IReadOnlyList<string>? AuthorizedFields = null)
+        IReadOnlyList<string>? AuthorizedFields = null,
+        int? TenantId = null,
+        int? UserId = null)
     {
         public OperationalSeverity Severity => OperationalEvidenceAxes.ParseSeverity(Level);
         public OperationalDepth DiagnosticDepth => OperationalEvidenceAxes.ParseDepth(Depth);
@@ -123,6 +125,17 @@ namespace Dominio.Interfaces
             string? field,
             string? operationId)
             => Evaluate(component, operation, entity, recordId, field);
+
+        OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation,
+            string? entity,
+            string? recordId,
+            string? field,
+            string? operationId,
+            int? tenantId,
+            int? userId)
+            => Evaluate(component, operation, entity, recordId, field, operationId);
     }
 
     public interface IDomainTrackingPolicy
@@ -147,6 +160,15 @@ namespace Dominio.Interfaces
             string? recordId,
             string? operationId)
             => Evaluate(component, operation, entity, recordId);
+        OperationalTelemetryDecision Evaluate(
+            string component,
+            string? operation,
+            string? entity,
+            string? recordId,
+            string? operationId,
+            int? tenantId,
+            int? userId)
+            => Evaluate(component, operation, entity, recordId, operationId);
         void Info(string message);
         void CommandStarted(string commandName);
         void CommandStarted(
@@ -181,7 +203,8 @@ namespace Dominio.Interfaces
             OperationalTelemetryDecision telemetry,
             OperationalExecutionIdentity executionIdentity = default,
             string? operationalEntityId = null,
-            bool emitEvent = true);
+            bool emitEvent = true,
+            string? resultMessage = null);
         void CommandFailed(
             string commandName,
             string traceId,

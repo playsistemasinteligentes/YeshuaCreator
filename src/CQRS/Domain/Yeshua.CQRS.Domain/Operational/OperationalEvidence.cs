@@ -73,7 +73,9 @@ public readonly record struct OperationalEvidenceEnvelope(
     string? OperationalEntityId = null,
     string? ErrorCode = null,
     string? DiagnosticSessionId = null,
-    IReadOnlyList<string>? AuthorizedFields = null);
+    IReadOnlyList<string>? AuthorizedFields = null,
+    int? TenantId = null,
+    int? UserId = null);
 
 public readonly record struct OperationalEvidenceTransition(
     string Component,

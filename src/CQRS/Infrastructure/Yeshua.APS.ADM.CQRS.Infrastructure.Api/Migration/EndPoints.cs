@@ -4446,6 +4446,28 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
     }))
     .RequireAuthorization();
 
+app.MapGet("/yapi/operational/users", async ([FromServices] Command.Receivers.Read.yUserReadReceiver receiver, [FromQuery] string? search) =>
+{
+    var value = string.IsNullOrWhiteSpace(search) ? null : search.Trim();
+    var command = new Command.Read.yUserReadCommand
+    {
+        Nome = value is not null && !value.Contains('@') ? value : null,
+        Email = value is not null && value.Contains('@') ? value : null,
+        Paginacao = new Pagination(1, 25)
+    };
+    var result = await receiver.ExecuteAsync(command);
+    if (result.StatusCode is < 200 or >= 300)
+        return Results.BadRequest(new { error = result.Message });
+    return Results.Ok(result.Data.Items.Select(user => new
+    {
+        id = user.id,
+        name = user.nome,
+        email = user.email,
+        tenantId = user.tenantid
+    }));
+})
+    .RequireAuthorization();
+
 app.MapGet("/yapi/operational/telemetry", ([FromServices] Dominio.Interfaces.ILogger logger) =>
     Results.Ok(logger.Snapshot()))
     .AllowAnonymous();

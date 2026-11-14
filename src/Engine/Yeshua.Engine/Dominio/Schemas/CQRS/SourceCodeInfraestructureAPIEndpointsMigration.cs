@@ -74,6 +74,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
 
             AppendOperationalCatalogEndpoint(sb);
+            AppendOperationalUsersEndpoint(sb);
 
             sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/telemetry\", ([FromServices] Dominio.Interfaces.ILogger logger) =>");
             sb.AppendLine("    Results.Ok(logger.Snapshot()))");
@@ -1255,6 +1256,38 @@ namespace Dominio.Schemas.CQRS
 
             sb.AppendLine("        }");
             sb.AppendLine("    }))");
+            sb.AppendLine("    .RequireAuthorization();");
+            sb.AppendLine("");
+        }
+
+        private void AppendOperationalUsersEndpoint(StringBuilder sb)
+        {
+            if (!_migration.Entitys.Any(entity =>
+                    entity.EntityName.Equals("yUser", StringComparison.OrdinalIgnoreCase)))
+            {
+                return;
+            }
+
+            sb.AppendLine($"app.MapGet(\"{getPrefixo()}/operational/users\", async ([FromServices] Command.Receivers.Read.yUserReadReceiver receiver, [FromQuery] string? search) =>");
+            sb.AppendLine("{");
+            sb.AppendLine("    var value = string.IsNullOrWhiteSpace(search) ? null : search.Trim();");
+            sb.AppendLine("    var command = new Command.Read.yUserReadCommand");
+            sb.AppendLine("    {");
+            sb.AppendLine("        Nome = value is not null && !value.Contains('@') ? value : null,");
+            sb.AppendLine("        Email = value is not null && value.Contains('@') ? value : null,");
+            sb.AppendLine("        Paginacao = new Pagination(1, 25)");
+            sb.AppendLine("    };");
+            sb.AppendLine("    var result = await receiver.ExecuteAsync(command);");
+            sb.AppendLine("    if (result.StatusCode is < 200 or >= 300)");
+            sb.AppendLine("        return Results.BadRequest(new { error = result.Message });");
+            sb.AppendLine("    return Results.Ok(result.Data.Items.Select(user => new");
+            sb.AppendLine("    {");
+            sb.AppendLine("        id = user.id,");
+            sb.AppendLine("        name = user.nome,");
+            sb.AppendLine("        email = user.email,");
+            sb.AppendLine("        tenantId = user.tenantid");
+            sb.AppendLine("    }));");
+            sb.AppendLine("})");
             sb.AppendLine("    .RequireAuthorization();");
             sb.AppendLine("");
         }

@@ -82,8 +82,12 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "Default depth must be D0 or D1");
             StringAssert.Contains(content, "public string? DiagnosticSessionId");
             StringAssert.Contains(content, "public string? OperationId");
+            StringAssert.Contains(content, "public int? TenantId");
+            StringAssert.Contains(content, "public int? UserId");
             StringAssert.Contains(content, "public int? MaximumCaptures");
             StringAssert.Contains(content, "public IReadOnlyList<string>? AuthorizedFields");
+            StringAssert.Contains(content, "!Matches(candidate.TenantId, tenantId)");
+            StringAssert.Contains(content, "!Matches(candidate.UserId, userId)");
             StringAssert.Contains(content, "BuildDiagnosticAudit");
             StringAssert.Contains(content, "TryConsumeDiagnosticCapture");
         }
@@ -173,6 +177,11 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "sagaDto.rootoperationid");
             StringAssert.Contains(content, "BeginOperationalExecution(");
             StringAssert.Contains(content, "\"SagaWorker.Record\"");
+            StringAssert.Contains(content, "sagaDto.operationid");
+            StringAssert.Contains(content, "sagaDto.tenantid > 0 ? sagaDto.tenantid : (int?)null");
+            StringAssert.Contains(content, "sagaDto.userid > 0 ? sagaDto.userid : (int?)null");
+            StringAssert.Contains(content, "\"yeshua.tenant_id\"");
+            StringAssert.Contains(content, "\"enduser.id\"");
             StringAssert.Contains(content, "saga.SetOperationalIdentity(");
             StringAssert.Contains(content, "saga.GetCurrent()?.SetOperationalIdentity(");
             StringAssert.Contains(content, "\"Inbox\"");
@@ -205,8 +214,11 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "identity.OperationId");
             StringAssert.Contains(content, "identity.ExecutionId");
             StringAssert.Contains(content, "identity.CausationId");
-            StringAssert.Contains(content, "_logger.Evaluate(\"Outbox\"");
-            StringAssert.Contains(content, "_logger.Evaluate(\"Inbox\"");
+            StringAssert.Contains(content, "\"Outbox\",");
+            StringAssert.Contains(content, "\"Inbox\",");
+            StringAssert.Contains(content, "identity.OperationId");
+            StringAssert.Contains(content, "_executionContext.TenantID > 0");
+            StringAssert.Contains(content, "_executionContext.UserId > 0");
             StringAssert.Contains(content, "new Dominio.Operational.OperationalEvidenceTransition(");
             StringAssert.Contains(content, "\"Stored\"");
             StringAssert.Contains(content, "\"StoreFailed\"");
@@ -244,6 +256,33 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "authenticator.Authenticate(");
             StringAssert.Contains(content, "}).AllowAnonymous();");
             Assert.IsFalse(content.Contains("unitOfWork.Execute(", StringComparison.Ordinal));
+        }
+        finally
+        {
+            Directory.Delete(directory, true);
+        }
+    }
+
+    [TestMethod]
+    public void OperationalUserLookupIsGeneratedAsAnAuthenticatedMinimalProjection()
+    {
+        var directory = CreateDirectory();
+
+        try
+        {
+            var migration = new OperationalUserEndpointMigration();
+            migration.Up();
+            var migrationPath = Path.Combine(directory, "EndPoints.cs");
+
+            new SourceCodeInfraestructureAPIEndpointsMigration(migration, "Clinica")
+                .WriteCode(null, migrationPath, Path.Combine(directory, "EndPoints.Custon.cs"));
+
+            var content = File.ReadAllText(migrationPath);
+            StringAssert.Contains(content, "/yapi/operational/users");
+            StringAssert.Contains(content, "Command.Receivers.Read.yUserReadReceiver");
+            StringAssert.Contains(content, "tenantId = user.tenantid");
+            StringAssert.Contains(content, ".RequireAuthorization();");
+            Assert.IsFalse(content.Contains("password = user.", StringComparison.OrdinalIgnoreCase));
         }
         finally
         {
@@ -475,6 +514,18 @@ public sealed class OperationalEvidenceGenerationTests
             AddEntity("Cliente")
                 .AddColumn("Id", "ID").Int().Key()
                 .AddColumn("Cpf", "CPF").Varchar(20);
+        }
+    }
+
+    private sealed class OperationalUserEndpointMigration : MigrationBase
+    {
+        public override void Up()
+        {
+            AddEntity("yUser")
+                .AddColumn("Id", "ID").Int().Key()
+                .AddColumn("Nome", "Nome").Varchar(150)
+                .AddColumn("Email", "Email").Varchar(150)
+                .AddColumn("TenantID", "Tenant ID").Int();
         }
     }
 
