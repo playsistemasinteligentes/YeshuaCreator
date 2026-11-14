@@ -5,6 +5,8 @@ public sealed class AgentTaskOptions
     public const string SectionName = "AgentTasks";
     public bool Enabled { get; init; }
     public bool AllowWorkspaceWrite { get; init; }
+    public bool AllowDevelopmentNetwork { get; init; }
+    public AgentGitOptions Git { get; init; } = new();
     public bool ChatGptAuthentication { get; init; }
     public string CodexHomePath { get; init; } = "/home/agent/.codex";
     public string CodexExecutable { get; init; } = "codex";
@@ -18,4 +20,17 @@ public sealed class AgentTaskOptions
     public int MaxPendingMessages { get; init; } = 100;
     public int MaxTurnSeconds { get; init; } = 1800;
     public int PollSeconds { get; init; } = 2;
+}
+
+public sealed class AgentGitOptions
+{
+    public bool Enabled { get; init; }
+    public bool PublishPullRequests { get; init; }
+    public string Owner { get; init; } = "playsistemasinteligentes";
+    public string Repository { get; init; } = "YeshuaCreator";
+    public string BaseBranch { get; init; } = "main";
+    public string WorkspacesRoot { get; init; } = "/workspace/tasks";
+    public string UserName { get; init; } = "";
+    public string Email { get; init; } = "";
+    public string Token { get; init; } = "";
 }

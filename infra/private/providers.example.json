@@ -1,5 +1,18 @@
 {
   "OpenAI": { "ApiKey": "" },
   "Anthropic": { "ApiKey": "" },
-  "McpTunnel": { "Id": "", "ApiKey": "" }
+  "McpTunnel": { "Id": "", "ApiKey": "" },
+  "AgentDevelopment": {
+    "Enabled": false,
+    "PublishPullRequests": false,
+    "AllowNetwork": false,
+    "GitHub": {
+      "Owner": "playsistemasinteligentes",
+      "Repository": "YeshuaCreator",
+      "BaseBranch": "main",
+      "UserName": "agpsi0001-lgtm",
+      "Email": "agpsi0001@gmail.com",
+      "Token": ""
+    }
+  }
 }

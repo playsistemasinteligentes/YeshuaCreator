@@ -51,6 +51,21 @@ test('continues the exact thread using the requested bounded workspace mode', as
   assert.equal(codex.calls.length, 2);
 });
 
+test('development networking requires server opt-in and never changes observe', async () => {
+  for (const [mode, allowDevelopmentNetwork, expected] of [
+    ['workspace-write', true, true], ['workspace-write', false, false],
+    ['workspace-write', 'true', false], ['observe', true, false],
+  ]) {
+    const codex = runtime([
+      { type: 'thread.started', thread_id: 'fixture' }, { type: 'turn.completed' },
+    ]);
+    await executeTask({ ...input, mode, allowDevelopmentNetwork }, codex, () => {});
+    assert.equal(codex.calls[0].start.networkAccessEnabled, expected);
+    assert.equal(codex.calls[0].start.approvalPolicy, 'never');
+    if (mode === 'workspace-write') assert.ok(codex.calls[1].message.includes('Nao execute git commit'));
+  }
+});
+
 test('continuation without the original conversation is blocked before starting any thread', async () => {
   const codex = runtime([]);
   await assert.rejects(executeTask({ ...input, isContinuation: true }, codex, () => {}), /Original task/);

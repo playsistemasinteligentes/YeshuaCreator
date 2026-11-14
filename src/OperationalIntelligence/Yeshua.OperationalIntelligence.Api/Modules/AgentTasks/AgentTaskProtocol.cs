@@ -41,6 +41,11 @@ public static class AgentTaskProtocol
         Use yeshua_task_send apenas para uma ordem real do usuario. Omita taskId somente
         quando ele pedir nova tarefa; para continuar, envie a taskId selecionada.
         Cada ordem nova recebe novo requestId; numa repeticao do mesmo envio reutilize-o.
+        mode=workspace-write exige habilitacao explicita no servidor. No modo de desenvolvimento,
+        o aplicativo prepara um workspace/branch proprio da task e pode abrir um PR em rascunho
+        pela conta GitHub do agente configurada no cofre privado. Essa ordem nao autoriza merge nem deploy. O modo observe
+        nao publica Git. Uma continuacao usa o workspace original; perda desse workspace bloqueia
+        desenvolvimento na task, sem substituir silenciosamente seus arquivos.
         Nunca reenvie ordens para consultar progresso ou recuperar uma falha.
         Use yeshua_task_read para ler andamento e resposta. Failed ou Interrupted nao
         autorizam repeticao automatica: confira o workspace e espere nova ordem explicita.

@@ -234,9 +234,18 @@ def exports(document, root, target, include_shared=False):
     result["MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING"] = result["YESHUA_SQL_CENTRAL_AUTHORIZATION"]
     result.update({key: "" for key in ("OPENAI_API_KEY", "ANTHROPIC_API_KEY",
         "YESHUA_MCP_TUNNEL_ID", "YESHUA_MCP_TUNNEL_API_KEY",
+        "YESHUA_AGENT_GIT_USERNAME", "YESHUA_AGENT_GIT_EMAIL", "YESHUA_AGENT_GIT_TOKEN",
         "YESHUA_MEMORIAS_YOUTUBE_CLIENT_ID", "YESHUA_MEMORIAS_YOUTUBE_CLIENT_SECRET",
         "YESHUA_MEMORIAS_YOUTUBE_ENCRYPTION_KEY", "YESHUA_MEMORIAS_YOUTUBE_REDIRECT_URI",
         "YESHUA_MEMORIAS_CONFIG_ADMIN_TENANT_ID", "YESHUA_MEMORIAS_CONFIG_ADMIN_USER_ID")})
+    result.update({
+        "YESHUA_AGENT_ALLOW_WORKSPACE_WRITE": "false",
+        "YESHUA_AGENT_ALLOW_DEVELOPMENT_NETWORK": "false",
+        "YESHUA_AGENT_GIT_PUBLISH_PULL_REQUESTS": "false",
+        "YESHUA_AGENT_GIT_OWNER": "playsistemasinteligentes",
+        "YESHUA_AGENT_GIT_REPOSITORY": "YeshuaCreator",
+        "YESHUA_AGENT_GIT_BASE_BRANCH": "main",
+    })
     return result
 
 
@@ -281,6 +290,26 @@ def environment(document, root, target, include_shared=False):
             tunnel_id, tunnel_key = result["YESHUA_MCP_TUNNEL_ID"], result["YESHUA_MCP_TUNNEL_API_KEY"]
             if bool(tunnel_id) != bool(tunnel_key) or (tunnel_id and not tunnel_id.startswith("tunnel_")):
                 raise ConfigurationError("McpTunnel exige Id valido e ApiKey juntos em providers.json.")
+            development = config.get("AgentDevelopment", {})
+            if not isinstance(development, dict):
+                raise ConfigurationError("AgentDevelopment deve ser um objeto em providers.json.")
+            for name, variable in (("Enabled", "YESHUA_AGENT_ALLOW_WORKSPACE_WRITE"),
+                                   ("AllowNetwork", "YESHUA_AGENT_ALLOW_DEVELOPMENT_NETWORK"),
+                                   ("PublishPullRequests", "YESHUA_AGENT_GIT_PUBLISH_PULL_REQUESTS")):
+                value = development.get(name, False)
+                if type(value) is not bool:
+                    raise ConfigurationError("AgentDevelopment." + name + " deve ser booleano.")
+                result[variable] = str(value).lower()
+            for name, suffix in (("Owner", "OWNER"), ("Repository", "REPOSITORY"), ("BaseBranch", "BASE_BRANCH"),
+                                 ("UserName", "USERNAME"), ("Email", "EMAIL"), ("Token", "TOKEN")):
+                value = get(config, "AgentDevelopment", "GitHub", name)
+                if value:
+                    result["YESHUA_AGENT_GIT_" + suffix] = value
+            if development.get("PublishPullRequests"):
+                if not development.get("Enabled"):
+                    raise ConfigurationError("Publicar PRs exige AgentDevelopment.Enabled em providers.json.")
+                for suffix in ("USERNAME", "EMAIL", "TOKEN"):
+                    required(result["YESHUA_AGENT_GIT_" + suffix], "AgentDevelopment.GitHub." + suffix)
     # App-owned configuration lives in the main credentials document; never inherit secrets.
     clinical_keys = ("CLINICA_PROCESSING_SCOPE", "CLINICA_CODEX_MODEL", "CLINICA_CODEX_TIMEOUT_SECONDS",
                      "CLINICA_TRANSCRIPTION_API_KEY", "CLINICA_TRANSCRIPTION_MODEL", "CLINICA_TRANSCRIPTION_BASE_URL",

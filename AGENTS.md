@@ -1991,6 +1991,20 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   `workspace-write` exige habilitacao de servidor e escolha explicita na ordem,
   limitada ao workspace. Nao montar `/var/run/docker.sock`, conceder deploy,
   reinicio de containers ou escrita nos bancos dos aplicativos ao agente.
+- Decisao de 2026-11-14: desenvolvimento pelo agente usa conta GitHub dedicada
+  (`agpsi0001-lgtm`, autoria `agpsi0001@gmail.com`), independente do login Codex.
+  Configuracao e token pertencem ao `providers.json` privado existente, nunca
+  ao Git, imagem, historico SQL ou ambiente enviado ao modelo. A API prepara
+  workspace/branch por task e faz commit, push somente da branch `codex/task-*`
+  e PR em rascunho. A ponte continua `yeshua_task_send`/`yeshua_task_read`;
+  nao adicionar ferramentas Git nem autorizar merge/deploy ao agente.
+- O isolamento de comandos do agente usa perfil AppArmor/seccomp especifico
+  instalado pelo deploy Shared, sem SYS_ADMIN, privileged ou socket Docker.
+  Na VPS, Codex 0.164.0 usa seu executor nativo por stdio com PIDs e /proc do
+  proprio container herdados juntos; filesystem e rede continuam isolados.
+  Isso permite compilar .NET sem nova API ou runner. O ambiente e administrativo
+  confiavel: herdar PIDs permite sinalizar processos do mesmo usuario dentro do
+  container. Nunca aplicar esse modelo a codigo arbitrario de tenants.
 - O diagnostico de ocupacao por diretorio do host e entregue ao agente em
   `/host-diagnostics/disk-usage.json`, por bind somente leitura e pela ferramenta
   privada `yeshua_storage_usage`, sem exigir shell dentro do sandbox Codex. O deploy shared

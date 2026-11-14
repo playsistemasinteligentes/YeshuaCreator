@@ -11,7 +11,7 @@ export async function executeTask(input, codex, emit) {
     workingDirectory: input.workspacePath,
     sandboxMode: input.mode === 'workspace-write' ? 'workspace-write' : 'read-only',
     approvalPolicy: 'never',
-    networkAccessEnabled: false,
+    networkAccessEnabled: input.mode === 'workspace-write' && input.allowDevelopmentNetwork === true,
     skipGitRepoCheck: false,
   };
   const thread = input.threadId
@@ -23,7 +23,13 @@ export async function executeTask(input, codex, emit) {
     + 'Esse relatorio de tamanhos e diretorios vem do host, e somente leitura e atualiza a cada 15 minutos. '
     + 'Confira collectedAtUtc, status, timedOut e truncated antes de concluir. Os escopos se sobrepoem; nao some seus totais. '
     + 'Use yeshua_metrics_query para ocupacao e tendencia atuais. df/du no container nao detalham automaticamente o host. '
-    + 'Se o relatorio estiver ausente, antigo ou parcial, informe a limitacao. Limpeza exige ordem explicita.');
+    + 'Se o relatorio estiver ausente, antigo ou parcial, informe a limitacao. Limpeza exige ordem explicita. '
+    + (input.mode === 'workspace-write'
+      ? 'Esta e uma tarefa de desenvolvimento. Leia AGENTS.md, altere somente o necessario e execute verificacoes adequadas. '
+        + 'O aplicativo prepara a branch da task e faz commit/envio/PR em rascunho apos sua resposta. '
+        + 'Nao execute git commit, git push, merge ou deploy pelo terminal; .git permanece protegido. '
+        + 'Informe os arquivos alterados e os testes realmente executados. Uma falha de teste deve ser informada com clareza. '
+      : 'Esta e uma tarefa de consulta. Nao altere fontes, Git ou configuracoes. '));
   let response = '';
   let completed = false;
   let confirmedThread = false;

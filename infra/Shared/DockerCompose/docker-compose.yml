@@ -45,6 +45,9 @@ services:
     container_name: yeshua-operational-intelligence
     init: true
     stop_grace_period: 45s
+    security_opt:
+      - apparmor=yeshua-operational-agent
+      - seccomp=./operational-intelligence/security/seccomp.json
     environment:
       ASPNETCORE_URLS: "http://0.0.0.0:5728;http://127.0.0.1:5729"
       ASPNETCORE_ENVIRONMENT: "Production"
@@ -72,6 +75,15 @@ services:
       AgentTasks__WorkspacePath: "/workspace/YeshuaCreator"
       AgentTasks__RuntimeScript: "/app/agent/codex-task.mjs"
       AgentTasks__AllowWorkspaceWrite: "${YESHUA_AGENT_ALLOW_WORKSPACE_WRITE:-false}"
+      AgentTasks__AllowDevelopmentNetwork: "${YESHUA_AGENT_ALLOW_DEVELOPMENT_NETWORK:-false}"
+      AgentTasks__Git__Enabled: "${YESHUA_AGENT_ALLOW_WORKSPACE_WRITE:-false}"
+      AgentTasks__Git__PublishPullRequests: "${YESHUA_AGENT_GIT_PUBLISH_PULL_REQUESTS:-false}"
+      AgentTasks__Git__Owner: "${YESHUA_AGENT_GIT_OWNER:-playsistemasinteligentes}"
+      AgentTasks__Git__Repository: "${YESHUA_AGENT_GIT_REPOSITORY:-YeshuaCreator}"
+      AgentTasks__Git__BaseBranch: "${YESHUA_AGENT_GIT_BASE_BRANCH:-main}"
+      AgentTasks__Git__UserName: "${YESHUA_AGENT_GIT_USERNAME:-}"
+      AgentTasks__Git__Email: "${YESHUA_AGENT_GIT_EMAIL:-}"
+      AgentTasks__Git__Token: "${YESHUA_AGENT_GIT_TOKEN:-}"
       AgentTasks__ChatGptAuthentication: "${YESHUA_AGENT_CHATGPT_AUTHENTICATION:-true}"
       AgentTasks__CodexHomePath: "/home/agent/.codex"
       CLINICA_CODEX_EXECUTOR_ENABLED: "${CLINICA_CODEX_EXECUTOR_ENABLED:-false}"
@@ -94,6 +106,7 @@ services:
       - /root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output
       - operational-agent-workspace:/workspace
       - operational-agent-codex:/home/agent/.codex
+      - ./operational-intelligence/agent/environments.toml:/home/agent/.codex/environments.toml:ro
       - operational-agent-claude:/home/agent/.claude
     depends_on:
       - sqlserver

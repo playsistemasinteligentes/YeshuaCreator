@@ -1,0 +1,10 @@
+# Native Codex executor, scoped to this dedicated agent container.
+# Reuse the container PID view together with its existing /proc; Docker denies a
+# fresh procfs mount. Filesystem/network sandbox policies remain enforced.
+default = "yeshua-container"
+include_local = false
+
+[[environments]]
+id = "yeshua-container"
+program = "/home/agent/.npm-global/bin/codex"
+args = ["exec-server", "--listen", "stdio", "--linux-sandbox-pid-namespace", "inherit"]

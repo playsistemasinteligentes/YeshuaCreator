@@ -60,6 +60,13 @@ preenchimento, sem subir os servicos da aplicacao.
 
 ## Estrutura
 
+A conta GitHub do agente e configurada no `providers.json` privado existente,
+em `AgentDevelopment.GitHub`: `UserName`, `Email` e `Token`. O exemplo usa
+`agpsi0001-lgtm` / `agpsi0001@gmail.com`; nunca preencher o token no arquivo
+versionado. Desenvolvimento e envio de PRs ficam desligados por padrao.
+O deploy Shared exporta a configuracao para a API, que nao repassa a credencial
+ao processo Codex. Roteiro: [Git do agente](../Shared/DockerCompose/operational-intelligence/README.md#git-do-agente).
+
 ```text
 /root/YeshuaPrivate/production/
   credentials.json
