@@ -46,7 +46,7 @@ garbage collector nativo do Docker, preservando as demais configuracoes do
 daemon. Os tamanhos do JSON estao em bytes: alvo de 30 GB de cache, reserva
 minima de 30 GB livres no disco e piso de 10 GB de cache util. Contextos e caches
 de download antigos recebem prioridade de remocao; depois entram camadas sem
-uso ha sete dias, camadas nao compartilhadas e, por ultimo, os demais caches.
+uso ha 60 dias, camadas nao compartilhadas e, por ultimo, os demais caches.
 E uma politica periodica, nao uma quota rigida: builds ativos podem ultrapassar
 o alvo temporariamente. Imagens, containers, volumes e backups nao sao alvos.
 
@@ -54,6 +54,8 @@ o alvo temporariamente. Imagens, containers, volumes e backups nao sao alvos.
 tenta reload e confere os limites reais do builder. Quando a versao do Docker
 exige, a primeira aplicacao reinicia o daemon sob o lock do deploy. Deploys
 seguintes nao reiniciam o Docker se a politica ja estiver ativa.
+Sao usados os limites nativos do daemon, sem filtros customizados. Se a
+ativacao falhar, o helper restaura a configuracao anterior e retoma os containers.
 
 Os Dockerfiles ativos separam os manifests dos fontes para reutilizar o restore
 NuGet. O pacote de fontes .NET inclui somente Engine, Studio, CQRS do aplicativo

@@ -34,10 +34,11 @@ class BuildCacheTests(unittest.TestCase):
 
     def test_checks_effective_limits_not_only_config_file(self):
         policy = json.loads(cache_policy.POLICY.read_text())
-        rules = []
-        for rule in policy["policy"]:
-            rules.append({**rule, "keepDuration": int(rule.get("keepDuration", "0h")[:-1]) * 3600 * 10**9,
-                          **{key: int(rule.get(key, 0)) for key in ("reservedSpace", "maxUsedSpace", "minFreeSpace")}})
+        rules = [{}] + [
+            {"all": all_records, **{key: int(policy["default" + key[0].upper() + key[1:]])
+                                   for key in ("reservedSpace", "maxUsedSpace", "minFreeSpace")}}
+            for all_records in (False, False, True)
+        ]
         builder = {"Name": "default", "Driver": "docker", "Nodes": [{"GCPolicy": rules}]}
         with patch.object(cache_policy, "run", side_effect=lambda *args: subprocess.CompletedProcess([], 0, json.dumps(builder))):
             self.assertTrue(cache_policy.active_policy(policy))
@@ -54,6 +55,25 @@ class BuildCacheTests(unittest.TestCase):
                 cache_policy.main()
                 write.assert_not_called()
                 command.assert_not_called()
+
+    def test_failed_activation_restores_config_and_running_containers(self):
+        with tempfile.TemporaryDirectory() as directory:
+            config = Path(directory) / "daemon.json"
+            previous = {"log-driver": "local"}
+            config.write_text(json.dumps(previous))
+            def command(*args):
+                if args == ("systemctl", "restart", "docker"):
+                    raise subprocess.CalledProcessError(1, args)
+                return subprocess.CompletedProcess(args, 0, "c1\nc2\n" if args == ("docker", "ps", "-q") else "")
+            with patch.object(cache_policy, "CONFIG", config), patch.object(cache_policy.os, "geteuid", return_value=0, create=True), \
+                 patch.object(cache_policy, "active_policy", return_value=False), \
+                 patch.object(cache_policy, "write_config") as write, patch.object(cache_policy, "run", side_effect=command) as run, \
+                 patch.object(cache_policy.subprocess, "run"):
+                with self.assertRaises(subprocess.CalledProcessError):
+                    cache_policy.main()
+                self.assertEqual(previous, write.call_args_list[-1].args[1])
+                self.assertIn(unittest.mock.call("systemctl", "start", "docker"), run.call_args_list)
+                self.assertIn(unittest.mock.call("docker", "start", "c1", "c2"), run.call_args_list)
 
 
 if __name__ == "__main__":

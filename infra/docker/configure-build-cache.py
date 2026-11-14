@@ -31,16 +31,13 @@ def active_policy(policy):
             continue
         for node in builder.get("Nodes", []):
             rules = node.get("GCPolicy") or []
-            if len(rules) != len(policy["policy"]):
+            if len(rules) != 4:
                 continue
             matches = True
-            for actual, expected in zip(rules, policy["policy"]):
-                duration = int(expected.get("keepDuration", "0h")[:-1]) * 3600 * 1_000_000_000
-                matches &= actual.get("keepDuration", 0) == duration
-                matches &= actual.get("all", False) == expected.get("all", False)
-                matches &= (actual.get("filter") or []) == expected.get("filter", [])
+            for actual in rules[1:]:
                 for key in ("reservedSpace", "maxUsedSpace", "minFreeSpace"):
-                    matches &= actual.get(key, 0) == int(expected.get(key, 0))
+                    matches &= actual.get(key, 0) == int(policy["default" + key[0].upper() + key[1:]])
+            matches &= rules[-1].get("all") is True
             if matches:
                 return True
     return False
@@ -83,16 +80,25 @@ def main():
     subprocess.run(["systemctl", "reload", "docker"], capture_output=True, timeout=120)
     if not active_policy(policy):
         print("Cache Docker: ativando politica com reinicio do Docker.", flush=True)
-        run("systemctl", "restart", "docker")
-        for _ in range(30):
-            try:
-                if active_policy(policy):
-                    break
-            except subprocess.SubprocessError:
-                pass
-            time.sleep(1)
-        else:
-            raise RuntimeError("Politica de cache nao confirmada no builder ativo.")
+        running = run("docker", "ps", "-q").stdout.split()
+        try:
+            run("systemctl", "restart", "docker")
+            for _ in range(30):
+                try:
+                    if active_policy(policy):
+                        break
+                except subprocess.SubprocessError:
+                    pass
+                time.sleep(1)
+            else:
+                raise RuntimeError("Politica de cache nao confirmada no builder ativo.")
+        except Exception:
+            write_config(CONFIG, previous)
+            run("systemctl", "reset-failed", "docker.service", "docker.socket")
+            run("systemctl", "start", "docker")
+            if running:
+                run("docker", "start", *running)
+            raise
     print("Cache Docker: retencao nativa confirmada, alvo 30 GB e reserva de disco 30 GB.")
 
 
