@@ -2,7 +2,7 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish
 WORKDIR /src
 
-ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
+ENV DOTNET_PROCESSOR_COUNT=1
 COPY Directory.Build.props ./
 COPY --parents src/**/*.csproj src/**/Directory.Build.targets ./
 RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked \
@@ -21,7 +21,7 @@ RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=lock
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS publish-front
 WORKDIR /src
-ENV DOTNET_PROCESSOR_COUNT=1 DOTNET_GCHeapHardLimit=0x20000000
+ENV DOTNET_PROCESSOR_COUNT=1
 COPY Directory.Build.props ./
 COPY src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/
 RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked dotnet restore src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj --disable-parallel
