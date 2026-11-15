@@ -1,4 +1,4 @@
-# Transcrição OpenAI no Clínica
+# Transcrição OpenAI e Groq no Clínica
 
 Publicado e homologado pela API em 27/10/2026. O Worker existente entrega o pedido à API
 OpenAI usando Strategy. Gravação, telas, upload e junção dos chunks pelo C#
@@ -10,6 +10,8 @@ flowchart LR
     S --> O[Outbox]
     O --> F[Factory de entrega]
     F --> H[Strategy OpenAI HTTP]
+    F --> G[Strategy Groq HTTP]
+    G --> I
     F --> Q[Strategy Queue]
     H --> I[Inbox: contrato comum]
     Q --> E[Executor externo pela fila]
@@ -25,7 +27,9 @@ contrato, implementações e seleção explícita por configuração/DI, sem ref
 A factory é chamada somente pelo processamento da Outbox. A saga continua
 publicando `audio.transcribe`, aguardando e aplicando o mesmo resultado.
 
-`OpenAI` é o padrão para novas entregas de transcrição. `Queue` conserva o
+`OpenAI` continua sendo o padrão para novas entregas de transcrição. `Groq` é
+um provedor adicional selecionado globalmente na configuração da Clínica, sem
+seleção por tenant. `Queue` conserva o
 executor pela fila, inclusive o protótipo Codex quando configurado. Outras
 operações, como `text.summarize`, continuam pela fila. Não há fallback automático.
 Não foram criados host, Worker, endpoint, tabela ou serviço intermediário.
@@ -37,7 +41,8 @@ novos ainda não vinculados usam a configuração vigente na primeira entrega.
 
 ## Configuração
 
-O Worker lê `ClinicaTranscription:Provider`, `ApiKey`, `Model`, `BaseUrl` e,
+O Worker lê `ClinicaTranscription:Provider`, `ApiKey`, `Model`, `BaseUrl`,
+`Groq:ApiKey`, `Groq:Model`, `Groq:BaseUrl` e,
 opcionalmente, `FFmpegExecutable`. Padrões: `OpenAI`, `gpt-transcribe`,
 `https://api.openai.com/v1` e `ffmpeg`. A chave não está no código ou no Front.
 
@@ -55,7 +60,12 @@ Modelo publico: [clinica-transcription.example.json](../../../infra/private/clin
     "Provider": "OpenAI",
     "ApiKey": "",
     "Model": "gpt-transcribe",
-    "BaseUrl": "https://api.openai.com/v1"
+    "BaseUrl": "https://api.openai.com/v1",
+    "Groq": {
+      "ApiKey": "",
+      "Model": "whisper-large-v3-turbo",
+      "BaseUrl": "https://api.groq.com/openai/v1"
+    }
   }
 }
 ```
@@ -67,15 +77,21 @@ variáveis somente no Worker para esta integração. Para voltar à fila, usar
 `Transcription.Provider = Queue` e manter um consumidor configurado para as
 tasks. O resumo continua exigindo esse consumidor mesmo com transcrição OpenAI.
 Sem chave, a transcrição falha de forma visível pelo contrato comum de Inbox.
+Para Groq, preencher `Transcription.Groq.ApiKey` pelo mecanismo privado e, somente
+após autorização de ativação, trocar `Transcription.Provider` para `Groq`.
+`ApiKey/Model/BaseUrl` na raiz de `Transcription` continuam pertencendo à OpenAI;
+nunca copiar uma chave de provedor para o outro. Preservar ambas as credenciais
+enquanto houver entregas vinculadas aos respectivos provedores. O rollback da
+seleção global afeta pedidos novos, sem redirecionar retries já vinculados.
 
 ## Áudio e limites do piloto
 
 - O arquivo final já reunido é lido do storage do tenant/upload. A referência
   recebida não autoriza baixar URLs ou ler caminhos arbitrários.
-- Formatos reconhecidos de até 24 MB seguem diretamente, por streaming multipart.
+- Para OpenAI, formatos reconhecidos de até 24 MB seguem diretamente, por streaming multipart.
   O envio usa a extensão do conteúdo identificado, inclusive MP4 gravado com
   nome `audio.webm`.
-- Acima dessa margem, ou com formato não reconhecido, o FFmpeg prepara MP3 mono,
+- Para OpenAI acima dessa margem, ou com formato não reconhecido, o FFmpeg prepara MP3 mono,
   16 kHz, 64 kbps e partes de dez minutos. As partes são enviadas sequencialmente
   e seus textos reunidos na ordem. Não são os chunks de dez segundos do navegador.
 - Limites locais: entrada até 250 MB, até 64 partes, texto até 300 mil caracteres.
@@ -86,11 +102,113 @@ Sem chave, a transcrição falha de forma visível pelo contrato comum de Inbox.
   menor que a recuperação de reserva de cinco minutos. Sessões longas precisam
   de medição no piloto; não há garantia de completar nesse prazo.
 
-O modelo é executado na OpenAI. O servidor não carrega modelo local de fala.
+No destino OpenAI, o modelo é executado na OpenAI. O servidor não carrega modelo local de fala.
 Formato, multipart e limites do provedor seguem o
 [guia oficial de transcrição](https://developers.openai.com/api/docs/guides/speech-to-text)
 e a [referência da API](https://developers.openai.com/api/reference/resources/audio/subresources/transcriptions/methods/create).
 Para `gpt-transcribe`, o envio informa `languages[]=pt`.
+
+## Groq: limites e áudio longo
+
+O adaptador adicional usa `POST /audio/transcriptions`, Bearer e multipart com
+`file`, `model=whisper-large-v3-turbo` e `language=pt`, na base
+`https://api.groq.com/openai/v1`. Reutiliza o preparo FFmpeg e o contrato de retorno
+existentes; não altera a gravação nem o resumo pela fila.
+
+Limites documentados conferidos em 15/11/2026: upload de até **25 MB no Free**
+(100 MB no Developer); não há um teto único de duração publicado nesse guia.
+O envio para Groq passa pelo preparo existente em segmentos de dez minutos,
+MP3 mono de 16 kHz a 64 kbps: aproximadamente 4,8 MB por segmento. A duração
+é limitada por segmento e pelas cotas de segundos da organização, não por uma
+suposta garantia de uma hora por requisição. Uma gravação de cerca de uma hora
+gera aproximadamente seis segmentos sequenciais, preservando a ordem do texto.
+Ver [Speech to Text da Groq](https://console.groq.com/docs/speech-to-text) e
+[referência da API](https://console.groq.com/docs/api-reference#audio).
+
+O Free publica 20 requisições/minuto, 2.000/dia, 7.200 segundos de áudio/hora e
+28.800/dia para esse modelo. Os limites são compartilhados pela organização;
+uma sessão de uma hora consome cerca de 3.600 segundos, e uma repetição integral
+pode consumir esse volume novamente. Outros consumidores reduzem a disponibilidade.
+A conta pode ter limites diferentes: conferir sua página privada Limits antes
+de ativar. Não há reserva local de quota nem promessa de capacidade clínica no
+Free. `429` segue o retry de Outbox com `Retry-After` limitado a 1–300 segundos
+pelo adaptador existente; não trocar provedor ao
+atingir quota. Ver [Rate Limits da Groq](https://console.groq.com/docs/rate-limits).
+
+O prazo total continua 240 segundos e as tentativas continuam limitadas: uma
+indisponibilidade ou quota diária pode terminar em falha visível, exigindo retry
+manual pelo caminho já existente após recuperar a capacidade. Uma falha após
+segmentos concluídos pode repetir esses segmentos e seu consumo. Nenhum scheduler,
+checkpoint ou controlador de quota paralelo foi criado. `401/403` e chave ausente
+são falhas terminais; timeout e falhas transitórias seguem a política existente.
+
+## Catálogo operacional e aplicação da configuração
+
+Todos os campos abaixo pertencem ao arquivo privado único, sob
+`Apps.Clinica.Transcription`. Não há hot reload desse arquivo no Worker.
+
+| Campo / exportação | Finalidade / serviço | Aplicação | Validação | Reversão |
+| --- | --- | --- | --- | --- |
+| `Provider` → `CLINICA_TRANSCRIPTION_PROVIDER` → `ClinicaTranscription__Provider` | Seleção global na Factory / `clinica-worker` | Recriar Worker após carregar exportação; primeiro uso do novo código exige deploy | Nova entrega usa destino esperado; retry conserva `TransportData.DeliveryProvider` | Restaurar `OpenAI` (ou `Queue`, com consumidor) e recriar Worker |
+| `ApiKey/Model/BaseUrl` → `CLINICA_TRANSCRIPTION_API_KEY/MODEL/BASE_URL` → `ClinicaTranscription__ApiKey/Model/BaseUrl` | Credencial e endpoint OpenAI / Worker | Recriação | Áudio fictício, Inbox comum e autenticação; jamais imprimir chave | Restaurar valores privados anteriores e recriar |
+| `Groq.ApiKey/Model/BaseUrl` → `CLINICA_TRANSCRIPTION_GROQ_API_KEY/MODEL/BASE_URL` → `ClinicaTranscription__Groq__ApiKey/Model/BaseUrl` | Credencial e endpoint Groq / Worker | Recriação | Áudio fictício e destino Groq; quotas na conta | Restaurar valores privados anteriores; preservar credencial de pedidos Groq pendentes |
+| `ClinicaTranscription__FFmpegExecutable=/usr/bin/ffmpeg` (Compose) | Preparo de áudio / Worker | Recriar se mudar caminho; alterar binário exige imagem/deploy | Binário executável e conversão fictícia | Restaurar caminho/imagem anterior |
+
+Caminho conferido: `infra/Clinica/DockerCompose/deploy.sh` carrega
+`infra/docker/load-deploy-env.sh clinica`; o loader chama `credentials.py export`,
+decodifica em memória e exporta `CLINICA_TRANSCRIPTION_*`. O Compose interpola
+essas variáveis somente no Worker. O JSON privado não é montado nos containers.
+**`docker restart` não atualiza environment**. É necessário recarregar o loader e
+recriar o container. Não executar `credentials.py export`, `env`, `docker inspect`
+ou `docker compose config` sem `--quiet` em terminal registrado: podem revelar
+segredos. Não usar `set -x`.
+
+Após disponibilizar a imagem revisada e obter autorização operacional, validar
+sem imprimir valores:
+
+```bash
+python3 infra/private/credentials.py validate --target clinica
+```
+
+Para aplicar somente configuração com a imagem revisada já instalada, em uma
+sessão administrativa privada no host e na raiz do repositório:
+
+```bash
+APP_DIR="$PWD"
+source infra/docker/load-deploy-env.sh clinica
+docker compose -f infra/Clinica/DockerCompose/docker-compose.yml config --quiet
+docker compose -f infra/Clinica/DockerCompose/docker-compose.yml up -d --no-deps --force-recreate clinica-worker
+```
+
+Esses comandos são roteiro para execução autorizada futura, não evidência de
+deploy nesta tarefa. Nenhuma migration de banco é necessária para o provedor.
+Para rollback sem recompilar, restaurar `Provider=OpenAI`, conservar os dados
+OpenAI anteriores, validar, recarregar e repetir a recriação do Worker. Não editar
+`DeliveryProvider` de pedidos existentes: eles precisam concluir ou falhar pelo
+provedor original, inclusive após rollback. Validar health, uma transcrição
+fictícia, Inbox e continuidade para resumo; conferir erros sanitizados e
+identidades sem abrir áudio ou texto clínico em logs.
+
+A leitura de `/root/YeshuaPrivate/production/credentials.json` nesta tarefa foi
+impedida por permissão do ambiente de desenvolvimento. A presença/validade da
+chave Groq não pôde ser confirmada; integração real permanece bloqueada até
+verificação privada autorizada. Isso não comprova chave ausente. Não solicitar
+nem enviar segredo pelo chat. Testes mockados não substituem essa prova real.
+
+## Verificação local da extensão Groq (15/11/2026)
+
+- `dotnet test tests/CQRS/Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke --no-restore --filter 'FullyQualifiedName~Custon.Saga' --verbosity quiet`: 45 aprovados, zero falhas.
+- Inclui HTTP mockado Groq, multipart/autenticação, erros 401/403/408/429/503,
+  quota terminal, timeout/rede, ausência de chave sem fallback, destino persistido
+  em ambas as trocas OpenAI/Groq e resumo pela fila. O FFmpeg real processou uma
+  hora de tom sintético em partes, com limpeza de temporários.
+- `dotnet build src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker --verbosity quiet`: aprovado, zero avisos/erros após restore.
+- `python3 -m unittest discover -s tests/Infrastructure/PrivateConfig -p test_credentials.py -k clinica`: 8 aprovados.
+- A suíte PrivateConfig completa teve 34 aprovados, 7 ignorados e 25 erros de
+  permissão ao criar temporários em `/home/agent`, somente leitura neste ambiente.
+  Docker Compose CLI indisponível; a validação do Compose ficou pendente.
+- `git diff --check`: aprovado. Nenhum deploy ou teste com áudio clínico real.
+  A integração HTTP real Groq está bloqueada pela leitura privada descrita acima.
 
 ## Entrega, falhas e retomada
 
@@ -108,7 +226,7 @@ erro terminal. Retornos já recebidos evitam novo envio ao provedor.
 
 A entrega é pelo menos uma vez: uma queda após o processamento no provedor e
 antes do commit local ainda pode repetir a chamada e o custo. O identificador
-estável deduplica a aplicação local; não promete deduplicação na OpenAI.
+estável deduplica a aplicação local; não promete deduplicação na OpenAI ou Groq.
 Logs HTTP usam a borda operacional compartilhada, sem áudio, texto, token ou
 corpo de erro do provedor. Identidade causal é preservada nas tentativas.
 

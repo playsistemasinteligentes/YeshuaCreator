@@ -2358,3 +2358,12 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   usa conta da Central e abre a sessao local por getMenu antes dos Commands;
   nao usar a senha da Central no login legado do aplicativo. O ensaio de
   gravacao por microfone na tela permanece separado do teste real de API.
+
+- Extensao de transcricao Groq: Strategy/Factory da Outbox tambem oferece Groq
+  Whisper Large V3 Turbo por configuracao global; OpenAI permanece padrao.
+  Apps.Clinica.Transcription.Groq separa credenciais/modelo/base URL dos valores
+  OpenAI existentes para preservar entregas com DeliveryProvider ja vinculado.
+  Groq reutiliza preparo FFmpeg e contrato HTTP/Inbox existentes, sempre em
+  segmentos de 600 segundos; nao ha fallback automatico nem selecao por tenant.
+  Aplicar alteracoes de environment exige recriacao do Worker, conforme
+  docs/operational/clinica/OPENAI_TRANSCRIPTION.md; restart nao atualiza env.

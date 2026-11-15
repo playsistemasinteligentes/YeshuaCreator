@@ -11,7 +11,7 @@ using System.Text.Json.Serialization;
 namespace Clinica.Infrastructure.OutboxDelivery;
 
 public sealed class OpenAITranscriptionDeliveryStrategy(
-    HttpClient client, IFileStorage storage, ClinicaTranscriptionOptions options) : IOutboxDeliveryStrategy
+    HttpClient client, IFileStorage storage, ClinicaTranscriptionOptions options, bool prepareAllAudio = false) : IOutboxDeliveryStrategy
 {
     private const long MaximumUploadBytes = 24_000_000;
     private const long MaximumInputBytes = 250_000_000;
@@ -42,7 +42,7 @@ public sealed class OpenAITranscriptionDeliveryStrategy(
         input.Position = 0;
         var format = DetectFormat(header.AsSpan(0, count));
         string text;
-        if (input.Length <= MaximumUploadBytes && format is { } recognized)
+        if (!prepareAllAudio && input.Length <= MaximumUploadBytes && format is { } recognized)
             text = await SendAsync(request, endpoint, input, recognized.Extension, recognized.Mime, cancellationToken);
         else
             text = await PrepareAndSendAsync(request, endpoint, input, cancellationToken);

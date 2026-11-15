@@ -66,6 +66,9 @@ services:
       ClinicaTranscription__ApiKey: "${CLINICA_TRANSCRIPTION_API_KEY:-}"
       ClinicaTranscription__Model: "${CLINICA_TRANSCRIPTION_MODEL:-gpt-transcribe}"
       ClinicaTranscription__BaseUrl: "${CLINICA_TRANSCRIPTION_BASE_URL:-https://api.openai.com/v1}"
+      ClinicaTranscription__Groq__ApiKey: "${CLINICA_TRANSCRIPTION_GROQ_API_KEY:-}"
+      ClinicaTranscription__Groq__Model: "${CLINICA_TRANSCRIPTION_GROQ_MODEL:-whisper-large-v3-turbo}"
+      ClinicaTranscription__Groq__BaseUrl: "${CLINICA_TRANSCRIPTION_GROQ_BASE_URL:-https://api.groq.com/openai/v1}"
       ClinicaTranscription__FFmpegExecutable: "/usr/bin/ffmpeg"
     expose:
       - "7215"

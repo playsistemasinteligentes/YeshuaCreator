@@ -473,3 +473,17 @@ para entrega direta da Outbox a OpenAI. `Transcription.Provider` aceita
 mantem o executor externo pela fila; resumo continua pela fila em ambos os modos.
 O antigo apps/Clinica/integracoes/codex-executor.json nao e lido nem usado como fallback.
 Configuracao e limites: [transcricao OpenAI](../../docs/operational/clinica/OPENAI_TRANSCRIPTION.md).
+
+
+## Transcricao Clinica: provedores HTTP
+
+`Apps.Clinica.Transcription.Provider` aceita `OpenAI` (padrao), `Groq` ou `Queue`.
+A extensao Groq preserva os campos OpenAI `ApiKey/Model/BaseUrl` e acrescenta
+`Groq.ApiKey/Model/BaseUrl` no mesmo bloco e arquivo privado. Nao usar a chave
+OpenAI como fallback Groq. O loader exporta `CLINICA_TRANSCRIPTION_GROQ_*`; o
+Compose os injeta como `ClinicaTranscription__Groq__*` somente no Worker.
+Mudanca de environment exige recarregar o loader e recriar o container;
+`docker restart` conserva a environment antiga. O padrao versionado continua
+OpenAI e nenhum valor secreto deve entrar nos exemplos.
+Catalogo, limites, validacao e rollback sem recompilar:
+[Transcricao da Clinica](../../docs/operational/clinica/OPENAI_TRANSCRIPTION.md).

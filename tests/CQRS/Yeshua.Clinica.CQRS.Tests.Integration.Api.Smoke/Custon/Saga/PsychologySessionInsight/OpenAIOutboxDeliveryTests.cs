@@ -58,10 +58,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal(1, f.InboxWrites);
     }
 
-    [Fact]
-    public async Task Summary_remains_a_separate_queue_request_when_transcription_uses_OpenAI()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Summary_remains_a_separate_queue_request(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         f.Event.type = "text.summarize";
         f.Event.transportdata = """{"Queue":"text.summarize.outbox","Exchange":"ai.tasks","RoutingKey":"text.summarize","TaskName":"app.tasks.summarize_session"}""";
         await f.Run();
@@ -136,10 +138,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal("transcription_http_429", f.LastError);
     }
 
-    [Fact]
-    public async Task Quota_failure_is_terminal_in_the_common_Inbox_without_exposing_provider_body()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Quota_failure_is_terminal_in_the_common_Inbox_without_exposing_provider_body(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Status = HttpStatusCode.TooManyRequests,
+        var f = new Fixture(provider) { Status = HttpStatusCode.TooManyRequests,
             Response = """{"error":{"code":"insufficient_quota","message":"fixture-private-body"}}""" };
         await f.Run();
         Assert.Equal(0, f.Retries);
@@ -148,6 +152,7 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal("transcription_quota", f.LastError);
         Assert.DoesNotContain("fixture-private-body", f.InboxPayload!);
         Assert.DoesNotContain("fixture-key", f.InboxPayload!);
+        f.Cleanup();
     }
 
     [Fact]
@@ -249,6 +254,129 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal("", command.ResultContract);
     }
 
+    [Fact]
+    public async Task Groq_uses_Whisper_multipart_and_the_common_Inbox()
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq);
+        try
+        {
+            await f.Run();
+            Assert.Equal(1, f.HttpCalls);
+            Assert.Equal(1, f.InboxWrites);
+            Assert.Equal(1, f.Done);
+            Assert.Equal("https://api.groq.com/openai/v1/audio/transcriptions", f.Endpoint);
+            Assert.Equal("Bearer groq-fixture-key", f.Authorization);
+            Assert.Contains("whisper-large-v3-turbo", f.Multipart);
+            Assert.Contains("name=language", f.Multipart!.Replace("\"", ""));
+            Assert.DoesNotContain("languages[]", f.Multipart);
+            Assert.Contains("Groq", f.Event.transportdata);
+            Assert.Equal(0, f.QueueCalls);
+        }
+        finally { f.Cleanup(); }
+    }
+
+    [Theory]
+    [InlineData(401, false)]
+    [InlineData(403, false)]
+    [InlineData(429, true)]
+    [InlineData(408, true)]
+    [InlineData(503, true)]
+    public async Task Groq_errors_follow_existing_Outbox_retry_and_terminal_contract(int status, bool retry)
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq)
+        { Status = (HttpStatusCode)status, Response = "private non-json provider response" };
+        try
+        {
+            await f.Run();
+            Assert.Equal(retry ? 1 : 0, f.Retries);
+            Assert.Equal(retry ? 0 : 1, f.DeadLetters);
+            Assert.Equal("transcription_http_" + status, f.LastError);
+            Assert.DoesNotContain("private non-json", f.InboxPayload ?? "");
+        }
+        finally { f.Cleanup(); }
+    }
+
+    [Theory]
+    [InlineData("Groq", TranscriptionDeliveryProvider.OpenAI, "api.groq.com")]
+    [InlineData("OpenAI", TranscriptionDeliveryProvider.Groq, "api.openai.com")]
+    public async Task Provider_bound_before_retry_survives_global_configuration_change(
+        string bound, TranscriptionDeliveryProvider configured, string host)
+    {
+        var f = new Fixture(configured);
+        f.Event.transportdata = "{\"DeliveryProvider\":\"" + bound + "\"}";
+        f.Event.transporttype = 2;
+        f.Event.retrycount = 1;
+        f.Audio = SyntheticWave(1);
+        try
+        {
+            await f.Run();
+            Assert.Equal(1, f.HttpCalls);
+            Assert.Equal(0, f.Bindings);
+            Assert.Equal(host, new Uri(f.Endpoint!).Host);
+            Assert.Equal(1, f.Done);
+        }
+        finally { f.Cleanup(); }
+    }
+
+    [Fact]
+    public async Task Groq_hour_of_synthetic_audio_is_segmented_and_temporary_files_are_removed()
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq) { Audio = SyntheticWave(3600) };
+        try
+        {
+            await f.Run();
+            Assert.InRange(f.HttpCalls, 6, 7);
+            Assert.Equal(1, f.InboxWrites);
+            Assert.Equal(1, f.Done);
+            Assert.Empty(Directory.GetFileSystemEntries(Path.Combine(f.StorageRoot,
+                "volatile", "ia", "transcriptions", "output")));
+        }
+        finally { f.Cleanup(); }
+    }
+
+    [Theory]
+    [InlineData(true, "delivery_timeout")]
+    [InlineData(false, "delivery_unavailable")]
+    public async Task Groq_timeout_and_network_failure_schedule_existing_retry(bool timeout, string code)
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq)
+        { NetworkFailure = timeout ? new TaskCanceledException() : new HttpRequestException() };
+        try
+        {
+            await f.Run();
+            Assert.Equal(1, f.Retries);
+            Assert.Equal(code, f.LastError);
+            Assert.Equal(0, f.InboxWrites);
+            Assert.Contains("Groq", f.Event.transportdata);
+        }
+        finally { f.Cleanup(); }
+    }
+
+    [Fact]
+    public async Task Groq_missing_credentials_never_uses_OpenAI_key_or_network()
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq, groqApiKey: "");
+        await f.Run();
+        Assert.Equal(0, f.HttpCalls);
+        Assert.Equal("transcription_credentials_missing", f.LastError);
+        Assert.Equal(1, f.DeadLetters);
+    }
+
+    private static byte[] SyntheticWave(int seconds)
+    {
+        // Fictitious tone, never patient audio. PCM 16kHz mono, 16 bit.
+        using var output = new MemoryStream();
+        using var writer = new BinaryWriter(output);
+        var bytes = seconds * 16000 * 2;
+        writer.Write("RIFF"u8); writer.Write(36 + bytes); writer.Write("WAVEfmt "u8);
+        writer.Write(16); writer.Write((short)1); writer.Write((short)1);
+        writer.Write(16000); writer.Write(32000); writer.Write((short)2); writer.Write((short)16);
+        writer.Write("data"u8); writer.Write(bytes);
+        for (var i = 0; i < seconds * 16000; i++)
+            writer.Write((short)(1000 * Math.Sin(i * 2 * Math.PI * 440 / 16000)));
+        return output.ToArray();
+    }
+
     private sealed class Fixture
     {
         public readonly yOutboxDTO Event = new()
@@ -265,15 +393,17 @@ public sealed class OpenAIOutboxDeliveryTests
         public bool LoseClaim, Accepted, FailCommitOnce;
         public bool Current = true;
         public int HttpCalls, QueueCalls, InboxWrites, Done, Retries, DeadLetters, Bindings;
-        public string? InboxPayload, Multipart, Authorization, LastError;
+        public string? InboxPayload, Multipart, Authorization, LastError, Endpoint;
+        public Exception? NetworkFailure;
         public HttpStatusCode Status = HttpStatusCode.OK;
         public string Response = """{"text":"Relato fiel, com acentuação."}""";
         public byte[] Audio = new byte[] { 0x1a, 0x45, 0xdf, 0xa3 }.Concat(new byte[12]).ToArray();
         public readonly string StorageRoot = Path.Combine(AppContext.BaseDirectory, "audio-preparation-" + Guid.NewGuid().ToString("N"));
         private bool _transaction, _pendingInbox, _pendingDone, _pendingDeadLetter;
 
-        public Fixture(TranscriptionDeliveryProvider provider = TranscriptionDeliveryProvider.OpenAI, string apiKey = "fixture-key")
+        public Fixture(TranscriptionDeliveryProvider provider = TranscriptionDeliveryProvider.OpenAI, string apiKey = "fixture-key", string groqApiKey = "groq-fixture-key")
         {
+            if (provider == TranscriptionDeliveryProvider.Groq) Audio = SyntheticWave(1);
             var context = new Context();
             var logger = new Shered.Logger.Logger();
             var work = Fake<IUnitOfWork>((name, _) =>
@@ -334,21 +464,27 @@ public sealed class OpenAIOutboxDeliveryTests
             });
             var options = new ClinicaTranscriptionOptions
             {
-                Provider = provider, ApiKey = apiKey, StorageRoot = StorageRoot,
-                FFmpegExecutable = Path.Combine(StorageRoot, "missing-ffmpeg")
+                Provider = provider, ApiKey = apiKey, GroqApiKey = groqApiKey, StorageRoot = StorageRoot,
+                FFmpegExecutable = provider == TranscriptionDeliveryProvider.Groq ? "/usr/bin/ffmpeg" : Path.Combine(StorageRoot, "missing-ffmpeg")
             };
             var http = new HttpClient(new HttpStub(async request =>
             {
                 Assert.False(_transaction);
                 HttpCalls++; Events.Add("http");
+                Endpoint = request.RequestUri!.ToString();
+                Assert.InRange(request.Content!.Headers.ContentLength ?? 0, 0, 24_100_000);
+                if (NetworkFailure is not null) throw NetworkFailure;
                 Multipart = await request.Content!.ReadAsStringAsync();
                 Authorization = request.Headers.Authorization?.ToString();
                 return new HttpResponseMessage(Status) { Content = new StringContent(Response, Encoding.UTF8, "application/json") };
             }));
             var factory = new TranscriptionDeliveryFactory(new QueueOutboxDeliveryStrategy(publisher),
-                new OpenAITranscriptionDeliveryStrategy(http, storage, options), options);
+                new OpenAITranscriptionDeliveryStrategy(http, storage, options),
+                new GroqTranscriptionDeliveryStrategy(http, storage, new ClinicaTranscriptionOptions
+                { GroqApiKey = options.GroqApiKey, StorageRoot = StorageRoot, FFmpegExecutable = "/usr/bin/ffmpeg" }), options);
             _worker = new(work, reads, Fake<IyOutboxWriteRepository>((_, _) => null), publisher, logger, context, Inbox, factory);
         }
+        public void Cleanup() { if (Directory.Exists(StorageRoot)) Directory.Delete(StorageRoot, recursive: true); }
         public async Task Run() => await _worker.ExecuteAsync(new yOutboxInputCommand());
         private string Bind(string provider, int type)
         {

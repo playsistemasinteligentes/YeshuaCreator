@@ -2,7 +2,7 @@ using Command.Patterns.OutBox;
 
 namespace Clinica.Infrastructure.OutboxDelivery;
 
-public enum TranscriptionDeliveryProvider { OpenAI, Queue }
+public enum TranscriptionDeliveryProvider { OpenAI, Queue, Groq }
 
 public sealed class ClinicaTranscriptionOptions
 {
@@ -10,6 +10,9 @@ public sealed class ClinicaTranscriptionOptions
     public string ApiKey { get; init; } = "";
     public string Model { get; init; } = "gpt-transcribe";
     public string BaseUrl { get; init; } = "https://api.openai.com/v1";
+    public string GroqApiKey { get; init; } = "";
+    public string GroqModel { get; init; } = "whisper-large-v3-turbo";
+    public string GroqBaseUrl { get; init; } = "https://api.groq.com/openai/v1";
     public string StorageRoot { get; init; } = "/storage";
     public string FFmpegExecutable { get; init; } = "ffmpeg";
 }
@@ -18,13 +21,14 @@ public sealed class ClinicaTranscriptionOptions
 // This factory is consumed only at the Outbox delivery boundary, never by a saga.
 public sealed class TranscriptionDeliveryFactory(
     QueueOutboxDeliveryStrategy queue, OpenAITranscriptionDeliveryStrategy openAI,
-    ClinicaTranscriptionOptions options) : IOutboxDeliveryFactory
+    GroqTranscriptionDeliveryStrategy groq, ClinicaTranscriptionOptions options) : IOutboxDeliveryFactory
 {
     public string SelectProvider(OutboxDeliveryRequest request) => request.Message.Type == "audio.transcribe"
         ? options.Provider switch
         {
             TranscriptionDeliveryProvider.OpenAI => "OpenAI",
             TranscriptionDeliveryProvider.Queue => "Queue",
+            TranscriptionDeliveryProvider.Groq => "Groq",
             _ => throw new OutboxDeliveryException("provider_invalid", "Destino de entrega invalido.", false)
         } : "Queue";
 
@@ -32,6 +36,7 @@ public sealed class TranscriptionDeliveryFactory(
     {
         "Queue" => queue,
         "OpenAI" => openAI,
+        "Groq" => groq,
         _ => throw new OutboxDeliveryException("provider_invalid", "Destino de entrega invalido.", false)
     };
 }

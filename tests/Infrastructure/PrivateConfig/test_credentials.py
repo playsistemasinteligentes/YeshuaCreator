@@ -165,6 +165,32 @@ class CredentialsTests(unittest.TestCase):
         self.assertEqual("Queue", result["CLINICA_TRANSCRIPTION_PROVIDER"])
         self.assertEqual("fixture-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
 
+    def test_clinica_can_select_groq_and_keep_openai_credentials_for_retries(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"].update(
+            Provider="Groq", ApiKey="fixture-openai", Model="configured-openai",
+            Groq={"ApiKey": "fixture-groq"})
+        result = credentials.environment(document, Path("/private"), "clinica")
+        self.assertEqual("Groq", result["CLINICA_TRANSCRIPTION_PROVIDER"])
+        self.assertEqual("fixture-openai", result["CLINICA_TRANSCRIPTION_API_KEY"])
+        self.assertEqual("configured-openai", result["CLINICA_TRANSCRIPTION_MODEL"])
+        self.assertEqual("fixture-groq", result["CLINICA_TRANSCRIPTION_GROQ_API_KEY"])
+        self.assertEqual("whisper-large-v3-turbo", result["CLINICA_TRANSCRIPTION_GROQ_MODEL"])
+        self.assertEqual("https://api.groq.com/openai/v1", result["CLINICA_TRANSCRIPTION_GROQ_BASE_URL"])
+
+    def test_clinica_missing_groq_key_never_inherits_or_reuses_openai_key(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"].update(
+            Provider="Groq", ApiKey="fixture-openai", Groq={})
+        with patch.dict(os.environ, CLINICA_TRANSCRIPTION_GROQ_API_KEY="inherited-secret"):
+            result = credentials.environment(document, Path("/private"), "clinica")
+            unselected = credentials.environment(document, Path("/private"), "central")
+        self.assertEqual("", result["CLINICA_TRANSCRIPTION_GROQ_API_KEY"])
+        self.assertEqual("", unselected["CLINICA_TRANSCRIPTION_GROQ_API_KEY"])
+        document["Apps"]["Clinica"]["Transcription"]["Groq"]["ApiKey"] = "fixture-groq"
+        unselected = credentials.environment(document, Path("/private"), "central")
+        self.assertEqual("", unselected["CLINICA_TRANSCRIPTION_GROQ_API_KEY"])
+
     def test_clinica_rejects_unknown_delivery_provider(self):
         document = configured()
         document["Apps"]["Clinica"]["Transcription"]["Provider"] = "invalid"
