@@ -521,6 +521,26 @@ class ComposeRecoveryTests(unittest.TestCase):
         volume = result["services"]["rabbitmq"]["volumes"][0]
         self.assertEqual({"name": "random", "external": True}, result["volumes"][volume["source"]])
 
+    def test_shared_capture_keeps_observability_network_internal(self):
+        container = self.container("rabbitmq")
+        model = {"services": {"rabbitmq": {}}, "networks": {
+            "yeshua-net": {"name": "yeshua-net"},
+            "yeshua-observability-internal": {"name": "yeshua-observability-internal", "internal": True}}}
+        with tempfile.TemporaryDirectory() as folder, patch.object(backup.sql, "run", return_value=json.dumps(model)):
+            result = backup.frozen_projects([container], self.credentials(Path(folder)), Path(folder) / "credentials.json")
+        self.assertEqual({"name": "yeshua-observability-internal", "internal": True},
+                         result["playsis-shared"]["networks"]["yeshua-observability-internal"])
+
+    def test_unknown_or_nonprivate_recovery_network_is_rejected(self):
+        for project, network in (
+            ("playsis-central", {"name": "yeshua-observability-internal", "internal": True}),
+            ("playsis-shared", {"name": "yeshua-observability-internal"}),
+            ("playsis-shared", {"name": "yeshua-observability-internal", "internal": True, "external": True}),
+            ("playsis-shared", {"name": "unknown", "internal": True}),
+        ):
+            with self.subTest(project=project, network=network), self.assertRaises(backup.Error):
+                backup.recovery_networks({"networks": {"test": network}}, project)
+
 
 class CoverageTests(unittest.TestCase):
     def policy(self):
