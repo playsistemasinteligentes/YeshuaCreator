@@ -19,7 +19,9 @@ UNITS = ("yeshua-backup@.service", *BACKUP_TIMERS, "yeshua-volatile-cleanup.serv
 SOURCE_CONTROL_UNITS = ("yeshua-backup-request@.service", "yeshua-backup-sql-safety.service", "yeshua-backup-sql-safety.timer")
 CONTROLLER_UNITS = ("yeshua-backup-controller@.service", "yeshua-backup-maintenance@.service", "yeshua-backup-controller-tick.timer")
 CONTROLLER_TIMERS = tuple("yeshua-backup-controller-" + kind + ".timer" for kind in TIMERS)
-FILES = ("backup.py", "sql.py", "routine.py", "destination.py", "storage.py", "control.py", "source.py", "setup.py", "recovery.py", "enrollment.py", "volatile.py", "policy.json", "install.py", "README.md", "RECOVERY.md", *UNITS, *SOURCE_CONTROL_UNITS, *CONTROLLER_UNITS)
+FILES = ("backup.py", "sql.py", "routine.py", "destination.py", "storage.py", "control.py", "source.py",
+         "observability.py", "setup.py", "recovery.py", "enrollment.py", "volatile.py", "policy.json",
+         "install.py", "README.md", "RECOVERY.md", *UNITS, *SOURCE_CONTROL_UNITS, *CONTROLLER_UNITS)
 
 
 def run(args, env=None, timeout=120):

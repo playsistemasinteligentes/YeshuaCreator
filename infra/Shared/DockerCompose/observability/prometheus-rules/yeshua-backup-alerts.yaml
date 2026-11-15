@@ -1,0 +1,65 @@
+groups:
+  - name: yeshua-backup
+    interval: 30s
+    rules:
+      - alert: YeshuaBackupObservationStale
+        expr: |
+          time() - max by (backup_source) (
+            last_over_time(
+              {__name__=~"yeshua_backup_current(_value)?", metric="observed_at_unix_seconds"}[15m]
+            )
+          ) > 180
+        for: 2m
+        labels:
+          severity: critical
+          yeshua_scope: backup
+        annotations:
+          summary: "Observacao do backup parou de chegar"
+          description: "A origem {{ $labels.backup_source }} nao publica seu retrato de backup ha mais de tres minutos. Isso nao prova perda dos backups, mas torna a saude desconhecida."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuabackupobservationstale"
+
+      - alert: YeshuaBackupControllerFailure
+        expr: |
+          max by (backup_source) (
+            {__name__=~"yeshua_backup_current(_value)?", metric="health_state"}
+          ) >= 2
+        for: 1m
+        labels:
+          severity: critical
+          yeshua_scope: backup
+        annotations:
+          summary: "Controlador de backup registrou falha"
+          description: "A origem {{ $labels.backup_source }} possui falha atual no estado canonico do controlador. Consulte o status privado e os journals antes de repetir qualquer rotina."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuabackupcontrollerfailure"
+
+      - alert: YeshuaBackupProfileOverdue
+        expr: |
+          max by (backup_source, backup_kind) (
+            {__name__=~"yeshua_backup_current(_value)?", metric="profile_overdue"}
+          ) > 0
+        for: 5m
+        labels:
+          severity: warning
+          yeshua_scope: backup
+        annotations:
+          summary: "Perfil de backup atrasado ou nunca comprovado"
+          description: "O perfil {{ $labels.backup_kind }} da origem {{ $labels.backup_source }} ultrapassou sua janela operacional ou ainda nao possui conclusao comprovada no storage."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuabackupprofileoverdue"
+
+      - alert: YeshuaBackupRepositoryReserveBreached
+        expr: |
+          max by (backup_source) (
+            {__name__=~"yeshua_backup_current(_value)?", metric="repository_free_bytes"}
+          )
+          <= on (backup_source)
+          max by (backup_source) (
+            {__name__=~"yeshua_backup_current(_value)?", metric="repository_minimum_free_bytes"}
+          )
+        for: 5m
+        labels:
+          severity: critical
+          yeshua_scope: backup
+        annotations:
+          summary: "Repositorio abaixo da reserva de espaco"
+          description: "O repositorio da origem {{ $labels.backup_source }} atingiu ou ficou abaixo da reserva minima configurada. Preserve os backups existentes e expanda ou libere apenas dados classificados como descartaveis."
+          runbook: "docs/operational/runbooks/OBSERVABILITY_ALERT_RUNBOOKS.md#yeshuabackuprepositoryreservebreached"

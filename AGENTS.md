@@ -465,6 +465,13 @@ Miolos que IA/dev devem preencher:
   reconhecido permanece visivel como normalizacao parcial. A ordem **Atualize o
   Catalogo Semantico de Observabilidade** cobre revisao integral, validacao,
   descoberta MCP e publicacao do pacote.
+- A observabilidade de backup deriva somente do estado canonico e dos recibos
+  que o controlador central ja valida. O storage envia uma projecao sanitizada
+  e limitada pelo mesmo canal SSH restrito; a origem publica OTLP no Collector
+  local por loopback. Nao criar daemon, porta publica, banco ou pipeline
+  paralelo para observar backup. Falha de telemetria nunca altera estado,
+  recibo, agenda ou resultado do backup. Identificadores de execucao, snapshot,
+  erro, caminho e segredo permanecem fora das labels de metricas.
 
 ## Codigo Gerado E Codigo Customizado
 

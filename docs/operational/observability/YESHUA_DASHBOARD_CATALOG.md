@@ -29,6 +29,20 @@ Frequencias iniciais:
 | 14 | Ciclos de Workers | ciclos e itens/s | falha de item e pressao | um lote de polling nao vira pai dos itens processados |
 | 15 | Saude do pipeline | metricas internas do Collector | falha de exportacao por 2 min | ausencia de sinal nunca prova saude da aplicacao |
 
+Dashboard adicional provisionado: `Yeshua - Saude Dos Backups`.
+
+| # | Visao | Fonte e unidade | Alerta inicial | Limitacao conhecida |
+| --- | --- | --- | --- | --- |
+| B1 | Conclusao geral por origem | estado canonico sanitizado, escala 0/1/2 | estado critico por 1 min | nao substitui journal nem recibo Restic |
+| B2 | Idade da observacao | OTLP local, segundos | acima de 180 s por 2 min | se observabilidade e ambiente principal cairem juntos, nao ha observador externo nesta fase |
+| B3 | Perfil atrasado | ultimo sucesso versus janela do perfil | atraso por 5 min | janela e operacional, nao promessa contratual de RPO |
+| B4 | Idade do ultimo sucesso | segundos por origem e perfil | usa a conclusao de B3 | perfil sem sucesso permanece sem serie util de idade |
+| B5 | Reserva do repositorio | bytes livres e reserva minima | livre menor ou igual a reserva por 5 min | nao autoriza apagar backup para liberar espaco |
+| B6 | Ativos e pendentes | gauges 0/1 por perfil | correlacionado com atraso | pendencia nao e quantidade de arquivos ou bancos |
+| B7 | Duracao da ultima execucao | segundos | ainda sem linha de base | comparar o mesmo perfil ao longo do tempo |
+| B8 | Volume processado e adicionado | bytes | sem alerta isolado | deduplicacao torna os dois volumes naturalmente diferentes |
+| B9 | Restauracao funcional | 0 nao homologado, 1 comprovado | sem alerta nesta fase | a primeira versao ainda nao automatiza o ensaio de restauracao |
+
 ## Criterios Da Saude Dos Itens
 
 O diagnostico dos itens e separado da saude coletiva da fila. Sua escala atual
