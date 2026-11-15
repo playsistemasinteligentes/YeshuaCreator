@@ -37,6 +37,10 @@ VOLATILE_VOLUME_TARGETS = {
     "operational-intelligence-agent": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
     "operational-intelligence": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
 }
+RUNTIME_READ_ONLY_BINDS = {
+    ("yeshua-observability", "/", "/hostfs"),
+    ("docker-metrics-proxy", "/var/run/docker.sock", "/var/run/docker.sock"),
+}
 
 
 def now():
@@ -185,6 +189,14 @@ def mount_areas(containers, document, private_file, policy):
     for c in containers:
         labels = c.get("Config", {}).get("Labels") or {}
         for mount in c.get("Mounts", []):
+            # Observer inputs describe the running host; the persistent roots
+            # above already select its data. Never traverse the hostfs alias or
+            # archive the Docker socket (whose /var/run ancestor can be a link).
+            if (mount["Type"] == "bind" and mount.get("RW") is False
+                    and labels.get("com.docker.compose.project") == "playsis-shared"
+                    and (labels.get("com.docker.compose.service"), mount["Source"],
+                         mount.get("Destination")) in RUNTIME_READ_ONLY_BINDS):
+                continue
             source = absolute(mount["Source"])
             if mount["Type"] == "volume":
                 if not re.fullmatch(r"[a-zA-Z0-9_.-]+", mount.get("Name", "")):
