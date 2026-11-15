@@ -635,6 +635,9 @@ Os Compose usados na recuperacao sao copias privadas resolvidas dos modelos
 existentes, com imagens fixas, replicas registradas, volumes reais e hostname
 do RabbitMQ preservados. Nao constituem outra fonte de desenvolvimento: nao
 editar telas nem publicar por eles. O retorno ao deploy normal e um gate final.
+O ambiente de captura tambem resolve o grupo do socket Docker no host, como
+deploy.sh, para renderizar o modelo Shared sem depender de variaveis herdadas
+do terminal de deploy. Ausencia de socket valido bloqueia a captura.
 
 ## Credenciais Do Repositorio
 

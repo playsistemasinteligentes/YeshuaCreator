@@ -357,6 +357,16 @@ def snapshot_source(stage, revision):
     return source
 
 
+def docker_socket_group():
+    try:
+        socket = os.stat("/var/run/docker.sock")
+    except OSError:
+        raise Error("docker_socket_required_for_compose_capture") from None
+    if not stat.S_ISSOCK(socket.st_mode) or socket.st_gid < 0:
+        raise Error("docker_socket_required_for_compose_capture")
+    return str(socket.st_gid)
+
+
 def compose_environment(document, private_file):
     reader_spec = importlib.util.spec_from_file_location("private_for_compose", ROOT / "infra/private/credentials.py")
     reader = importlib.util.module_from_spec(reader_spec)
@@ -367,6 +377,8 @@ def compose_environment(document, private_file):
             key, value = line.split("=", 1)
             env[key] = value
     env.update(reader.environment(document, private_file.parent, "all", True))
+    # deploy.sh derives this host input before resolving the same Compose model.
+    env["YESHUA_DOCKER_SOCKET_GID"] = docker_socket_group()
     return env
 
 
