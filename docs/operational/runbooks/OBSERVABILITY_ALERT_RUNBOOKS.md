@@ -144,3 +144,38 @@ versionada deve complementar, e nao substituir, os limites de seguranca.
 3. Executar somente rotinas de limpeza previamente classificadas como volateis.
 4. Nunca remover dados persistentes ou backups para liberar espaco sem
    autorizacao explicita.
+
+## YeshuaBackupObservationStale
+
+1. Tratar a saude do backup como desconhecida, nunca como saudavel.
+2. Confirmar se o Collector local e o reconciliador central continuam ativos.
+3. Validar o canal SSH restrito e a identidade fixada do host; nao contornar
+   verificacao de chave para recuperar a metrica.
+4. Consultar `control.py status` e os journals diretamente, pois a falha de
+   telemetria nao interrompe nem altera o estado do backup.
+
+## YeshuaBackupControllerFailure
+
+1. Identificar a origem e consultar `last_error` no estado privado do
+   controlador.
+2. Correlacionar com o journal da unidade de origem ou de manutencao.
+3. Confirmar identidade do repositorio, espaco e recibo antes de repetir.
+4. Reutilizar o pedido idempotente existente; nao disparar captura paralela.
+
+## YeshuaBackupProfileOverdue
+
+1. Identificar origem, perfil e ultima conclusao comprovada no storage.
+2. Confirmar se existe execucao ativa ou intencao pendente.
+3. Comparar com a janela do perfil: logs 30 min, arquivos 36 h, diferencial
+   60 h, completo 8 dias, check 48 h e check-data 8 dias.
+4. Tratar a janela como protecao operacional inicial, nao como RPO contratual.
+
+## YeshuaBackupRepositoryReserveBreached
+
+1. Suspender qualquer limpeza improvisada e preservar os dados persistentes.
+2. Confirmar filesystem, espaco livre e reserva configurada diretamente no
+   storage.
+3. Liberar somente dados previamente classificados como volateis ou ampliar o
+   armazenamento.
+4. Nunca executar `forget`, `prune` ou remover snapshots sem politica aprovada e
+   autorizacao explicita.

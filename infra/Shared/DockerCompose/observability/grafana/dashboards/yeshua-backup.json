@@ -1,0 +1,200 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": { "type": "grafana", "uid": "-- Grafana --" },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Saude operacional do backup Yeshua. O painel usa somente a projecao sanitizada do estado canonico do controlador; detalhes, erros e recibos permanecem no journal e no estado privado do backup.",
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** conclusao atual calculada pelo controlador para cada origem.\n\n**Como interpretar:** `Saudavel` significa todos os perfis dentro da janela e sem erro atual; `Atencao` significa perfil ausente ou atrasado; `Critico` significa falha registrada pelo controlador.\n\n**Cuidado:** ausencia de serie nao significa saude; consulte tambem a idade da observacao.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [
+            { "options": { "0": { "color": "green", "index": 0, "text": "Saudavel" }, "1": { "color": "yellow", "index": 1, "text": "Atencao" }, "2": { "color": "red", "index": 2, "text": "Critico" } }, "type": "value" }
+          ],
+          "max": 2,
+          "min": 0,
+          "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 1 }, { "color": "red", "value": 2 } ] },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "id": 1,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"health_state\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
+      ],
+      "title": "1. O ambiente de backup esta saudavel?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** segundos desde o ultimo retrato recebido de cada origem.\n\n**Como interpretar:** o controlador publica a cada reconciliacao de 30 segundos. Acima de 180 segundos a observabilidade e considerada atrasada.\n\n**Cuidado:** este painel mede a coleta, nao a idade dos backups.",
+      "fieldConfig": { "defaults": { "decimals": 0, "max": 300, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "yellow", "value": 90 }, { "color": "red", "value": 180 } ] }, "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "id": 2,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        { "editorMode": "code", "expr": "time() - max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"observed_at_unix_seconds\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
+      ],
+      "title": "2. A observacao esta chegando?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** indica, por perfil, se a ultima conclusao ultrapassou a janela operacional ou ainda nunca foi comprovada.\n\n**Como interpretar:** `0` esta dentro da janela; `1` exige atencao. Logs: 30 min; arquivos: 36 h; diferencial: 60 h; completo: 8 dias; verificacao: 48 h; verificacao com leitura: 8 dias.",
+      "fieldConfig": { "defaults": { "decimals": 0, "mappings": [ { "options": { "0": { "color": "green", "index": 0, "text": "Em dia" }, "1": { "color": "red", "index": 1, "text": "Atrasado ou ausente" } }, "type": "value" } ], "max": 1, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "green", "value": null }, { "color": "red", "value": 1 } ] }, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 10, "w": 12, "x": 0, "y": 8 },
+      "id": 3,
+      "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"profile_overdue\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
+      ],
+      "title": "3. Quais perfis estao atrasados?",
+      "type": "bargauge"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** idade, em segundos, da ultima conclusao comprovada no storage para cada perfil.\n\n**Como interpretar:** use junto do painel de atraso. A idade cresce continuamente; o limite correto depende do calendario de cada perfil. Valor ausente significa que ainda nao existe conclusao comprovada.",
+      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 10, "w": 12, "x": 12, "y": 8 },
+      "id": 4,
+      "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "time() - max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"profile_last_success_unix_seconds\", backup_source=~\"$source\", backup_kind=~\"$kind\"} > 0)", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
+      ],
+      "title": "4. Ha quanto tempo cada perfil concluiu?",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** espaco livre atual do repositorio e reserva minima configurada.\n\n**Como interpretar:** a linha livre deve permanecer acima da reserva. Cruzar ou ficar abaixo da reserva e condicao critica; a rotina de backup deve preservar o dado existente.",
+      "fieldConfig": { "defaults": { "decimals": 1, "min": 0, "unit": "bytes" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 18 },
+      "id": 5,
+      "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"repository_free_bytes\", backup_source=~\"$source\"})", "legendFormat": "Livre {{backup_source}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"repository_minimum_free_bytes\", backup_source=~\"$source\"})", "legendFormat": "Reserva {{backup_source}}", "range": true, "refId": "B" }
+      ],
+      "title": "5. O repositorio possui espaco seguro?",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** perfis atualmente em execucao e intencoes pendentes no controlador.\n\n**Como interpretar:** atividade isolada e normal. Pendencia que permanece, principalmente junto de atraso, indica que o controlador nao conseguiu concluir ou iniciar a rotina. Nao representa quantidade de arquivos ou bancos.",
+      "fieldConfig": { "defaults": { "decimals": 0, "min": 0, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 18 },
+      "id": 6,
+      "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=~\"profile_(active|pending)\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}} / {{metric}}", "range": true, "refId": "A" }
+      ],
+      "title": "6. O que esta ativo ou pendente?",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** duracao da ultima execucao concluida de cada perfil.\n\n**Como interpretar:** compare o mesmo perfil ao longo do tempo. Crescimento persistente pode antecipar perda da janela, mas ainda nao existe linha de base aprovada para declarar regressao automaticamente.",
+      "fieldConfig": { "defaults": { "decimals": 1, "min": 0, "unit": "s" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 0, "y": 27 },
+      "id": 7,
+      "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"profile_duration_seconds\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
+      ],
+      "title": "7. Quanto durou a ultima execucao?",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** volume processado e volume efetivamente acrescentado ao repositorio na ultima execucao.\n\n**Como interpretar:** diferenca entre processado e adicionado e esperada por deduplicacao. Zero pode ser normal quando nada mudou; este painel nao prova sozinho falha ou sucesso.",
+      "fieldConfig": { "defaults": { "decimals": 1, "min": 0, "unit": "bytes" }, "overrides": [] },
+      "gridPos": { "h": 9, "w": 12, "x": 12, "y": 27 },
+      "id": 8,
+      "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind, metric) ({__name__=~\"yeshua_backup_current(_value)?\", metric=~\"profile_(bytes_processed|data_added_bytes)\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}} / {{metric}}", "range": true, "refId": "A" }
+      ],
+      "title": "8. Qual foi o volume da ultima execucao?",
+      "type": "timeseries"
+    },
+    {
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
+      "description": "**O que mede:** se existe evidencia registrada de restauracao funcional completa.\n\n**Como interpretar:** `Nao homologado` nao afirma que o backup esta corrompido; afirma que captura e verificacao de blocos nao substituem um ensaio de restauracao. Esta primeira versao ainda nao automatiza essa prova.",
+      "fieldConfig": { "defaults": { "decimals": 0, "mappings": [ { "options": { "0": { "color": "yellow", "index": 0, "text": "Nao homologado" }, "1": { "color": "green", "index": 1, "text": "Comprovado" } }, "type": "value" } ], "max": 1, "min": 0, "thresholds": { "mode": "absolute", "steps": [ { "color": "yellow", "value": null }, { "color": "green", "value": 1 } ] }, "unit": "short" }, "overrides": [] },
+      "gridPos": { "h": 6, "w": 24, "x": 0, "y": 36 },
+      "id": 9,
+      "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
+      "targets": [
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"functional_restore_proven\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
+      ],
+      "title": "9. A restauracao funcional foi comprovada?",
+      "type": "stat"
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 41,
+  "tags": ["yeshua", "observability", "backup", "infrastructure"],
+  "templating": {
+    "list": [
+      {
+        "allValue": ".+",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_backup_current(_value)?\"}, backup_source)",
+        "includeAll": true,
+        "label": "Origem",
+        "multi": true,
+        "name": "source",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_backup_current(_value)?\"}, backup_source)", "refId": "VariableQueryEditor-Source" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".+",
+        "current": { "text": "All", "value": "$__all" },
+        "datasource": { "type": "prometheus", "uid": "prometheus" },
+        "definition": "label_values({__name__=~\"yeshua_backup_current(_value)?\", backup_source=~\"$source\"}, backup_kind)",
+        "includeAll": true,
+        "label": "Perfil",
+        "multi": true,
+        "name": "kind",
+        "options": [],
+        "query": { "query": "label_values({__name__=~\"yeshua_backup_current(_value)?\", backup_source=~\"$source\"}, backup_kind)", "refId": "VariableQueryEditor-Kind" },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      }
+    ]
+  },
+  "time": { "from": "now-24h", "to": "now" },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Yeshua - Saude Dos Backups",
+  "uid": "yeshua-backup-health",
+  "version": 1,
+  "weekStart": ""
+}

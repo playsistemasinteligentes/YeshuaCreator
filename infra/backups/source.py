@@ -73,6 +73,12 @@ def dispatch(c, request):
         request_id(c, request.get("request_id"))
         if request.get("kind") not in KINDS:
             raise c.op.Error("unsupported_source_backup_kind")
+    elif action == "observe":
+        fields.add("observation")
+        try:
+            c.observability.validate(request.get("observation"))
+        except (TypeError, ValueError):
+            raise c.op.Error("invalid_backup_observation") from None
     elif action != "probe":
         raise c.op.Error("unsupported_control_action")
     if set(request) != fields or not re.fullmatch(r"[a-f0-9]{32}", request.get("controller_machine", "")):
@@ -89,6 +95,9 @@ def dispatch(c, request):
                     sql_generated=c.private_json(generated) if generated.exists() else None)
     if not ownership:
         raise c.op.Error("source_handoff_required")
+    if action == "observe":
+        published = c.observability.publish(request["observation"])
+        return dict(identity, status="observed" if published else "observability_unavailable")
     with c.op.locked(state(c) / "dispatch.lock"):
         path = request_path(c, request["request_id"])
         if path.exists():

@@ -9,6 +9,7 @@ import json
 import os
 from pathlib import Path
 import re
+import shutil
 import stat
 import subprocess
 import sys
@@ -37,6 +38,7 @@ op = load("backup")
 op.ROOT = Path(os.environ.get("YESHUA_APP_DIR", str(op.APP_ROOT)))
 routine = load("routine")
 source = load("source")
+observability = load("observability")
 
 
 def run(args, *, timeout=60, input=None):
@@ -115,11 +117,16 @@ def verify_repository(item):
         raise op.Error("storage_repository_identity_mismatch")
 
 
-def rpc(item, action, request=None, *, controller_machine=None):
+def rpc(item, action, request=None, *, controller_machine=None, observation=None):
     payload = {"protocol": 1, "action": action, "source_machine": item["MachineId"],
                "repository_id": item["RepositoryId"], "controller_machine": controller_machine or op.machine_id()}
+    if request and observation is not None:
+        raise op.Error("control_request_cannot_mix_backup_and_observation")
     if request:
         payload.update(request_id=request["request_id"], kind=request["kind"])
+    if observation is not None:
+        observability.validate(observation)
+        payload["observation"] = observation
     output = run(["ssh", "-F", "/dev/null", "-T", "-i", item["IdentityFile"], "-p", str(item["Port"]),
         "-o", "BatchMode=yes", "-o", "IdentitiesOnly=yes", "-o", "StrictHostKeyChecking=yes",
         "-o", "UserKnownHostsFile=" + item["KnownHostsFile"], "-o", "ConnectTimeout=5",
@@ -172,8 +179,7 @@ def read_state(item):
 def health(value):
     now = datetime.now(timezone.utc)
     overdue = []
-    for kind, seconds in {"logs": 1800, "files": 129600, "full": 691200, "differential": 216000,
-                          "check": 172800, "check-data": 691200}.items():
+    for kind, seconds in observability.LIMIT_SECONDS.items():
         receipt = value["results"].get(kind, {})
         stamp = receipt.get("finished_at")
         if receipt.get("status") != "completed" or not stamp:
@@ -182,7 +188,8 @@ def health(value):
         finished = datetime.fromisoformat(stamp)
         if finished.tzinfo is None or finished > now or (now - finished).total_seconds() > seconds:
             overdue.append(kind)
-    return {"status": "attention" if overdue or value.get("last_error") else "current", "overdue": overdue,
+    status = "critical" if value.get("last_error") else ("attention" if overdue else "current")
+    return {"status": status, "overdue": overdue,
             "functional_restore_proven": False}
 
 
@@ -200,7 +207,8 @@ def snapshot_confirmed(item, request, result):
             or snapshots[0].get("hostname") != item["Scope"]
             or not expected.issubset(snapshots[0].get("tags", []))):
         raise op.Error("snapshot_not_confirmed_at_storage")
-    return dict(result, storage_confirmed_at=op.now(), source_machine=item["MachineId"])
+    return dict(result, storage_confirmed_at=op.now(), source_machine=item["MachineId"],
+                duration_seconds=observability.elapsed_seconds(request.get("started_at"), result.get("finished_at")))
 
 
 def unit_active(name):
@@ -281,6 +289,7 @@ def controller(kind):
         # Bounded round-robin: a disconnected source cannot stall all machines.
         selected = (items[position:] + items[:position])[:4]
         outcomes = []
+        backup_policy = policy()
         started = time.monotonic()
         for item in selected:
             if time.monotonic() - started >= 60:
@@ -289,16 +298,25 @@ def controller(kind):
             captures = sum(bool(v["active"] and v["active"]["kind"] in CAPTURE) for v in states)
             maintenance_active = any(v["active"] and v["active"]["kind"] in CHECKS for v in states)
             value = read_state(item)
+            outcome = {"source": item["Name"], "status": "reconciled"}
             try:
                 reconcile(item, value, capture_slots=config["MaxActiveCaptures"] - captures,
                           maintenance_active=maintenance_active)
-                outcomes.append({"source": item["Name"], "status": "reconciled"})
             except Exception as error:
                 message = str(error) if isinstance(error, op.Error) else "controller_operation_failed"
                 value["last_error"] = {"failed_at": op.now(), "error": message}
                 value["retry_after"] = (datetime.now(timezone.utc) + timedelta(minutes=5)).isoformat()
-                outcomes.append({"source": item["Name"], "status": "failed", "error": message})
+                outcome.update(status="failed", error=message)
             op.write(state_path(item["Name"]), value)
+            try:
+                observation = observability.snapshot(item, value, shutil.disk_usage(item["RepositoryPath"]).free,
+                                                       backup_policy["minimum_free_bytes"])
+                response = rpc(item, "observe", observation=observation)
+                outcome["observability"] = response.get("status", "unexpected_response")
+            except Exception:
+                # Telemetry is deliberately outside the backup state machine.
+                outcome["observability"] = "unavailable"
+            outcomes.append(outcome)
         op.write(cursor, {"position": (position + len(outcomes)) % len(items) if items else 0})
         return {"status": "failed" if any(o["status"] == "failed" for o in outcomes) else "reconciled", "sources": outcomes}
 
@@ -317,6 +335,7 @@ def maintenance(identifier):
             value = read_state(item)
             if not value["active"] or value["active"]["kind"] != kind:
                 raise op.Error("maintenance_not_scheduled")
+            started_at = value["active"].get("started_at")
         try:
             verify_repository(item)
             local_restic(item, ["check", *(["--read-data"] if kind == "check-data" else [])], timeout=42000)
@@ -324,6 +343,8 @@ def maintenance(identifier):
                       "repository_id": item["RepositoryId"], "executed_on_storage": True}
         except Exception:
             result = {"status": "failed", "failed_at": op.now(), "error": "storage_repository_check_failed"}
+        result["duration_seconds"] = observability.elapsed_seconds(started_at,
+                result.get("finished_at") or result.get("failed_at"))
         with controller_lock():
             value = read_state(item)
             value["results"][kind] = result

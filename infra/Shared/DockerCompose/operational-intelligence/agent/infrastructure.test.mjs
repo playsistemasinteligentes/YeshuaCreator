@@ -117,3 +117,36 @@ test('general dashboard is the Grafana home and combines infrastructure, diagnos
   assert.deepEqual(diagnosis.panels.map(panel => panel.id), [1, 2, 3, 4, 5]);
   assert.ok(diagnosis.links.some(link => link.url.includes('yeshua-operational-overview')));
 });
+
+test('backup observability is semantic, low-cardinality and covered by actionable alerts', () => {
+  const dashboard = JSON.parse(readFileSync(
+    resolve(shared, 'observability/grafana/dashboards/yeshua-backup.json'),
+    'utf8'));
+  assert.equal(dashboard.uid, 'yeshua-backup-health');
+  assert.equal(dashboard.refresh, '30s');
+  assert.deepEqual(dashboard.panels.map(panel => panel.id), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+  assert.ok(dashboard.templating.list.some(variable => variable.name === 'source'));
+  assert.ok(dashboard.templating.list.some(variable => variable.name === 'kind'));
+  for (const panel of dashboard.panels) {
+    assert.ok(panel.description.includes('**O que mede:**'), panel.title);
+    assert.ok(panel.description.includes('**Como interpretar:**'), panel.title);
+    for (const target of panel.targets) {
+      assert.match(target.expr, /yeshua_backup_current/);
+      assert.doesNotMatch(target.expr, /run_id|snapshot_id|error|path|secret/i);
+    }
+  }
+
+  const rules = parse(readFileSync(
+    resolve(shared, 'observability/prometheus-rules/yeshua-backup-alerts.yaml'),
+    'utf8'));
+  const names = rules.groups.flatMap(group => group.rules.map(rule => rule.alert));
+  assert.deepEqual(names, [
+    'YeshuaBackupObservationStale',
+    'YeshuaBackupControllerFailure',
+    'YeshuaBackupProfileOverdue',
+    'YeshuaBackupRepositoryReserveBreached'
+  ]);
+  for (const rule of rules.groups.flatMap(group => group.rules)) {
+    assert.ok(rule.annotations.runbook.includes('OBSERVABILITY_ALERT_RUNBOOKS.md'));
+  }
+});

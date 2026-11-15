@@ -38,7 +38,7 @@ class SourceControlTests(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.base = Path(self.temp.name)
         self.c = SimpleNamespace(op=c.op, private_json=c.op.read, run=MagicMock(return_value="ActiveState=activating\n"),
-                                 policy=lambda: {"staging": str(self.base)})
+                                 policy=lambda: {"staging": str(self.base)}, observability=c.observability)
         for target, replacement in (("state", lambda _: self.base), ("binding", lambda _: IDENTITY),
                                     ("owner", lambda _: OWNER)):
             patcher = patch.object(source, target, replacement)
@@ -123,6 +123,26 @@ class SourceControlTests(unittest.TestCase):
         with patch.object(c.op, "machine_id", return_value=IDENTITY["source_machine"]):
             self.assertEqual("recent_native_sql_backup", source.safety(self.c)["status"])
 
+    def test_observation_is_published_without_starting_backup_or_exposing_protocol(self):
+        stamp = datetime.now(timezone.utc)
+        receipt = {"status": "completed", "finished_at": stamp.isoformat()}
+        observation = c.observability.snapshot(ITEM,
+                {"pending": {}, "active": None, "results": {kind: receipt for kind in c.observability.KINDS}},
+                20_000_000_000, 8_000_000_000, observed_at=stamp)
+        payload = {"protocol": 1, "action": "observe", **IDENTITY, **OWNER, "observation": observation}
+        with patch.object(c.observability, "publish", return_value=True) as publish:
+            result = source.dispatch(self.c, payload)
+        self.assertEqual("observed", result["status"])
+        publish.assert_called_once_with(observation)
+        self.c.run.assert_not_called()
+
+    def test_invalid_observation_is_rejected_before_otlp(self):
+        payload = {"protocol": 1, "action": "observe", **IDENTITY, **OWNER,
+                   "observation": {"schema": 1, "password": "must-not-pass"}}
+        with patch.object(c.observability, "publish") as publish, self.assertRaisesRegex(c.op.Error, "invalid_backup_observation"):
+            source.dispatch(self.c, payload)
+        publish.assert_not_called()
+
 
 class ControllerTests(unittest.TestCase):
     def test_health_reports_absent_or_failed_deliveries_not_only_scheduler_success(self):
@@ -132,6 +152,54 @@ class ControllerTests(unittest.TestCase):
         self.assertEqual("current", c.health(value)["status"])
         value["results"]["logs"] = {"status": "failed"}
         self.assertIn("logs", c.health(value)["overdue"])
+        value["last_error"] = {"error": "repository_unavailable"}
+        self.assertEqual("critical", c.health(value)["status"])
+
+    def test_observation_is_bounded_sanitized_and_low_cardinality(self):
+        stamp = datetime(2026, 11, 15, 12, 0, tzinfo=timezone.utc)
+        receipt = {"status": "completed", "finished_at": stamp.isoformat(), "duration_seconds": 12.5,
+                   "bytes_processed": 1234, "data_added_bytes": 56, "run_id": "secret-run",
+                   "snapshot_id": "secret-snapshot", "error": "secret-error"}
+        value = self.state(results={kind: receipt for kind in c.observability.KINDS})
+        observation = c.observability.snapshot(ITEM, value, 20_000_000_000, 8_589_934_592, observed_at=stamp)
+        serialized = json.dumps(observation)
+        self.assertEqual("current", observation["health"])
+        self.assertNotIn("secret", serialized)
+        self.assertLess(len(serialized.encode()), 4096)
+        payload = c.observability.otlp(observation)
+        metric = payload["resourceMetrics"][0]["scopeMetrics"][0]["metrics"][0]
+        self.assertEqual("yeshua.backup.current", metric["name"])
+        points = metric["gauge"]["dataPoints"]
+        self.assertEqual(6 + 7 * len(c.observability.KINDS), len(points))
+        attribute_keys = {attribute["key"] for point in points for attribute in point["attributes"]}
+        self.assertEqual({"backup.source", "backup.kind", "metric"}, attribute_keys)
+
+    def test_otlp_failure_is_best_effort(self):
+        stamp = datetime(2026, 11, 15, 12, 0, tzinfo=timezone.utc)
+        receipt = {"status": "completed", "finished_at": stamp.isoformat()}
+        observation = c.observability.snapshot(ITEM,
+                self.state(results={kind: receipt for kind in c.observability.KINDS}), 10, 5, observed_at=stamp)
+        self.assertFalse(c.observability.publish(observation, sender=MagicMock(side_effect=TimeoutError)))
+
+    def test_observability_failure_never_changes_backup_state_or_tick_result(self):
+        item = dict(ITEM, Enabled=True, RepositoryPath="/srv/yeshua-backups/production")
+        value = self.state()
+        usage = SimpleNamespace(free=20_000_000_000)
+        config = {"Sources": [item], "MaxActiveCaptures": 2}
+        with patch.object(c, "controller_lock", return_value=nullcontext()), \
+                patch.object(c, "configuration", return_value=config), \
+                patch.object(c, "policy", return_value={"minimum_free_bytes": 8_589_934_592}), \
+                patch.object(c, "read_state", return_value=value), \
+                patch.object(c, "reconcile"), \
+                patch.object(c, "state_path", return_value=Path("state.json")), \
+                patch.object(c.op, "private_directory", side_effect=lambda path, **_: Path(path)), \
+                patch.object(c.op, "write"), \
+                patch.object(c.shutil, "disk_usage", return_value=usage), \
+                patch.object(c, "rpc", side_effect=TimeoutError):
+            result = c.controller("tick")
+        self.assertEqual("reconciled", result["status"])
+        self.assertEqual("unavailable", result["sources"][0]["observability"])
+        self.assertNotIn("last_error", value)
 
     def test_new_sources_get_individual_storage_users_and_chroots(self):
         storage = c.load("storage")

@@ -184,6 +184,29 @@ isso nao e promessa contratual de RPO. Falhas vao ao journal e ao estado
 privado, com retentativa limitada; notificacao fora das maquinas ainda falta.
 Nao existem agendas de prune/forget nem exclusao automatica das midias SQL.
 
+### Observabilidade Basica Do Backup
+
+O reconciliador tambem deriva uma projecao operacional pequena do mesmo estado
+canonico usado por `control.py status`. Essa projecao informa somente saude,
+idade da observacao, ultimo sucesso e atraso por perfil, duracao, volume,
+atividade, pendencias e reserva do repositorio. `run_id`, `snapshot_id`, erros,
+caminhos, credenciais e identidades de itens nunca viram labels Prometheus.
+
+O retrato sanitizado usa o mesmo canal SSH restrito do controle central. Na
+origem, a acao `observe` valida uma lista fechada de campos e publica OTLP/HTTP
+no Collector local em `127.0.0.1:4318`. Nao existe nova porta publica, daemon,
+fila, banco ou credencial de observabilidade. O Grafana apresenta o dashboard
+`Yeshua - Saude Dos Backups` e os alertas tratam observacao atrasada, falha do
+controlador, perfil atrasado e reserva de disco violada.
+
+Essa publicacao e deliberadamente best effort e acontece depois da persistencia
+do estado. Timeout, Collector indisponivel ou rejeicao OTLP aparecem apenas como
+`observability_unavailable` no resultado daquela reconciliacao: nao alteram
+`last_error`, nao cancelam captura e nao mudam recibo de backup. Journal, estado
+privado, recibos Restic e comprovacao no storage continuam sendo as evidencias
+detalhadas. Nesta versao, restauracao funcional permanece `Nao homologado`; a
+observabilidade nao transforma verificacao de blocos em prova de restauracao.
+
 ## Rotina Online Inicial Na Origem
 
 Destino inicial aprovado: /root/YeshuaBackup/repository, privado e criptografado
