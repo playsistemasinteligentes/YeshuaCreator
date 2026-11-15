@@ -184,6 +184,26 @@ isso nao e promessa contratual de RPO. Falhas vao ao journal e ao estado
 privado, com retentativa limitada; notificacao fora das maquinas ainda falta.
 Nao existem agendas de prune/forget nem exclusao automatica das midias SQL.
 
+Uma resposta valida de `source-dispatch` usa exit code zero mesmo quando o
+pedido consultado terminou em `failed`: a falha pertence ao recibo do trabalho,
+nao ao transporte SSH. O controlador retira esse pedido de `active` e mantem a
+pendencia para nova tentativa; rejeicoes de protocolo/autorizacao continuam
+retornando erro. Isso tambem permite retomar apos reboot ou recuperacao da origem.
+
+O primeiro log de um banco restaurado pode comecar na ramificacao anterior e
+terminar na ramificacao do full escolhido. O catalogo registra `fork_point_lsn`;
+o validador aceita apenas a cauda cuja mudanca ja esta coberta pelo cursor de
+restauracao, preservando a familia, a ramificacao de destino e a continuidade LSN.
+Historicos antigos sem essa evidencia continuam exigindo revisao ou uma nova
+base completa; nao sao reescritos nem descartados para liberar a rotina.
+
+Ao publicar mudancas de infraestrutura que alterem servicos/mounts cobertos pelo
+backup, atualizar tambem o ferramental por `install.py` nos papeis origem e
+controlador. O deploy dos aplicativos nao atualiza `/opt/yeshua-backup/current`.
+Na reconstrucao, o setup existente instala o pacote atual e preserva o vinculo
+com o controlador; validacao deve incluir captura SQL, arquivos privados,
+confirmacao no storage e recuperacao isolada, alem de timers ativos.
+
 ## Rotina Online Inicial Na Origem
 
 Destino inicial aprovado: /root/YeshuaBackup/repository, privado e criptografado

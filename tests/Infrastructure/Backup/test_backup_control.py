@@ -1,6 +1,7 @@
-from contextlib import nullcontext
+from contextlib import nullcontext, redirect_stdout
 from datetime import datetime, timezone
 import importlib.util
+import io
 import json
 import os
 from pathlib import Path
@@ -125,6 +126,34 @@ class SourceControlTests(unittest.TestCase):
 
 
 class ControllerTests(unittest.TestCase):
+    def test_failed_job_survives_cli_and_ssh_status_and_releases_controller(self):
+        response = dict(IDENTITY, request_id="d" * 32, kind="logs", status="failed",
+                        error="sql_recovery_fork_requires_dba_review")
+        output = io.StringIO()
+        with patch.object(c, "main", return_value=response), \
+                patch.object(sys, "argv", ["control.py", "source-dispatch"]), redirect_stdout(output):
+            code = c.cli()
+        self.assertEqual(0, code, "A valid job-failure receipt must not become an SSH transport error")
+        item = dict(ITEM, Host="192.0.2.1", Port=22, IdentityFile="/private/key", KnownHostsFile="/private/known")
+        value = self.state(active={"request_id": "d" * 32, "kind": "logs"}, pending={"full": "now"})
+        with patch.object(c, "run", return_value=output.getvalue()), \
+                self.assertRaisesRegex(c.op.Error, "source_backup_failed_see_source_journal"):
+            c.reconcile(item, value, capture_slots=1, maintenance_active=False)
+        self.assertIsNone(value["active"])
+        self.assertEqual({"full", "logs"}, set(value["pending"]))
+
+    def test_invalid_dispatch_remains_a_transport_failure(self):
+        output = io.StringIO()
+        with patch.object(c, "main", side_effect=c.op.Error("controller_owner_mismatch")), \
+                patch.object(sys, "argv", ["control.py", "source-dispatch"]), redirect_stdout(output):
+            self.assertEqual(1, c.cli())
+        self.assertEqual("controller_owner_mismatch", json.loads(output.getvalue())["error"])
+
+    def test_local_backup_execution_failure_keeps_nonzero_exit(self):
+        with patch.object(c, "main", return_value={"status": "failed"}), \
+                patch.object(sys, "argv", ["control.py", "source-run"]), redirect_stdout(io.StringIO()):
+            self.assertEqual(1, c.cli())
+
     def test_health_reports_absent_or_failed_deliveries_not_only_scheduler_success(self):
         self.assertEqual("attention", c.health(self.state())["status"])
         receipt = {"status": "completed", "finished_at": datetime.now(timezone.utc).isoformat()}

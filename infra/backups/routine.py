@@ -208,8 +208,16 @@ def chain(op, records, name):
     fork = selected[-1]["last_fork"]
     logs = sorted((r for r in own if r["type"] == "L" and lsn(op, r["last_lsn"]) > cursor), key=lambda r: lsn(op, r["last_lsn"]))
     for record in logs:
-        if record["family_guid"] != full["family_guid"] or record["first_fork"] != fork or record["last_fork"] != fork:
+        if record["family_guid"] != full["family_guid"] or record["last_fork"] != fork:
             raise op.Error("sql_recovery_fork_requires_dba_review")
+        if record["first_fork"] != fork:
+            # A restored database's first log may include the previous fork.
+            # Only its tail on the selected full's fork is needed when the
+            # recovery cursor has already passed the recorded fork point.
+            point = record.get("fork_point_lsn")
+            if (point is None or not lsn(op, record["first_lsn"]) <= lsn(op, point) <= cursor
+                    or lsn(op, point) >= lsn(op, record["last_lsn"])):
+                raise op.Error("sql_recovery_fork_requires_dba_review")
         if lsn(op, record["first_lsn"]) > cursor:
             raise op.Error("sql_log_chain_gap_detected")
         selected.append(record)
@@ -228,6 +236,10 @@ def validate_metadata(op, row, intent):
             raise op.Error("invalid_native_backup_identity") from None
     for key in ("first_lsn", "last_lsn"):
         lsn(op, row[key])
+    if row["type"] == "L" and row["first_fork"] != row["last_fork"]:
+        point = lsn(op, row.get("fork_point_lsn"))
+        if not lsn(op, row["first_lsn"]) <= point < lsn(op, row["last_lsn"]):
+            raise op.Error("invalid_native_backup_fork_point")
     if row["type"] == "I" and row.get("differential_base_guid") != intent.get("base_guid"):
         raise op.Error("differential_base_changed_during_backup")
 
