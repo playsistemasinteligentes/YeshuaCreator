@@ -516,6 +516,31 @@ class CoverageTests(unittest.TestCase):
         self.assertFalse(any("volume" in a for a in areas))
         self.assertEqual(2, len(areas))
 
+    def test_observer_host_and_socket_mounts_do_not_expand_file_backup(self):
+        containers = [{"Config": {"Labels": {"com.docker.compose.project": "playsis-shared",
+                       "com.docker.compose.service": service}},
+                       "Mounts": [{"Type": "bind", "Source": source, "Destination": target, "RW": False}]}
+                      for service, source, target in (("yeshua-observability", "/", "/hostfs"),
+                          ("docker-metrics-proxy", "/var/run/docker.sock", "/var/run/docker.sock"))]
+        with patch.object(backup, "absolute", side_effect=Path):
+            areas = backup.mount_areas(containers, {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+        self.assertEqual({"/root/YeshuaStorage/persistent", "/root/YeshuaPrivate/production"},
+                         {a["path"] for a in areas})
+
+    def test_observer_exceptions_require_exact_role_source_destination_and_read_only(self):
+        original = {"Config": {"Labels": {"com.docker.compose.project": "playsis-shared",
+                    "com.docker.compose.service": "yeshua-observability"}},
+                    "Mounts": [{"Type": "bind", "Source": "/", "Destination": "/hostfs", "RW": False}]}
+        for field, value in (("RW", True), ("Destination", "/other"), ("Source", "/other"),
+                             ("service", "new-app"), ("project", "playsis-other")):
+            container = copy.deepcopy(original)
+            if field in {"service", "project"}:
+                container["Config"]["Labels"]["com.docker.compose." + field] = value
+            else:
+                container["Mounts"][0][field] = value
+            with self.subTest(field=field), patch.object(backup, "absolute", side_effect=Path), self.assertRaises(backup.Error):
+                backup.mount_areas([container], {}, Path("/root/YeshuaPrivate/production/credentials.json"), self.policy())
+
     def test_new_volume_on_a_known_service_is_not_implicitly_volatile(self):
         container = {"Name": "/redis", "Config": {"Labels": {
             "com.docker.compose.project": "playsis-shared", "com.docker.compose.service": "redis"}},

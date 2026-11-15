@@ -203,6 +203,10 @@ controlador. O deploy dos aplicativos nao atualiza `/opt/yeshua-backup/current`.
 Na reconstrucao, o setup existente instala o pacote atual e preserva o vinculo
 com o controlador; validacao deve incluir captura SQL, arquivos privados,
 confirmacao no storage e recuperacao isolada, alem de timers ativos.
+Os binds de observacao `/` -> `/hostfs` e do socket Docker sao entradas de
+runtime, excluidas apenas para o servico Shared declarado, origem/destino exatos
+e mount somente leitura. Nao ampliam a captura para a raiz do host nem alteram
+a selecao das areas privadas e persistentes; mounts novos continuam bloqueados.
 
 ## Rotina Online Inicial Na Origem
 
