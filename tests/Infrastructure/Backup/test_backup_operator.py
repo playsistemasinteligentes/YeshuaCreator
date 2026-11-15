@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import tarfile
 import tempfile
@@ -446,7 +447,28 @@ class ResumeTests(unittest.TestCase):
         self.assertIn(unittest.mock.call(["docker", "start", "b" * 64], timeout=90, stage="resume_writer"), run_mock.call_args_list)
 
 
+class ComposeSocketTests(unittest.TestCase):
+    def test_socket_group_comes_from_host_metadata(self):
+        with patch.object(backup.os, "stat", return_value=SimpleNamespace(st_mode=stat.S_IFSOCK, st_gid=997)):
+            self.assertEqual("997", backup.docker_socket_group())
+
+    def test_missing_socket_blocks_capture(self):
+        with patch.object(backup.os, "stat", side_effect=FileNotFoundError):
+            with self.assertRaisesRegex(backup.Error, "docker_socket_required_for_compose_capture"):
+                backup.docker_socket_group()
+
+    def test_regular_file_cannot_supply_socket_group(self):
+        with patch.object(backup.os, "stat", return_value=SimpleNamespace(st_mode=stat.S_IFREG, st_gid=997)):
+            with self.assertRaisesRegex(backup.Error, "docker_socket_required_for_compose_capture"):
+                backup.docker_socket_group()
+
+
 class ComposeRecoveryTests(unittest.TestCase):
+    def setUp(self):
+        socket = patch.object(backup, "docker_socket_group", return_value="997")
+        socket.start()
+        self.addCleanup(socket.stop)
+
     def credentials(self, root):
         def fill(value):
             if isinstance(value, dict):
@@ -469,8 +491,9 @@ class ComposeRecoveryTests(unittest.TestCase):
         two["Config"]["Env"].reverse()
         model = {"services": {"central-front": {"build": "ignored", "depends_on": ["unused"]}, "migration": {}},
                  "networks": {"yeshua-net": {"name": "yeshua-net"}}}
-        with tempfile.TemporaryDirectory() as folder, patch.object(backup.sql, "run", return_value=json.dumps(model)):
+        with tempfile.TemporaryDirectory() as folder, patch.object(backup.sql, "run", return_value=json.dumps(model)) as command:
             result = backup.frozen_projects([one, two], self.credentials(Path(folder)), Path(folder) / "credentials.json")
+        self.assertEqual("997", command.call_args.kwargs["env"]["YESHUA_DOCKER_SOCKET_GID"])
         frozen = result["playsis-central"]["services"]
         self.assertEqual(["central-front"], list(frozen))
         self.assertEqual(2, frozen["central-front"]["deploy"]["replicas"])
