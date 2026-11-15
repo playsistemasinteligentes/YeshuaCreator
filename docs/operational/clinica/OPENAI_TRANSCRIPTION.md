@@ -140,6 +140,24 @@ contendo `clinica`. O executor foi validado por
 `python3 -m unittest discover -s tests/Media/Clinica -p 'test_codex_executor.py'`.
 Nenhuma dessas provas substitui homologacao com SQL, broker e API real Groq.
 
+O smoke externo `GroqConnectionTests` valida autenticacao, conectividade e a
+disponibilidade do modelo configurado pelo endpoint oficial `GET /models`. Ele e
+ignorado automaticamente quando `CLINICA_GROQ_API_KEY` nao esta definida, para
+nao tornar a suite normal dependente de rede ou segredo. A chave nunca e gravada
+no repositorio nem incluida nas mensagens de falha. Em PowerShell, a execucao
+isolada e:
+
+```powershell
+$env:CLINICA_GROQ_API_KEY = "<chave somente nesta sessao>"
+dotnet test tests/CQRS/Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke/Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.csproj --filter "FullyQualifiedName~GroqConnectionTests" --nologo
+Remove-Item Env:CLINICA_GROQ_API_KEY
+```
+
+`CLINICA_GROQ_MODEL` e `CLINICA_GROQ_BASE_URL` sao opcionais e assumem os
+mesmos padroes do Worker. Esse smoke nao envia audio e, portanto, deve ser lido
+junto dos testes HTTP controlados da Strategy, que validam o multipart de
+transcricao sem custo externo.
+
 Arquivos desta entrega (caminhos relativos ao repositorio):
 
 - `src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared/Patterns/Strategy/Custon/OutboxDelivery/GroqTranscriptionDeliveryStrategy.cs` (novo).
