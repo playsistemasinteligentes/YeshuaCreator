@@ -34,7 +34,7 @@ parece ativo do que parece sobra historica.
 | `MyConfig:HttpsPathCertificado` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
 | `MyConfig:HttpssenhaCertificado` | appsettings antigos | Nao foi encontrado uso no Kestrel atual | Removido dos artefatos ativos |
 | `JwtSettings:SecretKey` | `Program.cs`, default em `JwtSettings` | JWT da API | Manter, mas configurar explicitamente em deploy |
-| `JwtSettings:ExpirationMinutes` | `Program.cs`, default em `JwtSettings` | JWT da API | Manter |
+| `JwtSettings:ExpirationMinutes` | `Program.cs`, default em `JwtSettings` | JWT da API | 21600 minutos (15 dias corridos); overrides de ambiente devem usar a mesma unidade |
 
 Observacao: `GS` hoje le apenas `appsettings.json` do diretorio de saida e aplica
 override manual para duas variaveis `MYCONFIG__...`. Ele nao mescla
