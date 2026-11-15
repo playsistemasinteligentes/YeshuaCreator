@@ -382,6 +382,21 @@ def compose_environment(document, private_file):
     return env
 
 
+def recovery_networks(model, project):
+    for network in model.get("networks", {}).values():
+        name = network.get("name")
+        if name == "yeshua-net":
+            network.clear()
+            network.update(name=name, external=True)
+        elif (project == "playsis-shared" and name == "yeshua-observability-internal"
+              and network.get("internal") is True and not network.get("external")):
+            # Compose recreates this private bridge, preserving its isolation.
+            network.clear()
+            network.update(name=name, internal=True)
+        else:
+            raise Error("network_requires_explicit_recovery_review")
+
+
 def frozen_projects(containers, document, private_file):
     """Use existing Compose models, not a second container launcher."""
     env = compose_environment(document, private_file)
@@ -430,12 +445,7 @@ def frozen_projects(containers, document, private_file):
                     item["bind"] = {"create_host_path": False}
                 mounts.append(item)
             config["volumes"] = mounts
-        for network in model.get("networks", {}).values():
-            name = network.get("name")
-            if name != "yeshua-net":
-                raise Error("network_requires_explicit_recovery_review")
-            network.clear()
-            network.update(name=name, external=True)
+        recovery_networks(model, project)
         result[project] = model
     return result
 
