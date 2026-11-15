@@ -333,7 +333,9 @@ class RecoveryContractTests(unittest.TestCase):
             contract = {"source_revision": "a" * 40, "projects": {"playsis-shared": {"files": ["infra/shared.yml"], "services": {
                 "sqlserver": {"image_digest": PIN, "replicas": 1}, "api": {"image_digest": None, "replicas": 2}}}}}
             template = {"services": {"sqlserver": {"image": "sql:latest"}, "api": {"build": "./app", "environment": {"PASSWORD": "abc$$secret"}},
-                                     "api-migration": {"build": "./migration"}}, "networks": {}}
+                                     "api-migration": {"build": "./migration"}}, "networks": {
+                                         "yeshua-net": {"name": "yeshua-net"},
+                                         "yeshua-observability-internal": {"name": "yeshua-observability-internal", "internal": True}}}
             def run(args, **kwargs):
                 if "config" in args:
                     return json.dumps(template)
@@ -353,6 +355,9 @@ class RecoveryContractTests(unittest.TestCase):
             self.assertEqual(PIN, model["services"]["sqlserver"]["image"])
             self.assertEqual(2, model["services"]["api"]["deploy"]["replicas"])
             self.assertEqual("no", model["services"]["api"]["restart"])
+            self.assertEqual({"name": "yeshua-net", "external": True}, model["networks"]["yeshua-net"])
+            self.assertEqual({"name": "yeshua-observability-internal", "internal": True},
+                             model["networks"]["yeshua-observability-internal"])
             self.assertEqual("abc$$secret", model["services"]["api"]["environment"]["PASSWORD"])
             self.assertEqual("abc$$secret", s.op.read(stage / "compose.json")["playsis-shared"]["services"]["api"]["environment"]["PASSWORD"])
             self.assertIn(["docker", "image", "inspect", "playsis-shared-api", "--format", "{{.Id}}"], [x.args[0] for x in commands.call_args_list])

@@ -194,11 +194,7 @@ def build_models(s, value, contract):
             service["restart"] = "no"
             service.setdefault("deploy", {})["replicas"] = captured["replicas"]
             service.pop("scale", None)
-        for network in model.get("networks", {}).values():
-            if network.get("name") != "yeshua-net":
-                raise op.Error("recovery_network_requires_review")
-            network.clear()
-            network.update(name="yeshua-net", external=True)
+        op.recovery_networks(model, project)
         models[project] = model
     stage = op.private_directory(s.BASE / "compose", create=True)
     op.write(stage / "compose.json", models)

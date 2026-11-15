@@ -661,6 +661,9 @@ editar telas nem publicar por eles. O retorno ao deploy normal e um gate final.
 O ambiente de captura tambem resolve o grupo do socket Docker no host, como
 deploy.sh, para renderizar o modelo Shared sem depender de variaveis herdadas
 do terminal de deploy. Ausencia de socket valido bloqueia a captura.
+A captura e a reconstrucao usam a mesma normalizacao de redes: yeshua-net
+permanece externa e a bridge yeshua-observability-internal do Shared continua
+interna, recriada pelo Compose. Redes desconhecidas continuam bloqueadas.
 
 ## Credenciais Do Repositorio
 
