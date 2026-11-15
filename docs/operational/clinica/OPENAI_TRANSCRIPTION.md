@@ -68,6 +68,98 @@ variáveis somente no Worker para esta integração. Para voltar à fila, usar
 tasks. O resumo continua exigindo esse consumidor mesmo com transcrição OpenAI.
 Sem chave, a transcrição falha de forma visível pelo contrato comum de Inbox.
 
+## Groq Whisper Large V3 Turbo — desenvolvimento e testes
+
+A Strategy `GroqTranscriptionDeliveryStrategy` usa o mesmo protocolo multipart,
+preparo FFmpeg, limites, resultado versionado e aceitacao de Inbox da OpenAI.
+O codigo comum fica no Infrastructure.Shared do Clinica, em
+`OpenAICompatibleTranscriptionDeliveryStrategy`; nao muda a Engine nem as sagas.
+A [documentacao oficial Groq](https://console.groq.com/docs/speech-to-text)
+define o endpoint `/openai/v1/audio/transcriptions`, o modelo
+`whisper-large-v3-turbo`, `language=pt` e retorno JSON com `text`.
+
+A selecao explicita `Transcription.Provider = Groq` usa exclusivamente o bloco
+`Apps.Clinica.Transcription.Groq` do mesmo arquivo privado por ambiente:
+
+```json
+{
+  "ApiKey": "",
+  "Model": "whisper-large-v3-turbo",
+  "BaseUrl": "https://api.groq.com/openai/v1"
+}
+```
+
+O Worker recebe `ClinicaTranscription:Groq:ApiKey`, `Model` e `BaseUrl`, exportados
+como `CLINICA_GROQ_API_KEY`, `CLINICA_GROQ_MODEL` e `CLINICA_GROQ_BASE_URL`.
+Esses valores nao substituem o perfil OpenAI existente nem sao enviados ao
+executor de resumo. Sem chave Groq, a entrega Groq falha pelo contrato comum,
+mesmo quando existe chave OpenAI. O destino `Groq` fica congelado na metadata da
+Outbox; uma troca posterior da configuracao nao muda pedidos ja vinculados.
+OpenAI continua como padrao, Queue preserva pedidos antigos e resumo continua Queue.
+
+Esta entrega e somente de desenvolvimento: nenhum deploy ou credencial de
+producao foi alterado. O teste real depende de credencial de teste disponivel em
+ambiente seguro e sandbox isolado, usando somente voz sintetica, sem banco,
+fila ou dados de pacientes. Sem essas condicoes, a prova real permanece pendente.
+Os testes offline usam chaves ficticias, HTTP/storage/repositories controlados e
+os handlers reais de Outbox/Inbox; nao comprovam chamada ao provedor.
+
+### Validacao local da extensao Groq em 15/11/2026
+
+| Verificacao executada | Resultado |
+| --- | --- |
+| Build do Worker Clinica e dependencias | Sucesso; 0 erros, 174 avisos em fontes existentes |
+| `OpenAIOutboxDeliveryTests` e `SessionInsightFlowTests` | 54 aprovados, 0 falhas |
+| Credenciais: testes com `clinica` no nome em `test_credentials.py` | 9 aprovados |
+| `test_codex_executor.py` | 13 aprovados |
+| Resolucao isolada da DI real do Worker para OpenAI/Groq/Queue | Aprovada, sem I/O externo |
+| `git diff --check` | Aprovado |
+| `test_compose_configuration.py` | 1 ignorado; CLI Docker Compose ausente |
+| Suite completa `test_credentials.py` | Nao passou neste sandbox: home somente leitura; redirecionar temporarios ao workspace tambem encontra a guarda que proibe arquivos privados no repositorio |
+| API real Groq com voz sintetica | Nao executada: nenhuma credencial Groq nas variaveis verificadas nem arquivo privado de testes selecionado |
+
+O fixture novo de ausencia de perfil foi corrigido apos a primeira execucao:
+o helper `configured()` preenche todas as chaves vazias do exemplo com valores
+ficticios; o teste agora remove explicitamente o perfil Groq para testar sua ausencia.
+Os nove testes focados passaram depois dessa correcao. As restricoes de caminho
+na suite completa nao foram contornadas nem alteradas na implementacao.
+
+Comandos .NET usados (a partir da raiz):
+
+```sh
+dotnet build src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Yeshua.Clinica.CQRS.Infrastructure.Worker.csproj --nologo -v quiet
+dotnet test tests/CQRS/Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke/Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.csproj --no-restore --filter 'FullyQualifiedName~OpenAIOutboxDeliveryTests|FullyQualifiedName~SessionInsightFlowTests' --nologo -v quiet --logger 'trx;LogFileName=clinica-groq-offline.trx' --results-directory /tmp/clinica-groq-test-results
+```
+
+O TRX desta sessao fica em `/tmp/clinica-groq-test-results/clinica-groq-offline.trx`.
+O verificador temporario de DI referencia o projeto Worker real e usa
+`WebApplication.CreateEmptyBuilder` com configuracao em memoria e chaves ficticias;
+nao carrega configuracao de producao nem inicia o host. Os testes Python focados
+foram selecionados via `unittest.TestLoader` em `CredentialsTests`, por nome
+contendo `clinica`. O executor foi validado por
+`python3 -m unittest discover -s tests/Media/Clinica -p 'test_codex_executor.py'`.
+Nenhuma dessas provas substitui homologacao com SQL, broker e API real Groq.
+
+Arquivos desta entrega (caminhos relativos ao repositorio):
+
+- `src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared/Patterns/Strategy/Custon/OutboxDelivery/GroqTranscriptionDeliveryStrategy.cs` (novo).
+- `src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared/Patterns/Strategy/Custon/OutboxDelivery/OpenAICompatibleTranscriptionDeliveryStrategy.cs` (extracao do protocolo existente).
+- `src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared/Patterns/Strategy/Custon/OutboxDelivery/OpenAITranscriptionDeliveryStrategy.cs`.
+- `src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Shared/Patterns/Strategy/Custon/OutboxDelivery/TranscriptionDeliveryFactory.cs` (inclui options).
+- `src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.Worker/Custon/DependencInjection.cs`.
+- `infra/private/credentials.py`.
+- `infra/private/credentials.example.json`.
+- `infra/private/clinica-transcription.example.json`.
+- `infra/private/README.md`.
+- `infra/Clinica/DockerCompose/docker-compose.yml`.
+- `tests/CQRS/Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke/Custon/Saga/PsychologySessionInsight/OpenAIOutboxDeliveryTests.cs`.
+- `tests/Infrastructure/PrivateConfig/test_credentials.py`.
+- `docs/operational/clinica/OPENAI_TRANSCRIPTION.md`.
+- `AGENTS.md`.
+
+Nenhum commit, push, merge ou deploy foi executado nesta tarefa. O aplicativo
+que gerencia a task fica responsavel pelo commit/envio/PR em rascunho.
+
 ## Áudio e limites do piloto
 
 - O arquivo final já reunido é lido do storage do tenant/upload. A referência

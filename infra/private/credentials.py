@@ -313,7 +313,8 @@ def environment(document, root, target, include_shared=False):
     # App-owned configuration lives in the main credentials document; never inherit secrets.
     clinical_keys = ("CLINICA_PROCESSING_SCOPE", "CLINICA_CODEX_MODEL", "CLINICA_CODEX_TIMEOUT_SECONDS",
                      "CLINICA_TRANSCRIPTION_API_KEY", "CLINICA_TRANSCRIPTION_MODEL", "CLINICA_TRANSCRIPTION_BASE_URL",
-                     "CLINICA_TRANSCRIPTION_PROVIDER", "CLINICA_CODEX_EXECUTOR_ENABLED")
+                     "CLINICA_TRANSCRIPTION_PROVIDER", "CLINICA_CODEX_EXECUTOR_ENABLED",
+                     "CLINICA_GROQ_API_KEY", "CLINICA_GROQ_MODEL", "CLINICA_GROQ_BASE_URL")
     result.update({key: "" for key in clinical_keys})
     if target in ("clinica", "shared", "all") or include_shared:
         config = document.get("Apps", {}).get("Clinica", {})
@@ -329,12 +330,15 @@ def environment(document, root, target, include_shared=False):
                 "CLINICA_TRANSCRIPTION_API_KEY": get(config, "Transcription", "ApiKey"),
                 "CLINICA_TRANSCRIPTION_MODEL": get(config, "Transcription", "Model") or "gpt-transcribe",
                 "CLINICA_TRANSCRIPTION_BASE_URL": get(config, "Transcription", "BaseUrl") or "https://api.openai.com/v1",
+                "CLINICA_GROQ_API_KEY": get(config, "Transcription", "Groq", "ApiKey"),
+                "CLINICA_GROQ_MODEL": get(config, "Transcription", "Groq", "Model") or "whisper-large-v3-turbo",
+                "CLINICA_GROQ_BASE_URL": get(config, "Transcription", "Groq", "BaseUrl") or "https://api.groq.com/openai/v1",
                 "CLINICA_TRANSCRIPTION_PROVIDER": get(config, "Transcription", "Provider") or "OpenAI",
             })
             if not result["CLINICA_CODEX_TIMEOUT_SECONDS"].isdigit() or not 30 <= int(result["CLINICA_CODEX_TIMEOUT_SECONDS"]) <= 3600:
                 raise ConfigurationError("Codex.TimeoutSeconds deve estar entre 30 e 3600.")
-            if result["CLINICA_TRANSCRIPTION_PROVIDER"] not in ("OpenAI", "Queue"):
-                raise ConfigurationError("Transcription.Provider deve ser OpenAI ou Queue.")
+            if result["CLINICA_TRANSCRIPTION_PROVIDER"] not in ("OpenAI", "Queue", "Groq"):
+                raise ConfigurationError("Transcription.Provider deve ser OpenAI, Queue ou Groq.")
 
     return result
 
