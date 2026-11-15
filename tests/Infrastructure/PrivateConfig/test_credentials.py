@@ -165,6 +165,39 @@ class CredentialsTests(unittest.TestCase):
         self.assertEqual("Queue", result["CLINICA_TRANSCRIPTION_PROVIDER"])
         self.assertEqual("fixture-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
 
+    def test_clinica_groq_profile_is_isolated_from_openai_and_other_apps(self):
+        document = configured()
+        transcription = document["Apps"]["Clinica"]["Transcription"]
+        transcription.update(Provider="Groq", ApiKey="fixture-openai-key", Model="configured-openai")
+        transcription["Groq"] = {"ApiKey": "fixture-groq-key"}
+        result = credentials.environment(document, Path("/private"), "clinica")
+        self.assertEqual("Groq", result["CLINICA_TRANSCRIPTION_PROVIDER"])
+        self.assertEqual("fixture-openai-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
+        self.assertEqual("configured-openai", result["CLINICA_TRANSCRIPTION_MODEL"])
+        self.assertEqual("fixture-groq-key", result["CLINICA_GROQ_API_KEY"])
+        self.assertEqual("whisper-large-v3-turbo", result["CLINICA_GROQ_MODEL"])
+        self.assertEqual("https://api.groq.com/openai/v1", result["CLINICA_GROQ_BASE_URL"])
+        unselected = credentials.environment(document, Path("/private"), "central")
+        self.assertEqual("", unselected["CLINICA_GROQ_API_KEY"])
+
+    def test_clinica_groq_does_not_inherit_secrets_or_openai_profile(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"].update(Provider="Groq", ApiKey="fixture-openai-key")
+        document["Apps"]["Clinica"]["Transcription"].pop("Groq", None)
+        with patch.dict(os.environ, CLINICA_GROQ_API_KEY="inherited-secret"):
+            result = credentials.environment(document, Path("/private"), "clinica")
+        self.assertEqual("", result["CLINICA_GROQ_API_KEY"])
+        self.assertEqual("whisper-large-v3-turbo", result["CLINICA_GROQ_MODEL"])
+        self.assertEqual("https://api.groq.com/openai/v1", result["CLINICA_GROQ_BASE_URL"])
+
+    def test_clinica_groq_supports_explicit_model_and_endpoint(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"]["Groq"] = {
+            "Model": "configured-groq", "BaseUrl": "https://fixture.example/v1"}
+        result = credentials.environment(document, Path("/private"), "clinica")
+        self.assertEqual("configured-groq", result["CLINICA_GROQ_MODEL"])
+        self.assertEqual("https://fixture.example/v1", result["CLINICA_GROQ_BASE_URL"])
+
     def test_clinica_rejects_unknown_delivery_provider(self):
         document = configured()
         document["Apps"]["Clinica"]["Transcription"]["Provider"] = "invalid"

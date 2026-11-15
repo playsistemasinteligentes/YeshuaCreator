@@ -2366,3 +2366,12 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   usa conta da Central e abre a sessao local por getMenu antes dos Commands;
   nao usar a senha da Central no login legado do aplicativo. O ensaio de
   gravacao por microfone na tela permanece separado do teste real de API.
+
+- Extensao de desenvolvimento da transcricao Clinica: `Groq` e um destino
+  explicito de `TranscriptionDeliveryFactory`, com Strategy propria e perfil
+  `Apps.Clinica.Transcription.Groq` no mesmo arquivo privado por ambiente.
+  Multipart, preparo e validacao HTTP sao reutilizados localmente em
+  `OpenAICompatibleTranscriptionDeliveryStrategy`. Nunca usar chave/modelo/URL
+  OpenAI como fallback Groq; o destino continua congelado na Outbox e resumo
+  continua Queue. OpenAI permanece o padrao. Implementacao local para testes,
+  sem autorizacao de deploy ou ativacao em producao.

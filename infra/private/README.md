@@ -467,9 +467,16 @@ TimeoutSeconds continuam opcionais. A autenticacao do Codex usa seu volume
 privado existente e nao depende da chave de transcricao.
 
 O Worker C# do Clinica usa `Apps.Clinica.Transcription` desse arquivo
-para entrega direta da Outbox a OpenAI. `Transcription.Provider` aceita
-`OpenAI` (padrao) ou `Queue`; `ApiKey`, `Model` e `BaseUrl` alimentam
+para entrega direta da Outbox a OpenAI ou Groq. `Transcription.Provider` aceita
+`OpenAI` (padrao), `Groq` ou `Queue`; `ApiKey`, `Model` e `BaseUrl` alimentam
 `CLINICA_TRANSCRIPTION_*`. Nao duplicar a chave em outro arquivo. A opcao Queue
-mantem o executor externo pela fila; resumo continua pela fila em ambos os modos.
+mantem o executor externo pela fila; resumo continua pela fila em todos os modos.
+O perfil `Transcription.Groq` tem `ApiKey`, `Model` (padrao
+`whisper-large-v3-turbo`) e `BaseUrl` (padrao `https://api.groq.com/openai/v1`)
+independentes. O exportador fornece `CLINICA_GROQ_API_KEY`, `CLINICA_GROQ_MODEL`
+e `CLINICA_GROQ_BASE_URL` somente no recorte Clinica/Shared/all. O Compose
+injeta esse perfil somente no Worker C#; API e executor Codex nao recebem a chave
+Groq. Nao ha fallback para a chave OpenAI. Esta extensao esta limitada a testes;
+nao altera a selecao padrao nem autoriza ativacao em producao.
 O antigo apps/Clinica/integracoes/codex-executor.json nao e lido nem usado como fallback.
 Configuracao e limites: [transcricao OpenAI](../../docs/operational/clinica/OPENAI_TRANSCRIPTION.md).
