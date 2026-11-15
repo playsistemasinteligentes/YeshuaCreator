@@ -49,7 +49,7 @@ namespace API.Migrations
                     var tokenDescriptor = new SecurityTokenDescriptor
                     {
                         Subject = new ClaimsIdentity(claims),
-                        Expires = DateTime.UtcNow.AddSeconds(jwtSettings.ExpirationMinutes),
+                        Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
                         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                     };
                     var token = tokenHandler.CreateToken(tokenDescriptor);

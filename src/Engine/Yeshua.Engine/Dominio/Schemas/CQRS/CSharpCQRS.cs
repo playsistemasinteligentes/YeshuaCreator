@@ -2648,7 +2648,7 @@ public static class EndpointsCuston
   },
   ""JwtSettings"": {
     ""SecretKey"": """",
-    ""ExpirationMinutes"": 60
+    ""ExpirationMinutes"": 21600
   },
   ""RabbitMq"": {},
   ""Storage"": {}
