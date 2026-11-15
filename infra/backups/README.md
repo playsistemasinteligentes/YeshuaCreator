@@ -207,6 +207,30 @@ privado, recibos Restic e comprovacao no storage continuam sendo as evidencias
 detalhadas. Nesta versao, restauracao funcional permanece `Nao homologado`; a
 observabilidade nao transforma verificacao de blocos em prova de restauracao.
 
+Uma resposta valida de `source-dispatch` usa exit code zero mesmo quando o
+pedido consultado terminou em `failed`: a falha pertence ao recibo do trabalho,
+nao ao transporte SSH. O controlador retira esse pedido de `active` e mantem a
+pendencia para nova tentativa; rejeicoes de protocolo/autorizacao continuam
+retornando erro. Isso tambem permite retomar apos reboot ou recuperacao da origem.
+
+O primeiro log de um banco restaurado pode comecar na ramificacao anterior e
+terminar na ramificacao do full escolhido. O catalogo registra `fork_point_lsn`;
+o validador aceita apenas a cauda cuja mudanca ja esta coberta pelo cursor de
+restauracao, preservando a familia, a ramificacao de destino e a continuidade LSN.
+Historicos antigos sem essa evidencia continuam exigindo revisao ou uma nova
+base completa; nao sao reescritos nem descartados para liberar a rotina.
+
+Ao publicar mudancas de infraestrutura que alterem servicos/mounts cobertos pelo
+backup, atualizar tambem o ferramental por `install.py` nos papeis origem e
+controlador. O deploy dos aplicativos nao atualiza `/opt/yeshua-backup/current`.
+Na reconstrucao, o setup existente instala o pacote atual e preserva o vinculo
+com o controlador; validacao deve incluir captura SQL, arquivos privados,
+confirmacao no storage e recuperacao isolada, alem de timers ativos.
+Os binds de observacao `/` -> `/hostfs` e do socket Docker sao entradas de
+runtime, excluidas apenas para o servico Shared declarado, origem/destino exatos
+e mount somente leitura. Nao ampliam a captura para a raiz do host nem alteram
+a selecao das areas privadas e persistentes; mounts novos continuam bloqueados.
+
 ## Rotina Online Inicial Na Origem
 
 Destino inicial aprovado: /root/YeshuaBackup/repository, privado e criptografado
@@ -634,6 +658,9 @@ Os Compose usados na recuperacao sao copias privadas resolvidas dos modelos
 existentes, com imagens fixas, replicas registradas, volumes reais e hostname
 do RabbitMQ preservados. Nao constituem outra fonte de desenvolvimento: nao
 editar telas nem publicar por eles. O retorno ao deploy normal e um gate final.
+O ambiente de captura tambem resolve o grupo do socket Docker no host, como
+deploy.sh, para renderizar o modelo Shared sem depender de variaveis herdadas
+do terminal de deploy. Ausencia de socket valido bloqueia a captura.
 
 ## Credenciais Do Repositorio
 

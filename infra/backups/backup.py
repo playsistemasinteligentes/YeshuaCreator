@@ -37,6 +37,10 @@ VOLATILE_VOLUME_TARGETS = {
     "operational-intelligence-agent": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
     "operational-intelligence": {"/workspace", "/home/agent/.codex", "/home/agent/.claude"},
 }
+RUNTIME_READ_ONLY_BINDS = {
+    ("yeshua-observability", "/", "/hostfs"),
+    ("docker-metrics-proxy", "/var/run/docker.sock", "/var/run/docker.sock"),
+}
 
 
 def now():
@@ -185,6 +189,14 @@ def mount_areas(containers, document, private_file, policy):
     for c in containers:
         labels = c.get("Config", {}).get("Labels") or {}
         for mount in c.get("Mounts", []):
+            # Observer inputs describe the running host; the persistent roots
+            # above already select its data. Never traverse the hostfs alias or
+            # archive the Docker socket (whose /var/run ancestor can be a link).
+            if (mount["Type"] == "bind" and mount.get("RW") is False
+                    and labels.get("com.docker.compose.project") == "playsis-shared"
+                    and (labels.get("com.docker.compose.service"), mount["Source"],
+                         mount.get("Destination")) in RUNTIME_READ_ONLY_BINDS):
+                continue
             source = absolute(mount["Source"])
             if mount["Type"] == "volume":
                 if not re.fullmatch(r"[a-zA-Z0-9_.-]+", mount.get("Name", "")):
@@ -345,6 +357,16 @@ def snapshot_source(stage, revision):
     return source
 
 
+def docker_socket_group():
+    try:
+        socket = os.stat("/var/run/docker.sock")
+    except OSError:
+        raise Error("docker_socket_required_for_compose_capture") from None
+    if not stat.S_ISSOCK(socket.st_mode) or socket.st_gid < 0:
+        raise Error("docker_socket_required_for_compose_capture")
+    return str(socket.st_gid)
+
+
 def compose_environment(document, private_file):
     reader_spec = importlib.util.spec_from_file_location("private_for_compose", ROOT / "infra/private/credentials.py")
     reader = importlib.util.module_from_spec(reader_spec)
@@ -355,6 +377,8 @@ def compose_environment(document, private_file):
             key, value = line.split("=", 1)
             env[key] = value
     env.update(reader.environment(document, private_file.parent, "all", True))
+    # deploy.sh derives this host input before resolving the same Compose model.
+    env["YESHUA_DOCKER_SOCKET_GID"] = docker_socket_group()
     return env
 
 

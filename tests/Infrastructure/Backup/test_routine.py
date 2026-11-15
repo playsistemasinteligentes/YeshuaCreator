@@ -62,6 +62,27 @@ class ChainTests(unittest.TestCase):
             with self.subTest(changes=changes), self.assertRaises(op.Error):
                 routine.chain(op, [record(), record("L", first_lsn="100", last_lsn="200", **changes)], "Db")
 
+    def test_restored_database_first_log_can_start_before_selected_fork(self):
+        base = record(first_lsn="80", last_lsn="100")
+        bridge = record("L", first_lsn="40", last_lsn="120", first_fork="previous",
+                        fork_point_lsn="70")
+        following = record("L", first_lsn="120", last_lsn="140")
+        self.assertEqual([base, bridge, following], routine.chain(op, [base, following, bridge], "Db"))
+
+    def test_fork_bridge_requires_proven_point_already_covered_by_full(self):
+        for point in (None, "30", "101", "200"):
+            bridge = record("L", first_lsn="40", last_lsn="200", first_fork="previous",
+                            fork_point_lsn=point)
+            with self.subTest(point=point), self.assertRaises(op.Error):
+                routine.chain(op, [record(), bridge], "Db")
+
+    def test_proven_fork_point_does_not_allow_wrong_destination_or_family(self):
+        for changes in ({"last_fork": "other"}, {"family_guid": "other"}):
+            bridge = record("L", first_lsn="40", last_lsn="200", first_fork="previous",
+                            fork_point_lsn="70", **changes)
+            with self.subTest(changes=changes), self.assertRaises(op.Error):
+                routine.chain(op, [record(), bridge], "Db")
+
     def test_matching_differential_base_does_not_allow_a_different_fork(self):
         for changes in ({"first_fork": "other"}, {"last_fork": "other"}, {"family_guid": "other"}):
             with self.subTest(changes=changes), self.assertRaises(op.Error):

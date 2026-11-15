@@ -408,11 +408,19 @@ def main():
             "destructive_retention_enabled": False, "functional_restore_proven": False}
 
 
-if __name__ == "__main__":
+def cli():
     try:
         result = main()
         print(json.dumps(result, ensure_ascii=True))
-        raise SystemExit(1 if result.get("status") == "failed" else 0)
+        # A persisted failed job is a successful status/protocol response.
+        # Returning exit 1 here makes SSH hide that receipt from the controller,
+        # leaving the failed request active forever. Invalid requests still fail.
+        dispatch = len(sys.argv) > 1 and sys.argv[1] == "source-dispatch"
+        return 1 if result.get("status") == "failed" and not dispatch else 0
     except Exception as error:
         print(json.dumps({"status": "failed", "error": str(error) if isinstance(error, op.Error) else "control_failed_details_omitted"}))
-        raise SystemExit(1)
+        return 1
+
+
+if __name__ == "__main__":
+    raise SystemExit(cli())

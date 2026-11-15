@@ -16,10 +16,12 @@ namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Custon.Saga;
 
 public sealed class OpenAIOutboxDeliveryTests
 {
-    [Fact]
-    public async Task Http_result_uses_the_same_Inbox_and_commits_with_Outbox_confirmation()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Http_result_uses_the_same_Inbox_and_commits_with_Outbox_confirmation(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         await f.Run();
         Assert.Equal(1, f.HttpCalls);
         Assert.Equal(0, f.QueueCalls);
@@ -31,12 +33,25 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal("step-1", body.RootElement.GetProperty("correlationId").GetString());
         Assert.Equal("audio.transcription.completed", body.RootElement.GetProperty("status").GetString());
         Assert.Equal("Relato fiel, com acentuação.", body.RootElement.GetProperty("result").GetProperty("text").GetString());
-        Assert.Equal("OpenAI", JsonDocument.Parse(f.Event.transportdata).RootElement.GetProperty("DeliveryProvider").GetString());
+        Assert.Equal(provider.ToString(), JsonDocument.Parse(f.Event.transportdata).RootElement.GetProperty("DeliveryProvider").GetString());
         Assert.Equal(2, f.Event.transporttype);
-        Assert.Contains("name=languages[]", f.Multipart!.Replace("\"", ""));
-        Assert.DoesNotContain("name=language;", f.Multipart.Replace("\"", ""));
-        Assert.Contains("gpt-transcribe", f.Multipart);
-        Assert.Equal("Bearer fixture-key", f.Authorization);
+        if (provider == TranscriptionDeliveryProvider.OpenAI)
+        {
+            Assert.Contains("name=languages[]", f.Multipart!.Replace("\"", ""));
+            Assert.DoesNotContain("name=language;", f.Multipart.Replace("\"", ""));
+            Assert.Contains("gpt-transcribe", f.Multipart);
+            Assert.Equal("Bearer fixture-key", f.Authorization);
+            Assert.Equal("https://api.openai.com/v1/audio/transcriptions", f.Endpoint);
+        }
+        else
+        {
+            Assert.Contains("name=language\r\n\r\npt", f.Multipart!.Replace("\"", ""));
+            Assert.DoesNotContain("languages[]", f.Multipart);
+            Assert.Contains("whisper-large-v3-turbo", f.Multipart);
+            Assert.DoesNotContain("gpt-transcribe", f.Multipart);
+            Assert.Equal("Bearer fixture-groq-key", f.Authorization);
+            Assert.Equal("https://api.groq.com/openai/v1/audio/transcriptions", f.Endpoint);
+        }
     }
 
     [Fact]
@@ -58,10 +73,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal(1, f.InboxWrites);
     }
 
-    [Fact]
-    public async Task Summary_remains_a_separate_queue_request_when_transcription_uses_OpenAI()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Summary_remains_a_separate_queue_request_when_transcription_uses_OpenAI(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         f.Event.type = "text.summarize";
         f.Event.transportdata = """{"Queue":"text.summarize.outbox","Exchange":"ai.tasks","RoutingKey":"text.summarize","TaskName":"app.tasks.summarize_session"}""";
         await f.Run();
@@ -71,10 +88,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal(1, f.Done);
     }
 
-    [Fact]
-    public async Task A_lost_claim_rolls_back_Inbox_and_never_confirms_Outbox()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task A_lost_claim_rolls_back_Inbox_and_never_confirms_Outbox(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { LoseClaim = true };
+        var f = new Fixture(provider) { LoseClaim = true };
         await f.Run();
         Assert.Equal(1, f.HttpCalls);
         Assert.Equal(0, f.InboxWrites);
@@ -82,10 +101,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Contains("rollback", f.Events);
     }
 
-    [Fact]
-    public async Task An_already_received_result_is_not_sent_to_the_provider_again()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task An_already_received_result_is_not_sent_to_the_provider_again(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Accepted = true };
+        var f = new Fixture(provider) { Accepted = true };
         await f.Run();
         Assert.Equal(0, f.HttpCalls);
         Assert.Equal(0, f.QueueCalls);
@@ -93,10 +114,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal(0, f.Bindings);
     }
 
-    [Fact]
-    public async Task An_obsolete_request_is_not_executed_or_applied()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task An_obsolete_request_is_not_executed_or_applied(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Current = false };
+        var f = new Fixture(provider) { Current = false };
         await f.Run();
         Assert.Equal(0, f.HttpCalls);
         Assert.Equal(0, f.InboxWrites);
@@ -115,20 +138,24 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal(0, f.Bindings);
     }
 
-    [Fact]
-    public async Task Recovered_legacy_queue_request_does_not_silently_switch_to_OpenAI()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Recovered_legacy_queue_request_does_not_silently_switch_to_OpenAI(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         f.Event.claimpreviousstatus = 9;
         await f.Run();
         Assert.Equal(0, f.HttpCalls);
         Assert.Equal(1, f.QueueCalls);
     }
 
-    [Fact]
-    public async Task A_transient_delivery_failure_only_schedules_Outbox_retry()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task A_transient_delivery_failure_only_schedules_Outbox_retry(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Status = HttpStatusCode.TooManyRequests, Response = """{"error":{"code":"rate_limit_exceeded"}}""" };
+        var f = new Fixture(provider) { Status = HttpStatusCode.TooManyRequests, Response = """{"error":{"code":"rate_limit_exceeded"}}""" };
         await f.Run();
         Assert.Equal(1, f.Retries);
         Assert.Equal(0, f.InboxWrites);
@@ -136,10 +163,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal("transcription_http_429", f.LastError);
     }
 
-    [Fact]
-    public async Task Quota_failure_is_terminal_in_the_common_Inbox_without_exposing_provider_body()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Quota_failure_is_terminal_in_the_common_Inbox_without_exposing_provider_body(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Status = HttpStatusCode.TooManyRequests,
+        var f = new Fixture(provider) { Status = HttpStatusCode.TooManyRequests,
             Response = """{"error":{"code":"insufficient_quota","message":"fixture-private-body"}}""" };
         await f.Run();
         Assert.Equal(0, f.Retries);
@@ -150,12 +179,14 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.DoesNotContain("fixture-key", f.InboxPayload!);
     }
 
-    [Fact]
-    public async Task Exhausted_transport_retry_returns_terminal_failure_and_cannot_leave_an_invisible_wait()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Exhausted_transport_retry_returns_terminal_failure_and_cannot_leave_an_invisible_wait(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Status = HttpStatusCode.ServiceUnavailable, Response = "{}" };
+        var f = new Fixture(provider) { Status = HttpStatusCode.ServiceUnavailable, Response = "{}" };
         f.Event.retrycount = 4;
-        f.Event.transportdata = """{"DeliveryProvider":"OpenAI"}""";
+        f.Event.transportdata = JsonSerializer.Serialize(new { DeliveryProvider = provider.ToString() });
         f.Event.transporttype = 2;
         await f.Run();
         Assert.Equal(1, f.DeadLetters);
@@ -164,20 +195,24 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.False(body.RootElement.GetProperty("error").GetProperty("retryable").GetBoolean());
     }
 
-    [Fact]
-    public async Task A_commit_failure_cannot_leave_only_the_Inbox_result_committed()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task A_commit_failure_cannot_leave_only_the_Inbox_result_committed(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { FailCommitOnce = true };
+        var f = new Fixture(provider) { FailCommitOnce = true };
         await f.Run();
         Assert.Equal(0, f.Done);
         Assert.Equal(0, f.InboxWrites);
         Assert.Equal(1, f.Retries);
     }
 
-    [Fact]
-    public async Task Missing_credentials_produce_a_visible_terminal_failure_without_network()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Missing_credentials_produce_a_visible_terminal_failure_without_network(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture(apiKey: "");
+        var f = new Fixture(provider, apiKey: "", groqApiKey: "");
         await f.Run();
         Assert.Equal(0, f.HttpCalls);
         Assert.Equal(1, f.InboxWrites);
@@ -185,20 +220,24 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal("transcription_credentials_missing", f.LastError);
     }
 
-    [Fact]
-    public async Task An_audio_reference_from_another_tenant_is_rejected_before_network()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task An_audio_reference_from_another_tenant_is_rejected_before_network(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         f.Event.payload = """{"StorageKey":"volatile/ia/transcriptions/input/2/71/audio.webm","uploadId":71}""";
         await f.Run();
         Assert.Equal(0, f.HttpCalls);
         Assert.Equal("audio_reference_invalid", f.LastError);
     }
 
-    [Fact]
-    public async Task Actual_mp4_content_is_sent_as_mp4_even_when_the_upload_filename_is_webm()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Actual_mp4_content_is_sent_as_mp4_even_when_the_upload_filename_is_webm(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         f.Audio = new byte[] { 0, 0, 0, 24 }.Concat("ftypisom"u8.ToArray()).ToArray();
         await f.Run();
         Assert.Contains("audio.mp4", f.Multipart);
@@ -206,10 +245,12 @@ public sealed class OpenAIOutboxDeliveryTests
         Assert.Equal(1, f.InboxWrites);
     }
 
-    [Fact]
-    public async Task Failed_media_preparation_removes_temporary_audio_and_returns_common_failure()
+    [Theory]
+    [InlineData(TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData(TranscriptionDeliveryProvider.Groq)]
+    public async Task Failed_media_preparation_removes_temporary_audio_and_returns_common_failure(TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture();
+        var f = new Fixture(provider);
         f.Audio = "unknown audio format"u8.ToArray();
         try
         {
@@ -229,12 +270,15 @@ public sealed class OpenAIOutboxDeliveryTests
     }
 
     [Theory]
-    [InlineData("{}")]
-    [InlineData("{\"text\":\"\"}")]
-    [InlineData("not-json")]
-    public async Task Invalid_provider_success_cannot_be_applied_as_transcription(string response)
+    [InlineData("{}", TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData("{\"text\":\"\"}", TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData("not-json", TranscriptionDeliveryProvider.OpenAI)]
+    [InlineData("{}", TranscriptionDeliveryProvider.Groq)]
+    [InlineData("{\"text\":\"\"}", TranscriptionDeliveryProvider.Groq)]
+    [InlineData("not-json", TranscriptionDeliveryProvider.Groq)]
+    public async Task Invalid_provider_success_cannot_be_applied_as_transcription(string response, TranscriptionDeliveryProvider provider)
     {
-        var f = new Fixture { Response = response };
+        var f = new Fixture(provider) { Response = response };
         await f.Run();
         Assert.Equal(1, f.DeadLetters);
         Assert.Contains("external.delivery.failed", f.InboxPayload);
@@ -247,6 +291,50 @@ public sealed class OpenAIOutboxDeliveryTests
             """{"QueueName":"audio.transcribed.inbox","ResultContract":"audio.transcribed"}""")!;
         Assert.Equal("", command.QueueName);
         Assert.Equal("", command.ResultContract);
+    }
+
+    [Fact]
+    public async Task Bound_Groq_keeps_its_own_profile_after_switching_to_OpenAI()
+    {
+        var f = new Fixture();
+        f.Event.transportdata = """{"DeliveryProvider":"Groq"}""";
+        f.Event.transporttype = 2;
+        await f.Run();
+        Assert.Equal(1, f.HttpCalls);
+        Assert.Equal("Bearer fixture-groq-key", f.Authorization);
+        Assert.Equal("https://api.groq.com/openai/v1/audio/transcriptions", f.Endpoint);
+        Assert.Equal(0, f.Bindings);
+    }
+
+    [Fact]
+    public async Task Groq_does_not_fall_back_to_an_available_OpenAI_key()
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq, groqApiKey: "");
+        await f.Run();
+        Assert.Equal(0, f.HttpCalls);
+        Assert.Equal("transcription_credentials_missing", f.LastError);
+        Assert.Equal(1, f.DeadLetters);
+    }
+
+    [Fact]
+    public async Task Groq_works_without_an_OpenAI_key()
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq, apiKey: "");
+        await f.Run();
+        Assert.Equal(1, f.InboxWrites);
+        Assert.Equal("Bearer fixture-groq-key", f.Authorization);
+    }
+
+    [Theory]
+    [InlineData("http://api.groq.com/openai/v1")]
+    [InlineData("https://user:password@api.groq.com/openai/v1")]
+    [InlineData("https://api.groq.com/openai/v1?secret=value")]
+    public async Task Invalid_Groq_endpoint_is_rejected_before_network(string endpoint)
+    {
+        var f = new Fixture(TranscriptionDeliveryProvider.Groq, groqBaseUrl: endpoint);
+        await f.Run();
+        Assert.Equal(0, f.HttpCalls);
+        Assert.Equal("transcription_endpoint_invalid", f.LastError);
     }
 
     private sealed class Fixture
@@ -265,14 +353,15 @@ public sealed class OpenAIOutboxDeliveryTests
         public bool LoseClaim, Accepted, FailCommitOnce;
         public bool Current = true;
         public int HttpCalls, QueueCalls, InboxWrites, Done, Retries, DeadLetters, Bindings;
-        public string? InboxPayload, Multipart, Authorization, LastError;
+        public string? InboxPayload, Multipart, Authorization, LastError, Endpoint;
         public HttpStatusCode Status = HttpStatusCode.OK;
         public string Response = """{"text":"Relato fiel, com acentuação."}""";
         public byte[] Audio = new byte[] { 0x1a, 0x45, 0xdf, 0xa3 }.Concat(new byte[12]).ToArray();
         public readonly string StorageRoot = Path.Combine(AppContext.BaseDirectory, "audio-preparation-" + Guid.NewGuid().ToString("N"));
         private bool _transaction, _pendingInbox, _pendingDone, _pendingDeadLetter;
 
-        public Fixture(TranscriptionDeliveryProvider provider = TranscriptionDeliveryProvider.OpenAI, string apiKey = "fixture-key")
+        public Fixture(TranscriptionDeliveryProvider provider = TranscriptionDeliveryProvider.OpenAI, string apiKey = "fixture-key",
+            string groqApiKey = "fixture-groq-key", string groqBaseUrl = "https://api.groq.com/openai/v1")
         {
             var context = new Context();
             var logger = new Shered.Logger.Logger();
@@ -335,6 +424,7 @@ public sealed class OpenAIOutboxDeliveryTests
             var options = new ClinicaTranscriptionOptions
             {
                 Provider = provider, ApiKey = apiKey, StorageRoot = StorageRoot,
+                Groq = new GroqTranscriptionOptions { ApiKey = groqApiKey, BaseUrl = groqBaseUrl },
                 FFmpegExecutable = Path.Combine(StorageRoot, "missing-ffmpeg")
             };
             var http = new HttpClient(new HttpStub(async request =>
@@ -343,10 +433,12 @@ public sealed class OpenAIOutboxDeliveryTests
                 HttpCalls++; Events.Add("http");
                 Multipart = await request.Content!.ReadAsStringAsync();
                 Authorization = request.Headers.Authorization?.ToString();
+                Endpoint = request.RequestUri?.AbsoluteUri;
                 return new HttpResponseMessage(Status) { Content = new StringContent(Response, Encoding.UTF8, "application/json") };
             }));
             var factory = new TranscriptionDeliveryFactory(new QueueOutboxDeliveryStrategy(publisher),
-                new OpenAITranscriptionDeliveryStrategy(http, storage, options), options);
+                new OpenAITranscriptionDeliveryStrategy(http, storage, options),
+                new GroqTranscriptionDeliveryStrategy(http, storage, options), options);
             _worker = new(work, reads, Fake<IyOutboxWriteRepository>((_, _) => null), publisher, logger, context, Inbox, factory);
         }
         public async Task Run() => await _worker.ExecuteAsync(new yOutboxInputCommand());

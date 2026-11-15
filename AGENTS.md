@@ -1914,6 +1914,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   manifests/dependencias antecedem fontes e copias de fontes respeitam o grafo
   real de referencias para evitar invalidacao por outros aplicativos.
 - O backup anterior permanece em `infra/legacy/pre-deployment-v1-2026-08-09`.
+- Backup controlado por SSH distingue falha do trabalho de falha do transporte:
+  `source-dispatch` entrega recibo valido com exit code zero, inclusive `failed`;
+  o controlador libera o pedido ativo e mantem a pendencia. Rejeicoes de
+  identidade/protocolo continuam falhando. Logs SQL de banco restaurado podem
+  atravessar a ramificacao anterior somente quando `fork_point_lsn` comprovar
+  que o cursor ja esta na ramificacao do full, com familia/destino/LSN validados.
+  Mudancas de servicos/mounts exigem atualizar o pacote instalado do backup nos
+  dois papeis pelo instalador existente; deploy de app nao atualiza esse pacote.
 - `pendencia`: implementar uma inicializacao explicita que copie e substitua os tokens do template sem sobrescrever uma infraestrutura existente.
 - `pendencia`: criar o template Kubernetes nativo do `CSharpCQRS`.
 - Arquivo privado/permissoes da VPS conferidos em 2026-10-19, sem deploy ou
@@ -2365,3 +2373,12 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   usa conta da Central e abre a sessao local por getMenu antes dos Commands;
   nao usar a senha da Central no login legado do aplicativo. O ensaio de
   gravacao por microfone na tela permanece separado do teste real de API.
+
+- Extensao de desenvolvimento da transcricao Clinica: `Groq` e um destino
+  explicito de `TranscriptionDeliveryFactory`, com Strategy propria e perfil
+  `Apps.Clinica.Transcription.Groq` no mesmo arquivo privado por ambiente.
+  Multipart, preparo e validacao HTTP sao reutilizados localmente em
+  `OpenAICompatibleTranscriptionDeliveryStrategy`. Nunca usar chave/modelo/URL
+  OpenAI como fallback Groq; o destino continua congelado na Outbox e resumo
+  continua Queue. OpenAI permanece o padrao. Implementacao local para testes,
+  sem autorizacao de deploy ou ativacao em producao.
