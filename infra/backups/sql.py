@@ -230,6 +230,7 @@ def backup_metadata(password, client, container_path):
           CONVERT(varchar(36),b.differential_base_guid) AS differential_base_guid,
           CONVERT(varchar(36),b.first_recovery_fork_guid) AS first_fork,
           CONVERT(varchar(36),b.last_recovery_fork_guid) AS last_fork,
+          CONVERT(varchar(30),b.fork_point_lsn) AS fork_point_lsn,
           CONVERT(varchar(36),b.family_guid) AS family_guid,
           CONVERT(varchar(40),b.backup_finish_date,126) AS finished_at,
           b.has_backup_checksums, CONVERT(bigint,b.compressed_backup_size) AS bytes
