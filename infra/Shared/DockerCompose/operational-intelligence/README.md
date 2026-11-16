@@ -322,6 +322,15 @@ O contrato MCP continua sendo `yeshua_task_send`/`yeshua_task_read`, sem novos
 metodos Git. Uma continuacao reutiliza o workspace original; sua perda bloqueia
 o desenvolvimento naquela task, preservando as respostas ja gravadas em SQL.
 
+A protecao de `.git` impede escrita pelo terminal do agente, mas nao cancela a
+autorizacao de publicacao pelo aplicativo. Apos o termino bem-sucedido do turno,
+`CodexTaskExecutor` chama `AgentGitWorkspace.PublishAsync`, que faz commit, push
+da branch da task e cria/reutiliza a PR em rascunho quando habilitado. O resultado
+da publicacao e acrescentado a resposta persistida da task. A mensagem final do
+agente, isoladamente, nao confirma nem descarta essa etapa posterior: conferir
+o resultado em `yeshua_task_read` ou a PR no GitHub antes de afirmar publicacao
+ou bloqueio. Nao invocar outro runner nem contornar `.git` para antecipar a etapa.
+
 Referencia: [tokens e limitacoes documentadas pelo GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
 ## Persistencia E Recuperacao

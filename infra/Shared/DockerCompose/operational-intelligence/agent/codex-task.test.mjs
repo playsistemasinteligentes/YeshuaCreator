@@ -66,6 +66,22 @@ test('development networking requires server opt-in and never changes observe', 
   }
 });
 
+test('development authorizes application publication without permitting Git protection bypass or claiming success', async () => {
+  const codex = runtime([
+    { type: 'thread.started', thread_id: 'publication-contract' }, { type: 'turn.completed' },
+  ]);
+  await executeTask({ ...input, mode: 'workspace-write' }, codex, () => {});
+  const prompt = codex.calls[1].message;
+  assert.ok(prompt.includes('Commit, push e criacao/atualizacao de PR em rascunho estao autorizados pelo mecanismo do aplicativo'));
+  assert.ok(prompt.includes('quando a publicacao estiver habilitada'));
+  assert.ok(prompt.includes('depois que este turno termina'));
+  assert.ok(prompt.includes('nao a publicacao pelo aplicativo'));
+  assert.ok(prompt.includes('Nao execute git commit, git push, merge ou deploy pelo terminal'));
+  assert.ok(prompt.includes('nem contorne a protecao de .git'));
+  assert.ok(prompt.includes('informe URL de PR somente com evidencia verificada'));
+  assert.ok(prompt.includes('nao presuma falha ou bloqueio'));
+});
+
 test('continuation without the original conversation is blocked before starting any thread', async () => {
   const codex = runtime([]);
   await assert.rejects(executeTask({ ...input, isContinuation: true }, codex, () => {}), /Original task/);

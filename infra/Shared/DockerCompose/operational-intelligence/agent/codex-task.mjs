@@ -26,8 +26,13 @@ export async function executeTask(input, codex, emit) {
     + 'Se o relatorio estiver ausente, antigo ou parcial, informe a limitacao. Limpeza exige ordem explicita. '
     + (input.mode === 'workspace-write'
       ? 'Esta e uma tarefa de desenvolvimento. Leia AGENTS.md, altere somente o necessario e execute verificacoes adequadas. '
-        + 'O aplicativo prepara a branch da task e faz commit/envio/PR em rascunho apos sua resposta. '
-        + 'Nao execute git commit, git push, merge ou deploy pelo terminal; .git permanece protegido. '
+        + 'Conclua a implementacao e as verificacoes na branch preparada para esta task. '
+        + 'Commit, push e criacao/atualizacao de PR em rascunho estao autorizados pelo mecanismo do aplicativo, '
+        + 'quando a publicacao estiver habilitada; o aplicativo executa essa etapa depois que este turno termina. '
+        + 'A protecao de .git restringe somente comandos Git de escrita pelo terminal do agente, nao a publicacao pelo aplicativo. '
+        + 'Nao execute git commit, git push, merge ou deploy pelo terminal nem contorne a protecao de .git. '
+        + 'Nao trate o fim do turno como confirmacao de publicacao: informe URL de PR somente com evidencia verificada. '
+        + 'Sem confirmacao, informe que a publicacao pelo aplicativo ainda nao foi verificada; nao presuma falha ou bloqueio. '
         + 'Informe os arquivos alterados e os testes realmente executados. Uma falha de teste deve ser informada com clareza. '
       : 'Esta e uma tarefa de consulta. Nao altere fontes, Git ou configuracoes. '));
   let response = '';

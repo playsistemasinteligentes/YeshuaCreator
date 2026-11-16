@@ -1326,6 +1326,19 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
 - Preferir customizacao local quando o comportamento for especifico de um caso de uso.
 - Nunca sobrescrever customizacoes sem confirmar a intencao.
 
+### Releases Por Componente
+
+- Releases usam tags anotadas `<componente>/v01.001` como fonte de numeracao,
+  independentes por arquitetura e aplicativo. Labels `architecture` e `app:*`
+  classificam explicitamente PRs, inclusive mistas; arquitetura nao incrementa apps.
+- A tag aponta para o SHA exato do merge, sem commit de bump. O recibo JSON na
+  anotacao vincula PR, SHA, componentes, versao e arquitetura ancestral utilizada.
+- GitHub Actions valida antes de publicar e usa criacao atomica de ref,
+  idempotencia por PR e fila por PR. Deploy permanece separado. A publicacao
+  exige confirmacao inicial do operador via `RELEASE_TAGGING_ENABLED=true`.
+- Ver `docs/operational/COMPONENT_RELEASES.md`; scripts pertencem a automacao
+  do repositorio, sem alterar Engine, codigo gerado ou runtime dos aplicativos.
+
 ## Marcação De Pendencias Entre Studios
 
 Use esta marcação quando houver algo que dependa da separacao ou harmonizacao
