@@ -38,3 +38,17 @@ test('CI e classificacao preservam limites de permissao', () => {
   assert.match(w, /issues: write/); assert.match(w, /ref: \$\{\{ github.workflow_sha \}\}/);
   assert.doesNotMatch(w, /contents: write|pull-requests: write|secrets\./);
 });
+test('draft tambem exige build integral no head exato e prontidao rejeita falha, cancelamento e skip', () => {
+  const w = read('release-validation.yml');
+  const build = w.split('\n  full-build:\n')[1].split('\n  release-tests:\n')[0];
+  assert.match(build, /ref: \$\{\{ github.event.pull_request.head.sha \|\| github.sha \}\}/);
+  assert.match(build, /bash scripts\/validation\/full-build.sh/);
+  assert.doesNotMatch(build, /continue-on-error|if:.*draft|paths:/);
+  assert.match(build, /dotnet-version:[\s\S]*8.0.x[\s\S]*9.0.x/);
+  const readiness = w.split('\n  pr-readiness:\n')[1];
+  assert.match(readiness, /needs: \[full-build, release-tests\]/);
+  assert.match(readiness, /if: always\(\)/);
+  assert.match(readiness, /"\$BUILD_RESULT" != success \|\| "\$TEST_RESULT" != success/);
+  assert.match(readiness, /exit 1/);
+  assert.match(readiness, /IS_DRAFT/);
+});

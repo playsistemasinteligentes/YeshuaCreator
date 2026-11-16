@@ -1,5 +1,11 @@
 # Revisao da correcao de releases
 
+**PR #29: DRAFT BLOQUEADA. Nao pronta para review/merge/deploy.**
+
+A validacao anterior foi insuficiente. A revisao de build completo, SDK 9,
+CI do head atual e enforcement estao em `PR29_BUILD_VALIDATION.md`.
+Esse relatorio substitui o impedimento inicial de SDK descrito abaixo.
+
 ## Issue pronta para abertura
 
 Titulo: Corrigir identidade local e releases independentes por PR no YeshuaCreator
@@ -50,14 +56,17 @@ sufixo de origem. Ver COMPONENT_RELEASES.md para procedimento completo.
 
 Validacoes locais:
 
-- Suite Node com `RUN_RELEASE_BUILD_TESTS=1 RUN_RELEASE_UI_TESTS=1`: **27 testes aprovados**, zero falhas.
+- Suite Node com `RUN_RELEASE_BUILD_TESTS=1 RUN_RELEASE_UI_TESTS=1`: **29 testes aprovados**, zero falhas.
   Inclui Git temporario, duas tags paralelas, builds/publish da Central com
   fontes NuGet vazias e hosts publicados lendo identidades distintas por HTTP.
 - actionlint 1.7.12: tres workflows aprovados.
 - git diff --check: aprovado.
-- Build completo da solucao: **falhou NETSDK1045**. Este ambiente possui somente
-  SDK 8.0.428; `Yeshua.Engine.AIContextBuilder` exige .NET 9. Workflow passa a
-  instalar SDKs 8/9. Build/publish integral deve passar no CI antes da publicacao.
+- Build completo da solucao: **aprovado com SDK 9.0.321**, depois de corrigir
+  o ambiente do NETSDK1045. Nenhum target foi alterado. Suites .NET finais:
+  Engine 60/60, Domain 1/1, Application 54/54. Uma falha inicial de portabilidade
+  do writer foi corrigida e repetida com sucesso. Logs em PR29_BUILD_VALIDATION.md.
+- CI da PR #29 ainda bloqueia: release-scope falhou por permissao e o novo
+  full-build depende do envio do commit pelo aplicativo. Nao esta pronta.
 - Ensaio Playwright aprovado: detalhes por teclado, SHA presente/ausente,
   desenvolvimento, identidade ausente, falha de leitura e mobile sem overflow.
   UI tambem executada contra os dois publishes reais, com telas PR35/PR36
@@ -80,8 +89,10 @@ nem consultado remotamente. Atualizacao nao altera os campos do formulario.
 
 Nenhuma tag, branch remota, issue, commit, merge ou deploy foi criado nesta
 sessao. Issue acima e rascunho: nao ha ferramenta GitHub autenticada disponivel.
-O aplicativo prepara a branch, faz commit/envio e abre a PR em rascunho depois
-da resposta do agente; numero e URL nao estao disponiveis antecipadamente.
+A PR existente e https://github.com/playsistemasinteligentes/YeshuaCreator/pull/29,
+confirmada draft pelo GET na API. O aplicativo atualiza a mesma branch/PR apos
+a resposta; nao abrir PR substituta. Nenhuma promocao para review foi autorizada
+sem validacao integral e checks obrigatorios verdes no head atual.
 Nao ativar a publicacao ate revisao e homologacao dos gates no GitHub. A variavel
 v1 nao ativa o workflow novo. A garantia de instalacao operacional completa,
 com bancos e integracoes reais, nao foi homologada nesta task.

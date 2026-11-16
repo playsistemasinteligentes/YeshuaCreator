@@ -166,7 +166,7 @@ fora do projeto, informe seu diretorio em `NODE_PATH`. Testes de API simulam con
 preparacao, revisao, recusas, multicomponente, resposta perdida e retomada.
 As escritas reais no GitHub nao sao exercitadas nesta task.
 
-A verificacao local do build integral falhou com `NETSDK1045`: o ambiente tem
+A primeira verificacao local do build integral falhou com `NETSDK1045`: o ambiente tinha
 SDK 8.0.428 e `Yeshua.Engine.AIContextBuilder` exige .NET 9. O workflow instala
 SDKs 8/9, mas seu build integral e os publishes dos aplicativos precisam passar
 no CI antes de habilitar publicacao. Os dois publishes da Central do ensaio
@@ -178,3 +178,24 @@ bibliotecas extraidas somente em `/tmp`, sem instalar pacotes no sistema. Nenhum
 Referencias primarias: [atualizacao fast-forward de refs](https://docs.github.com/en/rest/git/refs#update-a-reference),
 [API de tags](https://docs.github.com/en/rest/git/tags),
 [eventos originados pelo token](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow).
+
+
+## Correcao obrigatoria do gate de entrega (PR #29)
+
+A falha inicial NETSDK1045 foi investigada no projeto AIContextBuilder net9.0.
+O SDK 9.0.321 foi instalado no workspace e o framework foi preservado.
+`global.json` seleciona SDK 9 estavel. `release-validation.yml` agora inclui
+`full-build` (restore/build integral inclusive para drafts) e `pr-readiness`
+(falha, cancelamento e skipped bloqueiam). A aprovacao de `release-tests` sozinho
+nao torna uma PR pronta. Logs e resultados completos, estado remoto e passos
+administrativos para required checks estao em `PR29_BUILD_VALIDATION.md`.
+A PR #29 permanece DRAFT BLOQUEADA ate validacao integral e CI do head enviado.
+
+
+Na revisao obrigatoria, restore e build integrais passaram com SDK 9.0.321,
+sem mudar targets. A Engine teve uma falha real de separador de caminhos em
+Linux, corrigida no writer comum e coberta por regressao; suites finais Engine
+60/60, Domain 1/1, Application 54/54 passaram. A suite Node final passou 29/29.
+Isso nao substitui CI: a PR #29 permanece bloqueada pelo check release-scope
+sem permissao e pela necessidade de rodar os checks novos no commit enviado.
+Ver PR29_BUILD_VALIDATION.md para comandos e logs.

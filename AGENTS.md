@@ -1326,6 +1326,24 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
 - Preferir customizacao local quando o comportamento for especifico de um caso de uso.
 - Nunca sobrescrever customizacoes sem confirmar a intencao.
 
+### Gate Obrigatorio De Compilacao Para PR
+
+- Regra do operador: nao enviar, abrir ou entregar PR (mesmo draft), nem
+  promover PR para revisao, sem restore e
+  build completos de `YeshuaCreator.sln` bem-sucedidos, com SDKs adequados aos
+  targets existentes. `global.json` seleciona SDK 9 estavel (latestPatch).
+  Nao reduzir framework, omitir projetos nem tolerar erros.
+- `bash scripts/validation/full-build.sh` executa o mesmo gate local e no CI.
+  Qualquer falha, cancelamento ou verificacao incompleta significa BLOQUEADA.
+- Abertura de draft nao e entrega pronta e nao dispensa o gate de build.
+  PR ja existente com validacao incompleta permanece draft/BLOQUEADA ate build
+  integral, testes relevantes e CI obrigatorio do head atual passarem. Nao
+  abrir PR substituta para contornar falha da PR existente.
+- A automacao de commit/envio/PR pertence ao aplicativo. O agente nao executa
+  commit, push, merge ou deploy. A promocao para ready-for-review deve consultar
+  checks obrigatorios do head atual e falhar fechada; branch protection deve
+  exigir full-build, release-tests, pr-readiness e release-scope sem bypass.
+
 ### Releases Por Componente
 
 - Cada PR pode publicar release independente sem merge: `<componente>/v01.006-PR35`.

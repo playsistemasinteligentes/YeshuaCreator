@@ -77,6 +77,9 @@ namespace Migration.Dominio
 
         public void WriteCode(StringBuilder code, string path, bool custon, bool context)
         {
+            // Templates legados usam separadores Windows. Normalizar antes de
+            // verificar Custon e escrever evita nomes literais com barra no Linux.
+            path = path.Replace('\\', Path.DirectorySeparatorChar);
             AddOwnershipMarker(code, custon);
             code.Append("");
             code.Append("");

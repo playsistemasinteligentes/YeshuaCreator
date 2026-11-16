@@ -2,18 +2,52 @@ name: Release validation
 
 on:
   pull_request:
-    types: [opened, reopened, synchronize, labeled, unlabeled, edited, ready_for_review]
+    types: [opened, reopened, synchronize, labeled, unlabeled, edited, ready_for_review, converted_to_draft]
   workflow_dispatch:
 
 permissions:
   contents: read
 
+# Draft tambem compila. Nenhuma mudanca/path ou estado draft pode pular o build.
 jobs:
+  full-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
+        with:
+          dotnet-version: |
+            8.0.x
+            9.0.x
+      - run: bash scripts/validation/full-build.sh
+      - name: Run .NET unit tests
+        shell: bash
+        run: |
+          for project in tests/Engine/Yeshua.Engine.Tests/Yeshua.Engine.Tests.csproj tests/CQRS/Yeshua.CQRS.Tests.Domain/Yeshua.CQRS.Tests.Domain.csproj tests/CQRS/Yeshua.CQRS.Tests.Application/Yeshua.CQRS.Tests.Application.csproj; do
+            validation_name=$(basename "$project" .csproj)
+            dotnet test "$project" --no-build --no-restore --configuration Release --logger trx --results-directory .artifacts/pr-validation/test-results 2>&1 | tee ".artifacts/pr-validation/$validation_name.log"
+          done
+      - name: Preserve complete build logs
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: full-build-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            .artifacts/pr-validation/*.log
+            .artifacts/pr-validation/test-results/*.trx
+          if-no-files-found: error
+          retention-days: 14
+
   release-tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
         with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
           persist-credentials: false
       - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
         with:
@@ -36,3 +70,24 @@ jobs:
         env:
           NODE_PATH: /tmp/yeshua-release-ui/node_modules
           PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
+
+  pr-readiness:
+    needs: [full-build, release-tests]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enforce build and test results
+        env:
+          BUILD_RESULT: ${{ needs.full-build.result }}
+          TEST_RESULT: ${{ needs.release-tests.result }}
+          IS_DRAFT: ${{ github.event.pull_request.draft }}
+        run: |
+          if [[ "$BUILD_RESULT" != success || "$TEST_RESULT" != success ]]; then
+            echo "::error::BLOQUEADA: restore/build completos e testes devem passar. Falha, cancelamento ou skipped nao aprovam entrega."
+            exit 1
+          fi
+          if [[ "$IS_DRAFT" == true ]]; then
+            echo 'DRAFT: compilacao e testes validados; nao e entrega nem promocao automatica para review.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'Compilacao e testes validados. Revisao e demais checks obrigatorios continuam necessarios.' >> "$GITHUB_STEP_SUMMARY"
+          fi

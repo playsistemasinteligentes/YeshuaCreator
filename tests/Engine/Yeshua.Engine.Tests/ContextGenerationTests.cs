@@ -36,6 +36,33 @@ public sealed class ContextGenerationTests
         }
     }
 
+    [TestMethod]
+    public void LegacyDirectorySeparatorsCreateFoldersAndPreserveCustomFile()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "Yeshua.Engine.Tests", Guid.NewGuid().ToString("N"));
+        try
+        {
+            var generator = new SampleGenerator();
+            var generated = Path.Combine(directory, "Migration", "Entity", "Generated.cs");
+            var custom = Path.Combine(directory, "Custon", "Entity", "Custom.cs");
+            Directory.CreateDirectory(Path.GetDirectoryName(custom)!);
+            File.WriteAllText(custom, "custom-owned");
+            generator.WriteCode(new StringBuilder("class Generated {}"),
+                Path.Combine(directory, @"Migration\Entity\Generated.cs"), false, false);
+            generator.WriteCode(new StringBuilder("replacement"),
+                Path.Combine(directory, @"Custon\Entity\Custom.cs"), true, false);
+            Assert.IsTrue(File.Exists(generated), "Separadores legados devem produzir diretorios reais.");
+            Assert.AreEqual("custom-owned", File.ReadAllText(custom));
+            if (Path.DirectorySeparatorChar == '/')
+                Assert.IsFalse(Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories)
+                    .Any(path => Path.GetRelativePath(directory, path).Contains('\\')));
+        }
+        finally
+        {
+            if (Directory.Exists(directory)) Directory.Delete(directory, true);
+        }
+    }
+
     private static (bool Exists, long Length, DateTime Modified) Stamp(string path) => File.Exists(path)
         ? (true, new FileInfo(path).Length, File.GetLastWriteTimeUtc(path)) : (false, 0, DateTime.MinValue);
 
