@@ -16,10 +16,3 @@ jobs:
         with:
           persist-credentials: false
       - run: node --test tests/ReleaseAutomation/*.test.cjs
-      - name: Validate scope labels
-        if: github.event_name == 'pull_request'
-        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        with:
-          script: |
-            const { classify } = require('./scripts/component-release/release.cjs');
-            core.info(`Componentes: ${classify(context.payload.pull_request.labels).join(', ')}`);

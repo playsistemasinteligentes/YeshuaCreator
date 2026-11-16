@@ -118,7 +118,7 @@ async function architectureAt(github, repo, sha, tags) {
   return null;
 }
 
-async function publish({ github, context, core }) {
+async function publish({ github, context, core, dryRun = false }) {
   const pr = await pullRequest(github, context);
   const repo = context.repo;
   // Examinar todos os componentes impede que dispatch com labels alteradas
@@ -141,12 +141,19 @@ async function publish({ github, context, core }) {
       }
       const version = nextVersion(tags);
       const tag = `${component}/v${version}`;
-      const architecture = component === 'architecture' ? null :
+      const plannedArchitecture = dryRun && receipts.find(r => r.component === 'architecture');
+      const architecture = component === 'architecture' ? null : plannedArchitecture ?
+        { tag: plannedArchitecture.tag, version: plannedArchitecture.version, sha: plannedArchitecture.sha } :
         await architectureAt(github, repo, pr.sha, await readTags(github, repo, 'architecture'));
       const receipt = {
         schema: SCHEMA, repository: pr.repository, pr: pr.number, sha: pr.sha,
         components: pr.scopes, component, version, tag, architecture,
       };
+      if (dryRun) {
+        receipts.push(receipt);
+        completed = true;
+        break;
+      }
       const { data: object } = await github.rest.git.createTag({
         ...repo, tag, message: JSON.stringify(receipt, null, 2), object: pr.sha, type: 'commit',
       });
@@ -168,7 +175,7 @@ async function publish({ github, context, core }) {
     }
     if (!completed) throw new Error(`Disputa persistente de numeracao: ${component}. Reexecute o workflow.`);
   }
-  await core.summary.addHeading(`Release da PR #${pr.number}`)
+  await core.summary.addHeading(`${dryRun ? 'Simulacao (sem escrita)' : 'Release'} da PR #${pr.number}`)
     .addCodeBlock(JSON.stringify(receipts, null, 2), 'json').write();
   return receipts;
 }
