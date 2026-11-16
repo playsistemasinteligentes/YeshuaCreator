@@ -1,60 +1,37 @@
 'use strict';
-
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
-const { resolve } = require('node:path');
-const read = name => readFileSync(resolve(__dirname, '../../.github/workflows', name), 'utf8');
-
-test('publicacao exige testes, ativacao explicita e somente permissoes de tags/leitura de PR', () => {
-  const workflow = read('component-release.yml');
-  assert.match(workflow, /^permissions: \{\}$/m);
-  const publish = workflow.split('\n  publish:\n')[1];
-  assert.match(publish, /needs: validate/);
-  assert.match(publish, /vars\.RELEASE_TAGGING_ENABLED == 'true' &&/);
-  assert.match(publish, /permissions:\n      contents: write\n      pull-requests: read\n/);
-  assert.match(workflow.split('\n  publish:\n')[0], /node --test tests\/ReleaseAutomation\/\*\.test\.cjs/);
-  assert.doesNotMatch(workflow, /issues: write|pull-requests: write|actions: write|secrets\./);
+const read = name => readFileSync(require('node:path').resolve(__dirname, '../../.github/workflows', name), 'utf8');
+test('publicacao manual exige build isolado, SHA exato, barreira v2 e nenhum merge automatico', () => {
+  const w = read('component-release.yml');
+  assert.doesNotMatch(w, /pull_request_target|RELEASE_TAGGING_ENABLED|secrets\.|git push|git merge|\bdeploy:/);
+  assert.match(w, /needs: \[resolve, validate\]/);
+  assert.match(w, /RELEASE_TAGGING_V2_ENABLED == 'true'/);
+  assert.match(w, /expectedSha: process.env.VALIDATED_SHA/);
+  assert.match(w, /dotnet build YeshuaCreator.sln/);
+  assert.match(w, /dotnet publish/);
+  const build = w.split('\n  validate:\n')[1].split('\n  publish:\n')[0];
+  assert.match(build, /contents: read/); assert.doesNotMatch(build, /: write/);
+  assert.match(build, /ref: \$\{\{ needs.resolve.outputs.sha \}\}/);
+  assert.match(w, /dry_run:[\s\S]*default: true/);
+  assert.match(w, /inputs.dry_run == false/);
+  assert.match(w, /group: component-release-\$\{\{ inputs.pr_number \}\}/);
 });
-
-test('codigo privilegiado usa SHA do workflow, checkout sem credenciais e fila por PR', () => {
-  const workflow = read('component-release.yml');
-  assert.match(workflow, /pull_request_target:\n    types: \[closed\]/);
-  assert.match(workflow, /pull_request\.merged == true/);
-  assert.match(workflow, /group: component-release-\$\{\{ github\.event\.pull_request\.number \|\| inputs\.pr_number \}\}/);
-  assert.match(workflow, /cancel-in-progress: false/);
-  assert.equal((workflow.match(/ref: \$\{\{ github\.workflow_sha \}\}/g) || []).length, 2);
-  assert.equal((workflow.match(/persist-credentials: false/g) || []).length, 2);
-  assert.doesNotMatch(workflow, /pull_request\.head|github\.head_ref|\bdeploy\s*:|git push|git merge/);
-});
-
-test('CI valida mudanca de labels e actions sao fixadas por SHA completo', () => {
-  const validation = read('release-validation.yml');
-  assert.match(validation, /labeled, unlabeled/);
-  assert.match(validation, /permissions:\n  contents: read/);
-  assert.doesNotMatch(validation, /: write/);
+test('jobs privilegiados executam somente workflow confiavel sem credenciais persistentes', () => {
+  const w = read('component-release.yml');
+  for (const job of ['prepare', 'resolve', 'publish']) {
+    const text = w.split(`\n  ${job}:\n`)[1].split(/\n  [a-z]+:\n/)[0];
+    assert.match(text, /ref: \$\{\{ github.workflow_sha \}\}/);
+    assert.match(text, /persist-credentials: false/);
+  }
   for (const name of ['component-release.yml', 'release-validation.yml', 'release-classification.yml']) {
-    for (const match of read(name).matchAll(/uses: ([^\s]+)/g)) {
-      assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
-    }
+    for (const m of read(name).matchAll(/uses: ([^\s]+)/g)) assert.match(m[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
   }
 });
-
-test('classificacao privilegiada usa somente codigo confiavel e valida no proprio run', () => {
-  const workflow = read('release-classification.yml');
-  assert.match(workflow, /pull_request_target:/);
-  assert.match(workflow, /ref: \$\{\{ github.workflow_sha \}\}/);
-  assert.match(workflow, /persist-credentials: false/);
-  assert.match(workflow, /issues: write/);
-  assert.match(workflow, /pull-requests: read/);
-  assert.doesNotMatch(workflow, /contents: write|pull-requests: write|secrets\.|pull_request\.head|github\.head_ref/);
-  assert.match(workflow, /labelPullRequest/);
-  assert.doesNotMatch(read('release-validation.yml'), /classify\(context.payload/);
-});
-
-test('dispatch simula por padrao e publicacao tem barreira adicional independente', () => {
-  const workflow = read('component-release.yml');
-  assert.match(workflow, /dry_run:[\s\S]*type: boolean\n        default: true/);
-  assert.match(workflow, /publish\(\{ github, context, core, dryRun: true \}\)/);
-  assert.match(workflow.split('\n  publish:\n')[1], /inputs.dry_run == false/);
+test('CI e classificacao preservam limites de permissao', () => {
+  assert.doesNotMatch(read('release-validation.yml'), /: write/);
+  const w = read('release-classification.yml');
+  assert.match(w, /issues: write/); assert.match(w, /ref: \$\{\{ github.workflow_sha \}\}/);
+  assert.doesNotMatch(w, /contents: write|pull-requests: write|secrets\./);
 });

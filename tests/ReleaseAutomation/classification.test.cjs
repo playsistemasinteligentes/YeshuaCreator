@@ -5,6 +5,9 @@ const { inferLabels, labelPullRequest } = require('../../scripts/component-relea
 
 const front = 'src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/Custon/Apps/';
 const cases = [
+  ['release-identities/fiscal.json', 'app:fiscal'],
+  ['release-identities/central.json', 'app:central'],
+  ['release-identities/architecture.json', 'architecture'],
   ['src/Studio/Yeshua.Studio.AppClinicas/Migrations/M1.cs', 'app:clinica'],
   ['src/CQRS/Domain/Yeshua.Clinica.CQRS.Domain/Custon/X.cs', 'app:clinica'],
   ['src/CQRS/Application/Yeshua.APS.ADM.CQRS.Application.Command/X.cs', 'app:aps-adm'],

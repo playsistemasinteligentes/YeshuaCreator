@@ -8,6 +8,8 @@ const names = {
 };
 
 function scopeForPath(path) {
+  const identity = path.match(/^release-identities\/([^/]+)\.json$/);
+  if (identity && components.includes(identity[1])) return identity[1];
   // A tela pertence ao aplicativo mesmo quando hospedada no Front Central.
   const front = path.match(/\/Custon\/Apps\/([^/]+)\//);
   if (front) return names[front[1]] || 'architecture';

@@ -1328,32 +1328,31 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
 
 ### Releases Por Componente
 
-- Releases usam tags anotadas `<componente>/v01.001` como fonte de numeracao,
-  independentes por arquitetura e aplicativo. Labels `architecture` e `app:*`
-  classificam PRs, inclusive mistas; arquitetura nao incrementa apps.
-- A classificacao automatica e aditiva por caminhos no mapa versionado de
-  `scripts/component-release/classification.cjs`: preserva escopos manuais,
-  considera rename e classifica caminhos desconhecidos como arquitetura.
-  Telas de `Custon/Apps` pertencem ao app, mesmo hospedadas na Central.
-- O workflow de classificacao usa somente codigo confiavel da base e valida as
-  labels no proprio run, pois eventos labeled pelo GITHUB_TOKEN nao disparam CI.
-  Nunca executar codigo da PR no contexto privilegiado de pull_request_target.
-- A tag aponta para o SHA exato do merge, sem commit de bump. O recibo JSON na
-  anotacao vincula PR, SHA, componentes, versao e arquitetura ancestral utilizada.
-- GitHub Actions valida antes de publicar e usa criacao atomica de ref,
-  idempotencia por PR e fila por PR. Deploy permanece separado. A publicacao
-  exige `RELEASE_TAGGING_ENABLED=true` na configuracao do repositorio; nao e
-  possivel ativar essa variavel pelo YAML. Dispatch usa dry_run=true por padrao.
-- Simulacao usa o mesmo publicador sem criar objetos Git ou refs. Auditoria
-  publica somente GET nao comprova permissoes administrativas ou escrita real.
-- O rodape do Front Central le releases publicadas pela API publica do GitHub,
-  valida recibos das tags anotadas e oferece historico limitado com PR/commit.
-  Nao envia tokens da plataforma nem cria endpoint, banco ou pipeline paralelo.
-  Atualizacao e manual, com cache curto em memoria e sem polling. Publicacao
-  nao comprova implantacao; versoes implantadas/em desenvolvimento permanecem
-  explicitamente nao verificadas enquanto nao houver manifesto operacional.
-- Ver `docs/operational/COMPONENT_RELEASES.md`; scripts pertencem a automacao
-  do repositorio, sem alterar Engine, codigo gerado ou runtime dos aplicativos.
+- Cada PR pode publicar release independente sem merge: `<componente>/v01.006-PR35`.
+  Versao-base e explicita; PR identifica origem, nao cronologia nem dependencia.
+  PRs paralelas podem compartilhar a mesma base. Tags sao imutaveis e apontam
+  para o head validado da PR, nunca automaticamente para o merge/default HEAD.
+- Antes da tag, a preparacao grava `release-identities/<componente>.json` na
+  propria PR por commit de um pai e atualizacao fast-forward sem force.
+  O arquivo contem componente, base, PR, versao e tag; SHA final fica somente
+  no recibo da tag para evitar autorreferencia. Push concorrente aborta.
+- Caminhos em `scripts/component-release/classification.cjs` determinam escopos
+  minimos; labels validam e podem acrescentar escopos. Rename inclui origem.
+  PR multicomponente prepara e valida todas as identidades antes da publicacao.
+- Build/publish apenas copiam arquivos locais ja versionados. Central exibe
+  identidades do proprio artefato; nao consulta GitHub nem afirma a versao de
+  API/Worker implantados separadamente. Ausencia significa desenvolvimento.
+- Workflow privilegiado executa somente codigo confiavel da branch padrao.
+  Build do head ocorre em runner separado sem escrita/segredos. Publicacao
+  exige build aprovado, revisao do head exato, dispatch explicito e variavel
+  nova `RELEASE_TAGGING_V2_ENABLED=true`. Nenhum merge ou deploy automatico.
+- Conflito de identidade no merge exige decisao explicita: uma composicao nova
+  nao herda identidade exclusiva de outra PR. Remover a identidade conflitante
+  na integracao (desenvolvimento), preparar outra PR para sua release composta.
+  As tags independentes anteriores permanecem recuperaveis e nao sao alteradas.
+- Tags v1, como `architecture/v01.001`, permanecem historicas. Nao reescrever,
+  inferir identidade local retroativamente nem usar como sequenciador v2.
+- Ver `docs/operational/COMPONENT_RELEASES.md` para operacao e limites.
 
 ## Marcação De Pendencias Entre Studios
 

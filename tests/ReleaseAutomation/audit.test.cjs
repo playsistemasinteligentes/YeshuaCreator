@@ -2,31 +2,27 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { audit } = require('../../scripts/component-release/audit.cjs');
-
-test('auditoria publica simula PR mergeada e explicita configuracao inacessivel', async () => {
-  const paths = [];
-  const sha = 'a'.repeat(40);
-  const result = await audit(26, async path => {
+const { identity } = require('../../scripts/component-release/release.cjs');
+test('auditoria GET exige identidade existente sem inventar versao para tags legadas', async () => {
+  const paths = [], sha = 'a'.repeat(40), repository = 'playsistemasinteligentes/YeshuaCreator';
+  const result = await audit(35, async path => {
     paths.push(path);
-    if (path === '') return { default_branch: 'main' };
-    if (path === 'pulls/26') return { number: 26, merged: true, state: 'closed', merge_commit_sha: sha,
-      labels: [{ name: 'architecture' }], base: { ref: 'main', repo: { full_name: 'playsistemasinteligentes/YeshuaCreator' } } };
-    if (path.startsWith('git/matching-refs/')) return [];
+    if (!path) return { default_branch: 'main' };
+    if (path === 'pulls/35') return { number: 35, state: 'open', changed_files: 1,
+      labels: [{ name: 'architecture' }], head: { sha, ref: 'feature', repo: { full_name: repository } },
+      base: { ref: 'main', repo: { full_name: repository } } };
+    if (path.startsWith('pulls/35/files?')) return [{ filename: 'scripts/x.cjs' }];
+    if (path.startsWith('contents/')) return { type: 'file', encoding: 'base64', content: Buffer.from(JSON.stringify(identity('architecture', '01.001', 35))).toString('base64') };
     if (path.startsWith('labels?')) return [{ name: 'architecture' }];
     if (path === 'rulesets') return [];
-    throw Object.assign(new Error('Unauthorized'), { status: 401 });
+    throw Object.assign(new Error('Unavailable'), { status: path.startsWith('git/ref/') ? 404 : 401 });
   });
-  assert.equal(result.dryRun, true);
-  assert.equal(result.receipts[0].tag, 'architecture/v01.001');
-  assert.equal(result.receipts[0].sha, sha);
-  assert.equal(result.configuration['actions/variables/RELEASE_TAGGING_ENABLED'].unavailable, true);
-  assert.equal(result.configuration['actions/permissions'].status, 401);
-  assert.deepEqual(result.labels, ['architecture']);
-  assert.ok(paths.includes('git/matching-refs/tags/architecture/v'));
-  assert.ok(!paths.some(p => /git\/(tags|refs)$/.test(p)));
+  assert.equal(result.receipts[0].tag, 'architecture/v01.001-PR35');
+  assert.equal(result.sourceSha, sha);
+  assert.equal(result.configuration['actions/variables/RELEASE_TAGGING_V2_ENABLED'].status, 401);
+  assert.ok(paths.some(p => p.startsWith('contents/')));
 });
-
-test('auditoria rejeita numero invalido e erro de leitura de tags sem fingir homologacao', async () => {
-  await assert.rejects(audit(0, () => assert.fail('nao deveria consultar')), /numero/);
-  await assert.rejects(audit(26, async () => { throw new Error('API indisponivel'); }), /API indisponivel/);
+test('auditoria informa indisponibilidade sem fingir sucesso', async () => {
+  await assert.rejects(audit(0), /numero/);
+  await assert.rejects(audit(35, async () => { throw new Error('Offline'); }), /Offline/);
 });

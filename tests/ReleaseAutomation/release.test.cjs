@@ -1,283 +1,152 @@
 'use strict';
-
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { SCHEMA, classify, parseVersion, nextVersion, publish } = require('../../scripts/component-release/release.cjs');
-const { buildManifest } = require('../../scripts/component-release/build-manifest.cjs');
-
+const { SCHEMA, classify, identity, parseVersion, prepare, plan, publish } = require('../../scripts/component-release/release.cjs');
 const sha = n => n.toString(16).padStart(40, '0');
-const repo = { owner: 'owner', repo: 'repo' };
-function context(number = 1, labels = ['app:clinica'], commit = sha(10)) {
-  const pr = {
-    number, labels: labels.map(name => ({ name })), merged: true, state: 'closed',
-    merge_commit_sha: commit, base: { ref: 'main', repo: { full_name: 'owner/repo' } },
-  };
-  return { repo, eventName: 'pull_request_target', payload: {
-    action: 'closed', repository: { default_branch: 'main' }, pull_request: pr,
-  } };
-}
-
-function fake(...contexts) {
-  const refs = new Map();
-  const objects = new Map();
-  const prs = new Map(contexts.map(c => [c.payload.pull_request.number, c.payload.pull_request]));
-  let counter = 1000;
-  const state = { refs, objects, writes: [], fail: null, loseResponse: false, forbidden: false };
+function fixture(numbers = [35]) {
+  const repo = { owner: 'owner', repo: 'repo' };
+  const prs = new Map(numbers.map(n => [n, { number: n, state: 'open', draft: false, user: { login: 'author' }, changed_files: 1,
+    labels: [{ name: 'app:fiscal' }], head: { sha: sha(n), ref: `pr-${n}`, repo: { full_name: 'owner/repo' } },
+    base: { ref: 'main', repo: { full_name: 'owner/repo' } } }]));
+  const locals = new Map(numbers.map(n => [sha(n), { fiscal: identity('fiscal', '01.006', n) }]));
+  const refs = new Map(), objects = new Map();
+  let counter = 100;
+  const state = { prs, locals, refs, objects, writes: [], reviews: null, fail: null, race: false, forbidden: false, loseResponse: false };
   const git = {
-    listMatchingRefs: async ({ ref }) => [...refs.entries()]
-      .filter(([name]) => name.startsWith(`refs/${ref}`))
-      .map(([ref, object]) => ({ ref, object })),
+    listMatchingRefs: async () => [...refs].map(([ref, object]) => ({ ref, object })),
+    getRef: async ({ ref }) => {
+      if (!refs.has(`refs/${ref}`)) throw Object.assign(new Error('Not found'), { status: 404 });
+      return { data: { object: refs.get(`refs/${ref}`) } };
+    },
     getTag: async ({ tag_sha }) => ({ data: objects.get(tag_sha) }),
     createTag: async input => {
       if (state.forbidden) throw Object.assign(new Error('Forbidden'), { status: 403 });
-      const id = sha(counter++);
-      objects.set(id, { message: input.message, object: { type: input.type, sha: input.object } });
+      const id = sha(counter++); objects.set(id, { message: input.message, object: { type: input.type, sha: input.object } });
       return { data: { sha: id } };
     },
     createRef: async ({ ref, sha: id }) => {
-      if (state.fail && ref.includes(state.fail)) throw Object.assign(new Error('Falha simulada'), { status: 503 });
-      if (refs.has(ref)) throw Object.assign(new Error('Reference already exists'), { status: 422 });
-      refs.set(ref, { type: 'tag', sha: id });
-      state.writes.push(ref);
-      if (state.loseResponse) {
-        state.loseResponse = false;
-        throw Object.assign(new Error('Resposta perdida'), { status: 502 });
-      }
+      if (ref.includes(state.fail || 'never-match')) throw new Error('Falha simulada');
+      if (refs.has(ref)) throw Object.assign(new Error('Already exists'), { status: 422 });
+      refs.set(ref, { type: 'tag', sha: id }); state.writes.push(ref);
+      if (state.loseResponse) { state.loseResponse = false; throw new Error('Resposta perdida'); }
       return {};
     },
-  };
-  const github = {
-    paginate: (method, params) => method(params),
-    rest: { git, pulls: { get: async ({ pull_number }) => ({ data: prs.get(pull_number) }) },
-      repos: { compareCommitsWithBasehead: async ({ basehead }) => {
-        const [base, head] = basehead.split('...');
-        return { data: { status: base === head ? 'identical' : base < head ? 'ahead' : 'behind' } };
-      } },
+    getCommit: async () => ({ data: { tree: { sha: sha(1) } } }),
+    createTree: async input => { state.tree = input; return { data: { sha: state.unchanged ? sha(1) : sha(2) } }; },
+    createCommit: async input => {
+      state.commit = input;
+      if (state.race) prs.get(35).head.sha = sha(99);
+      return { data: { sha: sha(3) } };
     },
+    updateRef: async input => { state.writes.push(input); return {}; },
   };
-  const core = { info() {}, summary: {
-    addHeading() { return this; }, addCodeBlock() { return this; }, async write() {},
-  } };
+  const github = { paginate: (method, params) => method(params), rest: { git, pulls: {
+    get: async ({ pull_number }) => ({ data: structuredClone(prs.get(pull_number)) }),
+    listFiles: async ({ pull_number }) => state.files || [{ filename: 'src/Studio/Yeshua.Studio.Fiscal/X.cs' }],
+    listReviews: async ({ pull_number }) => state.reviews || [{ state: 'APPROVED', user: { login: 'reviewer' },
+      author_association: 'COLLABORATOR', commit_id: prs.get(pull_number).head.sha }],
+  }, repos: { getContent: async ({ ref, path }) => {
+    const value = locals.get(ref)?.[path.split('/').at(-1).replace('.json', '')];
+    if (!value) throw Object.assign(new Error('Identidade ausente'), { status: 404 });
+    return { data: { type: 'file', encoding: 'base64', content: Buffer.from(JSON.stringify(value)).toString('base64') } };
+  } } } };
+  const core = { info() {}, summary: { addHeading() { return this; }, addCodeBlock() { return this; }, async write() {} } };
+  state.context = n => ({ repo, eventName: 'workflow_dispatch', payload: { repository: { default_branch: 'main' },
+    inputs: { pr_number: String(n), versions: '{"fiscal":"01.006"}' } } });
+  state.run = (n = 35, options = {}) => publish({ github, context: state.context(n), core, expectedSha: sha(n), ...options });
+  state.prepare = () => prepare({ github, context: state.context(35), core });
+  state.plan = () => plan({ github, context: state.context(35) });
   state.github = github;
-  state.core = core;
-  state.run = context => publish({ github, context, core });
-  state.seed = (tag, commit, receipt) => {
-    const id = sha(counter++);
-    if (receipt) objects.set(id, { message: JSON.stringify(receipt), object: { type: 'commit', sha: commit } });
-    refs.set(`refs/tags/${tag}`, { type: receipt ? 'tag' : 'commit', sha: receipt ? id : commit });
-  };
   return state;
 }
-
-test('labels: arquitetura, misto, varios apps, duplicadas e labels comuns', () => {
-  assert.deepEqual(classify(['app:fiscal', 'bug', 'architecture', 'app:clinica', 'app:fiscal'].map(name => ({ name }))),
-    ['architecture', 'clinica', 'fiscal']);
-  for (const labels of [[], ['bug'], ['app:unknown'], ['app:architecture'], ['app:Clinica'], ['app:']]) {
-    assert.throws(() => classify(labels.map(name => ({ name }))));
+test('identidade canonica inclui PR, sem ordenar PR nem calcular proxima base', () => {
+  assert.equal(parseVersion('fiscal/v01.006-PR35', 'fiscal').version, '01.006-PR35');
+  for (const tag of ['fiscal/v01.006', 'fiscal/v1.006-PR35', 'fiscal/v01.0006-PR35', 'fiscal/v01.006-PR0']) assert.throws(() => parseVersion(tag, 'fiscal'));
+  assert.deepEqual(classify([{ name: 'architecture' }, { name: 'app:fiscal' }]), ['architecture', 'fiscal']);
+  assert.throws(() => classify([{ name: 'app:unknown' }]));
+});
+test('duas PRs paralelas mesma base publicam commits independentes sem substituicao', async () => {
+  const s = fixture([35, 36]);
+  const results = (await Promise.all([s.run(36), s.run(35)])).flat();
+  assert.deepEqual(results.map(r => r.tag), ['fiscal/v01.006-PR36', 'fiscal/v01.006-PR35']);
+  assert.deepEqual(results.map(r => r.sha), [sha(36), sha(35)]);
+  assert.ok(results.every(r => r.schema === SCHEMA));
+  assert.equal(s.refs.size, 2);
+  assert.deepEqual(await s.run(35), [results[1]]);
+  assert.equal(s.writes.length, 2);
+});
+test('preparacao grava somente identidades no pai exato, sem force, sem SHA circular', async () => {
+  const s = fixture(); await s.prepare();
+  assert.deepEqual(s.commit.parents, [sha(35)]);
+  assert.equal(s.tree.tree[0].path, 'release-identities/fiscal.json');
+  assert.deepEqual(JSON.parse(s.tree.tree[0].content), identity('fiscal', '01.006', 35));
+  assert.deepEqual(s.writes, [{ owner: 'owner', repo: 'repo', ref: 'heads/pr-35', sha: sha(3), force: false }]);
+});
+test('push concorrente interrompe preparacao antes de atualizar branch', async () => {
+  const s = fixture(); s.race = true;
+  await assert.rejects(s.prepare(), /PR mudou/); assert.equal(s.writes.length, 0);
+});
+test('PR publicada nao pode ser re-preparada', async () => {
+  const s = fixture(); await s.run();
+  await assert.rejects(s.prepare(), /ja possui release/);
+});
+test('labels validam caminhos, multicomponente inclui todos os arquivos locais', async () => {
+  const s = fixture(); s.files = [{ filename: 'src/Studio/Yeshua.Studio.Central/X.cs' }];
+  await assert.rejects(s.run(), /Labels nao cobrem/);
+  s.prs.get(35).labels.push({ name: 'app:central' });
+  s.locals.get(sha(35)).central = identity('central', '02.003', 35);
+  const r = await s.run(); assert.equal(r.length, 2);
+  assert.deepEqual(r.map(x => x.tag), ['central/v02.003-PR35', 'fiscal/v01.006-PR35']);
+});
+test('qualquer identidade ausente ou incoerente bloqueia todo o conjunto antes de escrever', async () => {
+  for (const mutate of [s => delete s.locals.get(sha(35)).fiscal,
+    s => { s.locals.get(sha(35)).fiscal.pr = 36; },
+    s => { s.locals.get(sha(35)).fiscal.tag = 'fiscal/v01.006-PR36'; },
+    s => { s.prs.get(35).labels.push({ name: 'architecture' }); }]) {
+    const s = fixture(); mutate(s); await assert.rejects(s.run()); assert.equal(s.writes.length, 0);
   }
 });
-
-test('sequencias numericas independentes e largura minima, sem rollover de major', () => {
-  assert.equal(nextVersion([]), '01.001');
-  const versions = ['01.009', '01.999', '02.003'].map(v => parseVersion(`fiscal/v${v}`, 'fiscal'));
-  assert.equal(nextVersion(versions), '02.004');
-  assert.equal(nextVersion([parseVersion('clinica/v01.999', 'clinica')]), '01.1000');
-  for (const tag of ['clinica/v1.001', 'clinica/v01.01', 'clinica/v01.0001', 'clinica/v01.001-beta']) {
-    assert.throws(() => parseVersion(tag, 'clinica'));
+test('head mudou, fork, evento de merge, draft e revisao insuficiente bloqueiam publicacao', async () => {
+  for (const mutate of [s => { s.prs.get(35).head.sha = sha(99); },
+    s => { s.prs.get(35).head.repo.full_name = 'fork/repo'; },
+    s => { s.prs.get(35).draft = true; }, s => { s.reviews = []; },
+    s => { s.reviews = [{ user: { login: 'r' }, state: 'APPROVED', author_association: 'COLLABORATOR', commit_id: sha(1) }]; }]) {
+    const s = fixture(); mutate(s); await assert.rejects(s.run()); assert.equal(s.writes.length, 0);
   }
+  const s = fixture();
+  const ctx = s.context(35); ctx.eventName = 'pull_request_target';
+  await assert.rejects(publish({ github: s.github, context: ctx }), /dispatch/);
+  await assert.rejects(s.run(35, { expectedSha: undefined }), /SHA validado/);
+});
+test('merge e squash nao mudam commit de origem; release independe do merge SHA', async () => {
+  const s = fixture(); Object.assign(s.prs.get(35), { state: 'closed', merged: true, merge_commit_sha: sha(777) });
+  assert.equal((await s.run())[0].sha, sha(35));
+});
+test('tag imutavel, resposta perdida e falha parcial permitem retomada exata', async () => {
+  const s = fixture(); s.loseResponse = true;
+  await assert.rejects(s.run(), /Resposta perdida/);
+  const r = await s.run(); assert.equal(s.writes.length, 1);
+  s.locals.set(sha(99), { fiscal: identity('fiscal', '01.006', 35) }); s.prs.get(35).head.sha = sha(99);
+  await assert.rejects(s.run(35, { expectedSha: sha(99) }), /Colisao imutavel/);
+  assert.equal(r[0].sha, sha(35));
+  const m = fixture(); m.prs.get(35).labels.push({ name: 'architecture' });
+  m.locals.get(sha(35)).architecture = identity('architecture', '01.001', 35); m.fail = 'fiscal/';
+  await assert.rejects(m.run(), /Falha simulada/); assert.equal(m.refs.size, 1);
+  m.fail = null; assert.equal((await m.run()).length, 2); assert.equal(m.writes.length, 2);
+});
+test('dry run nao escreve e 403 nunca e ignorado', async () => {
+  const s = fixture(); await s.run(35, { dryRun: true }); assert.equal(s.objects.size, 0);
+  s.forbidden = true; await assert.rejects(s.run(), /Forbidden/); assert.equal(s.refs.size, 0);
 });
 
-test('merge de aplicativo cria apenas sua release no SHA exato, nunca HEAD', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.seed('fiscal/v01.045', sha(3));
-  state.seed('clinica/v01.003', sha(4));
-  const [receipt] = await state.run(ctx);
-  assert.equal(receipt.tag, 'clinica/v01.004');
-  assert.equal(receipt.sha, ctx.payload.pull_request.merge_commit_sha);
-  assert.equal(receipt.architecture, null);
-  assert.deepEqual(state.writes, ['refs/tags/clinica/v01.004']);
-});
-
-test('merge de arquitetura nao incrementa aplicativos', async () => {
-  const ctx = context(1, ['architecture']);
-  const state = fake(ctx);
-  state.seed('clinica/v01.005', sha(2));
-  assert.equal((await state.run(ctx))[0].tag, 'architecture/v01.001');
-  assert.deepEqual(state.writes, ['refs/tags/architecture/v01.001']);
-});
-
-test('merge misto e multiapp registra a arquitetura publicada no mesmo SHA', async () => {
-  const ctx = context(1, ['app:fiscal', 'app:clinica', 'architecture']);
-  const state = fake(ctx);
-  const receipts = await state.run(ctx);
-  assert.deepEqual(receipts.map(x => x.tag), ['architecture/v01.001', 'clinica/v01.001', 'fiscal/v01.001']);
-  for (const app of receipts.slice(1)) {
-    assert.deepEqual(app.architecture, { tag: 'architecture/v01.001', version: '01.001', sha: sha(10) });
-    assert.deepEqual(app.components, ['architecture', 'clinica', 'fiscal']);
-    assert.equal(app.pr, 1);
-    assert.equal(app.repository, 'owner/repo');
-  }
-});
-
-test('arquitetura utilizada deve ser ancestral do merge, nao uma tag posterior', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.seed('architecture/v01.001', sha(2));
-  state.seed('architecture/v01.002', sha(20));
-  assert.equal((await state.run(ctx))[0].architecture.tag, 'architecture/v01.001');
-});
-
-test('reexecucao apos outros merges preserva numero e referencia da arquitetura', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  const first = await state.run(ctx);
-  state.seed('architecture/v01.001', sha(2));
-  state.seed('clinica/v01.002', sha(20));
-  assert.deepEqual(await state.run(ctx), first);
-  assert.equal(state.writes.length, 1);
-});
-
-test('falha parcial retoma sem duplicar componente ja publicado', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica', 'app:fiscal']);
-  const state = fake(ctx);
-  state.fail = 'clinica/';
-  await assert.rejects(state.run(ctx), /Falha simulada/);
-  assert.deepEqual(state.writes, ['refs/tags/architecture/v01.001']);
-  state.fail = null;
-  const result = await state.run(ctx);
-  assert.equal(result.length, 3);
-  assert.equal(new Set(state.writes).size, 3);
-  assert.equal(state.writes.length, 3);
-});
-
-test('merges concorrentes disputam a mesma ref e recebem numeros diferentes', async () => {
-  const a = context(1), b = context(2, ['app:clinica'], sha(11));
-  const state = fake(a, b);
-  const result = await Promise.all([state.run(a), state.run(b)]);
-  assert.deepEqual(result.flat().map(x => x.tag).sort(), ['clinica/v01.001', 'clinica/v01.002']);
-  assert.equal(state.writes.length, 2);
-  assert.deepEqual(new Set(result.flat().map(x => x.sha)), new Set([sha(10), sha(11)]));
-});
-
-test('execucoes concorrentes da mesma PR sao idempotentes', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  const result = await Promise.all([state.run(ctx), state.run(ctx)]);
-  assert.deepEqual(result[0], result[1]);
-  assert.equal(state.writes.length, 1);
-});
-
-test('rajada de dez merges nao perde PRs nem repete numeros', async () => {
-  const contexts = Array.from({ length: 10 }, (_, i) => context(i + 1, ['app:clinica'], sha(i + 10)));
-  const state = fake(...contexts);
-  const results = (await Promise.all(contexts.map(c => state.run(c)))).flat();
-  assert.equal(new Set(results.map(r => r.pr)).size, 10);
-  assert.equal(new Set(results.map(r => r.tag)).size, 10);
-  assert.equal(state.writes.length, 10);
-});
-
-test('resposta perdida depois da criacao da ref e reconciliada', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.loseResponse = true;
-  assert.equal((await state.run(ctx))[0].tag, 'clinica/v01.001');
-  assert.equal(state.writes.length, 1);
-});
-
-test('403 de permissao interrompe sem publicar tags', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.forbidden = true;
-  await assert.rejects(state.run(ctx), /Forbidden/);
-  assert.equal(state.writes.length, 0);
-});
-
-test('PR sem merge, branch incorreta, SHA divergente e escopo invalido falham antes de escrever', async () => {
-  const mutations = [
-    c => { c.payload.pull_request.merged = false; },
-    c => { c.payload.pull_request.base.ref = 'develop'; },
-    c => { c.payload.pull_request.base.repo.full_name = 'other/repo'; },
-    c => { c.payload.pull_request.merge_commit_sha = 'invalid'; },
-    c => { c.payload.pull_request.labels = [{ name: 'bug' }]; },
-    c => { c.payload.pull_request.labels = [{ name: 'app:unknown' }]; },
-    c => { c.payload.action = 'opened'; },
-  ];
-  for (const mutate of mutations) {
-    const ctx = context(); mutate(ctx);
-    const state = fake(ctx);
-    await assert.rejects(state.run(ctx));
-    assert.equal(state.writes.length, 0);
-  }
-  const ctx = context(), state = fake(ctx);
-  const snapshot = structuredClone(ctx);
-  snapshot.payload.pull_request.merge_commit_sha = sha(99);
-  await assert.rejects(state.run(snapshot), /inconsistente/);
-});
-
-test('dispatch recupera PR mergeada e recusa alterar escopo de release existente', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  const manual = { ...ctx, eventName: 'workflow_dispatch', payload: {
-    repository: ctx.payload.repository, inputs: { pr_number: '1' },
-  } };
-  const first = await state.run(manual);
-  assert.deepEqual(await state.run(manual), first);
-  ctx.payload.pull_request.labels = [{ name: 'app:fiscal' }];
-  await assert.rejects(state.run(manual), /classificacao alterados/);
-  assert.equal(state.writes.length, 1);
-});
-
-test('recibo inconsistente e tags malformadas nao sao silenciosamente ignorados', async () => {
-  const ctx = context(), state = fake(ctx);
-  state.seed('clinica/v01.001', sha(3), { schema: SCHEMA, tag: 'clinica/v01.001', sha: sha(4) });
-  await assert.rejects(state.run(ctx), /Recibo inconsistente/);
-  state.refs.clear();
-  state.seed('clinica/vbad', sha(3));
-  await assert.rejects(state.run(ctx), /Formato de tag invalido/);
-  assert.equal(state.writes.length, 0);
-});
-
-test('tags duplicadas por PR exigem intervencao, sem nova publicacao', async () => {
-  const ctx = context(), state = fake(ctx);
-  const [receipt] = await state.run(ctx);
-  state.seed('clinica/v01.002', sha(10), { ...receipt, tag: 'clinica/v01.002', version: '01.002' });
-  await assert.rejects(state.run(ctx), /duplicadas/);
-  assert.equal(state.writes.length, 1);
-});
-
-test('manifesto de build registra recibo e exige checkout/tag/arquitetura consistentes', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica']), state = fake(ctx);
-  const [, receipt] = await state.run(ctx);
-  const git = args => {
-    if (args[0] === 'cat-file') return `object ${receipt.sha}\ntype commit\n\n${JSON.stringify(receipt)}`;
-    if (args[0] === 'merge-base') return '';
-    return sha(10);
+test('preparacao identica nao cria commit; lista parcial e falha de fast-forward nao sao ocultadas', async () => {
+  const same = fixture(); same.unchanged = true;
+  assert.equal(await same.prepare(), sha(35)); assert.equal(same.commit, undefined); assert.equal(same.writes.length, 0);
+  const partial = fixture(); partial.prs.get(35).changed_files = 2;
+  await assert.rejects(partial.prepare(), /Lista de arquivos incompleta/); assert.equal(partial.writes.length, 0);
+  const raced = fixture();
+  raced.github.rest.git.updateRef = async ({ force }) => {
+    assert.equal(force, false); throw Object.assign(new Error('Not a fast forward'), { status: 422 });
   };
-  assert.deepEqual(buildManifest(receipt.tag, git), receipt);
-  assert.throws(() => buildManifest(receipt.tag, args => args.includes('HEAD') ? sha(99) : git(args)), /checkout/);
-  assert.throws(() => buildManifest(receipt.tag, args => args.some(a => a.includes('architecture/')) ? sha(99) : git(args)), /arquitetura/);
-  assert.throws(() => buildManifest('app:unknown/v01.001', git), /desconhecido/);
-});
-
-test('simulacao mista calcula arquitetura sem criar objetos ou refs e permite publicar depois', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica']);
-  const state = fake(ctx);
-  const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
-  assert.equal(state.objects.size, 0);
-  assert.equal(state.refs.size, 0);
-  assert.equal(dry[1].architecture.tag, dry[0].tag);
-  assert.deepEqual(await state.run(ctx), dry);
-});
-
-test('simulacao reconcilia publicacao parcial sem tentar completar tags', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica']);
-  const state = fake(ctx);
-  state.fail = 'clinica/';
-  await assert.rejects(state.run(ctx));
-  const objectCount = state.objects.size;
-  const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
-  assert.equal(dry.length, 2);
-  assert.equal(state.objects.size, objectCount);
-  assert.equal(state.writes.length, 1);
+  await assert.rejects(raced.prepare(), /Not a fast forward/); assert.equal(raced.writes.length, 0);
 });

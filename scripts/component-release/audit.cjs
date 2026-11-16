@@ -12,7 +12,7 @@ async function audit(number, request = async path => {
   if (!response.ok) throw Object.assign(new Error(`GET ${path}: HTTP ${response.status}`), { status: response.status });
   return response.json();
 }) {
-  if (!Number.isSafeInteger(number) || number < 1) throw new Error('Informe numero de PR mergeada.');
+  if (!Number.isSafeInteger(number) || number < 1) throw new Error('Informe numero de PR de origem.');
   const paged = async path => {
     const result = [];
     for (let page = 1; ; page++) {
@@ -30,24 +30,25 @@ async function audit(number, request = async path => {
   const github = {
     paginate: (method, params) => method(params),
     rest: {
-      pulls: { get: async () => ({ data: pr }) },
+      pulls: { get: async () => ({ data: pr }), listFiles: () => paged(`pulls/${number}/files`) },
       git: {
         listMatchingRefs: ({ ref }) => request(`git/matching-refs/${ref}`),
         getTag: async ({ tag_sha }) => ({ data: await request(`git/tags/${tag_sha}`) }),
+        getRef: async ({ ref }) => ({ data: await request(`git/ref/${ref}`) }),
       },
-      repos: { compareCommitsWithBasehead: async ({ basehead }) => ({ data: await request(`compare/${basehead}`) }) },
+      repos: { getContent: async ({ path, ref }) => ({ data: await request(`contents/${path}?ref=${ref}`) }) },
     },
   };
   const core = { info() {}, summary: { addHeading() { return this; }, addCodeBlock() { return this; }, async write() {} } };
   const receipts = await publish({ github, context, core, dryRun: true });
   const configuration = {};
-  for (const path of ['actions/permissions', 'actions/variables/RELEASE_TAGGING_ENABLED',
+  for (const path of ['actions/permissions', 'actions/variables/RELEASE_TAGGING_V2_ENABLED',
     `branches/${encodeURIComponent(metadata.default_branch)}/protection`, 'rulesets']) {
     try { configuration[path] = await request(path); }
     catch (error) { configuration[path] = { unavailable: true, status: error.status, message: error.message }; }
   }
   return { collectedAtUtc: new Date().toISOString(), repository, defaultBranch: metadata.default_branch,
-    pr: number, mergeSha: pr.merge_commit_sha, dryRun: true, receipts,
+    pr: number, sourceSha: pr.head.sha, dryRun: true, receipts,
     labels: (await paged('labels')).map(label => label.name), configuration };
 }
 

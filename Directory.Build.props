@@ -2,4 +2,8 @@
   <PropertyGroup>
     <DefaultItemExcludes>$(DefaultItemExcludes);artifacts\**;artifacts/**</DefaultItemExcludes>
   </PropertyGroup>
+  <!-- Identidade ja versionada; build/publish apenas copiam, sem Git ou rede. -->
+  <ItemGroup>
+    <Content Include="$(MSBuildThisFileDirectory)release-identities/*.json" Link="release-identities/%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+  </ItemGroup>
 </Project>
