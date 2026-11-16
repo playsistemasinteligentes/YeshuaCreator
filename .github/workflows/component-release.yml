@@ -9,6 +9,11 @@ on:
         description: PR ja mergeada na branch padrao (recuperacao sem deploy)
         required: true
         type: string
+      dry_run:
+        description: Simular sem criar objetos Git ou tags
+        required: true
+        type: boolean
+        default: true
 
 permissions: {}
 
@@ -36,22 +41,22 @@ jobs:
           # Codigo confiavel que definiu o workflow; nunca head/ref da PR.
           ref: ${{ github.workflow_sha }}
           persist-credentials: false
-      - run: node --test tests/ReleaseAutomation/*.test.cjs
+      - run: node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
       - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
-            const { pullRequest } = require('./scripts/component-release/release.cjs');
-            const pr = await pullRequest(github, context);
-            core.info(JSON.stringify(pr));
+            await require('./scripts/component-release/release.cjs').publish({ github, context, core, dryRun: true });
             if (process.env.RELEASE_TAGGING_ENABLED !== 'true') {
-              await core.summary.addRaw('Publicacao desabilitada. O operador deve confirmar convencao/inicio e configurar RELEASE_TAGGING_ENABLED=true.').write();
+              await core.summary.addRaw('Simulacao concluida. Publicacao desabilitada: configure RELEASE_TAGGING_ENABLED=true no repositorio.').write();
             }
         env:
           RELEASE_TAGGING_ENABLED: ${{ vars.RELEASE_TAGGING_ENABLED }}
 
   publish:
     needs: validate
-    if: vars.RELEASE_TAGGING_ENABLED == 'true'
+    if: >-
+      vars.RELEASE_TAGGING_ENABLED == 'true' &&
+      (github.event_name == 'pull_request_target' || inputs.dry_run == false)
     runs-on: ubuntu-latest
     permissions:
       contents: write

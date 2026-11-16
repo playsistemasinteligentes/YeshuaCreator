@@ -11,7 +11,7 @@ test('publicacao exige testes, ativacao explicita e somente permissoes de tags/l
   assert.match(workflow, /^permissions: \{\}$/m);
   const publish = workflow.split('\n  publish:\n')[1];
   assert.match(publish, /needs: validate/);
-  assert.match(publish, /if: vars\.RELEASE_TAGGING_ENABLED == 'true'/);
+  assert.match(publish, /vars\.RELEASE_TAGGING_ENABLED == 'true' &&/);
   assert.match(publish, /permissions:\n      contents: write\n      pull-requests: read\n/);
   assert.match(workflow.split('\n  publish:\n')[0], /node --test tests\/ReleaseAutomation\/\*\.test\.cjs/);
   assert.doesNotMatch(workflow, /issues: write|pull-requests: write|actions: write|secrets\./);
@@ -33,9 +33,28 @@ test('CI valida mudanca de labels e actions sao fixadas por SHA completo', () =>
   assert.match(validation, /labeled, unlabeled/);
   assert.match(validation, /permissions:\n  contents: read/);
   assert.doesNotMatch(validation, /: write/);
-  for (const name of ['component-release.yml', 'release-validation.yml']) {
+  for (const name of ['component-release.yml', 'release-validation.yml', 'release-classification.yml']) {
     for (const match of read(name).matchAll(/uses: ([^\s]+)/g)) {
       assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
     }
   }
+});
+
+test('classificacao privilegiada usa somente codigo confiavel e valida no proprio run', () => {
+  const workflow = read('release-classification.yml');
+  assert.match(workflow, /pull_request_target:/);
+  assert.match(workflow, /ref: \$\{\{ github.workflow_sha \}\}/);
+  assert.match(workflow, /persist-credentials: false/);
+  assert.match(workflow, /issues: write/);
+  assert.match(workflow, /pull-requests: read/);
+  assert.doesNotMatch(workflow, /contents: write|pull-requests: write|secrets\.|pull_request\.head|github\.head_ref/);
+  assert.match(workflow, /labelPullRequest/);
+  assert.doesNotMatch(read('release-validation.yml'), /classify\(context.payload/);
+});
+
+test('dispatch simula por padrao e publicacao tem barreira adicional independente', () => {
+  const workflow = read('component-release.yml');
+  assert.match(workflow, /dry_run:[\s\S]*type: boolean\n        default: true/);
+  assert.match(workflow, /publish\(\{ github, context, core, dryRun: true \}\)/);
+  assert.match(workflow.split('\n  publish:\n')[1], /inputs.dry_run == false/);
 });

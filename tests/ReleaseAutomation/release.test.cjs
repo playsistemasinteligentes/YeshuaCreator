@@ -58,6 +58,8 @@ function fake(...contexts) {
   const core = { info() {}, summary: {
     addHeading() { return this; }, addCodeBlock() { return this; }, async write() {},
   } };
+  state.github = github;
+  state.core = core;
   state.run = context => publish({ github, context, core });
   state.seed = (tag, commit, receipt) => {
     const id = sha(counter++);
@@ -256,4 +258,26 @@ test('manifesto de build registra recibo e exige checkout/tag/arquitetura consis
   assert.throws(() => buildManifest(receipt.tag, args => args.includes('HEAD') ? sha(99) : git(args)), /checkout/);
   assert.throws(() => buildManifest(receipt.tag, args => args.some(a => a.includes('architecture/')) ? sha(99) : git(args)), /arquitetura/);
   assert.throws(() => buildManifest('app:unknown/v01.001', git), /desconhecido/);
+});
+
+test('simulacao mista calcula arquitetura sem criar objetos ou refs e permite publicar depois', async () => {
+  const ctx = context(1, ['architecture', 'app:clinica']);
+  const state = fake(ctx);
+  const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
+  assert.equal(state.objects.size, 0);
+  assert.equal(state.refs.size, 0);
+  assert.equal(dry[1].architecture.tag, dry[0].tag);
+  assert.deepEqual(await state.run(ctx), dry);
+});
+
+test('simulacao reconcilia publicacao parcial sem tentar completar tags', async () => {
+  const ctx = context(1, ['architecture', 'app:clinica']);
+  const state = fake(ctx);
+  state.fail = 'clinica/';
+  await assert.rejects(state.run(ctx));
+  const objectCount = state.objects.size;
+  const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
+  assert.equal(dry.length, 2);
+  assert.equal(state.objects.size, objectCount);
+  assert.equal(state.writes.length, 1);
 });
