@@ -164,6 +164,16 @@ class SetupSelectionTests(unittest.TestCase):
         self.assertLess(source.index('if prepare_only:\n'), source.index('if role == "controller":'))
         self.assertIn('"repository_initialized": False', source)
 
+    def test_controller_deploy_is_scoped_to_the_existing_backup_controller(self):
+        source = (ROOT / "infra/backups/deploy-controller.sh").read_text()
+        self.assertIn('install.py" --role controller --enable-schedules', source)
+        self.assertIn("yeshua-backup-controller-deploy.lock", source)
+        self.assertIn("git -C \"$APP_DIR\" pull --ff-only origin main", source)
+        self.assertIn("yeshua-backup-controller-tick.timer", source)
+        self.assertNotIn("infra/docker/deploy.sh", source)
+        self.assertNotIn("--initialize-online", source)
+        self.assertNotIn("backup.py", source)
+
 
 class RecoveryContractTests(unittest.TestCase):
     def test_capture_records_sql_digest_uid_project_files_and_replicas(self):
@@ -947,7 +957,8 @@ class ShellFlowTests(unittest.TestCase):
                         self.assertLess(calls.index("prepare --role applications"), calls.index("apt upgrade"))
 
     def test_shell_syntax(self):
-        for relative in ("infra/bootstraps/setup.sh", "infra/bootstraps/setup-storage.sh", "infra/Memorias/DockerCompose/recovery-assets.sh"):
+        for relative in ("infra/bootstraps/setup.sh", "infra/bootstraps/setup-storage.sh",
+                         "infra/backups/deploy-controller.sh", "infra/Memorias/DockerCompose/recovery-assets.sh"):
             result = subprocess.run(["bash", "-n", str(ROOT / relative)], capture_output=True, text=True)
             self.assertEqual(0, result.returncode, result.stderr)
 
