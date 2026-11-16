@@ -26,8 +26,13 @@ public partial class ExecutarRecorrenciaConsultasHandler
             if (comand.Confirmar)
             {
                 var c=comand.Confirmacao ?? throw new AtendimentoException("Confirmação ausente.");
+                if (c.Ocorrencias is null || c.Ocorrencias.Count is <1 or >CalendarioConsultas.MaximoOcorrencias)
+                    throw new AtendimentoException("Informe uma decisão válida para cada ocorrência.");
+                foreach (var escolha in c.Ocorrencias)
+                    if (escolha is null)
+                        throw new AtendimentoException("Informe uma decisão válida para cada ocorrência.");
                 result=_write.Confirmar(_executionContext.TenantID,_executionContext.UserId,c.PlanoId,c.Revisado,
-                    c.Ocorrencias?.Select(x=>new EscolhaRecorrencia(x.Ordem,x.DataInicio,x.DataFim,x.Agendar)).ToList()!,now);
+                    c.Ocorrencias.Select(x=>new EscolhaRecorrencia(x.Ordem,x.DataInicio,x.DataFim,x.Agendar)).ToList(),now);
             }
             else
             {
