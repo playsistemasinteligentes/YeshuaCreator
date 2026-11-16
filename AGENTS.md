@@ -2226,6 +2226,19 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Clinica E Executor Codex
 
+- Recorrencia de consultas e uma capacidade local do painel Atendimentos,
+  declarada em M000009: Prever/ConfirmarRecorrenciaConsultas usam o receiver
+  interno ExecutarRecorrenciaConsultas e os repositories existentes. A entidade
+  interna, com tenant, PlanoRecorrenciaConsulta guarda previa e recibo idempotente;
+  nao possui CRUD publico. Confirmacao revalida catalogo, vinculo, versoes e
+  conflitos sob a mesma trava de profissional usada pelo agendamento normal.
+  Todas as ocorrencias e o recibo pertencem a uma unica transacao. Calendario
+  usa America/Sao_Paulo e data final inclusiva. Edicao de serie futura preserva
+  consultas passadas/iniciadas e rejeita previa desatualizada; nao ha worker,
+  saga, alertas de termino ou execucao automatica. Ver
+  docs/operational/clinica/RECORRENCIA_CONSULTAS.md. Implementacao de desenvolvimento;
+  testes sem banco nao comprovam isolamento/concorrencia real do SQL Server.
+
 - PsychologySessionInsight mantem transcricao e resumo como dois StepWait
   independentes, conservando os identificadores de steps ja persistidos.
 - Novas sagas pertencem a Sesoes; a referencia explicita ao upload usa sua

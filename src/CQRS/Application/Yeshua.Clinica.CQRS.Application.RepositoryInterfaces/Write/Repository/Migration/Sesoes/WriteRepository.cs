@@ -63,6 +63,7 @@ namespace IRepository.Write
         void UpdateServicoNome(int id, string value);
         void UpdateModeloConsulta(int id, int value);
         void UpdateVersaoModeloConsulta(int id, int value);
+        void UpdateRecorrenciaId(int id, string value);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesWriteMigration

@@ -71,6 +71,7 @@ namespace IRepository.Read
         public bool ExistsByServicoNome(string value );
         public bool ExistsByModeloConsulta(int value );
         public bool ExistsByVersaoModeloConsulta(int value );
+        public bool ExistsByRecorrenciaId(string value );
         public SesoesDTO FirstByPacienteId(int value );
         public SesoesDTO FirstByDataInicio(DateTime value );
         public SesoesDTO FirstByDataFim(DateTime value );
@@ -113,6 +114,7 @@ namespace IRepository.Read
         public SesoesDTO FirstByServicoNome(string value );
         public SesoesDTO FirstByModeloConsulta(int value );
         public SesoesDTO FirstByVersaoModeloConsulta(int value );
+        public SesoesDTO FirstByRecorrenciaId(string value );
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value );
         public IEnumerable<SesoesDTO> GetAllByDataInicio(DateTime value );
         public IEnumerable<SesoesDTO> GetAllByDataFim(DateTime value );
@@ -155,6 +157,7 @@ namespace IRepository.Read
         public IEnumerable<SesoesDTO> GetAllByServicoNome(string value );
         public IEnumerable<SesoesDTO> GetAllByModeloConsulta(int value );
         public IEnumerable<SesoesDTO> GetAllByVersaoModeloConsulta(int value );
+        public IEnumerable<SesoesDTO> GetAllByRecorrenciaId(string value );
         public DataPagination<SesoesStandardDTO> GetSesoesGeral(ICommandRead command );
     }
 }

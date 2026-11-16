@@ -58,6 +58,7 @@ namespace IQuery.Write
         QueryModel UpdateServicoNome(int id, string value);
         QueryModel UpdateModeloConsulta(int id, int value);
         QueryModel UpdateVersaoModeloConsulta(int id, int value);
+        QueryModel UpdateRecorrenciaId(int id, string value);
         public QueryModel DeleteSesoesQuery(ISesoesEntity Sesoes);
     }
 }

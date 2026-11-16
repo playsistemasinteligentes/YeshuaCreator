@@ -256,6 +256,11 @@ namespace Input.Repository.Sesoes
             var query = _query.UpdateVersaoModeloConsulta(id, value);
              _UnitOfWork.Execute(query.Query, query.Parameters);
         }
+        public void UpdateRecorrenciaId(int id, string value)
+        {
+            var query = _query.UpdateRecorrenciaId(id, value);
+             _UnitOfWork.Execute(query.Query, query.Parameters);
+        }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureWriteConcreteRepositoryMigration

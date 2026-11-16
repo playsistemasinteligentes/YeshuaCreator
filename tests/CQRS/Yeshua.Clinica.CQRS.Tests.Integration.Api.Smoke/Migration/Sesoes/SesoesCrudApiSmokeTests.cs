@@ -113,6 +113,7 @@ public partial class SesoesCrudApiSmokeTests : ApiIntegrationTestBase
             ["ServicoNome"] = ApiTestData.Text("Sesoes ServicoNome", 80),
             ["ModeloConsulta"] = 1,
             ["VersaoModeloConsulta"] = 1,
+            ["RecorrenciaId"] = ApiTestData.Text("Sesoes RecorrenciaId", 32),
         };
     }
 
@@ -164,6 +165,7 @@ public partial class SesoesCrudApiSmokeTests : ApiIntegrationTestBase
         payload["ServicoNome"] = ApiTestData.Text("Sesoes ServicoNome Update", 80);
         payload["ModeloConsulta"] = 2;
         payload["VersaoModeloConsulta"] = 2;
+        payload["RecorrenciaId"] = ApiTestData.Text("Sesoes RecorrenciaId Update", 32);
         return payload;
     }
 

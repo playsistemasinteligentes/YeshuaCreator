@@ -60,6 +60,7 @@ namespace Repositorio.Outputs
     public string serviconome { get; set; } = string.Empty;
     public int modeloconsulta { get; set; }
     public int versaomodeloconsulta { get; set; }
+    public string recorrenciaid { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
