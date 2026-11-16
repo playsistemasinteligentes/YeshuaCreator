@@ -403,6 +403,23 @@ Conferir as agendas com:
 systemctl list-timers --all 'yeshua-backup-*' 'yeshua-volatile-cleanup.timer'
 ```
 
+Na Storage VPS controladora, deploys posteriores possuem um comando publico
+proprio, equivalente ao deploy das aplicacoes, mas restrito ao backup:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-storage-backup.sh | bash
+```
+
+Esse comando exige que o setup inicial da Storage VPS ja tenha criado
+`/root/YeshuaCreator` e a configuracao privada do controlador. Ele atualiza o
+repositorio para `main`, instala uma release imutavel em
+`/opt/yeshua-backup/releases`, troca `current` atomicamente, executa o probe e
+mantem as agendas do controlador ativas. Nao instala Docker ou aplicativos,
+nao inicializa repositorios, nao executa capturas e nao habilita retencao
+destrutiva. Assim como o deploy geral, descarta alteracoes locais no clone de
+implantacao; configuracao, chaves, estado, recibos e dados ficam fora desse
+clone e sao preservados.
+
 Recibos novos de arquivos usam persistent-roots-v3 com identidade da origem e cobertura
 de recuperacao. O instalador refaz arquivos quando a selecao/metadata e antiga,
 seguido da leitura integral; nunca reaproveita check-data anterior a uma nova

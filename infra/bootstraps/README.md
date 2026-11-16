@@ -64,6 +64,8 @@ As fases, guardas e limitacoes estao em [RECOVERY.md](../backups/RECOVERY.md).
 
 ## Deploys Posteriores
 
+### Servidor De Aplicacoes
+
 ```bash
 curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/main/infra/docker/deploy.sh | bash
 
@@ -80,6 +82,19 @@ Somente o Front da Central e publicado.
 O Nginx e validado e recarregado pelo deploy porque suas rotas conhecem os
 aplicativos publicados. A limpeza dos Fronts antigos e uma operacao manual e
 unica; ela nao faz parte do setup nem dos deploys seguintes.
+
+### Servidor De Storage
+
+Depois do setup inicial, o controlador de backup possui um deploy proprio:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-storage-backup.sh | bash
+```
+
+Ele atualiza somente o clone e o pacote do controlador em
+`/opt/yeshua-backup`, valida o acesso e mantem suas agendas. Nao executa o
+deploy dos aplicativos, nao instala Docker, nao inicia capturas e nao altera
+os dados armazenados.
 
 ## Backup No Setup
 

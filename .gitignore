@@ -301,6 +301,7 @@ Backup*/
 !/infra/backups/yeshua-backup-request@.service
 !/infra/backups/yeshua-backup-sql-safety.service
 !/infra/backups/install.py
+!/infra/backups/deploy-storage-backup.sh
 !/infra/backups/volatile.py
 !/infra/backups/yeshua-volatile-cleanup.service
 !/infra/backups/yeshua-volatile-cleanup.timer

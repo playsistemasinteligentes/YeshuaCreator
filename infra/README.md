@@ -117,6 +117,17 @@ curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCrea
 O script utiliza um lock global para impedir deploys simultaneos, atualiza o
 repositorio uma vez e recarrega o nginx graciosamente ao final.
 
+No servidor de storage, depois do setup inicial, o controlador de backup e
+atualizado por uma linha propria. Ela nao publica os aplicativos nem executa
+uma captura de backup:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-storage-backup.sh | bash
+```
+
+O comando instala uma nova release imutavel do controlador, troca o ponteiro
+ativo, valida o servico e preserva configuracao, chaves, recibos e dados.
+
 ## Rotas
 
 - `/`: Front compartilhado da Central.
