@@ -8,7 +8,7 @@ if [[ "${EUID}" -ne 0 ]]; then
   exit 1
 fi
 
-exec 9>/var/lock/yeshua-backup-controller-deploy.lock
+exec 9>/var/lock/yeshua-storagebk-deploy.lock
 flock 9
 
 if [[ ! -d "$APP_DIR/.git" ]]; then
@@ -25,10 +25,10 @@ fi
 python3 -B "$APP_DIR/infra/backups/install.py" --role controller --enable-schedules
 
 if ! systemctl is-active --quiet yeshua-backup-controller-tick.timer; then
-  echo "O controlador foi instalado, mas a agenda de reconciliacao nao esta ativa." >&2
+  echo "O StorageBK foi instalado, mas a agenda de reconciliacao nao esta ativa." >&2
   exit 1
 fi
 
 release="$(readlink -f /opt/yeshua-backup/current)"
 revision="$(git -C "$APP_DIR" rev-parse HEAD)"
-printf 'Deploy do controlador de backup concluido.\nRevisao: %s\nRelease: %s\n' "$revision" "$release"
+printf 'Deploy do StorageBK concluido.\nRevisao: %s\nRelease: %s\n' "$revision" "$release"

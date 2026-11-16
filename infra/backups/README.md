@@ -407,7 +407,7 @@ Na Storage VPS controladora, deploys posteriores possuem um comando publico
 proprio, equivalente ao deploy das aplicacoes, mas restrito ao backup:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-controller.sh | bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-storage-backup.sh | bash
 ```
 
 Esse comando exige que o setup inicial da Storage VPS ja tenha criado

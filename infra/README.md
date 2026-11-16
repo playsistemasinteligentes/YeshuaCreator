@@ -122,7 +122,7 @@ atualizado por uma linha propria. Ela nao publica os aplicativos nem executa
 uma captura de backup:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-controller.sh | bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-storage-backup.sh | bash
 ```
 
 O comando instala uma nova release imutavel do controlador, troca o ponteiro

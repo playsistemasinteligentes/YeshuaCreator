@@ -88,7 +88,7 @@ unica; ela nao faz parte do setup nem dos deploys seguintes.
 Depois do setup inicial, o controlador de backup possui um deploy proprio:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-controller.sh | bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/backups/deploy-storage-backup.sh | bash
 ```
 
 Ele atualiza somente o clone e o pacote do controlador em
