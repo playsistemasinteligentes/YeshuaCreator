@@ -7,6 +7,7 @@ import {
     getAuthenticationApi,
     initializeApplicationContext
 } from './application-context.js';
+import { bindReleaseFooter } from './release-footer.js?v=20261116-releases01';
 import { bindUserArea } from './user-area.js?v=20261028-help02';
 
 
@@ -107,6 +108,7 @@ async function attachEvents(route) {
         await initializeApplicationContext(true);
         bindApplicationSelector();
         bindUserArea();
+        bindReleaseFooter();
         buildCrud();
         buildMenu();
         await loadDataMenu();

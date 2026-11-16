@@ -61,7 +61,9 @@ O operador ja autorizou a ativacao; as etapas administrativas abaixo dependem
 de uma sessao GitHub com os acessos adequados, nao de nova autorizacao de negocio.
 Nao e possivel ativar uma variavel de repositorio editando YAML ou o Git local.
 
-1. Na nova PR desta task, manter `architecture` antes do merge. Enquanto o novo
+1. Na PR #28 desta task, manter `architecture` e `app:central` antes do merge
+   (automacao compartilhada e interface Central). Criar `app:central` se ainda
+   nao existir. Enquanto o novo
    workflow nao estiver na branch padrao, ele ainda nao classifica PRs. Revisao
    e merge sao externos a esta task; deploy nao e necessario para os workflows.
 2. Em Settings > Actions, permitir as duas actions fixadas por SHA. Manter o
@@ -162,10 +164,77 @@ commit e ancestralidade da arquitetura registrada. Publicacao posterior de outra
 tag nao muda o manifesto. O build existente nao foi alterado para consumir esse
 arquivo; quem construir o artefato deve guarda-lo com os resultados do build.
 
+## Versoes na interface Central (issue #27)
+
+A mesma PR da ativacao inclui a [issue #27](https://github.com/playsistemasinteligentes/YeshuaCreator/issues/27).
+No rodape do shell autenticado da Central, os sete componentes exibem suas
+**versoes publicadas**. Cada componente abre o historico das dez releases mais
+recentes, com links para a tag, PR e commit. O link para todas as tags permite
+continuar a consulta no GitHub. O rodape e responsivo, usa controles nativos de
+teclado e nao ocupa uma faixa fixa sobre as telas de trabalho.
+
+`component-releases.js` consulta somente a API publica do repositorio, por GET,
+sem cookie, token da Central, segredo GitHub ou referrer. Os nomes visuais sao
+metadata estatica; um teste exige igualdade com `components.json`. Numeros de
+versao nunca sao fixados no Front. Uma leitura completa de refs escolhe a maior
+versao numerica de cada componente; somente suas anotacoes sao lidas na carga
+inicial. O recibo deve corresponder ao repositorio, schema, tag, componente,
+versao, PR e SHA apontado. Tags leves, recibos ausentes ou inconsistentes nao
+sao apresentadas como releases verificadas da automacao.
+
+Uma tag invalida no namespace ou falha na anotacao mais recente marca somente
+seu componente como indisponivel, sem substitui-lo silenciosamente por versao
+mais antiga. Ausencia de tags mostra **Sem release**. Falha na leitura global
+remove os valores anteriores e informa indisponibilidade. O horario da consulta
+fica visivel. Como ainda nao havia tags na consulta real desta task, o resultado
+correto foi Sem release nos sete componentes, sem numeros ilustrativos.
+
+**Atualizar versoes** relê as refs e encontra novas releases sem recarregar a
+pagina ou alterar formularios. A navegacao reutiliza cache em memoria por cinco
+minutos; nao ha polling nem persistencia de resultados em localStorage. Anotacoes
+sao cacheadas pelo SHA imutavel, com limite de 128 entradas; historico e sob demanda.
+O catalogo e limitado a 10.000 refs; se ultrapassar o limite, a leitura falha
+explicitamente. A API publica tem limite de requisicoes por IP; bloqueios de rede,
+CORS ou rate limit sao indisponibilidade, nunca Sem release. Nao introduzir
+credenciais no navegador para ampliar esse limite.
+
+O rodape declara **Versoes implantadas e em desenvolvimento nao verificadas**.
+Uma nova tag informa o que foi publicado no GitHub; nao prova qual binario esta
+rodando em API, Worker ou Front. A identidade runtime existente nao e um recibo
+de implantacao de todos os componentes. Integrar manifestos de deploy reais e
+uma evolucao separada, sem inferir implantacao pela ultima tag ou pela branch.
+
+Arquivos de interface pertencem exclusivamente ao Front Central em `wwwroot/spa`:
+`component-releases.js`, `release-footer.js`, `release-footer.css`, `router.js`,
+`views/dashboard.html` e `index.html`. Nao houve alteracao de DSL, codigo gerado,
+API de negocio ou pipeline de deploy. Os workflows executam tambem os testes de
+dados do Front; o ensaio Playwright fica separado para ambientes com navegador.
+
+## Validacao da ampliacao nesta task
+
+Em 2026-11-16, a ampliacao permaneceu na branch da PR em rascunho
+[#28](https://github.com/playsistemasinteligentes/YeshuaCreator/pull/28).
+Passaram 38 testes Node (32 da automacao e seis de dados da interface), build
+.NET 8 do Front com zero avisos/erros, actionlint dos tres workflows e
+`git diff --check`. A consulta real do cliente do Front em 22:10 UTC retornou
+os sete componentes sem release. Nenhuma tag foi criada para simular dados.
+
+O ensaio `release-footer.cjs` passou em Chromium/Playwright 1.65.1, com API
+GitHub simulada: sete componentes, atualizacao independente, historico e links,
+teclado, viewport de 360 px sem overflow, rate limit/recuperacao, nenhuma
+credencial enviada e zero erros JavaScript. A primeira tentativa falhou ao
+iniciar Chromium por ausencia de `libnspr4.so` e outras bibliotecas do container;
+a repeticao passou com dependencias extraidas somente em `/tmp`, sem instalar
+pacotes no sistema. O ensaio visual usa o markup real do rodape em shell de
+teste; nao comprova login, dados de negocio nem ambiente publicado.
+
 ## Verificacao e limites
 
 ```sh
-node --test tests/ReleaseAutomation/*.test.cjs
+node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
+# Requer Playwright e Chromium disponiveis no ambiente de testes:
+node tests/Front/Central/release-footer.cjs
+dotnet build src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj
 actionlint .github/workflows/*.yml
 ```
 
@@ -189,3 +258,8 @@ Referencias: [eventos](https://docs.github.com/en/actions/reference/workflows-an
 [refs Git](https://docs.github.com/en/rest/git/refs),
 [variaveis de repositorio](https://docs.github.com/en/rest/actions/variables#create-a-repository-variable),
 [eventos gerados pelo token](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow).
+
+Fontes da consulta publica: [refs](https://docs.github.com/en/rest/git/refs#list-matching-references),
+[anotacoes](https://docs.github.com/en/rest/git/tags#get-a-tag),
+[CORS](https://docs.github.com/en/rest/using-the-rest-api/using-cors-and-jsonp-to-make-cross-origin-requests),
+[limites da API](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).

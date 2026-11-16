@@ -32,7 +32,7 @@ async function audit(number, request = async path => {
     rest: {
       pulls: { get: async () => ({ data: pr }) },
       git: {
-        listMatchingRefs: ({ ref }) => paged(`git/matching-refs/${ref}`),
+        listMatchingRefs: ({ ref }) => request(`git/matching-refs/${ref}`),
         getTag: async ({ tag_sha }) => ({ data: await request(`git/tags/${tag_sha}`) }),
       },
       repos: { compareCommitsWithBasehead: async ({ basehead }) => ({ data: await request(`compare/${basehead}`) }) },

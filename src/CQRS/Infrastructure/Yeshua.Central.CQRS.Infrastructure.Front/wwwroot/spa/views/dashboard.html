@@ -219,3 +219,13 @@
         .then(html => {
             document.getElementById("action-modal-container").innerHTML = html;
         });</script>
+
+<footer id="component-release-footer" class="yeshua-release-footer" aria-label="Versões dos componentes">
+    <div class="yeshua-release-heading">
+        <h2>Versões publicadas</h2>
+        <button type="button" data-release-refresh>Atualizar versões</button>
+    </div>
+    <p>Fonte: tags de release no GitHub. Versões implantadas e em desenvolvimento não verificadas.</p>
+    <p data-release-status role="status" aria-live="polite"></p>
+    <div data-release-components class="yeshua-release-components"></div>
+</footer>

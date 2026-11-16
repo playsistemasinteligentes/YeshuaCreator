@@ -1346,6 +1346,12 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
   possivel ativar essa variavel pelo YAML. Dispatch usa dry_run=true por padrao.
 - Simulacao usa o mesmo publicador sem criar objetos Git ou refs. Auditoria
   publica somente GET nao comprova permissoes administrativas ou escrita real.
+- O rodape do Front Central le releases publicadas pela API publica do GitHub,
+  valida recibos das tags anotadas e oferece historico limitado com PR/commit.
+  Nao envia tokens da plataforma nem cria endpoint, banco ou pipeline paralelo.
+  Atualizacao e manual, com cache curto em memoria e sem polling. Publicacao
+  nao comprova implantacao; versoes implantadas/em desenvolvimento permanecem
+  explicitamente nao verificadas enquanto nao houver manifesto operacional.
 - Ver `docs/operational/COMPONENT_RELEASES.md`; scripts pertencem a automacao
   do repositorio, sem alterar Engine, codigo gerado ou runtime dos aplicativos.
 

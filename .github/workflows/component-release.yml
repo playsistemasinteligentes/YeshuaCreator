@@ -41,7 +41,7 @@ jobs:
           # Codigo confiavel que definiu o workflow; nunca head/ref da PR.
           ref: ${{ github.workflow_sha }}
           persist-credentials: false
-      - run: node --test tests/ReleaseAutomation/*.test.cjs
+      - run: node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
       - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |

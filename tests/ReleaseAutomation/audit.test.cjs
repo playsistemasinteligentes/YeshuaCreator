@@ -22,7 +22,7 @@ test('auditoria publica simula PR mergeada e explicita configuracao inacessivel'
   assert.equal(result.configuration['actions/variables/RELEASE_TAGGING_ENABLED'].unavailable, true);
   assert.equal(result.configuration['actions/permissions'].status, 401);
   assert.deepEqual(result.labels, ['architecture']);
-  assert.ok(paths.includes('git/matching-refs/tags/architecture/v?per_page=100&page=1'));
+  assert.ok(paths.includes('git/matching-refs/tags/architecture/v'));
   assert.ok(!paths.some(p => /git\/(tags|refs)$/.test(p)));
 });
 
