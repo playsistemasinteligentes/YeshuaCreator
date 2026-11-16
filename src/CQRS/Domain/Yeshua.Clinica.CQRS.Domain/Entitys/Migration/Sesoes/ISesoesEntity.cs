@@ -62,6 +62,7 @@
     string? ServicoNome { get; }
     int? ModeloConsulta { get; }
     int? VersaoModeloConsulta { get; }
+    string? RecorrenciaId { get; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

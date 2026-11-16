@@ -30,7 +30,7 @@ namespace Query.Write
         }
         public QueryModel InserirSesoesQuery(ISesoesEntity Sesoes)
         {
-            this.Query = $@" INSERT INTO [Sesoes] ([PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas], [ServicoNome], [ModeloConsulta], [VersaoModeloConsulta]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @DataInicio, @DataFim, @StatusAgendamento, @StatusProntuario, @Prontuario, @QueixaPrincipal, @RegistroDocumental, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @UsoMedicacao, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico, @ServicoId, @MovimentacaoFinanceiraId, @ProfissionalId, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @AtendimentoIniciadoEm, @AtendimentoEncerradoEm, @VersaoAtendimento, @RegistroFinalizadoEm, @RegistroFinalizadoPorUserId, @SugestoesIncorporadas, @ServicoNome, @ModeloConsulta, @VersaoModeloConsulta) ";
+            this.Query = $@" INSERT INTO [Sesoes] ([PacienteId], [DataInicio], [DataFim], [StatusAgendamento], [StatusProntuario], [Prontuario], [QueixaPrincipal], [RegistroDocumental], [SintomasRelatados], [MudancasDesdeUltimaSessaao], [ComportamentoObservado], [EstadoEmocionalGeral], [DiscursoPensamentos], [UsoMedicacao], [TecnicasUtilizadas], [QuestionamentosReflexoesAbordadas], [ExerciciosTarefasSugeridas], [DiagnoosticoHipoteseDiagnoostica], [ObjetivosCurtoPrazo], [ObjetivosLongoPrazo], [FrequenciaSugeridaSessooes], [EncaminhamentoOutrosProfissionais], [InformacoesRelevantesFuturasConsultas], [FeedbackPacienteSobreProcessoTerapeeutico], [ServicoId], [MovimentacaoFinanceiraId], [ProfissionalId], [TenantID], [Deleted], [Changed], [UserId], [OperationalEntityId], [AtendimentoIniciadoEm], [AtendimentoEncerradoEm], [VersaoAtendimento], [RegistroFinalizadoEm], [RegistroFinalizadoPorUserId], [SugestoesIncorporadas], [ServicoNome], [ModeloConsulta], [VersaoModeloConsulta], [RecorrenciaId]) OUTPUT INSERTED.[Id] VALUES(@PacienteId, @DataInicio, @DataFim, @StatusAgendamento, @StatusProntuario, @Prontuario, @QueixaPrincipal, @RegistroDocumental, @SintomasRelatados, @MudancasDesdeUltimaSessaao, @ComportamentoObservado, @EstadoEmocionalGeral, @DiscursoPensamentos, @UsoMedicacao, @TecnicasUtilizadas, @QuestionamentosReflexoesAbordadas, @ExerciciosTarefasSugeridas, @DiagnoosticoHipoteseDiagnoostica, @ObjetivosCurtoPrazo, @ObjetivosLongoPrazo, @FrequenciaSugeridaSessooes, @EncaminhamentoOutrosProfissionais, @InformacoesRelevantesFuturasConsultas, @FeedbackPacienteSobreProcessoTerapeeutico, @ServicoId, @MovimentacaoFinanceiraId, @ProfissionalId, @TenantID, @Deleted, @Changed, @UserId, @OperationalEntityId, @AtendimentoIniciadoEm, @AtendimentoEncerradoEm, @VersaoAtendimento, @RegistroFinalizadoEm, @RegistroFinalizadoPorUserId, @SugestoesIncorporadas, @ServicoNome, @ModeloConsulta, @VersaoModeloConsulta, @RecorrenciaId) ";
             this.Parameters = new
             {
                 PacienteId = Sesoes.PacienteId,
@@ -74,6 +74,7 @@ namespace Query.Write
                 ServicoNome = Sesoes.ServicoNome,
                 ModeloConsulta = Sesoes.ModeloConsulta,
                 VersaoModeloConsulta = Sesoes.VersaoModeloConsulta,
+                RecorrenciaId = Sesoes.RecorrenciaId,
             };
             return new QueryModel(this.Query, this.Parameters);
         }
@@ -527,6 +528,16 @@ namespace Query.Write
             this.Parameters = new
             {
                 VersaoModeloConsulta = value,
+                Id = id,
+            };
+            return new QueryModel(this.Query, this.Parameters);
+        }
+        public QueryModel UpdateRecorrenciaId(int id, string value)
+        {
+            this.Query = $@" UPDATE [Sesoes] SET [RecorrenciaId] = @RecorrenciaId WHERE [Id] = @Id ";
+            this.Parameters = new
+            {
+                RecorrenciaId = value,
                 Id = id,
             };
             return new QueryModel(this.Query, this.Parameters);

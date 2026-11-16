@@ -111,5 +111,44 @@ public partial record ServicoInicialInfo : ICommand
     public int ModeloConsulta { get; set; }
 }
 
+public partial record OcorrenciaRecorrenciaInfo : ICommand
+{
+    public int Ordem { get; set; }
+    public int SessaoId { get; set; }
+    public string DataInicio { get; set; } = string.Empty;
+    public string DataFim { get; set; } = string.Empty;
+    public bool Agendar { get; set; }
+    public bool Conflito { get; set; }
+}
+
+public partial record EscolhaRecorrenciaInfo : ICommand
+{
+    public int Ordem { get; set; }
+    public string DataInicio { get; set; } = string.Empty;
+    public string DataFim { get; set; } = string.Empty;
+    public bool Agendar { get; set; }
+}
+
+public partial record RecorrenciaInput : ICommand
+{
+    public int PacienteId { get; set; }
+    public int ServicoId { get; set; }
+    public int ModeloConsulta { get; set; }
+    public int VersaoModeloConsulta { get; set; }
+    public string DataInicio { get; set; } = string.Empty;
+    public string DataFim { get; set; } = string.Empty;
+    public int IntervaloDias { get; set; }
+    public string DataFinal { get; set; } = string.Empty;
+    public int SessaoId { get; set; }
+    public bool SerieFutura { get; set; }
+}
+
+public partial record ConfirmacaoRecorrenciaInput : ICommand
+{
+    public string PlanoId { get; set; } = string.Empty;
+    public bool Revisado { get; set; }
+    public List<EscolhaRecorrenciaInfo> Ocorrencias { get; set; } = default!;
+}
+
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup

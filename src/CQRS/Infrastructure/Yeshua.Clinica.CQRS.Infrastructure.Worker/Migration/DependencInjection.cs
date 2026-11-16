@@ -237,6 +237,9 @@ builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadFK
 builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadFKUserIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadQueryGeralReceiver>();
 
+builder.Services.AddTransient<IRepository.Write.IPlanoRecorrenciaConsultaWriteRepository, Input.Repository.PlanoRecorrenciaConsulta.PlanoRecorrenciaConsultaWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IPlanoRecorrenciaConsultaReadRepository, Read.Repository.PlanoRecorrenciaConsultaReadRepository>();
+
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
@@ -516,6 +519,12 @@ builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarEstabelecimento
 builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarProfissionalClinicaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarServicoClinicaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.PreverRecorrenciaConsultasHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarRecorrenciaConsultasHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarRecorrenciaConsultasHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

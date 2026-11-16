@@ -521,6 +521,14 @@ namespace Read.Repository
                 return result == 1;
         }
 
+        public bool ExistsByRecorrenciaId(string value )
+        {
+            var query = _query.ExistsByRecorrenciaIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<int>(query.Query, query.Parameters);
+                return result == 1;
+        }
+
         public SesoesDTO FirstByPacienteId(int value )
         {
             var query = _query.FirstByPacienteIdQuery(value );
@@ -857,6 +865,14 @@ namespace Read.Repository
                 return result;
         }
 
+        public SesoesDTO FirstByRecorrenciaId(string value )
+        {
+            var query = _query.FirstByRecorrenciaIdQuery(value );
+
+                var result = _unitOfWork.QueryFirstOrDefault<SesoesDTO>(query.Query, query.Parameters);
+                return result;
+        }
+
         public IEnumerable<SesoesDTO> GetAllByPacienteId(int value )
         {
             var query = _query.FirstByPacienteIdQuery(value );
@@ -1188,6 +1204,14 @@ namespace Read.Repository
         public IEnumerable<SesoesDTO> GetAllByVersaoModeloConsulta(int value )
         {
             var query = _query.FirstByVersaoModeloConsultaQuery(value );
+
+                var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
+                return result;
+        }
+
+        public IEnumerable<SesoesDTO> GetAllByRecorrenciaId(string value )
+        {
+            var query = _query.FirstByRecorrenciaIdQuery(value );
 
                 var result = _unitOfWork.Query<SesoesDTO>(query.Query,query.Parameters).ToList();
                 return result;

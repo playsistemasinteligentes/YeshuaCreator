@@ -309,6 +309,7 @@ app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider
                     new { name = "ServicoNome", title = "Serviço no agendamento", classification = "Confidential" },
                     new { name = "ModeloConsulta", title = "Modelo da consulta", classification = "Internal" },
                     new { name = "VersaoModeloConsulta", title = "Versão do modelo", classification = "Internal" },
+                    new { name = "RecorrenciaId", title = "Série de consultas", classification = "Internal" },
                 }
             },
             new
@@ -6234,6 +6235,48 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Clinica/ConfiguracaoConfirmarServicoClinicaUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarServicoClinicaHandler receiver, [FromBody] Command.UseCase.ConfirmarServicoClinicaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosPreverRecorrenciaConsultasUseCase", async ([FromServices] Command.Receivers.UseCase.PreverRecorrenciaConsultasHandler receiver, [FromBody] Command.UseCase.PreverRecorrenciaConsultasInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Clinica/AtendimentosConfirmarRecorrenciaConsultasUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarRecorrenciaConsultasHandler receiver, [FromBody] Command.UseCase.ConfirmarRecorrenciaConsultasInputCommand command) =>
 {
 try
 {

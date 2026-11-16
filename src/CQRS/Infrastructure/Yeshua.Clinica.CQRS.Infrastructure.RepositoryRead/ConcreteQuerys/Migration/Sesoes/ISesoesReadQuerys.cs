@@ -63,6 +63,7 @@ namespace IQuery.Read
         public QueryModel ExistsByServicoNomeQuery(string value );
         public QueryModel ExistsByModeloConsultaQuery(int value );
         public QueryModel ExistsByVersaoModeloConsultaQuery(int value );
+        public QueryModel ExistsByRecorrenciaIdQuery(string value );
         public QueryModel FirstByPacienteIdQuery(int value );
         public QueryModel FirstByDataInicioQuery(DateTime value );
         public QueryModel FirstByDataFimQuery(DateTime value );
@@ -105,6 +106,7 @@ namespace IQuery.Read
         public QueryModel FirstByServicoNomeQuery(string value );
         public QueryModel FirstByModeloConsultaQuery(int value );
         public QueryModel FirstByVersaoModeloConsultaQuery(int value );
+        public QueryModel FirstByRecorrenciaIdQuery(string value );
     public QueryModel SesoesGeralQuery(Command.Read.SesoesGeralCommand Command );
     }
 }

@@ -215,6 +215,7 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string? ServicoNome { get; set; }
         public int? ModeloConsulta { get; set; }
         public int? VersaoModeloConsulta { get; set; }
+        public string? RecorrenciaId { get; set; }
 
         public static MyApp.QueryBuilder.Query<Sesoes> Query() => new MyApp.QueryBuilder.Query<Sesoes>();
     }
@@ -277,6 +278,25 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public string OperationalEntityId { get; set; }
 
         public static MyApp.QueryBuilder.Query<RevisaoRegistroSessao> Query() => new MyApp.QueryBuilder.Query<RevisaoRegistroSessao>();
+    }
+
+    public class PlanoRecorrenciaConsulta
+    {
+        public string? Id { get; set; }
+        public int ProfissionalId { get; set; }
+        public string Plano { get; set; }
+        public string? ConfirmacaoHash { get; set; }
+        public string? Resultado { get; set; }
+        public DateTime ExpiraEmUtc { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<PlanoRecorrenciaConsulta> Query() => new MyApp.QueryBuilder.Query<PlanoRecorrenciaConsulta>();
     }
 
     public class yFileUpload

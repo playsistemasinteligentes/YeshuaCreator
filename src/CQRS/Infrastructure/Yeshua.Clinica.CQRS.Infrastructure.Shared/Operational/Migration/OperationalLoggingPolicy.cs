@@ -387,6 +387,7 @@ private OperationalLoggingDecision Evaluate(
                         "PlanoConta" => GetPlanoContaMask(policy, operation, recordId),
                         "MovimentoFinanceiro" => GetMovimentoFinanceiroMask(policy, operation, recordId),
                         "RevisaoRegistroSessao" => GetRevisaoRegistroSessaoMask(policy, operation, recordId),
+                        "PlanoRecorrenciaConsulta" => GetPlanoRecorrenciaConsultaMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -733,6 +734,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= SesoesTrackingFields.ModeloConsulta;
                     if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "VersaoModeloConsulta"))
                         mask |= SesoesTrackingFields.VersaoModeloConsulta;
+                    if (DomainFieldTracked(policy, "Sesoes", operation, recordId, "RecorrenciaId"))
+                        mask |= SesoesTrackingFields.RecorrenciaId;
                     return mask;
                 }
 
@@ -826,6 +829,37 @@ private OperationalLoggingDecision Evaluate(
                         mask |= RevisaoRegistroSessaoTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "RevisaoRegistroSessao", operation, recordId, "OperationalEntityId"))
                         mask |= RevisaoRegistroSessaoTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetPlanoRecorrenciaConsultaMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "Id"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "ProfissionalId"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.ProfissionalId;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "Plano"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.Plano;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "ConfirmacaoHash"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.ConfirmacaoHash;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "Resultado"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.Resultado;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "ExpiraEmUtc"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.ExpiraEmUtc;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "TenantID"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "Deleted"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "Changed"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "UserId"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "OperationalEntityId"))
+                        mask |= PlanoRecorrenciaConsultaTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

@@ -55,6 +55,7 @@ namespace Command.Read
         public string? ServicoNome { get; set; }
         public int? ModeloConsulta { get; set; }
         public int? VersaoModeloConsulta { get; set; }
+        public string? RecorrenciaId { get; set; }
  public Pagination Paginacao { get; set; }
  public string OperationalEntity => "Sesoes";
  public string? OperationalRecordId => OperationalEntityId;

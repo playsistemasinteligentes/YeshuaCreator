@@ -62,6 +62,7 @@
             public const ulong ServicoNome = 1UL << 39;
             public const ulong ModeloConsulta = 1UL << 40;
             public const ulong VersaoModeloConsulta = 1UL << 41;
+            public const ulong RecorrenciaId = 1UL << 42;
         }
 
         public static class SesoesOperationalFields
@@ -108,6 +109,7 @@
             public const Dominio.Operational.OperationalDataClassification ServicoNome = Dominio.Operational.OperationalDataClassification.Confidential;
             public const Dominio.Operational.OperationalDataClassification ModeloConsulta = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification VersaoModeloConsulta = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RecorrenciaId = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class SesoesDecorator : ISesoesEntity
@@ -680,6 +682,7 @@
     public string? ServicoNome => _inner.ServicoNome;
     public int? ModeloConsulta => _inner.ModeloConsulta;
     public int? VersaoModeloConsulta => _inner.VersaoModeloConsulta;
+    public string? RecorrenciaId => _inner.RecorrenciaId;
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();
