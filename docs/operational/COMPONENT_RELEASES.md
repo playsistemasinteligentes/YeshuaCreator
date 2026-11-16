@@ -28,8 +28,8 @@ revisada pelo operador; nao ha inferencia de impacto por caminhos alterados.
 
 ## Ativacao pelo operador
 
-Consulta publica em 2026-11-16: nenhuma tag existente e nenhuma label de escopo
-no repositorio. Assim, a proposta inicial e `01.001` por componente, usando as
+Consulta inicial em 2026-11-16, antes do merge: nenhuma tag existente e nenhuma
+label de escopo no repositorio. Assim, a proposta inicial e `01.001` por componente, usando as
 convencoes da issue. Nenhuma tag ou label real foi criada nesta implementacao.
 
 1. Revisar/mergear esta PR pelo processo normal e confirmar novamente as tags
@@ -41,6 +41,80 @@ convencoes da issue. Nenhuma tag ou label real foi criada nesta implementacao.
    e impedir atualizacao/exclusao dos namespaces de release. Nao usar PAT.
 4. Definir a variavel de repositorio `RELEASE_TAGGING_ENABLED=true`. Sem esse
    valor exato, testes/classificacao executam e a publicacao fica desabilitada.
+
+### Auditoria apos merge da PR #26 (2026-11-16)
+
+Evidencias obtidas pela API publica, sem credencial administrativa:
+
+| Item | Resultado observado |
+| --- | --- |
+| [PR #26](https://github.com/playsistemasinteligentes/YeshuaCreator/pull/26) | Mergeada em `a3893ef5514290420c8b9b30cb71e8820eadf962`; label `architecture` |
+| [Execucao de release](https://github.com/playsistemasinteligentes/YeshuaCreator/actions/runs/43961401451) | `validate` passou, `publish` foi pulado; sucesso do run nao confirma ativacao |
+| Workflows | Component release e Release validation ativos |
+| Labels | `architecture` presente; as seis labels `app:*` ausentes |
+| Tags | Nenhuma tag existente na consulta |
+| Branch padrao | `main`, sem protecao (`protected: false`) |
+| Rulesets | Nenhum retornado pela API publica |
+| Variavel, permissoes Actions e protecao detalhada | HTTP 401; valor/configuracao nao verificaveis por esta conexao |
+
+O `publish` pulado e consistente com a condicao `RELEASE_TAGGING_ENABLED != 'true'`
+naquela execucao; nao comprova se a variavel esta ausente, falsa ou foi alterada
+depois. Nao afirmar que uma consulta sem autenticacao verificou o valor atual.
+
+### Ferramentas de preparacao e sequencia de ativacao
+
+O workflow manual **Release readiness**, disponivel apos merge desta entrega,
+executa auditoria sem criar tags ou alterar configuracoes administrativas.
+Com `create_labels=true`, um job separado usa somente `issues: write` para criar
+labels ausentes, preservando nomes/cores/descricoes existentes. Pode ser repetido.
+O job de auditoria nao recebe escrita. Nenhum dos jobs acessa servidor ou deploy.
+
+A auditoria confere labels, workflows ativos, inventario/formato/recibos das tags,
+variavel efetiva recebida pelo contexto Actions, protecao da branch, rulesets e
+permissoes Actions quando legiveis. HTTP 401/403/404 gera `unknown`, nunca passa
+por ausencia de evidencia. Uma indisponibilidade tecnica falha explicitamente.
+`unknown` ou `fail` deixam o run com falha e um relatorio JSON no resumo.
+O relatorio nao certifica automaticamente cobertura/bypasses de rulesets: mesmo
+um ruleset ativo exige verificacao humana das regras efetivas. Nao usar esse
+workflow manual como check obrigatorio de PR nem como gate de publicacao.
+
+Procedimento do operador com acesso administrativo:
+
+1. Publicar/revisar esta entrega em uma **nova task/branch**, pois a branch desta
+   conversa ja pertence a PR #26 mergeada. O publicador do aplicativo recusa PR
+   fechado; nao tentar contornar `.git` nem reabrir a PR mergeada.
+2. Executar Release readiness na branch padrao com `create_labels=true`. Verificar
+   as sete labels no GitHub; o run pode falhar pela ativacao ainda desligada.
+3. Em Settings > Rules, proteger `main`: exigir PR/revisao e o status check
+   **`release-tests`** (exibido sob o workflow Release validation). Revisar bypasses
+   e impedir pushes diretos que dispensem classificacao/testes. Conferir rulesets
+   efetivos em vez de depender somente da protecao classica.
+4. Criar ruleset de **tags** para os sete prefixos da tabela: bloquear update e
+   deletion, permitir criacao pelo Actions. Nao adicionar bypass amplo para
+   superar bloqueio de criacao; nao mover/apagar nenhuma tag existente.
+5. Revisar Settings > Actions: permitir as actions fixadas por SHA nos workflows.
+   Manter permissoes globais restritas; o job publish declara `contents: write`
+   e `pull-requests: read`. Nao habilitar escrita de PR nem criar PAT no workflow.
+6. Em Settings > Secrets and variables > Actions > Variables, definir a variavel
+   **de repositorio** `RELEASE_TAGGING_ENABLED=true`, apos confirmar a convencao
+   `01.001` e o inventario. Nao usar secret nem variavel de Environment.
+7. Executar novamente Release readiness e verificar o resumo; resolver cada
+   `fail` e registrar a conferencia humana de cada `unknown`. A API de protecao
+   pode exigir Administration/read que o GITHUB_TOKEN minimo nao possui; nao
+   ampliar seu privilegio apenas para deixar essa auditoria verde.
+8. Para versionar a PR de bootstrap, executar **Component release** na branch
+   padrao com `pr_number=26`. Se ainda nao houver tags, a previsao e
+   `architecture/v01.001` no SHA `a3893ef5514290420c8b9b30cb71e8820eadf962`.
+   O inventario e relido na execucao; nunca assumir que esse numero esta reservado.
+9. Conferir no GitHub a anotacao, PR, commit e componente da tag; repetir o mesmo
+   dispatch e confirmar que nenhuma tag nova foi criada. A partir dai, merges
+   classificados futuros seguem o mesmo workflow automaticamente.
+
+O validate de Component release agora tambem gera um plano somente leitura,
+inclusive com publicacao desligada. O plano verifica tags e idempotencia sem
+criar sequer objeto Git; numeros previstos podem mudar por merges concorrentes.
+Dispatch fora da branch padrao e eventos diferentes dos autorizados sao recusados
+tambem pelo script, alem da condicao do workflow.
 
 O workflow reage somente a PR efetivamente mergeada na branch padrao, inclusive
 de fork. `pull_request_target` executa codigo confiavel do `github.workflow_sha`,
@@ -104,7 +178,7 @@ arquivo; quem construir o artefato deve guarda-lo com os resultados do build.
 
 ```sh
 node --test tests/ReleaseAutomation/*.test.cjs
-actionlint .github/workflows/component-release.yml .github/workflows/release-validation.yml
+actionlint .github/workflows/component-release.yml .github/workflows/release-validation.yml .github/workflows/release-readiness.yml
 ```
 
 Testes simulam API GitHub e criacao atomica de refs em memoria: app, arquitetura,

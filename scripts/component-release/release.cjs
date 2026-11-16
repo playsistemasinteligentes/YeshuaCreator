@@ -48,6 +48,10 @@ async function pullRequest(github, context) {
   const { owner, repo } = context.repo;
   const payload = context.payload;
   const manual = context.eventName === 'workflow_dispatch';
+  if (!manual && context.eventName !== 'pull_request_target') throw new Error('Evento de publicacao nao autorizado.');
+  if (manual && context.ref !== `refs/heads/${payload.repository.default_branch}`) {
+    throw new Error('A recuperacao deve executar na branch padrao.');
+  }
   const number = manual ? Number(payload.inputs?.pr_number) : payload.pull_request?.number;
   if (!Number.isSafeInteger(number) || number < 1) throw new Error('Numero de PR invalido.');
   const { data: pr } = await github.rest.pulls.get({ owner, repo, pull_number: number });
@@ -173,4 +177,18 @@ async function publish({ github, context, core }) {
   return receipts;
 }
 
-module.exports = { SCHEMA, classify, parseVersion, nextVersion, pullRequest, readTags, architectureAt, publish };
+async function planRelease(github, context) {
+  const pr = await pullRequest(github, context);
+  const releases = [];
+  for (const component of components) {
+    const tags = await readTags(github, context.repo, component);
+    const existing = existingRelease(tags, pr, component);
+    if (pr.scopes.includes(component)) releases.push({
+      component, tag: existing?.tag ?? `${component}/v${nextVersion(tags)}`,
+      sha: pr.sha, existing: Boolean(existing),
+    });
+  }
+  return { pr, releases };
+}
+
+module.exports = { SCHEMA, classify, parseVersion, nextVersion, pullRequest, readTags, architectureAt, planRelease, publish };

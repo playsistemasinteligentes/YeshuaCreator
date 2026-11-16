@@ -2,7 +2,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { SCHEMA, classify, parseVersion, nextVersion, publish } = require('../../scripts/component-release/release.cjs');
+const { SCHEMA, classify, parseVersion, nextVersion, planRelease, publish } = require('../../scripts/component-release/release.cjs');
 const { buildManifest } = require('../../scripts/component-release/build-manifest.cjs');
 
 const sha = n => n.toString(16).padStart(40, '0');
@@ -59,6 +59,7 @@ function fake(...contexts) {
     addHeading() { return this; }, addCodeBlock() { return this; }, async write() {},
   } };
   state.run = context => publish({ github, context, core });
+  state.plan = context => planRelease(github, context);
   state.seed = (tag, commit, receipt) => {
     const id = sha(counter++);
     if (receipt) objects.set(id, { message: JSON.stringify(receipt), object: { type: 'commit', sha: commit } });
@@ -216,7 +217,7 @@ test('PR sem merge, branch incorreta, SHA divergente e escopo invalido falham an
 test('dispatch recupera PR mergeada e recusa alterar escopo de release existente', async () => {
   const ctx = context();
   const state = fake(ctx);
-  const manual = { ...ctx, eventName: 'workflow_dispatch', payload: {
+  const manual = { ...ctx, ref: 'refs/heads/main', eventName: 'workflow_dispatch', payload: {
     repository: ctx.payload.repository, inputs: { pr_number: '1' },
   } };
   const first = await state.run(manual);
@@ -224,6 +225,24 @@ test('dispatch recupera PR mergeada e recusa alterar escopo de release existente
   ctx.payload.pull_request.labels = [{ name: 'app:fiscal' }];
   await assert.rejects(state.run(manual), /classificacao alterados/);
   assert.equal(state.writes.length, 1);
+});
+
+test('plano nao cria objeto/ref e permite auditar tags com publicacao desligada', async () => {
+  const ctx = context(), state = fake(ctx);
+  const plan = await state.plan(ctx);
+  assert.deepEqual(plan.releases, [{ component: 'clinica', tag: 'clinica/v01.001', sha: sha(10), existing: false }]);
+  assert.equal(state.objects.size, 0);
+  assert.equal(state.writes.length, 0);
+  await state.run(ctx);
+  assert.equal((await state.plan(ctx)).releases[0].existing, true);
+  assert.equal(state.writes.length, 1);
+});
+
+test('evento nao autorizado e dispatch fora da branch padrao falham sem escrita', async () => {
+  const ctx = context(), state = fake(ctx);
+  await assert.rejects(state.run({ ...ctx, eventName: 'push' }), /Evento/);
+  await assert.rejects(state.run({ ...ctx, ref: 'refs/heads/untrusted', eventName: 'workflow_dispatch' }), /branch padrao/);
+  assert.equal(state.writes.length, 0);
 });
 
 test('recibo inconsistente e tags malformadas nao sao silenciosamente ignorados', async () => {

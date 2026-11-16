@@ -33,9 +33,19 @@ test('CI valida mudanca de labels e actions sao fixadas por SHA completo', () =>
   assert.match(validation, /labeled, unlabeled/);
   assert.match(validation, /permissions:\n  contents: read/);
   assert.doesNotMatch(validation, /: write/);
-  for (const name of ['component-release.yml', 'release-validation.yml']) {
+  for (const name of ['component-release.yml', 'release-validation.yml', 'release-readiness.yml']) {
     for (const match of read(name).matchAll(/uses: ([^\s]+)/g)) {
       assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
     }
   }
+});
+
+test('readiness e manual na branch padrao, sem contents write ou alteracao de variaveis/tags', () => {
+  const workflow = read('release-readiness.yml');
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.doesNotMatch(workflow, /pull_request_target:|contents: write|actions: write|secrets\./);
+  assert.match(workflow, /if: inputs.create_labels && github.ref_name == github.event.repository.default_branch/);
+  assert.match(workflow, /issues: write/);
+  assert.match(workflow, /RELEASE_TAGGING_ENABLED: \$\{\{ vars.RELEASE_TAGGING_ENABLED \}\}/);
+  assert.match(workflow, /core.setFailed/);
 });

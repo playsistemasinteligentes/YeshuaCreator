@@ -40,10 +40,13 @@ jobs:
       - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
-            const { pullRequest } = require('./scripts/component-release/release.cjs');
-            const pr = await pullRequest(github, context);
-            core.info(JSON.stringify(pr));
+            const { planRelease } = require('./scripts/component-release/release.cjs');
+            const plan = await planRelease(github, context);
+            core.info(JSON.stringify(plan));
+            await core.summary.addHeading('Plano de release (somente leitura)')
+              .addCodeBlock(JSON.stringify(plan, null, 2), 'json').write();
             if (process.env.RELEASE_TAGGING_ENABLED !== 'true') {
+              core.notice('Publicacao desabilitada: o sucesso da validacao nao significa criacao de tags.');
               await core.summary.addRaw('Publicacao desabilitada. O operador deve confirmar convencao/inicio e configurar RELEASE_TAGGING_ENABLED=true.').write();
             }
         env:

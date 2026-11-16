@@ -1338,6 +1338,11 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
   exige confirmacao inicial do operador via `RELEASE_TAGGING_ENABLED=true`.
 - Ver `docs/operational/COMPONENT_RELEASES.md`; scripts pertencem a automacao
   do repositorio, sem alterar Engine, codigo gerado ou runtime dos aplicativos.
+- O workflow manual `Release readiness` audita ativacao e pode criar apenas
+  labels de escopo ausentes em job separado. Nunca altera tags, variaveis,
+  permissoes ou protecoes administrativas; evidencia inacessivel permanece
+  desconhecida e exige conferencia do operador. O validate da release produz
+  plano somente leitura antes da decisao de publicar.
 
 ## Marcação De Pendencias Entre Studios
 
