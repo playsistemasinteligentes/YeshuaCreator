@@ -35,5 +35,18 @@
     <label id="cli-recorrencia-label">Repetir<select id="cli-agendar-recorrencia"><option value="0">Não repetir</option><option value="7">Semanal</option><option value="14">Quinzenal</option></select></label>
     <label id="cli-final-label" hidden>Data final inclusiva<input type="date" id="cli-agendar-final"></label>
     <p class="cli-muted">Todos os horários são de São Paulo (America/Sao_Paulo).</p>
-    <label>Início<input type="datetime-local" id="cli-agendar-inicio" required></label><label>Fim<input type="datetime-local" id="cli-agendar-fim" required></label><div class="cli-actions"><button type="submit" id="cli-agendar-confirmar" class="cli-primary">Confirmar agendamento</button><button type="button" id="cli-dialog-fechar">Voltar</button></div><p id="cli-agendar-erro" role="alert"></p><section id="cli-recorrencia-previa" hidden aria-label="Prévia das consultas"><h3>Revise cada ocorrência</h3><p>Resolva os conflitos alterando data/hora ou desmarcando Agendar. Na edição, desmarcar cancela somente a ocorrência indicada. Consultas passadas ou iniciadas são preservadas.</p><div id="cli-recorrencia-itens"></div><label class="cli-check"><input type="checkbox" id="cli-recorrencia-revisado"> Revisei as datas e as decisões de cada ocorrência.</label><button type="button" id="cli-recorrencia-confirmar" class="cli-primary">Confirmar ocorrências</button></section></form></dialog>
+    <label>Início<input type="datetime-local" id="cli-agendar-inicio" required></label><label>Fim<input type="datetime-local" id="cli-agendar-fim" required></label><div class="cli-actions"><button type="submit" id="cli-agendar-confirmar" class="cli-primary">Confirmar agendamento</button><button type="button" id="cli-dialog-fechar">Voltar</button></div><p id="cli-agendar-erro" role="alert"></p><section id="cli-recorrencia-previa" hidden aria-label="Prévia das consultas">
+    <h3>Prévia do agendamento</h3>
+    <div class="cli-tabs" role="tablist" aria-label="Detalhamento da prévia">
+      <button type="button" role="tab" id="cli-recorrencia-tab-resumo" aria-controls="cli-recorrencia-painel" aria-selected="true">Resumo e conflitos</button>
+      <button type="button" role="tab" id="cli-recorrencia-tab-todas" aria-controls="cli-recorrencia-painel" aria-selected="false" tabindex="-1">Todas as datas</button>
+    </div>
+    <div id="cli-recorrencia-painel" role="tabpanel" aria-labelledby="cli-recorrencia-tab-resumo">
+      <p id="cli-recorrencia-resumo"></p><p id="cli-recorrencia-estado" role="status"></p>
+      <p>Horários de São Paulo. Altere data/hora ou desmarque Agendar para resolver um conflito. Na edição, desmarcar cancela somente a ocorrência indicada. Consultas passadas ou iniciadas são preservadas. Todos os horários serão revalidados na confirmação.</p>
+      <div id="cli-recorrencia-itens"></div>
+    </div>
+    <label id="cli-recorrencia-revisao" class="cli-check"><input type="checkbox" id="cli-recorrencia-revisado"> Revisei os conflitos e os cancelamentos indicados.</label>
+    <button type="button" id="cli-recorrencia-confirmar" class="cli-primary" disabled>Confirmar ocorrências</button>
+    </section></form></dialog>
 </section>

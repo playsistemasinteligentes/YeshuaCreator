@@ -1,9 +1,9 @@
 import { apiFetch, getApiErrorMessage } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20261028-cadastros01';
 import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
-import { localSaoPaulo, instanteSaoPaulo, escolhasDaPrevia } from './calendario-consultas.js?v=20261116-recorrencia01';
+import { localSaoPaulo, instanteSaoPaulo, escolhasDaPrevia } from './calendario-consultas.js?v=20261116-recorrencia02';
 import { ClinicSetup } from './configuracao.js?v=20261028-config01';
 
-const assets='/Custon/Apps/Clinica/pages',version='20261116-recorrencia01';
+const assets='/Custon/Apps/Clinica/pages',version='20261116-recorrencia02';
 const fields=['prontuario','queixaPrincipal','registroDocumental','objetivosCurtoPrazo','objetivosLongoPrazo','exerciciosTarefasSugeridas','encaminhamentoOutrosProfissionais','frequenciaSugeridaSessooes','informacoesRelevantesFuturasConsultas'];
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const normalize=value=>Array.isArray(value)?value.map(normalize):value&&typeof value==='object'?Object.fromEntries(Object.entries(value).map(([k,v])=>[k[0].toLowerCase()+k.slice(1),normalize(v)])):value;
@@ -81,7 +81,13 @@ class ClinicPanel{
         this.host.querySelectorAll('[data-field]').forEach(input=>input.addEventListener('input',()=>{this.dirty=true;this.edits++;this.text('save-status','Alterações por salvar');clearTimeout(this.saveTimer);if(!this.isFinal())this.saveTimer=setTimeout(()=>this.save().catch(e=>this.feedback(e.message,true)),1800);},{signal:this.controller.signal}));
         on('editar-agenda',async()=>{await this.leaveCurrent();await this.openSchedule(this.current.pacienteId,true);});
         on('recorrencia-confirmar',()=>this.confirmRecurrence());
-        this.el('recorrencia-itens').addEventListener('input',()=>{this.el('recorrencia-revisado').checked=false;},{signal:this.controller.signal});
+        this.el('recorrencia-itens').addEventListener('input',()=>{this.el('recorrencia-revisado').checked=false;this.updateRecurrence();},{signal:this.controller.signal});
+        this.el('recorrencia-revisado').addEventListener('change',()=>this.updateRecurrence(),{signal:this.controller.signal});
+        for(const tab of ['resumo','todas']){
+            const button=this.el('recorrencia-tab-'+tab);
+            button.addEventListener('click',()=>this.selectRecurrenceTab(tab),{signal:this.controller.signal});
+            button.addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const next=e.key==='Home'?'resumo':e.key==='End'?'todas':tab==='resumo'?'todas':'resumo';this.selectRecurrenceTab(next);this.el('recorrencia-tab-'+next).focus();},{signal:this.controller.signal});
+        }
         const refreshScope=()=>{this.invalidateRecurrence();const future=this.editingSchedule&&this.el('agendar-escopo').value==='futuras';this.show('recorrencia-label',!this.editingSchedule||future);this.show('final-label',this.editingSchedule?Boolean(future):Number(this.el('agendar-recorrencia').value)>0);if(future&&!Number(this.el('agendar-recorrencia').value))this.el('agendar-recorrencia').value='7';this.text('agendar-confirmar',this.editingSchedule||Number(this.el('agendar-recorrencia').value)>0?'Ver prévia':'Agendar');};
         this.el('agendar-recorrencia').addEventListener('change',refreshScope,{signal:this.controller.signal});
         this.el('agendar-escopo').addEventListener('change',refreshScope,{signal:this.controller.signal});
@@ -144,7 +150,7 @@ class ClinicPanel{
     controls(){
         if(this.disposed)return;
         this.el('agendar-confirmar').disabled=this.busy||!this.scheduledService;
-        this.el('recorrencia-confirmar').disabled=this.busy;
+        this.updateRecurrence();
         const s=this.current;if(!s)return;const started=Boolean(s.atendimentoIniciadoEm)||s.statusAgendamento===2,ended=Boolean(s.atendimentoEncerradoEm)||s.statusAgendamento===2,final=this.isFinal(),capturing=Boolean(this.recorder?.active),pending=Boolean(this.recorder?.pending),editable=(started&&!final)||this.correcting;
         for(const id of ['iniciar','cancelar','falta','editar-agenda'])this.el(id).disabled=this.busy||started||final||![0,1].includes(s.statusAgendamento);
         this.host.querySelectorAll('[data-field]').forEach(input=>input.disabled=!editable||this.busy);this.el('salvar').disabled=this.busy||!editable||this.correcting;this.el('encerrar').disabled=this.busy||!started||ended||final||capturing||pending;this.el('gravar').disabled=this.busy||!started||ended||final||capturing||pending;
@@ -162,6 +168,42 @@ class ClinicPanel{
     async transition(command,next){await this.save();const result=await this.request(command,{sessaoId:this.current.id,versao:this.current.versao});this.current.versao=result.versao;await this.load(this.current.id);this.setMode(next);this.feedback(command==='EncerrarAtendimento'?'Atendimento encerrado. Revise e finalize o registro quando estiver pronto.':'Atendimento atualizado.');}
     async finalize(){this.requireAudioDone();if(!this.el('revisado').checked)throw new Error('Confirme a revisão do registro antes de finalizar.');await this.save();const result=await this.request(this.correcting?'CorrigirRegistro':'FinalizarRegistro',this.recordPayload());this.dirty=false;this.current.versao=result.versao;await this.load(this.current.id);this.setMode('fechar');this.feedback('Registro revisado e salvo. A versão foi preservada no histórico de revisões.');}
     invalidateRecurrence(){this.recurrenceRevision=(this.recurrenceRevision||0)+1;this.recurrencePreview=null;this.recurrenceConfirmation=null;this.show('recorrencia-previa',false);this.el('recorrencia-revisado').checked=false;}
+    selectRecurrenceTab(tab){
+        this.recurrenceTab=tab;
+        for(const name of ['resumo','todas']){const button=this.el('recorrencia-tab-'+name);button.setAttribute('aria-selected',String(name===tab));button.tabIndex=name===tab?0:-1;}
+        this.el('recorrencia-painel').setAttribute('aria-labelledby','cli-recorrencia-tab-'+tab);
+        this.updateRecurrence();
+    }
+    recurrenceState(){
+        const originals=this.recurrencePreview?.ocorrencias||[],choices=escolhasDaPrevia(this.el('recorrencia-itens'));
+        const pending=new Set(),scheduled=[];
+        for(const choice of choices){
+            if(!choice.agendar)continue;
+            const original=originals.find(x=>x.ordem===choice.ordem);
+            if(original?.conflito&&choice.dataInicio===original.dataInicio&&choice.dataFim===original.dataFim)pending.add(choice.ordem);
+            try{const start=Date.parse(instanteSaoPaulo(choice.dataInicio)),end=Date.parse(instanteSaoPaulo(choice.dataFim));
+                if(end<=start||end-start>8*3600000)pending.add(choice.ordem);
+                for(const other of scheduled)if(start<other.end&&end>other.start){pending.add(choice.ordem);pending.add(other.ordem);}
+                scheduled.push({ordem:choice.ordem,start,end});
+            }catch{pending.add(choice.ordem);}
+        }
+        return {choices,pending,review:originals.some(x=>x.conflito||!x.agendar)||choices.some(x=>!x.agendar)};
+    }
+    updateRecurrence(){
+        if(!this.recurrencePreview){this.el('recorrencia-confirmar').disabled=true;return;}
+        const {choices,pending,review}=this.recurrenceState(),originals=this.recurrencePreview.ocorrencias;
+        const dates=choices.filter(x=>x.agendar).map(x=>x.dataInicio.slice(0,10)).sort(),format=value=>value.split('-').reverse().join('/');
+        const period=this.recurrencePeriod||'Consulta';
+        this.text('recorrencia-resumo',dates.length?`${period}: recorrência de ${format(dates[0])} até ${format(dates.at(-1))} · ${dates.length} ocorrência(s).`:'Nenhuma ocorrência será agendada.');
+        const skipped=choices.filter(x=>!x.agendar).length,conflicts=originals.filter(x=>x.conflito).length;
+        this.text('recorrencia-estado',`${pending.size?pending.size+' ocorrência(s) com decisão pendente ou horário inválido.':conflicts?'Decisões preenchidas; horários alterados serão revalidados na confirmação.':'Nenhum conflito na prévia.'}${skipped?' '+skipped+' ocorrência(s) não serão agendadas; consultas existentes desmarcadas serão canceladas.':''}`);
+        this.show('recorrencia-revisao',review);
+        this.el('recorrencia-confirmar').disabled=Boolean(this.busy||pending.size||(review&&!this.el('recorrencia-revisado').checked));
+        for(const row of this.el('recorrencia-itens').querySelectorAll('[data-ocorrencia]')){
+            const order=Number(row.dataset.ocorrencia),original=originals.find(x=>x.ordem===order),choice=choices.find(x=>x.ordem===order);
+            row.hidden=this.recurrenceTab!=='todas'&&!original?.conflito&&original?.agendar!==false&&choice?.agendar!==false&&!pending.has(order);
+        }
+    }
     async openSchedule(patient=0,editing=false){
         this.editingSchedule=editing?{...this.current}:null;this.invalidateRecurrence();
         this.show('editar-escopo',editing);this.show('recorrencia-label',!editing);this.show('final-label',false);
@@ -191,8 +233,9 @@ class ClinicPanel{
                 dataFinal:this.el('agendar-final').value,sessaoId:this.editingSchedule?.id||0,serieFutura:Boolean(future)});
             if(revision!==this.recurrenceRevision)throw new Error('O agendamento mudou durante a prévia. Gere outra com os dados atuais.');
             this.recurrencePreview=result;
+            this.recurrencePeriod=this.editingSchedule&&!future?'Consulta individual':Number(this.el('agendar-recorrencia').value)===14?'Quinzenal':'Semanal';
             this.el('recorrencia-itens').innerHTML=result.ocorrencias.map(x=>`<fieldset data-ocorrencia="${x.ordem}"><legend>Ocorrência ${x.ordem+1}${x.sessaoId?' · consulta #'+x.sessaoId:''}</legend><p>${x.conflito?'Conflito de horário: altere ou desmarque Agendar.':x.agendar?'Disponível na prévia; será revalidada.':'Fora do novo período: será cancelada.'}</p><label>Início<input data-inicio type="datetime-local" value="${escape(x.dataInicio)}"></label><label>Fim<input data-fim type="datetime-local" value="${escape(x.dataFim)}"></label><label><input data-agendar type="checkbox" ${x.agendar?'checked':''}> Agendar</label></fieldset>`).join('');
-            this.show('recorrencia-previa',true);return;
+            this.selectRecurrenceTab('resumo');this.show('recorrencia-previa',true);return;
         }
         const start=new Date(instanteSaoPaulo(localStart)),end=new Date(instanteSaoPaulo(localEnd));
         if(end<=start)throw new Error('O fim da consulta deve ser posterior ao início.');
@@ -200,13 +243,16 @@ class ClinicPanel{
         this.el('agendar-dialog').close();this.el('data').value=day(start);await this.load(result.sessaoId);this.feedback('Consulta agendada. Histórico e plano anterior já estão disponíveis.');
     }catch(e){if(e.status===409){this.servicos=null;this.text('agendar-servico-alterar','Atualizar serviços');this.show('agendar-servico-alterar',true);}this.text('agendar-erro',e.message);throw e;}}
     async confirmRecurrence(){try{
-        if(!this.recurrencePreview||!this.el('recorrencia-revisado').checked)throw new Error('Revise a prévia e confirme as decisões de cada ocorrência.');
-        const body={planoId:this.recurrencePreview.planoId,revisado:true,ocorrencias:escolhasDaPrevia(this.el('recorrencia-itens'))};
+        if(!this.recurrencePreview)throw new Error('Revise a prévia e confirme as decisões de cada ocorrência.');
+        const {choices,pending,review}=this.recurrenceState();
+        if(pending.size)throw new Error('Resolva os conflitos pendentes: altere data/hora ou desmarque Agendar.');
+        if(review&&!this.el('recorrencia-revisado').checked)throw new Error('Revise os conflitos e os cancelamentos antes de confirmar.');
+        const body={planoId:this.recurrencePreview.planoId,revisado:true,ocorrencias:choices};
         // Keep exactly the same payload after an ambiguous network outcome; never create another preview automatically.
         if(this.recurrenceConfirmation&&JSON.stringify(this.recurrenceConfirmation)!==JSON.stringify(body))throw new Error('O envio anterior pode ter sido confirmado. Reenvie as mesmas escolhas ou atualize a agenda antes de gerar outra prévia.');
         this.recurrenceConfirmation=body;
         let result;
-        try{result=await this.request('ConfirmarRecorrenciaConsultas',body);}catch(e){if(e.status>=400&&e.status<500)this.recurrenceConfirmation=null;throw e;}
+        try{result=await this.request('ConfirmarRecorrenciaConsultas',body);}catch(e){if(e.status>=400&&e.status<500){this.recurrenceConfirmation=null;this.el('recorrencia-revisado').checked=false;if(e.status===409)this.selectRecurrenceTab('todas');}throw e;}
         this.el('agendar-dialog').close();const first=result.ocorrencias.find(x=>x.agendar);
         if(first)this.el('data').value=first.dataInicio.slice(0,10);
         await this.load(first?.sessaoId||0);this.feedback('Ocorrências confirmadas.');
