@@ -87,8 +87,25 @@ incluido **no artefato da Central em execucao**. Nao consulta tags, nao ordena
 PRs nem afirma que APIs e Workers implantados separadamente estao na mesma
 versao. Esses hosts recebem seus proprios arquivos locais no publish; a futura
 exibicao remota precisa de evidencias desses hosts, nao de tags GitHub.
-Arquivo ausente significa desenvolvimento sem identidade de release; corrompido
-ou erro de leitura e indisponibilidade. Nenhuma versao v1 e presumida.
+O rodape e discreto, com Central primeiro e resumos como `Central v01.006-PR36`.
+Cada resumo abre detalhes nativos `details/summary`: componente, versao-base,
+PR de origem, tag instalavel exata e SHA quando declarado no arquivo local.
+Nao ha lista de outras origens nem historico de alternativas. Enter/Espaco
+controlam o detalhe pelo navegador; foco visivel e layout flexivel evitam
+sobreposicao do formulario e rolagem horizontal no mobile.
+
+Arquivo ausente mostra **Versao desconhecida**; erro/corrupcao tambem mostra
+versao desconhecida, com motivo nos detalhes. **Desenvolvimento** exige marcador
+local explicito, sem campos de release:
+
+```json
+{"schema":"yeshua.release/v2","component":"central","state":"development"}
+```
+
+O publicador recusa esse marcador ate a preparacao da identidade completa.
+SHA final normalmente nao esta no arquivo por causa da autorreferencia; o
+rodape informa a ausencia, sem consultar tags nem inventar um commit. Se um
+arquivo local trouxer `sha`, a UI exige 40 caracteres hexadecimais antes de exibir. Nenhuma versao v1 e presumida.
 Repositorio privado/offline nao altera essa leitura. Restore de dependencias
 num ambiente offline ainda exige SDKs/pacotes previamente disponiveis.
 
@@ -100,12 +117,12 @@ competem porque incluem PR. Nao existe lock global nem ordem de PRs.
 Arquivos por componente evitam conflito entre apps diferentes. Alteracoes do
 mesmo componente podem gerar conflito normal ao integrar branches. Isso nao
 impede editar, compilar nem publicar as branches isoladas. Na integracao,
-resolver explicitamente: remover a identidade do componente para marcar
+resolver explicitamente: substituir a identidade pelo marcador de
 **desenvolvimento**, em vez de escolher automaticamente maior PR/base.
 Se houver composicao nova publicavel, abrir/preparar outra PR que represente
 essa composicao. Nao reaproveitar identidade exclusiva PR35 para codigo que
 agora soma PR35 e PR36. Qualquer mudanca no componente apos uma release deve
-remover sua identidade herdada ate nova preparacao. Nenhuma resolucao altera
+substituir sua identidade herdada pelo marcador de desenvolvimento ate nova preparacao. Nenhuma resolucao altera
 os commits ou tags das releases independentes anteriores.
 
 ## Incompatibilidade v1 e bloqueios
@@ -126,8 +143,8 @@ producao; validacoes operacionais por aplicativo permanecem necessarias.
 ## Verificacao
 
 ```sh
-RUN_RELEASE_BUILD_TESTS=1 node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
-node tests/Front/Central/release-footer.cjs # opcional: requer Playwright/Chromium
+RUN_RELEASE_BUILD_TESTS=1 RUN_RELEASE_UI_TESTS=1 node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
+node tests/Front/Central/release-footer.cjs # requer Playwright/Chromium
 dotnet build YeshuaCreator.sln --configuration Release
 actionlint .github/workflows/*.yml
 ```
@@ -136,7 +153,16 @@ O teste Git usa repositorio temporario sem remoto: dois commits com o mesmo
 pai, tags PR35/PR36, checkout e auditoria de cada um, conflito real de integracao,
 e publish do projeto real da Central nas duas variantes. O restore desse
 ensaio usa fontes NuGet vazias. Cada host publicado e iniciado localmente e seu
-cliente real le a identidade por HTTP local. Testes de API simulam concorrencia,
+cliente real le a identidade por HTTP local. Com `RUN_RELEASE_UI_TESTS=1`,
+Chromium renderiza o markup real do rodape contra cada host publicado e verifica
+`Central v01.006-PR35`/`Central v01.006-PR36`, tag exata, detalhes, teclado,
+formulario preservado e mobile. Requisicoes fora do host local sao bloqueadas;
+o repositorio Git temporario nao tem remoto. O ensaio usa shell isolado com o
+rodape real, nao autentica nem exercita regras de negocio do dashboard.
+Os dois workflows preparam Playwright 1.65.1/Chromium e ativam esses testes,
+alem do ensaio de SHA opcional, estados e falhas. Para reproduzir localmente,
+instale Playwright/Chromium e dependencias do navegador; se o pacote estiver
+fora do projeto, informe seu diretorio em `NODE_PATH`. Testes de API simulam concorrencia,
 preparacao, revisao, recusas, multicomponente, resposta perdida e retomada.
 As escritas reais no GitHub nao sao exercitadas nesta task.
 
@@ -144,8 +170,10 @@ A verificacao local do build integral falhou com `NETSDK1045`: o ambiente tem
 SDK 8.0.428 e `Yeshua.Engine.AIContextBuilder` exige .NET 9. O workflow instala
 SDKs 8/9, mas seu build integral e os publishes dos aplicativos precisam passar
 no CI antes de habilitar publicacao. Os dois publishes da Central do ensaio
-isolado passaram. O ensaio Playwright foi atualizado, mas nao executado por
-falta da dependencia. Nenhuma instalacao em producao foi realizada.
+isolado passaram. No complemento, **27 testes Node passaram**, incluindo UI
+nos dois hosts publicados; o ensaio Playwright separado tambem passou. A primeira
+execucao do browser falhou por `libnspr4.so` ausente; a repeticao passou com
+bibliotecas extraidas somente em `/tmp`, sem instalar pacotes no sistema. Nenhuma instalacao em producao foi realizada.
 
 Referencias primarias: [atualizacao fast-forward de refs](https://docs.github.com/en/rest/git/refs#update-a-reference),
 [API de tags](https://docs.github.com/en/rest/git/tags),

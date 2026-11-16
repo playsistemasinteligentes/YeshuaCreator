@@ -101,6 +101,7 @@ test('labels validam caminhos, multicomponente inclui todos os arquivos locais',
 test('qualquer identidade ausente ou incoerente bloqueia todo o conjunto antes de escrever', async () => {
   for (const mutate of [s => delete s.locals.get(sha(35)).fiscal,
     s => { s.locals.get(sha(35)).fiscal.pr = 36; },
+    s => { s.locals.get(sha(35)).fiscal = { schema: SCHEMA, component: 'fiscal', state: 'development' }; },
     s => { s.locals.get(sha(35)).fiscal.tag = 'fiscal/v01.006-PR36'; },
     s => { s.prs.get(35).labels.push({ name: 'architecture' }); }]) {
     const s = fixture(); mutate(s); await assert.rejects(s.run()); assert.equal(s.writes.length, 0);

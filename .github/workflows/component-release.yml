@@ -79,9 +79,22 @@ jobs:
           dotnet-version: |
             8.0.x
             9.0.x
+      - name: Prepare browser tests
+        run: |
+          npm install --prefix /tmp/yeshua-release-ui --no-audit --no-fund playwright@1.65.1
+          node /tmp/yeshua-release-ui/node_modules/playwright/cli.js install --with-deps chromium
+        env:
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
       - run: node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
         env:
           RUN_RELEASE_BUILD_TESTS: '1'
+          RUN_RELEASE_UI_TESTS: '1'
+          NODE_PATH: /tmp/yeshua-release-ui/node_modules
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
+      - run: node tests/Front/Central/release-footer.cjs
+        env:
+          NODE_PATH: /tmp/yeshua-release-ui/node_modules
+          PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
       - run: dotnet build YeshuaCreator.sln --configuration Release
       - name: Publish hosts without deployment
         shell: bash

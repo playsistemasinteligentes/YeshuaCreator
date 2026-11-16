@@ -30,3 +30,14 @@ test('ausencia, erro e identidade corrupta nao viram release verificada', async 
     else { assert.ok(row.error); assert.equal(row.release, undefined); }
   }
 });
+test('desenvolvimento e explicito e separado de identidade ausente; SHA opcional e validado', async () => {
+  const { readIdentity, createReleaseClient } = await modulePromise;
+  const development = { schema: 'yeshua.release/v2', component: 'central', state: 'development' };
+  assert.deepEqual(readIdentity(development, 'central'), development);
+  assert.throws(() => readIdentity({ ...development, pr: 35 }, 'central'));
+  assert.equal(readIdentity({ ...identity('central', '01.006', 36), sha: 'a'.repeat(40) }, 'central').sha, 'a'.repeat(40));
+  assert.throws(() => readIdentity({ ...identity('central', '01.006', 36), sha: 'invalido' }, 'central'));
+  const data = await createReleaseClient(async url => ({ status: url.endsWith('/central.json') ? 200 : 404, ok: true, json: async () => development })).local();
+  assert.equal(data.rows.find(row => row.component === 'central').state, 'development');
+  assert.equal(data.rows.find(row => row.component === 'fiscal').state, 'unknown');
+});

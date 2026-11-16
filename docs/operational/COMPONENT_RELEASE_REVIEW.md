@@ -50,7 +50,7 @@ sufixo de origem. Ver COMPONENT_RELEASES.md para procedimento completo.
 
 Validacoes locais:
 
-- Suite Node com `RUN_RELEASE_BUILD_TESTS=1`: **26 testes aprovados**, zero falhas.
+- Suite Node com `RUN_RELEASE_BUILD_TESTS=1 RUN_RELEASE_UI_TESTS=1`: **27 testes aprovados**, zero falhas.
   Inclui Git temporario, duas tags paralelas, builds/publish da Central com
   fontes NuGet vazias e hosts publicados lendo identidades distintas por HTTP.
 - actionlint 1.7.12: tres workflows aprovados.
@@ -58,8 +58,23 @@ Validacoes locais:
 - Build completo da solucao: **falhou NETSDK1045**. Este ambiente possui somente
   SDK 8.0.428; `Yeshua.Engine.AIContextBuilder` exige .NET 9. Workflow passa a
   instalar SDKs 8/9. Build/publish integral deve passar no CI antes da publicacao.
-- Ensaio Playwright atualizado para leitura local, mas nao executado: Playwright
-  nao esta instalado neste ambiente. Cliente real e host publicado foram testados.
+- Ensaio Playwright aprovado: detalhes por teclado, SHA presente/ausente,
+  desenvolvimento, identidade ausente, falha de leitura e mobile sem overflow.
+  UI tambem executada contra os dois publishes reais, com telas PR35/PR36
+  distintas e toda requisicao externa bloqueada. A primeira tentativa falhou
+  por biblioteca nativa ausente; repeticao aprovada com dependencias em `/tmp`.
+  Workflows agora preparam o navegador e executam ambas as verificacoes.
+
+## Complemento de apresentacao na Central
+
+O rodape agora mostra `Central v01.006-PR36` recolhido e oferece detalhes
+nativos acessiveis por teclado com componente, base, PR, tag exata e SHA se
+localmente disponivel. Nenhuma lista de origens incluidas ou releases
+alternativas e apresentada. Central vem primeiro; outros componentes usam
+somente os arquivos locais. Desenvolvimento exige marcador explicito;
+arquivo ausente ou invalido mostra versao desconhecida. CSS permite detalhes
+em 360 px sem sobreposicao nem rolagem horizontal. SHA final nao e calculado
+nem consultado remotamente. Atualizacao nao altera os campos do formulario.
 
 ## Estado de publicacao e abertura
 
@@ -97,3 +112,7 @@ com bancos e integracoes reais, nao foi homologada nesta task.
 - `tests/ReleaseAutomation/classification.test.cjs`
 - `tests/ReleaseAutomation/release.test.cjs`
 - `tests/ReleaseAutomation/workflow.test.cjs`
+
+Arquivos adicionais do complemento: `wwwroot/spa/styles/release-footer.css`,
+`tests/Front/Central/release-footer.assertions.cjs` e `release-identities/README.md`.
+Demais ajustes permanecem nos workflows, scripts/testes e documentos listados.

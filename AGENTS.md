@@ -1341,14 +1341,17 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
   PR multicomponente prepara e valida todas as identidades antes da publicacao.
 - Build/publish apenas copiam arquivos locais ja versionados. Central exibe
   identidades do proprio artefato; nao consulta GitHub nem afirma a versao de
-  API/Worker implantados separadamente. Ausencia significa desenvolvimento.
+  API/Worker implantados separadamente. Ausencia de identidade significa versao
+  desconhecida. Desenvolvimento exige marcador local explicito de ambiente;
+  ele nao e aceito para publicar release. Rodape usa details/summary acessivel,
+  exibindo versao completa e detalhes somente da identidade selecionada.
 - Workflow privilegiado executa somente codigo confiavel da branch padrao.
   Build do head ocorre em runner separado sem escrita/segredos. Publicacao
   exige build aprovado, revisao do head exato, dispatch explicito e variavel
   nova `RELEASE_TAGGING_V2_ENABLED=true`. Nenhum merge ou deploy automatico.
 - Conflito de identidade no merge exige decisao explicita: uma composicao nova
-  nao herda identidade exclusiva de outra PR. Remover a identidade conflitante
-  na integracao (desenvolvimento), preparar outra PR para sua release composta.
+  nao herda identidade exclusiva de outra PR. Substituir a identidade conflitante
+  pelo marcador local explicito de desenvolvimento na integracao, preparar outra PR para sua release composta.
   As tags independentes anteriores permanecem recuperaveis e nao sao alteradas.
 - Tags v1, como `architecture/v01.001`, permanecem historicas. Nao reescrever,
   inferir identidade local retroativamente nem usar como sequenciador v2.

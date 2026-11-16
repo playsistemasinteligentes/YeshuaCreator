@@ -11,6 +11,9 @@ test('publicacao manual exige build isolado, SHA exato, barreira v2 e nenhum mer
   assert.match(w, /expectedSha: process.env.VALIDATED_SHA/);
   assert.match(w, /dotnet build YeshuaCreator.sln/);
   assert.match(w, /dotnet publish/);
+  assert.match(w, /RUN_RELEASE_UI_TESTS: '1'/);
+  assert.match(w, /playwright@1\.65\.1/);
+  assert.match(read('release-validation.yml'), /RUN_RELEASE_UI_TESTS: '1'/);
   const build = w.split('\n  validate:\n')[1].split('\n  publish:\n')[0];
   assert.match(build, /contents: read/); assert.doesNotMatch(build, /: write/);
   assert.match(build, /ref: \$\{\{ needs.resolve.outputs.sha \}\}/);

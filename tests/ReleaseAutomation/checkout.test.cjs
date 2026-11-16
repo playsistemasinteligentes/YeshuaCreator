@@ -26,9 +26,11 @@ test('Git real: PR35 e PR36 saem do mesmo pai, tags independentes, conflitos e c
       git(['checkout', '-q', '--detach', base]);
       fs.mkdirSync(path.join(root, 'release-identities'), { recursive: true });
       fs.writeFileSync(path.join(root, 'release-identities/fiscal.json'), JSON.stringify(identity('fiscal', '01.006', pr), null, 2) + '\n');
+      fs.writeFileSync(path.join(root, 'release-identities/central.json'), JSON.stringify(identity('central', '01.006', pr), null, 2) + '\n');
       fs.writeFileSync(path.join(root, 'independent-change.txt'), `Only PR${pr}\n`);
       git(['add', '.']); const commit = git(['commit-tree', git(['write-tree']), '-p', base, '-m', `Prepared PR${pr}`]);
       git(['checkout', '-q', '--detach', commit]);
+      git(['tag', `central/v01.006-PR${pr}`, commit]);
       commits.push(commit); git(['tag', `fiscal/v01.006-PR${pr}`, commit]);
     }
     assert.notEqual(commits[0], commits[1]);
@@ -61,6 +63,9 @@ test('Git real: PR35 e PR36 saem do mesmo pai, tags independentes, conflitos e c
           const module = await import(`data:text/javascript;base64,${Buffer.from(source).toString('base64')}`);
           const client = module.createReleaseClient(url => fetch(address + url));
           assert.equal((await client.local()).rows.find(row => row.component === 'fiscal').release.version, local.version);
+          if (process.env.RUN_RELEASE_UI_TESTS === '1') {
+            await require('../Front/Central/release-footer.assertions.cjs').assertPublishedFooter(address, pr);
+          }
         } finally {
           host.kill();
           await new Promise(resolve => host.exitCode !== null ? resolve() : host.once('exit', resolve));

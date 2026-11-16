@@ -7,7 +7,7 @@ import {
     getAuthenticationApi,
     initializeApplicationContext
 } from './application-context.js';
-import { bindReleaseFooter } from './release-footer.js?v=20261116-local02';
+import { bindReleaseFooter } from './release-footer.js?v=20261116-local03';
 import { bindUserArea } from './user-area.js?v=20261028-help02';
 
 
