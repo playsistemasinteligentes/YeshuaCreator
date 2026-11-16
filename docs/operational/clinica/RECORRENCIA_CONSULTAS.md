@@ -12,9 +12,20 @@ O painel Atendimentos oferece Não repetir, Semanal (7 dias) e Quinzenal
 em calendário local antes da conversão individual para UTC, respeitando regras
 de fuso. Horários inexistentes ou ambíguos são rejeitados pelo servidor.
 
-Ver prévia mostra cada ocorrência e seu conflito. O profissional pode alterar
-início/fim ou desmarcar Agendar. A confirmação exige revisão explícita; mudanças
-nas decisões retiram essa revisão. Não há confirmação automática nem alerta ao
+Ver prévia abre a aba **Resumo e conflitos**, com periodicidade, início/fim,
+quantidade de ocorrências e estado das decisões. Somente conflitos, horários
+inválidos e cancelamentos ficam expostos nessa aba. **Todas as datas** permite
+conferir e editar a série inteira; alternar abas preserva os mesmos campos e
+escolhas. Datas ocultas continuam sendo enviadas no contrato completo existente.
+Sem conflitos ou cancelamentos, o clique em Confirmar ocorrências constitui a
+confirmação humana explícita (`Revisado=true`), sem checkbox adicional.
+
+O profissional pode alterar início/fim ou desmarcar Agendar por ocorrência.
+Conflitos ainda no horário original, intervalos inválidos e sobreposições entre
+escolhas impedem confirmar. Alterações de horário ficam sujeitas à revalidação
+existente no servidor: a UI não afirma disponibilidade definitiva. Conflitos e
+cancelamentos exigem também marcar a revisão; mudar escolhas retira essa revisão.
+Rejeição HTTP 409 preserva os campos e abre Todas as datas para correção. Não há confirmação automática nem alerta ao
 terminar a série. Disponibilidade da prévia não reserva horário.
 
 Editar agendamento permite somente a consulta selecionada ou esta e as futuras
@@ -73,7 +84,13 @@ Usam dublê transacional de UnitOfWork, sem conexão a SQL ou APIs.
 Testes Node executam os métodos reais do painel com transporte/DOM simulados:
 prévia sem confirmar, revisão humana, decisões modificadas, reenvio idêntico,
 conflito, edição individual/futura e conversão independente do fuso do dispositivo.
-Não substituem ensaio visual em navegador.
+O teste `tests/Front/Clinica/recurrence-preview.cjs` usa Chromium/Playwright com
+os assets reais e API simulada localmente, nas larguras 1440 e 390 px e fuso do
+dispositivo Asia/Tokyo. Cobre resumo padrão, abas por clique/teclado, envio de
+todas as datas, bloqueio de conflitos, alteração/exclusão por ocorrência e
+rejeição 409 na confirmação. Requer Playwright e Chromium instalados; executar
+com `node tests/Front/Clinica/recurrence-preview.cjs`. Não usa dados reais e não
+substitui ensaio integrado com SQL Server.
 
 Comandos de verificação:
 
