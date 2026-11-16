@@ -131,7 +131,7 @@ test('backup observability is semantic, low-cardinality and covered by actionabl
     assert.ok(panel.description.includes('**O que mede:**'), panel.title);
     assert.ok(panel.description.includes('**Como interpretar:**'), panel.title);
     for (const target of panel.targets) {
-      assert.match(target.expr, /yeshua_backup_current/);
+      assert.match(target.expr, /yeshua_backup_current\(_value\|_ratio\)\?/);
       assert.doesNotMatch(target.expr, /run_id|snapshot_id|error|path|secret/i);
     }
   }
@@ -147,6 +147,7 @@ test('backup observability is semantic, low-cardinality and covered by actionabl
     'YeshuaBackupRepositoryReserveBreached'
   ]);
   for (const rule of rules.groups.flatMap(group => group.rules)) {
+    assert.match(rule.expr, /yeshua_backup_current\(_value\|_ratio\)\?/);
     assert.ok(rule.annotations.runbook.includes('OBSERVABILITY_ALERT_RUNBOOKS.md'));
   }
 });

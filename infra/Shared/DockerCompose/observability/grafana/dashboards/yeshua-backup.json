@@ -40,7 +40,7 @@
       "id": 1,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"health_state\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"health_state\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
       ],
       "title": "1. O ambiente de backup esta saudavel?",
       "type": "bargauge"
@@ -53,7 +53,7 @@
       "id": 2,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
       "targets": [
-        { "editorMode": "code", "expr": "time() - max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"observed_at_unix_seconds\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "time() - max by (backup_source) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"observed_at_unix_seconds\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
       ],
       "title": "2. A observacao esta chegando?",
       "type": "bargauge"
@@ -66,7 +66,7 @@
       "id": 3,
       "options": { "displayMode": "gradient", "minVizHeight": 16, "minVizWidth": 8, "namePlacement": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showUnfilled": true, "sizing": "auto", "valueMode": "color" },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"profile_overdue\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"profile_overdue\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
       ],
       "title": "3. Quais perfis estao atrasados?",
       "type": "bargauge"
@@ -79,7 +79,7 @@
       "id": 4,
       "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "time() - max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"profile_last_success_unix_seconds\", backup_source=~\"$source\", backup_kind=~\"$kind\"} > 0)", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "time() - max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"profile_last_success_unix_seconds\", backup_source=~\"$source\", backup_kind=~\"$kind\"} > 0)", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
       ],
       "title": "4. Ha quanto tempo cada perfil concluiu?",
       "type": "timeseries"
@@ -92,8 +92,8 @@
       "id": 5,
       "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"repository_free_bytes\", backup_source=~\"$source\"})", "legendFormat": "Livre {{backup_source}}", "range": true, "refId": "A" },
-        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"repository_minimum_free_bytes\", backup_source=~\"$source\"})", "legendFormat": "Reserva {{backup_source}}", "range": true, "refId": "B" }
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"repository_free_bytes\", backup_source=~\"$source\"})", "legendFormat": "Livre {{backup_source}}", "range": true, "refId": "A" },
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"repository_minimum_free_bytes\", backup_source=~\"$source\"})", "legendFormat": "Reserva {{backup_source}}", "range": true, "refId": "B" }
       ],
       "title": "5. O repositorio possui espaco seguro?",
       "type": "timeseries"
@@ -106,7 +106,7 @@
       "id": 6,
       "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=~\"profile_(active|pending)\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}} / {{metric}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=~\"profile_(active|pending)\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}} / {{metric}}", "range": true, "refId": "A" }
       ],
       "title": "6. O que esta ativo ou pendente?",
       "type": "timeseries"
@@ -119,7 +119,7 @@
       "id": 7,
       "options": { "legend": { "calcs": ["lastNotNull", "max"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"profile_duration_seconds\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"profile_duration_seconds\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}}", "range": true, "refId": "A" }
       ],
       "title": "7. Quanto durou a ultima execucao?",
       "type": "timeseries"
@@ -132,7 +132,7 @@
       "id": 8,
       "options": { "legend": { "calcs": ["lastNotNull"], "displayMode": "table", "placement": "bottom", "showLegend": true }, "tooltip": { "mode": "multi", "sort": "desc" } },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source, backup_kind, metric) ({__name__=~\"yeshua_backup_current(_value)?\", metric=~\"profile_(bytes_processed|data_added_bytes)\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}} / {{metric}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "max by (backup_source, backup_kind, metric) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=~\"profile_(bytes_processed|data_added_bytes)\", backup_source=~\"$source\", backup_kind=~\"$kind\"})", "legendFormat": "{{backup_source}} / {{backup_kind}} / {{metric}}", "range": true, "refId": "A" }
       ],
       "title": "8. Qual foi o volume da ultima execucao?",
       "type": "timeseries"
@@ -145,7 +145,7 @@
       "id": 9,
       "options": { "colorMode": "value", "graphMode": "none", "justifyMode": "auto", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"], "fields": "", "values": false }, "showPercentChange": false, "textMode": "auto", "wideLayout": true },
       "targets": [
-        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value)?\", metric=\"functional_restore_proven\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
+        { "editorMode": "code", "expr": "max by (backup_source) ({__name__=~\"yeshua_backup_current(_value|_ratio)?\", metric=\"functional_restore_proven\", backup_source=~\"$source\"})", "legendFormat": "{{backup_source}}", "range": true, "refId": "A" }
       ],
       "title": "9. A restauracao funcional foi comprovada?",
       "type": "stat"
@@ -160,13 +160,13 @@
         "allValue": ".+",
         "current": { "text": "All", "value": "$__all" },
         "datasource": { "type": "prometheus", "uid": "prometheus" },
-        "definition": "label_values({__name__=~\"yeshua_backup_current(_value)?\"}, backup_source)",
+        "definition": "label_values({__name__=~\"yeshua_backup_current(_value|_ratio)?\"}, backup_source)",
         "includeAll": true,
         "label": "Origem",
         "multi": true,
         "name": "source",
         "options": [],
-        "query": { "query": "label_values({__name__=~\"yeshua_backup_current(_value)?\"}, backup_source)", "refId": "VariableQueryEditor-Source" },
+        "query": { "query": "label_values({__name__=~\"yeshua_backup_current(_value|_ratio)?\"}, backup_source)", "refId": "VariableQueryEditor-Source" },
         "refresh": 2,
         "regex": "",
         "sort": 1,
@@ -176,13 +176,13 @@
         "allValue": ".+",
         "current": { "text": "All", "value": "$__all" },
         "datasource": { "type": "prometheus", "uid": "prometheus" },
-        "definition": "label_values({__name__=~\"yeshua_backup_current(_value)?\", backup_source=~\"$source\"}, backup_kind)",
+        "definition": "label_values({__name__=~\"yeshua_backup_current(_value|_ratio)?\", backup_source=~\"$source\"}, backup_kind)",
         "includeAll": true,
         "label": "Perfil",
         "multi": true,
         "name": "kind",
         "options": [],
-        "query": { "query": "label_values({__name__=~\"yeshua_backup_current(_value)?\", backup_source=~\"$source\"}, backup_kind)", "refId": "VariableQueryEditor-Kind" },
+        "query": { "query": "label_values({__name__=~\"yeshua_backup_current(_value|_ratio)?\", backup_source=~\"$source\"}, backup_kind)", "refId": "VariableQueryEditor-Kind" },
         "refresh": 2,
         "regex": "",
         "sort": 1,

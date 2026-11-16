@@ -6,7 +6,7 @@ groups:
         expr: |
           time() - max by (backup_source) (
             last_over_time(
-              {__name__=~"yeshua_backup_current(_value)?", metric="observed_at_unix_seconds"}[15m]
+              {__name__=~"yeshua_backup_current(_value|_ratio)?", metric="observed_at_unix_seconds"}[15m]
             )
           ) > 180
         for: 2m
@@ -21,7 +21,7 @@ groups:
       - alert: YeshuaBackupControllerFailure
         expr: |
           max by (backup_source) (
-            {__name__=~"yeshua_backup_current(_value)?", metric="health_state"}
+            {__name__=~"yeshua_backup_current(_value|_ratio)?", metric="health_state"}
           ) >= 2
         for: 1m
         labels:
@@ -35,7 +35,7 @@ groups:
       - alert: YeshuaBackupProfileOverdue
         expr: |
           max by (backup_source, backup_kind) (
-            {__name__=~"yeshua_backup_current(_value)?", metric="profile_overdue"}
+            {__name__=~"yeshua_backup_current(_value|_ratio)?", metric="profile_overdue"}
           ) > 0
         for: 5m
         labels:
@@ -49,11 +49,11 @@ groups:
       - alert: YeshuaBackupRepositoryReserveBreached
         expr: |
           max by (backup_source) (
-            {__name__=~"yeshua_backup_current(_value)?", metric="repository_free_bytes"}
+            {__name__=~"yeshua_backup_current(_value|_ratio)?", metric="repository_free_bytes"}
           )
           <= on (backup_source)
           max by (backup_source) (
-            {__name__=~"yeshua_backup_current(_value)?", metric="repository_minimum_free_bytes"}
+            {__name__=~"yeshua_backup_current(_value|_ratio)?", metric="repository_minimum_free_bytes"}
           )
         for: 5m
         labels:
