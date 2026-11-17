@@ -24,21 +24,35 @@ a versao ja atribuida. O formato existente, inclusive `architecture/v01.001`,
 continua compativel. Nao ha formato `-PR`, preparacao de identidade na branch,
 alteracao da Engine ou do rodape da Central nesta PR.
 
-O workflow `component-release` fica **somente manual** (`workflow_dispatch`),
-sem jobs de build/testes, classificacao de escopo ou pr-readiness. Ele recebe o
-numero de uma PR ja mergeada, le o campo `Aplicativos:` e utiliza o SHA de merge,
-conforme o mecanismo existente. `dry_run` permanece verdadeiro por padrao;
-esta correcao nao aciona o workflow, nem mesmo para simulacao. Nao ha incremento
-por abertura, edicao, push ou merge de PR. A decisao de executar futuramente o
-workflow e separada desta correcao.
+O workflow `component-release` executa **automaticamente no merge de qualquer
+PR na main**, pelo evento `pull_request_target`, acao `closed`, com
+`pull_request.merged == true`. Ele le `Aplicativos:` do corpo da PR no evento
+de merge e cria as tags no `merge_commit_sha` da PR. O fluxo normal publica
+diretamente, sem execucao manual nem `dry_run`. Fechar uma PR sem merge nao
+publica. Nao ha jobs de build/testes, classificacao de escopo ou pr-readiness.
 
-Os workflows `release-classification` e `release-validation` foram removidos.
-Enquanto a alteracao nao estiver na branch padrao, workflows antigos dessa
-branch ainda podem reagir aos eventos da PR (especialmente
-`pull_request_target`). Um push tambem pode acionar configuracoes externas do
-repositorio; esta correcao nao dispara acoes manuais nem altera configuracoes
+O job usa `GITHUB_TOKEN` com `contents: write` para criar tags e
+`pull-requests: read` para consultar a PR. O checkout permanece fixado em
+`github.workflow_sha`, sem credenciais persistidas; nao executa codigo da
+branch de origem da PR. Regras administrativas de protecao de tags continuam
+valendo; uma recusa de permissao faz a publicacao falhar, sem contorno.
+
+A concorrencia e agrupada por numero de PR, sem cancelar execucoes em curso.
+Merges distintos usam a criacao atomica de refs existente para disputar a
+proxima versao sem sobrescrever tags. O recibo na tag identifica PR, SHA e
+lista de apps: reexecutar preserva tags ja publicadas e completa uma falha
+parcial sem novo incremento dos apps concluidos.
+
+`workflow_dispatch` permanece opcional, na main, somente para recuperacao de
+uma PR ja mergeada. Recebe `pr_number` e consulta o corpo atual da PR;
+`dry_run` e verdadeiro por padrao apenas nesse caminho manual. Para completar
+tags pela recuperacao, informar `dry_run: false`. Nao alterar a lista de apps
+de uma publicacao parcial: o recibo existente recusa lista ou SHA divergentes.
+
+Os workflows `release-classification` e `release-validation` foram removidos
+na PR #29. Esta correcao nao dispara acoes manuais nem altera configuracoes
 administrativas ou exigencias de branch protection.
 
 Nesta correcao a validacao e somente estatica, por ordem do operador. Nenhum
-build, teste ou versionamento deve ser executado para esta entrega. A publicacao
-da branch/PR nao autoriza merge nem deploy.
+build, teste ou versionamento deve ser executado durante a implementacao.
+A publicacao da branch/PR nao autoriza merge nem deploy.
