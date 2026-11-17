@@ -18,6 +18,12 @@ using System.Threading.Tasks;
 
 namespace Yeshua.CQRS.Tests.Application;
 
+// ActivityListener observa a Source global do processo. Esta colecao nao pode
+// concorrer com testes de outras classes que tambem publicam atividades.
+[CollectionDefinition(nameof(OperationalTelemetryCollection), DisableParallelization = true)]
+public sealed class OperationalTelemetryCollection { }
+
+[Collection(nameof(OperationalTelemetryCollection))]
 public sealed class OperationalTelemetryTests
 {
     [Fact]
