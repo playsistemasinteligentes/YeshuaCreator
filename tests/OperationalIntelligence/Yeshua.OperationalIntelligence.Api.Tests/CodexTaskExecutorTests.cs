@@ -39,6 +39,11 @@ public sealed class CodexTaskExecutorTests
                 Assert.Fail("Cancellation must interrupt the running adapter.");
             }
             catch (OperationCanceledException) { }
+            // Waiting for the adapter only waits for that process. Its killed descendants
+            // can still be exiting/reaped when the adapter has already exited.
+            var exitDeadline = Stopwatch.StartNew();
+            while (pids.Any(IsRunning) && exitDeadline.Elapsed < TimeSpan.FromSeconds(2))
+                await Task.Delay(20);
             foreach (var pid in pids)
                 Assert.IsFalse(IsRunning(pid), $"Fixture process {pid} must not survive cancellation.");
         }

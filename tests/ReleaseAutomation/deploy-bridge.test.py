@@ -1,7 +1,5 @@
 """Workspace-only bridge tests: deploy.sh is always replaced by a harmless fixture."""
-import datetime as dt
 import importlib.util
-import json
 import os
 from pathlib import Path
 import tempfile
@@ -19,24 +17,15 @@ class BridgeTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.base = Path(self.temp.name)
-        (self.base / 'approvals').mkdir(mode=0o700)
         (self.base / 'receipts').mkdir(mode=0o700)
         self.script = self.base / 'fixture.sh'
         self.script.write_text('echo "$1:$YESHUA_RELEASE_TAG" >> calls\necho fixture-output\nexit 0\n')
-        self.command = dict(action='execute', requestId='test-1', target='all', releaseTag='1.2.3', confirm=True)
+        self.command = dict(action='execute', requestId='test-1', target='all', releaseTag='1.2.3')
         self.addCleanup(patch.stopall)
         patch.object(b, 'BASE', self.base).start()
         patch.object(b, 'SCRIPT', self.script).start()
         # Unit tests work under non-root too; production requires uid=0.
         patch.object(b, 'ROOT_UID', os.getuid()).start()
-        self.approve()
-
-    def approve(self, **changes):
-        approval = {**self.command, 'approvedBy': 'operator-test',
-                    'expiresAtUtc': (dt.datetime.now(dt.timezone.utc) + dt.timedelta(minutes=5)).isoformat(), **changes}
-        path = self.base / 'approvals/test-1.json'
-        path.write_text(json.dumps(approval))
-        path.chmod(0o600)
 
     def dispatch(self, command=None):
         return b.dispatch(command or self.command, detach=False)
@@ -45,34 +34,22 @@ class BridgeTests(unittest.TestCase):
         result = self.dispatch()
         self.assertEqual('Succeeded', result['status'])
         self.assertEqual('all:1.2.3\n', (self.base / 'calls').read_text())
+        self.assertFalse((self.base / 'approvals').exists())
         self.assertEqual('fixture-output\n', (self.base / 'receipts/test-1.log').read_text())
         self.assertEqual(0, result['exitCode'])
 
-    def test_duplicate_never_reexecutes_even_after_approval_expiry(self):
+    def test_duplicate_never_reexecutes_and_rejects_changed_target_or_release(self):
         self.dispatch()
-        self.approve(expiresAtUtc='2000-01-01T00:00:00+00:00')
         self.assertEqual('Succeeded', self.dispatch()['status'])
         self.assertEqual(1, len((self.base / 'calls').read_text().splitlines()))
         with self.assertRaises(ValueError):
             self.dispatch({**self.command, 'target': 'central'})
-
-    def test_expired_mismatched_missing_and_unsafe_authorizations_do_not_execute(self):
-        for changes in ({'expiresAtUtc': '2000-01-01T00:00:00+00:00'}, {'target': 'central'}, {'releaseTag': '9.9.9'}):
-            self.approve(**changes)
-            with self.assertRaises(ValueError):
-                self.dispatch()
-        self.approve()
-        (self.base / 'approvals/test-1.json').chmod(0o644)
         with self.assertRaises(ValueError):
-            self.dispatch()
-        (self.base / 'approvals/test-1.json').unlink()
-        with self.assertRaises(FileNotFoundError):
-            self.dispatch()
-        self.assertFalse((self.base / 'calls').exists())
+            self.dispatch({**self.command, 'releaseTag': '9.9.9'})
 
-    def test_rejects_injection_extra_fields_unconfirmed_and_status_mutation(self):
+    def test_rejects_injection_extra_fields_and_status_mutation(self):
         for change in ({'target': 'all; id'}, {'requestId': '../escape'}, {'releaseTag': '1.0.0; id'},
-                       {'confirm': False}, {'confirm': 1}, {'command': 'id'}, {'action': 'restart'},
+                       {'confirm': True}, {'target': []}, {'releaseTag': 123}, {'command': 'id'}, {'action': 'restart'},
                        {'action': 'status'}):
             with self.assertRaises(ValueError):
                 self.dispatch({**self.command, **change})

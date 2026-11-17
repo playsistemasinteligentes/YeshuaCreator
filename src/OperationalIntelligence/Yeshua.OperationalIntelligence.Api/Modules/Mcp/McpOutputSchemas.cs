@@ -131,7 +131,7 @@ public static class McpOutputSchemas
                 {
                     ["requestId"] = text.DeepClone(), ["target"] = text.DeepClone(),
                     ["releaseTag"] = text.DeepClone(), ["status"] = text.DeepClone(),
-                    ["approvedBy"] = text.DeepClone(), ["startedAtUtc"] = text.DeepClone(),
+                    ["startedAtUtc"] = text.DeepClone(),
                     ["finishedAtUtc"] = text.DeepClone(), ["exitCode"] = integer.DeepClone(),
                     ["instruction"] = text.DeepClone()
                 },

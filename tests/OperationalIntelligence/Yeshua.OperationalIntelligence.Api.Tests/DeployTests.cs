@@ -22,32 +22,32 @@ public sealed class DeployTests
     }
 
     [TestMethod]
-    public async Task DisabledByDefaultAndInvalidCommandsNeverReachBridge()
+    public async Task ValidCommandsNeedOnlyPrivateConnectionAndInvalidCommandsNeverReachBridge()
     {
         var bridge = new Bridge();
-        var receiver = new DeployReceiver(bridge, Options.Create(new DeployOptions()));
-        await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(new("execute", "test", "all", "1.0.0", true), default));
-        receiver = new(bridge, Options.Create(new DeployOptions { Enabled = true }));
+        var receiver = new DeployReceiver(bridge);
         foreach (var command in new[]
         {
-            new DeployCommand("execute", "test", "all", "1.0.0", false),
-            new DeployCommand("execute", "test", "all; id", "1.0.0", true),
-            new DeployCommand("execute", "../test", "all", "1.0.0", true),
-            new DeployCommand("execute", "test", "all", "1.0.0; id", true),
+            new DeployCommand("execute", "test"),
+            new DeployCommand("execute", "test", "all; id", "1.0.0"),
+            new DeployCommand("execute", "../test", "all", "1.0.0"),
+            new DeployCommand("execute", "test", "all", "1.0.0; id"),
             new DeployCommand("restart", "test"), new DeployCommand("status", "test", "all")
         })
             await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(command, default));
         Assert.AreEqual(0, bridge.Calls);
-        await receiver.ExecuteAsync(new("execute", "test", "all", "1.0.0", true), default);
+        await receiver.ExecuteAsync(new("execute", "test", "all", "1.0.0"), default);
         await receiver.ExecuteAsync(new("status", "test"), default);
         Assert.AreEqual(2, bridge.Calls);
+        var schema = JsonSerializer.SerializeToElement(new DeployTool(receiver).InputSchema);
+        Assert.IsFalse(schema.GetProperty("properties").TryGetProperty("confirm", out _));
     }
 
     [TestMethod]
     public async Task PublicAndSpoofedConnectionsCannotDiscoverOrCallDeploy()
     {
         var bridge = new Bridge();
-        var tool = new DeployTool(new(bridge, Options.Create(new DeployOptions { Enabled = true })));
+        var tool = new DeployTool(new(bridge));
         var context = new DefaultHttpContext();
         context.Connection.LocalPort = 8080;
         context.Connection.LocalIpAddress = IPAddress.Loopback;
@@ -55,7 +55,7 @@ public sealed class DeployTests
         context.Request.Headers["X-Forwarded-Port"] = "5729";
         var access = new McpAccessPolicy(new HttpContextAccessor { HttpContext = context }, Options.Create(new McpOptions()));
         var registry = new McpToolRegistry([tool], access);
-        var arguments = JsonSerializer.SerializeToElement(new { action = "execute", requestId = "test", target = "all", releaseTag = "1.0.0", confirm = true });
+        var arguments = JsonSerializer.SerializeToElement(new { action = "execute", requestId = "test", target = "all", releaseTag = "1.0.0" });
         Assert.AreEqual(0, registry.List().Count);
         Assert.IsTrue((await registry.CallAsync("yeshua_deploy", arguments, default)).IsError ?? false);
         Assert.AreEqual(0, bridge.Calls);
@@ -84,11 +84,11 @@ public sealed class DeployTests
     public async Task UnknownArgumentsAndInvalidTypesAreRejected()
     {
         var bridge = new Bridge();
-        var tool = new DeployTool(new(bridge, Options.Create(new DeployOptions { Enabled = true })));
+        var tool = new DeployTool(new(bridge));
         foreach (var json in new[]
         {
-            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","confirm":true,"command":"id"}""",
-            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","confirm":"true"}""",
+            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","command":"id"}""",
+            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","confirm":true}""",
             """{"action":"status","requestId":"test","confirm":false}""",
             """{"action":"status","requestId":15}"""
         })

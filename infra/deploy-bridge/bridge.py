@@ -6,6 +6,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import subprocess
 import sys
 
@@ -35,26 +36,24 @@ def save(path, value):
 
 
 def validate(value):
-    if not isinstance(value, dict) or set(value) - {'action', 'requestId', 'target', 'releaseTag', 'confirm'}:
+    if not isinstance(value, dict) or set(value) - {'action', 'requestId', 'target', 'releaseTag'}:
         raise ValueError('invalid_arguments')
     if value.get('action') not in {'execute', 'status'}:
         raise ValueError('invalid_action')
-    if not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}', value.get('requestId', '')):
+    if not isinstance(value.get('requestId'), str) or not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}', value['requestId']):
         raise ValueError('invalid_request_id')
     if value['action'] == 'status':
         if set(value) != {'action', 'requestId'}:
             raise ValueError('status_requires_only_request_id')
-    elif (set(value) != {'action', 'requestId', 'target', 'releaseTag', 'confirm'} or
-          value.get('target') not in TARGETS or value.get('confirm') is not True or
-          not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', value.get('releaseTag', ''))):
-        raise ValueError('explicit_confirmation_target_and_release_required')
+    elif (set(value) != {'action', 'requestId', 'target', 'releaseTag'} or
+          not isinstance(value.get('target'), str) or value['target'] not in TARGETS or
+          not isinstance(value.get('releaseTag'), str) or not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', value.get('releaseTag', ''))):
+        raise ValueError('target_and_release_required')
 
 
-def private(path, directory=False):
+def private_directory(path):
     info = path.lstat()
-    import stat
-    if (info.st_uid != ROOT_UID or info.st_mode & 0o077 or
-            not (stat.S_ISDIR(info.st_mode) if directory else stat.S_ISREG(info.st_mode))):
+    if info.st_uid != ROOT_UID or info.st_mode & 0o077 or not stat.S_ISDIR(info.st_mode):
         raise ValueError('unsafe_host_permissions')
 
 
@@ -116,14 +115,6 @@ def dispatch(value, detach=True):
             if any(receipt[key] != value[key] for key in ('target', 'releaseTag')):
                 raise ValueError('request_id_conflict')
             return receipt
-        approval_path = BASE / 'approvals' / (value['requestId'] + '.json')
-        private(approval_path)
-        approval = json.loads(approval_path.read_text())
-        expiry = dt.datetime.fromisoformat(approval['expiresAtUtc'])
-        if (any(approval.get(key) != value[key] for key in ('requestId', 'target', 'releaseTag')) or
-                not isinstance(approval.get('approvedBy'), str) or
-                not re.fullmatch(r'[a-zA-Z0-9_-]{1,80}', approval['approvedBy']) or expiry.tzinfo is None or expiry <= dt.datetime.now(dt.timezone.utc)):
-            raise ValueError('missing_or_expired_execution_authorization')
         global_lock = (BASE / 'execution.lock').open('a')
         try:
             fcntl.flock(global_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -133,8 +124,8 @@ def dispatch(value, detach=True):
         job_lock = path.with_suffix('.lock').open('a')
         fcntl.flock(job_lock, fcntl.LOCK_EX)
         receipt = {key: value[key] for key in ('requestId', 'target', 'releaseTag')}
-        receipt.update(status='Running', startedAtUtc=now(), approvedBy=approval['approvedBy'])
-        save(path, receipt)  # Consumes authorization durably BEFORE any execution.
+        receipt.update(status='Running', startedAtUtc=now())
+        save(path, receipt)  # Records requestId durably BEFORE any execution to prevent replay.
         if not detach:  # Test seam: same execution path with an isolated script fixture.
             run(receipt, path, job_lock, global_lock)
             return read_status(path)
@@ -162,15 +153,15 @@ def main():
     try:
         if os.geteuid() != 0 or len(sys.argv) != 1:
             raise ValueError('restricted_host_entry_only')
-        for directory in (BASE, BASE / 'approvals', BASE / 'receipts'):
-            private(directory, directory=True)
+        for directory in (BASE, BASE / 'receipts'):
+            private_directory(directory)
         raw = sys.stdin.buffer.read(4097)
         if len(raw) > 4096:
             raise ValueError('request_too_large')
         result = dispatch(json.loads(raw))
     except Exception:
-        # Never expose host paths, approval contents, exceptions or deploy output.
-        result = {'status': 'Blocked', 'instruction': 'Host administrator must review authorization, permissions and bridge configuration. Do not retry with another requestId.'}
+        # Never expose host paths, exceptions or deploy output.
+        result = {'status': 'Blocked', 'instruction': 'Bridge unavailable: check permissions, request arguments and configuration. Query the same requestId after any uncertain result.'}
     print(json.dumps(result), flush=True)
 
 

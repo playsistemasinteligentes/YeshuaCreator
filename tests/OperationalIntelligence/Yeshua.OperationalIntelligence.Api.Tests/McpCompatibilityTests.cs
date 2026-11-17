@@ -31,12 +31,12 @@ public sealed class McpCompatibilityTests
         var deploy = tools.Single(tool => tool.Name == "yeshua_deploy").ProtocolTool;
         Assert.AreEqual(false, deploy.Annotations!.ReadOnlyHint);
         Assert.AreEqual(true, deploy.Annotations.DestructiveHint);
-        var disabledDeploy = await client.CallToolAsync("yeshua_deploy", new Dictionary<string, object?>
+        var unconfiguredDeploy = await client.CallToolAsync("yeshua_deploy", new Dictionary<string, object?>
         {
-            ["action"] = "execute", ["requestId"] = "disabled-test", ["target"] = "all",
-            ["releaseTag"] = "1.0.0", ["confirm"] = true
+            ["action"] = "execute", ["requestId"] = "unconfigured-test", ["target"] = "all",
+            ["releaseTag"] = "1.0.0"
         });
-        Assert.AreEqual(true, disabledDeploy.IsError);
+        Assert.AreEqual(true, unconfiguredDeploy.IsError);
         Assert.IsTrue(tools.Any(tool => tool.Name == "yeshua_storage_usage" && tool.ProtocolTool.Annotations!.ReadOnlyHint == true));
         foreach (var tool in tools)
         {
