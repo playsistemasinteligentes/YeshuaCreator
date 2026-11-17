@@ -1337,8 +1337,10 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
   Nao classificar automaticamente nem acrescentar build, testes, gates de CI,
   pr-readiness ou bloqueios a este mecanismo.
 - Preservar a numeracao existente `<componente>/v01.001`, independente por
-  componente. O workflow de versionamento fica somente manual e usa a lista
-  da PR mergeada; esta correcao nao executa versionamento nem cria tags/releases.
+  componente. Correcao do operador apos merge da PR #29: o workflow incrementa
+  automaticamente no merge de qualquer PR na main, usando somente a lista
+  `Aplicativos:` do evento de merge. Execucao manual e opcional para recuperacao;
+  durante a implementacao nao executar versionamento nem criar tags/releases.
   As mudancas de identidade local, rodape e formato `-PR` foram retiradas desta PR.
 - Publicar/atualizar automaticamente a branch e PR para revisao esta autorizado,
   sem nova confirmacao. Merge e deploy continuam exigindo ordem separada.
