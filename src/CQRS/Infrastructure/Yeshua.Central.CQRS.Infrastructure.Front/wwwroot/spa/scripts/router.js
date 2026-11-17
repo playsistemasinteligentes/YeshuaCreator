@@ -1,4 +1,4 @@
-import { loadDataMenu, buildMenu, showModuleLoadError } from './menu.js?v=20261117-support01';
+import { loadDataMenu, buildMenu, showModuleLoadError } from './menu.js?v=20261117-support02';
 import { buildCrud } from './crud.js?v=20260926-userarea01';
 import { buildRegister } from './viewsScripts/register.js?v=20260926-auth-central01';
 import { buildForgot } from './viewsScripts/forgot.js?v=20260926-auth-central01';
@@ -7,8 +7,8 @@ import {
     getAuthenticationApi,
     initializeApplicationContext
 } from './application-context.js';
-import { preloadInstalledVersion } from './release-footer.js?v=20261117-support01';
-import { bindUserArea } from './user-area.js?v=20261117-support01';
+import { preloadInstalledVersion } from './release-footer.js?v=20261117-support02';
+import { bindUserArea } from './user-area.js?v=20261117-support02';
 
 
 export async function handleRouting(hash) {
@@ -35,7 +35,7 @@ export async function handleRouting(hash) {
 
     let pageRendered = false;
     try {
-        const viewVersion = publicRoutes.includes(route) ? '?v=20261016-auth-layout01' : '?v=20261117-support01';
+        const viewVersion = publicRoutes.includes(route) ? '?v=20261016-auth-layout01' : '?v=20261117-support02';
         const res = await fetch(`views/${route.replace('#', '')}.html${viewVersion}`, { cache: 'no-cache' });
         if (!res.ok) throw new Error('Página não encontrada...');
 

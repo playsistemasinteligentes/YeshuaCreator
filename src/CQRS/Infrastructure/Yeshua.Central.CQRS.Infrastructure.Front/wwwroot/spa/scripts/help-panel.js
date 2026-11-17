@@ -1,11 +1,18 @@
-import { buildHelpPrompt, readHelpContext, copyText } from './help-prompt.js?v=20261117-support01';
-import { loadInstalledVersion } from './release-footer.js?v=20261117-support01';
+import { buildHelpPrompt, readHelpContext, copyText } from './help-prompt.js?v=20261117-support02';
+import { loadInstalledVersion } from './release-footer.js?v=20261117-support02';
 import { getAuthenticationApi } from './application-context.js';
 import { SessionRecorder, AudioBufferStore } from './components/recording/session-recorder.js?v=20261028-stream01';
 
 let panel;
 const actorKey = context => `${context.tenantId || ''}:${context.userId || ''}`;
-const newId = () => crypto.randomUUID().replaceAll('-', '');
+const newId = () => {
+    if (typeof crypto.randomUUID === 'function') return crypto.randomUUID().replaceAll('-', '');
+    // getRandomValues is available on HTTP too; retain UUID v4 entropy and format.
+    const bytes = crypto.getRandomValues(new Uint8Array(16));
+    bytes[6] = (bytes[6] & 0x0f) | 0x40;
+    bytes[8] = (bytes[8] & 0x3f) | 0x80;
+    return Array.from(bytes, value => value.toString(16).padStart(2, '0')).join('');
+};
 const wait = milliseconds => new Promise(resolve => setTimeout(resolve, milliseconds));
 
 export async function openHelpPanel() {
@@ -40,6 +47,7 @@ function createPanel(context) {
                 <label for="support-description">Descrição</label><textarea id="support-description" maxlength="20000" required rows="7" placeholder="O que você estava fazendo? O que aconteceu e o que esperava?"></textarea>
                 <small>Confira o texto antes de enviar. O aplicativo e a tela serão registrados automaticamente.</small>
                 <div class="support-actions"><button type="button" id="support-record">Gravar relato</button><button type="button" id="support-stop" hidden>Parar gravação</button><button type="button" id="support-resend" hidden>Reenviar áudio</button><button type="button" id="support-refresh" hidden>Consultar transcrição</button></div>
+                <p id="support-audio-https" class="support-context support-audio-https" hidden>A gravação de voz precisa de HTTPS. Você pode enviar o chamado por texto ou <a id="support-open-https" target="_blank" rel="noopener noreferrer">Abrir em HTTPS para gravar</a> em outra aba.</p>
                 <div id="support-audio-status" class="support-recording-status" role="status" aria-live="polite"></div>
                 <div class="support-actions"><button type="submit" id="support-submit" class="support-primary">Enviar chamado</button><button type="button" id="support-new" hidden>Novo chamado</button></div>
             </form>
@@ -56,6 +64,11 @@ function createPanel(context) {
     document.body.append(dialog);
     const p = { dialog, context, actor: actorKey(context), id: newId(), prepared: false, opened: false, busy: false, transcribing: false, sequence: 0, recorder: null,
         field: id => dialog.querySelector(`#${id}`) };
+    p.field('support-audio-https').hidden = isSecureContext;
+    if (!isSecureContext) p.field('support-record').setAttribute('aria-describedby', 'support-audio-https');
+    const secureUrl = new URL(location.href);
+    secureUrl.protocol = 'https:'; secureUrl.search = '';
+    p.field('support-open-https').href = secureUrl.href;
     p.refreshContext = () => {
         const c = p.context;
         p.field('support-context').textContent = `${c.applicationTitle || c.application} · ${c.title || 'Página inicial'}`;
@@ -165,7 +178,7 @@ function updateControls(p) {
     p.field('support-description').readOnly = active || p.transcribing || p.opened;
     p.field('support-subject').readOnly = p.opened;
     p.field('support-record').hidden = capturing || pending || p.opened;
-    p.field('support-record').disabled = p.busy || active || p.transcribing;
+    p.field('support-record').disabled = !isSecureContext || p.busy || active || p.transcribing;
     p.field('support-stop').hidden = !capturing; p.field('support-stop').disabled = p.recorder?.state === 'stopping';
     p.field('support-resend').hidden = !pending || active; p.field('support-resend').disabled = p.busy;
     p.field('support-refresh').hidden = !p.prepared || p.opened || capturing || pending;
@@ -175,6 +188,7 @@ function updateControls(p) {
 
 async function startRecording(p) {
     if (p.busy || p.opened || p.transcribing || p.recorder?.active) return;
+    if (!isSecureContext) { p.message('Abra a página em HTTPS para gravar. O chamado por texto continua disponível.'); return; }
     p.busy = true; p.message(''); updateControls(p);
     try {
         await prepare(p);

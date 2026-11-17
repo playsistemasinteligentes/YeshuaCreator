@@ -97,7 +97,9 @@ export async function copyText(text) {
     const selection = typeof focus?.selectionStart === 'number' && typeof focus?.selectionEnd === 'number' ? [focus.selectionStart, focus.selectionEnd] : null;
     const scroll = { x: window.scrollX, y: window.scrollY }, field = document.createElement('textarea');
     field.value = text; field.readOnly = true; field.style.cssText = 'position:fixed;left:-10000px;top:0;opacity:0';
-    document.body.append(field); field.select();
+    // Content outside an open modal is inert, including temporary copy fields.
+    (focus?.closest?.('dialog[open]') || document.body).append(field);
+    field.focus({ preventScroll: true }); field.select();
     let copied = false;
     try { copied = document.execCommand('copy'); } catch { /* Show manual copy when the browser rejects both APIs. */ }
     finally {
@@ -117,7 +119,7 @@ export function bindHelpPrompt() {
             if (button.dataset.copying) return;
             button.dataset.copying = 'true';
             try {
-                const { openHelpPanel } = await import('./help-panel.js?v=20261117-support01');
+                const { openHelpPanel } = await import('./help-panel.js?v=20261117-support02');
                 await openHelpPanel();
             } catch { showAlert('Não foi possível abrir a ajuda. Tente novamente.', 'error'); }
             finally { delete button.dataset.copying; }
