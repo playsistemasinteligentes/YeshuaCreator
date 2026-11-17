@@ -8,3 +8,12 @@ server {
     include /etc/nginx/routes/*.conf;
 }
 
+# Loaded together with HTTPS only after certificate validation at deployment.
+# A temporary redirect preserves HTTP methods and allows the HTTP fallback
+# when HTTPS is unavailable, without a certificate check on each request.
+server {
+    listen 80 default_server;
+    server_name playsis.com.br;
+    return 307 https://playsis.com.br$request_uri;
+}
+

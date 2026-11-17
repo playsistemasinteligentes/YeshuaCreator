@@ -45,8 +45,12 @@ export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEA
 prepare_https_config() {
   local disabled="$SHARED_DIR/nginx/conf.d/20-https.conf.disabled"
   local active="$SHARED_DIR/nginx/conf.d/20-https.conf"
+  local certificate="/etc/letsencrypt/live/playsis.com.br/fullchain.pem"
+  local private_key="/etc/letsencrypt/live/playsis.com.br/privkey.pem"
 
-  if [[ -f /etc/letsencrypt/live/playsis.com.br/fullchain.pem ]]; then
+  if [[ -r "$certificate" && -r "$private_key" ]] && \
+    openssl verify -purpose sslserver -verify_hostname playsis.com.br \
+      -untrusted "$certificate" "$certificate" >/dev/null 2>&1; then
     if [[ ! -f "$disabled" ]]; then
       echo "Template HTTPS nao encontrado: $disabled" >&2
       return 1
@@ -55,11 +59,12 @@ prepare_https_config() {
     cp "$disabled" "$active"
   else
     rm -f "$active"
+    echo "HTTPS nao ativado: certificado ausente ou invalido; acesso HTTP preservado." >&2
   fi
 }
 
 assert_https_config() {
-  if [[ ! -f /etc/letsencrypt/live/playsis.com.br/fullchain.pem ]]; then
+  if [[ ! -f "$SHARED_DIR/nginx/conf.d/20-https.conf" ]]; then
     return
   fi
 
@@ -72,6 +77,12 @@ assert_https_config() {
   if ! docker exec yeshua-nginx nginx -T 2>&1 \
     | grep -F 'ssl_certificate /etc/letsencrypt/live/playsis.com.br/fullchain.pem;' >/dev/null; then
     echo "Certificado encontrado, mas o Nginx nao carregou o certificado HTTPS esperado." >&2
+    return 1
+  fi
+
+  if ! docker exec yeshua-nginx nginx -T 2>&1 \
+    | grep -F 'return 307 https://playsis.com.br$request_uri;' >/dev/null; then
+    echo "O Nginx nao carregou o redirecionamento HTTP para HTTPS." >&2
     return 1
   fi
 }

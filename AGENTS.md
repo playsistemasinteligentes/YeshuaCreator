@@ -2429,6 +2429,26 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Ajuda E Chamados Da Central
 
+- Quando o acesso ocorre em HTTP, a Ajuda, chamados por texto, prompt e versao devem
+  funcionar em origem insegura. Identificadores usam randomUUID quando existe
+  ou UUID v4 com getRandomValues; nao usar Math.random. Gravacao exige contexto
+  seguro do navegador; em HTTP, explicar e oferecer HTTPS em outra aba, sem
+  redirecionamento global nem perda do texto. Copia alternativa fica dentro do
+  dialogo ativo para respeitar a restricao de foco dos modais.
+- Havendo certificado valido para playsis.com.br, o gateway redireciona HTTP
+  para HTTPS no proprio Nginx, para o site inteiro. O deploy verifica cadeia,
+  finalidade, hostname e validade do certificado com OpenSSL; a configuracao
+  HTTPS ativa tambem declara o servidor HTTP de redirecionamento. Sem
+  certificado valido, permanece o servidor HTTP de fallback. Retorno 307
+  preserva metodo/caminho/query e nao fixa no navegador uma regra permanente
+  que impediria esse fallback. Nao ha validacao de certificado, consulta a
+  arquivos de certificado, banco, worker ou chamada ao aplicativo por requisicao. O
+  bootstrap Certbot existente continua emitindo com o gateway parado.
+- Pendencia preexistente conferida em 2026-11-17: Certbot 2.9 usa standalone,
+  certbot.timer esta ativo e nao ha hooks pre/post/deploy. A renovacao sem
+  intervencao precisa liberar a porta 80 e recarregar o Nginx; setup-cert.sh
+  faz essa coordenacao somente na execucao explicita. Certificado atual valido
+  ate 2027-01-19. A correcao de redirecionamento nao reemite certificados.
 - Decisao de 2026-11-17: Ajuda abre um dialogo comum com Chamado, Ajuda com IA
   e Sobre. A versao instalada fica em Sobre, fora do conteudo do dashboard.
   ChamadoSuporte e uma entidade interna da Central declarada na DSL; preparacao,

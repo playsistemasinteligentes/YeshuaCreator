@@ -21,3 +21,5 @@
 @media(max-width:480px){.support-heading{padding:16px}.support-body{padding:16px}.support-tabs{padding:0 12px}.support-tabs [role=tab]{padding:9px 10px;font-size:14px}.support-actions button{flex:1 1 auto}}
 
 .yeshua-support-dialog [hidden] { display: none !important; }
+.support-audio-https { margin-top:14px !important; }
+.support-audio-https a { color:#185a43; text-decoration:underline; font-weight:600; }
