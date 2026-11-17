@@ -1,54 +1,19 @@
 'use strict';
+
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { readFileSync } = require('node:fs');
-const read = name => readFileSync(require('node:path').resolve(__dirname, '../../.github/workflows', name), 'utf8');
-test('publicacao manual exige build isolado, SHA exato, barreira v2 e nenhum merge automatico', () => {
-  const w = read('component-release.yml');
-  assert.doesNotMatch(w, /pull_request_target|RELEASE_TAGGING_ENABLED|secrets\.|git push|git merge|\bdeploy:/);
-  assert.match(w, /needs: \[resolve, validate\]/);
-  assert.match(w, /RELEASE_TAGGING_V2_ENABLED == 'true'/);
-  assert.match(w, /expectedSha: process.env.VALIDATED_SHA/);
-  assert.match(w, /dotnet build YeshuaCreator.sln/);
-  assert.match(w, /dotnet publish/);
-  assert.match(w, /RUN_RELEASE_UI_TESTS: '1'/);
-  assert.match(w, /playwright@1\.65\.1/);
-  assert.match(read('release-validation.yml'), /RUN_RELEASE_UI_TESTS: '1'/);
-  const build = w.split('\n  validate:\n')[1].split('\n  publish:\n')[0];
-  assert.match(build, /contents: read/); assert.doesNotMatch(build, /: write/);
-  assert.match(build, /ref: \$\{\{ needs.resolve.outputs.sha \}\}/);
-  assert.match(w, /dry_run:[\s\S]*default: true/);
-  assert.match(w, /inputs.dry_run == false/);
-  assert.match(w, /group: component-release-\$\{\{ inputs.pr_number \}\}/);
-});
-test('jobs privilegiados executam somente workflow confiavel sem credenciais persistentes', () => {
-  const w = read('component-release.yml');
-  for (const job of ['prepare', 'resolve', 'publish']) {
-    const text = w.split(`\n  ${job}:\n`)[1].split(/\n  [a-z]+:\n/)[0];
-    assert.match(text, /ref: \$\{\{ github.workflow_sha \}\}/);
-    assert.match(text, /persist-credentials: false/);
+const { resolve } = require('node:path');
+
+// Somente contrato do workflow manual existente; nao instala gates de CI.
+test('versionamento somente por dispatch, sem build, classificacao ou deploy', () => {
+  const workflow = readFileSync(resolve(__dirname, '../../.github/workflows/component-release.yml'), 'utf8');
+  assert.match(workflow, /workflow_dispatch:/);
+  assert.match(workflow, /dry_run:[\s\S]*default: true/);
+  assert.match(workflow, /ref: \$\{\{ github\.workflow_sha \}\}/);
+  assert.match(workflow, /persist-credentials: false/);
+  assert.doesNotMatch(workflow, /pull_request_target:|pull_request:|needs:|node --test|dotnet |pr-readiness|classif|deploy:/);
+  for (const match of workflow.matchAll(/uses: ([^\s]+)/g)) {
+    assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
   }
-  for (const name of ['component-release.yml', 'release-validation.yml', 'release-classification.yml']) {
-    for (const m of read(name).matchAll(/uses: ([^\s]+)/g)) assert.match(m[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
-  }
-});
-test('CI e classificacao preservam limites de permissao', () => {
-  assert.doesNotMatch(read('release-validation.yml'), /: write/);
-  const w = read('release-classification.yml');
-  assert.match(w, /issues: write/); assert.match(w, /ref: \$\{\{ github.workflow_sha \}\}/);
-  assert.doesNotMatch(w, /contents: write|pull-requests: write|secrets\./);
-});
-test('draft tambem exige build integral no head exato e prontidao rejeita falha, cancelamento e skip', () => {
-  const w = read('release-validation.yml');
-  const build = w.split('\n  full-build:\n')[1].split('\n  release-tests:\n')[0];
-  assert.match(build, /ref: \$\{\{ github.event.pull_request.head.sha \|\| github.sha \}\}/);
-  assert.match(build, /bash scripts\/validation\/full-build.sh/);
-  assert.doesNotMatch(build, /continue-on-error|if:.*draft|paths:/);
-  assert.match(build, /dotnet-version:[\s\S]*8.0.x[\s\S]*9.0.x/);
-  const readiness = w.split('\n  pr-readiness:\n')[1];
-  assert.match(readiness, /needs: \[full-build, release-tests\]/);
-  assert.match(readiness, /if: always\(\)/);
-  assert.match(readiness, /"\$BUILD_RESULT" != success \|\| "\$TEST_RESULT" != success/);
-  assert.match(readiness, /exit 1/);
-  assert.match(readiness, /IS_DRAFT/);
 });

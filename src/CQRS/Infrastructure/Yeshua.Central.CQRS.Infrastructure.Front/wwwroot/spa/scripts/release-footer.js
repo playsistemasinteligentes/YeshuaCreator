@@ -1,4 +1,5 @@
-import { components, createReleaseClient } from './component-releases.js?v=20261116-local03';
+import { components, createReleaseClient } from './component-releases.js?v=20261116-releases01';
+
 const client = createReleaseClient();
 function element(tag, text, className) {
     const node = document.createElement(tag);
@@ -6,34 +7,13 @@ function element(tag, text, className) {
     if (className) node.className = className;
     return node;
 }
-function detail(list, label, value) {
-    list.append(element('dt', label), element('dd', value));
+function link(text, href) {
+    const node = element('a', text); node.href = href; node.target = '_blank'; node.rel = 'noopener noreferrer'; return node;
 }
-function renderRow(row) {
-    const name = components[row.component];
-    const release = row.release;
-    const development = row.state === 'development';
-    const unknown = !release && !development;
-    const item = element('details', undefined, 'yeshua-release-component');
-    item.dataset.component = row.component;
-    const label = release ? `${name} v${release.version}` : `${name} · ${development ? 'Desenvolvimento' : 'Versão desconhecida'}`;
-    const summary = element('summary', label);
-    const content = element('dl', undefined, 'yeshua-release-details');
-    detail(content, 'Componente', `${name} (${row.component})`);
-    if (release) {
-        detail(content, 'Versão-base', release.baseVersion);
-        detail(content, 'PR de origem', `PR${release.pr}`);
-        detail(content, 'Tag instalável', release.tag);
-        detail(content, 'SHA / commit', release.sha || 'Não disponível na identidade local.');
-    } else {
-        detail(content, 'Estado', development ? 'Ambiente de desenvolvimento, sem release instalável declarada.' :
-            row.error ? 'Não foi possível verificar a identidade local.' : 'Arquivo de identidade local ausente.');
-        if (row.error) detail(content, 'Detalhe', row.error);
-    }
-    if (unknown) item.dataset.state = 'unknown';
-    if (development) item.dataset.state = 'development';
-    item.append(summary, content);
-    return item;
+function evidence(item) {
+    const node = element('span', undefined, 'yeshua-release-evidence');
+    node.append(link(item.tag, item.tagUrl), link(`PR #${item.pr}`, item.prUrl), link(item.sha.slice(0, 8), item.commitUrl));
+    return node;
 }
 export function bindReleaseFooter() {
     const footer = document.getElementById('component-release-footer');
@@ -42,21 +22,48 @@ export function bindReleaseFooter() {
     const status = footer.querySelector('[data-release-status]');
     const rows = footer.querySelector('[data-release-components]');
     const refresh = footer.querySelector('[data-release-refresh]');
-    async function load() {
-        refresh.disabled = true;
-        rows.replaceChildren();
-        status.textContent = 'Lendo identidades locais…';
-        footer.setAttribute('aria-busy', 'true');
+    async function load(force = false) {
+        refresh.disabled = true; rows.replaceChildren(); status.textContent = 'Consultando versões publicadas…';
         try {
-            const data = await client.local();
+            const data = await client.latest(force);
             if (!footer.isConnected) return;
-            // Central primeiro; nenhuma ordenacao ou comparacao de origens de release.
-            const ordered = [...data.rows].sort((a, b) => (a.component === 'central' ? -1 : b.component === 'central' ? 1 : 0));
-            for (const row of ordered) rows.append(renderRow(row));
-            status.textContent = data.rows.some(row => row.error) ? 'Leitura local parcial.' : 'Identidades locais carregadas.';
+            for (const row of data.rows) {
+                const item = element('details', undefined, 'yeshua-release-component');
+                const summary = element('summary', `${components[row.component]} · ${row.error ? 'Indisponível' : row.release?.version || 'Sem release'}`);
+                const history = element('div', undefined, 'yeshua-release-history');
+                item.append(summary, history);
+                if (row.error) history.append(element('p', row.error));
+                else if (!row.release) history.append(element('p', 'Nenhuma release publicada. Isso não identifica a versão em desenvolvimento.'));
+                else {
+                    history.append(evidence(row.release));
+                    let loading = false, loaded = false;
+                    item.addEventListener('toggle', async () => {
+                        if (!item.open || loading || loaded) return;
+                        loading = true;
+                        const message = element('p', 'Consultando histórico…'); history.append(message);
+                        try {
+                            const result = await client.history(row.component);
+                            message.remove();
+                            const list = element('ul');
+                            for (const entry of result.entries) {
+                                const line = element('li');
+                                line.append(entry.error ? element('span', `${entry.tag}: ${entry.error}`) : evidence(entry));
+                                list.append(line);
+                            }
+                            history.replaceChildren(element('p', `Histórico: ${result.entries.length} de ${result.total} releases.`), list,
+                                link('Todas as tags no GitHub', result.historyUrl));
+                            loaded = true;
+                        } catch (error) { message.textContent = error.message; }
+                        finally { loading = false; }
+                    });
+                }
+                rows.append(item);
+            }
+            const incomplete = data.rows.some(row => row.error);
+            status.textContent = `${incomplete ? 'Leitura parcial' : 'Consultado'} em ${new Date(data.checkedAt).toLocaleString('pt-BR')}.`;
         } catch (error) { status.textContent = error.message; }
-        finally { refresh.disabled = false; footer.setAttribute('aria-busy', 'false'); }
+        finally { refresh.disabled = false; }
     }
-    refresh.addEventListener('click', load);
+    refresh.addEventListener('click', () => load(true));
     void load();
 }

@@ -1326,54 +1326,25 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
 - Preferir customizacao local quando o comportamento for especifico de um caso de uso.
 - Nunca sobrescrever customizacoes sem confirmar a intencao.
 
-### Gate Obrigatorio De Compilacao Para PR
-
-- Regra do operador: nao enviar, abrir ou entregar PR (mesmo draft), nem
-  promover PR para revisao, sem restore e
-  build completos de `YeshuaCreator.sln` bem-sucedidos, com SDKs adequados aos
-  targets existentes. `global.json` seleciona SDK 9 estavel (latestPatch).
-  Nao reduzir framework, omitir projetos nem tolerar erros.
-- `bash scripts/validation/full-build.sh` executa o mesmo gate local e no CI.
-  Qualquer falha, cancelamento ou verificacao incompleta significa BLOQUEADA.
-- Abertura de draft nao e entrega pronta e nao dispensa o gate de build.
-  PR ja existente com validacao incompleta permanece draft/BLOQUEADA ate build
-  integral, testes relevantes e CI obrigatorio do head atual passarem. Nao
-  abrir PR substituta para contornar falha da PR existente.
-- A automacao de commit/envio/PR pertence ao aplicativo. O agente nao executa
-  commit, push, merge ou deploy. A promocao para ready-for-review deve consultar
-  checks obrigatorios do head atual e falhar fechada; branch protection deve
-  exigir full-build, release-tests, pr-readiness e release-scope sem bypass.
-
 ### Releases Por Componente
 
-- Cada PR pode publicar release independente sem merge: `<componente>/v01.006-PR35`.
-  Versao-base e explicita; PR identifica origem, nao cronologia nem dependencia.
-  PRs paralelas podem compartilhar a mesma base. Tags sao imutaveis e apontam
-  para o head validado da PR, nunca automaticamente para o merge/default HEAD.
-- Antes da tag, a preparacao grava `release-identities/<componente>.json` na
-  propria PR por commit de um pai e atualizacao fast-forward sem force.
-  O arquivo contem componente, base, PR, versao e tag; SHA final fica somente
-  no recibo da tag para evitar autorreferencia. Push concorrente aborta.
-- Caminhos em `scripts/component-release/classification.cjs` determinam escopos
-  minimos; labels validam e podem acrescentar escopos. Rename inclui origem.
-  PR multicomponente prepara e valida todas as identidades antes da publicacao.
-- Build/publish apenas copiam arquivos locais ja versionados. Central exibe
-  identidades do proprio artefato; nao consulta GitHub nem afirma a versao de
-  API/Worker implantados separadamente. Ausencia de identidade significa versao
-  desconhecida. Desenvolvimento exige marcador local explicito de ambiente;
-  ele nao e aceito para publicar release. Rodape usa details/summary acessivel,
-  exibindo versao completa e detalhes somente da identidade selecionada.
-- Workflow privilegiado executa somente codigo confiavel da branch padrao.
-  Build do head ocorre em runner separado sem escrita/segredos. Publicacao
-  exige build aprovado, revisao do head exato, dispatch explicito e variavel
-  nova `RELEASE_TAGGING_V2_ENABLED=true`. Nenhum merge ou deploy automatico.
-- Conflito de identidade no merge exige decisao explicita: uma composicao nova
-  nao herda identidade exclusiva de outra PR. Substituir a identidade conflitante
-  pelo marcador local explicito de desenvolvimento na integracao, preparar outra PR para sua release composta.
-  As tags independentes anteriores permanecem recuperaveis e nao sao alteradas.
-- Tags v1, como `architecture/v01.001`, permanecem historicas. Nao reescrever,
-  inferir identidade local retroativamente nem usar como sequenciador v2.
-- Ver `docs/operational/COMPONENT_RELEASES.md` para operacao e limites.
+- Diretriz final do operador para a PR #29 em 2026-11-17: a unica fonte para
+  selecionar componentes e o campo `Aplicativos:` no corpo da PR, preenchido
+  explicitamente pelo autor com nomes separados por virgula. App listado
+  incrementa; app nao listado permanece exatamente na mesma versao. Campo
+  vazio ou ausente nao incrementa nenhum componente.
+- Nao inferir apps por arquivos/diff, labels, Engine, Shared ou dependencias.
+  Nao classificar automaticamente nem acrescentar build, testes, gates de CI,
+  pr-readiness ou bloqueios a este mecanismo.
+- Preservar a numeracao existente `<componente>/v01.001`, independente por
+  componente. O workflow de versionamento fica somente manual e usa a lista
+  da PR mergeada; esta correcao nao executa versionamento nem cria tags/releases.
+  As mudancas de identidade local, rodape e formato `-PR` foram retiradas desta PR.
+- Publicar/atualizar automaticamente a branch e PR para revisao esta autorizado,
+  sem nova confirmacao. Merge e deploy continuam exigindo ordem separada.
+  Respeitar `.git` protegido: nesse ambiente o publicador do aplicativo faz
+  commit/push e atualiza a PR apos a resposta; nao contornar a protecao.
+- Ver `docs/operational/COMPONENT_RELEASES.md`.
 
 ## Marcação De Pendencias Entre Studios
 

@@ -4,110 +4,25 @@ on:
   workflow_dispatch:
     inputs:
       pr_number:
-        description: PR de origem (nao exige merge)
+        description: PR ja mergeada na branch padrao (recuperacao sem deploy)
         required: true
         type: string
-      operation:
-        description: Preparar identidades ou validar/publicar
-        type: choice
-        options: [validate, prepare, publish]
-        default: validate
-      versions:
-        description: 'Prepare: versoes-base explicitas, ex. {"fiscal":"01.006"}'
-        type: string
-        default: '{}'
       dry_run:
-        description: Simular publicacao sem criar tags
+        description: Simular sem criar objetos Git ou tags
+        required: true
         type: boolean
         default: true
 
 permissions: {}
+
+# Execucao somente manual; abrir/editar/enviar uma PR nao incrementa versoes.
 concurrency:
   group: component-release-${{ inputs.pr_number }}
   cancel-in-progress: false
 
 jobs:
-  prepare:
-    if: inputs.operation == 'prepare' && github.ref_name == github.event.repository.default_branch
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: read
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: ${{ github.workflow_sha }}
-          persist-credentials: false
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        with:
-          script: await require('./scripts/component-release/release.cjs').prepare({ github, context, core });
-
-  resolve:
-    if: inputs.operation != 'prepare' && github.ref_name == github.event.repository.default_branch
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
-    outputs:
-      sha: ${{ steps.plan.outputs.sha }}
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: ${{ github.workflow_sha }}
-          persist-credentials: false
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        id: plan
-        with:
-          script: |
-            const { pr } = await require('./scripts/component-release/release.cjs').plan({ github, context });
-            core.setOutput('sha', pr.sha);
-            await require('./scripts/component-release/release.cjs').publish({ github, context, core, dryRun: true, expectedSha: pr.sha });
-
-  validate:
-    needs: resolve
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      # Codigo da PR somente em job sem escrita, sem segredos e em runner separado.
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          ref: ${{ needs.resolve.outputs.sha }}
-          persist-credentials: false
-      - uses: actions/setup-dotnet@67a3573c9a986a3f9c594539f4ab511d57bb3ce9 # v4
-        with:
-          dotnet-version: |
-            8.0.x
-            9.0.x
-      - name: Prepare browser tests
-        run: |
-          npm install --prefix /tmp/yeshua-release-ui --no-audit --no-fund playwright@1.65.1
-          node /tmp/yeshua-release-ui/node_modules/playwright/cli.js install --with-deps chromium
-        env:
-          PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
-      - run: node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
-        env:
-          RUN_RELEASE_BUILD_TESTS: '1'
-          RUN_RELEASE_UI_TESTS: '1'
-          NODE_PATH: /tmp/yeshua-release-ui/node_modules
-          PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
-      - run: node tests/Front/Central/release-footer.cjs
-        env:
-          NODE_PATH: /tmp/yeshua-release-ui/node_modules
-          PLAYWRIGHT_BROWSERS_PATH: /tmp/yeshua-release-browsers
-      - run: dotnet build YeshuaCreator.sln --configuration Release
-      - name: Publish hosts without deployment
-        shell: bash
-        run: |
-          for project in src/CQRS/Infrastructure/*Infrastructure.Api/*.csproj src/CQRS/Infrastructure/*Infrastructure.Worker/*.csproj src/CQRS/Infrastructure/*Infrastructure.Front/*.csproj; do
-            dotnet publish "$project" --configuration Release --output "/tmp/component-release/$(basename "$project" .csproj)"
-          done
-
   publish:
-    needs: [resolve, validate]
-    if: >-
-      inputs.operation == 'publish' && inputs.dry_run == false &&
-      vars.RELEASE_TAGGING_V2_ENABLED == 'true'
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -118,8 +33,6 @@ jobs:
           ref: ${{ github.workflow_sha }}
           persist-credentials: false
       - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        env:
-          VALIDATED_SHA: ${{ needs.resolve.outputs.sha }}
         with:
           script: |
-            await require('./scripts/component-release/release.cjs').publish({ github, context, core, expectedSha: process.env.VALIDATED_SHA });
+            await require('./scripts/component-release/release.cjs').publish({ github, context, core, dryRun: context.payload.inputs.dry_run !== 'false' });

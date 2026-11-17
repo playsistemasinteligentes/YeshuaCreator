@@ -88,9 +88,6 @@ dependencia conceitual da engine.
 - `Custon` representa codigo customizado/protegido.
 - A engine pode atualizar arquivos `Migration`.
 - Arquivos `Custon` existentes nao devem ser sobrescritos.
-- O writer comum `SourceCodeBase.WriteCode` normaliza separadores legados antes
-  de verificar Custon e gravar. Caminhos de templates devem produzir diretorios
-  reais em Windows/Linux; nao corrigir copias geradas para contornar o writer.
 - Quando uma nova borda for gerada, criar tambem um ponto claro para miolo customizado.
 - Se uma mudanca precisa aparecer em muitos artefatos, ela provavelmente pertence ao template/gerador.
 - Se uma mudanca e especifica de um caso de uso, ela pertence ao miolo customizado.
