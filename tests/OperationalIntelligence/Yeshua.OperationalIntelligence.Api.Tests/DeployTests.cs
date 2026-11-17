@@ -1,0 +1,98 @@
+using System.Net;
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Yeshua.OperationalIntelligence.Api.Modules.Deploy;
+using Yeshua.OperationalIntelligence.Api.Modules.Mcp;
+
+namespace Yeshua.OperationalIntelligence.Api.Tests;
+
+[TestClass]
+public sealed class DeployTests
+{
+    private sealed class Bridge : IDeployBridge
+    {
+        public int Calls;
+        public Task<JsonElement> SendAsync(DeployCommand command, CancellationToken cancellationToken)
+        {
+            Calls++;
+            return Task.FromResult(JsonSerializer.SerializeToElement(new { requestId = command.RequestId, status = "Running" }));
+        }
+    }
+
+    [TestMethod]
+    public async Task DisabledByDefaultAndInvalidCommandsNeverReachBridge()
+    {
+        var bridge = new Bridge();
+        var receiver = new DeployReceiver(bridge, Options.Create(new DeployOptions()));
+        await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(new("execute", "test", "all", "1.0.0", true), default));
+        receiver = new(bridge, Options.Create(new DeployOptions { Enabled = true }));
+        foreach (var command in new[]
+        {
+            new DeployCommand("execute", "test", "all", "1.0.0", false),
+            new DeployCommand("execute", "test", "all; id", "1.0.0", true),
+            new DeployCommand("execute", "../test", "all", "1.0.0", true),
+            new DeployCommand("execute", "test", "all", "1.0.0; id", true),
+            new DeployCommand("restart", "test"), new DeployCommand("status", "test", "all")
+        })
+            await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(command, default));
+        Assert.AreEqual(0, bridge.Calls);
+        await receiver.ExecuteAsync(new("execute", "test", "all", "1.0.0", true), default);
+        await receiver.ExecuteAsync(new("status", "test"), default);
+        Assert.AreEqual(2, bridge.Calls);
+    }
+
+    [TestMethod]
+    public async Task PublicAndSpoofedConnectionsCannotDiscoverOrCallDeploy()
+    {
+        var bridge = new Bridge();
+        var tool = new DeployTool(new(bridge, Options.Create(new DeployOptions { Enabled = true })));
+        var context = new DefaultHttpContext();
+        context.Connection.LocalPort = 8080;
+        context.Connection.LocalIpAddress = IPAddress.Loopback;
+        context.Connection.RemoteIpAddress = IPAddress.Loopback;
+        context.Request.Headers["X-Forwarded-Port"] = "5729";
+        var access = new McpAccessPolicy(new HttpContextAccessor { HttpContext = context }, Options.Create(new McpOptions()));
+        var registry = new McpToolRegistry([tool], access);
+        var arguments = JsonSerializer.SerializeToElement(new { action = "execute", requestId = "test", target = "all", releaseTag = "1.0.0", confirm = true });
+        Assert.AreEqual(0, registry.List().Count);
+        Assert.IsTrue((await registry.CallAsync("yeshua_deploy", arguments, default)).IsError ?? false);
+        Assert.AreEqual(0, bridge.Calls);
+        context.Connection.LocalPort = 5729;
+        var definition = registry.List().Single();
+        Assert.AreEqual(false, definition.Annotations!.ReadOnlyHint);
+        Assert.AreEqual(true, definition.Annotations.DestructiveHint);
+        Assert.IsFalse((await registry.CallAsync("yeshua_deploy", arguments, default)).IsError ?? false);
+        Assert.AreEqual(1, bridge.Calls);
+    }
+
+    [TestMethod]
+    public async Task SshTransportRejectsRootFreeformDestinationsAndRelativeKeysBeforeStartingProcess()
+    {
+        foreach (var config in new[]
+        {
+            new DeployOptions { Destination = "root@host", IdentityFile = "/private/key", KnownHostsFile = "/private/hosts" },
+            new DeployOptions { Destination = "yeshua-deploy@host;id", IdentityFile = "/private/key", KnownHostsFile = "/private/hosts" },
+            new DeployOptions { Destination = "yeshua-deploy@host", IdentityFile = "relative", KnownHostsFile = "/private/hosts" },
+            new DeployOptions { Destination = "yeshua-deploy@host", IdentityFile = "/private/key", KnownHostsFile = "relative" }
+        })
+            await Assert.ThrowsExceptionAsync<ArgumentException>(() => new SshDeployBridge(Options.Create(config)).SendAsync(new("status", "test"), default));
+    }
+
+    [TestMethod]
+    public async Task UnknownArgumentsAndInvalidTypesAreRejected()
+    {
+        var bridge = new Bridge();
+        var tool = new DeployTool(new(bridge, Options.Create(new DeployOptions { Enabled = true })));
+        foreach (var json in new[]
+        {
+            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","confirm":true,"command":"id"}""",
+            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","confirm":"true"}""",
+            """{"action":"status","requestId":"test","confirm":false}""",
+            """{"action":"status","requestId":15}"""
+        })
+            await Assert.ThrowsExceptionAsync<ArgumentException>(() => tool.CallAsync(JsonSerializer.Deserialize<JsonElement>(json), default));
+        Assert.AreEqual(0, bridge.Calls);
+    }
+}

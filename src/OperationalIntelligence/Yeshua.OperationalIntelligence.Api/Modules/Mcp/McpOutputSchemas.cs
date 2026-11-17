@@ -124,6 +124,19 @@ public static class McpOutputSchemas
             searchArguments["properties"]![name] = Nullable(searchArguments["properties"]![name]!);
         var schemas = new Dictionary<string, JsonNode>(StringComparer.Ordinal)
         {
+            ["yeshua_deploy"] = new JsonObject
+            {
+                ["type"] = "object",
+                ["properties"] = new JsonObject
+                {
+                    ["requestId"] = text.DeepClone(), ["target"] = text.DeepClone(),
+                    ["releaseTag"] = text.DeepClone(), ["status"] = text.DeepClone(),
+                    ["approvedBy"] = text.DeepClone(), ["startedAtUtc"] = text.DeepClone(),
+                    ["finishedAtUtc"] = text.DeepClone(), ["exitCode"] = integer.DeepClone(),
+                    ["instruction"] = text.DeepClone()
+                },
+                ["required"] = new JsonArray("status"), ["additionalProperties"] = false
+            },
             ["yeshua_health"] = health,
             ["yeshua_explorer"] = Object(("guide", text)),
             ["yeshua_app_explore"] = Object(("scope", text), ("retrievedAtUtc", text), ("catalogUrl", text),

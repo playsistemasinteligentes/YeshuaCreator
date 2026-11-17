@@ -27,7 +27,16 @@ public sealed class McpCompatibilityTests
         await using var host = await McpHost.StartAsync(productionCatalog: true);
         await using var client = await ConnectAsync(host.PrivateUrl);
         var tools = await client.ListToolsAsync();
-        Assert.AreEqual(20, tools.Count);
+        Assert.AreEqual(21, tools.Count);
+        var deploy = tools.Single(tool => tool.Name == "yeshua_deploy").ProtocolTool;
+        Assert.AreEqual(false, deploy.Annotations!.ReadOnlyHint);
+        Assert.AreEqual(true, deploy.Annotations.DestructiveHint);
+        var disabledDeploy = await client.CallToolAsync("yeshua_deploy", new Dictionary<string, object?>
+        {
+            ["action"] = "execute", ["requestId"] = "disabled-test", ["target"] = "all",
+            ["releaseTag"] = "1.0.0", ["confirm"] = true
+        });
+        Assert.AreEqual(true, disabledDeploy.IsError);
         Assert.IsTrue(tools.Any(tool => tool.Name == "yeshua_storage_usage" && tool.ProtocolTool.Annotations!.ReadOnlyHint == true));
         foreach (var tool in tools)
         {
@@ -52,6 +61,11 @@ public sealed class McpCompatibilityTests
             tools.Select(tool => tool.Name).ToArray());
         var disk = await client.CallToolAsync("yeshua_storage_usage");
         Assert.AreEqual(true, disk.IsError);
+        var deploy = await client.CallToolAsync("yeshua_deploy", new Dictionary<string, object?>
+        {
+            ["action"] = "status", ["requestId"] = "public-denied"
+        });
+        Assert.AreEqual(true, deploy.IsError);
         Assert.AreEqual(0, host.Repository.AcceptedCount);
     }
 

@@ -2104,6 +2104,22 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   apenas a exigencia de concluir login apos uma troca interrompida. Nao e fila,
   historico ou cofre novo. Continua VOLATIL com o volume Codex; tokens permanecem
   exclusivamente no cache nativo da CLI, nunca SQL, Git, logs ou respostas MCP.
+- Decisao de 2026-11-17: `yeshua_deploy` e uma ponte administrativa privada,
+  desabilitada por padrao, exclusivamente para `infra/docker/deploy.sh`; deploy
+  completo usa `all`. Nao entrega deploy ao sandbox do agente: MCP privado chama
+  SSH com comando forcado e sudo limitado ao helper root-owned instalado fora
+  do checkout. Cada execucao exige ordem humana, confirm=true e aprovacao
+  administrativa temporaria por requestId/destino/tag, criada fora do MCP/agente.
+  A ponte nao orquestra Docker, nao aceita comandos/env/caminhos nem reinicia host.
+  Recibos/logs administrativos privados ficam na area persistente do host
+  `Storage/persistent/infra/deploy-bridge`, coberta pelo backup existente; esta
+  excecao nao cria banco/fila da API nem usa volumes volateis dos agentes.
+  Recibo duravel consome a autorizacao antes de executar. Reinicio/perda de
+  processo deixa Interrupted, nunca replay automatico; timeout exige consultar
+  o mesmo requestId. Ver `infra/deploy-bridge/README.md` para instalacao, gates
+  e limites. Implementacao/testes autorizados; instalacao, ativacao e deploy
+  continuam pendentes de autorizacao separada. Sem socket Docker, root SSH livre
+  ou ampliacao de sandbox para contornar bloqueio administrativo.
 - A recuperacao administrativa `yeshua_agent_restart` exige pedido explicito,
   `confirm=true` e o par taskId/requestId de `activeExecution`. Ela interrompe
   somente o processo da ordem atual e persiste Interrupted, sem repetir trabalho,

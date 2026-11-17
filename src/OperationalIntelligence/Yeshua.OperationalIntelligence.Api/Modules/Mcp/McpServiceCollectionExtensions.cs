@@ -50,6 +50,10 @@ public static class McpServiceCollectionExtensions
             client.Timeout = TimeSpan.FromSeconds(options.TimeoutSeconds);
         });
 
+        services.AddOptions<Yeshua.OperationalIntelligence.Api.Modules.Deploy.DeployOptions>().BindConfiguration("Mcp:Deploy");
+        services.AddScoped<Yeshua.OperationalIntelligence.Api.Modules.Deploy.IDeployBridge, Yeshua.OperationalIntelligence.Api.Modules.Deploy.SshDeployBridge>();
+        services.AddScoped<Yeshua.OperationalIntelligence.Api.Modules.Deploy.DeployReceiver>();
+        services.AddScoped<IMcpTool, Yeshua.OperationalIntelligence.Api.Modules.Deploy.DeployTool>();
         services.AddScoped<IMcpTool, HealthTool>();
         services.AddSingleton(new ExplorerDocument());
         services.AddScoped<IMcpTool, ExplorerTool>();
