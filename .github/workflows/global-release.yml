@@ -1,0 +1,51 @@
+name: Global release
+
+on:
+  pull_request_target:
+    types: [closed]
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: PR incorporada na main (recuperacao sem deploy)
+        required: true
+        type: string
+      dry_run:
+        description: Simular sem gravar commit ou tag
+        required: true
+        type: boolean
+        default: true
+
+permissions: {}
+
+# Nao usar grupo global: GitHub descarta runs pendentes quando chegam outros.
+# PRs distintas disputam a main por fast-forward e releem em caso de conflito.
+concurrency:
+  group: global-release-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: >-
+      (github.event_name == 'pull_request_target' && github.event.pull_request.merged == true) ||
+      (github.event_name == 'workflow_dispatch' && github.ref_name == 'main')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.workflow_sha }}
+          persist-credentials: false
+      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          # Token de bot autorizado externamente quando main exige PR.
+          # Sem permissao, falha; nao altera protecoes nem usa force push.
+          github-token: ${{ secrets.YESHUA_RELEASE_TOKEN || github.token }}
+          script: |
+            const result = await require('./scripts/global-release/release.cjs').publish({
+              github, context, core,
+              dryRun: context.eventName === 'workflow_dispatch' && context.payload.inputs?.dry_run !== 'false'
+            });
+            await core.summary.addHeading('Versao global').addCodeBlock(JSON.stringify(result, null, 2), 'json').write();

@@ -1326,27 +1326,22 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
 - Preferir customizacao local quando o comportamento for especifico de um caso de uso.
 - Nunca sobrescrever customizacoes sem confirmar a intencao.
 
-### Releases Por Componente
+### Versao Global
 
-- Diretriz final do operador para a PR #29 em 2026-11-17: a unica fonte para
-  selecionar componentes e o campo `Aplicativos:` no corpo da PR, preenchido
-  explicitamente pelo autor com nomes separados por virgula. App listado
-  incrementa; app nao listado permanece exatamente na mesma versao. Campo
-  vazio ou ausente nao incrementa nenhum componente.
-- Nao inferir apps por arquivos/diff, labels, Engine, Shared ou dependencias.
-  Nao classificar automaticamente nem acrescentar build, testes, gates de CI,
-  pr-readiness ou bloqueios a este mecanismo.
-- Preservar a numeracao existente `<componente>/v01.001`, independente por
-  componente. Correcao do operador apos merge da PR #29: o workflow incrementa
-  automaticamente no merge de qualquer PR na main, usando somente a lista
-  `Aplicativos:` do evento de merge. Execucao manual e opcional para recuperacao;
-  durante a implementacao nao executar versionamento nem criar tags/releases.
-  As mudancas de identidade local, rodape e formato `-PR` foram retiradas desta PR.
-- Publicar/atualizar automaticamente a branch e PR para revisao esta autorizado,
-  sem nova confirmacao. Merge e deploy continuam exigindo ordem separada.
-  Respeitar `.git` protegido: nesse ambiente o publicador do aplicativo faz
-  commit/push e atualiza a PR apos a resposta; nao contornar a protecao.
-- Ver `docs/operational/COMPONENT_RELEASES.md`.
+- A diretriz final substitui integralmente releases por aplicativo/componente.
+  `Directory.Build.props` na raiz e a unica fonte de Version, AssemblyVersion,
+  FileVersion e InformationalVersion para todos os projetos .NET.
+- Cada PR incorporada na main incrementa o patch uma vez por automacao pos-merge;
+  um commit adicional grava a versao e a tag global tem exatamente esse valor.
+  Review aprovada nao e merge. Nao versionar na abertura/atualizacao da PR.
+- Nao usar Aplicativos:, tags por componente, version.json ou Version.cs.
+- A Central consulta uma unica vez por carregamento a versao compilada da API,
+  sem GitHub nem polling. Deploy usa tag existente e nunca calcula versao.
+- Respeitar protecao da main; permissao administrativa para o bot e externa
+  ao codigo. Falha de permissao bloqueia publicacao, sem force push.
+- O aplicativo publica commit/push/PR em rascunho apos a resposta; nao contornar
+  `.git` protegido. Merge, tags reais e deploy nao estao autorizados nesta tarefa.
+- Ver `docs/operational/GLOBAL_VERSION.md`.
 
 ## Marcação De Pendencias Entre Studios
 
