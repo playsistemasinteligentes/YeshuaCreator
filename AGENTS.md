@@ -1328,32 +1328,23 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
 
 ### Releases Por Componente
 
-- Releases usam tags anotadas `<componente>/v01.001` como fonte de numeracao,
-  independentes por arquitetura e aplicativo. Labels `architecture` e `app:*`
-  classificam PRs, inclusive mistas; arquitetura nao incrementa apps.
-- A classificacao automatica e aditiva por caminhos no mapa versionado de
-  `scripts/component-release/classification.cjs`: preserva escopos manuais,
-  considera rename e classifica caminhos desconhecidos como arquitetura.
-  Telas de `Custon/Apps` pertencem ao app, mesmo hospedadas na Central.
-- O workflow de classificacao usa somente codigo confiavel da base e valida as
-  labels no proprio run, pois eventos labeled pelo GITHUB_TOKEN nao disparam CI.
-  Nunca executar codigo da PR no contexto privilegiado de pull_request_target.
-- A tag aponta para o SHA exato do merge, sem commit de bump. O recibo JSON na
-  anotacao vincula PR, SHA, componentes, versao e arquitetura ancestral utilizada.
-- GitHub Actions valida antes de publicar e usa criacao atomica de ref,
-  idempotencia por PR e fila por PR. Deploy permanece separado. A publicacao
-  exige `RELEASE_TAGGING_ENABLED=true` na configuracao do repositorio; nao e
-  possivel ativar essa variavel pelo YAML. Dispatch usa dry_run=true por padrao.
-- Simulacao usa o mesmo publicador sem criar objetos Git ou refs. Auditoria
-  publica somente GET nao comprova permissoes administrativas ou escrita real.
-- O rodape do Front Central le releases publicadas pela API publica do GitHub,
-  valida recibos das tags anotadas e oferece historico limitado com PR/commit.
-  Nao envia tokens da plataforma nem cria endpoint, banco ou pipeline paralelo.
-  Atualizacao e manual, com cache curto em memoria e sem polling. Publicacao
-  nao comprova implantacao; versoes implantadas/em desenvolvimento permanecem
-  explicitamente nao verificadas enquanto nao houver manifesto operacional.
-- Ver `docs/operational/COMPONENT_RELEASES.md`; scripts pertencem a automacao
-  do repositorio, sem alterar Engine, codigo gerado ou runtime dos aplicativos.
+- Diretriz final do operador para a PR #29 em 2026-11-17: a unica fonte para
+  selecionar componentes e o campo `Aplicativos:` no corpo da PR, preenchido
+  explicitamente pelo autor com nomes separados por virgula. App listado
+  incrementa; app nao listado permanece exatamente na mesma versao. Campo
+  vazio ou ausente nao incrementa nenhum componente.
+- Nao inferir apps por arquivos/diff, labels, Engine, Shared ou dependencias.
+  Nao classificar automaticamente nem acrescentar build, testes, gates de CI,
+  pr-readiness ou bloqueios a este mecanismo.
+- Preservar a numeracao existente `<componente>/v01.001`, independente por
+  componente. O workflow de versionamento fica somente manual e usa a lista
+  da PR mergeada; esta correcao nao executa versionamento nem cria tags/releases.
+  As mudancas de identidade local, rodape e formato `-PR` foram retiradas desta PR.
+- Publicar/atualizar automaticamente a branch e PR para revisao esta autorizado,
+  sem nova confirmacao. Merge e deploy continuam exigindo ordem separada.
+  Respeitar `.git` protegido: nesse ambiente o publicador do aplicativo faz
+  commit/push e atualiza a PR apos a resposta; nao contornar a protecao.
+- Ver `docs/operational/COMPONENT_RELEASES.md`.
 
 ## Marcação De Pendencias Entre Studios
 

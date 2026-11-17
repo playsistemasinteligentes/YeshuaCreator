@@ -4,20 +4,16 @@ const components = require('./components.json');
 const SCHEMA = 'yeshua.release/v1';
 const SHA = /^[a-f0-9]{40}$/;
 
-function classify(labels) {
-  const selected = new Set();
-  for (const { name } of labels) {
-    if (name === 'architecture') selected.add(name);
-    else if (name.startsWith('app:')) {
-      const component = name.slice(4);
-      if (component === 'architecture' || !components.includes(component)) {
-        throw new Error(`Label de aplicativo desconhecida: ${name}`);
-      }
-      selected.add(component);
-    }
+// Unica fonte de selecao: campo explicito no corpo da PR, preenchido pelo autor.
+function applications(body) {
+  const fields = [...(body || '').matchAll(/^Aplicativos:[ \t]*([^\r\n]*)$/gm)];
+  if (!fields.length) return [];
+  if (fields.length > 1) throw new Error('Informe apenas um campo Aplicativos: no corpo da PR.');
+  const selected = [...new Set(fields[0][1].split(',').map(name => name.trim()).filter(Boolean))];
+  for (const component of selected) {
+    if (!components.includes(component)) throw new Error(`Aplicativo desconhecido: ${component}`);
   }
-  if (!selected.size) throw new Error('Classifique a PR com architecture e/ou app:<componente>.');
-  return [...selected].sort((a, b) => a === 'architecture' ? -1 : b === 'architecture' ? 1 : a.localeCompare(b));
+  return selected.sort((a, b) => a === 'architecture' ? -1 : b === 'architecture' ? 1 : a.localeCompare(b));
 }
 
 function parseVersion(tag, component) {
@@ -62,9 +58,8 @@ async function pullRequest(github, context) {
       payload.pull_request.merge_commit_sha !== pr.merge_commit_sha)) {
     throw new Error('Evento de merge inconsistente com a PR.');
   }
-  // Reexecucoes do evento preservam a classificacao no merge. Dispatch permite
-  // recuperar uma classificacao ausente, desde que nenhuma release tenha sido criada.
-  const scopes = classify(manual ? pr.labels : payload.pull_request.labels);
+  // Evento de merge usa a declaracao do autor naquele momento; dispatch le o corpo atual.
+  const scopes = applications(manual ? pr.body : payload.pull_request.body);
   return { number, sha: pr.merge_commit_sha, scopes, repository: `${owner}/${repo}` };
 }
 
@@ -101,7 +96,7 @@ function existingRelease(tags, pr, component) {
   if (existing.length > 1) throw new Error(`Releases duplicadas para PR #${pr.number}: ${component}`);
   const found = existing[0];
   if (found && (found.sha !== pr.sha || JSON.stringify(found.receipt.components) !== JSON.stringify(pr.scopes))) {
-    throw new Error(`SHA ou classificacao alterados para PR #${pr.number}.`);
+    throw new Error(`SHA ou lista de aplicativos alterados para PR #${pr.number}.`);
   }
   return found?.receipt;
 }
@@ -121,12 +116,6 @@ async function architectureAt(github, repo, sha, tags) {
 async function publish({ github, context, core, dryRun = false }) {
   const pr = await pullRequest(github, context);
   const repo = context.repo;
-  // Examinar todos os componentes impede que dispatch com labels alteradas
-  // transforme uma execucao parcial em uma classificacao diferente.
-  for (const component of components) {
-    const tags = await readTags(github, repo, component);
-    existingRelease(tags, pr, component);
-  }
   const receipts = [];
   for (const component of pr.scopes) {
     let completed = false;
@@ -180,4 +169,4 @@ async function publish({ github, context, core, dryRun = false }) {
   return receipts;
 }
 
-module.exports = { SCHEMA, classify, parseVersion, nextVersion, pullRequest, readTags, architectureAt, publish };
+module.exports = { SCHEMA, applications, parseVersion, nextVersion, pullRequest, readTags, architectureAt, publish };

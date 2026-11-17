@@ -1,265 +1,44 @@
-# Releases independentes por PR
+# Versionamento por lista explicita do autor
 
-Implementa a [issue #25](https://github.com/playsistemasinteligentes/YeshuaCreator/issues/25).
-Release e uma **tag anotada**, sem commit de bump, GitHub Release, build ou deploy automatico.
-Os scripts de deploy existentes permanecem separados.
+A unica fonte para decidir quais componentes incrementam e o campo
+`Aplicativos:` no corpo do Pull Request, preenchido pelo autor:
 
-## Classificacao
-
-O workflow `Release classification / release-scope` cria as sete labels de
-escopo ausentes e acrescenta as labels inferidas pelos arquivos da PR aberta.
-Ele valida o resultado no mesmo run: eventos `labeled` causados pelo
-`GITHUB_TOKEN` nao iniciam outra execucao. `Release validation / release-tests`
-executa os testes no codigo da PR, sem escrita; a classificacao privilegiada usa
-somente o codigo confiavel do `github.workflow_sha`, nunca o head da PR.
-
-| Label | Prefixo da tag |
-| --- | --- |
-| `architecture` | `architecture/v` |
-| `app:aps-adm` | `aps-adm/v` |
-| `app:aps-cadastros` | `aps-cadastros/v` |
-| `app:central` | `central/v` |
-| `app:clinica` | `clinica/v` |
-| `app:fiscal` | `fiscal/v` |
-| `app:memorias` | `memorias/v` |
-
-O registro fechado fica em `scripts/component-release/components.json` e o mapa
-em `classification.cjs`. Projetos CQRS e Studio identificam o app; `AppClinicas`
-corresponde a Clinica e `MDFe` a Fiscal. Pastas de infra, documentos e testes
-especificos seguem o app. Telas em `Front/wwwroot/Custon/Apps/<app>` pertencem ao
-app, mesmo hospedadas na Central. Engine, Shared, automacao e caminhos nao
-mapeados recebem `architecture`. Rename considera origem e destino; remocao
-continua contando. Lista incompleta de arquivos bloqueia a classificacao.
-
-A inferencia e conservadora e **aditiva**: preserva labels manuais, inclusive
-escopos de dependencias indiretas. Depois de retirar arquivos de uma PR, revisar
-labels antigas, pois elas nao sao removidas automaticamente. Uma label inferida
-sera reaplicada no proximo run; corrija o mapa em PR se ele estiver errado.
-Labels comuns sao ignoradas e `app:*` desconhecida falha. Arquitetura sozinha
-nao incrementa aplicativos. O publicador continua usando as labels do evento
-de merge, sem nova inferencia de impacto no momento da publicacao.
-
-## Auditoria depois da PR #26 e ativacao
-
-Auditoria publica em **2026-11-16, 22:03 UTC**, nesta task:
-
-- PR #26 integrada em `a3893ef5514290420c8b9b30cb71e8820eadf962`, classificada
-  `architecture`; os dois workflows da PR #26 estavam ativos na `main`.
-- [Run de merge](https://github.com/playsistemasinteligentes/YeshuaCreator/actions/runs/43961401451):
-  `validate=success`, `publish=skipped`. Sucesso do run nao comprova publicacao.
-- Nenhuma tag existente; entre as labels de release, apenas `architecture` existia.
-  A simulacao real por GET propôs `architecture/v01.001` no SHA acima.
-- Consultas a Actions permissions, protecao da `main` e
-  `RELEASE_TAGGING_ENABLED` retornaram **401** sem autenticacao. Isso nao prova
-  ausencia da variavel ou da protecao. A listagem publica de rulesets retornou
-  vazia; outras restricoes organizacionais nao foram verificadas.
-- Nao houve escrita de labels, configuracoes ou tags no GitHub nesta task.
-  O sandbox nao fornece ferramenta administrativa GitHub nem GitHub CLI
-  autenticada; o token privado do aplicativo permanece fora do agente.
-
-O operador ja autorizou a ativacao; as etapas administrativas abaixo dependem
-de uma sessao GitHub com os acessos adequados, nao de nova autorizacao de negocio.
-Nao e possivel ativar uma variavel de repositorio editando YAML ou o Git local.
-
-1. Na PR #28 desta task, manter `architecture` e `app:central` antes do merge
-   (automacao compartilhada e interface Central). Criar `app:central` se ainda
-   nao existir. Enquanto o novo
-   workflow nao estiver na branch padrao, ele ainda nao classifica PRs. Revisao
-   e merge sao externos a esta task; deploy nao e necessario para os workflows.
-2. Em Settings > Actions, permitir as duas actions fixadas por SHA. Manter o
-   token padrao somente leitura; os jobs declaram as permissoes adicionais:
-   classificacao `issues: write` e `pull-requests: read`, publicacao somente
-   `contents: write` e `pull-requests: read`. Nao habilitar criacao/aprovacao de
-   PR por Actions nem conceder permissoes de deploy.
-3. Na protecao da branch padrao, manter os checks existentes e exigir
-   `release-tests`. Conferir tambem o run `Release classification / release-scope`
-   e suas labels antes do merge. Nao substituir protecoes existentes por um
-   JSON generico. Revisar rulesets de tags para permitir a criacao pela
-   automacao e impedir atualizacao/exclusao dos sete namespaces de release.
-4. Rodar a auditoria abaixo. A ausencia de tags confirmou o inicio `01.001`;
-   conferir novamente, pois outra publicacao pode ter ocorrido desde a coleta.
-   Definir a variavel pela interface Settings > Secrets and variables > Actions
-   > Variables ou pela CLI autenticada do operador:
-
-   ```sh
-   gh variable set RELEASE_TAGGING_ENABLED --repo playsistemasinteligentes/YeshuaCreator --body true
-   gh variable get RELEASE_TAGGING_ENABLED --repo playsistemasinteligentes/YeshuaCreator
-   ```
-
-   Essa operacao exige acesso de escrita a Variables; nao adicionar PAT aos
-   workflows nem ampliar o token da conta do agente para contornar a restricao.
-5. Depois da integracao normal desta PR, usar `Release classification > Run
-   workflow`, na `main`, com uma PR aberta, para provisionar todas as labels
-   antes do proximo merge. Confirmar os sete nomes na tabela e o resumo do run.
-6. Homologar `Component release > Run workflow`, na `main`, com `pr_number=26`
-   e `dry_run=true`. O job `validate` le tags e publica um plano; `publish` deve
-   ficar skipped mesmo com a variavel ativa. O padrao de dispatch e simulacao.
-   Para publicar a release real da PR #26, executar novamente com
-   `dry_run=false`. Repetir o mesmo dispatch deve reutilizar o recibo existente.
-   Os merges novos publicam automaticamente quando a variavel e `true`.
-
-```sh
-# Somente GET na API publica; sem token, tags, build ou deploy.
-node scripts/component-release/audit.cjs 26
-# Apos integracao desta PR: simular no GitHub (CLI autenticada do operador).
-gh workflow run component-release.yml --repo playsistemasinteligentes/YeshuaCreator --ref main -f pr_number=26 -f dry_run=true
+```text
+Aplicativos: fiscal, central
 ```
 
-O auditor imprime recibos planejados e explicita configuracoes inacessiveis.
-Simulacao nao reserva numero nem comprova permissao de escrita. A criacao real,
-os rulesets efetivos e a idempotencia real ainda dependem do primeiro run de
-publicacao. A automacao nunca atualiza, sobrescreve ou apaga tags. Para suspender
-publicacoes futuras, definir `RELEASE_TAGGING_ENABLED=false`; isso nao cancela
-um job de publicacao que ja tenha iniciado.
+Neste exemplo apenas Fiscal e Central incrementam. Todos os demais componentes
+permanecem exatamente na mesma versao, independentemente de arquivos alterados,
+labels, dependencias, Engine ou Shared. Campo vazio ou ausente significa nenhum
+incremento. Nomes repetidos contam uma vez. Informe o campo apenas uma vez.
 
-## Numeracao, concorrencia e retomada
+Nomes aceitos: `architecture`, `aps-adm`, `aps-cadastros`, `central`, `clinica`,
+`fiscal`, `memorias`. `architecture` so incrementa quando tambem for declarado
+explicitamente; nunca e acrescentado por inferencia. Nomes desconhecidos sao
+erros de preenchimento, nao sao convertidos automaticamente para outro app.
 
-Tags sao a fonte da numeracao: maior par numerico `major.release` do componente
-mais um na release. Sem tags, inicia `01.001`; `01.999` passa a `01.1000`.
-O major nao e incrementado automaticamente. Tags historicas leves/anotadas
-validas contam para numeracao; formato invalido no namespace bloqueia a execucao.
+O publicador existente mantem a sequencia independente por componente:
+`fiscal/v01.006` passa a `fiscal/v01.007`, enquanto apps nao listados nao recebem
+tag nova. Tags existentes nunca sao movidas; repetir a mesma publicacao preserva
+a versao ja atribuida. O formato existente, inclusive `architecture/v01.001`,
+continua compativel. Nao ha formato `-PR`, preparacao de identidade na branch,
+alteracao da Engine ou do rodape da Central nesta PR.
 
-Cada PR tem seu grupo de concorrencia, compartilhado entre evento e recuperacao
-manual, sem cancelamento da execucao ativa. PRs distintas nunca substituem umas
-as outras na fila. Entre PRs, a criacao atomica de `refs/tags/<componente>/v...`
-resolve disputas: em conflito, reler tags e tentar o proximo numero, ate dez
-tentativas. Numeracao acompanha a ordem de publicacao, nao necessariamente a
-ordem dos merges. Nenhuma ref e atualizada, forcada ou excluida.
+O workflow `component-release` fica **somente manual** (`workflow_dispatch`),
+sem jobs de build/testes, classificacao de escopo ou pr-readiness. Ele recebe o
+numero de uma PR ja mergeada, le o campo `Aplicativos:` e utiliza o SHA de merge,
+conforme o mecanismo existente. `dry_run` permanece verdadeiro por padrao;
+esta correcao nao aciona o workflow, nem mesmo para simulacao. Nao ha incremento
+por abertura, edicao, push ou merge de PR. A decisao de executar futuramente o
+workflow e separada desta correcao.
 
-A anotacao JSON `yeshua.release/v1` registra repositorio, PR, SHA, todos os
-componentes classificados, componente, release/tag e referencia da arquitetura.
-A tag aponta diretamente para `merge_commit_sha`, incluindo squash/rebase;
-HEAD atual da branch nao e usado para escolher o commit da release.
-Reexecucao encontra o recibo da PR e reutiliza a tag. Falha entre componentes
-preserva o que ja foi publicado e permite completar o restante. Alteracao de
-SHA/escopos ou recibos duplicados/inconsistentes exige intervencao e nao gera tags.
+Os workflows `release-classification` e `release-validation` foram removidos.
+Enquanto a alteracao nao estiver na branch padrao, workflows antigos dessa
+branch ainda podem reagir aos eventos da PR (especialmente
+`pull_request_target`). Um push tambem pode acionar configuracoes externas do
+repositorio; esta correcao nao dispara acoes manuais nem altera configuracoes
+administrativas ou exigencias de branch protection.
 
-Para recuperar falha, reexecutar o run original. Se o evento foi perdido,
-rotulado incorretamente antes de qualquer publicacao ou a fila foi cancelada,
-usar **Component release > Run workflow**, na branch padrao, com `pr_number`
-e `dry_run=false` apos conferir a simulacao.
-O dispatch consulta novamente a PR e recusa PR aberta, apenas fechada ou com
-outro destino. Depois da primeira tag, a classificacao original fica congelada.
-403/rulesets nunca sao contornados; corrigir a permissao e reexecutar.
-Nao apagar tags para tentar novamente. Criacao interrompida pode deixar objeto
-Git anotado sem ref; ele nao conta como release.
-
-## Rastreabilidade do build
-
-Para apps, o recibo fixa a maior release de arquitetura ja publicada cujo commit
-e ancestral do SHA do merge. Na PR mista, arquitetura e publicada primeiro.
-Sem arquitetura versionada ancestral, `architecture: null` explicita a ausencia.
-Essa referencia e o snapshot do fonte no monorepo, nao prova de um binario ja
-construido; nao ha build nesta automacao.
-
-O processo de build pode arquivar o manifesto junto ao artefato, depois de obter
-as tags e fazer checkout do commit exato da release:
-
-```sh
-node scripts/component-release/build-manifest.cjs clinica/v01.001 > release-manifest.json
-```
-
-Esse comando somente le Git, exige HEAD igual ao SHA da release e valida tag,
-commit e ancestralidade da arquitetura registrada. Publicacao posterior de outra
-tag nao muda o manifesto. O build existente nao foi alterado para consumir esse
-arquivo; quem construir o artefato deve guarda-lo com os resultados do build.
-
-## Versoes na interface Central (issue #27)
-
-A mesma PR da ativacao inclui a [issue #27](https://github.com/playsistemasinteligentes/YeshuaCreator/issues/27).
-No rodape do shell autenticado da Central, os sete componentes exibem suas
-**versoes publicadas**. Cada componente abre o historico das dez releases mais
-recentes, com links para a tag, PR e commit. O link para todas as tags permite
-continuar a consulta no GitHub. O rodape e responsivo, usa controles nativos de
-teclado e nao ocupa uma faixa fixa sobre as telas de trabalho.
-
-`component-releases.js` consulta somente a API publica do repositorio, por GET,
-sem cookie, token da Central, segredo GitHub ou referrer. Os nomes visuais sao
-metadata estatica; um teste exige igualdade com `components.json`. Numeros de
-versao nunca sao fixados no Front. Uma leitura completa de refs escolhe a maior
-versao numerica de cada componente; somente suas anotacoes sao lidas na carga
-inicial. O recibo deve corresponder ao repositorio, schema, tag, componente,
-versao, PR e SHA apontado. Tags leves, recibos ausentes ou inconsistentes nao
-sao apresentadas como releases verificadas da automacao.
-
-Uma tag invalida no namespace ou falha na anotacao mais recente marca somente
-seu componente como indisponivel, sem substitui-lo silenciosamente por versao
-mais antiga. Ausencia de tags mostra **Sem release**. Falha na leitura global
-remove os valores anteriores e informa indisponibilidade. O horario da consulta
-fica visivel. Como ainda nao havia tags na consulta real desta task, o resultado
-correto foi Sem release nos sete componentes, sem numeros ilustrativos.
-
-**Atualizar versoes** relê as refs e encontra novas releases sem recarregar a
-pagina ou alterar formularios. A navegacao reutiliza cache em memoria por cinco
-minutos; nao ha polling nem persistencia de resultados em localStorage. Anotacoes
-sao cacheadas pelo SHA imutavel, com limite de 128 entradas; historico e sob demanda.
-O catalogo e limitado a 10.000 refs; se ultrapassar o limite, a leitura falha
-explicitamente. A API publica tem limite de requisicoes por IP; bloqueios de rede,
-CORS ou rate limit sao indisponibilidade, nunca Sem release. Nao introduzir
-credenciais no navegador para ampliar esse limite.
-
-O rodape declara **Versoes implantadas e em desenvolvimento nao verificadas**.
-Uma nova tag informa o que foi publicado no GitHub; nao prova qual binario esta
-rodando em API, Worker ou Front. A identidade runtime existente nao e um recibo
-de implantacao de todos os componentes. Integrar manifestos de deploy reais e
-uma evolucao separada, sem inferir implantacao pela ultima tag ou pela branch.
-
-Arquivos de interface pertencem exclusivamente ao Front Central em `wwwroot/spa`:
-`component-releases.js`, `release-footer.js`, `release-footer.css`, `router.js`,
-`views/dashboard.html` e `index.html`. Nao houve alteracao de DSL, codigo gerado,
-API de negocio ou pipeline de deploy. Os workflows executam tambem os testes de
-dados do Front; o ensaio Playwright fica separado para ambientes com navegador.
-
-## Validacao da ampliacao nesta task
-
-Em 2026-11-16, a ampliacao permaneceu na branch da PR em rascunho
-[#28](https://github.com/playsistemasinteligentes/YeshuaCreator/pull/28).
-Passaram 38 testes Node (32 da automacao e seis de dados da interface), build
-.NET 8 do Front com zero avisos/erros, actionlint dos tres workflows e
-`git diff --check`. A consulta real do cliente do Front em 22:10 UTC retornou
-os sete componentes sem release. Nenhuma tag foi criada para simular dados.
-
-O ensaio `release-footer.cjs` passou em Chromium/Playwright 1.65.1, com API
-GitHub simulada: sete componentes, atualizacao independente, historico e links,
-teclado, viewport de 360 px sem overflow, rate limit/recuperacao, nenhuma
-credencial enviada e zero erros JavaScript. A primeira tentativa falhou ao
-iniciar Chromium por ausencia de `libnspr4.so` e outras bibliotecas do container;
-a repeticao passou com dependencias extraidas somente em `/tmp`, sem instalar
-pacotes no sistema. O ensaio visual usa o markup real do rodape em shell de
-teste; nao comprova login, dados de negocio nem ambiente publicado.
-
-## Verificacao e limites
-
-```sh
-node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
-# Requer Playwright e Chromium disponiveis no ambiente de testes:
-node tests/Front/Central/release-footer.cjs
-dotnet build src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Yeshua.Central.CQRS.Infrastructure.Front.csproj
-actionlint .github/workflows/*.yml
-```
-
-Testes simulam API GitHub e criacao atomica de refs em memoria: app, arquitetura,
-misto, multiapp, reexecucao, falha parcial, permissao negada, resposta perdida,
-concorrencia, manifesto, classificacao automatica, rename, lista parcial,
-corrida de labels e simulacao sem criar objetos/refs. O auditor usa leituras
-reais; os testes de escrita usam API simulada em memoria.
-Builds .NET, smoke de aplicativos e deploy sao verificacoes separadas; esses
-workflows validam a automacao de release, nao substituem os checks do produto.
-
-Nao ha transacao unica entre componentes: uma falha pode deixar PR parcialmente
-publicada ate a retomada. Dez disputas consecutivas falham de forma explicita,
-sem sobrescrever tags. Rulesets, permissoes efetivas, check obrigatorio e o
-primeiro evento com escrita precisam ser homologados no GitHub.
-Nao remover ou editar tags anotadas: elas sao tambem o recibo de idempotencia.
-
-Referencias: [eventos](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows),
-[concorrencia](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/control-workflow-concurrency),
-[tags anotadas](https://docs.github.com/en/rest/git/tags),
-[refs Git](https://docs.github.com/en/rest/git/refs),
-[variaveis de repositorio](https://docs.github.com/en/rest/actions/variables#create-a-repository-variable),
-[eventos gerados pelo token](https://docs.github.com/en/actions/how-tos/write-workflows/choose-when-workflows-run/trigger-a-workflow#triggering-a-workflow-from-a-workflow).
-
-Fontes da consulta publica: [refs](https://docs.github.com/en/rest/git/refs#list-matching-references),
-[anotacoes](https://docs.github.com/en/rest/git/tags#get-a-tag),
-[CORS](https://docs.github.com/en/rest/using-the-rest-api/using-cors-and-jsonp-to-make-cross-origin-requests),
-[limites da API](https://docs.github.com/en/rest/using-the-rest-api/rate-limits-for-the-rest-api).
+Nesta correcao a validacao e somente estatica, por ordem do operador. Nenhum
+build, teste ou versionamento deve ser executado para esta entrega. A publicacao
+da branch/PR nao autoriza merge nem deploy.

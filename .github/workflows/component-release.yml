@@ -1,8 +1,6 @@
 name: Component release
 
 on:
-  pull_request_target:
-    types: [closed]
   workflow_dispatch:
     inputs:
       pr_number:
@@ -17,46 +15,14 @@ on:
 
 permissions: {}
 
-# Uma fila por PR: nenhum merge distinto substitui outro pendente.
-# A disputa entre PRs e resolvida pela criacao atomica da ref, com releitura.
+# Execucao somente manual; abrir/editar/enviar uma PR nao incrementa versoes.
 concurrency:
-  group: component-release-${{ github.event.pull_request.number || inputs.pr_number }}
+  group: component-release-${{ inputs.pr_number }}
   cancel-in-progress: false
 
 jobs:
-  validate:
-    if: >-
-      (github.event_name == 'pull_request_target' &&
-       github.event.pull_request.merged == true &&
-       github.event.pull_request.base.ref == github.event.repository.default_branch) ||
-      (github.event_name == 'workflow_dispatch' &&
-       github.ref_name == github.event.repository.default_branch)
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
-    steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-        with:
-          # Codigo confiavel que definiu o workflow; nunca head/ref da PR.
-          ref: ${{ github.workflow_sha }}
-          persist-credentials: false
-      - run: node --test tests/ReleaseAutomation/*.test.cjs tests/Front/Central/component-releases.test.cjs
-      - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
-        with:
-          script: |
-            await require('./scripts/component-release/release.cjs').publish({ github, context, core, dryRun: true });
-            if (process.env.RELEASE_TAGGING_ENABLED !== 'true') {
-              await core.summary.addRaw('Simulacao concluida. Publicacao desabilitada: configure RELEASE_TAGGING_ENABLED=true no repositorio.').write();
-            }
-        env:
-          RELEASE_TAGGING_ENABLED: ${{ vars.RELEASE_TAGGING_ENABLED }}
-
   publish:
-    needs: validate
-    if: >-
-      vars.RELEASE_TAGGING_ENABLED == 'true' &&
-      (github.event_name == 'pull_request_target' || inputs.dry_run == false)
+    if: github.ref_name == github.event.repository.default_branch
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -69,4 +35,4 @@ jobs:
       - uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
         with:
           script: |
-            await require('./scripts/component-release/release.cjs').publish({ github, context, core });
+            await require('./scripts/component-release/release.cjs').publish({ github, context, core, dryRun: context.payload.inputs.dry_run !== 'false' });

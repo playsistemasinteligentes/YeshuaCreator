@@ -10,7 +10,7 @@ test('auditoria publica simula PR mergeada e explicita configuracao inacessivel'
     paths.push(path);
     if (path === '') return { default_branch: 'main' };
     if (path === 'pulls/26') return { number: 26, merged: true, state: 'closed', merge_commit_sha: sha,
-      labels: [{ name: 'architecture' }], base: { ref: 'main', repo: { full_name: 'playsistemasinteligentes/YeshuaCreator' } } };
+      body: 'Aplicativos: architecture', labels: [{ name: 'architecture' }], base: { ref: 'main', repo: { full_name: 'playsistemasinteligentes/YeshuaCreator' } } };
     if (path.startsWith('git/matching-refs/')) return [];
     if (path.startsWith('labels?')) return [{ name: 'architecture' }];
     if (path === 'rulesets') return [];

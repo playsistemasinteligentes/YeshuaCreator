@@ -2,14 +2,14 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { SCHEMA, classify, parseVersion, nextVersion, publish } = require('../../scripts/component-release/release.cjs');
+const { SCHEMA, applications, parseVersion, nextVersion, publish } = require('../../scripts/component-release/release.cjs');
 const { buildManifest } = require('../../scripts/component-release/build-manifest.cjs');
 
 const sha = n => n.toString(16).padStart(40, '0');
 const repo = { owner: 'owner', repo: 'repo' };
-function context(number = 1, labels = ['app:clinica'], commit = sha(10)) {
+function context(number = 1, apps = ['clinica'], commit = sha(10)) {
   const pr = {
-    number, labels: labels.map(name => ({ name })), merged: true, state: 'closed',
+    number, body: `Aplicativos: ${apps.join(', ')}`, labels: [], merged: true, state: 'closed',
     merge_commit_sha: commit, base: { ref: 'main', repo: { full_name: 'owner/repo' } },
   };
   return { repo, eventName: 'pull_request_target', payload: {
@@ -69,11 +69,13 @@ function fake(...contexts) {
   return state;
 }
 
-test('labels: arquitetura, misto, varios apps, duplicadas e labels comuns', () => {
-  assert.deepEqual(classify(['app:fiscal', 'bug', 'architecture', 'app:clinica', 'app:fiscal'].map(name => ({ name }))),
+test('lista explicita do autor seleciona somente os aplicativos declarados', () => {
+  assert.deepEqual(applications('Aplicativos: fiscal, architecture, clinica, fiscal'),
     ['architecture', 'clinica', 'fiscal']);
-  for (const labels of [[], ['bug'], ['app:unknown'], ['app:architecture'], ['app:Clinica'], ['app:']]) {
-    assert.throws(() => classify(labels.map(name => ({ name }))));
+  assert.deepEqual(applications('Sem declaracao de aplicativos.'), []);
+  assert.deepEqual(applications('Aplicativos:'), []);
+  for (const body of ['Aplicativos: unknown', 'Aplicativos: Clinica', 'Aplicativos: app:fiscal']) {
+    assert.throws(() => applications(body));
   }
 });
 
@@ -108,7 +110,7 @@ test('merge de arquitetura nao incrementa aplicativos', async () => {
 });
 
 test('merge misto e multiapp registra a arquitetura publicada no mesmo SHA', async () => {
-  const ctx = context(1, ['app:fiscal', 'app:clinica', 'architecture']);
+  const ctx = context(1, ['fiscal', 'clinica', 'architecture']);
   const state = fake(ctx);
   const receipts = await state.run(ctx);
   assert.deepEqual(receipts.map(x => x.tag), ['architecture/v01.001', 'clinica/v01.001', 'fiscal/v01.001']);
@@ -139,7 +141,7 @@ test('reexecucao apos outros merges preserva numero e referencia da arquitetura'
 });
 
 test('falha parcial retoma sem duplicar componente ja publicado', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica', 'app:fiscal']);
+  const ctx = context(1, ['architecture', 'clinica', 'fiscal']);
   const state = fake(ctx);
   state.fail = 'clinica/';
   await assert.rejects(state.run(ctx), /Falha simulada/);
@@ -152,7 +154,7 @@ test('falha parcial retoma sem duplicar componente ja publicado', async () => {
 });
 
 test('merges concorrentes disputam a mesma ref e recebem numeros diferentes', async () => {
-  const a = context(1), b = context(2, ['app:clinica'], sha(11));
+  const a = context(1), b = context(2, ['clinica'], sha(11));
   const state = fake(a, b);
   const result = await Promise.all([state.run(a), state.run(b)]);
   assert.deepEqual(result.flat().map(x => x.tag).sort(), ['clinica/v01.001', 'clinica/v01.002']);
@@ -169,7 +171,7 @@ test('execucoes concorrentes da mesma PR sao idempotentes', async () => {
 });
 
 test('rajada de dez merges nao perde PRs nem repete numeros', async () => {
-  const contexts = Array.from({ length: 10 }, (_, i) => context(i + 1, ['app:clinica'], sha(i + 10)));
+  const contexts = Array.from({ length: 10 }, (_, i) => context(i + 1, ['clinica'], sha(i + 10)));
   const state = fake(...contexts);
   const results = (await Promise.all(contexts.map(c => state.run(c)))).flat();
   assert.equal(new Set(results.map(r => r.pr)).size, 10);
@@ -199,8 +201,7 @@ test('PR sem merge, branch incorreta, SHA divergente e escopo invalido falham an
     c => { c.payload.pull_request.base.ref = 'develop'; },
     c => { c.payload.pull_request.base.repo.full_name = 'other/repo'; },
     c => { c.payload.pull_request.merge_commit_sha = 'invalid'; },
-    c => { c.payload.pull_request.labels = [{ name: 'bug' }]; },
-    c => { c.payload.pull_request.labels = [{ name: 'app:unknown' }]; },
+    c => { c.payload.pull_request.body = 'Aplicativos: unknown'; },
     c => { c.payload.action = 'opened'; },
   ];
   for (const mutate of mutations) {
@@ -223,8 +224,8 @@ test('dispatch recupera PR mergeada e recusa alterar escopo de release existente
   } };
   const first = await state.run(manual);
   assert.deepEqual(await state.run(manual), first);
-  ctx.payload.pull_request.labels = [{ name: 'app:fiscal' }];
-  await assert.rejects(state.run(manual), /classificacao alterados/);
+  ctx.payload.pull_request.body = 'Aplicativos: fiscal';
+  await assert.rejects(state.run(manual), /lista de aplicativos alterados/);
   assert.equal(state.writes.length, 1);
 });
 
@@ -247,7 +248,7 @@ test('tags duplicadas por PR exigem intervencao, sem nova publicacao', async () 
 });
 
 test('manifesto de build registra recibo e exige checkout/tag/arquitetura consistentes', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica']), state = fake(ctx);
+  const ctx = context(1, ['architecture', 'clinica']), state = fake(ctx);
   const [, receipt] = await state.run(ctx);
   const git = args => {
     if (args[0] === 'cat-file') return `object ${receipt.sha}\ntype commit\n\n${JSON.stringify(receipt)}`;
@@ -261,7 +262,7 @@ test('manifesto de build registra recibo e exige checkout/tag/arquitetura consis
 });
 
 test('simulacao mista calcula arquitetura sem criar objetos ou refs e permite publicar depois', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica']);
+  const ctx = context(1, ['architecture', 'clinica']);
   const state = fake(ctx);
   const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
   assert.equal(state.objects.size, 0);
@@ -271,7 +272,7 @@ test('simulacao mista calcula arquitetura sem criar objetos ou refs e permite pu
 });
 
 test('simulacao reconcilia publicacao parcial sem tentar completar tags', async () => {
-  const ctx = context(1, ['architecture', 'app:clinica']);
+  const ctx = context(1, ['architecture', 'clinica']);
   const state = fake(ctx);
   state.fail = 'clinica/';
   await assert.rejects(state.run(ctx));
