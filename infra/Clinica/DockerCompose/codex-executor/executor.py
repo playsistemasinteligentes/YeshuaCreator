@@ -61,6 +61,8 @@ def validate_result(task, value):
 def input_audio(payload, storage_root):
     key = payload.get("StorageKey", "")
     parts = key.replace("\\", "/").split("/")
+    if payload.get("application") == "Central" and parts[4:5] == ["central"]:
+        parts = parts[:4] + parts[5:]
     if (len(parts) != 7 or parts[:4] != ["volatile", "ia", "transcriptions", "input"]
             or not parts[4].isdigit() or int(parts[4]) <= 0 or parts[5] != str(payload.get("uploadId"))
             or parts[6] != "audio.webm"):
@@ -149,6 +151,8 @@ def execute(task, request_id, correlation_id, payload, *, run=codex_run):
     if task not in TASKS or not request_id or not correlation_id or not isinstance(payload, dict):
         raise ValueError("Invalid task envelope")
     result_queue, status_prefix = TASKS[task]
+    if task == "app.tasks.transcribe_audio" and payload.get("application") == "Central":
+        result_queue = "central.audio.transcribed.inbox"
     result = error = None
     try:
         storage = Path(os.environ.get("STORAGE_ROOT", "/storage")).resolve()

@@ -15,6 +15,22 @@ public static class EndpointsCuston
             return Results.Ok(new { version });
         }).AllowAnonymous();
 
+        app.MapPost("/yapi/FileUpload/InfraSendFileUseCase2", async (
+            HttpContext context,
+            [Microsoft.AspNetCore.Mvc.FromServices] Command.Receivers.UseCase.SendFileHandler receiver) =>
+        {
+            if (!context.Request.HasFormContentType) return Results.BadRequest("Esperado multipart/form-data.");
+            var form = await context.Request.ReadFormAsync(context.RequestAborted);
+            if (!int.TryParse(form["chunkIndex"], out var index) || !bool.TryParse(form["isFinalChunk"], out var final))
+                return Results.BadRequest("Parte de audio invalida.");
+            var result = await receiver.ExecuteAsync(new Command.UseCase.SendFileInputCommand
+            {
+                token = form["token"], ChunkIndex = index, IsFinalChunk = final,
+                FileName = form["fileName"], ContentType = form["contentType"], FileStream = form.Files["fileStream"]
+            }, context.RequestAborted);
+            return result.StatusCode == 200 ? Results.Ok(result.Data) : Results.BadRequest(result);
+        }).RequireAuthorization();
+
         app.MapPost("/yapi/login", async (
             UserLogin user,
             JwtSettings jwtSettings,

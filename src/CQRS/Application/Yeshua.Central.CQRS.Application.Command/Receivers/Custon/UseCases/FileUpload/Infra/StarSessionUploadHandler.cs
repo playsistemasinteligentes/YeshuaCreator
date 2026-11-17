@@ -1,43 +1,34 @@
-﻿// <yeshua>
-// artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
-// createdBy: DSL
-// ownership: IA_DEV
-// editable: true
-// regeneration: NEVER_OVERWRITE
-// sourceOfTruth: THIS_FILE
-// generator: Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers
-// </yeshua>
-
-using Dominio.Interfaces;
 using Aplication.Interfaces.Services;
-using RepositoryInterfaces.Patterns.Command;
-using RepositoryInterfaces.Patterns.UnitOfWork;
-using IRepository.Read;
-using IRepository.Write;
+using Command.Patterns.FileUpload;
 using Command.UseCase;
+using Dominio.Entitys;
+using IRepository.Write;
+using RepositoryInterfaces.Patterns.Command;
+namespace Command.Receivers.UseCase;
 
-namespace Command.Receivers.UseCase
+public partial class StarSessionUploadHandler
 {
-    public partial class StarSessionUploadHandler
+    private readonly IyFileUploadWriteRepository _uploads;
+    private readonly UploadTokenHelper _tokens;
+    private readonly ExecutarChamadoSuporteHandler _tickets;
+    public StarSessionUploadHandler(Dominio.Interfaces.ILogger logger, IExecutionContext context,
+        IyFileUploadWriteRepository uploads, UploadTokenHelper tokens, ExecutarChamadoSuporteHandler tickets) : base(logger, context)
+    { _logger = logger; _executionContext = context; _uploads = uploads; _tokens = tokens; _tickets = tickets; }
+    protected partial async Task<State<StarSessionUploadOutputCommand>> CustomActionHookAsync(
+        State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand, CancellationToken cancellationToken)
     {
-        private readonly IUnitOfWork _unitOfWork = default!;
-        private readonly IDomainTrackingPolicy _domainTrackingPolicy = default!;
-        private readonly IyFileUploadReadRepository _repReadyFileUpload = default!;
-        private readonly IyFileUploadWriteRepository _repWriteyFileUpload = default!;
-        public StarSessionUploadHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyFileUploadReadRepository repReadyFileUpload, IyFileUploadWriteRepository repWriteyFileUpload)
-            : base(logger, executionContext)
-        {
-           _unitOfWork = unitOfWork;
-           _logger = logger;
-           _executionContext = executionContext;
-           _domainTrackingPolicy = domainTrackingPolicy;
-            _repReadyFileUpload = repReadyFileUpload;
-            _repWriteyFileUpload = repWriteyFileUpload;
-        }
-protected partial Task<State<StarSessionUploadOutputCommand>> CustomActionHookAsync(State<StarSessionUploadOutputCommand> state, StarSessionUploadInputCommand comand, CancellationToken cancellationToken)
-{
-    return Task.FromResult(state);
-}
+        if (comand.entityType != "ChamadoSuporte" || !Guid.TryParse(comand.entityId, out var id))
+            return ValidationError("Chamado invalido para gravacao.", new StarSessionUploadOutputCommand());
+        var ticket = await _tickets.ExecuteAsync(new ExecutarChamadoSuporteInputCommand {
+            ChamadoId = id.ToString("N"), Operacao = "AutorizarGravacao"
+        }, cancellationToken);
+        if (ticket.StatusCode >= 400) return ValidationError("Rascunho nao encontrado para o usuario atual.", new StarSessionUploadOutputCommand());
+        var upload = new yFileUploadFactory(_logger).Create(0, "audio.transcribe.support", 0, "", 0,
+            "ChamadoSuporte", id.ToString("N"), DateTime.UtcNow, null);
+        if (!upload.isValidInsert()) return ValidationError("Nao foi possivel preparar o audio.", new StarSessionUploadOutputCommand());
+        _uploads.Insert(upload);
+        return Success("Gravacao preparada.", new StarSessionUploadOutputCommand {
+            uploadToken = _tokens.Generate(upload.Id.Value, _executionContext.UserId, _executionContext.TenantID)
+        });
     }
 }
-//Dominio.Schemas.CQRS.SourceCodeAplicationHandlesAndResolvers

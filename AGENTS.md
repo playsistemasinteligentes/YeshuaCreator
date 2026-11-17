@@ -2426,3 +2426,28 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   OpenAI como fallback Groq; o destino continua congelado na Outbox e resumo
   continua Queue. OpenAI permanece o padrao. Implementacao local para testes,
   sem autorizacao de deploy ou ativacao em producao.
+
+## Ajuda E Chamados Da Central
+
+- Decisao de 2026-11-17: Ajuda abre um dialogo comum com Chamado, Ajuda com IA
+  e Sobre. A versao instalada fica em Sobre, fora do conteudo do dashboard.
+  ChamadoSuporte e uma entidade interna da Central declarada na DSL; preparacao,
+  abertura e consulta usam Commands normais e repositories, sempre por tenant
+  e usuario autenticados. Metadados de navegacao sao automaticos, sem valores
+  de formularios, query strings ou credenciais. Descricao e NeverCapture.
+- Relato por voz reutiliza SessionRecorder, IndexedDB, upload em partes,
+  UploadTokenHelper e a saga/Outbox/Inbox existentes. O nucleo de montagem e
+  transcricao HTTP e compartilhado; Central usa namespace de arquivo central e
+  contrato central.audio.transcribed para evitar colisao com Clinica. Retorno
+  preenche texto revisavel; somente Enviar chamado confirma a abertura.
+- Central pode usar Shared.Transcription no arquivo privado; sem esse perfil,
+  reutiliza Apps.Clinica.Transcription, preservando OpenAI/Groq/Queue e sem
+  copiar chaves no Git. A chave de upload Central e derivada uma vez no loader
+  privado por HMAC-SHA256 da raiz JWT, com proposito Central.Support.Upload.v1;
+  nao e o token JWT nem a chave de upload da Clinica. Rebuild preserva o acesso
+  usando o mesmo arquivo privado e o storage persistido.
+- Evolucao solicitada para versoes futuras, ainda nao implementada: relato
+  contextual com voz e acoes da interface sincronizadas por tempo. Capturar
+  identificadores de tela/botao/campo e resultado da acao; depois permitir
+  capturas de tela selecionadas. O usuario revisa o conjunto antes do envio;
+  nao gravar senhas ou valores sensiveis de campos por captura automatica.

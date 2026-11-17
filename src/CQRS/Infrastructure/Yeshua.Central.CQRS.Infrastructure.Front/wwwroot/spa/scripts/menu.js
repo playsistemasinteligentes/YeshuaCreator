@@ -34,6 +34,11 @@ export async function loadDataMenu() {
 
         await waitForApplicationExtension();
         const menuItems = extendMenuItems(await response.json());
+        function markModule(item, module) {
+            item.helpModule = module;
+            item.children?.forEach(child => markModule(child, module));
+        }
+        menuItems.forEach(item => markModule(item, item.description));
         const menuList = document.getElementById('menu');
         if (!menuList) return;
 
@@ -149,6 +154,7 @@ export function showModuleLoadError(error) {
 }
 
 async function openMenuItem(item) {
+    window.yeshuaHelpModule = { application: window.yeshuaActiveApplication?.application, name: item.helpModule };
     if (isCustomPage(item)) {
         await openCustomPage(item);
         return;

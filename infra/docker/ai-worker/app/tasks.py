@@ -98,12 +98,15 @@ def transcribe_audio(self, correlationId: str, payload: str):
     file_path = None
     wav_path  = None
     cleanup_wav = False
+    result_queue = "audio.transcribed.inbox"
     try:
         print(f"[{correlationId}] INICIO TASK")
 
         # 1️⃣ desserializa payload
         data     = json.loads(payload)
         file_url = data.get("FilePath")
+        if data.get("application") == "Central":
+            result_queue = "central.audio.transcribed.inbox"
 
         if not file_url:
             raise ValueError("FilePath não encontrado no payload.")
@@ -123,7 +126,7 @@ def transcribe_audio(self, correlationId: str, payload: str):
 
         # ✅ SUCESSO
         publish_message(
-            "audio.transcribed.inbox",
+            result_queue,
             {
                 "messageId":     str(uuid.uuid4()),
                 "correlationId": correlationId,
@@ -138,7 +141,7 @@ def transcribe_audio(self, correlationId: str, payload: str):
         print(f"[{correlationId}] ERRO: {e}")
 
         publish_message(
-            "audio.transcribed.inbox",
+            result_queue,
             {
                 "messageId":     str(uuid.uuid4()),
                 "correlationId": correlationId,

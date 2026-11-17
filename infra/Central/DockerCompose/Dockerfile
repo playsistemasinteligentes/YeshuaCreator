@@ -44,6 +44,7 @@ HEALTHCHECK --interval=15s --timeout=5s --start-period=20s --retries=5 \
 ENTRYPOINT ["dotnet", "Yeshua.Central.CQRS.Infrastructure.Api.dll"]
 
 FROM aspnet-health AS worker
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*
 COPY --from=publish /app/publish/worker .
 ENV ASPNETCORE_URLS=http://0.0.0.0:7215
 EXPOSE 7215

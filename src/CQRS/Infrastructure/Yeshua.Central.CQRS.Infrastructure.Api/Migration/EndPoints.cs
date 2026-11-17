@@ -1104,7 +1104,7 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
 
                         return Results.Ok(result);
                     }).RequireAuthorization("ApplicationEntry");
-            
+
 app.MapPost("/yapi/yFileUpload/ReadyFileUpload", async ([FromServices] Command.Receivers.Read.yFileUploadReadReceiver receiver, [FromBody] Command.Read.yFileUploadReadCommand command) =>
 {
  return await StateResults.TryAsync(() => receiver.ExecuteAsync(command));
@@ -3487,6 +3487,69 @@ app.MapGet("/yapi/getMetaDatayUserGrant", (HttpContext context) =>
 }).RequireAuthorization();
 #region ServicesMethod
 app.MapPost("/yapi/Central/CatalogoAdicionarAplicativoAoTenantUseCase", async ([FromServices] Command.Receivers.UseCase.AdicionarAplicativoAoTenantHandler receiver, [FromBody] Command.UseCase.AdicionarAplicativoAoTenantInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/SuportePrepararChamadoSuporteUseCase", async ([FromServices] Command.Receivers.UseCase.PrepararChamadoSuporteHandler receiver, [FromBody] Command.UseCase.PrepararChamadoSuporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/SuporteAbrirChamadoSuporteUseCase", async ([FromServices] Command.Receivers.UseCase.AbrirChamadoSuporteHandler receiver, [FromBody] Command.UseCase.AbrirChamadoSuporteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/SuporteConsultarChamadoSuporteUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarChamadoSuporteHandler receiver, [FromBody] Command.UseCase.ConsultarChamadoSuporteInputCommand command) =>
 {
 try
 {

@@ -1,0 +1,419 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeApplicationSagaWorker
+// </yeshua>
+
+using Command.Interfaces;
+using Command.Patterns.Command;
+using Command.Receivers.Migration.Saga;
+using Dominio.Operational;
+using Dominio.Patterns.Saga;
+using IRepository.Read;
+using IRepository.Write;
+using RepositoryInterfaces.Patterns.Command;
+using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Patterns.Worker;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Command.Patterns
+{
+    public class SagaStepContinuation : ISagaStepContinuation
+    {
+        private const int MaxImmediateSteps = 25;
+        private readonly SagaResolverRegistry _registry;
+        private readonly ISagaExecutor _executor;
+        private readonly IySagaReadRepository _sagaReadRepository;
+        private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IySagaStepReadRepository _sagaStepReadRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        private readonly Dominio.Interfaces.ILogger _logger;
+
+        public SagaStepContinuation(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context,
+            SagaResolverRegistry registry,
+            ISagaExecutor executor,
+            IySagaReadRepository sagaReadRepository,
+            IySagaWriteRepository sagaWriteRepository,
+            IySagaStepReadRepository sagaStepReadRepository,
+            IUnitOfWork unitOfWork)
+        {
+            _logger = logger;
+            _executionContext = context;
+            _registry = registry;
+            _executor = executor;
+            _sagaReadRepository = sagaReadRepository;
+            _sagaWriteRepository = sagaWriteRepository;
+            _sagaStepReadRepository = sagaStepReadRepository;
+            _unitOfWork = unitOfWork;
+        }
+
+        public Task ContinueUntilWaitAsync(ISagaStepStimulusOutput stimulus, CancellationToken cancellationToken = default)
+        {
+            if (stimulus == null || !stimulus.Accepted || stimulus.SagaId <= 0 || stimulus.InboxId <= 0)
+                return Task.CompletedTask;
+
+            var lockedBy = $"Immediate_{Environment.MachineName}_{Guid.NewGuid():N}";
+            var lockedAt = DateTime.UtcNow;
+            var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
+
+            if (!_sagaReadRepository.TryClaimSagaForExecution(stimulus.SagaId, lockedBy, lockedAt, nextExecutionAt))
+                return Task.CompletedTask;
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(stimulus.CorrelationId))
+                    _executionContext.SetTraceId(stimulus.CorrelationId);
+
+                var operation = string.IsNullOrWhiteSpace(stimulus.StepKey)
+                    ? "SagaStepStimulus"
+                    : stimulus.StepKey;
+                var telemetry = _logger.Evaluate(
+                    "Inbox",
+                    operation,
+                    "yInbox",
+                    stimulus.InboxId.ToString(),
+                    _executionContext.OperationalIdentity.OperationId,
+                    _executionContext.TenantID > 0 ? _executionContext.TenantID : (int?)null,
+                    _executionContext.UserId > 0 ? _executionContext.UserId : (int?)null);
+                var startedTimestamp = telemetry.Enabled ? Stopwatch.GetTimestamp() : 0;
+                var executionIdentity = _executionContext.TryGetOperationalIdentity(out var currentIdentity)
+                    ? currentIdentity
+                    : OperationalExecutionIdentity.FromTrace(stimulus.CorrelationId);
+
+                _unitOfWork.BeginTran();
+                try
+                {
+                    var applied = _sagaStepReadRepository.SetPendingApplyByInboxId(stimulus.InboxId);
+                    _unitOfWork.Commit();
+
+                    if (applied <= 0)
+                        return Task.CompletedTask;
+
+                    RecordInboxTransition(
+                        stimulus,
+                        operation,
+                        "Consumed",
+                        telemetry,
+                        executionIdentity,
+                        startedTimestamp,
+                        OperationalTechnicalOutcome.Succeeded,
+                        OperationalBusinessOutcome.Accepted);
+                }
+                catch (Exception exception)
+                {
+                    _unitOfWork.Rollback();
+                    RecordInboxTransition(
+                        stimulus,
+                        operation,
+                        "ConsumptionFailed",
+                        telemetry,
+                        executionIdentity,
+                        startedTimestamp,
+                        OperationalTechnicalOutcome.Failed,
+                        OperationalBusinessOutcome.NotEvaluated,
+                        exception);
+                    throw;
+                }
+
+                RunClaimedSaga(stimulus.SagaId, lockedBy, lockedAt, cancellationToken);
+                return Task.CompletedTask;
+            }
+            finally
+            {
+                _sagaReadRepository.ReleaseLock(stimulus.SagaId, lockedBy);
+            }
+        }
+
+        private void RecordInboxTransition(
+            ISagaStepStimulusOutput stimulus,
+            string operation,
+            string phase,
+            Dominio.Interfaces.OperationalTelemetryDecision telemetry,
+            OperationalExecutionIdentity executionIdentity,
+            long startedTimestamp,
+            OperationalTechnicalOutcome technicalOutcome,
+            OperationalBusinessOutcome businessOutcome,
+            Exception? exception = null)
+        {
+            if (!telemetry.Enabled)
+                return;
+
+            _logger.Transition(
+                new OperationalEvidenceTransition(
+                    "Inbox",
+                    operation,
+                    phase,
+                    (long)Stopwatch.GetElapsedTime(startedTimestamp).TotalMilliseconds,
+                    technicalOutcome,
+                    businessOutcome,
+                    executionIdentity,
+                    "yInbox",
+                    stimulus.InboxId.ToString(),
+                    stimulus.CorrelationId,
+                    stimulus.CorrelationId,
+                    Dependency: "Saga",
+                    ErrorCode: exception?.GetType().Name,
+                    ErrorSummary: exception is null
+                        ? null
+                        : $"Inbox consumption failed with {exception.GetType().Name}."),
+                telemetry);
+        }
+
+        private void RunClaimedSaga(int sagaId, string lockedBy, DateTime lockedAt, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var sagaDto = _sagaReadRepository.GetByIdWithSteps(sagaId);
+            if (sagaDto == null)
+                return;
+
+            if (sagaDto.tenantid > 0)
+                _executionContext.SetTenantId(sagaDto.tenantid);
+            if (sagaDto.userid > 0)
+                _executionContext.SetUserId(sagaDto.userid);
+            if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
+                _executionContext.SetTraceId(sagaDto.correlationid);
+
+            var saga = _registry.Map(sagaDto);
+            if (_executionContext.TryGetOperationalIdentity(out var currentIdentity))
+            {
+                saga.SetOperationalIdentity(
+                    currentIdentity.RootOperationId,
+                    currentIdentity.OperationId,
+                    currentIdentity.ExecutionId,
+                    currentIdentity.CausationId);
+                saga.GetCurrent()?.SetOperationalIdentity(
+                    currentIdentity.RootOperationId,
+                    currentIdentity.OperationId,
+                    currentIdentity.ExecutionId,
+                    currentIdentity.CausationId);
+            }
+            saga.LockedBy = lockedBy;
+            saga.LockedAt = lockedAt;
+
+            if (saga.Status != SagaStatus.InProgress)
+                return;
+
+            var current = saga.GetCurrent();
+            if (current == null || current.Status == SagaStepStatus.WaitingResponse)
+                return;
+
+            var resolver = _registry.Resolve(saga);
+            _executor.ExecuteUntilWait(saga, resolver, MaxImmediateSteps);
+
+            if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
+                return;
+
+            _unitOfWork.BeginTran();
+            try
+            {
+                _sagaWriteRepository.Save(saga);
+                _unitOfWork.Commit();
+            }
+            catch
+            {
+                _unitOfWork.Rollback();
+                throw;
+            }
+        }
+    }
+
+    public class SagaWorkerCommandHandler : ReciverBase<InputCommand, OutputCommand>
+    {
+        private readonly SagaResolverRegistry _registry;
+        private readonly ISagaExecutor _executor;
+        private readonly IySagaReadRepository _sagaReadRepository;
+        private readonly IySagaWriteRepository _sagaWriteRepository;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly Aplication.Interfaces.Services.IExecutionContext _executionContext;
+        private readonly Dominio.Interfaces.ILogger _logger;
+
+        public SagaWorkerCommandHandler(
+            Dominio.Interfaces.ILogger logger,
+            Aplication.Interfaces.Services.IExecutionContext context,
+            SagaResolverRegistry registry,
+            ISagaExecutor executor,
+            IySagaReadRepository sagaReadRepository,
+            IySagaWriteRepository sagaWriteRepository,
+            IUnitOfWork unitOfWork)
+            : base(logger, context)
+        {
+            _registry = registry;
+            _executor = executor;
+            _sagaReadRepository = sagaReadRepository;
+            _sagaWriteRepository = sagaWriteRepository;
+            _unitOfWork = unitOfWork;
+            _executionContext = context;
+            _logger = logger;
+        }
+
+        protected override Task<State<OutputCommand>> ActionAsync(InputCommand command, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var processed = 0;
+                var failed = 0;
+                var lockedBy = $"Worker_{Environment.MachineName}";
+                var lockedAt = DateTime.UtcNow;
+                var nextExecutionAt = DateTime.UtcNow.AddMinutes(5);
+
+                var sagas = _sagaReadRepository
+                    .ClaimRunnableSagas(5, lockedBy, lockedAt, nextExecutionAt)
+                    .ToList();
+
+                foreach (var sagaDto in sagas)
+                {
+                    string sagaId = string.Empty;
+                    var recordTelemetry = _logger.Evaluate(
+                        "SagaWorkerRecord",
+                        "Execute",
+                        "ySaga",
+                        sagaDto.correlationid,
+                        sagaDto.operationid,
+                        sagaDto.tenantid > 0 ? sagaDto.tenantid : (int?)null,
+                        sagaDto.userid > 0 ? sagaDto.userid : (int?)null);
+                    var parentIdentity = new OperationalExecutionIdentity(
+                        sagaDto.rootoperationid,
+                        sagaDto.operationid,
+                        sagaDto.executionid,
+                        sagaDto.causationid);
+                    using var recordExecution = recordTelemetry.Enabled
+                        ? _executionContext.BeginOperationalExecution(
+                            parentIdentity,
+                            "SagaWorker.Record")
+                        : null;
+                    using var recordActivity = recordTelemetry.Enabled
+                        ? OperationalActivity.StartRoot("SagaWorker.Record")
+                        : null;
+                    recordActivity?.SetTag("yeshua.component", "SagaWorkerRecord");
+                    recordActivity?.SetTag("yeshua.entity", "ySaga");
+                    recordActivity?.SetTag("yeshua.operational_entity_id", sagaDto.correlationid);
+                    if (sagaDto.tenantid > 0)
+                        recordActivity?.SetTag("yeshua.tenant_id", sagaDto.tenantid);
+                    if (sagaDto.userid > 0)
+                        recordActivity?.SetTag("enduser.id", sagaDto.userid);
+                    if (_executionContext.TryGetOperationalIdentity(out var executionIdentity))
+                        OperationalActivity.SetIdentity(recordActivity, executionIdentity);
+
+                    try
+                    {
+                        if (sagaDto.tenantid > 0)
+                            _executionContext.SetTenantId(sagaDto.tenantid);
+                        if (sagaDto.userid > 0)
+                            _executionContext.SetUserId(sagaDto.userid);
+                        if (!string.IsNullOrWhiteSpace(sagaDto.correlationid))
+                            _executionContext.SetTraceId(sagaDto.correlationid);
+
+                        var saga = _registry.Map(sagaDto);
+                        if (_executionContext.TryGetOperationalIdentity(out executionIdentity))
+                        {
+                            saga.SetOperationalIdentity(
+                                executionIdentity.RootOperationId,
+                                executionIdentity.OperationId,
+                                executionIdentity.ExecutionId,
+                                executionIdentity.CausationId);
+                            saga.GetCurrent()?.SetOperationalIdentity(
+                                executionIdentity.RootOperationId,
+                                executionIdentity.OperationId,
+                                executionIdentity.ExecutionId,
+                                executionIdentity.CausationId);
+                        }
+                        sagaId = saga.CorrelationId.ToString();
+                        saga.LockedBy = lockedBy;
+                        saga.LockedAt = lockedAt;
+
+                        if (saga.Status != SagaStatus.InProgress)
+                            continue;
+
+                        var current = saga.GetCurrent();
+                        if (current == null)
+                            continue;
+
+                        var resolver = _registry.Resolve(saga);
+                        const bool TransactionalStepWrites = true;
+                        if (TransactionalStepWrites)
+                            _unitOfWork.BeginTran();
+                        try
+                        {
+                            _executor.Execute(saga, resolver);
+                            if (TransactionalStepWrites && saga.LastExecutionFailed)
+                            {
+                                _unitOfWork.Rollback();
+                                _unitOfWork.BeginTran();
+                            }
+                            if (!saga.IsDirty && saga.Steps.All(step => !step.IsDirty))
+                            {
+                                if (TransactionalStepWrites)
+                                    _unitOfWork.Rollback();
+                                continue;
+                            }
+                            if (!TransactionalStepWrites)
+                                _unitOfWork.BeginTran();
+                            _sagaWriteRepository.Save(saga);
+                            _unitOfWork.Commit();
+                            processed++;
+                            recordActivity?.SetStatus(ActivityStatusCode.Ok);
+                        }
+                        catch
+                        {
+                            _unitOfWork.Rollback();
+                            throw;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        failed++;
+                        recordActivity?.SetStatus(ActivityStatusCode.Error, ex.Message);
+                        OperationalActivity.RecordException(recordActivity, ex);
+                        Console.WriteLine($"Erro na saga {sagaId}: {ex.Message}");
+                    }
+                    finally
+                    {
+                        _sagaReadRepository.ReleaseLock(sagaDto.id, lockedBy);
+                    }
+                }
+
+                return Task.FromResult(Success("OK", new OutputCommand
+                {
+                    Claimed = sagas.Count,
+                    Processed = processed,
+                    Failed = failed
+                }));
+            }
+            catch (ReceiverException<OutputCommand> ex)
+            {
+                return Task.FromResult(ex.State);
+            }
+            catch (Exception ex)
+            {
+                return Task.FromResult(Error(ex));
+            }
+        }
+    }
+
+    public partial record InputCommand : ICommand
+    {
+        public List<int> lst { get; set; } = new();
+    }
+
+    public partial record OutputCommand : ICommand, IWorkerCycleResult
+    {
+        public List<int> lst { get; set; } = new();
+        public int BatchLimit => 5;
+        public int Claimed { get; init; }
+        public int Processed { get; init; }
+        public int Failed { get; init; }
+    }
+}//Dominio.Schemas.CQRS.SourceCodeApplicationSagaWorker

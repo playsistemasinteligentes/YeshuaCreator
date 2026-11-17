@@ -3,6 +3,8 @@
 import argparse
 import base64
 import copy
+import hashlib
+import hmac
 from contextlib import contextmanager, ExitStack
 import json
 import os
@@ -340,6 +342,27 @@ def environment(document, root, target, include_shared=False):
             if result["CLINICA_TRANSCRIPTION_PROVIDER"] not in ("OpenAI", "Queue", "Groq"):
                 raise ConfigurationError("Transcription.Provider deve ser OpenAI, Queue ou Groq.")
 
+    central_keys = ("CENTRAL_UPLOAD_SIGNING_KEY", "CENTRAL_TRANSCRIPTION_PROVIDER", "CENTRAL_TRANSCRIPTION_API_KEY",
+                    "CENTRAL_TRANSCRIPTION_MODEL", "CENTRAL_TRANSCRIPTION_BASE_URL",
+                    "CENTRAL_GROQ_API_KEY", "CENTRAL_GROQ_MODEL", "CENTRAL_GROQ_BASE_URL")
+    result.update({key: "" for key in central_keys})
+    if target in ("central", "shared", "all") or include_shared:
+        # Upload tokens have a separate purpose/key; the private JWT root remains stable on rebuild.
+        root_key = required(get(document, "Shared", "Jwt", "SecretKey"), "Shared.Jwt.SecretKey")
+        result["CENTRAL_UPLOAD_SIGNING_KEY"] = hmac.new(root_key.encode(), b"Central.Support.Upload.v1", hashlib.sha256).hexdigest()
+        # Shared profile is optional. Preserve the installed provider profile without copying credentials.
+        profile = document.get("Shared", {}).get("Transcription") or document.get("Apps", {}).get("Clinica", {}).get("Transcription", {})
+        result.update({
+            "CENTRAL_TRANSCRIPTION_PROVIDER": profile.get("Provider") or "OpenAI",
+            "CENTRAL_TRANSCRIPTION_API_KEY": profile.get("ApiKey") or "",
+            "CENTRAL_TRANSCRIPTION_MODEL": profile.get("Model") or "gpt-transcribe",
+            "CENTRAL_TRANSCRIPTION_BASE_URL": profile.get("BaseUrl") or "https://api.openai.com/v1",
+            "CENTRAL_GROQ_API_KEY": get(profile, "Groq", "ApiKey"),
+            "CENTRAL_GROQ_MODEL": get(profile, "Groq", "Model") or "whisper-large-v3-turbo",
+            "CENTRAL_GROQ_BASE_URL": get(profile, "Groq", "BaseUrl") or "https://api.groq.com/openai/v1",
+        })
+        if result["CENTRAL_TRANSCRIPTION_PROVIDER"] not in ("OpenAI", "Queue", "Groq"):
+            raise ConfigurationError("Transcription.Provider deve ser OpenAI, Queue ou Groq.")
     return result
 
 

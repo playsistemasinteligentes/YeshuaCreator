@@ -60,31 +60,12 @@ public partial class SendFileHandler
                 { Success = true, IsFinalized = true, ChunkIndex = command.ChunkIndex, SagaId = existing.id, SagaCorrelationId = existing.correlationid });
             }
             if (upload.status != 0) throw new InvalidOperationException("Upload nao aceita novas partes.");
-            var pending = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,
-                token.tenantId.ToString(), Path.Combine(token.uploadId.ToString(), "pending_merge"),
-                $"chunk_{command.ChunkIndex}.part", false);
-            await _storage.SaveAsync(command.FileStream, pending, cancellationToken);
-            if (!command.IsFinalChunk)
+            var final = await Command.Patterns.FileUpload.AudioChunkStorage.SaveAsync(_storage, token.tenantId, token.uploadId,
+                command.FileStream, command.ChunkIndex, command.IsFinalChunk, cancellationToken);
+            if (final is null)
             {
                 _work.Commit();
                 return Success("Parte recebida.", new SendFileOutputCommand { Success = true, ChunkIndex = command.ChunkIndex });
-            }
-            var parts = _storage.ListFiles(StoragePathBuilder.BuildFromFullPath(
-                StorageLocation.Volatile.TranscriptionsInput, pending.Directory + Path.DirectorySeparatorChar))
-                .Where(p => Path.GetFileName(p.Value).StartsWith("chunk_", StringComparison.Ordinal)).ToList();
-            if (parts.Count != command.ChunkIndex + 1)
-                throw new InvalidOperationException("Ainda faltam partes do audio. Reenvie as partes ausentes.");
-            var final = StoragePathBuilder.Build(StorageLocation.Volatile.TranscriptionsInput,
-                token.tenantId.ToString(), token.uploadId.ToString(), "audio.webm", false);
-            using (var output = _storage.OpenWrite(final))
-            {
-                for (var index = 0; index <= command.ChunkIndex; index++)
-                {
-                    var part = parts.SingleOrDefault(p => Path.GetFileName(p.Value) == $"chunk_{index}.part")
-                        ?? throw new InvalidOperationException("Sequencia de partes incompleta.");
-                    using var input = _storage.OpenRead(part);
-                    await input.CopyToAsync(output, cancellationToken);
-                }
             }
             var saga = new PsychologySessionInsightSaga();
             saga.Start(sessionId.ToString(), "Sesoes");
@@ -93,7 +74,7 @@ public partial class SendFileHandler
             saga.GetCurrent()!.SetPayload(JsonSerializer.Serialize(new { uploadId = upload.id }));
             if (_executionContext.TryGetOperationalIdentity(out var identity))
                 saga.SetOperationalIdentity(identity.RootOperationId, identity.OperationId, identity.ExecutionId, identity.CausationId);
-            _uploadsWrite.UpdateFilePath(upload.id, final.Value);
+            _uploadsWrite.UpdateFilePath(upload.id, final);
             _uploadsWrite.UpdateStatus(upload.id, 1);
             _uploadsWrite.UpdateCompletedAt(upload.id, DateTime.UtcNow);
             _sagasWrite.Save(saga);
