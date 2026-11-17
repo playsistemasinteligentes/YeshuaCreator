@@ -26,6 +26,13 @@ O mesmo next devolve url absoluta pronta para GET, montada com a base canonica
 OperationalIntelligence:PublicBaseUrl, nunca com Host/headers do chamador.
 Limites sao de volume e pertinencia; nao ha leitura de Git/disco em fallback.
 Os contratos de saida MCP sao estaticos e ficam em McpOutputSchemas.
+`yeshua_deploy` segue o mesmo `McpToolRegistry`/`McpAccessPolicy` das demais
+ferramentas administrativas: a conexao privada/tunel existente e a autorizacao.
+Nao criar approvals por requestId, segunda autenticacao ou confirmacao adicional.
+Command/Receiver chama somente o deploy.sh por SSH com comando forcado, sem
+socket Docker ou orquestracao propria. `requestId` deduplica e consulta recibos;
+estado incerto nao repete execucao. Configuracao tecnica e recibos/logs privados
+do host: `infra/deploy-bridge/README.md`. Esta tarefa nao ativa infraestrutura.
 `yeshua_storage_usage` e privada e somente leitura: entrega metadados do relatorio
 fixo `/host-diagnostics/disk-usage.json`. Nao aceita caminhos/comandos e nao executa
 limpeza. A leitura pela API evita depender de shell. Comandos do agente usam o
