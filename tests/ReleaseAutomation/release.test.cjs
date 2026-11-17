@@ -1,284 +1,143 @@
 'use strict';
-
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { SCHEMA, applications, parseVersion, nextVersion, publish } = require('../../scripts/component-release/release.cjs');
-const { buildManifest } = require('../../scripts/component-release/build-manifest.cjs');
-
+const { readFileSync } = require('node:fs');
+const { readVersion, increment, publish } = require('../../scripts/global-release/release.cjs');
+const initialProps = readFileSync('Directory.Build.props', 'utf8');
 const sha = n => n.toString(16).padStart(40, '0');
-const repo = { owner: 'owner', repo: 'repo' };
-function context(number = 1, apps = ['clinica'], commit = sha(10)) {
-  const pr = {
-    number, body: `Aplicativos: ${apps.join(', ')}`, labels: [], merged: true, state: 'closed',
-    merge_commit_sha: commit, base: { ref: 'main', repo: { full_name: 'owner/repo' } },
-  };
-  return { repo, eventName: 'pull_request_target', payload: {
-    action: 'closed', repository: { default_branch: 'main' }, pull_request: pr,
-  } };
-}
+const fault = status => Object.assign(new Error(`HTTP ${status}`), { status });
 
-function fake(...contexts) {
-  const refs = new Map();
-  const objects = new Map();
-  const prs = new Map(contexts.map(c => [c.payload.pull_request.number, c.payload.pull_request]));
-  let counter = 1000;
-  const state = { refs, objects, writes: [], fail: null, loseResponse: false, forbidden: false };
-  const git = {
-    listMatchingRefs: async ({ ref }) => [...refs.entries()]
-      .filter(([name]) => name.startsWith(`refs/${ref}`))
-      .map(([ref, object]) => ({ ref, object })),
-    getTag: async ({ tag_sha }) => ({ data: objects.get(tag_sha) }),
-    createTag: async input => {
-      if (state.forbidden) throw Object.assign(new Error('Forbidden'), { status: 403 });
-      const id = sha(counter++);
-      objects.set(id, { message: input.message, object: { type: input.type, sha: input.object } });
-      return { data: { sha: id } };
-    },
-    createRef: async ({ ref, sha: id }) => {
-      if (state.fail && ref.includes(state.fail)) throw Object.assign(new Error('Falha simulada'), { status: 503 });
-      if (refs.has(ref)) throw Object.assign(new Error('Reference already exists'), { status: 422 });
-      refs.set(ref, { type: 'tag', sha: id });
-      state.writes.push(ref);
-      if (state.loseResponse) {
-        state.loseResponse = false;
-        throw Object.assign(new Error('Resposta perdida'), { status: 502 });
-      }
-      return {};
-    },
-  };
+// Git DAG + fast-forward rules in memory; never writes .git or remote refs.
+function fixture() {
+  let seq = 100;
+  const state = { head: sha(1), commits: new Map(), trees: new Map(), tags: new Map(), updates: 0, conflicts: 0 };
+  state.commits.set(state.head, { sha: state.head, xml: initialProps, parent: null, message: 'merge', tree: { sha: state.head } });
+  state.trees.set(state.head, initialProps);
+  function ancestor(base, tip) {
+    while (tip) { if (base === tip) return true; tip = state.commits.get(tip)?.parent; }
+    return false;
+  }
+  function history(tip) {
+    const result = [];
+    while (tip) { const c = state.commits.get(tip); result.push({ sha: tip, commit: { message: c.message } }); tip = c.parent; }
+    return result;
+  }
   const github = {
-    paginate: (method, params) => method(params),
-    rest: { git, pulls: { get: async ({ pull_number }) => ({ data: prs.get(pull_number) }) },
-      repos: { compareCommitsWithBasehead: async ({ basehead }) => {
-        const [base, head] = basehead.split('...');
-        return { data: { status: base === head ? 'identical' : base < head ? 'ahead' : 'behind' } };
-      } },
+    paginate: async (method, args) => method(args),
+    rest: {
+      pulls: { get: async ({ pull_number }) => ({ data: { number: pull_number, merged: true, state: 'closed',
+        base: { ref: 'main', repo: { full_name: 'owner/repo' } }, merge_commit_sha: sha(1) } }) },
+      repos: {
+        getContent: async ({ ref }) => ({ data: { type: 'file', encoding: 'base64', content: Buffer.from(state.commits.get(ref).xml).toString('base64') } }),
+        compareCommitsWithBasehead: async ({ basehead }) => {
+          const [base, tip] = basehead.split('...');
+          return { data: { status: base === tip ? 'identical' : ancestor(base, tip) ? 'ahead' : 'diverged' } };
+        },
+        listCommits: async ({ sha: tip }) => history(tip),
+      },
+      git: {
+        getRef: async ({ ref }) => {
+          if (ref === 'heads/main') return { data: { object: { type: 'commit', sha: state.head } } };
+          if (!state.tags.has(ref.slice(5))) throw fault(404);
+          return { data: { object: { type: 'commit', sha: state.tags.get(ref.slice(5)) } } };
+        },
+        getCommit: async ({ commit_sha }) => ({ data: state.commits.get(commit_sha) }),
+        createTree: async ({ base_tree, tree }) => {
+          assert.equal(state.trees.has(base_tree), true);
+          assert.equal(tree.length, 1); assert.equal(tree[0].path, 'Directory.Build.props');
+          const id = sha(seq++); state.trees.set(id, tree[0].content); return { data: { sha: id } };
+        },
+        createCommit: async ({ tree, parents, message }) => {
+          assert.equal(parents.length, 1);
+          const id = sha(seq++);
+          state.commits.set(id, { sha: id, xml: state.trees.get(tree), parent: parents[0], message, tree: { sha: tree } });
+          return { data: { sha: id } };
+        },
+        updateRef: async ({ sha: id, force, ref }) => {
+          assert.equal(force, false); assert.equal(ref, 'heads/main');
+          if (state.denied) throw fault(403);
+          if (!ancestor(state.head, id)) { state.conflicts++; throw fault(422); }
+          state.head = id; state.updates++;
+          if (state.loseUpdateResponse) { state.loseUpdateResponse = false; throw fault(502); }
+        },
+        createRef: async ({ ref, sha: id }) => {
+          if (state.failTag) throw fault(403);
+          const tag = ref.slice('refs/tags/'.length);
+          if (state.tags.has(tag)) throw fault(422);
+          assert.equal(readVersion(state.commits.get(id).xml), tag);
+          assert.equal(ancestor(id, state.head), true, 'tag only after main accepted version commit');
+          state.tags.set(tag, id);
+          if (state.loseTagResponse) { state.loseTagResponse = false; throw fault(502); }
+        },
+      },
     },
   };
-  const core = { info() {}, summary: {
-    addHeading() { return this; }, addCodeBlock() { return this; }, async write() {},
-  } };
-  state.github = github;
-  state.core = core;
-  state.run = context => publish({ github, context, core });
-  state.seed = (tag, commit, receipt) => {
-    const id = sha(counter++);
-    if (receipt) objects.set(id, { message: JSON.stringify(receipt), object: { type: 'commit', sha: commit } });
-    refs.set(`refs/tags/${tag}`, { type: receipt ? 'tag' : 'commit', sha: receipt ? id : commit });
-  };
-  return state;
+  const run = (n = 1, options = {}) => publish({ github, core: { info() {} }, context: {
+    repo: { owner: 'owner', repo: 'repo' }, eventName: 'pull_request_target',
+    payload: { action: 'closed', pull_request: { number: n, merged: true, merge_commit_sha: sha(1) } },
+    ...options.context,
+  }, dryRun: options.dryRun });
+  return { state, run, github };
 }
 
-test('lista explicita do autor seleciona somente os aplicativos declarados', () => {
-  assert.deepEqual(applications('Aplicativos: fiscal, architecture, clinica, fiscal'),
-    ['architecture', 'clinica', 'fiscal']);
-  assert.deepEqual(applications('Sem declaracao de aplicativos.'), []);
-  assert.deepEqual(applications('Aplicativos:'), []);
-  for (const body of ['Aplicativos: unknown', 'Aplicativos: Clinica', 'Aplicativos: app:fiscal']) {
-    assert.throws(() => applications(body));
+test('primeiro merge: um incremento; tag aponta para props correto e commit associado a PR', async () => {
+  const { state, run } = fixture(); const r = await run();
+  assert.equal(r.version, '1.0.1'); assert.notEqual(r.sha, sha(1));
+  assert.equal(state.tags.get('1.0.1'), r.sha); assert.equal(state.head, r.sha);
+  assert.equal(state.commits.get(r.sha).xml, initialProps.replace('<Version>1.0.0</Version>', '<Version>1.0.1</Version>'));
+  assert.match(state.commits.get(r.sha).message, /Yeshua-Release-PR: 1/);
+  assert.equal(state.updates, 1);
+});
+test('rerun antigo depois de outro merge nao incrementa nem cria segunda tag', async () => {
+  const { state, run } = fixture(); const a = await run(1); const b = await run(2);
+  assert.deepEqual(await run(1), a); assert.deepEqual(await run(2), b);
+  assert.equal(state.updates, 2); assert.equal(state.tags.size, 2);
+});
+test('falha entre commit e tag recupera somente tag', async () => {
+  const { state, run } = fixture(); state.failTag = true;
+  await assert.rejects(run(), /403/); const committed = state.head;
+  assert.equal(state.updates, 1); assert.equal(state.tags.size, 0);
+  state.failTag = false; const r = await run();
+  assert.equal(r.sha, committed); assert.equal(state.updates, 1); assert.equal(state.tags.size, 1);
+});
+test('respostas perdidas apos update e tag sao idempotentes', async () => {
+  const { state, run } = fixture(); state.loseUpdateResponse = true; state.loseTagResponse = true;
+  const r = await run(); assert.equal(state.updates, 1); assert.equal(state.tags.size, 1);
+  assert.deepEqual(await run(), r);
+});
+test('tres merges concorrentes e reruns concorrentes preservam todos os incrementos', async () => {
+  const { state, run } = fixture();
+  const results = await Promise.all([run(1), run(2), run(3), run(1)]);
+  assert.equal(state.updates, 3); assert.equal(state.tags.size, 3); assert.ok(state.conflicts > 0);
+  assert.deepEqual([...state.tags.keys()].sort(), ['1.0.1', '1.0.2', '1.0.3']);
+  assert.deepEqual(results[0], results[3]);
+  await Promise.all([run(1), run(2), run(3)]);
+  assert.equal(state.updates, 3);
+});
+test('main protegida recusa escrita sem tag e sem contorno', async () => {
+  const { state, run } = fixture(); state.denied = true;
+  await assert.rejects(run(), /403/); assert.equal(state.head, sha(1)); assert.equal(state.tags.size, 0);
+});
+test('colisao de tag nunca move tag nem grava props', async () => {
+  const { state, run } = fixture(); state.tags.set('1.0.1', sha(99));
+  await assert.rejects(run(), /ja existe/); assert.equal(state.updates, 0); assert.equal(state.tags.get('1.0.1'), sha(99));
+});
+test('dry run sem escrita; dispatch restrito a main e PR incorporada', async () => {
+  const { state, run } = fixture();
+  const r = await run(1, { dryRun: true }); assert.equal(r.version, '1.0.1');
+  assert.equal(state.updates, 0); assert.equal(state.commits.size, 1);
+  await assert.rejects(run(1, { context: { eventName: 'workflow_dispatch', ref: 'refs/heads/other', payload: { inputs: { pr_number: '1' } } } }), /main/);
+});
+test('aprovacao, abertura e fechamento sem merge nao publicam', async () => {
+  const { state, run } = fixture();
+  for (const context of [ { eventName: 'pull_request_review' }, { payload: { action: 'opened' } }, { payload: { action: 'closed', pull_request: { merged: false } } } ]) {
+    await assert.rejects(run(1, { context }), /merge efetivo/);
   }
+  assert.equal(state.updates, 0);
 });
-
-test('sequencias numericas independentes e largura minima, sem rollover de major', () => {
-  assert.equal(nextVersion([]), '01.001');
-  const versions = ['01.009', '01.999', '02.003'].map(v => parseVersion(`fiscal/v${v}`, 'fiscal'));
-  assert.equal(nextVersion(versions), '02.004');
-  assert.equal(nextVersion([parseVersion('clinica/v01.999', 'clinica')]), '01.1000');
-  for (const tag of ['clinica/v1.001', 'clinica/v01.01', 'clinica/v01.0001', 'clinica/v01.001-beta']) {
-    assert.throws(() => parseVersion(tag, 'clinica'));
-  }
-});
-
-test('merge de aplicativo cria apenas sua release no SHA exato, nunca HEAD', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.seed('fiscal/v01.045', sha(3));
-  state.seed('clinica/v01.003', sha(4));
-  const [receipt] = await state.run(ctx);
-  assert.equal(receipt.tag, 'clinica/v01.004');
-  assert.equal(receipt.sha, ctx.payload.pull_request.merge_commit_sha);
-  assert.equal(receipt.architecture, null);
-  assert.deepEqual(state.writes, ['refs/tags/clinica/v01.004']);
-});
-
-test('merge de arquitetura nao incrementa aplicativos', async () => {
-  const ctx = context(1, ['architecture']);
-  const state = fake(ctx);
-  state.seed('clinica/v01.005', sha(2));
-  assert.equal((await state.run(ctx))[0].tag, 'architecture/v01.001');
-  assert.deepEqual(state.writes, ['refs/tags/architecture/v01.001']);
-});
-
-test('merge misto e multiapp registra a arquitetura publicada no mesmo SHA', async () => {
-  const ctx = context(1, ['fiscal', 'clinica', 'architecture']);
-  const state = fake(ctx);
-  const receipts = await state.run(ctx);
-  assert.deepEqual(receipts.map(x => x.tag), ['architecture/v01.001', 'clinica/v01.001', 'fiscal/v01.001']);
-  for (const app of receipts.slice(1)) {
-    assert.deepEqual(app.architecture, { tag: 'architecture/v01.001', version: '01.001', sha: sha(10) });
-    assert.deepEqual(app.components, ['architecture', 'clinica', 'fiscal']);
-    assert.equal(app.pr, 1);
-    assert.equal(app.repository, 'owner/repo');
-  }
-});
-
-test('arquitetura utilizada deve ser ancestral do merge, nao uma tag posterior', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.seed('architecture/v01.001', sha(2));
-  state.seed('architecture/v01.002', sha(20));
-  assert.equal((await state.run(ctx))[0].architecture.tag, 'architecture/v01.001');
-});
-
-test('reexecucao apos outros merges preserva numero e referencia da arquitetura', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  const first = await state.run(ctx);
-  state.seed('architecture/v01.001', sha(2));
-  state.seed('clinica/v01.002', sha(20));
-  assert.deepEqual(await state.run(ctx), first);
-  assert.equal(state.writes.length, 1);
-});
-
-test('falha parcial retoma sem duplicar componente ja publicado', async () => {
-  const ctx = context(1, ['architecture', 'clinica', 'fiscal']);
-  const state = fake(ctx);
-  state.fail = 'clinica/';
-  await assert.rejects(state.run(ctx), /Falha simulada/);
-  assert.deepEqual(state.writes, ['refs/tags/architecture/v01.001']);
-  state.fail = null;
-  const result = await state.run(ctx);
-  assert.equal(result.length, 3);
-  assert.equal(new Set(state.writes).size, 3);
-  assert.equal(state.writes.length, 3);
-});
-
-test('merges concorrentes disputam a mesma ref e recebem numeros diferentes', async () => {
-  const a = context(1), b = context(2, ['clinica'], sha(11));
-  const state = fake(a, b);
-  const result = await Promise.all([state.run(a), state.run(b)]);
-  assert.deepEqual(result.flat().map(x => x.tag).sort(), ['clinica/v01.001', 'clinica/v01.002']);
-  assert.equal(state.writes.length, 2);
-  assert.deepEqual(new Set(result.flat().map(x => x.sha)), new Set([sha(10), sha(11)]));
-});
-
-test('execucoes concorrentes da mesma PR sao idempotentes', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  const result = await Promise.all([state.run(ctx), state.run(ctx)]);
-  assert.deepEqual(result[0], result[1]);
-  assert.equal(state.writes.length, 1);
-});
-
-test('rajada de dez merges nao perde PRs nem repete numeros', async () => {
-  const contexts = Array.from({ length: 10 }, (_, i) => context(i + 1, ['clinica'], sha(i + 10)));
-  const state = fake(...contexts);
-  const results = (await Promise.all(contexts.map(c => state.run(c)))).flat();
-  assert.equal(new Set(results.map(r => r.pr)).size, 10);
-  assert.equal(new Set(results.map(r => r.tag)).size, 10);
-  assert.equal(state.writes.length, 10);
-});
-
-test('resposta perdida depois da criacao da ref e reconciliada', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.loseResponse = true;
-  assert.equal((await state.run(ctx))[0].tag, 'clinica/v01.001');
-  assert.equal(state.writes.length, 1);
-});
-
-test('403 de permissao interrompe sem publicar tags', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  state.forbidden = true;
-  await assert.rejects(state.run(ctx), /Forbidden/);
-  assert.equal(state.writes.length, 0);
-});
-
-test('PR sem merge, branch incorreta, SHA divergente e escopo invalido falham antes de escrever', async () => {
-  const mutations = [
-    c => { c.payload.pull_request.merged = false; },
-    c => { c.payload.pull_request.base.ref = 'develop'; },
-    c => { c.payload.pull_request.base.repo.full_name = 'other/repo'; },
-    c => { c.payload.pull_request.merge_commit_sha = 'invalid'; },
-    c => { c.payload.pull_request.body = 'Aplicativos: unknown'; },
-    c => { c.payload.action = 'opened'; },
-  ];
-  for (const mutate of mutations) {
-    const ctx = context(); mutate(ctx);
-    const state = fake(ctx);
-    await assert.rejects(state.run(ctx));
-    assert.equal(state.writes.length, 0);
-  }
-  const ctx = context(), state = fake(ctx);
-  const snapshot = structuredClone(ctx);
-  snapshot.payload.pull_request.merge_commit_sha = sha(99);
-  await assert.rejects(state.run(snapshot), /inconsistente/);
-});
-
-test('dispatch recupera PR mergeada e recusa alterar escopo de release existente', async () => {
-  const ctx = context();
-  const state = fake(ctx);
-  const manual = { ...ctx, eventName: 'workflow_dispatch', payload: {
-    repository: ctx.payload.repository, inputs: { pr_number: '1' },
-  } };
-  const first = await state.run(manual);
-  assert.deepEqual(await state.run(manual), first);
-  ctx.payload.pull_request.body = 'Aplicativos: fiscal';
-  await assert.rejects(state.run(manual), /lista de aplicativos alterados/);
-  assert.equal(state.writes.length, 1);
-});
-
-test('recibo inconsistente e tags malformadas nao sao silenciosamente ignorados', async () => {
-  const ctx = context(), state = fake(ctx);
-  state.seed('clinica/v01.001', sha(3), { schema: SCHEMA, tag: 'clinica/v01.001', sha: sha(4) });
-  await assert.rejects(state.run(ctx), /Recibo inconsistente/);
-  state.refs.clear();
-  state.seed('clinica/vbad', sha(3));
-  await assert.rejects(state.run(ctx), /Formato de tag invalido/);
-  assert.equal(state.writes.length, 0);
-});
-
-test('tags duplicadas por PR exigem intervencao, sem nova publicacao', async () => {
-  const ctx = context(), state = fake(ctx);
-  const [receipt] = await state.run(ctx);
-  state.seed('clinica/v01.002', sha(10), { ...receipt, tag: 'clinica/v01.002', version: '01.002' });
-  await assert.rejects(state.run(ctx), /duplicadas/);
-  assert.equal(state.writes.length, 1);
-});
-
-test('manifesto de build registra recibo e exige checkout/tag/arquitetura consistentes', async () => {
-  const ctx = context(1, ['architecture', 'clinica']), state = fake(ctx);
-  const [, receipt] = await state.run(ctx);
-  const git = args => {
-    if (args[0] === 'cat-file') return `object ${receipt.sha}\ntype commit\n\n${JSON.stringify(receipt)}`;
-    if (args[0] === 'merge-base') return '';
-    return sha(10);
-  };
-  assert.deepEqual(buildManifest(receipt.tag, git), receipt);
-  assert.throws(() => buildManifest(receipt.tag, args => args.includes('HEAD') ? sha(99) : git(args)), /checkout/);
-  assert.throws(() => buildManifest(receipt.tag, args => args.some(a => a.includes('architecture/')) ? sha(99) : git(args)), /arquitetura/);
-  assert.throws(() => buildManifest('app:unknown/v01.001', git), /desconhecido/);
-});
-
-test('simulacao mista calcula arquitetura sem criar objetos ou refs e permite publicar depois', async () => {
-  const ctx = context(1, ['architecture', 'clinica']);
-  const state = fake(ctx);
-  const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
-  assert.equal(state.objects.size, 0);
-  assert.equal(state.refs.size, 0);
-  assert.equal(dry[1].architecture.tag, dry[0].tag);
-  assert.deepEqual(await state.run(ctx), dry);
-});
-
-test('simulacao reconcilia publicacao parcial sem tentar completar tags', async () => {
-  const ctx = context(1, ['architecture', 'clinica']);
-  const state = fake(ctx);
-  state.fail = 'clinica/';
-  await assert.rejects(state.run(ctx));
-  const objectCount = state.objects.size;
-  const dry = await publish({ github: state.github, context: ctx, core: state.core, dryRun: true });
-  assert.equal(dry.length, 2);
-  assert.equal(state.objects.size, objectCount);
-  assert.equal(state.writes.length, 1);
+test('formato unico .NET, patch e limite de assembly', () => {
+  assert.equal(increment('<Version>1.2.9</Version>').version, '1.2.10');
+  for (const x of ['01.001', 'v1.0.0', 'central/v1.0.0', '01.0.0', '1.0.65535']) assert.throws(() => readVersion(`<Version>${x}</Version>`));
+  assert.throws(() => increment('<Version>1.0.65534</Version>'));
+  assert.throws(() => readVersion('<Version>1.0.0</Version><Version>2.0.0</Version>'));
 });

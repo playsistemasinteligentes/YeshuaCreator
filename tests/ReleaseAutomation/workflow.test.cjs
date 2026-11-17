@@ -1,19 +1,17 @@
 'use strict';
-
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { readFileSync } = require('node:fs');
-const { resolve } = require('node:path');
+const { readFileSync, existsSync } = require('node:fs');
 
-// Somente contrato do workflow manual existente; nao instala gates de CI.
-test('versionamento somente por dispatch, sem build, classificacao ou deploy', () => {
-  const workflow = readFileSync(resolve(__dirname, '../../.github/workflows/component-release.yml'), 'utf8');
-  assert.match(workflow, /workflow_dispatch:/);
+test('somente merge ou recuperacao; sem build/test/deploy obrigatorio', () => {
+  const workflow = readFileSync('.github/workflows/global-release.yml', 'utf8');
+  assert.match(workflow, /pull_request_target:\s+types: \[closed\]\s+branches: \[main\]/);
+  assert.match(workflow, /pull_request.merged == true/);
   assert.match(workflow, /dry_run:[\s\S]*default: true/);
-  assert.match(workflow, /ref: \$\{\{ github\.workflow_sha \}\}/);
+  assert.match(workflow, /ref: \$\{\{ github.workflow_sha \}\}/);
   assert.match(workflow, /persist-credentials: false/);
-  assert.doesNotMatch(workflow, /pull_request_target:|pull_request:|needs:|node --test|dotnet |pr-readiness|classif|deploy:/);
-  for (const match of workflow.matchAll(/uses: ([^\s]+)/g)) {
-    assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
-  }
+  assert.match(workflow, /group: global-release-\$\{\{ github.event.pull_request.number/);
+  assert.doesNotMatch(workflow, /pull_request_review:|needs:|node --test|dotnet |deploy:/);
+  assert.equal(existsSync('.github/workflows/component-release.yml'), false);
+  for (const match of workflow.matchAll(/uses: ([^\s]+)/g)) assert.match(match[1], /^[\w-]+\/[\w-]+@[a-f0-9]{40}$/);
 });

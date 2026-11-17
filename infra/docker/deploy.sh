@@ -14,11 +14,7 @@ TARGET="${1:-all}"
 exec 9>/var/lock/yeshua-deploy.lock
 flock 9
 
-if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
-  git -C "$APP_DIR" reset --hard
-  git -C "$APP_DIR" clean -fd
-  git -C "$APP_DIR" pull origin main
-fi
+source "$APP_DIR/infra/docker/select-release.sh"
 
 case "${TARGET,,}" in
   aps|aps_adm) TARGET="aps-adm" ;;

@@ -6,6 +6,15 @@ public static class EndpointsCuston
 
     public static void MapEndpoints(this WebApplication app)
     {
+        var version = System.Reflection.CustomAttributeExtensions
+            .GetCustomAttribute<System.Reflection.AssemblyInformationalVersionAttribute>(typeof(EndpointsCuston).Assembly)
+            ?.InformationalVersion ?? throw new InvalidOperationException("Versao compilada ausente.");
+        app.MapGet("/yapi/version", (HttpContext context) =>
+        {
+            context.Response.Headers.CacheControl = "no-store";
+            return Results.Ok(new { version });
+        }).AllowAnonymous();
+
         app.MapPost("/yapi/login", async (
             UserLogin user,
             JwtSettings jwtSettings,
