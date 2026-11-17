@@ -25,6 +25,23 @@ def configured():
 
 
 class CredentialsTests(unittest.TestCase):
+    def test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key(self):
+        document = configured()
+        document["Apps"]["Clinica"]["Transcription"] = {"Provider": "OpenAI", "ApiKey": "fixture-openai"}
+        first = credentials.environment(document, Path("/private"), "central")
+        second = credentials.environment(copy.deepcopy(document), Path("/rebuilt"), "central")
+        self.assertEqual(first["CENTRAL_UPLOAD_SIGNING_KEY"], second["CENTRAL_UPLOAD_SIGNING_KEY"])
+        self.assertNotEqual(document["Shared"]["Jwt"]["SecretKey"], first["CENTRAL_UPLOAD_SIGNING_KEY"])
+        self.assertEqual("fixture-openai", first["CENTRAL_TRANSCRIPTION_API_KEY"])
+        self.assertEqual("", first["CLINICA_TRANSCRIPTION_API_KEY"])
+        document["Shared"]["Transcription"] = {"Provider": "Groq", "Groq": {"ApiKey": "fixture-groq"}}
+        shared = credentials.environment(document, Path("/private"), "central")
+        self.assertEqual("Groq", shared["CENTRAL_TRANSCRIPTION_PROVIDER"])
+        self.assertEqual("fixture-groq", shared["CENTRAL_GROQ_API_KEY"])
+        other = credentials.environment(document, Path("/private"), "memorias")
+        self.assertEqual("", other["CENTRAL_TRANSCRIPTION_API_KEY"])
+        self.assertEqual("", other["CENTRAL_GROQ_API_KEY"])
+
     def test_all_consumers_and_independent_connections(self):
         document = configured()
         document["Apps"]["Memorias"]["MyConfig"].update(ReadConectionString="read-memory", WriteConectionString="write-memory")

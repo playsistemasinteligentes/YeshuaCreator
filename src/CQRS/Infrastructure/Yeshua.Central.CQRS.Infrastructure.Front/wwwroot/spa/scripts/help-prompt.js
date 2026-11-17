@@ -40,6 +40,7 @@ export function readHelpContext() {
     }
     return {
         application: identifier(application.application) || identifier(localStorage.getItem('yeshua.activeApplication')) || 'Não identificado',
+        module: window.yeshuaHelpModule?.application === application.application ? label(window.yeshuaHelpModule.name) : label(application.title || application.application),
         applicationTitle: label(application.title), ...screen, ...identity,
         origin: location.origin, path: location.pathname, route: identifier(location.hash.replace(/^#/, '')),
         timestampUtc: new Date().toISOString(), timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone
@@ -54,6 +55,7 @@ export function buildHelpPrompt(context) {
         `Identificador da tela: ${identifier(context.key) || 'não informado'}`,
         `Tipo de tela: ${label(context.kind) || 'não informado'}`
     ];
+    if (label(context.module)) lines.push(`Módulo: ${label(context.module)}`);
     if (identifier(context.entity)) lines.push(`Entidade: ${identifier(context.entity)}`);
     if (identifier(context.action)) lines.push(`Ação: ${actionNames[context.action] || identifier(context.action)}`);
     if (recordId(context.recordId)) lines.push(`Identificador do registro: ${recordId(context.recordId)}`);
@@ -87,7 +89,7 @@ Responda em português, com instruções práticas para esta tela. Separe o que 
 O contexto foi copiado sem senhas, tokens, valores dos formulários ou conteúdo dos registros.`;
 }
 
-async function copyText(text) {
+export async function copyText(text) {
     if (window.isSecureContext && navigator.clipboard?.writeText) {
         try { await navigator.clipboard.writeText(text); return true; } catch { /* Use the existing browser copy fallback. */ }
     }
@@ -105,17 +107,6 @@ async function copyText(text) {
     return copied;
 }
 
-function showManualCopy(text) {
-    document.getElementById('help-prompt-dialog')?.remove();
-    const dialog = document.createElement('dialog'); dialog.id = 'help-prompt-dialog'; dialog.className = 'yeshua-help-dialog';
-    dialog.setAttribute('aria-labelledby', 'help-prompt-title');
-    dialog.innerHTML = '<h2 id="help-prompt-title">Prompt de ajuda</h2><p>O navegador não permitiu copiar automaticamente. Selecione o texto e copie com Ctrl+C ou com a opção Copiar do celular. Depois, cole no GPT e escreva sua dúvida.</p><label for="help-prompt-text">Texto para copiar</label><textarea id="help-prompt-text" rows="14" readonly></textarea><button type="button">Fechar</button>';
-    dialog.querySelector('textarea').value = text;
-    dialog.querySelector('button').onclick = () => dialog.close();
-    dialog.addEventListener('close', () => dialog.remove(), { once: true });
-    document.body.append(dialog); dialog.showModal(); dialog.querySelector('textarea').select();
-}
-
 export function bindHelpPrompt() {
     for (const id of ['help-prompt-copy', 'user-help-prompt']) {
         const button = document.getElementById(id);
@@ -126,10 +117,9 @@ export function bindHelpPrompt() {
             if (button.dataset.copying) return;
             button.dataset.copying = 'true';
             try {
-                const text = buildHelpPrompt(readHelpContext());
-                if (await copyText(text)) showAlert('Prompt de ajuda copiado. Cole no GPT e escreva sua dúvida.', 'success');
-                else showManualCopy(text);
-            } catch { showAlert('Não foi possível preparar o prompt de ajuda. Tente novamente.', 'error'); }
+                const { openHelpPanel } = await import('./help-panel.js?v=20261117-support01');
+                await openHelpPanel();
+            } catch { showAlert('Não foi possível abrir a ajuda. Tente novamente.', 'error'); }
             finally { delete button.dataset.copying; }
         });
     }

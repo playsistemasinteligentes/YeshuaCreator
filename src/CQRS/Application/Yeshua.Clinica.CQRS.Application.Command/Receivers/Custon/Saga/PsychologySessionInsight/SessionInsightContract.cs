@@ -5,34 +5,9 @@ namespace Command.Receivers;
 public static class SessionInsightContract
 {
     public static JsonElement ReadResult(string payload, string expectedStatus)
-    {
-        try
-        {
-            using var doc = JsonDocument.Parse(payload);
-            var root = doc.RootElement;
-            if (root.TryGetProperty("status", out var status))
-            {
-                if (status.GetString() != expectedStatus)
-                {
-                    var retryable = status.GetString()?.EndsWith(".failed", StringComparison.Ordinal) == true
-                        && root.TryGetProperty("error", out var error) && error.ValueKind == JsonValueKind.Object
-                        && error.TryGetProperty("retryable", out var retry) && retry.ValueKind == JsonValueKind.True;
-                    throw new SagaStepExecutionException("O executor de IA nao concluiu a tarefa solicitada.", retryable);
-                }
-                return root.GetProperty("result").Clone();
-            }
-            return root.Clone(); // Compatibility with results already persisted by the original listener.
-        }
-        catch (SagaStepExecutionException) { throw; }
-        catch (Exception) { throw new SagaStepExecutionException("Retorno da IA invalido.", retryable: false); }
-    }
+        => Command.Patterns.Transcription.AudioTranscriptionResult.ReadResult(payload, expectedStatus);
     public static string ReadTranscript(string payload)
-    {
-        var result = ReadResult(payload, "audio.transcription.completed");
-        if (!result.TryGetProperty("text", out var text) || text.ValueKind != JsonValueKind.String || string.IsNullOrWhiteSpace(text.GetString()) || text.GetString()!.Length > 300000)
-            throw new SagaStepExecutionException("Transcricao ausente no retorno da IA.", retryable: false);
-        return text.GetString()!;
-    }
+        => Command.Patterns.Transcription.AudioTranscriptionResult.ReadText(payload);
     public static IReadOnlyDictionary<string, string> ReadSummary(string payload)
     {
         try

@@ -12,6 +12,34 @@ using System;
 
 namespace Yeshua.Studio.Central.Domain.Entities
 {
+    public class ChamadoSuporte
+    {
+        public string? Id { get; set; }
+        public string Aplicativo { get; set; }
+        public string? Modulo { get; set; }
+        public string? Tela { get; set; }
+        public string? TituloTela { get; set; }
+        public string? Rota { get; set; }
+        public string? Caminho { get; set; }
+        public string Versao { get; set; }
+        public string? FusoHorario { get; set; }
+        public string? MomentoClienteUtc { get; set; }
+        public string? Assunto { get; set; }
+        public string? Descricao { get; set; }
+        public int Status { get; set; }
+        public DateTime CriadoEmUtc { get; set; }
+        public DateTime? AbertoEmUtc { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<ChamadoSuporte> Query() => new MyApp.QueryBuilder.Query<ChamadoSuporte>();
+    }
+
     public class yFileUpload
     {
         public int? Id { get; set; }

@@ -16,6 +16,20 @@ audio_tool = importlib.util.module_from_spec(tool_spec)
 tool_spec.loader.exec_module(audio_tool)
 
 class CodexExecutorTests(unittest.TestCase):
+    def test_support_audio_uses_separate_storage_and_declared_result_queue(self):
+        key = "volatile/ia/transcriptions/input/central/1/71/audio.webm"
+        audio = self.storage / key
+        audio.parent.mkdir(parents=True)
+        audio.write_bytes(b"fixture-support-audio")
+        payload = {"StorageKey": key, "uploadId": 71, "application": "Central", "ResultQueue": "untrusted.queue"}
+        self.assertEqual(audio, executor.input_audio(payload, self.storage))
+        queue, result = executor.execute("app.tasks.transcribe_audio", "support-request", "support-step", payload,
+                                         run=lambda *args: {"text": "Relato de suporte."})
+        self.assertEqual("central.audio.transcribed.inbox", queue)
+        self.assertEqual("audio.transcription.completed", result["status"])
+        with self.assertRaises(executor.TaskFailure):
+            executor.input_audio({**payload, "application": "Clinica"}, self.storage)
+
     def setUp(self):
         test_root = ROOT / "artifacts/clinica-executor-tests"
         test_root.mkdir(parents=True, exist_ok=True)

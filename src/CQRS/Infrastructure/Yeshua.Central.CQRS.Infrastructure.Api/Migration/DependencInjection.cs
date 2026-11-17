@@ -13,6 +13,9 @@ using Shered.Services;
 using RepositoryInterfaces.Services;
 using Command.Patterns;
 using Command.Interfaces;
+using RepositoryInterfaces.Patterns.Saga;
+using Command.Receivers.Migration.Saga;
+using Command.Patterns.OutBox;
 using Command.Receivers;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -64,7 +67,14 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
                     builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
+                    builder.Services.AddTransient<SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaStepContinuation, SagaStepContinuation>();
+                    builder.Services.AddScoped<OutboxService>();
 
+
+builder.Services.AddTransient<IRepository.Write.IChamadoSuporteWriteRepository, Input.Repository.ChamadoSuporte.ChamadoSuporteWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IChamadoSuporteReadRepository, Read.Repository.ChamadoSuporteReadRepository>();
 
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
@@ -304,8 +314,19 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
+builder.Services.AddTransient<Dominio.Saga.TranscreverAudioSuporteSaga>();
+builder.Services.AddTransient<Command.Receivers.TranscreverAudioSuporteSagaHandlerResolver>();
+builder.Services.AddTransient<TranscreverAudioChamadoHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.AdicionarAplicativoAoTenantHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.PrepararChamadoSuporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AbrirChamadoSuporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarChamadoSuporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarChamadoSuporteHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
@@ -332,6 +353,32 @@ return new Command.Interfaces.Patterns.Queue.QueueTopology
 {
     Exchanges = new List<Command.Interfaces.Patterns.Queue.ExchangeDefinition>
     {
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "ai.tasks",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "audio.transcribe.outbox",
+                    RoutingKey = "audio.transcribe"
+                },
+            }
+        },
+        new Command.Interfaces.Patterns.Queue.ExchangeDefinition
+        {
+            Name = "ai.results",
+            Type = "topic",
+            Bindings = new List<Command.Interfaces.Patterns.Queue.QueueBindingDefinition>
+            {
+                new Command.Interfaces.Patterns.Queue.QueueBindingDefinition
+                {
+                    QueueName = "central.audio.transcribed.inbox",
+                    RoutingKey = "central.audio.transcribed"
+                },
+            }
+        },
     }
 };
 }

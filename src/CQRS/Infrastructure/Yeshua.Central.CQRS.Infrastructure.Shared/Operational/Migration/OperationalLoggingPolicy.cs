@@ -375,6 +375,7 @@ private OperationalLoggingDecision Evaluate(
 
                     return entity switch
                     {
+                        "ChamadoSuporte" => GetChamadoSuporteMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -395,6 +396,55 @@ private OperationalLoggingDecision Evaluate(
                         "yUserGrant" => GetyUserGrantMask(policy, operation, recordId),
                         _ => 0UL
                     };
+                }
+
+                private ulong GetChamadoSuporteMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Id"))
+                        mask |= ChamadoSuporteTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Aplicativo"))
+                        mask |= ChamadoSuporteTrackingFields.Aplicativo;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Modulo"))
+                        mask |= ChamadoSuporteTrackingFields.Modulo;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Tela"))
+                        mask |= ChamadoSuporteTrackingFields.Tela;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "TituloTela"))
+                        mask |= ChamadoSuporteTrackingFields.TituloTela;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Rota"))
+                        mask |= ChamadoSuporteTrackingFields.Rota;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Caminho"))
+                        mask |= ChamadoSuporteTrackingFields.Caminho;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Versao"))
+                        mask |= ChamadoSuporteTrackingFields.Versao;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "FusoHorario"))
+                        mask |= ChamadoSuporteTrackingFields.FusoHorario;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "MomentoClienteUtc"))
+                        mask |= ChamadoSuporteTrackingFields.MomentoClienteUtc;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Assunto"))
+                        mask |= ChamadoSuporteTrackingFields.Assunto;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Descricao"))
+                        mask |= ChamadoSuporteTrackingFields.Descricao;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Status"))
+                        mask |= ChamadoSuporteTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "CriadoEmUtc"))
+                        mask |= ChamadoSuporteTrackingFields.CriadoEmUtc;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "AbertoEmUtc"))
+                        mask |= ChamadoSuporteTrackingFields.AbertoEmUtc;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "TenantID"))
+                        mask |= ChamadoSuporteTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Deleted"))
+                        mask |= ChamadoSuporteTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "Changed"))
+                        mask |= ChamadoSuporteTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "UserId"))
+                        mask |= ChamadoSuporteTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "OperationalEntityId"))
+                        mask |= ChamadoSuporteTrackingFields.OperationalEntityId;
+                    return mask;
                 }
 
                 private ulong GetyFileUploadMask(

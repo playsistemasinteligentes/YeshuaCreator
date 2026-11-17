@@ -87,6 +87,9 @@ namespace IRepository.Read
         public IEnumerable<ySagaDTO> GetAllByChanged(DateTime value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByUserId(int value , bool TakeOffTenantID = false);
         public IEnumerable<ySagaDTO> GetAllByOperationalEntityId(string value , bool TakeOffTenantID = false);
+        public IEnumerable<ySagaDTO> ClaimRunnableSagas(int limit, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
+        public RepositoryInterfaces.Patterns.Worker.WorkerQueueHealthSnapshot GetRunnableSagaHealth(RepositoryInterfaces.Patterns.Worker.WorkerQueueItemHealthThresholds thresholds);
+        public IReadOnlyList<RepositoryInterfaces.Patterns.Worker.WorkerQueueSickItem> GetSickSagaItems(RepositoryInterfaces.Patterns.Worker.WorkerQueueItemHealthThresholds thresholds, int limit);
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

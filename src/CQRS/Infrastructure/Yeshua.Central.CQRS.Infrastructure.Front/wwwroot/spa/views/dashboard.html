@@ -31,7 +31,7 @@
 
         <div class="yeshua-header-actions flex items-center gap-4">
 
-        <button id="help-prompt-copy" type="button" class="yeshua-help-button" title="Copiar prompt de ajuda para colar no GPT" aria-label="Copiar prompt de ajuda">
+        <button id="help-prompt-copy" type="button" class="yeshua-help-button" title="Abrir ajuda" aria-label="Abrir ajuda">
             <i class="fa-regular fa-circle-question" aria-hidden="true"></i><span>Ajuda</span>
         </button>
 
@@ -78,7 +78,7 @@
                 <div class="yeshua-user-menu-section">
                     <button id="user-help-prompt" type="button" class="yeshua-user-menu-command">
                         <i class="fa-regular fa-circle-question" aria-hidden="true"></i>
-                        <span><strong>Copiar prompt de ajuda</strong><small>Cole no GPT e escreva sua dúvida</small></span>
+                        <span><strong>Ajuda</strong><small>Chamados, ajuda com IA e versão</small></span>
                     </button>
                     <button id="user-operational-control" type="button" class="yeshua-user-menu-command">
                         <i class="fa-solid fa-sliders" aria-hidden="true"></i>
@@ -219,5 +219,3 @@
         .then(html => {
             document.getElementById("action-modal-container").innerHTML = html;
         });</script>
-
-<footer id="release-footer" class="yeshua-release-footer" aria-label="Versão instalada" role="status" aria-live="polite">Consultando versão…</footer>

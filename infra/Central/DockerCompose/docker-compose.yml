@@ -28,11 +28,18 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
       YeshuaProcessing__Scope: "production"
+      UploadTokens__SigningKey: "${CENTRAL_UPLOAD_SIGNING_KEY:?Configure credentials.json}"
+      Storage__Providers__Disk__Root: "/storage"
+      Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
+      Storage__Locations__volatile/ia/transcriptions/input: "Disk"
+      Storage__Locations__volatile/ia/transcriptions/output: "Disk"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-observability:4317}"
       JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
       MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_READ:?Configure credentials.json}"
       MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_CENTRAL_WRITE:?Configure credentials.json}"
+    volumes:
+      - /root/YeshuaStorage:/storage
     expose:
       - "7214"
     restart: unless-stopped
@@ -50,6 +57,11 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:7215"
       ASPNETCORE_ENVIRONMENT: "Production"
       YeshuaProcessing__Scope: "production"
+      UploadTokens__SigningKey: "${CENTRAL_UPLOAD_SIGNING_KEY:?Configure credentials.json}"
+      Storage__Providers__Disk__Root: "/storage"
+      Storage__Providers__Disk__BaseUrl: "https://playsis.com.br"
+      Storage__Locations__volatile/ia/transcriptions/input: "Disk"
+      Storage__Locations__volatile/ia/transcriptions/output: "Disk"
       OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
       OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-observability:4317}"
       OperationalControl__Enabled: "true"
@@ -62,6 +74,15 @@ services:
       RabbitMq__Username: "${YESHUA_RABBITMQ_USERNAME:?Configure credentials.json}"
       RabbitMq__Password: "${YESHUA_RABBITMQ_PASSWORD:?Configure credentials.json}"
       RabbitMq__VirtualHost: "/"
+      CentralTranscription__Provider: "${CENTRAL_TRANSCRIPTION_PROVIDER:-OpenAI}"
+      CentralTranscription__ApiKey: "${CENTRAL_TRANSCRIPTION_API_KEY:-}"
+      CentralTranscription__Model: "${CENTRAL_TRANSCRIPTION_MODEL:-gpt-transcribe}"
+      CentralTranscription__BaseUrl: "${CENTRAL_TRANSCRIPTION_BASE_URL:-https://api.openai.com/v1}"
+      CentralTranscription__Groq__ApiKey: "${CENTRAL_GROQ_API_KEY:-}"
+      CentralTranscription__Groq__Model: "${CENTRAL_GROQ_MODEL:-whisper-large-v3-turbo}"
+      CentralTranscription__Groq__BaseUrl: "${CENTRAL_GROQ_BASE_URL:-https://api.groq.com/openai/v1}"
+    volumes:
+      - /root/YeshuaStorage:/storage
     expose:
       - "7215"
     restart: unless-stopped
