@@ -11,7 +11,11 @@ if [[ "${YESHUA_SKIP_LOCK:-0}" != "1" ]]; then
   flock 9
 fi
 
-source "$APP_DIR/infra/docker/select-release.sh"
+if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
+  git -C "$APP_DIR" reset --hard
+  git -C "$APP_DIR" clean -fd
+  git -C "$APP_DIR" pull origin main
+fi
 
 source "$APP_DIR/infra/docker/load-deploy-env.sh" memorias
 
