@@ -12,6 +12,20 @@ function storage(initial) {
     return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, String(value)), removeItem: key => values.delete(key) };
 }
 
+test('explicit resumption refreshes newly purchased rights even before token expiration', async () => {
+    globalThis.localStorage = storage(token(1800)); globalThis.environments = { authenticationApi: '/central', urlApi: '/clinic' };
+    const calls = [], renewed = token(1800), scoped = token(1790);
+    globalThis.fetch = async url => {
+        calls.push(url);
+        if (url.includes('AtualizarAcesso')) return new Response(JSON.stringify({ token: renewed }));
+        return new Response('[]', { headers: { 'X-Yeshua-Application-Token': scoped } });
+    };
+    const { refreshCommercialSession } = await import(moduleUrl + '?explicit-resume');
+    await refreshCommercialSession();
+    assert.equal(calls.length, 2);
+    assert.equal(localStorage.getItem('token'), scoped);
+});
+
 test('commercial renewal is shared by concurrent requests and preserves the application scope', async () => {
     globalThis.localStorage = storage(token(60)); globalThis.environments = { authenticationApi: '/central', urlApi: '/clinic' };
     const calls = [], renewed = token(1800), scoped = token(1800);

@@ -21,7 +21,7 @@ public partial class RetrySagaStepHandler
             if (key is null)
             {
                 _work.Rollback();
-                return Task.FromResult(ValidationError("Somente o step em falha do processamento atual pode ser reaberto.", new RetrySagaStepOutputCommand()));
+                return Task.FromResult(ValidationError("Somente o step em falha ou aguardando creditos do processamento atual pode ser retomado.", new RetrySagaStepOutputCommand()));
             }
             _work.Commit();
             return Task.FromResult(Success("Retomada agendada para o Worker.", new RetrySagaStepOutputCommand

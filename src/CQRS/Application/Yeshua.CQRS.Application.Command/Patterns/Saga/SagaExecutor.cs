@@ -65,7 +65,7 @@ namespace Command.Patterns
             try
             {
                 // 🔒 não faz nada
-                if (step.Status == SagaStepStatus.WaitingResponse)
+                if (step.Status is SagaStepStatus.WaitingResponse or SagaStepStatus.WaitingUsageRight)
                     return;
 
                 // ▶ EXECUTA
@@ -73,22 +73,25 @@ namespace Command.Patterns
                 {
                     var sagaStarting = step.Order == 1 && step.ExecutionCount == 0;
 
-                    step.SetInProgress();
-                    if (telemetry.Enabled && sagaStarting)
-                        Record(saga, step, "SagaStarted", telemetry, executionIdentity, 0);
-
-                    if (telemetry.Enabled)
-                        Record(saga, step, "StepStarted", telemetry, executionIdentity, 0);
-
                     if (!string.IsNullOrEmpty(handler.UsageResourceKey))
                     {
                         if (_usageRights is null)
                             throw new SagaStepExecutionException("Controle de direito de uso indisponivel.", retryable: false,
                                 nature: OperationalFailureNature.Technical, stableCode: "USAGE_CONTROL_UNAVAILABLE");
                         if (!_usageRights.Reserve(handler.UsageResourceKey, step.CorrelationId, handler.UsageUnits))
-                            throw new SagaStepExecutionException("Contrate um periodo ou mais unidades para este recurso.", retryable: false,
-                                stableCode: "USAGE_RIGHT_REQUIRED");
+                        {
+                            step.SetWaitingForUsageRight();
+                            if (telemetry.Enabled)
+                                Record(saga, step, "WaitingUsageRight", telemetry, executionIdentity,
+                                    ElapsedMilliseconds(startedTimestamp));
+                            return;
+                        }
                     }
+                    step.SetInProgress();
+                    if (telemetry.Enabled && sagaStarting)
+                        Record(saga, step, "SagaStarted", telemetry, executionIdentity, 0);
+                    if (telemetry.Enabled)
+                        Record(saga, step, "StepStarted", telemetry, executionIdentity, 0);
                     handler.Execute(saga, step);
 
                     if (telemetry.Enabled && step.Status == SagaStepStatus.WaitingResponse)
@@ -218,7 +221,7 @@ namespace Command.Patterns
             {
                 var step = saga.GetCurrent();
 
-                if (step == null || step.Status == SagaStepStatus.WaitingResponse)
+                if (step == null || step.Status is SagaStepStatus.WaitingResponse or SagaStepStatus.WaitingUsageRight)
                     return;
 
                 var previousStep = step;
@@ -231,7 +234,7 @@ namespace Command.Patterns
 
                 var current = saga.GetCurrent();
 
-                if (current == null || current.Status == SagaStepStatus.WaitingResponse)
+                if (current == null || current.Status is SagaStepStatus.WaitingResponse or SagaStepStatus.WaitingUsageRight)
                     return;
 
                 if (ReferenceEquals(previousStep, current) && previousStatus == current.Status)

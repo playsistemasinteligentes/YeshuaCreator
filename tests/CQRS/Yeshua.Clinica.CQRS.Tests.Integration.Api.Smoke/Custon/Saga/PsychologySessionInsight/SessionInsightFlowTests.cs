@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Repositorio.Outputs;
 using RepositoryInterfaces.Patterns.Saga;
 using RepositoryInterfaces.Patterns.UnitOfWork;
+using RepositoryInterfaces.Commercial;
 
 namespace Yeshua.Clinica.CQRS.Tests.Integration.Api.Smoke.Custon.Saga;
 
@@ -25,6 +26,40 @@ public class SessionInsightFlowTests
 {
     private static readonly string UploadOperationId = Guid.NewGuid().ToString("N");
     private static readonly JsonSerializerOptions Json = new() { PropertyNameCaseInsensitive = true };
+
+    [Fact]
+    public void Audio_without_credit_waits_and_resumes_the_same_step_after_purchase()
+    {
+        var fixture = new Fixture { RightsAllowed = false };
+        var step = fixture.Saga.GetCurrent(); var identity = step.CorrelationId;
+        fixture.Executor.ExecuteUntilWait(fixture.Saga, fixture.Resolver);
+        fixture.Executor.ExecuteUntilWait(fixture.Saga, fixture.Resolver);
+        Assert.Equal(SagaStepStatus.WaitingUsageRight, step.Status);
+        Assert.Equal(0, step.ExecutionCount); Assert.Equal(0, step.RetryCount);
+        Assert.Empty(fixture.Requests);
+        fixture.RightsAllowed = true;
+        step.SetPending();
+        fixture.Executor.Execute(fixture.Saga, fixture.Resolver);
+        Assert.Equal(identity, step.CorrelationId);
+        Assert.Single(fixture.Requests);
+        fixture.Receive(Transcript()); fixture.Executor.Execute(fixture.Saga, fixture.Resolver);
+        Assert.Equal(1, fixture.Consumed);
+        Assert.Equal(0, fixture.Released);
+    }
+
+    [Fact]
+    public void Audio_cleaned_before_credit_purchase_fails_without_consuming_the_unit()
+    {
+        var fixture = new Fixture { RightsAllowed = false };
+        fixture.Executor.Execute(fixture.Saga, fixture.Resolver);
+        fixture.RightsAllowed = true; fixture.AudioExists = false;
+        fixture.Saga.GetCurrent().SetPending();
+        fixture.Executor.Execute(fixture.Saga, fixture.Resolver);
+        Assert.Equal(SagaStatus.Failed, fixture.Saga.Status);
+        Assert.Empty(fixture.Requests);
+        Assert.Equal(0, fixture.Consumed);
+        Assert.Equal(1, fixture.Released);
+    }
     private static string Transcript() => JsonSerializer.Serialize(new
         { status = "audio.transcription.completed", result = new { text = "relato de teste" } });
     private static string Summary() => JsonSerializer.Serialize(new
@@ -196,11 +231,13 @@ public class SessionInsightFlowTests
         public readonly IFileStorage Storage;
         public readonly ISesoesWriteRepository Sessions;
         public int Applied, AppliedSession;
+        public bool RightsAllowed = true, AudioExists = true;
+        public int Consumed, Released;
         public Fixture()
         {
             var context = new Context();
             Storage = Fake<IFileStorage>((name, _) => name switch
-            { "ExistsAsync" => Task.FromResult(true), "GetBaseUrl" => "https://fixture.invalid/audio", _ => null });
+            { "ExistsAsync" => Task.FromResult(AudioExists), "GetBaseUrl" => "https://fixture.invalid/audio", _ => throw new InvalidOperationException("A saga nao pode mover nem regravar o audio.") });
             Sessions = Fake<ISesoesWriteRepository>((name, args) =>
             {
                 if (name == "ApplyInsight") { Applied++; AppliedSession = (int)args![0]!; }
@@ -216,7 +253,13 @@ public class SessionInsightFlowTests
             var transcribe = new AudioTranscriptRequestedHandler(uploads, Storage, outbox);
             var summarize = new ReportEndProntuaryRequestedHandler(uploads, Sessions, outbox);
             Resolver = new Resolver(transcribe, summarize);
-            Executor = new SagaExecutor(Logger);
+            Executor = new SagaExecutor(Logger, Fake<IUsageRightsRepository>((name, _) =>
+            {
+                if (name == "Reserve") return RightsAllowed;
+                if (name == "Confirm") Consumed++;
+                if (name == "Release") Released++;
+                return null;
+            }));
             Saga.Start("509", "Sesoes");
             Saga.SetCorrelationId(UploadOperationId);
         }

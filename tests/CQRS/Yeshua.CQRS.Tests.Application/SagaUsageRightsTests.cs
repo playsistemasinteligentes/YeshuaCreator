@@ -15,8 +15,30 @@ public sealed class SagaUsageRightsTests
         var handler = new BilledHandler(); var saga = Start();
         new SagaExecutor(new Shered.Logger.Logger(), repository).Execute(saga, new Resolver(handler));
         Assert.Equal(0, handler.Executions);
-        Assert.Equal(SagaStatus.Failed, saga.Status);
+        Assert.Equal(SagaStatus.InProgress, saga.Status);
+        Assert.Equal(SagaStepStatus.WaitingUsageRight, saga.GetCurrent()!.Status);
+        Assert.Equal(0, saga.GetCurrent()!.ExecutionCount);
+        Assert.Equal(0, saga.GetCurrent()!.RetryCount);
         Assert.Equal(0, repository.Confirmations);
+    }
+
+    [Fact]
+    public void Missing_right_waits_silently_and_explicit_resumption_keeps_the_same_operation()
+    {
+        var repository = new RecordingRights { Allowed = false };
+        var handler = new BilledHandler(); var saga = Start(); var step = saga.GetCurrent()!;
+        var identity = step.CorrelationId;
+        var executor = new SagaExecutor(new Shered.Logger.Logger(), repository);
+        executor.ExecuteUntilWait(saga, new Resolver(handler));
+        executor.ExecuteUntilWait(saga, new Resolver(handler));
+        Assert.Equal(1, repository.Reservations);
+        Assert.Equal(0, handler.Executions);
+        repository.Allowed = true;
+        step.SetPending();
+        executor.ExecuteUntilWait(saga, new Resolver(handler));
+        Assert.Equal(identity, step.CorrelationId);
+        Assert.Equal(1, handler.Executions);
+        Assert.Equal(SagaStepStatus.WaitingResponse, step.Status);
     }
 
     [Fact]
@@ -77,7 +99,7 @@ public sealed class SagaUsageRightsTests
     }
     private sealed class RecordingRights : IUsageRightsRepository
     {
-        public bool Allowed { get; init; } = true;
+        public bool Allowed { get; set; } = true;
         public int Reservations { get; private set; }
         public int Confirmations { get; private set; }
         public int Releases { get; private set; }

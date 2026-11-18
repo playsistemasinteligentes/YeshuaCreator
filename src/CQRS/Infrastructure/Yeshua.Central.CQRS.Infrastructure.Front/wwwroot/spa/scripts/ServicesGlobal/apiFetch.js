@@ -11,7 +11,9 @@ export function storeSessionToken(token) {
     localStorage.setItem('tokenExp', Number(payload.exp) * 1000);
 }
 
-async function renewCommercialSession() {
+export async function refreshCommercialSession() { return renewCommercialSession(true); }
+
+async function renewCommercialSession(force = false) {
     const token = localStorage.getItem('token');
     if (token !== inspectedToken) {
         inspectedToken = token;
@@ -22,8 +24,8 @@ async function renewCommercialSession() {
             if (payload.usageRights && payload.usageRights !== '[]') commercialExpiry = Number(payload.exp) * 1000;
         } catch { return; }
     }
-    if (!commercialExpiry || commercialExpiry - Date.now() > 120000 || commercialExpiry < Date.now()) return;
-    if (!commercialRenewal && Date.now() - lastCommercialRenewal < 60000) return;
+    if (!force && (!commercialExpiry || commercialExpiry - Date.now() > 120000 || commercialExpiry < Date.now())) return;
+    if (!force && !commercialRenewal && Date.now() - lastCommercialRenewal < 60000) return;
     if (!commercialRenewal) {
         lastCommercialRenewal = Date.now();
         commercialRenewal = (async () => {
@@ -46,7 +48,7 @@ async function renewCommercialSession() {
         })().finally(() => commercialRenewal = null);
     }
     try { await commercialRenewal; }
-    catch (error) { if (Date.now() >= commercialExpiry) throw error; }
+    catch (error) { if (force || Date.now() >= commercialExpiry) throw error; }
 }
 
 export function getApiErrorMessage(payload, status, fields = []) {

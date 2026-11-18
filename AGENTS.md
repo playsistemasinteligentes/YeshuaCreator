@@ -23,6 +23,11 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 - A borda compartilhada da saga reserva antes de enviar ao provedor, confirma
   apos resposta bem-sucedida e libera na falha definitiva. Nao inserir controles
   financeiros em cada metodo, chunk de upload ou integracao de provedor.
+- Sem direito de transcricao, a gravacao continua e o step aguarda em
+  WaitingUsageRight, sem falha terminal, retry automatico ou polling financeiro.
+  A retomada e explicita apos contratar. Por decisao do operador em 2026-11-18,
+  manter o audio no temporario e a limpeza atual; nao copiar para persistente,
+  alterar retencao nem proteger o arquivo contra limpeza por causa da cobranca.
 - Pagamentos do prototipo sao simulados e explicitamente habilitados pelo arquivo
   privado em Apps.Central.Billing.SandboxEnabled. Sem esse sinalizador, nao ha
   confirmacao simulada. A issue #22 reutilizara a carteira posteriormente; direitos

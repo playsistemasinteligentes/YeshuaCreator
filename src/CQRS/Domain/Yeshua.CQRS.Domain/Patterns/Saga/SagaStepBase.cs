@@ -69,6 +69,12 @@ namespace Dominio.Patterns.Saga
             Status = SagaStepStatus.WaitingResponse;
             MarkDirty();
         }
+        public void SetWaitingForUsageRight()
+        {
+            Status = SagaStepStatus.WaitingUsageRight;
+            NextExecutionAt = null;
+            MarkDirty();
+        }
         public void SetPayload(string payload)
         {
             Payload = payload;

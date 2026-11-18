@@ -22,7 +22,8 @@ namespace Dominio.Patterns.Saga
         WaitingResponse = 3, // espera confirmação ao confirmar chama next step e move para completed 
         PendingApply = 4,   // executa o resultado no dominio 
         Completed = 5,
-        Failed = 6 // retry 
+        Failed = 6, // retry
+        WaitingUsageRight = 7 // aguarda contratacao e retomada explicita
 
 
         /*

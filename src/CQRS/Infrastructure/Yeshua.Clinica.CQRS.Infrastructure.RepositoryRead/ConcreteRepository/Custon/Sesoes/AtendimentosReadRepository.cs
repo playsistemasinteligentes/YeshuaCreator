@@ -61,7 +61,8 @@ public partial class SesoesReadRepository
             new { Id=sessaoId,Patient=current.PacienteId,Before=DateTime.Parse(current.DataInicio,System.Globalization.CultureInfo.InvariantCulture,System.Globalization.DateTimeStyles.AdjustToUniversal),Tenant=_executionContext.TenantID,Actor=_executionContext.UserId }).ToList();
         var rows=_unitOfWork.Query<AudioRow>(@"SELECT g.Id SagaId,g.Status,CONVERT(varchar(33),u.CreatedAt,126)+'Z' Data,
             CASE WHEN t.Status=5 THEN t.Payload ELSE NULL END Transcricao,CASE WHEN r.Status=5 THEN r.Payload ELSE NULL END Resumo,
-            CASE WHEN t.Status=6 THEN t.Id WHEN r.Status=6 THEN r.Id ELSE 0 END StepFalhouId
+            CASE WHEN t.Status=6 THEN t.Id WHEN r.Status=6 THEN r.Id ELSE 0 END StepFalhouId,
+            CASE WHEN t.Status=7 THEN t.Id ELSE 0 END StepAguardandoCreditoId
             FROM ySaga g JOIN yFileUpload u ON u.OperationalEntityId=REPLACE(g.CorrelationId,'-','') AND u.TenantID=g.TenantID AND u.Deleted=0
             LEFT JOIN ySagaStep t ON t.SagaId=g.Id AND t.StepKey='AudioTranscriptRequested' AND t.TenantID=g.TenantID AND t.Deleted=0
             LEFT JOIN ySagaStep r ON r.SagaId=g.Id AND r.StepKey='ReportEndProntuaryRequested' AND r.TenantID=g.TenantID AND r.Deleted=0
@@ -72,7 +73,7 @@ public partial class SesoesReadRepository
             string text="",pront="",queixa="",registro="";
             try { if(!string.IsNullOrWhiteSpace(row.Transcricao)) { using var d=JsonDocument.Parse(row.Transcricao);var e=Result(d.RootElement);if(e.TryGetProperty("text",out var v))text=v.GetString()??""; } } catch(JsonException) { }
             try { if(!string.IsNullOrWhiteSpace(row.Resumo)) { using var d=JsonDocument.Parse(row.Resumo);var e=Result(d.RootElement);if(e.TryGetProperty("fields",out var fields))foreach(var f in fields.EnumerateArray()) { var v=f.GetProperty("value").GetString()??"";switch(f.GetProperty("key").GetString()){case "Prontuario":pront=v;break;case "QueixaPrincipal":queixa=v;break;case "RegistroDocumental":registro=v;break;} } } } catch(JsonException) { }
-            result.Audios.Add(new(row.SagaId,row.Data,row.Status==2?"Concluído":row.Status==3?"Falha":"Processando",text,pront,queixa,registro,row.StepFalhouId));
+            result.Audios.Add(new(row.SagaId,row.Data,row.StepAguardandoCreditoId>0?"Aguardando créditos":row.Status==2?"Concluído":row.Status==3?"Falha":"Processando",text,pront,queixa,registro,row.StepFalhouId,row.StepAguardandoCreditoId));
         }
         return result;
     }
@@ -94,7 +95,7 @@ public partial class SesoesReadRepository
         public int ModeloConsultaHabitual {get;set;} public int VersaoModeloConsultaHabitual {get;set;}
     }
     private static JsonElement Result(JsonElement root) => root.TryGetProperty("result",out var result)?result:root;
-    private sealed class AudioRow { public int SagaId {get;set;} public int Status {get;set;} public string Data {get;set;}="";public string? Transcricao {get;set;}public string? Resumo {get;set;} public int StepFalhouId {get;set;} }
+    private sealed class AudioRow { public int SagaId {get;set;} public int Status {get;set;} public string Data {get;set;}="";public string? Transcricao {get;set;}public string? Resumo {get;set;} public int StepFalhouId {get;set;} public int StepAguardandoCreditoId {get;set;} }
     // O CRUD legado continua consultável, mas somente pelo profissional vinculado.
     partial void TryGetSesoesCustom(Command.Read.SesoesReadCommand command, ref RepositoryInterfaces.Patterns.Repository.DataPagination<Repositorio.Outputs.SesoesDTO> result, ref bool handled)
     {

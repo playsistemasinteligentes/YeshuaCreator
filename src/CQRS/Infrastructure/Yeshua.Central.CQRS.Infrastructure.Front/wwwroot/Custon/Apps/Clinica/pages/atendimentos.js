@@ -1,4 +1,4 @@
-import { apiFetch, getApiErrorMessage } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20261028-cadastros01';
+import { apiFetch, getApiErrorMessage, refreshCommercialSession } from '/spa/scripts/ServicesGlobal/apiFetch.js?v=20261028-cadastros01';
 import { SessionRecorder } from '/spa/scripts/components/recording/session-recorder.js?v=20261028-clinica04';
 import { localSaoPaulo, instanteSaoPaulo, escolhasDaPrevia } from './calendario-consultas.js?v=20261116-recorrencia02';
 import { ClinicSetup } from './configuracao.js?v=20261028-config01';
@@ -366,9 +366,11 @@ class ClinicPanel{
             let row=container.querySelector(`[data-saga="${a.sagaId}"]`);
             if(!row){row=document.createElement('article');row.className='cli-audio-item';row.dataset.saga=a.sagaId;}
             const markup=`<div class="cli-row cli-between"><strong>Áudio #${a.sagaId} · ${escape(a.status)}</strong><span class="cli-source">${escape(date(a.data))} · ${escape(time(a.data))}</span></div>${a.transcricao?`<details data-detail="transcricao"><summary>Ver transcrição</summary><pre>${escape(a.transcricao)}</pre></details>`:'<p class="cli-muted">Aguardando transcrição…</p>'}${a.prontuario?`<details data-detail="resumo"><summary>Revisar sugestão de resumo</summary><h3>Prontuário</h3><pre>${escape(a.prontuario)}</pre><h3>Queixa principal</h3><pre>${escape(a.queixaPrincipal)}</pre><h3>Registro documental</h3><pre>${escape(a.registroDocumental)}</pre></details><button data-adopt="${a.sagaId}" ${this.isFinal()?'disabled':''}>Acrescentar ao rascunho</button>`:''}${a.stepFalhouId?`<p class="cli-alert">O processamento falhou. Seu registro manual permanece disponível.</p><button data-retry="${a.sagaId}" data-step="${a.stepFalhouId}">Tentar processamento novamente</button>`:''}`;
-            if(row.audioMarkup!==markup){
+            const usageWait=a.stepAguardandoCreditoId?`<p class="cli-alert">Áudio recebido. A transcrição aguarda créditos ou um período contratado. Retome antes da limpeza dos arquivos temporários.</p><a href="/spa/?app=Central#central-financeiro" target="_blank" rel="noopener">Contratar na Central</a> <button data-retry="${a.sagaId}" data-step="${a.stepAguardandoCreditoId}">Retomar transcrição</button>`:'';
+            const combinedMarkup=markup+usageWait;
+            if(row.audioMarkup!==combinedMarkup){
                 const details=[...row.querySelectorAll('details')].map(d=>({key:d.dataset.detail,open:d.open,scroll:[...d.querySelectorAll('pre')].map(p=>p.scrollTop)}));
-                row.innerHTML=markup;row.audioMarkup=markup;
+                row.innerHTML=combinedMarkup;row.audioMarkup=combinedMarkup;
                 for(const previous of details){const detail=row.querySelector(`[data-detail="${previous.key}"]`);if(detail){detail.open=previous.open;detail.querySelectorAll('pre').forEach((p,i)=>p.scrollTop=previous.scroll[i]||0);}}
             }
             if(container.children[index]!==row)container.insertBefore(row,container.children[index]||null);
@@ -382,6 +384,10 @@ class ClinicPanel{
         for(const [key,addition] of Object.entries(additions))if(addition)this.el(key).value+=(this.el(key).value?'\n\n':'')+addition;
         this.incorporarSagaId=id;this.dirty=true;this.edits++;await this.save();this.current.sugestoesIncorporadas+=`\nsaga:${id};`;this.feedback('Sugestão acrescentada ao rascunho. Revise antes de finalizar.');
     }
-    async retry(sagaId,stepId){await this.post('/Saga/OperacaoRetrySagaStepUseCase',{sagaId,sagaStepId:stepId});this.feedback('Nova tentativa solicitada. Use Atualizar para consultar o resultado.');}
+    async retry(sagaId,stepId){
+        if(this.data.audios.some(audio=>audio.sagaId===sagaId&&audio.stepAguardandoCreditoId===stepId))await refreshCommercialSession();
+        await this.post('/Saga/OperacaoRetrySagaStepUseCase',{sagaId,sagaStepId:stepId});
+        this.feedback('Retomada solicitada. Use Atualizar para consultar o resultado.');
+    }
     dispose(){if(this.disposed)return;this.disposed=true;clearTimeout(this.saveTimer);this.recorder?.dispose();this.controller.abort();this.observer.disconnect();this.el('agendar-dialog')?.close();}
 }
