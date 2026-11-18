@@ -8,7 +8,7 @@ namespace Command.Receivers.UseCase;
 public partial class ContratarUsoHandler
 {
     private readonly ExecutarFinanceiroHandler _financeiro;
-    public ContratarUsoHandler(ExecutarFinanceiroHandler financeiro, ILogger logger, IExecutionContext context) : base(logger, context)
+    public ContratarUsoHandler(ExecutarFinanceiroHandler financeiro, ILogger logger, IExecutionContext context) : this(logger, context)
         => _financeiro = financeiro;
     protected partial async Task<State<ContratarUsoOutputCommand>> CustomActionHookAsync(
         State<ContratarUsoOutputCommand> state, ContratarUsoInputCommand command, CancellationToken cancellationToken)

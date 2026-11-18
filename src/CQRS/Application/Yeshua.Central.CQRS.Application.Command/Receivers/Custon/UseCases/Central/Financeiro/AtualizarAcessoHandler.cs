@@ -8,7 +8,7 @@ namespace Command.Receivers.UseCase;
 public partial class AtualizarAcessoHandler
 {
     private readonly ExecutarFinanceiroHandler _financeiro;
-    public AtualizarAcessoHandler(ExecutarFinanceiroHandler financeiro, ILogger logger, IExecutionContext context) : base(logger, context)
+    public AtualizarAcessoHandler(ExecutarFinanceiroHandler financeiro, ILogger logger, IExecutionContext context) : this(logger, context)
         => _financeiro = financeiro;
     protected partial async Task<State<AtualizarAcessoOutputCommand>> CustomActionHookAsync(
         State<AtualizarAcessoOutputCommand> state, AtualizarAcessoInputCommand command, CancellationToken cancellationToken)
