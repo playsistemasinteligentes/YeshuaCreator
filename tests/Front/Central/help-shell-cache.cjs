@@ -26,7 +26,7 @@ const oldShell=shell.replace(/<button id="help-prompt-copy"[\s\S]*?<\/button>/,'
    }else if(pathname==='/spa/scripts/main.js'&&url.searchParams.get('v')==='20261028-help01')content=`import {bindUserArea} from './user-area.js';const r=await fetch('views/dashboard.html');document.getElementById('app').innerHTML=await r.text();bindUserArea();window.oldShellReady=true;`;
    else if(pathname==='/spa/scripts/user-area.js'&&!url.search)content='export function bindUserArea(){}';
    else if(pathname==='/spa/views/dashboard.html'&&!url.search){content=oldShell;mime='text/html; charset=utf-8';}
-   else if(pathname==='/spa/scripts/application-context.js')content='export async function initializeApplicationContext(){window.yeshuaActiveApplication={application:"Clinica",title:"Clínica"};window.environments={urlApi:"/apps/clinica/yapi"};}export function bindApplicationSelector(){}export function getAuthenticationApi(){return "/apps/central/yapi";}';
+   else if(pathname==='/spa/scripts/application-context.js')content='export async function initializeApplicationContext(){window.yeshuaActiveApplication={application:"Clinica",title:"Clínica"};window.environments={urlApi:"/apps/clinica/yapi"};}export function bindApplicationSelector(){}export function getAuthenticationApi(){return "/apps/central/yapi";}export async function getAuthenticationToken(){return localStorage.getItem("token");}';
    else if(pathname==='/apps/clinica/yapi/getMenu'){content='[]';mime='application/json';}
    else{
     const file=path.resolve(root,'.'+pathname);if(!file.startsWith(root+path.sep)||!fs.existsSync(file)||!fs.statSync(file).isFile()){res.writeHead(404).end();return;}
@@ -39,8 +39,8 @@ const oldShell=shell.replace(/<button id="help-prompt-copy"[\s\S]*?<\/button>/,'
   const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(e.message));page.setDefaultTimeout(20000);
   await page.goto(`http://127.0.0.1:${server.address().port}/spa/#dashboard`);await page.waitForFunction(()=>window.oldShellReady);assert.equal(await page.locator('#help-prompt-copy').count(),0);
   legacy=false;await page.reload();await page.locator('#help-prompt-copy').waitFor();await page.locator('#help-prompt-copy').click();await page.getByRole('tab',{name:'Ajuda com IA',exact:true}).click();await page.getByRole('button',{name:'Copiar prompt',exact:true}).click();await page.waitForFunction(()=>window.copiedHelp?.includes('Yeshua Inteligência Operacional'));
-  for(const asset of ['main.js','router.js','user-area.js'])assert(requests.some(r=>!r.legacy&&r.path.endsWith('/'+asset)&&r.query==='?v=20261117-support02'),asset+' must bypass the legacy URL');
-  assert(requests.some(r=>!r.legacy&&r.path==='/spa/views/dashboard.html'&&r.query==='?v=20261117-support02'));
+  for(const asset of ['main.js','router.js','user-area.js'])assert(requests.some(r=>!r.legacy&&r.path.endsWith('/'+asset)&&r.query==='?v=20261117-support03'),asset+' must bypass the legacy URL');
+  assert(requests.some(r=>!r.legacy&&r.path==='/spa/views/dashboard.html'&&r.query==='?v=20261117-support03'));
   assert((await page.evaluate(()=>window.copiedHelp)).includes('TenantID: 2'));assert.equal(errors.length,0,errors.join('\n'));
   console.log(JSON.stringify({passed:true,legacyHeaderCachePrimed:true,helpVisibleAfterNormalReload:true,copyWorks:true,versionedDependencyChain:true,staticRevalidation:true,conditional304Preserved:true,jsErrors:errors.length}));
  }finally{if(browser)await browser.close();if(server)await new Promise(r=>server.close(r));if(host)host.kill();}
