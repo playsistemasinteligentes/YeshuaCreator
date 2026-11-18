@@ -6,7 +6,13 @@ const { chromium } = require('playwright');
 const root = path.resolve(__dirname, '../../../src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot');
 const artifact = path.resolve(__dirname, '../../../artifacts/help-support');
 const shell = fs.readFileSync(path.join(root, 'spa/views/dashboard.html'), 'utf8');
-const jwt = tenant => 'header.' + Buffer.from(JSON.stringify({ tenantId: tenant, nameid: '7' })).toString('base64url') + '.signature';
+const applicationSession = process.env.HELP_APPLICATION_SESSION;
+const tokenExpiresAt = Math.floor(Date.now()/1000)+3600;
+const scenario = applicationSession === 'Clinica'
+    ? { application:'Clinica', title:'Clínica', module:'Clínica Psicologia', screen:'clinica-atendimentos', screenTitle:'Atendimentos' }
+    : { application:'Memorias', title:'Memórias', module:'Álbuns', screen:'memorias-estudio', screenTitle:'Estúdio Memórias' };
+const jwt = (tenant, central = false) => 'header.' + Buffer.from(JSON.stringify({ tenantId: tenant, nameid: '7',
+    ...(applicationSession ? { tokenOrigin:central?'Central':'Application',application:central?'Central':applicationSession,exp:tokenExpiresAt } : {}) })).toString('base64url') + '.signature';
 let server, browser;
 (async () => {
     server = http.createServer((req, res) => {
@@ -23,10 +29,10 @@ let server, browser;
     await new Promise(r => server.listen(0, '127.0.0.1', r));
     browser = await chromium.launch({ channel: 'msedge', headless: true });
     const context = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
-    await context.addInitScript(token => {
+    await context.addInitScript(({token,scenario}) => {
         localStorage.setItem('token', token);
-        window.yeshuaActiveApplication = { application: 'Memorias', title: 'Memórias' };
-        window.yeshuaHelpModule = { application: 'Memorias', name: 'Álbuns' };
+        window.yeshuaActiveApplication = { application: scenario.application, title: scenario.title };
+        window.yeshuaHelpModule = { application: scenario.application, name: scenario.module };
         window.copies = [];
         Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async t => window.copies.push(t) } });
         Object.defineProperty(navigator, 'mediaDevices', { configurable: true, value: { getUserMedia: async () => ({ getTracks: () => [{ stop() {} }] }) } });
@@ -36,15 +42,21 @@ let server, browser;
             start() { this.state = 'recording'; }
             stop() { this.state = 'inactive'; queueMicrotask(() => { this.ondataavailable({ data: new Blob(['test-audio'], { type: 'audio/webm' }) }); this.onstop(); }); }
         };
-    }, jwt(2));
+    }, {token:jwt(2),scenario});
     const page = await context.newPage(), errors = [], requests = [], tickets = new Map();
-    let opened = 0, upload = 0, reads = 0, failSubmit = false, transcriptionFailure = false;
+    let opened = 0, upload = 0, reads = 0, exchanges = 0, failSubmit = false, transcriptionFailure = false;
     page.on('pageerror', error => errors.push(error.message));
     await page.route('**/yapi/**', async route => {
         const req = route.request(), endpoint = new URL(req.url()).pathname;
         requests.push(endpoint);
         const reply = data => route.fulfill({ json: data });
         if (endpoint === '/yapi/version') return reply({ version: '1.0.3+fixture-commit' });
+        if (endpoint === '/yapi/getMenu') {
+            exchanges++; assert.equal(req.headers().authorization, 'Bearer '+jwt(2));
+            return route.fulfill({ json:[],headers:{'X-Yeshua-Application-Token':jwt(2,true)} });
+        }
+        if (req.headers().authorization !== 'Bearer '+jwt(2,Boolean(applicationSession)))
+            return route.fulfill({status:403,json:{message:'Central requires its own session'}});
         if (endpoint.includes('PrepararChamado')) {
             const body = req.postDataJSON(); tickets.set(body.chamadoId, body);
             return reply({ chamadoId: body.chamadoId, aberto: false });
@@ -65,6 +77,7 @@ let server, browser;
     });
     await page.goto(`http://127.0.0.1:${server.address().port}/help-test?secret=PRIVATE#dashboard`);
     await page.waitForFunction(() => window.testReady);
+    await page.evaluate(s=>{const host=document.getElementById('custom-page-container');host.dataset.helpScreen=s.screen;host.dataset.helpTitle=s.screenTitle;},scenario);
     assert.equal(await page.locator('#release-footer').count(), 0);
     await page.getByRole('button', { name: 'Abrir ajuda', exact: true }).click();
     await page.getByRole('tab', { name: 'Sobre', exact: true }).click();
@@ -72,7 +85,7 @@ let server, browser;
     await page.getByRole('tab', { name: 'Ajuda com IA', exact: true }).click();
     await page.getByRole('button', { name: 'Copiar prompt', exact: true }).click();
     const prompt = await page.evaluate(() => window.copies[0]);
-    assert(prompt.includes('Memorias')); assert(prompt.includes('Módulo: Álbuns')); assert(!prompt.includes('PRIVATE'));
+    assert(prompt.includes(scenario.application)); assert(prompt.includes('Módulo: '+scenario.module)); assert(!prompt.includes('PRIVATE'));
     assert.equal(requests.filter(x => x !== '/yapi/version').length, 0, 'Opening help/copy must not create a ticket');
     await page.getByRole('tab', { name: 'Chamado', exact: true }).click();
     await page.locator('#support-subject').fill('Dúvida sobre o álbum');
@@ -94,7 +107,7 @@ let server, browser;
     await page.getByText(/Chamado .* aberto\./).waitFor();
     assert.equal(opened, 1); assert.equal(tickets.size, 1);
     const ticket = [...tickets.values()][0];
-    assert.equal(ticket.aplicativo, 'Memorias'); assert.equal(ticket.modulo, 'Álbuns'); assert.equal(ticket.tela, 'memorias-estudio');
+    assert.equal(ticket.aplicativo, scenario.application); assert.equal(ticket.modulo, scenario.module); assert.equal(ticket.tela, scenario.screen);
     assert.equal(ticket.descricao, 'Texto revisto pelo usuário.'); assert(!JSON.stringify(ticket).includes('PRIVATE'));
     for (const width of [1440, 390, 320]) {
         await page.setViewportSize({ width, height: 844 });
@@ -111,9 +124,11 @@ let server, browser;
     await page.getByRole('button', { name: 'Fechar ajuda', exact: true }).click();
     await page.getByRole('button', { name: 'Abrir ajuda', exact: true }).click();
     assert.equal(requests.filter(x => x === '/yapi/version').length, 1);
+    assert.equal(exchanges,applicationSession?1:0,'Use one Central credential per application session, never one exchange per audio part');
+    assert.equal(await page.evaluate(()=>localStorage.getItem('token')),jwt(2),'Keep the application session active');
     await page.keyboard.press('Escape');
     assert.deepEqual(errors, []);
-    console.log(JSON.stringify({ passed: true, textTicket: true, audioToReviewedText: true, preservesRetry: true,
+    console.log(JSON.stringify({ passed: true, application:scenario.application, centralExchanges:exchanges, applicationSessionPreserved:true, textTicket: true, audioToReviewedText: true, preservesRetry: true,
         noAutomaticSubmit: true, versionInHelpOnly: true, widths: [1440, 390, 320], jsErrors: 0 }));
 })().catch(error => { console.error(error.stack); process.exitCode = 1; })
     .finally(async () => { await browser?.close(); if (server) { server.closeAllConnections(); await new Promise(r => server.close(r)); } });

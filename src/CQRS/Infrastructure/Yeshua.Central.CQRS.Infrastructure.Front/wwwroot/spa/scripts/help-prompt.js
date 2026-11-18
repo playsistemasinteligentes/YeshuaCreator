@@ -119,7 +119,7 @@ export function bindHelpPrompt() {
             if (button.dataset.copying) return;
             button.dataset.copying = 'true';
             try {
-                const { openHelpPanel } = await import('./help-panel.js?v=20261117-support02');
+                const { openHelpPanel } = await import('./help-panel.js?v=20261117-support03');
                 await openHelpPanel();
             } catch { showAlert('Não foi possível abrir a ajuda. Tente novamente.', 'error'); }
             finally { delete button.dataset.copying; }

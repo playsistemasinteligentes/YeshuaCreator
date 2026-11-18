@@ -2,6 +2,7 @@ const storageKey = 'yeshua.activeApplication';
 
 let availableApplications = [];
 let activeApplication = null;
+let authenticationSession = null;
 
 export async function initializeApplicationContext(forceReload = false) {
     if (availableApplications.length > 0 && !forceReload) {
@@ -39,6 +40,63 @@ export async function initializeApplicationContext(forceReload = false) {
 
 export function getAuthenticationApi() {
     return environments.authenticationApi || '/yapi';
+}
+
+// Application sessions remain active in localStorage. Central services use the
+// existing getMenu session exchange, cached only in memory for that source token.
+export async function getAuthenticationToken() {
+    const source = localStorage.getItem('token');
+    if (!source) throw new Error('Sua sessão expirou. Entre novamente.');
+    const claims = sessionClaims(source);
+    if (String(claims.tokenOrigin || '').toLowerCase() !== 'application') return source;
+
+    let entry = authenticationSession;
+    if (!entry || entry.source !== source || entry.expiresAt <= Date.now()) {
+        entry = { source, expiresAt: Infinity, promise: null };
+        authenticationSession = entry;
+        entry.promise = (async () => {
+            const response = await fetch(`${getAuthenticationApi()}/getMenu`, {
+                headers: { Authorization: `Bearer ${source}` }, cache: 'no-store'
+            }).catch(() => { throw new Error('Não foi possível acessar a Central. Tente novamente.'); });
+            if (!response.ok) throw new Error(response.status === 401
+                ? 'Sua sessão expirou. Entre novamente.'
+                : response.status === 403 ? 'Seu usuário não tem acesso à Central para abrir chamados.'
+                : 'Não foi possível preparar a sessão da Central. Tente novamente.');
+            const token = response.headers.get('X-Yeshua-Application-Token');
+            if (!token) throw new Error('A Central não confirmou sua sessão. Entre novamente.');
+            const central = sessionClaims(token);
+            const expiresAt = Number(central.exp) * 1000;
+            if (central.tokenOrigin !== 'Central' || central.application !== 'Central'
+                || !/^[1-9]\d*:[1-9]\d*$/.test(sessionOwner(claims))
+                || sessionOwner(central) !== sessionOwner(claims)
+                || !Number.isFinite(expiresAt) || expiresAt <= Date.now())
+                throw new Error('A Central não confirmou sua sessão. Entre novamente.');
+            entry.expiresAt = expiresAt;
+            return token;
+        })();
+    }
+    try {
+        const token = await entry.promise;
+        if (localStorage.getItem('token') !== source)
+            throw new Error('Sua sessão mudou. Abra a ajuda novamente.');
+        return token;
+    } catch (error) {
+        if (authenticationSession === entry) authenticationSession = null;
+        throw error;
+    }
+}
+
+function sessionClaims(token) {
+    try {
+        const claims = JSON.parse(decodeBase64Url(token.split('.')[1]));
+        if (!claims || typeof claims !== 'object' || Array.isArray(claims)) throw new Error();
+        return claims;
+    }
+    catch { throw new Error('Sua sessão é inválida. Entre novamente.'); }
+}
+
+function sessionOwner(claims) {
+    return `${claims.tenantId ?? claims.tenantID ?? claims.TenantID ?? ''}:${claims.userId ?? claims.nameid ?? claims.sub ?? claims['http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier'] ?? ''}`;
 }
 
 export function bindApplicationSelector() {
