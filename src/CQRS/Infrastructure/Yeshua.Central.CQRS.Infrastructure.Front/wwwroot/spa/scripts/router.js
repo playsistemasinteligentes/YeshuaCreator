@@ -111,7 +111,7 @@ async function attachEvents(route) {
         preloadInstalledVersion();
         buildCrud();
         buildMenu();
-        await loadDataMenu();
+        if (await loadDataMenu() === false) return;
         if (typeof window.yeshuaExtensions?.dashboard === 'function') {
             await window.yeshuaExtensions.dashboard();
         }

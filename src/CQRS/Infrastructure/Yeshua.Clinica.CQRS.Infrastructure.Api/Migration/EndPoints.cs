@@ -1557,6 +1557,17 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                         [FromServices] Command.Receivers.UseCase.OpenApplicationSessionHandler sessionHandler) =>
                     {
                         const string applicationName = "Clinica";
+                        if (!StaticUsageRights.AllowsApplication(context.User))
+                        {
+                            context.Response.Headers.CacheControl = "no-store";
+                            return Results.Json(new
+                            {
+                                code = "USAGE_PERIOD_REQUIRED",
+                                message = "Você não possui um período de uso ativo para este aplicativo. Acesse a Central para contratar ou renovar o acesso.",
+                                application = applicationName,
+                                financeUrl = "/spa/?app=Central#central-financeiro"
+                            }, statusCode: StatusCodes.Status403Forbidden);
+                        }
                         var tokenOrigin = context.User.FindFirst("tokenOrigin")?.Value;
                         var tokenApplication = context.User.FindFirst("application")?.Value;
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;

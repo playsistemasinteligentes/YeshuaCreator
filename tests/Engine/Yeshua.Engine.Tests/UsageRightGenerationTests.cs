@@ -27,6 +27,11 @@ public sealed class UsageRightGenerationTests
             Assert.IsFalse(output.Contains("/yUsageConsumption/"));
             StringAssert.Contains(output, "StaticUsageRights.TokenExpiry");
             StringAssert.Contains(output, "IUsageRightsRepository");
+            StringAssert.Contains(output, "code = \"USAGE_PERIOD_REQUIRED\"");
+            StringAssert.Contains(output, "financeUrl = \"/spa/?app=Central#central-financeiro\"");
+            Assert.IsTrue(output.IndexOf("if (!StaticUsageRights.AllowsApplication(context.User))", StringComparison.Ordinal)
+                < output.IndexOf("sessionHandler.ExecuteAsync", StringComparison.Ordinal),
+                "Entry must explain the missing period before opening the application session.");
             var modules = Path.Combine(directory, "Modules.cs");
             new SourceCodeInfraestructureModulesMigration(migration).WriteCode(null, modules, Path.Combine(directory, "Modules.Custon.cs"));
             var generated = File.ReadAllText(modules);

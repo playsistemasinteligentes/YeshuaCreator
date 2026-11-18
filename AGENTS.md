@@ -20,6 +20,12 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   sem consulta financeira por requisicao. Quantidades no token representam total
   contratado, nunca saldo disponivel; reserva e consumo sao atomicos e persistidos
   no aplicativo, por tenant e identidade estavel do step, sem nova cobranca no retry.
+- Na entrada, getMenu distingue ausencia de periodo ativo com HTTP 403 e
+  USAGE_PERIOD_REQUIRED, apontando para Central > Creditos e contratacoes.
+  A policy ApplicationEntry valida identidade/catalogo; o endpoint valida o periodo
+  antes de abrir a sessao. A policy das operacoes continua exigindo periodo ativo.
+  O Front nao carrega o dashboard do aplicativo quando a entrada e negada e
+  distingue esse motivo de permissao insuficiente, sessao expirada e falha tecnica.
 - A borda compartilhada da saga reserva antes de enviar ao provedor, confirma
   apos resposta bem-sucedida e libera na falha definitiva. Nao inserir controles
   financeiros em cada metodo, chunk de upload ou integracao de provedor.
