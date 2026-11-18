@@ -245,6 +245,11 @@ namespace Dominio.Schemas.CQRS
                     sb.AppendLine($"        public string Key => {stepConst};");
                     sb.AppendLine();
                     sb.AppendLine($"        public bool RequiresExternalStimulus => {(_step.IsWait ? "true" : "false")};");
+                    if (_step.UsageRight is { } usageRight)
+                    {
+                        sb.AppendLine($"        public string UsageResourceKey => \"{usageRight.Key}\";");
+                        sb.AppendLine($"        public decimal UsageUnits => {usageRight.Units.ToString(System.Globalization.CultureInfo.InvariantCulture)}m;");
+                    }
                     sb.AppendLine();
 
                     // =============================

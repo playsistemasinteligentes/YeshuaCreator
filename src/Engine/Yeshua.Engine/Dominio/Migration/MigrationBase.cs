@@ -16,6 +16,47 @@ namespace Dominio.Migration
         public List<Entity> Entitys = new List<Entity>();
         public List<Module> Modules = new List<Module>();
         public List<UseCaseGroup> UseCaseGroup = new List<UseCaseGroup>();
+        public List<UsageRightDefinition> UsageRights { get; } = new();
+
+        public MigrationBase RequirePeriodAccess(string module, string resource, string title)
+        {
+            var definition = new UsageRightDefinition(resource, title, UsagePurchaseModel.Period, Module: module);
+            definition.Validate();
+            UsageRights.Add(definition);
+            EnsureUsageRightsPersistence();
+            return this;
+        }
+
+        private void EnsureUsageRightsPersistence()
+        {
+            if (Entitys.Any(entity => entity.EntityName == "yUsageRight")) return;
+            AddEntity("yUsageRight").InternalToUseCase("Y", "Commercial", "ProcessUsageRights")
+                .AddColumn("Id", "ID").Varchar(64).Key()
+                .AddColumn("ResourceKey", "Recurso").Varchar(100).NotNull()
+                .AddColumn("PeriodUntilUtc", "Validade").DateTime()
+                .AddColumn("GrantedUnits", "Quantidade contratada").Decimal(18, 4).NotNull()
+                .AddColumn("ReservedUnits", "Quantidade reservada").Decimal(18, 4).NotNull()
+                .AddColumn("ConsumedUnits", "Quantidade consumida").Decimal(18, 4).NotNull();
+            AddEntity("yUsageConsumption").InternalToUseCase("Y", "Commercial", "ProcessUsageRights")
+                .AddColumn("Id", "ID").Varchar(64).Key()
+                .AddColumn("ResourceKey", "Recurso").Varchar(100).NotNull()
+                .AddColumn("OperationId", "Operacao").Varchar(100).NotNull()
+                .AddColumn("Units", "Quantidade").Decimal(18, 4).NotNull()
+                .AddColumn("UsesPeriod", "Coberto por periodo").Boolean().NotNull()
+                .AddColumn("Status", "Estado").Int().NotNull();
+            AddUsecaseGroup("Y").AddUseCaseSubGrup("Commercial")
+                .AddCommand("ProcessUsageRights", new { }, new { }).Internal();
+        }
+
+        public MigrationBase ChargeSagaStep(string saga, string step, string resource, string title,
+            UsagePurchaseModel models, decimal units = 1)
+        {
+            var definition = new UsageRightDefinition(resource, title, models, Saga: saga, Step: step, Units: units);
+            definition.Validate();
+            UsageRights.Add(definition);
+            EnsureUsageRightsPersistence();
+            return this;
+        }
         public int? SagaWorkerLoopMilliseconds { get; private set; }
         public bool GenerateSagaQueueWorkers { get; private set; }
         private Entity _entity;

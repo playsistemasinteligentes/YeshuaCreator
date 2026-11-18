@@ -21,6 +21,8 @@ namespace Command.Receivers
         public string Key => PsychologySessionInsightSaga.STEP_1;
 
         public bool RequiresExternalStimulus => true;
+        public string UsageResourceKey => "clinica.transcription";
+        public decimal UsageUnits => 1m;
 
         public void Execute(SagaBase saga, SagaStepBase step)
         {

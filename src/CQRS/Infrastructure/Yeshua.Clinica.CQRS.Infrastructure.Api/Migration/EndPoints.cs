@@ -42,7 +42,7 @@ app.MapPut("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.
         return Results.BadRequest(new { error = exception.Message });
     }
 })
-    .RequireAuthorization();
+    .RequireAuthorization("OperationalAccess");
 
 app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
     Results.Ok(new
@@ -1629,10 +1629,15 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                                 new("tenantName", context.User.FindFirst("tenantName")?.Value ?? string.Empty),
                                 new("userName", context.User.FindFirst("userName")?.Value ?? email)
                             };
+                            claims.AddRange(context.User.Claims.Where(claim =>
+                                claim.Type == Dominio.Commercial.UsageRightClaims.Type
+                                || claim.Type.StartsWith("usageUntil.", StringComparison.Ordinal)));
+                            context.RequestServices.GetRequiredService<RepositoryInterfaces.Commercial.IUsageRightsRepository>().Synchronize(Dominio.Commercial.UsageRightClaims.Read(context.User).Where(right => StaticUsageRights.Resources.Contains(right.Resource)).ToArray());
                             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
                             {
                                 Subject = new ClaimsIdentity(claims),
-                                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
+                                Expires = StaticUsageRights.TokenExpiry(context.User,
+                                    DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes)),
                                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
                                     new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                                         System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),

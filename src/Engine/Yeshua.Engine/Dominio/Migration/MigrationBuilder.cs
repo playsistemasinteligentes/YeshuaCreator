@@ -48,6 +48,7 @@ namespace Dominio.Migration
                 item.Up();
 
             ValidateInternalEntities(migration);
+            ValidateUsageRights(migration);
 
             ApplyStandardFields(migration);
 
@@ -69,6 +70,29 @@ namespace Dominio.Migration
 
             foreach (var schema in _schemas.OfType<ISchemaCodeGeneration>())
                 schema.CodeGenaration(_migrationConcriteBase);
+        }
+
+        private static void ValidateUsageRights(IEnumerable<MigrationBase> migrations)
+        {
+            var versions = migrations.ToArray();
+            foreach (var migration in versions)
+            {
+                if (migration.UsageRights.GroupBy(right => right.Key, StringComparer.Ordinal).Any(group => group.Count() > 1))
+                    throw new InvalidOperationException("Direito de uso duplicado na mesma migration.");
+                foreach (var right in migration.UsageRights)
+                {
+                    right.Validate();
+                    if (!string.IsNullOrEmpty(right.Module))
+                    {
+                        if (!versions.SelectMany(version => version.Modules).Any(module => module.Key == right.Module))
+                            throw new InvalidOperationException($"Modulo de direito de uso desconhecido: {right.Module}.");
+                    }
+                    else if (!versions.SelectMany(version => version.UseCaseGroup).SelectMany(group => group.UseCaseSubGroup)
+                        .SelectMany(group => group.Saga).Where(saga => saga.Name._value == right.Saga)
+                        .SelectMany(saga => saga.SagaStepGroup).SelectMany(group => group.Steps).Any(step => step.Name._value == right.Step))
+                        throw new InvalidOperationException($"Step de direito de uso desconhecido: {right.Saga}/{right.Step}.");
+                }
+            }
         }
 
         public static void ApplyStandardFields(IEnumerable<MigrationBase> migration)
@@ -126,6 +150,29 @@ namespace Dominio.Migration
                 SanitizeMigrationEndEntityToCodeGenerete(migration);
                 SanitizeMigrationEndHubAgentsToCodeGenerete(migration);
                 SanitizeMigrationExternalConnectorsToCodeGenerete(migration);
+                if (migration.UsageRights.GroupBy(right => right.Key, StringComparer.Ordinal).Any(group => group.Count() > 1))
+                    throw new InvalidOperationException("Direito de uso duplicado na mesma migration.");
+                foreach (var right in migration.UsageRights)
+                {
+                    right.Validate();
+                    _migrationConcriteBase.UsageRights.RemoveAll(existing => existing.Key == right.Key);
+                    _migrationConcriteBase.UsageRights.Add(right);
+                }
+            }
+            foreach (var right in _migrationConcriteBase.UsageRights)
+            {
+                if (!string.IsNullOrEmpty(right.Module))
+                {
+                    if (!_migrationConcriteBase.Modules.Any(module => module.Key == right.Module))
+                        throw new InvalidOperationException($"Modulo de direito de uso desconhecido: {right.Module}.");
+                    continue;
+                }
+                var step = _migrationConcriteBase.UseCaseGroup.SelectMany(group => group.UseCaseSubGroup)
+                    .SelectMany(group => group.Saga).Where(saga => saga.Name._value == right.Saga)
+                    .SelectMany(saga => saga.SagaStepGroup).SelectMany(group => group.Steps)
+                    .SingleOrDefault(step => step.Name._value == right.Step)
+                    ?? throw new InvalidOperationException($"Step de direito de uso desconhecido: {right.Saga}/{right.Step}.");
+                step.UsageRight = right;
             }
         }
 

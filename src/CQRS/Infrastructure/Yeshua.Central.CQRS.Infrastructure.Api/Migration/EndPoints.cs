@@ -42,7 +42,7 @@ app.MapPut("/yapi/operational/logging-policy", ([FromServices] Yeshua.Generated.
         return Results.BadRequest(new { error = exception.Message });
     }
 })
-    .RequireAuthorization();
+    .RequireAuthorization("OperationalAccess");
 
 app.MapGet("/yapi/operational/catalog", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
     Results.Ok(new
@@ -1052,10 +1052,15 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                                 new("tenantName", context.User.FindFirst("tenantName")?.Value ?? string.Empty),
                                 new("userName", context.User.FindFirst("userName")?.Value ?? email)
                             };
+                            claims.AddRange(context.User.Claims.Where(claim =>
+                                claim.Type == Dominio.Commercial.UsageRightClaims.Type
+                                || claim.Type.StartsWith("usageUntil.", StringComparison.Ordinal)));
+
                             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
                             {
                                 Subject = new ClaimsIdentity(claims),
-                                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
+                                Expires = StaticUsageRights.TokenExpiry(context.User,
+                                    DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes)),
                                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
                                     new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                                         System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
@@ -3568,6 +3573,111 @@ catch (Exception ex)
 return Results.Problem(ex.Message);
 }
 }).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/FinanceiroConsultarFinanceiroUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarFinanceiroHandler receiver, [FromBody] Command.UseCase.ConsultarFinanceiroInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/FinanceiroCriarRecargaUseCase", async ([FromServices] Command.Receivers.UseCase.CriarRecargaHandler receiver, [FromBody] Command.UseCase.CriarRecargaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/FinanceiroConfirmarPagamentoTesteUseCase", async ([FromServices] Command.Receivers.UseCase.ConfirmarPagamentoTesteHandler receiver, [FromBody] Command.UseCase.ConfirmarPagamentoTesteInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/FinanceiroContratarUsoUseCase", async ([FromServices] Command.Receivers.UseCase.ContratarUsoHandler receiver, [FromBody] Command.UseCase.ContratarUsoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/FinanceiroAtualizarAcessoUseCase", async ([FromServices] Command.Receivers.UseCase.AtualizarAcessoHandler receiver, [FromBody] Command.UseCase.AtualizarAcessoInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization("ApplicationEntry");
 
 
 app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.StarSessionUploadHandler receiver, [FromBody] Command.UseCase.StarSessionUploadInputCommand command) =>

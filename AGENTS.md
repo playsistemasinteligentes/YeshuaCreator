@@ -7,6 +7,28 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   sem publicar. Push, PR, merge e deploy aguardam autorizacao explicita do
   operador; nao inferir permissao de publicacao de uma solicitacao de correcao.
 
+## Cobranca E Direitos De Uso
+
+- Decisao de 2026-11-17: a Central mantem pagamento, carteira de creditos e
+  contratacao; aplicativos recebem direitos por periodo ou quantidade. A DSL
+  declara as modalidades aceitas e a borda cobrada. Precos e ofertas pertencem
+  ao codigo customizado da Central, nao ao caminho quente da Engine.
+- Clinica exige periodo de acesso. O step audioTranscriptRequested declara
+  transcricao contratavel por periodo ou pacote pre-pago. A contratacao escolhe
+  a modalidade; a DSL nao fixa a escolha do cliente.
+- Direitos por periodo trafegam em claims assinadas e sao verificados localmente,
+  sem consulta financeira por requisicao. Quantidades no token representam total
+  contratado, nunca saldo disponivel; reserva e consumo sao atomicos e persistidos
+  no aplicativo, por tenant e identidade estavel do step, sem nova cobranca no retry.
+- A borda compartilhada da saga reserva antes de enviar ao provedor, confirma
+  apos resposta bem-sucedida e libera na falha definitiva. Nao inserir controles
+  financeiros em cada metodo, chunk de upload ou integracao de provedor.
+- Pagamentos do prototipo sao simulados e explicitamente habilitados pelo arquivo
+  privado em Apps.Central.Billing.SandboxEnabled. Sem esse sinalizador, nao ha
+  confirmacao simulada. A issue #22 reutilizara a carteira posteriormente; direitos
+  economicos e patrocinio nao estao implementados. Detalhes em
+  docs/Central/COBRANCA_E_DIREITOS_DE_USO.md.
+
 ## Ideia Central
 
 O Yeshua e uma fabrica de software baseada em uma meta linguagem propria.

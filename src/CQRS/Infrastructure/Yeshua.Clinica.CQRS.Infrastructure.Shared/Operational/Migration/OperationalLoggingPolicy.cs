@@ -388,6 +388,8 @@ private OperationalLoggingDecision Evaluate(
                         "MovimentoFinanceiro" => GetMovimentoFinanceiroMask(policy, operation, recordId),
                         "RevisaoRegistroSessao" => GetRevisaoRegistroSessaoMask(policy, operation, recordId),
                         "PlanoRecorrenciaConsulta" => GetPlanoRecorrenciaConsultaMask(policy, operation, recordId),
+                        "yUsageRight" => GetyUsageRightMask(policy, operation, recordId),
+                        "yUsageConsumption" => GetyUsageConsumptionMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -860,6 +862,68 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PlanoRecorrenciaConsultaTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "PlanoRecorrenciaConsulta", operation, recordId, "OperationalEntityId"))
                         mask |= PlanoRecorrenciaConsultaTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetyUsageRightMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "Id"))
+                        mask |= yUsageRightTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "ResourceKey"))
+                        mask |= yUsageRightTrackingFields.ResourceKey;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "PeriodUntilUtc"))
+                        mask |= yUsageRightTrackingFields.PeriodUntilUtc;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "GrantedUnits"))
+                        mask |= yUsageRightTrackingFields.GrantedUnits;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "ReservedUnits"))
+                        mask |= yUsageRightTrackingFields.ReservedUnits;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "ConsumedUnits"))
+                        mask |= yUsageRightTrackingFields.ConsumedUnits;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "TenantID"))
+                        mask |= yUsageRightTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "Deleted"))
+                        mask |= yUsageRightTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "Changed"))
+                        mask |= yUsageRightTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "UserId"))
+                        mask |= yUsageRightTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yUsageRight", operation, recordId, "OperationalEntityId"))
+                        mask |= yUsageRightTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetyUsageConsumptionMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "Id"))
+                        mask |= yUsageConsumptionTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "ResourceKey"))
+                        mask |= yUsageConsumptionTrackingFields.ResourceKey;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "OperationId"))
+                        mask |= yUsageConsumptionTrackingFields.OperationId;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "Units"))
+                        mask |= yUsageConsumptionTrackingFields.Units;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "UsesPeriod"))
+                        mask |= yUsageConsumptionTrackingFields.UsesPeriod;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "Status"))
+                        mask |= yUsageConsumptionTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "TenantID"))
+                        mask |= yUsageConsumptionTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "Deleted"))
+                        mask |= yUsageConsumptionTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "Changed"))
+                        mask |= yUsageConsumptionTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "UserId"))
+                        mask |= yUsageConsumptionTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "yUsageConsumption", operation, recordId, "OperationalEntityId"))
+                        mask |= yUsageConsumptionTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

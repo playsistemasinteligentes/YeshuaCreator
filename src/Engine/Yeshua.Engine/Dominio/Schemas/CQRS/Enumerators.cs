@@ -34,7 +34,8 @@ namespace Migration.Dominio.Schemas.CQRS
     public enum Authorization
     {
         Free = 0,
-        User = 1
+        User = 1,
+        ApplicationEntry = 2
     }
     public enum InfraEstrutctureType
     {

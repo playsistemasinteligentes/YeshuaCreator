@@ -344,12 +344,16 @@ def environment(document, root, target, include_shared=False):
 
     central_keys = ("CENTRAL_UPLOAD_SIGNING_KEY", "CENTRAL_TRANSCRIPTION_PROVIDER", "CENTRAL_TRANSCRIPTION_API_KEY",
                     "CENTRAL_TRANSCRIPTION_MODEL", "CENTRAL_TRANSCRIPTION_BASE_URL",
-                    "CENTRAL_GROQ_API_KEY", "CENTRAL_GROQ_MODEL", "CENTRAL_GROQ_BASE_URL")
+                    "CENTRAL_GROQ_API_KEY", "CENTRAL_GROQ_MODEL", "CENTRAL_GROQ_BASE_URL", "YESHUA_BILLING_SANDBOX_ENABLED")
     result.update({key: "" for key in central_keys})
     if target in ("central", "shared", "all") or include_shared:
         # Upload tokens have a separate purpose/key; the private JWT root remains stable on rebuild.
         root_key = required(get(document, "Shared", "Jwt", "SecretKey"), "Shared.Jwt.SecretKey")
         result["CENTRAL_UPLOAD_SIGNING_KEY"] = hmac.new(root_key.encode(), b"Central.Support.Upload.v1", hashlib.sha256).hexdigest()
+        sandbox = (get(document, "Apps", "Central", "Billing", "SandboxEnabled") or "false").lower()
+        if sandbox not in ("true", "false"):
+            raise ConfigurationError("Apps.Central.Billing.SandboxEnabled deve ser true ou false.")
+        result["YESHUA_BILLING_SANDBOX_ENABLED"] = sandbox
         # Shared profile is optional. Preserve the installed provider profile without copying credentials.
         profile = document.get("Shared", {}).get("Transcription") or document.get("Apps", {}).get("Clinica", {}).get("Transcription", {})
         result.update({

@@ -70,7 +70,7 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("        return Results.BadRequest(new { error = exception.Message });");
             sb.AppendLine("    }");
             sb.AppendLine("})");
-            sb.AppendLine("    .RequireAuthorization();");
+            sb.AppendLine("    .RequireAuthorization(\"OperationalAccess\");");
             sb.AppendLine("");
 
             AppendOperationalCatalogEndpoint(sb);
@@ -243,10 +243,15 @@ namespace Dominio.Schemas.CQRS
                                 new(""tenantName"", context.User.FindFirst(""tenantName"")?.Value ?? string.Empty),
                                 new(""userName"", context.User.FindFirst(""userName"")?.Value ?? email)
                             };
+                            claims.AddRange(context.User.Claims.Where(claim =>
+                                claim.Type == Dominio.Commercial.UsageRightClaims.Type
+                                || claim.Type.StartsWith(""usageUntil."", StringComparison.Ordinal)));
+                            {USAGE_RIGHTS_SYNC}
                             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
                             {
                                 Subject = new ClaimsIdentity(claims),
-                                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
+                                Expires = StaticUsageRights.TokenExpiry(context.User,
+                                    DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes)),
                                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
                                     new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                                         System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),
@@ -297,6 +302,9 @@ namespace Dominio.Schemas.CQRS
                     }).RequireAuthorization(""ApplicationEntry"");
             ")
                 .Replace("{PREFIXO}", prefixo)
+                .Replace("{USAGE_RIGHTS_SYNC}", _migration.UsageRights.Count == 0 ? string.Empty :
+                    "context.RequestServices.GetRequiredService<RepositoryInterfaces.Commercial.IUsageRightsRepository>().Synchronize(" +
+                    "Dominio.Commercial.UsageRightClaims.Read(context.User).Where(right => StaticUsageRights.Resources.Contains(right.Resource)).ToArray());")
                 .Replace("{APPLICATION}", EscapeLiteral(_applicationName));
 
 
@@ -562,6 +570,8 @@ namespace Dominio.Schemas.CQRS
 
                         if (useCase.Authorization == Authorization.Free)
                             sb.AppendLine(hasFormFileInput ? ";" : "});");
+                        else if (useCase.Authorization == Authorization.ApplicationEntry)
+                            sb.AppendLine(hasFormFileInput ? ".RequireAuthorization(\"ApplicationEntry\");" : "}).RequireAuthorization(\"ApplicationEntry\");");
                         else
                             sb.AppendLine(hasFormFileInput ? ".RequireAuthorization();" : "}).RequireAuthorization();");
 

@@ -26,7 +26,8 @@ namespace Command.Receivers.UseCase
         private readonly IyUserWriteRepository _repWriteyUser = default!;
         private readonly IyTenantApplicationReadRepository _repReadTenantApplication = default!;
         private readonly IyTenantReadRepository _repReadTenant = default!;
-        public LoginHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,IyTenantApplicationReadRepository repReadTenantApplication,IyTenantReadRepository repReadTenant)
+        private readonly RepositoryInterfaces.Commercial.Central.IFinanceiroRepository _financeiro;
+        public LoginHandler(IUnitOfWork unitOfWork,ILogger logger,IExecutionContext executionContext,IDomainTrackingPolicy domainTrackingPolicy,IyUserReadRepository repReadyUser, IyUserWriteRepository repWriteyUser,IyTenantApplicationReadRepository repReadTenantApplication,IyTenantReadRepository repReadTenant, RepositoryInterfaces.Commercial.Central.IFinanceiroRepository financeiro)
             : base(logger, executionContext)
         {
            _unitOfWork = unitOfWork;
@@ -37,6 +38,7 @@ namespace Command.Receivers.UseCase
             _repWriteyUser = repWriteyUser;
             _repReadTenantApplication = repReadTenantApplication;
             _repReadTenant = repReadTenant;
+            _financeiro = financeiro;
         }
 protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<LoginOutputCommand> state, LoginInputCommand comand, CancellationToken cancellationToken)
 {
@@ -69,6 +71,7 @@ protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<Lo
         tenantDocument = tenant.cnpjcpf,
         tenantName = tenant.nome,
         userName = user.nome
+        , UsageRights = Dominio.Commercial.UsageRightClaims.Write(_financeiro.ReadRights(user.tenantid))
     });
     return Task.FromResult(state);
 }

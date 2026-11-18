@@ -1,5 +1,9 @@
 ﻿window.yeshuaExtensions = window.yeshuaExtensions || {};
 window.yeshuaExtensions.pages = window.yeshuaExtensions.pages || {};
+window.yeshuaExtensions.pages['central-financeiro'] = async function openFinanceiro() {
+    const page = await import('/Custon/Apps/Central/pages/financeiro.js');
+    await page.renderFinanceiro();
+};
 
 window.yeshuaExtensions.pages['application-catalog'] = async function openApplicationCatalog() {
     const page = await import('/Custon/Apps/Central/pages/application-catalog.js?v=20260924-central01');

@@ -180,6 +180,8 @@ namespace Dominio.Schemas
             }
 
             return definitions.Values
+                .Concat(migration.UsageRights.Select(right =>
+                    new AuthorizationDefinition("UsageRight", right.Key, System.Text.Json.JsonSerializer.Serialize(right))))
                 .OrderBy(item => item.DefinitionType, StringComparer.OrdinalIgnoreCase)
                 .ThenBy(item => item.DefinitionKey, StringComparer.OrdinalIgnoreCase)
                 .ToArray();

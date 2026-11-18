@@ -11,6 +11,11 @@ export async function renderApplicationCatalog() {
         .then(response => response.text());
     host.classList.remove('hidden');
 
+    const finance = document.createElement('a');
+    finance.href = '#central-financeiro';
+    finance.textContent = 'Creditos e contratacoes';
+    host.prepend(finance);
+
     const applications = await fetch('/applications.json', { cache: 'no-store' })
         .then(response => response.json());
     const grantedCatalogs = readTokenCatalogs();

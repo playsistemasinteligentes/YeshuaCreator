@@ -191,6 +191,30 @@ namespace Dominio.Schemas.CQRS
 
 
 
+            sb.AppendLine("public static class StaticUsageRights");
+            sb.AppendLine("{");
+            sb.AppendLine("    public static readonly string[] Resources = new string[] { " +
+                string.Join(", ", _migration.UsageRights.Select(right => "\"" + right.Key + "\"")) + " };");
+            sb.AppendLine("    public static bool AllowsApplication(System.Security.Claims.ClaimsPrincipal principal)");
+            sb.AppendLine("    {");
+            foreach (var right in _migration.UsageRights.Where(right => !string.IsNullOrEmpty(right.Module)))
+                sb.AppendLine($"        if (!Dominio.Commercial.UsageRightClaims.HasPeriodClaim(principal, \"usageUntil.{right.Key}\", System.DateTimeOffset.UtcNow)) return false;");
+            sb.AppendLine("        return true;");
+            sb.AppendLine("    }");
+            sb.AppendLine("    public static System.DateTime TokenExpiry(System.Security.Claims.ClaimsPrincipal principal, System.DateTime proposed)");
+            sb.AppendLine("    {");
+            sb.AppendLine("        var expiry = Dominio.Commercial.UsageRightClaims.TokenExpiry(principal, proposed);");
+            foreach (var right in _migration.UsageRights.Where(right => !string.IsNullOrEmpty(right.Module)))
+            {
+                sb.AppendLine("        {");
+                sb.AppendLine($"            if (long.TryParse(principal.FindFirst(\"usageUntil.{right.Key}\")?.Value, out var until) && until > 0)");
+                sb.AppendLine("                expiry = new System.DateTime(System.Math.Min(expiry.Ticks, System.DateTimeOffset.FromUnixTimeSeconds(until).UtcDateTime.Ticks), System.DateTimeKind.Utc);");
+                sb.AppendLine("        }");
+            }
+            sb.AppendLine("        return expiry;");
+            sb.AppendLine("    }");
+            sb.AppendLine("}");
+
             sb.AppendLine("}");
 
             return sb;

@@ -1,0 +1,25 @@
+.central-financeiro { max-width: 1100px; margin: 24px auto; padding: 0 20px 32px; color: #18372e; font-family: system-ui, -apple-system, "Segoe UI", sans-serif; }
+.central-financeiro h1 { font-size: 24px; margin: 0 0 8px; }
+.central-financeiro h2 { font-size: 18px; margin: 0 0 16px; }
+.financeiro-heading { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.central-financeiro button, .central-financeiro input, .central-financeiro select { min-height: 40px; border-radius: 4px; font: inherit; padding: 8px 12px; }
+.central-financeiro button { background: #185a43; color: #fff; border: 1px solid #185a43; cursor: pointer; }
+.central-financeiro button:disabled { opacity: .55; cursor: wait; }
+.central-financeiro button:hover:enabled { background: #104633; }
+.central-financeiro input, .central-financeiro select { border: 1px solid #aabbb4; background: #fff; width: 100%; min-width: 0; }
+.central-financeiro button:focus-visible, .central-financeiro select:focus-visible, .central-financeiro input:focus-visible { outline: 2px solid #366ec2; outline-offset: 3px; }
+.financeiro-heading button { width: 40px; height: 40px; flex: 0 0 40px; padding: 0; }
+.financeiro-forms { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+.central-financeiro section { border-top: 1px solid #c7d5cf; padding-top: 20px; margin-top: 24px; min-width: 0; }
+.central-financeiro form { display: grid; gap: 10px; align-content: start; }
+.central-financeiro form button { justify-self: start; max-width: 100%; white-space: normal; }
+.financeiro-notice { border-left: 3px solid #ac7419; background: #fff5dd; padding: 12px; color: #61460e; }
+#financeiro-status { min-height: 24px; color: #185a43; overflow-wrap: anywhere; }
+#financeiro-status[data-error="true"] { color: #a12424; }
+.central-financeiro .financeiro-table-wrap { overflow-x: auto; }
+.central-financeiro table { width: 100%; border-collapse: collapse; text-align: left; }
+.central-financeiro th, .central-financeiro td { padding: 12px 8px; border-bottom: 1px solid #dce5e0; vertical-align: middle; }
+.central-financeiro td { overflow-wrap: anywhere; }
+.central-financeiro th { font-size: 13px; color: #52675e; }
+.central-financeiro td button { white-space: normal; }
+@media (max-width: 680px) { .financeiro-forms { grid-template-columns: minmax(0, 1fr); gap: 0; } .central-financeiro { margin-top: 16px; padding: 0 12px 24px; } .central-financeiro h1 { font-size: 21px; } }

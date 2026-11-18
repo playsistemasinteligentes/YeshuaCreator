@@ -40,6 +40,97 @@ namespace Yeshua.Studio.Central.Domain.Entities
         public static MyApp.QueryBuilder.Query<ChamadoSuporte> Query() => new MyApp.QueryBuilder.Query<ChamadoSuporte>();
     }
 
+    public class CarteiraCredito
+    {
+        public string? Id { get; set; }
+        public Decimal Saldo { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<CarteiraCredito> Query() => new MyApp.QueryBuilder.Query<CarteiraCredito>();
+    }
+
+    public class CobrancaCredito
+    {
+        public string? Id { get; set; }
+        public Decimal Creditos { get; set; }
+        public Decimal Valor { get; set; }
+        public int Status { get; set; }
+        public DateTime CriadaEmUtc { get; set; }
+        public DateTime VenceEmUtc { get; set; }
+        public string Moeda { get; set; }
+        public string Provedor { get; set; }
+        public DateTime? PagaEmUtc { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<CobrancaCredito> Query() => new MyApp.QueryBuilder.Query<CobrancaCredito>();
+    }
+
+    public class MovimentoCredito
+    {
+        public string? Id { get; set; }
+        public string Tipo { get; set; }
+        public string Referencia { get; set; }
+        public Decimal Quantidade { get; set; }
+        public Decimal SaldoApos { get; set; }
+        public DateTime CriadoEmUtc { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<MovimentoCredito> Query() => new MyApp.QueryBuilder.Query<MovimentoCredito>();
+    }
+
+    public class DireitoUsoContratado
+    {
+        public string? Id { get; set; }
+        public string ResourceKey { get; set; }
+        public DateTime? PeriodUntilUtc { get; set; }
+        public Decimal GrantedUnits { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<DireitoUsoContratado> Query() => new MyApp.QueryBuilder.Query<DireitoUsoContratado>();
+    }
+
+    public class ContratacaoUso
+    {
+        public string? Id { get; set; }
+        public string Oferta { get; set; }
+        public int Quantidade { get; set; }
+        public Decimal Creditos { get; set; }
+        public DateTime CriadaEmUtc { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<ContratacaoUso> Query() => new MyApp.QueryBuilder.Query<ContratacaoUso>();
+    }
+
     public class yFileUpload
     {
         public int? Id { get; set; }
