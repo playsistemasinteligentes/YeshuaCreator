@@ -18,6 +18,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\Engine\Yeshua.Engine\Yeshua.Engine.csproj" />
+    <Compile Include="..\..\..\src\Studio\Yeshua.Studio.Central\Migrations\M000003.cs" Link="Fixtures\Central\M000003.cs" />
+    <Compile Include="..\..\..\src\Studio\Yeshua.Studio.Central\Migrations\M000004.cs" Link="Fixtures\Central\M000004.cs" />
   </ItemGroup>
 
 </Project>

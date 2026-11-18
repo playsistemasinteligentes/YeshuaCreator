@@ -20,6 +20,10 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   para compatibilidade. O extrato identifica servico, descricao, saldo anterior,
   entrada, saida e saldo apos; historico anterior permanece legivel e preservado.
   Retencao, indices e arquivamento ficam para avaliacao futura, sem mudanca agora.
+- Evolucoes de metadata de um modulo existente usam AddModule(new Module(...))
+  com Inserir=false, em vez do overload de criacao AddModule(chave, descricao).
+  A migration M000004 reutiliza COBRANCA sem outro INSERT em yModule; o teste
+  usa a propria migration do Studio para validar a ausencia de SQL de recriacao.
 
 - Decisao de 2026-11-17: a Central mantem pagamento, carteira de creditos e
   contratacao; aplicativos recebem direitos por periodo ou quantidade. A DSL
