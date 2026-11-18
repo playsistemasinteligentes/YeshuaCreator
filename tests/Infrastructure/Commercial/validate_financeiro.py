@@ -23,7 +23,7 @@ def main():
         request = Request(base + path, data=json.dumps(body).encode() if body is not None else None, headers=headers)
         try:
             with urlopen(request, timeout=90) as response:
-                text = response.read().decode()
+                text = response.read().decode('utf-8-sig')
                 return response.status, json.loads(text) if text else None, dict(response.headers)
         except HTTPError as error:
             text = error.read().decode()
@@ -42,17 +42,21 @@ def main():
         suffix = uuid.uuid4().hex[:12]
         password = secrets.token_urlsafe(24)
         email = "financeiro-" + suffix + "@example.invalid"
-        status, created, _ = call("/yapi/Y/ContascreateContaUseCase", {
+        status, created, _ = call(central_api + "/Y/ContascreateContaUseCase", {
             "cpfCnpj": str(secrets.randbelow(10**13)).zfill(14), "nome": "Teste financeiro " + suffix,
             "email": email, "phone": "11999999999", "password": password, "confirmpassword": password})
         expect("create-isolated-account", status == 200)
-        status, login, _ = call("/yapi/login", {"login": email, "password": password})
+        status, login, _ = call(central_api + "/login", {"login": email, "password": password})
         expect("login", status == 200 and bool(login.get("token")))
         return login["token"], created.get("tenantId", created.get("TenantId"))
 
     def finance(command, body, token):
-        return call("/yapi/Central/Financeiro" + command + "UseCase", body, token)
+        return call(central_api + "/Central/Financeiro" + command + "UseCase", body, token)
 
+    status, catalog, _ = call('/applications.json')
+    expect('read-live-application-catalog', status == 200)
+    central_api = next(application['apiBasePath'] for application in catalog if application['application'] == 'Central')
+    clinic_api = next(application['apiBasePath'] for application in catalog if application['application'] == 'Clinica')
     owner, tenant_id = account()
     other, other_tenant_id = account()
     status, initial, _ = finance("ConsultarFinanceiro", {}, owner)
@@ -60,7 +64,7 @@ def main():
     expect("three-dsl-compatible-offers", len(initial["ofertas"]) == 3)
     expect("no-initial-credit", initial["saldo"] == 0)
     expect("anonymous-finance-rejected", finance("ConsultarFinanceiro", {}, None)[0] in (401, 403))
-    expect("clinic-requires-purchased-period", call("/apps/clinica/yapi/getMenu", token=owner)[0] == 403)
+    expect("clinic-requires-purchased-period", call(clinic_api + "/getMenu", token=owner)[0] == 403)
 
     charge_request = {"requestId": str(uuid.uuid4()), "creditos": 500}
     status, charged, _ = finance("CriarRecarga", charge_request, owner)
@@ -84,7 +88,7 @@ def main():
     owner = contracted["token"]
     central_claims = json.loads(base64.urlsafe_b64decode(owner.split(".")[1] + "=="))
     expect("period-in-signed-token", int(central_claims["usageUntil.clinica.access"]) > time.time())
-    status, _, headers = call("/apps/clinica/yapi/getMenu", token=owner)
+    status, _, headers = call(clinic_api + "/getMenu", token=owner)
     application_token = next((value for key, value in headers.items() if key.lower() == "x-yeshua-application-token"), None)
     expect("paid-clinic-entry", status == 200 and bool(application_token))
     application_claims = json.loads(base64.urlsafe_b64decode(application_token.split(".")[1] + "=="))
@@ -103,7 +107,7 @@ def main():
     expect("all-money-movements-accounted", len(final["movimentos"]) == 22)
     other_state = finance("ConsultarFinanceiro", {"tenantId": tenant_id}, other)[1]
     expect("tenant-isolation", other_state["saldo"] == 0 and not other_state["contratacoes"] and not other_state["movimentos"])
-    expect("internal-wallet-crud-not-exposed", call("/yapi/CarteiraCredito/PostCarteiraCredito", {}, owner)[0] == 404)
+    expect("internal-wallet-crud-not-exposed", call(central_api + "/CarteiraCredito/PostCarteiraCredito", {}, owner)[0] == 404)
     print(json.dumps({"passed": True, "tenantIds": [tenant_id, other_tenant_id], "checks": checks,
                       "walletBalance": final["saldo"], "concurrentPurchasesAccepted": results.count(200)}, ensure_ascii=True))
 

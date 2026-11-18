@@ -8,7 +8,9 @@ public partial class ySagaStepWriteRepository
                SET Status = 1, RetryCount = 0, ErrorMessage = NULL
                OUTPUT inserted.StepKey INTO @reopened
               FROM ySagaStep st INNER JOIN ySaga sg WITH (UPDLOCK) ON sg.Id = st.SagaId
-             WHERE st.Id = @StepId AND sg.Id = @SagaId AND st.Status = 6 AND sg.Status = 3 AND sg.KeyCurrentStep = st.StepKey
+             WHERE st.Id = @StepId AND sg.Id = @SagaId
+               AND ((st.Status = 6 AND sg.Status = 3) OR (st.Status = 7 AND sg.Status = 1))
+               AND sg.KeyCurrentStep = st.StepKey
                AND sg.TenantID = @TenantId AND sg.UserId = @UserId AND sg.ProcessingScope = @Scope
                AND sg.Deleted = 0 AND st.Deleted = 0
                AND (sg.LockedBy IS NULL OR sg.LockedAt < DATEADD(MINUTE,-1,SYSUTCDATETIME()));

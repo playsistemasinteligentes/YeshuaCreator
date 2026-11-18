@@ -19,7 +19,7 @@
 .central-financeiro .financeiro-table-wrap { overflow-x: auto; }
 .central-financeiro table { width: 100%; border-collapse: collapse; text-align: left; }
 .central-financeiro th, .central-financeiro td { padding: 12px 8px; border-bottom: 1px solid #dce5e0; vertical-align: middle; }
-.central-financeiro td { overflow-wrap: anywhere; }
+.central-financeiro td { overflow-wrap: normal; }
 .central-financeiro th { font-size: 13px; color: #52675e; }
 .central-financeiro td button { white-space: normal; }
 @media (max-width: 680px) { .financeiro-forms { grid-template-columns: minmax(0, 1fr); gap: 0; } .central-financeiro { margin-top: 16px; padding: 0 12px 24px; } .central-financeiro h1 { font-size: 21px; } }

@@ -36,7 +36,7 @@ public sealed record RegistroAtendimentoInfo(int Id = 0, int PacienteId = 0, str
     string FrequenciaSugeridaSessooes = "", string InformacoesRelevantesFuturasConsultas = "", string SugestoesIncorporadas = "",
     int ServicoId = 0, string ServicoNome = "", int ModeloConsulta = 1, int VersaoModeloConsulta = 1);
 public sealed record AudioAtendimentoInfo(int SagaId = 0, string Data = "", string Status = "", string Transcricao = "",
-    string Prontuario = "", string QueixaPrincipal = "", string RegistroDocumental = "", int StepFalhouId = 0);
+    string Prontuario = "", string QueixaPrincipal = "", string RegistroDocumental = "", int StepFalhouId = 0, int StepAguardandoCreditoId = 0);
 
 public sealed record ServicoAgendamentoInfo(int Id = 0, string Nome = "", int ModeloConsulta = 1, int VersaoModeloConsulta = 1);
 public sealed class ServicosAgendamentoOutput

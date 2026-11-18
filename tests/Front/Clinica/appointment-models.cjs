@@ -19,14 +19,14 @@ const session=()=>({id:42,pacienteId:7,paciente:'Paciente fictício',dataInicio:
  try{
   browser=await chromium.launch({channel:'msedge',headless:true,args:['--use-fake-ui-for-media-stream','--use-fake-device-for-media-stream']});
   const cases=[];
-  async function fixture({habitual=services[0],catalog=services,current=session(),delayOptions=0,patients=null}={}){
+  async function fixture({habitual=services[0],catalog=services,current=session(),delayOptions=0,patients=null,audios=null}={}){
    const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['microphone']});await context.addInitScript(t=>localStorage.setItem('token',t),token(7));
    patients=patients??[{id:7,nome:current.paciente}];
    const page=await context.newPage(),calls=[],errors=[],writes=[],uploads=[];
    page.setDefaultTimeout(15000);page.on('pageerror',e=>errors.push(e.message));
    await page.route('**/apps/clinica/yapi/**',async route=>{
     const req=route.request(),url=req.url();calls.push(url);let data,status=200;
-    if(url.includes('ConsultarAtendimentos')){const body=req.postDataJSON();data={profissionalId:3,profissionalNome:'Profissional fictício',servicoHabitualId:habitual?.id||0,servicoHabitualNome:habitual?.nome||'',modeloConsultaHabitual:habitual?.modeloConsulta||0,versaoModeloConsultaHabitual:habitual?.versaoModeloConsulta||0,agenda:[current],pacientes:patients,atual:body.sessaoId?[current]:[],historico:[],audios:[{sagaId:55,data:new Date().toISOString(),status:'Concluído',prontuario:'Sugestão de evolução',queixaPrincipal:'Sugestão de queixa',registroDocumental:'Sugestão documental'}]};}
+    if(url.includes('ConsultarAtendimentos')){const body=req.postDataJSON();data={profissionalId:3,profissionalNome:'Profissional fictício',servicoHabitualId:habitual?.id||0,servicoHabitualNome:habitual?.nome||'',modeloConsultaHabitual:habitual?.modeloConsulta||0,versaoModeloConsultaHabitual:habitual?.versaoModeloConsulta||0,agenda:[current],pacientes:patients,atual:body.sessaoId?[current]:[],historico:[],audios:audios??[{sagaId:55,data:new Date().toISOString(),status:'Concluído',prontuario:'Sugestão de evolução',queixaPrincipal:'Sugestão de queixa',registroDocumental:'Sugestão documental'}]};}
     else if(url.includes('ConsultarServicosAgendamento')){if(delayOptions)await new Promise(resolve=>setTimeout(resolve,delayOptions));data={servicos:catalog};}
     else if(url.includes('DefinirServicoHabitual')){const id=req.postDataJSON().servicoId;habitual=catalog.find(s=>s.id===id)||null;data=habitual||{id:0,nome:'',modeloConsulta:0,versaoModeloConsulta:0};}
     else if(url.includes('/Paciente/PostPaciente')){const body=req.postDataJSON();writes.push(body);if(body.telefone==='123'){status=400;data={statusCode:400,message:'Dados inválidos',messageList:['Telefone de contato: informe um número válido.','Confira o DDD.']};}else{data={id:88,nome:body.nome};patients.push(data);}}
@@ -79,6 +79,19 @@ const session=()=>({id:42,pacienteId:7,paciente:'Paciente fictício',dataInicio:
   assert.deepEqual(Object.keys(f.writes.at(-1)).sort(),['nome','telefone']);assert.equal(f.writes.filter(x=>x.telefone==='11999990000').length,1);
   await f.page.locator('#cli-agendar-confirmar').click();await f.page.getByText('Consulta agendada. Histórico e plano anterior já estão disponíveis.',{exact:true}).waitFor();assert.equal(f.writes.at(-1).pacienteId,88);assert.equal(f.writes.at(-1).servicoId,10);
   assert.equal(f.errors.length,0,f.errors.join('\n'));await f.context.close();cases.push('quick patient: existing CRUD, actionable errors, draft and schedule preserved, selected automatically, appointment completed');
+  f=await fixture({audios:[{sagaId:55,data:new Date().toISOString(),status:'Aguardando créditos',stepAguardandoCreditoId:91}]});
+  const resume=[];
+  await f.page.route('**/yapi/Central/FinanceiroAtualizarAcessoUseCase',async route=>{resume.push('rights');await route.fulfill({json:{token:token(7)}});});
+  await f.page.route('**/apps/clinica/yapi/getMenu',async route=>{resume.push('scope');await route.fulfill({json:[],headers:{'X-Yeshua-Application-Token':token(7)}});});
+  await f.page.route('**/apps/clinica/yapi/Saga/OperacaoRetrySagaStepUseCase',async route=>{resume.push(route.request().postDataJSON());await route.fulfill({json:{status:'Pending'}});});
+  await f.page.locator('#cli-agenda-lista [data-id="42"]').click();
+  await f.page.getByText('Áudio recebido. A transcrição aguarda créditos ou um período contratado. Retome antes da limpeza dos arquivos temporários.',{exact:true}).waitFor();
+  assert.equal(await f.page.getByRole('link',{name:'Contratar na Central',exact:true}).getAttribute('href'),'/spa/?app=Central#central-financeiro');
+  await f.page.getByRole('button',{name:'Retomar transcrição',exact:true}).click();
+  await f.page.getByText('Retomada solicitada. Use Atualizar para consultar o resultado.',{exact:true}).waitFor();
+  assert.deepEqual(resume,['rights','scope',{sagaId:55,sagaStepId:91}]);
+  assert.equal(f.uploads.length,0,'Retomar nao pode regravar nem reenviar o audio');
+  assert.deepEqual(f.errors,[]);await f.context.close();cases.push('credit wait: original saga, renewed rights, explicit resume, no new audio upload');
   console.log(JSON.stringify({passed:true,cases}));
  }finally{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));}
 })().catch(e=>{console.error(e.stack||e.message);process.exitCode=1;});

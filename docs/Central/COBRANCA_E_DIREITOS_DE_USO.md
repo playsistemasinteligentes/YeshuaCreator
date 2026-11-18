@@ -77,6 +77,15 @@ transitoria preserva a reserva para retry. Periodo valido tem prioridade sobre
 unidades, preservando pacotes adquiridos. O custo inicial e uma unidade por
 transcricao concluida, independentemente do provedor existente.
 
+Sem direito suficiente, o step fica em `WaitingUsageRight` (estado persistido 7),
+sem executar o provedor, contar retry ou gerar polling financeiro. A gravacao e o
+upload continuam normais. A tela informa a espera e usa o command existente de
+retomada depois da contratacao, renovando os direitos na entrada do aplicativo.
+O mesmo step e o mesmo audio sao reutilizados. A localizacao temporaria do audio
+e sua limpeza permanecem exatamente as existentes: nao ha copia persistente,
+protecao contra limpeza nem extensao de prazo. Se o arquivo ja tiver sido limpo,
+a retomada falha e libera a reserva sem consumir a unidade.
+
 As transicoes financeiras locais sao idempotentes e persistentes, separadas da
 tentativa de transporte. Elas nao fazem chamadas para a Central nem para o
 provedor. OpenAI, Groq e Queue continuam usando os caminhos existentes.
@@ -108,3 +117,11 @@ usar as bordas protegidas.
 
 Validacoes unitarias e de interface nao substituem o ensaio HTTP/SQL no sandbox
 publicado, especialmente concorrencia, isolamento entre tenants e retomada.
+
+Em 2026-11-18, o ensaio HTTP no sandbox publicado passou com duas contas
+sinteticas: confirmacoes concorrentes nao duplicaram saldo; vinte compras de
+pacotes esgotaram exatamente 400 creditos e cinco compras extras foram negadas.
+O ensaio pelo navegador confirmou recarga, entrada na Clinica e contratacao de
+transcricao por periodo e unidades em desktop e celular, sem chamar provedores.
+Os testes da saga verificam espera sem credito, retomada com a mesma identidade
+e liberacao da reserva quando o arquivo temporario ja nao existe.
