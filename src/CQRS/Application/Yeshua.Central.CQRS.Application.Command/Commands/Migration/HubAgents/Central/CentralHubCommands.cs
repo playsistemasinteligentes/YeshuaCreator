@@ -45,6 +45,9 @@ public partial record MovimentoFinanceiroInfo : ICommand
     public decimal Quantidade { get; set; }
     public decimal SaldoApos { get; set; }
     public string CriadoEmUtc { get; set; } = string.Empty;
+    public string Servico { get; set; } = string.Empty;
+    public string Descricao { get; set; } = string.Empty;
+    public decimal SaldoAnterior { get; set; }
 }
 
 public partial record CobrancaFinanceiraInfo : ICommand

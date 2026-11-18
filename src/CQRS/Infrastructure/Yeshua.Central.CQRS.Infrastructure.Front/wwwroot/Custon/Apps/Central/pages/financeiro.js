@@ -13,7 +13,7 @@ export async function renderFinanceiro() {
     if (!template.ok) throw new Error('Nao foi possivel abrir o financeiro.');
     host.innerHTML = await template.text(); host.classList.remove('hidden');
     const element = id => host.querySelector(`#financeiro-${id}`);
-    let offers = [], busy = false, pendingPurchase = null, pendingCharge = null;
+    let offers = [], movements = [], busy = false, pendingAllocation = null, pendingAddition = null;
     const status = (message, error = false) => { element('status').textContent = message; element('status').dataset.error = String(error); };
     const format = value => Number(value).toLocaleString('pt-BR', { maximumFractionDigits: 4 });
     const date = value => value ? new Date(value).toLocaleString('pt-BR') : '-';
@@ -29,7 +29,7 @@ export async function renderFinanceiro() {
         const table = document.createElement('table'), head = document.createElement('thead'), body = document.createElement('tbody');
         const heading = document.createElement('tr'); headers.forEach(label => { const cell = document.createElement('th'); cell.scope = 'col'; cell.textContent = label; heading.append(cell); });
         head.append(heading);
-        rows.forEach(values => { const row = document.createElement('tr'); values.forEach(value => { const cell = document.createElement('td'); if (value instanceof Node) cell.append(value); else cell.textContent = String(value); row.append(cell); }); body.append(row); });
+        rows.forEach(values => { const row = document.createElement('tr'); values.forEach((value, index) => { const cell = document.createElement('td'); cell.dataset.label = headers[index]; if (value instanceof Node) cell.append(value); else cell.textContent = String(value); row.append(cell); }); body.append(row); });
         table.append(head, body); wrap.append(table); target.append(wrap);
     }
     function total() {
@@ -47,18 +47,31 @@ export async function renderFinanceiro() {
         if (offers.some(offer => offer.codigo === selected)) element('oferta').value = selected;
         element('contratar').querySelector('button').disabled = !offers.length;
         total();
-        const resourceTitles = { 'clinica.access': 'Clinica', 'clinica.transcription': 'Transcricao de audio' };
-        table(element('direitos'), ['Servico', 'Validade', 'Unidades contratadas'], (data.contratacoes || []).map(right =>
+        const resourceTitles = { 'clinica.access': 'Clínica', 'clinica.transcription': 'Transcrição de áudio' };
+        table(element('direitos'), ['Serviço', 'Validade', 'Unidades alocadas'], (data.contratacoes || []).map(right =>
             [resourceTitles[right.recurso] || offers.find(offer => offer.recurso === right.recurso)?.titulo || 'Servico contratado',
-                right.validoAteUtc ? new Date(right.validoAteUtc).toLocaleDateString('pt-BR') : '-', format(right.unidadesContratadas)]));
+                right.validoAteUtc ? new Date(right.validoAteUtc).toLocaleDateString('pt-BR') : 'Sem período',
+                Number(right.unidadesContratadas) > 0 ? format(right.unidadesContratadas) : right.validoAteUtc ? 'Por período' : '0']));
         element('clinica').hidden = !(data.contratacoes || []).some(right => right.recurso === 'clinica.access' && new Date(right.validoAteUtc) > new Date());
-        table(element('cobrancas'), ['Creditos', 'Valor', 'Situacao', 'Acao'], (data.cobrancas || []).map(charge => {
-            let action = '-';
-            if (charge.status === 0 && data.simulacao) { action = document.createElement('button'); action.type = 'button'; action.textContent = 'Confirmar simulacao'; action.addEventListener('click', () => run('ConfirmarPagamentoTeste', { cobrancaId: charge.id }, 'Pagamento de teste confirmado.')); }
-            return [format(charge.creditos), Number(charge.valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }), charge.status === 1 ? 'Pago' : 'Aguardando pagamento', action];
-        }));
-        table(element('movimentos'), ['Data', 'Movimento', 'Creditos', 'Saldo apos'], (data.movimentos || []).map(movement =>
-            [date(movement.criadoEmUtc), movement.tipo, format(movement.quantidade), format(movement.saldoApos)]));
+        movements = data.movimentos || [];
+        const filter = element('filtro-servico'), previousFilter = filter.value;
+        filter.replaceChildren();
+        for (const [value, title] of [['', 'Todos os serviços'], ['carteira', 'Carteira — adições'], ...Object.entries(resourceTitles)]) {
+            const option = document.createElement('option'); option.value = value; option.textContent = title; filter.append(option);
+        }
+        filter.value = previousFilter;
+        displayMovements();
+    }
+    function displayMovements() {
+        const selected = element('filtro-servico').value;
+        const rows = movements.filter(movement => !selected || movement.servico === selected).map(movement => {
+            const quantity = Number(movement.quantidade);
+            const description = movement.descricao || (quantity > 0 ? 'Adição à carteira' : 'Alocação de créditos');
+            return [date(movement.criadoEmUtc), quantity < 0 ? `Alocação — ${description}` : description,
+                format(movement.saldoAnterior ?? Number(movement.saldoApos) - quantity),
+                quantity > 0 ? format(quantity) : '—', quantity < 0 ? format(-quantity) : '—', format(movement.saldoApos)];
+        });
+        table(element('movimentos'), ['Data', 'Serviço / movimentação', 'Saldo anterior', 'Entrada', 'Saída', 'Saldo após'], rows);
     }
     async function run(command, input = {}, success = '', onSuccess = null) {
         if (busy) return;
@@ -73,16 +86,17 @@ export async function renderFinanceiro() {
         finally { busy = false; host.querySelectorAll('button').forEach(button => button.disabled = false); element('contratar').querySelector('button').disabled = !offers.length; }
     }
     element('atualizar').addEventListener('click', () => run('AtualizarAcesso', {}, 'Acesso e saldo atualizados.'));
-    element('oferta').addEventListener('change', () => { pendingPurchase = null; total(); });
-    element('quantidade').addEventListener('input', () => { pendingPurchase = null; total(); });
-    element('creditos').addEventListener('change', () => pendingCharge = null);
+    element('filtro-servico').addEventListener('change', displayMovements);
+    element('oferta').addEventListener('change', () => { pendingAllocation = null; total(); });
+    element('quantidade').addEventListener('input', () => { pendingAllocation = null; total(); });
+    element('creditos').addEventListener('change', () => pendingAddition = null);
     element('recarga').addEventListener('submit', event => {
-        event.preventDefault(); pendingCharge ||= { requestId: requestId(), creditos: Number(element('creditos').value) };
-        run('CriarRecarga', pendingCharge, 'Cobranca criada. Confirme a simulacao na lista abaixo.', () => pendingCharge = null);
+        event.preventDefault(); pendingAddition ||= { requestId: requestId(), creditos: Number(element('creditos').value) };
+        run('AdicionarCreditosCarteira', pendingAddition, 'Créditos adicionados à carteira.', () => pendingAddition = null);
     });
     element('contratar').addEventListener('submit', event => {
-        event.preventDefault(); pendingPurchase ||= { requestId: requestId(), oferta: element('oferta').value, quantidade: Number(element('quantidade').value) };
-        run('ContratarUso', pendingPurchase, 'Contratacao concluida. O acesso foi atualizado.', () => pendingPurchase = null);
+        event.preventDefault(); pendingAllocation ||= { requestId: requestId(), oferta: element('oferta').value, quantidade: Number(element('quantidade').value) };
+        run('AlocarCreditosCarteira', pendingAllocation, 'Créditos alocados ao serviço. O acesso foi atualizado.', () => pendingAllocation = null);
     });
     element('clinica').addEventListener('click', () => { localStorage.setItem('yeshua.activeApplication', 'Clinica'); location.hash = 'dashboard'; location.reload(); });
     await run('ConsultarFinanceiro');

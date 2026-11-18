@@ -1,30 +1,33 @@
-<section class="central-financeiro" data-help-screen="central-financeiro" data-help-title="Creditos e contratacoes">
+<section class="central-financeiro" data-help-screen="central-financeiro" data-help-title="Carteira de créditos">
     <header class="financeiro-heading">
-        <div><h1>Cr&eacute;ditos e contrata&ccedil;&otilde;es</h1><span>Saldo dispon&iacute;vel: <strong id="financeiro-saldo">...</strong> cr&eacute;ditos</span></div>
+        <div><h1>Carteira de cr&eacute;ditos</h1><span>Saldo da carteira: <strong id="financeiro-saldo">...</strong> cr&eacute;ditos</span></div>
         <button type="button" id="financeiro-atualizar" title="Atualizar" aria-label="Atualizar"><i class="fa-solid fa-rotate-right" aria-hidden="true"></i></button>
     </header>
-    <p id="financeiro-simulacao" class="financeiro-notice" hidden>Ambiente de demonstra&ccedil;&atilde;o. Os pagamentos s&atilde;o simulados, sem movimenta&ccedil;&atilde;o banc&aacute;ria. Pre&ccedil;os demonstrativos.</p>
+    <p id="financeiro-simulacao" class="financeiro-notice" hidden>Demonstra&ccedil;&atilde;o: os cr&eacute;ditos s&atilde;o adicionados diretamente &agrave; carteira. N&atilde;o h&aacute; pagamento real.</p>
     <p id="financeiro-status" role="status" aria-live="polite"></p>
     <div class="financeiro-forms">
         <section>
-            <h2>Adicionar cr&eacute;ditos</h2>
+            <h2>1. Adicionar cr&eacute;ditos &agrave; carteira</h2>
+            <p>Escolha quantos cr&eacute;ditos deseja adicionar ao saldo da carteira.</p>
             <form id="financeiro-recarga">
                 <label for="financeiro-creditos">Quantidade</label>
-                <select id="financeiro-creditos"><option value="50">50 cr&eacute;ditos / R$ 50,00</option><option value="100">100 cr&eacute;ditos / R$ 100,00</option><option value="500">500 cr&eacute;ditos / R$ 500,00</option></select>
-                <button type="submit">Gerar cobran&ccedil;a de teste</button>
+                <select id="financeiro-creditos"><option value="50">50 cr&eacute;ditos</option><option value="100">100 cr&eacute;ditos</option><option value="500">500 cr&eacute;ditos</option></select>
+                <button type="submit">Adicionar cr&eacute;ditos &agrave; carteira</button>
             </form>
         </section>
         <section>
-            <h2>Contratar</h2>
+            <h2>2. Alocar cr&eacute;ditos da carteira</h2>
+            <p>Use o saldo da carteira para ativar o per&iacute;odo ou pacote do servi&ccedil;o escolhido.</p>
             <form id="financeiro-contratar">
                 <label for="financeiro-oferta">Servi&ccedil;o</label><select id="financeiro-oferta" required></select>
                 <label for="financeiro-quantidade">Meses ou pacotes</label><input id="financeiro-quantidade" type="number" min="1" max="36" step="1" value="1" required>
                 <p id="financeiro-total"></p>
-                <button type="submit">Contratar com cr&eacute;ditos</button>
+                <button type="submit">Alocar cr&eacute;ditos da carteira</button>
             </form>
         </section>
     </div>
-    <section><h2>Contrata&ccedil;&otilde;es</h2><div id="financeiro-direitos"></div><button id="financeiro-clinica" type="button" hidden>Abrir Cl&iacute;nica</button></section>
-    <section><h2>Cobran&ccedil;as</h2><div id="financeiro-cobrancas"></div></section>
-    <section><h2>Extrato</h2><div id="financeiro-movimentos"></div></section>
+    <section><h2>Servi&ccedil;os e aloca&ccedil;&otilde;es</h2><div id="financeiro-direitos"></div><button id="financeiro-clinica" type="button" hidden>Abrir Cl&iacute;nica</button></section>
+    <section><h2>Extrato da carteira</h2><p>Movimenta&ccedil;&otilde;es mais recentes primeiro.</p>
+        <label for="financeiro-filtro-servico">Filtrar por servi&ccedil;o</label><select id="financeiro-filtro-servico"><option value="">Todos os servi&ccedil;os</option></select>
+        <div id="financeiro-movimentos"></div></section>
 </section>

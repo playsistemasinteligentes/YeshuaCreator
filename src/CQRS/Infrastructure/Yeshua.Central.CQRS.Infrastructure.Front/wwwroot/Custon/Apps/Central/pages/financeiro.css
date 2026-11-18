@@ -9,7 +9,10 @@
 .central-financeiro input, .central-financeiro select { border: 1px solid #aabbb4; background: #fff; width: 100%; min-width: 0; }
 .central-financeiro button:focus-visible, .central-financeiro select:focus-visible, .central-financeiro input:focus-visible { outline: 2px solid #366ec2; outline-offset: 3px; }
 .financeiro-heading button { width: 40px; height: 40px; flex: 0 0 40px; padding: 0; }
-.financeiro-forms { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+.financeiro-forms { display: grid; grid-template-columns: minmax(0, 1fr); }
+.financeiro-forms form { max-width: 560px; }
+.central-financeiro section > p { margin: 0 0 16px; line-height: 1.5; }
+#financeiro-filtro-servico { display: block; max-width: 360px; margin: 8px 0 16px; }
 .central-financeiro section { border-top: 1px solid #c7d5cf; padding-top: 20px; margin-top: 24px; min-width: 0; }
 .central-financeiro form { display: grid; gap: 10px; align-content: start; }
 .central-financeiro form button { justify-self: start; max-width: 100%; white-space: normal; }
@@ -23,3 +26,12 @@
 .central-financeiro th { font-size: 13px; color: #52675e; }
 .central-financeiro td button { white-space: normal; }
 @media (max-width: 680px) { .financeiro-forms { grid-template-columns: minmax(0, 1fr); gap: 0; } .central-financeiro { margin-top: 16px; padding: 0 12px 24px; } .central-financeiro h1 { font-size: 21px; } }
+@media (max-width: 680px) {
+    #financeiro-movimentos table, #financeiro-movimentos tbody { display: block; }
+    #financeiro-movimentos thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    #financeiro-movimentos tr { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px 16px; padding: 16px 0; border-bottom: 1px solid #c7d5cf; }
+    #financeiro-movimentos td { border: 0; padding: 0; min-width: 0; overflow-wrap: anywhere; }
+    #financeiro-movimentos td::before { content: attr(data-label); display: block; margin-bottom: 4px; font-size: 12px; color: #52675e; }
+    #financeiro-movimentos td:nth-child(1), #financeiro-movimentos td:nth-child(2) { grid-column: 1 / -1; }
+    #financeiro-movimentos td:nth-child(2) { grid-row: 1; font-weight: 600; }
+}

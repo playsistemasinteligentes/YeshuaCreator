@@ -115,9 +115,9 @@ public static class StaticModules
         var menuGroup0_0 = new Menu("Plataforma", "", "menuGroup");
         menuGroup0_0.AddSubMenu(new SubMenu("Catalogo de Aplicativos", "#application-catalog", "customPage", "application-catalog", "central.catalogo.visualizar"));
         Modules[Modules.Count - 1].Menus.Add(menuGroup0_0);
-        Modules.Add(new Module("COBRANCA", "Cobranca e contratacoes"));
+        Modules.Add(new Module("COBRANCA", "Carteira de creditos"));
         var menuGroup1_0 = new Menu("Minha conta", "", "menuGroup");
-        menuGroup1_0.AddSubMenu(new SubMenu("Creditos e contratacoes", "#central-financeiro", "customPage", "central-financeiro", "central.financeiro"));
+        menuGroup1_0.AddSubMenu(new SubMenu("Carteira de creditos", "#central-financeiro", "customPage", "central-financeiro", "central.financeiro"));
         Modules[Modules.Count - 1].Menus.Add(menuGroup1_0);
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules[Modules.Count - 1].Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));

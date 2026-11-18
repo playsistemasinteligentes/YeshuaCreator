@@ -19,6 +19,8 @@ public partial record ConfirmarPagamentoTesteOutputCommand : IFinanceiroResult;
 public partial record ContratarUsoOutputCommand : IFinanceiroResult;
 public partial record AtualizarAcessoOutputCommand : IFinanceiroResult;
 public partial record ExecutarFinanceiroOutputCommand : IFinanceiroResult;
+public partial record AdicionarCreditosCarteiraOutputCommand : IFinanceiroResult;
+public partial record AlocarCreditosCarteiraOutputCommand : IFinanceiroResult;
 
 public static class FinanceiroResults
 {

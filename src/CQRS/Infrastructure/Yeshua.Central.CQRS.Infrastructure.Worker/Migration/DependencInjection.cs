@@ -360,6 +360,10 @@ builder.Services.AddTransient<Command.Receivers.UseCase.AtualizarAcessoHandler>(
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarFinanceiroHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.AdicionarCreditosCarteiraHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AlocarCreditosCarteiraHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();

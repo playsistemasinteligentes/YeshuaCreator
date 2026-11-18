@@ -42,6 +42,10 @@ public partial class ExecutarFinanceiroHandler
             switch (command.Operacao)
             {
                 case "consultar": case "atualizar": break;
+                case "adicionar":
+                    if (!_options.SandboxEnabled) throw new ArgumentException("Adição demonstrativa indisponível neste ambiente.");
+                    _financeiro.AddWalletCredits(tenantId, userId, command.RequestId, command.Creditos);
+                    break;
                 case "recarga":
                     if (!_options.SandboxEnabled) throw new ArgumentException("Recarga demonstrativa indisponivel neste ambiente.");
                     chargeId = _financeiro.CreateCharge(tenantId, userId, command.RequestId, command.Creditos);
@@ -50,8 +54,8 @@ public partial class ExecutarFinanceiroHandler
                     if (!_options.SandboxEnabled) throw new ArgumentException("Confirmacao simulada indisponivel neste ambiente.");
                     _financeiro.ConfirmSandboxPayment(tenantId, userId, command.CobrancaId);
                     break;
-                case "contratar":
-                    _financeiro.Purchase(tenantId, userId, command.RequestId, command.Oferta, command.Quantidade);
+                case "alocar":
+                    _financeiro.AllocateWalletCredits(tenantId, userId, command.RequestId, command.Oferta, command.Quantidade);
                     break;
                 default: throw new ArgumentException("Operacao financeira invalida.");
             }
@@ -66,11 +70,13 @@ public partial class ExecutarFinanceiroHandler
                 Contratacoes = snapshot.Rights.Select(right => new DireitoFinanceiroInfo { Recurso = right.Resource,
                     ValidoAteUtc = right.Until > 0 ? DateTimeOffset.FromUnixTimeSeconds(right.Until).ToString("O") : "", UnidadesContratadas = right.GrantedUnits }).ToList(),
                 Movimentos = snapshot.Movements.Select(movement => new MovimentoFinanceiroInfo { Tipo = movement.Tipo, Referencia = movement.Referencia,
-                    Quantidade = movement.Quantidade, SaldoApos = movement.SaldoApos, CriadoEmUtc = DateTime.SpecifyKind(movement.CriadoEmUtc, DateTimeKind.Utc).ToString("O") }).ToList(),
+                    Quantidade = movement.Quantidade, SaldoApos = movement.SaldoApos, SaldoAnterior = movement.SaldoApos - movement.Quantidade,
+                    Servico = movement.Servico, Descricao = movement.Descricao,
+                    CriadoEmUtc = DateTime.SpecifyKind(movement.CriadoEmUtc, DateTimeKind.Utc).ToString("O") }).ToList(),
                 Cobrancas = snapshot.Charges.Select(charge => new CobrancaFinanceiraInfo
                     { Id = charge.Id, Creditos = charge.Creditos, Valor = charge.Valor, Status = charge.Status }).ToList()
             };
-            if (command.Operacao is "contratar" or "atualizar")
+            if (command.Operacao is "alocar" or "atualizar")
             {
                 var catalogs = new[] { "Central" }.Concat(_applications.GetAllByTenantID(tenantId)
                     .Where(application => application.validuntil > DateTime.UtcNow).Select(application => application.applicationkey))

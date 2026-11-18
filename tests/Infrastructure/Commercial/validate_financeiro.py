@@ -66,25 +66,20 @@ def main():
     expect("anonymous-finance-rejected", finance("ConsultarFinanceiro", {}, None)[0] in (401, 403))
     expect("clinic-requires-purchased-period", call(clinic_api + "/getMenu", token=owner)[0] == 403)
 
-    charge_request = {"requestId": str(uuid.uuid4()), "creditos": 500}
-    status, charged, _ = finance("CriarRecarga", charge_request, owner)
-    expect("creating-charge-does-not-credit-wallet", status == 200 and charged["saldo"] == 0)
-    charge_id = charged["cobrancaId"]
-    expect("charge-idempotency", finance("CriarRecarga", charge_request, owner)[1]["cobrancaId"] == charge_id)
-    expect("charge-request-body-conflict", finance("CriarRecarga", {**charge_request, "creditos": 100}, owner)[0] == 400)
-    expect("cross-tenant-payment-rejected", finance("ConfirmarPagamentoTeste", {"cobrancaId": charge_id}, other)[0] == 400)
+    addition_request = {"requestId": str(uuid.uuid4()), "creditos": 500}
     with ThreadPoolExecutor(max_workers=6) as pool:
-        confirmations = list(pool.map(lambda _: finance("ConfirmarPagamentoTeste", {"cobrancaId": charge_id}, owner)[0], range(12)))
-    expect("concurrent-confirmations-accepted", all(status == 200 for status in confirmations))
+        additions = list(pool.map(lambda _: finance("AdicionarCreditosCarteira", addition_request, owner)[0], range(12)))
+    expect("concurrent-wallet-additions-accepted", all(status == 200 for status in additions))
+    expect("wallet-addition-body-conflict", finance("AdicionarCreditosCarteira", {**addition_request, "creditos": 100}, owner)[0] == 400)
     snapshot = finance("ConsultarFinanceiro", {}, owner)[1]
-    expect("payment-credits-exactly-once", snapshot["saldo"] == 500 and len(snapshot["movimentos"]) == 1)
+    expect("wallet-credits-exactly-once-without-charge", snapshot["saldo"] == 500 and len(snapshot["movimentos"]) == 1 and not snapshot["cobrancas"])
 
     purchase = {"requestId": str(uuid.uuid4()), "oferta": "clinica-periodo", "quantidade": 1}
-    status, contracted, _ = finance("ContratarUso", purchase, owner)
+    status, contracted, _ = finance("AlocarCreditosCarteira", purchase, owner)
     expect("period-purchase", status == 200 and contracted["saldo"] == 400)
-    expect("purchase-idempotency", finance("ContratarUso", purchase, owner)[1]["saldo"] == 400)
-    expect("purchase-request-body-conflict", finance("ContratarUso", {**purchase, "quantidade": 2}, owner)[0] == 400)
-    expect("insufficient-credit-blocks-purchase", finance("ContratarUso", {"requestId": str(uuid.uuid4()), "oferta": "clinica-periodo", "quantidade": 36}, owner)[0] == 400)
+    expect("allocation-idempotency", finance("AlocarCreditosCarteira", purchase, owner)[1]["saldo"] == 400)
+    expect("allocation-request-body-conflict", finance("AlocarCreditosCarteira", {**purchase, "quantidade": 2}, owner)[0] == 400)
+    expect("insufficient-credit-blocks-allocation", finance("AlocarCreditosCarteira", {"requestId": str(uuid.uuid4()), "oferta": "clinica-periodo", "quantidade": 36}, owner)[0] == 400)
     owner = contracted["token"]
     central_claims = json.loads(base64.urlsafe_b64decode(owner.split(".")[1] + "=="))
     expect("period-in-signed-token", int(central_claims["usageUntil.clinica.access"]) > time.time())
@@ -97,7 +92,7 @@ def main():
     expect("renewal-from-application-token", finance("AtualizarAcesso", {}, application_token)[0] == 200)
 
     def buy(_):
-        return finance("ContratarUso", {"requestId": str(uuid.uuid4()), "oferta": "transcricao-creditos", "quantidade": 1}, owner)[0]
+        return finance("AlocarCreditosCarteira", {"requestId": str(uuid.uuid4()), "oferta": "transcricao-creditos", "quantidade": 1}, owner)[0]
     with ThreadPoolExecutor(max_workers=6) as pool:
         results = list(pool.map(buy, range(25)))
     expect("concurrent-purchases-exhaust-only-available-credit", results.count(200) == 20 and results.count(400) == 5)
@@ -105,6 +100,7 @@ def main():
     expect("wallet-never-negative", final["saldo"] == 0)
     expect("purchased-quantity-preserved", next(right for right in final["contratacoes"] if right["recurso"] == "clinica.transcription")["unidadesContratadas"] == 200)
     expect("all-money-movements-accounted", len(final["movimentos"]) == 22)
+    expect("statement-balances-and-service", all(movement["saldoAnterior"] + movement["quantidade"] == movement["saldoApos"] and movement["servico"] and movement["descricao"] for movement in final["movimentos"]))
     other_state = finance("ConsultarFinanceiro", {"tenantId": tenant_id}, other)[1]
     expect("tenant-isolation", other_state["saldo"] == 0 and not other_state["contratacoes"] and not other_state["movimentos"])
     expect("internal-wallet-crud-not-exposed", call(central_api + "/CarteiraCredito/PostCarteiraCredito", {}, owner)[0] == 404)
