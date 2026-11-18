@@ -1,6 +1,6 @@
-import { buildHelpPrompt, readHelpContext, copyText } from './help-prompt.js?v=20261117-support02';
-import { loadInstalledVersion } from './release-footer.js?v=20261117-support02';
-import { getAuthenticationApi } from './application-context.js';
+import { buildHelpPrompt, readHelpContext, copyText } from './help-prompt.js?v=20261117-support03';
+import { loadInstalledVersion } from './release-footer.js?v=20261117-support03';
+import { getAuthenticationApi, getAuthenticationToken } from './application-context.js';
 import { SessionRecorder, AudioBufferStore } from './components/recording/session-recorder.js?v=20261028-stream01';
 
 let panel;
@@ -135,8 +135,10 @@ function assertActor(p) {
 
 async function post(p, endpoint, body, multipart = false) {
     assertActor(p);
+    const token = await getAuthenticationToken();
+    assertActor(p);
     const response = await fetch(`${getAuthenticationApi()}${endpoint}`, {
-        method: 'POST', headers: { Authorization: `Bearer ${localStorage.getItem('token')}`, ...(multipart ? {} : { 'Content-Type': 'application/json' }) },
+        method: 'POST', headers: { Authorization: `Bearer ${token}`, ...(multipart ? {} : { 'Content-Type': 'application/json' }) },
         body: multipart ? body : JSON.stringify(body)
     }).catch(() => { throw new Error('Não foi possível concluir. Seu texto foi preservado; tente novamente.'); });
     const result = await response.json().catch(() => null);

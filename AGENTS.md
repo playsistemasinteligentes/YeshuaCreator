@@ -3,6 +3,10 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Preferencia expressa do operador em 2026-11-17: preparar e testar alteracoes
+  sem publicar. Push, PR, merge e deploy aguardam autorizacao explicita do
+  operador; nao inferir permissao de publicacao de uma solicitacao de correcao.
+
 ## Ideia Central
 
 O Yeshua e uma fabrica de software baseada em uma meta linguagem propria.
@@ -2429,6 +2433,11 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
 
 ## Ajuda E Chamados Da Central
 
+- Quando o usuario esta em outro aplicativo, a Ajuda usa a troca de sessao
+  existente em getMenu da Central para obter uma credencial Central. Essa
+  credencial fica somente em memoria, vinculada ao token de origem e validade,
+  sem substituir a sessao ativa do aplicativo. Tenant e usuario devem coincidir;
+  nenhuma politica de autorizacao do servidor e relaxada para atender a Ajuda.
 - Quando o acesso ocorre em HTTP, a Ajuda, chamados por texto, prompt e versao devem
   funcionar em origem insegura. Identificadores usam randomUUID quando existe
   ou UUID v4 com getRandomValues; nao usar Math.random. Gravacao exige contexto

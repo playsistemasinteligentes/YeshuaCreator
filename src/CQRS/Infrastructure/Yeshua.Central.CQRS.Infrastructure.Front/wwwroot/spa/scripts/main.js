@@ -1,4 +1,4 @@
-import { handleRouting } from './router.js?v=20261117-support02';
+import { handleRouting } from './router.js?v=20261117-support03';
 import { initFkModal } from './components/fk-modal.js';
 import { initializeApplicationContext } from './application-context.js';
 import './pages/operational-control.js?v=20261004-logs-panel01';
