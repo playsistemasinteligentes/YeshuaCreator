@@ -23,7 +23,7 @@ public partial class ExecutarFinanceiroHandler
 
     public ExecutarFinanceiroHandler(IFinanceiroRepository financeiro, IyTenantReadRepository tenants,
         IyUserReadRepository users, IyTenantApplicationReadRepository applications, ICommercialTokenIssuer tokens,
-        BillingPrototypeOptions options, ILogger logger, IExecutionContext context) : base(logger, context)
+        BillingPrototypeOptions options, ILogger logger, IExecutionContext context) : this(logger, context)
     { _financeiro = financeiro; _tenants = tenants; _users = users; _applications = applications; _tokens = tokens; _options = options; }
 
     protected partial Task<State<ExecutarFinanceiroOutputCommand>> CustomActionHookAsync(

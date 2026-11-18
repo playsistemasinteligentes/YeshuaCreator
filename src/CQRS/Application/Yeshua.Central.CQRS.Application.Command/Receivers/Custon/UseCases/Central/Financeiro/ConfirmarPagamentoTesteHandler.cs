@@ -8,7 +8,7 @@ namespace Command.Receivers.UseCase;
 public partial class ConfirmarPagamentoTesteHandler
 {
     private readonly ExecutarFinanceiroHandler _financeiro;
-    public ConfirmarPagamentoTesteHandler(ExecutarFinanceiroHandler financeiro, ILogger logger, IExecutionContext context) : base(logger, context)
+    public ConfirmarPagamentoTesteHandler(ExecutarFinanceiroHandler financeiro, ILogger logger, IExecutionContext context) : this(logger, context)
         => _financeiro = financeiro;
     protected partial async Task<State<ConfirmarPagamentoTesteOutputCommand>> CustomActionHookAsync(
         State<ConfirmarPagamentoTesteOutputCommand> state, ConfirmarPagamentoTesteInputCommand command, CancellationToken cancellationToken)
