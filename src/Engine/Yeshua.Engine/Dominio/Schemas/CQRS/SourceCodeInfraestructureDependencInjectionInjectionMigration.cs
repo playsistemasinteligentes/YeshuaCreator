@@ -130,6 +130,9 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("");
         
 
+            if (_migration.UsageRights.Count > 0)
+                sb.AppendLine("builder.Services.AddScoped<RepositoryInterfaces.Commercial.IUsageRightsRepository, Shared.Repository.Commercial.UsageRightsRepository>();");
+
             // ingeção dependencia 
             foreach (var entity in _migration.Entitys)
             {

@@ -183,5 +183,18 @@ public static class StaticYeshuaModuleContinuations
         Continuations.Add(new ModuleContinuation("Fiscal", "EncerramentoMDFeStandard", "publicarMDFeEncerrado", "MDFeEncerrado", 1, "APSADM", "CargaStandard", false, "Publishes", "YeshuaApi", "/yapi/APSADM/Inbox/YeshuaModuleEvent", "YeshuaModules:APSADM:BaseUrl"));
     }
 }
+public static class StaticUsageRights
+{
+    public static readonly string[] Resources = new string[] {  };
+    public static bool AllowsApplication(System.Security.Claims.ClaimsPrincipal principal)
+    {
+        return true;
+    }
+    public static System.DateTime TokenExpiry(System.Security.Claims.ClaimsPrincipal principal, System.DateTime proposed)
+    {
+        var expiry = Dominio.Commercial.UsageRightClaims.TokenExpiry(principal, proposed);
+        return expiry;
+    }
+}
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureModulesMigration

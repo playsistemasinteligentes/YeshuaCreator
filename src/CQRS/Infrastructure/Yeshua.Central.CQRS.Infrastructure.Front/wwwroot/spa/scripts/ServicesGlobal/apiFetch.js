@@ -1,5 +1,53 @@
 ﻿let isRefreshing = false;
 let refreshQueue = [];
+let commercialRenewal = null;
+let inspectedToken = '', commercialExpiry = 0;
+let lastCommercialRenewal = 0;
+
+export function storeSessionToken(token) {
+    const encoded = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    const payload = JSON.parse(atob(encoded.padEnd(Math.ceil(encoded.length / 4) * 4, '=')));
+    localStorage.setItem('token', token);
+    localStorage.setItem('tokenExp', Number(payload.exp) * 1000);
+}
+
+async function renewCommercialSession() {
+    const token = localStorage.getItem('token');
+    if (token !== inspectedToken) {
+        inspectedToken = token;
+        commercialExpiry = 0;
+        try {
+            const encoded = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            const payload = JSON.parse(atob(encoded.padEnd(Math.ceil(encoded.length / 4) * 4, '=')));
+            if (payload.usageRights && payload.usageRights !== '[]') commercialExpiry = Number(payload.exp) * 1000;
+        } catch { return; }
+    }
+    if (!commercialExpiry || commercialExpiry - Date.now() > 120000 || commercialExpiry < Date.now()) return;
+    if (!commercialRenewal && Date.now() - lastCommercialRenewal < 60000) return;
+    if (!commercialRenewal) {
+        lastCommercialRenewal = Date.now();
+        commercialRenewal = (async () => {
+            const central = environments.authenticationApi || '/yapi';
+            const response = await fetch(`${central}/Central/FinanceiroAtualizarAcessoUseCase`, {
+                method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` }, body: '{}'
+            });
+            if (!response.ok) throw new Error('Nao foi possivel renovar o acesso.');
+            const payload = await response.json(), renewed = (payload.data ?? payload.Data ?? payload)?.token;
+            if (!renewed) throw new Error('Nao foi possivel renovar o acesso.');
+            const active = environments.urlApi || central;
+            let applicationToken = renewed;
+            if (active !== central) {
+                const menu = await fetch(`${active}/getMenu`, { headers: { Authorization: `Bearer ${renewed}` } });
+                if (!menu.ok) throw new Error('O periodo de acesso terminou. Consulte suas contratacoes na Central.');
+                applicationToken = menu.headers.get('X-Yeshua-Application-Token');
+                if (!applicationToken) throw new Error('Nao foi possivel atualizar o acesso ao aplicativo.');
+            }
+            storeSessionToken(applicationToken);
+        })().finally(() => commercialRenewal = null);
+    }
+    try { await commercialRenewal; }
+    catch (error) { if (Date.now() >= commercialExpiry) throw error; }
+}
 
 export function getApiErrorMessage(payload, status, fields = []) {
     const code = Number(payload?.statusCode ?? payload?.StatusCode ?? status);
@@ -62,6 +110,7 @@ async function tryRefreshToken() {
 }
 
 export async function apiFetch(url, options = {}) {
+    await renewCommercialSession();
     const token = localStorage.getItem("token");
     if (!token) {
         location.hash = "#login";

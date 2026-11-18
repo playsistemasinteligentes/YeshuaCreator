@@ -60,10 +60,12 @@ public static class EndpointsCuston
                 new("tenantName", authenticatedUser.tenantName),
                 new("userName", authenticatedUser.userName)
             };
+            var rights = Dominio.Commercial.UsageRightClaims.Read(authenticatedUser.UsageRights);
+            Dominio.Commercial.UsageRightClaims.AddTo(claims, rights);
             var tokenDescriptor = new Microsoft.IdentityModel.Tokens.SecurityTokenDescriptor
             {
                 Subject = new System.Security.Claims.ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddMinutes(jwtSettings.ExpirationMinutes),
+                Expires = DateTime.UtcNow.AddMinutes(rights.Count > 0 ? Math.Min(jwtSettings.ExpirationMinutes, 30) : jwtSettings.ExpirationMinutes),
                 SigningCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
                     new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(
                         System.Text.Encoding.UTF8.GetBytes(jwtSettings.SecretKey)),

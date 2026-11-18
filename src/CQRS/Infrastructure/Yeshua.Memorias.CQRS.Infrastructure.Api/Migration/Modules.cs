@@ -153,5 +153,18 @@ public static class StaticYeshuaModuleContinuations
         Continuations.Clear();
     }
 }
+public static class StaticUsageRights
+{
+    public static readonly string[] Resources = new string[] {  };
+    public static bool AllowsApplication(System.Security.Claims.ClaimsPrincipal principal)
+    {
+        return true;
+    }
+    public static System.DateTime TokenExpiry(System.Security.Claims.ClaimsPrincipal principal, System.DateTime proposed)
+    {
+        var expiry = Dominio.Commercial.UsageRightClaims.TokenExpiry(principal, proposed);
+        return expiry;
+    }
+}
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureModulesMigration

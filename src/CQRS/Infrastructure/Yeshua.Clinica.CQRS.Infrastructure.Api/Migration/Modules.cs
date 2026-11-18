@@ -156,5 +156,23 @@ public static class StaticYeshuaModuleContinuations
         Continuations.Clear();
     }
 }
+public static class StaticUsageRights
+{
+    public static readonly string[] Resources = new string[] { "clinica.access", "clinica.transcription" };
+    public static bool AllowsApplication(System.Security.Claims.ClaimsPrincipal principal)
+    {
+        if (!Dominio.Commercial.UsageRightClaims.HasPeriodClaim(principal, "usageUntil.clinica.access", System.DateTimeOffset.UtcNow)) return false;
+        return true;
+    }
+    public static System.DateTime TokenExpiry(System.Security.Claims.ClaimsPrincipal principal, System.DateTime proposed)
+    {
+        var expiry = Dominio.Commercial.UsageRightClaims.TokenExpiry(principal, proposed);
+        {
+            if (long.TryParse(principal.FindFirst("usageUntil.clinica.access")?.Value, out var until) && until > 0)
+                expiry = new System.DateTime(System.Math.Min(expiry.Ticks, System.DateTimeOffset.FromUnixTimeSeconds(until).UtcDateTime.Ticks), System.DateTimeKind.Utc);
+        }
+        return expiry;
+    }
+}
 }
 //Dominio.Schemas.CQRS.SourceCodeInfraestructureModulesMigration

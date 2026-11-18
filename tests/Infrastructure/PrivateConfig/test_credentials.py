@@ -25,6 +25,16 @@ def configured():
 
 
 class CredentialsTests(unittest.TestCase):
+    def test_billing_sandbox_is_explicit_and_survives_rebuild_without_leaking_to_other_apps(self):
+        document = configured()
+        self.assertEqual("false", credentials.environment(document, Path("/private"), "central")["YESHUA_BILLING_SANDBOX_ENABLED"])
+        document["Apps"].setdefault("Central", {})["Billing"] = {"SandboxEnabled": "true"}
+        self.assertEqual("true", credentials.environment(document, Path("/restored"), "central")["YESHUA_BILLING_SANDBOX_ENABLED"])
+        self.assertEqual("", credentials.environment(document, Path("/private"), "clinica")["YESHUA_BILLING_SANDBOX_ENABLED"])
+        document["Apps"]["Central"]["Billing"]["SandboxEnabled"] = "invalid"
+        with self.assertRaises(credentials.ConfigurationError):
+            credentials.environment(document, Path("/private"), "central")
+
     def test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key(self):
         document = configured()
         document["Apps"]["Clinica"]["Transcription"] = {"Provider": "OpenAI", "ApiKey": "fixture-openai"}

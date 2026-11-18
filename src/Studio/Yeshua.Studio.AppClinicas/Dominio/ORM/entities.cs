@@ -299,6 +299,44 @@ namespace Yeshua.Studio.AppClinicas.Domain.Entities
         public static MyApp.QueryBuilder.Query<PlanoRecorrenciaConsulta> Query() => new MyApp.QueryBuilder.Query<PlanoRecorrenciaConsulta>();
     }
 
+    public class yUsageRight
+    {
+        public string? Id { get; set; }
+        public string ResourceKey { get; set; }
+        public DateTime? PeriodUntilUtc { get; set; }
+        public Decimal GrantedUnits { get; set; }
+        public Decimal ReservedUnits { get; set; }
+        public Decimal ConsumedUnits { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yUsageRight> Query() => new MyApp.QueryBuilder.Query<yUsageRight>();
+    }
+
+    public class yUsageConsumption
+    {
+        public string? Id { get; set; }
+        public string ResourceKey { get; set; }
+        public string OperationId { get; set; }
+        public Decimal Units { get; set; }
+        public bool UsesPeriod { get; set; }
+        public int Status { get; set; }
+        public int? TenantID { get; set; }
+        public yTenant yTenant { get; set; }
+        public bool? Deleted { get; set; }
+        public DateTime? Changed { get; set; }
+        public int? UserId { get; set; }
+        public yUser yUser { get; set; }
+        public string OperationalEntityId { get; set; }
+
+        public static MyApp.QueryBuilder.Query<yUsageConsumption> Query() => new MyApp.QueryBuilder.Query<yUsageConsumption>();
+    }
+
     public class yFileUpload
     {
         public int? Id { get; set; }

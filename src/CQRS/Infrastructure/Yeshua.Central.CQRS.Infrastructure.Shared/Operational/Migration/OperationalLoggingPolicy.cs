@@ -376,6 +376,11 @@ private OperationalLoggingDecision Evaluate(
                     return entity switch
                     {
                         "ChamadoSuporte" => GetChamadoSuporteMask(policy, operation, recordId),
+                        "CarteiraCredito" => GetCarteiraCreditoMask(policy, operation, recordId),
+                        "CobrancaCredito" => GetCobrancaCreditoMask(policy, operation, recordId),
+                        "MovimentoCredito" => GetMovimentoCreditoMask(policy, operation, recordId),
+                        "DireitoUsoContratado" => GetDireitoUsoContratadoMask(policy, operation, recordId),
+                        "ContratacaoUso" => GetContratacaoUsoMask(policy, operation, recordId),
                         "yFileUpload" => GetyFileUploadMask(policy, operation, recordId),
                         "ySaga" => GetySagaMask(policy, operation, recordId),
                         "ySagaStep" => GetySagaStepMask(policy, operation, recordId),
@@ -444,6 +449,153 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ChamadoSuporteTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "ChamadoSuporte", operation, recordId, "OperationalEntityId"))
                         mask |= ChamadoSuporteTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetCarteiraCreditoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "Id"))
+                        mask |= CarteiraCreditoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "Saldo"))
+                        mask |= CarteiraCreditoTrackingFields.Saldo;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "TenantID"))
+                        mask |= CarteiraCreditoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "Deleted"))
+                        mask |= CarteiraCreditoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "Changed"))
+                        mask |= CarteiraCreditoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "UserId"))
+                        mask |= CarteiraCreditoTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "CarteiraCredito", operation, recordId, "OperationalEntityId"))
+                        mask |= CarteiraCreditoTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetCobrancaCreditoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Id"))
+                        mask |= CobrancaCreditoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Creditos"))
+                        mask |= CobrancaCreditoTrackingFields.Creditos;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Valor"))
+                        mask |= CobrancaCreditoTrackingFields.Valor;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Status"))
+                        mask |= CobrancaCreditoTrackingFields.Status;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "CriadaEmUtc"))
+                        mask |= CobrancaCreditoTrackingFields.CriadaEmUtc;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "VenceEmUtc"))
+                        mask |= CobrancaCreditoTrackingFields.VenceEmUtc;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Moeda"))
+                        mask |= CobrancaCreditoTrackingFields.Moeda;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Provedor"))
+                        mask |= CobrancaCreditoTrackingFields.Provedor;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "PagaEmUtc"))
+                        mask |= CobrancaCreditoTrackingFields.PagaEmUtc;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "TenantID"))
+                        mask |= CobrancaCreditoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Deleted"))
+                        mask |= CobrancaCreditoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "Changed"))
+                        mask |= CobrancaCreditoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "UserId"))
+                        mask |= CobrancaCreditoTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "CobrancaCredito", operation, recordId, "OperationalEntityId"))
+                        mask |= CobrancaCreditoTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetMovimentoCreditoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "Id"))
+                        mask |= MovimentoCreditoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "Tipo"))
+                        mask |= MovimentoCreditoTrackingFields.Tipo;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "Referencia"))
+                        mask |= MovimentoCreditoTrackingFields.Referencia;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "Quantidade"))
+                        mask |= MovimentoCreditoTrackingFields.Quantidade;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "SaldoApos"))
+                        mask |= MovimentoCreditoTrackingFields.SaldoApos;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "CriadoEmUtc"))
+                        mask |= MovimentoCreditoTrackingFields.CriadoEmUtc;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "TenantID"))
+                        mask |= MovimentoCreditoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "Deleted"))
+                        mask |= MovimentoCreditoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "Changed"))
+                        mask |= MovimentoCreditoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "UserId"))
+                        mask |= MovimentoCreditoTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "MovimentoCredito", operation, recordId, "OperationalEntityId"))
+                        mask |= MovimentoCreditoTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetDireitoUsoContratadoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "Id"))
+                        mask |= DireitoUsoContratadoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "ResourceKey"))
+                        mask |= DireitoUsoContratadoTrackingFields.ResourceKey;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "PeriodUntilUtc"))
+                        mask |= DireitoUsoContratadoTrackingFields.PeriodUntilUtc;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "GrantedUnits"))
+                        mask |= DireitoUsoContratadoTrackingFields.GrantedUnits;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "TenantID"))
+                        mask |= DireitoUsoContratadoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "Deleted"))
+                        mask |= DireitoUsoContratadoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "Changed"))
+                        mask |= DireitoUsoContratadoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "UserId"))
+                        mask |= DireitoUsoContratadoTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "DireitoUsoContratado", operation, recordId, "OperationalEntityId"))
+                        mask |= DireitoUsoContratadoTrackingFields.OperationalEntityId;
+                    return mask;
+                }
+
+                private ulong GetContratacaoUsoMask(
+                    OperationalLoggingPolicy policy,
+                    string? operation,
+                    string? recordId)
+                {
+                    ulong mask = 0UL;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "Id"))
+                        mask |= ContratacaoUsoTrackingFields.Id;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "Oferta"))
+                        mask |= ContratacaoUsoTrackingFields.Oferta;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "Quantidade"))
+                        mask |= ContratacaoUsoTrackingFields.Quantidade;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "Creditos"))
+                        mask |= ContratacaoUsoTrackingFields.Creditos;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "CriadaEmUtc"))
+                        mask |= ContratacaoUsoTrackingFields.CriadaEmUtc;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "TenantID"))
+                        mask |= ContratacaoUsoTrackingFields.TenantID;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "Deleted"))
+                        mask |= ContratacaoUsoTrackingFields.Deleted;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "Changed"))
+                        mask |= ContratacaoUsoTrackingFields.Changed;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "UserId"))
+                        mask |= ContratacaoUsoTrackingFields.UserId;
+                    if (DomainFieldTracked(policy, "ContratacaoUso", operation, recordId, "OperationalEntityId"))
+                        mask |= ContratacaoUsoTrackingFields.OperationalEntityId;
                     return mask;
                 }
 

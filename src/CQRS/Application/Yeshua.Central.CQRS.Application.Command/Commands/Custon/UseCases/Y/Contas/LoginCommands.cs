@@ -9,3 +9,10 @@
 // </yeshua>
 
 //Dominio.Schemas.CQRS.SourceCodeAplicationCommandCommandsUseCaseGroup
+
+namespace Command.UseCase;
+
+public partial record LoginOutputCommand
+{
+    public string UsageRights { get; set; } = "";
+}

@@ -12,10 +12,12 @@ namespace Command.Patterns
     public class SagaExecutor : ISagaExecutor
     {
         private readonly ILogger _logger;
+        private readonly RepositoryInterfaces.Commercial.IUsageRightsRepository? _usageRights;
 
-        public SagaExecutor(ILogger logger)
+        public SagaExecutor(ILogger logger, RepositoryInterfaces.Commercial.IUsageRightsRepository? usageRights = null)
         {
             _logger = logger;
+            _usageRights = usageRights;
         }
 
         public void Execute(SagaBase saga, ISagaHandlerResolver resolver)
@@ -78,6 +80,15 @@ namespace Command.Patterns
                     if (telemetry.Enabled)
                         Record(saga, step, "StepStarted", telemetry, executionIdentity, 0);
 
+                    if (!string.IsNullOrEmpty(handler.UsageResourceKey))
+                    {
+                        if (_usageRights is null)
+                            throw new SagaStepExecutionException("Controle de direito de uso indisponivel.", retryable: false,
+                                nature: OperationalFailureNature.Technical, stableCode: "USAGE_CONTROL_UNAVAILABLE");
+                        if (!_usageRights.Reserve(handler.UsageResourceKey, step.CorrelationId, handler.UsageUnits))
+                            throw new SagaStepExecutionException("Contrate um periodo ou mais unidades para este recurso.", retryable: false,
+                                stableCode: "USAGE_RIGHT_REQUIRED");
+                    }
                     handler.Execute(saga, step);
 
                     if (telemetry.Enabled && step.Status == SagaStepStatus.WaitingResponse)
@@ -97,6 +108,10 @@ namespace Command.Patterns
                         Record(saga, step, "Resumed", telemetry, executionIdentity, 0);
 
                     handler.ApplyResponse(saga, step, step.Payload);
+
+                    if (!string.IsNullOrEmpty(handler.UsageResourceKey) && step.Status is SagaStepStatus.PendingApply or SagaStepStatus.Completed)
+                        (_usageRights ?? throw new InvalidOperationException("Controle de direito de uso indisponivel."))
+                            .Confirm(handler.UsageResourceKey, step.CorrelationId);
 
                     if (step.Status == SagaStepStatus.PendingApply)
                         saga.CompleteCurrentStep(step.Payload);
@@ -132,6 +147,8 @@ namespace Command.Patterns
             {
                 activity?.SetStatus(ActivityStatusCode.Error, e.GetType().Name);
                 HandleFailure(saga, step, e, e.Classification);
+                if (saga.Status == SagaStatus.Failed && !string.IsNullOrEmpty(handler.UsageResourceKey))
+                    _usageRights?.Release(handler.UsageResourceKey, step.CorrelationId);
                 OperationalActivity.RecordFailure(
                     activity,
                     e,
@@ -159,6 +176,8 @@ namespace Command.Patterns
                     retryable: true,
                     OperationalFailureOrigin.Application);
                 HandleFailure(saga, step, e, classification);
+                if (saga.Status == SagaStatus.Failed && !string.IsNullOrEmpty(handler.UsageResourceKey))
+                    _usageRights?.Release(handler.UsageResourceKey, step.CorrelationId);
                 OperationalActivity.RecordFailure(
                     activity,
                     e,

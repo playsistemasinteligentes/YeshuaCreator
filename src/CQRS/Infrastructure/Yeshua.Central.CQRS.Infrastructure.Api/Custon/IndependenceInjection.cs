@@ -15,6 +15,10 @@ public static class DependenceInjectionCuston
     public static void MapDependenceInjection(WebApplicationBuilder builder)
     {
         builder.Services.AddHttpContextAccessor();
+        builder.Services.AddScoped<RepositoryInterfaces.Commercial.Central.IFinanceiroRepository, Central.Repository.Commercial.FinanceiroRepository>();
+        builder.Services.AddSingleton<RepositoryInterfaces.Commercial.ICommercialTokenIssuer, YourNamespace.Services.CommercialTokenIssuer>();
+        builder.Services.AddSingleton(new Dominio.Commercial.Central.BillingPrototypeOptions
+            { SandboxEnabled = builder.Configuration.GetValue<bool>("Billing:SandboxEnabled") });
         builder.Services.AddSingleton<Command.Patterns.FileUpload.UploadTokenHelper>(_ =>
             new(builder.Configuration["UploadTokens:SigningKey"] ?? string.Empty));
         builder.Services.AddScoped<IExecutionContext, executionContextHttp>();

@@ -115,6 +115,10 @@ public static class StaticModules
         var menuGroup0_0 = new Menu("Plataforma", "", "menuGroup");
         menuGroup0_0.AddSubMenu(new SubMenu("Catalogo de Aplicativos", "#application-catalog", "customPage", "application-catalog", "central.catalogo.visualizar"));
         Modules[Modules.Count - 1].Menus.Add(menuGroup0_0);
+        Modules.Add(new Module("COBRANCA", "Cobranca e contratacoes"));
+        var menuGroup1_0 = new Menu("Minha conta", "", "menuGroup");
+        menuGroup1_0.AddSubMenu(new SubMenu("Creditos e contratacoes", "#central-financeiro", "customPage", "central-financeiro", "central.financeiro"));
+        Modules[Modules.Count - 1].Menus.Add(menuGroup1_0);
         Modules.Add(new Module("ADM", "Administrativo"));
         Modules[Modules.Count - 1].Menus.Add(new Menu("yFileUpload", "/getMetaDatayFileUpload", "crud", "", ""));
         Modules[Modules.Count - 1].Menus.Add(new Menu("ySaga", "/getMetaDataySaga", "crud", "", ""));
@@ -141,6 +145,19 @@ public static class StaticYeshuaModuleContinuations
     static StaticYeshuaModuleContinuations()
     {
         Continuations.Clear();
+    }
+}
+public static class StaticUsageRights
+{
+    public static readonly string[] Resources = new string[] {  };
+    public static bool AllowsApplication(System.Security.Claims.ClaimsPrincipal principal)
+    {
+        return true;
+    }
+    public static System.DateTime TokenExpiry(System.Security.Claims.ClaimsPrincipal principal, System.DateTime proposed)
+    {
+        var expiry = Dominio.Commercial.UsageRightClaims.TokenExpiry(principal, proposed);
+        return expiry;
     }
 }
 }

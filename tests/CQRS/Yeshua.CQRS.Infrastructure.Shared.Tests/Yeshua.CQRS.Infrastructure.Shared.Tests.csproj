@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\CQRS\Domain\Yeshua.CQRS.Domain\Yeshua.CQRS.Domain.csproj" />
     <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.CQRS.Infrastructure.Shared\Yeshua.CQRS.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.CQRS.Infrastructure.RepositoryWrite\Yeshua.CQRS.Infrastructure.RepositoryWrite.csproj" />
   </ItemGroup>
 
 </Project>

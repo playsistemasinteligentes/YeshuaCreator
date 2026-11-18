@@ -2408,12 +2408,19 @@ builder.Services.AddAuthorization(options =>
             || (string.Equals(applicationName, ""Central"", StringComparison.OrdinalIgnoreCase)
                 ? IsCentralToken(context)
                 : IsApplicationToken(context, applicationName)))
+        .RequireAssertion(context => Modules.StaticUsageRights.AllowsApplication(context.User))
         .Build();
 
     options.AddPolicy(""ApplicationEntry"", policy =>
         policy.RequireAuthenticatedUser().RequireAssertion(context =>
             IsLegacy(context)
-            || (IsPlatformToken(context) && HasCatalog(context, applicationName))));
+            || (IsPlatformToken(context) && HasCatalog(context, applicationName)))
+            .RequireAssertion(context => Modules.StaticUsageRights.AllowsApplication(context.User)));
+    options.AddPolicy(""OperationalAccess"", policy =>
+        policy.RequireAuthenticatedUser().RequireAssertion(context =>
+            IsLegacy(context)
+            || (string.Equals(applicationName, ""Central"", StringComparison.OrdinalIgnoreCase)
+                ? IsCentralToken(context) : IsApplicationToken(context, applicationName))));
 });
 
 var app = builder.Build();
@@ -3538,6 +3545,10 @@ public static class CustonDependenceInjection
         public void CodeGenaration(Migration.MigrationBase migration)
         {
             AppSolutionGenerate(migration);
+            if (migration.UsageRights.Count > 0)
+                EnsureProjectReference(
+                    Path.Combine(GetPathAppInfraestructure(), GetApplicationInfrastructureRepositoryWriteProjectName(), GetApplicationInfrastructureRepositoryWriteProjectName() + ".csproj"),
+                    Path.Combine(GetPathAppInfraestructure(), "Yeshua.CQRS.Infrastructure.RepositoryWrite", "Yeshua.CQRS.Infrastructure.RepositoryWrite.csproj"));
             AppInfrastructureGenerateRuntimeIdentity();
             AppInfrastructureGenerateOperationalHealth();
             AppInfrastructureGenerateOperationalControl(migration);

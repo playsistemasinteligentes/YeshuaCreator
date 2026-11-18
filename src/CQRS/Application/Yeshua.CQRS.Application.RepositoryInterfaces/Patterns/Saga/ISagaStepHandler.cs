@@ -11,6 +11,8 @@ namespace RepositoryInterfaces.Patterns.Saga
     {
         string Key { get; }     // 🔑 casa com o step.Key
         bool RequiresExternalStimulus { get; }
+        string UsageResourceKey => string.Empty;
+        decimal UsageUnits => 1;
 
         void Execute(SagaBase saga, SagaStepBase step);
         void ApplyResponse(SagaBase saga, SagaStepBase step, string payload);

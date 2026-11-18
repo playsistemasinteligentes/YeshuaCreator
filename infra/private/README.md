@@ -454,6 +454,15 @@ Usa docker-compose ou docker compose; YESHUA_TEST_COMPOSE pode apontar para
 um executavel standalone oficial. Sem CLI, esse teste e explicitamente ignorado.
 Nunca substituir a fixture pelas credenciais reais para imprimir config.
 
+### Prototipo Financeiro Da Central
+
+`Apps.Central.Billing.SandboxEnabled` aceita as strings `"true"` ou `"false"`
+(padrao `"false"`). O loader exporta `YESHUA_BILLING_SANDBOX_ENABLED` somente
+para Central/all/shared, e o Compose entrega a opcao apenas a API Central.
+Ela libera recarga e confirmacao de pagamentos simulados, sem operacao bancaria.
+O arquivo privado preservado e reutilizado em deploy/reconstrucao; nao ativar
+simulacao em ambiente comercial. Ver [cobranca e direitos](../../docs/Central/COBRANCA_E_DIREITOS_DE_USO.md).
+
 ### Executor Codex Do Clinica
 
 A configuracao Apps.Clinica no credentials.json geral usa o cofre privado

@@ -81,6 +81,21 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
 builder.Services.AddTransient<IRepository.Write.IChamadoSuporteWriteRepository, Input.Repository.ChamadoSuporte.ChamadoSuporteWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IChamadoSuporteReadRepository, Read.Repository.ChamadoSuporteReadRepository>();
 
+builder.Services.AddTransient<IRepository.Write.ICarteiraCreditoWriteRepository, Input.Repository.CarteiraCredito.CarteiraCreditoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.ICarteiraCreditoReadRepository, Read.Repository.CarteiraCreditoReadRepository>();
+
+builder.Services.AddTransient<IRepository.Write.ICobrancaCreditoWriteRepository, Input.Repository.CobrancaCredito.CobrancaCreditoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.ICobrancaCreditoReadRepository, Read.Repository.CobrancaCreditoReadRepository>();
+
+builder.Services.AddTransient<IRepository.Write.IMovimentoCreditoWriteRepository, Input.Repository.MovimentoCredito.MovimentoCreditoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IMovimentoCreditoReadRepository, Read.Repository.MovimentoCreditoReadRepository>();
+
+builder.Services.AddTransient<IRepository.Write.IDireitoUsoContratadoWriteRepository, Input.Repository.DireitoUsoContratado.DireitoUsoContratadoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IDireitoUsoContratadoReadRepository, Read.Repository.DireitoUsoContratadoReadRepository>();
+
+builder.Services.AddTransient<IRepository.Write.IContratacaoUsoWriteRepository, Input.Repository.ContratacaoUso.ContratacaoUsoWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IContratacaoUsoReadRepository, Read.Repository.ContratacaoUsoReadRepository>();
+
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
 builder.Services.AddTransient<IQuery.Read.IyFileUploadQueryRead, Query.Read.yFileUploadQueryRead>();
@@ -332,6 +347,18 @@ builder.Services.AddTransient<Command.Receivers.UseCase.AbrirChamadoSuporteHandl
 builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarChamadoSuporteHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarChamadoSuporteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarFinanceiroHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.CriarRecargaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarPagamentoTesteHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ContratarUsoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.AtualizarAcessoHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarFinanceiroHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

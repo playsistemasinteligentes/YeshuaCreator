@@ -77,6 +77,7 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                     builder.Services.AddTransient<ISagaStepContinuation, SagaStepContinuation>();
                     builder.Services.AddScoped<OutboxService>();
 
+builder.Services.AddScoped<RepositoryInterfaces.Commercial.IUsageRightsRepository, Shared.Repository.Commercial.UsageRightsRepository>();
 
 builder.Services.AddTransient<IRepository.Write.IClinicaWriteRepository, Input.Repository.Clinica.ClinicaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IClinicaReadRepository, Read.Repository.ClinicaReadRepository>();
@@ -239,6 +240,12 @@ builder.Services.AddTransient<Command.Receivers.Read.RevisaoRegistroSessaoReadQu
 
 builder.Services.AddTransient<IRepository.Write.IPlanoRecorrenciaConsultaWriteRepository, Input.Repository.PlanoRecorrenciaConsulta.PlanoRecorrenciaConsultaWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IPlanoRecorrenciaConsultaReadRepository, Read.Repository.PlanoRecorrenciaConsultaReadRepository>();
+
+builder.Services.AddTransient<IRepository.Write.IyUsageRightWriteRepository, Input.Repository.yUsageRight.yUsageRightWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyUsageRightReadRepository, Read.Repository.yUsageRightReadRepository>();
+
+builder.Services.AddTransient<IRepository.Write.IyUsageConsumptionWriteRepository, Input.Repository.yUsageConsumption.yUsageConsumptionWriteRepository>();
+builder.Services.AddTransient<IRepository.Read.IyUsageConsumptionReadRepository, Read.Repository.yUsageConsumptionReadRepository>();
 
 builder.Services.AddTransient<IRepository.Write.IyFileUploadWriteRepository, Input.Repository.yFileUpload.yFileUploadWriteRepository>();
 builder.Services.AddTransient<IRepository.Read.IyFileUploadReadRepository, Read.Repository.yFileUploadReadRepository>();
@@ -525,6 +532,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.PreverRecorrenciaConsult
 builder.Services.AddTransient<Command.Receivers.UseCase.ConfirmarRecorrenciaConsultasHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarRecorrenciaConsultasHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ProcessUsageRightsHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

@@ -12,7 +12,8 @@ RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=lock
 
 COPY --parents src/Engine/Yeshua.Engine/ src/Studio/Yeshua.Studio.AppClinicas/ src/CQRS/*/Yeshua.Clinica.CQRS.*/ \
     src/CQRS/Application/Yeshua.CQRS.Application.Command/ src/CQRS/Application/Yeshua.CQRS.Application.RepositoryInterfaces/ \
-    src/CQRS/Domain/Yeshua.CQRS.Domain/ src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/ ./
+    src/CQRS/Domain/Yeshua.CQRS.Domain/ src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/ \
+    src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.RepositoryWrite/ ./
 
 FROM source AS publish-migration
 RUN --mount=type=cache,id=yeshua-nuget,target=/root/.nuget/packages,sharing=locked dotnet publish src/Studio/Yeshua.Studio.AppClinicas/Yeshua.Studio.AppClinicas.csproj -p:RestoreForce=true -p:RestoreDisableParallel=true -c Release -m:1 -p:BuildInParallel=false -p:UseSharedCompilation=false -o /app/publish/migration
