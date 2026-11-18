@@ -45,7 +45,64 @@ public sealed class CommercialHandlerTests
         Assert.Contains("indisponivel", response.Message);
     }
 
-    private static ExecutarFinanceiroHandler Create(Context context, bool sandbox)
+    [Fact]
+    public async Task Wallet_addition_calls_the_named_operation_with_authenticated_identity_and_no_charge()
+    {
+        var requestId = Guid.NewGuid().ToString("D");
+        var writes = 0;
+        var finance = Fake<IFinanceiroRepository>((name, args) => name switch
+        {
+            "AddWalletCredits" => Added(args),
+            "Read" => new FinanceiroSnapshot { Balance = 50m },
+            "ReadOffers" => CommercialOffers.All,
+            _ => throw new InvalidOperationException("Unexpected operation: " + name)
+        });
+        object? Added(object?[]? args)
+        {
+            Assert.Equal(7, args![0]); Assert.Equal(12, args[1]); Assert.Equal(requestId, args[2]); Assert.Equal(50m, args[3]);
+            writes++; return null;
+        }
+        var response = await new AdicionarCreditosCarteiraHandler(Create(new Context(12), true, finance), new Shered.Logger.Logger(), new Context(12))
+            .ExecuteAsync(new AdicionarCreditosCarteiraInputCommand { Creditos = 50, RequestId = requestId });
+        Assert.Equal(200, response.StatusCode); Assert.Equal(50m, response.Data.Saldo); Assert.Equal(1, writes);
+        Assert.Empty(response.Data.CobrancaId);
+    }
+
+    [Fact]
+    public async Task Wallet_addition_remains_explicitly_enabled_and_owner_only()
+    {
+        foreach (var context in new[] { new Context(12), new Context(13) })
+        {
+            var response = await new AdicionarCreditosCarteiraHandler(Create(context, context.UserId == 13), new Shered.Logger.Logger(), context)
+                .ExecuteAsync(new AdicionarCreditosCarteiraInputCommand { Creditos = 50, RequestId = Guid.NewGuid().ToString("D") });
+            Assert.Equal(400, response.StatusCode);
+        }
+        var member = new Context(13);
+        var allocation = await new AlocarCreditosCarteiraHandler(Create(member, true), new Shered.Logger.Logger(), member)
+            .ExecuteAsync(new AlocarCreditosCarteiraInputCommand { Oferta = "clinica-periodo", Quantidade = 1, RequestId = Guid.NewGuid().ToString("D") });
+        Assert.Equal(400, allocation.StatusCode);
+    }
+
+    [Fact]
+    public async Task Wallet_statement_preserves_service_and_derives_the_previous_balance_from_each_movement()
+    {
+        var context = new Context(12);
+        var finance = Fake<IFinanceiroRepository>((name, _) => name switch
+        {
+            "Read" => new FinanceiroSnapshot { Balance = 50m, Movements = [new FinanceiroMovement {
+                Tipo = "AlocacaoCarteira", Quantidade = -100, SaldoApos = 50,
+                Servico = "clinica.access", Descricao = "Clínica — 1 mês(es)" }] },
+            "ReadOffers" => CommercialOffers.All,
+            _ => throw new InvalidOperationException(name)
+        });
+        var response = await new ConsultarFinanceiroHandler(Create(context, true, finance), new Shered.Logger.Logger(), context)
+            .ExecuteAsync(new ConsultarFinanceiroInputCommand());
+        var movement = Assert.Single(response.Data.Movimentos);
+        Assert.Equal(150m, movement.SaldoAnterior); Assert.Equal(50m, movement.SaldoApos);
+        Assert.Equal("clinica.access", movement.Servico); Assert.Equal("Clínica — 1 mês(es)", movement.Descricao);
+    }
+
+    private static ExecutarFinanceiroHandler Create(Context context, bool sandbox, IFinanceiroRepository? repository = null)
     {
         var finance = Fake<IFinanceiroRepository>((name, arguments) => name switch
         {
@@ -53,7 +110,7 @@ public sealed class CommercialHandlerTests
             "ReadOffers" => CommercialOffers.All,
             _ => throw new InvalidOperationException("Consulta ou escrita financeira inesperada: " + name)
         });
-        return new ExecutarFinanceiroHandler(finance,
+        return new ExecutarFinanceiroHandler(repository ?? finance,
             Fake<IyTenantReadRepository>((_, _) => new yTenantDTO { id = 7, userid = 12 }),
             Fake<IyUserReadRepository>((_, _) => new yUserDTO { id = context.UserId, tenantid = 7 }),
             Fake<IyTenantApplicationReadRepository>((_, _) => throw new InvalidOperationException("Catalogo inesperado.")),

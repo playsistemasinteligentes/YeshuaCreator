@@ -29,27 +29,39 @@ compativeis com essas definicoes ficam disponiveis.
 
 As tabelas financeiras e de utilizacao sao internas, declaradas na DSL, sem
 CRUD, lookup, menu de entidade ou metadata publica. Commands normais expõem
-consulta, recarga demonstrativa, confirmacao simulada, contratacao e renovacao
+consulta, adicao demonstrativa a carteira, alocacao e renovacao
 do acesso. Mutacoes comerciais exigem o proprietario do tenant autenticado.
 
 ## Compra e acesso
 
-1. O responsavel acessa Central > Creditos e contratacoes.
-2. Gera uma cobranca de teste. Ela ainda nao disponibiliza creditos.
-3. Confirma o pagamento simulado, quando explicitamente habilitado no ambiente.
-4. Compra meses de acesso a Clinica e escolhe transcricao por periodo ou pacote.
-5. A Central desconta creditos e registra a contratacao na mesma transacao.
-6. O token atualizado transporta os direitos para a entrada do aplicativo.
+1. O responsavel acessa Central > Carteira de creditos.
+2. Em **Adicionar creditos a carteira**, escolhe a quantidade e confirma a adicao.
+   Neste prototipo o saldo entra diretamente, sem cobranca ou confirmacao de Pix.
+3. Na etapa abaixo, **Alocar creditos da carteira**, escolhe o servico e o periodo
+   ou pacote. A Central desconta o saldo e ativa o direito na mesma transacao.
+4. O token atualizado transporta os direitos para a entrada do aplicativo.
+
+A DSL M000004 declara AdicionarCreditosCarteira e AlocarCreditosCarteira com os
+mesmos conceitos da interface. Os contratos antigos de cobranca permanecem para
+compatibilidade, fora do fluxo atual. O corpo Up de M000003 e suas definicoes de
+autorizacao continuam iguais; somente seu DTO de movimento recebeu os campos
+opcionais de apresentacao. Nao houve nova tabela ou mudanca de dados historicos.
+
+O extrato separa entrada, saida, saldo anterior e saldo apos, identifica o servico
+e permite filtrar a visualizacao. A identificacao de alocacoes novas e anteriores
+usa a referencia ja persistida para ContratacaoUso; nao consulta uma vez por linha.
+Direitos por periodo sem pacote de unidades aparecem como Por periodo.
+Pagamento real por Pix e transferencia entre servicos nao estao implementados.
 
 Sem periodo ativo, a entrada responde `403` com `USAGE_PERIOD_REQUIRED` antes
 de abrir a sessao local. A tela explica a necessidade de contratar ou renovar e
-oferece **Ir para creditos e contratacoes**, direcionando para
+oferece **Ir para a carteira de creditos**, direcionando para
 `/spa/?app=Central#central-financeiro` com a identidade atual. O dashboard e suas
 consultas nao sao carregados nesse caso. Falta de permissao continua sendo um
 bloqueio distinto; sessao expirada pede novo login e falha tecnica permite tentar
 novamente. Esse tratamento nao concede saldo nem direito automaticamente.
 
-Pedidos de recarga e contratacao possuem identidade idempotente vinculada ao
+Pedidos de adicao e alocacao possuem identidade idempotente vinculada ao
 tenant. Repetir o mesmo pedido nao repete seu efeito; alterar seus parametros
 com a mesma identidade e rejeitado. A confirmacao repetida de uma cobranca nao
 duplica creditos. Compras concorrentes travam a mesma carteira e nao geram divida.
@@ -100,11 +112,11 @@ provedor. OpenAI, Groq e Queue continuam usando os caminhos existentes.
 
 ## Configuracao e limites do prototipo
 
-Pagamentos simulados ficam desabilitados por padrao. Para o sandbox autorizado,
+Adicoes demonstrativas ficam desabilitadas por padrao. Para o sandbox autorizado,
 o arquivo privado pode conter `Apps.Central.Billing.SandboxEnabled` com a string
 `"true"`. O loader existente exporta somente o sinalizador ao servico Central.
 Rebuild usa o mesmo arquivo privado e os mesmos bancos. O frontend identifica
-a simulacao e os precos demonstrativos. Nao existe Pix real nesta entrega.
+a adicao demonstrativa. Nao existe Pix real nesta entrega.
 
 Esta primeira carteira usa creditos livres. Lotes restritos, conversao, cambio,
 expiracao de creditos, devolucao bancaria, cobranca automatica, boleto,

@@ -13,7 +13,7 @@ export async function renderApplicationCatalog() {
 
     const finance = document.createElement('a');
     finance.href = '#central-financeiro';
-    finance.textContent = 'Creditos e contratacoes';
+    finance.textContent = 'Carteira de créditos';
     host.prepend(finance);
 
     const applications = await fetch('/applications.json', { cache: 'no-store' })

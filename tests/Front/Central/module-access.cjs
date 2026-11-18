@@ -56,13 +56,13 @@ const token = 'test.' + Buffer.from(JSON.stringify({ exp: Math.floor(Date.now() 
             assert.equal(await page.evaluate(() => window.dashboardCalls || 0), 0);
             assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
             await page.screenshot({ path: path.join(artifacts, `access-period-${viewport.width}.png`), fullPage: true });
-            await page.getByRole('button', { name: 'Ir para créditos e contratações', exact: true }).click();
+            await page.getByRole('button', { name: 'Ir para a carteira de créditos', exact: true }).click();
             await page.waitForURL('**/spa/?app=Central#central-financeiro');
             assert.equal(await page.evaluate(() => localStorage.getItem('token')), token, 'Keep identity when opening the Central');
 
             body = {}; await open();
             await page.getByRole('heading', { name: 'Acesso não autorizado', exact: true }).waitFor();
-            assert.equal(await page.getByRole('button', { name: 'Ir para créditos e contratações', exact: true }).count(), 0);
+            assert.equal(await page.getByRole('button', { name: 'Ir para a carteira de créditos', exact: true }).count(), 0);
             await page.getByRole('button', { name: 'Voltar à Central', exact: true }).click();
             await page.waitForURL('**/spa/?app=Central#dashboard');
 

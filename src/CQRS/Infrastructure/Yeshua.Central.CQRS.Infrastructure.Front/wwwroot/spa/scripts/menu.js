@@ -162,7 +162,7 @@ export function showModuleLoadError(error) {
     if (error?.status === 403 && error?.code === 'USAGE_PERIOD_REQUIRED') {
         title.textContent = 'Período de acesso necessário';
         message.textContent = error.message;
-        primary.textContent = 'Ir para créditos e contratações';
+        primary.textContent = 'Ir para a carteira de créditos';
         primary.title = primary.textContent;
         primary.addEventListener('click', () => location.assign('/spa/?app=Central#central-financeiro'));
     } else if (error?.status === 401) {

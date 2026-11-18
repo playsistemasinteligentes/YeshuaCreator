@@ -14,7 +14,7 @@ public partial class ContratarUsoHandler
         State<ContratarUsoOutputCommand> state, ContratarUsoInputCommand command, CancellationToken cancellationToken)
     {
         var result = await _financeiro.ExecuteAsync(new ExecutarFinanceiroInputCommand
-            { Operacao = "contratar", RequestId = command.RequestId, Oferta = command.Oferta, Quantidade = command.Quantidade }, cancellationToken);
+            { Operacao = "alocar", RequestId = command.RequestId, Oferta = command.Oferta, Quantidade = command.Quantidade }, cancellationToken);
         return result.StatusCode is >= 200 and < 300
             ? Success(result.Message, FinanceiroResults.Copy<ContratarUsoOutputCommand>(result.Data))
             : ValidationError(result.Message, new ContratarUsoOutputCommand());

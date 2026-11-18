@@ -81,5 +81,5 @@ public sealed record OfertaFinanceiraInfo(string Codigo = "", string Titulo = ""
     string Modelo = "", decimal PrecoCreditos = 0, int Meses = 0, decimal Unidades = 0);
 public sealed record DireitoFinanceiroInfo(string Recurso = "", string ValidoAteUtc = "", decimal UnidadesContratadas = 0);
 public sealed record MovimentoFinanceiroInfo(string Tipo = "", string Referencia = "", decimal Quantidade = 0,
-    decimal SaldoApos = 0, string CriadoEmUtc = "");
+    decimal SaldoApos = 0, string CriadoEmUtc = "", string Servico = "", string Descricao = "", decimal SaldoAnterior = 0);
 public sealed record CobrancaFinanceiraInfo(string Id = "", decimal Creditos = 0, decimal Valor = 0, int Status = 0);

@@ -8,9 +8,10 @@ public interface IFinanceiroRepository
     FinanceiroSnapshot Read(int tenantId);
     IReadOnlyList<UsageRight> ReadRights(int tenantId);
     IReadOnlyList<CommercialOffer> ReadOffers();
+    void AddWalletCredits(int tenantId, int userId, string requestId, decimal credits);
     string CreateCharge(int tenantId, int userId, string requestId, decimal credits);
     void ConfirmSandboxPayment(int tenantId, int userId, string chargeId);
-    void Purchase(int tenantId, int userId, string requestId, string offerCode, int quantity);
+    void AllocateWalletCredits(int tenantId, int userId, string requestId, string offerCode, int quantity);
 }
 
 public sealed class FinanceiroSnapshot
@@ -27,6 +28,10 @@ public sealed class FinanceiroMovement
     public decimal Quantidade { get; set; }
     public decimal SaldoApos { get; set; }
     public DateTime CriadoEmUtc { get; set; }
+    public string Oferta { get; set; } = "";
+    public int QuantidadeOferta { get; set; }
+    public string Servico { get; set; } = "";
+    public string Descricao { get; set; } = "";
 }
 public sealed class FinanceiroCharge
 {

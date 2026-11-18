@@ -9,6 +9,18 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Cobranca E Direitos De Uso
 
+- Decisao de 2026-11-18: a interface usa Carteira de creditos, com Adicionar
+  creditos a carteira e Alocar creditos da carteira em etapas verticais. Os
+  commands publicos correspondentes sao AdicionarCreditosCarteira e
+  AlocarCreditosCarteira. Adicao demonstrativa e direta, atomica e idempotente,
+  habilitada somente pelo SandboxEnabled existente e pelo proprietario do tenant;
+  nao cria cobranca nem exige confirmacao separada. Pix e transferencia entre
+  servicos sao futuros. Alocacao ativa periodo/pacote e desconta o saldo; nao
+  cria subcarteira nem saldo transferivel. Os contratos antigos continuam apenas
+  para compatibilidade. O extrato identifica servico, descricao, saldo anterior,
+  entrada, saida e saldo apos; historico anterior permanece legivel e preservado.
+  Retencao, indices e arquivamento ficam para avaliacao futura, sem mudanca agora.
+
 - Decisao de 2026-11-17: a Central mantem pagamento, carteira de creditos e
   contratacao; aplicativos recebem direitos por periodo ou quantidade. A DSL
   declara as modalidades aceitas e a borda cobrada. Precos e ofertas pertencem
@@ -21,7 +33,7 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   contratado, nunca saldo disponivel; reserva e consumo sao atomicos e persistidos
   no aplicativo, por tenant e identidade estavel do step, sem nova cobranca no retry.
 - Na entrada, getMenu distingue ausencia de periodo ativo com HTTP 403 e
-  USAGE_PERIOD_REQUIRED, apontando para Central > Creditos e contratacoes.
+  USAGE_PERIOD_REQUIRED, apontando para Central > Carteira de creditos.
   A policy ApplicationEntry valida identidade/catalogo; o endpoint valida o periodo
   antes de abrir a sessao. A policy das operacoes continua exigindo periodo ativo.
   O Front nao carrega o dashboard do aplicativo quando a entrada e negada e

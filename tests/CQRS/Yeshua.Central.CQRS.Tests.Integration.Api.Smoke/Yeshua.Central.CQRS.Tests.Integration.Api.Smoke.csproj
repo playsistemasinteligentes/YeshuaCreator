@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\CQRS\Application\Yeshua.Central.CQRS.Application.Command\Yeshua.Central.CQRS.Application.Command.csproj" />
     <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.Central.CQRS.Infrastructure.Shared\Yeshua.Central.CQRS.Infrastructure.Shared.csproj" />
+    <ProjectReference Include="..\..\..\src\CQRS\Infrastructure\Yeshua.Central.CQRS.Infrastructure.RepositoryWrite\Yeshua.Central.CQRS.Infrastructure.RepositoryWrite.csproj" />
     <ProjectReference Include="..\Yeshua.CQRS.Tests.Integration.Api.TestKit\Yeshua.CQRS.Tests.Integration.Api.TestKit.csproj" />
   </ItemGroup>
 

@@ -14,11 +14,56 @@ public sealed class FinanceiroRepository(IUnitOfWork work) : IFinanceiroReposito
     {
         Balance = work.ExecuteScalar<decimal>("SELECT COALESCE((SELECT Saldo FROM CarteiraCredito WHERE Id=CONVERT(varchar(32),@TenantID) AND TenantID=@TenantID AND Deleted=0),0);", new { TenantID = tenantId }),
         Rights = ReadRights(tenantId),
-        Movements = work.Query<FinanceiroMovement>(@"SELECT TOP(50) Tipo,Referencia,Quantidade,SaldoApos,CriadoEmUtc
-            FROM MovimentoCredito WHERE TenantID=@TenantID AND Deleted=0 ORDER BY CriadoEmUtc DESC,Id;", new { TenantID = tenantId }).ToList(),
+        Movements = ReadWalletMovements(tenantId),
         Charges = work.Query<FinanceiroCharge>(@"SELECT TOP(20) Id,Creditos,Valor,Status FROM CobrancaCredito
             WHERE TenantID=@TenantID AND Deleted=0 ORDER BY CriadaEmUtc DESC,Id;", new { TenantID = tenantId }).ToList()
     };
+
+    private List<FinanceiroMovement> ReadWalletMovements(int tenantId)
+    {
+        var movements = work.Query<FinanceiroMovement>(@"SELECT TOP(50) m.Tipo,m.Referencia,m.Quantidade,m.SaldoApos,m.CriadoEmUtc,
+                c.Oferta,COALESCE(c.Quantidade,0) QuantidadeOferta
+            FROM MovimentoCredito m LEFT JOIN ContratacaoUso c ON c.Id=m.Referencia AND c.TenantID=m.TenantID AND c.Deleted=0
+                AND m.Tipo IN ('Contratacao','AlocacaoCarteira')
+            WHERE m.TenantID=@TenantID AND m.Deleted=0 ORDER BY m.CriadoEmUtc DESC,m.Id;", new { TenantID = tenantId }).ToList();
+        foreach (var movement in movements)
+        {
+            if (movement.Tipo is "Recarga" or "AdicaoCarteira")
+            {
+                movement.Servico = "carteira";
+                movement.Descricao = "Adição à carteira";
+                continue;
+            }
+            var offer = CommercialOffers.All.FirstOrDefault(item => item.Code == movement.Oferta);
+            movement.Servico = offer?.Resource ?? "";
+            var title = offer?.Resource switch { "clinica.access" => "Clínica", "clinica.transcription" => "Transcrição de áudio", _ => movement.Oferta };
+            movement.Descricao = offer is null ? "Alocação de créditos (serviço não identificado)"
+                : offer.Model == "period" ? $"{title} — {offer.Months * movement.QuantidadeOferta} {(offer.Months * movement.QuantidadeOferta == 1 ? "mês" : "meses")}"
+                : $"{title} — {offer.Units * movement.QuantidadeOferta} transcrições";
+        }
+        return movements;
+    }
+
+    public void AddWalletCredits(int tenantId, int userId, string requestId, decimal credits)
+    {
+        if (credits is not (50m or 100m or 500m)) throw new ArgumentException("Escolha uma quantidade de créditos disponível.");
+        var reference = RequestKey(tenantId, requestId);
+        var movementId = Hash(tenantId + ":AdicaoCarteira:" + reference);
+        Atomic(() =>
+        {
+            LockWallet(tenantId, userId);
+            var previous = work.QueryFirstOrDefault<FinanceiroMovement>(@"SELECT Quantidade FROM MovimentoCredito WITH(UPDLOCK,HOLDLOCK)
+                WHERE Id=@Id AND TenantID=@TenantID AND Deleted=0;", new { Id = movementId, TenantID = tenantId });
+            if (previous is not null)
+            {
+                if (previous.Quantidade != credits) throw new InvalidOperationException("Pedido já utilizado para outra adição à carteira.");
+                return;
+            }
+            work.Execute(@"UPDATE CarteiraCredito SET Saldo=Saldo+@Creditos,Changed=SYSUTCDATETIME()
+                WHERE Id=CONVERT(varchar(32),@TenantID) AND TenantID=@TenantID AND Deleted=0;", new { Creditos = credits, TenantID = tenantId });
+            AddMovement(tenantId, userId, "AdicaoCarteira", reference, credits);
+        });
+    }
 
     public IReadOnlyList<UsageRight> ReadRights(int tenantId)
         => work.Query<RightRow>(@"SELECT ResourceKey,PeriodUntilUtc,GrantedUnits FROM DireitoUsoContratado
@@ -81,7 +126,7 @@ public sealed class FinanceiroRepository(IUnitOfWork work) : IFinanceiroReposito
         });
     }
 
-    public void Purchase(int tenantId, int userId, string requestId, string offerCode, int quantity)
+    public void AllocateWalletCredits(int tenantId, int userId, string requestId, string offerCode, int quantity)
     {
         if (quantity is < 1 or > 36) throw new ArgumentException("Escolha uma quantidade de 1 a 36.");
         var id = RequestKey(tenantId, requestId);
@@ -100,7 +145,7 @@ public sealed class FinanceiroRepository(IUnitOfWork work) : IFinanceiroReposito
                 ?? throw new ArgumentException("Oferta indisponivel ou nao declarada na DSL.");
             var total = checked(offer.PriceCredits * quantity);
             var balance = work.ExecuteScalar<decimal>("SELECT Saldo FROM CarteiraCredito WHERE Id=CONVERT(varchar(32),@TenantID) AND TenantID=@TenantID AND Deleted=0;", new { TenantID = tenantId });
-            if (balance < total) throw new InvalidOperationException("Creditos insuficientes. Adicione creditos antes de contratar.");
+            if (balance < total) throw new InvalidOperationException("Créditos insuficientes na carteira para esta alocação.");
             var rightId = Hash(tenantId + ":" + offer.Resource);
             var right = work.QueryFirstOrDefault<RightRow>(@"SELECT ResourceKey,PeriodUntilUtc,GrantedUnits FROM DireitoUsoContratado WITH(UPDLOCK,HOLDLOCK)
                 WHERE Id=@Id AND TenantID=@TenantID;", new { Id = rightId, TenantID = tenantId });
@@ -117,7 +162,7 @@ public sealed class FinanceiroRepository(IUnitOfWork work) : IFinanceiroReposito
                 INSERT INTO ContratacaoUso(Id,Oferta,Quantidade,Creditos,CriadaEmUtc,TenantID,UserId,Deleted,Changed,OperationalEntityId)
                     VALUES(@Id,@Oferta,@Quantidade,@Creditos,SYSUTCDATETIME(),@TenantID,@UserId,0,SYSUTCDATETIME(),@OperationalEntityId);",
                 new { Id = id, Oferta = offer.Code, Quantidade = quantity, Creditos = total, TenantID = tenantId, UserId = userId, OperationalEntityId = Guid.NewGuid().ToString("N") });
-            AddMovement(tenantId, userId, "Contratacao", id, -total);
+            AddMovement(tenantId, userId, "AlocacaoCarteira", id, -total);
             if (offer.GrantsApplicationAccess && until.HasValue)
                 work.Execute(@"IF NOT EXISTS(SELECT 1 FROM yTenantApplication WITH(UPDLOCK,HOLDLOCK) WHERE TenantID=@TenantID AND ApplicationKey=@Application AND Deleted=0)
                     INSERT INTO yTenantApplication(ApplicationKey,ValidUntil,TenantID,UserId,Deleted,Changed,OperationalEntityId)

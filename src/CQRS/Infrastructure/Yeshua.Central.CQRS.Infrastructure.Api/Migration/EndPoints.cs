@@ -980,6 +980,17 @@ app.MapDelete("/yapi/yUserGrant/DeleteyUserGrant", async ([FromServices] Command
                         [FromServices] Command.Receivers.UseCase.OpenApplicationSessionHandler sessionHandler) =>
                     {
                         const string applicationName = "Central";
+                        if (!StaticUsageRights.AllowsApplication(context.User))
+                        {
+                            context.Response.Headers.CacheControl = "no-store";
+                            return Results.Json(new
+                            {
+                                code = "USAGE_PERIOD_REQUIRED",
+                                message = "Você não possui um período de uso ativo para este aplicativo. Acesse a Central para contratar ou renovar o acesso.",
+                                application = applicationName,
+                                financeUrl = "/spa/?app=Central#central-financeiro"
+                            }, statusCode: StatusCodes.Status403Forbidden);
+                        }
                         var tokenOrigin = context.User.FindFirst("tokenOrigin")?.Value;
                         var tokenApplication = context.User.FindFirst("application")?.Value;
                         var modulesClaim = context.User.Claims.FirstOrDefault(c => c.Type == "userModules")?.Value;
@@ -3678,6 +3689,48 @@ catch (Exception ex)
 return Results.Problem(ex.Message);
 }
 }).RequireAuthorization("ApplicationEntry");
+
+
+app.MapPost("/yapi/Central/FinanceiroAdicionarCreditosCarteiraUseCase", async ([FromServices] Command.Receivers.UseCase.AdicionarCreditosCarteiraHandler receiver, [FromBody] Command.UseCase.AdicionarCreditosCarteiraInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Central/FinanceiroAlocarCreditosCarteiraUseCase", async ([FromServices] Command.Receivers.UseCase.AlocarCreditosCarteiraHandler receiver, [FromBody] Command.UseCase.AlocarCreditosCarteiraInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
 
 
 app.MapPost("/yapi/FileUpload/InfraStarSessionUploadUseCase", async ([FromServices] Command.Receivers.UseCase.StarSessionUploadHandler receiver, [FromBody] Command.UseCase.StarSessionUploadInputCommand command) =>
