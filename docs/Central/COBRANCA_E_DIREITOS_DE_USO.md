@@ -41,6 +41,14 @@ do acesso. Mutacoes comerciais exigem o proprietario do tenant autenticado.
 5. A Central desconta creditos e registra a contratacao na mesma transacao.
 6. O token atualizado transporta os direitos para a entrada do aplicativo.
 
+Sem periodo ativo, a entrada responde `403` com `USAGE_PERIOD_REQUIRED` antes
+de abrir a sessao local. A tela explica a necessidade de contratar ou renovar e
+oferece **Ir para creditos e contratacoes**, direcionando para
+`/spa/?app=Central#central-financeiro` com a identidade atual. O dashboard e suas
+consultas nao sao carregados nesse caso. Falta de permissao continua sendo um
+bloqueio distinto; sessao expirada pede novo login e falha tecnica permite tentar
+novamente. Esse tratamento nao concede saldo nem direito automaticamente.
+
 Pedidos de recarga e contratacao possuem identidade idempotente vinculada ao
 tenant. Repetir o mesmo pedido nao repete seu efeito; alterar seus parametros
 com a mesma identidade e rejeitado. A confirmacao repetida de uma cobranca nao

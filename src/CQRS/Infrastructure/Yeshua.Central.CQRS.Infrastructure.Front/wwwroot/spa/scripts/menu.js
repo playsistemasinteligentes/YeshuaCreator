@@ -1,4 +1,5 @@
 import { loadDataCrud } from './crud.js?v=20260926-userarea01';
+import { getApiErrorMessage } from './ServicesGlobal/apiFetch.js';
 
 export function buildMenu() {
     const btnToggleMenu = document.getElementById('btn-toggle-menu');
@@ -23,7 +24,13 @@ export async function loadDataMenu() {
         const token = localStorage.getItem('token');
         const response = await fetchMenu(token);
 
-        if (!response.ok) throw new Error('Token inválido ou expirado');
+        if (!response.ok) {
+            const body = await response.json().catch(() => ({}));
+            throw Object.assign(new Error(getApiErrorMessage(body, response.status)), {
+                status: response.status, code: body.code ?? body.Code
+            });
+        }
+        document.getElementById('module-load-error')?.remove();
 
         const applicationToken = response.headers.get('X-Yeshua-Application-Token');
         if (applicationToken) {
@@ -113,7 +120,9 @@ export async function loadDataMenu() {
 
     } catch (error) {
         showModuleLoadError(error);
+        return false;
     }
+    return true;
 }
 
 export function showModuleLoadError(error) {
@@ -145,12 +154,37 @@ export function showModuleLoadError(error) {
             </button>
         </div>`;
 
-    panel.querySelector('[data-action="retry"]')?.addEventListener('click', () => location.reload());
-    panel.querySelector('[data-action="central"]')?.addEventListener('click', () => {
-        localStorage.setItem('yeshua.activeApplication', 'Central');
-        location.hash = '#dashboard';
-        location.reload();
-    });
+    const title = panel.querySelector('h2'), message = panel.querySelector('p');
+    const primary = panel.querySelector('[data-action="retry"]');
+    const secondary = panel.querySelector('[data-action="central"]');
+    const goCentral = () => location.assign('/spa/?app=Central#dashboard');
+    primary.style.backgroundColor = 'var(--y-brand, #185a43)';
+    if (error?.status === 403 && error?.code === 'USAGE_PERIOD_REQUIRED') {
+        title.textContent = 'Período de acesso necessário';
+        message.textContent = error.message;
+        primary.textContent = 'Ir para créditos e contratações';
+        primary.title = primary.textContent;
+        primary.addEventListener('click', () => location.assign('/spa/?app=Central#central-financeiro'));
+    } else if (error?.status === 401) {
+        title.textContent = 'Sua sessão expirou';
+        message.textContent = 'Entre novamente para continuar.';
+        primary.textContent = 'Entrar novamente';
+        primary.title = primary.textContent;
+        primary.addEventListener('click', () => {
+            for (const key of ['token', 'tokenExp', 'refreshToken']) localStorage.removeItem(key);
+            location.assign('/spa/?app=Central#login');
+        });
+    } else if (error?.status === 403) {
+        title.textContent = 'Acesso não autorizado';
+        message.textContent = 'Seu usuário não tem permissão para acessar este aplicativo. Fale com o responsável pela sua conta.';
+        primary.textContent = 'Voltar à Central';
+        primary.title = primary.textContent;
+        primary.addEventListener('click', goCentral);
+        secondary.hidden = true;
+    } else {
+        primary.addEventListener('click', () => location.reload());
+    }
+    secondary.addEventListener('click', goCentral);
 }
 
 async function openMenuItem(item) {

@@ -54,6 +54,8 @@ async function renewCommercialSession(force = false) {
 export function getApiErrorMessage(payload, status, fields = []) {
     const code = Number(payload?.statusCode ?? payload?.StatusCode ?? status);
     if (status === 401) return 'Sua sessão expirou. Entre novamente para continuar.';
+    if (status === 403 && (payload?.code ?? payload?.Code) === 'USAGE_PERIOD_REQUIRED')
+        return payload?.message ?? payload?.Message ?? 'Contrate ou renove o período de acesso na Central de créditos e contratações.';
     if (status === 403) return 'Seu usuário não tem permissão para realizar esta ação.';
     if (status === 404) return 'O registro não foi encontrado. Atualize a pesquisa e tente novamente.';
     if (status >= 500 || code >= 500) return 'Não foi possível concluir a ação agora. Seus dados foram mantidos na tela. Tente novamente.';

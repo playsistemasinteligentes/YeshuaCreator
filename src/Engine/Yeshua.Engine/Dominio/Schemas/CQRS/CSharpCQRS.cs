@@ -2414,8 +2414,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy(""ApplicationEntry"", policy =>
         policy.RequireAuthenticatedUser().RequireAssertion(context =>
             IsLegacy(context)
-            || (IsPlatformToken(context) && HasCatalog(context, applicationName)))
-            .RequireAssertion(context => Modules.StaticUsageRights.AllowsApplication(context.User)));
+            || (IsPlatformToken(context) && HasCatalog(context, applicationName))));
     options.AddPolicy(""OperationalAccess"", policy =>
         policy.RequireAuthenticatedUser().RequireAssertion(context =>
             IsLegacy(context)
