@@ -38,3 +38,4 @@ for legacy_service in operational-intelligence-api operational-intelligence-agen
   fi
 done
 docker compose up -d --wait --wait-timeout 180 sqlserver redis rabbitmq yeshua-observability operational-intelligence
+bash "$APP_DIR/infra/deploy-bridge/install.sh"

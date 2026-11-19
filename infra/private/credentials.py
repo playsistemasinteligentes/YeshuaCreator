@@ -223,6 +223,10 @@ def exports(document, root, target, include_shared=False):
         if key in needed and len(result[key].encode("utf-8")) < 32:
             raise ConfigurationError("Chave de assinatura deve ter pelo menos 32 bytes: " + key)
     result["YESHUA_PRIVATE_ROOT"] = str(root)
+    result["YESHUA_MCP_DEPLOY_ENABLED"] = "false"
+    result["YESHUA_MCP_DEPLOY_DESTINATION"] = ""
+    result["YESHUA_MCP_DEPLOY_IDENTITY_FILE"] = ""
+    result["YESHUA_MCP_DEPLOY_KNOWN_HOSTS_FILE"] = ""
     result["YESHUA_FISCAL_PRIVATE_ROOT"] = str(root / "apps" / "Fiscal")
     memory_root = get(document, "Apps", "Memorias", "PrivateRoot")
     if memory_root and not Path(memory_root).is_absolute():
@@ -292,6 +296,14 @@ def environment(document, root, target, include_shared=False):
             tunnel_id, tunnel_key = result["YESHUA_MCP_TUNNEL_ID"], result["YESHUA_MCP_TUNNEL_API_KEY"]
             if bool(tunnel_id) != bool(tunnel_key) or (tunnel_id and not tunnel_id.startswith("tunnel_")):
                 raise ConfigurationError("McpTunnel exige Id valido e ApiKey juntos em providers.json.")
+            deploy = config.get("Deploy", {})
+            if not isinstance(deploy, dict) or set(deploy) - {"Enabled"} or type(deploy.get("Enabled", False)) is not bool:
+                raise ConfigurationError("Deploy.Enabled deve ser booleano em providers.json.")
+            if deploy.get("Enabled", False):
+                result["YESHUA_MCP_DEPLOY_ENABLED"] = "true"
+                result["YESHUA_MCP_DEPLOY_DESTINATION"] = "yeshua-deploy@host.docker.internal"
+                result["YESHUA_MCP_DEPLOY_IDENTITY_FILE"] = "/run/yeshua-deploy/id_ed25519"
+                result["YESHUA_MCP_DEPLOY_KNOWN_HOSTS_FILE"] = "/run/yeshua-deploy/known_hosts"
             development = config.get("AgentDevelopment", {})
             if not isinstance(development, dict):
                 raise ConfigurationError("AgentDevelopment deve ser um objeto em providers.json.")

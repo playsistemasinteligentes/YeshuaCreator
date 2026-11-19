@@ -63,6 +63,9 @@ services:
       Mcp__DatabaseQuery__Connections__Fiscal: "${YESHUA_SQL_MCP_FISCAL:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Memorias: "${YESHUA_SQL_MCP_MEMORIAS:?Configure credentials.json}"
       Mcp__PrivatePort: "5729"
+      Mcp__Deploy__Destination: "${YESHUA_MCP_DEPLOY_DESTINATION:-}"
+      Mcp__Deploy__IdentityFile: "${YESHUA_MCP_DEPLOY_IDENTITY_FILE:-}"
+      Mcp__Deploy__KnownHostsFile: "${YESHUA_MCP_DEPLOY_KNOWN_HOSTS_FILE:-}"
       McpTunnel__Id: "${YESHUA_MCP_TUNNEL_ID:-}"
       McpTunnel__ApiKey: "${YESHUA_MCP_TUNNEL_API_KEY:-}"
       OPERATIONAL_INTELLIGENCE_BASE_URL: "http://127.0.0.1:5728"
@@ -98,11 +101,14 @@ services:
       ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
     ports:
       - "127.0.0.1:5728:5728"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     volumes:
       - /root/YeshuaCreator:/server/YeshuaCreator:ro
       - /root/YeshuaCreator/infra/Shared/DockerCompose/observability/grafana/dashboards:/catalog/observability-dashboards:ro
       - /root/YeshuaStorage:/storage:ro
       - /root/YeshuaStorage/volatile/operational-intelligence/host-diagnostics:/host-diagnostics:ro
+      - ${YESHUA_PRIVATE_ROOT:?Configure credentials.json}/shared/OperationalAgent/integracoes/deploy-bridge:/run/yeshua-deploy:ro
       - /root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output
       - operational-agent-workspace:/workspace
       - operational-agent-codex:/home/agent/.codex

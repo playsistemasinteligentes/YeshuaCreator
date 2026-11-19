@@ -32,7 +32,10 @@ Nao criar approvals por requestId, segunda autenticacao ou confirmacao adicional
 Command/Receiver chama somente o deploy.sh por SSH com comando forcado, sem
 socket Docker ou orquestracao propria. `requestId` deduplica e consulta recibos;
 estado incerto nao repete execucao. Configuracao tecnica e recibos/logs privados
-do host: `infra/deploy-bridge/README.md`. Esta tarefa nao ativa infraestrutura.
+do host: `infra/deploy-bridge/README.md`. Por decisao explicita de 19/11/2026,
+a instalacao Shared pode ativar essa ponte pelo opt-in Deploy.Enabled do provider
+privado. MCP e Codex continuam na mesma unidade administrativa confiavel, sem
+promessa de isolamento entre eles nem novos containers nesta frente.
 `yeshua_storage_usage` e privada e somente leitura: entrega metadados do relatorio
 fixo `/host-diagnostics/disk-usage.json`. Nao aceita caminhos/comandos e nao executa
 limpeza. A leitura pela API evita depender de shell. Comandos do agente usam o
