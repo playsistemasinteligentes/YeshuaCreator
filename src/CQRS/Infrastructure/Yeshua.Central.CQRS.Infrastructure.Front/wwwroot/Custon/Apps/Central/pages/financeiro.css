@@ -25,6 +25,11 @@
 .central-financeiro td { overflow-wrap: normal; }
 .central-financeiro th { font-size: 13px; color: #52675e; }
 .central-financeiro td button { white-space: normal; }
+#financeiro-movimentos td:nth-child(2) { overflow-wrap: anywhere; }
+#financeiro-movimentos th:nth-child(n+3), #financeiro-movimentos td:nth-child(n+3) { text-align: right; font-variant-numeric: tabular-nums; }
+.financeiro-movimento { font-weight: 600; }
+.financeiro-credito { color: #185a43; }
+.financeiro-debito { color: #a12424; }
 @media (max-width: 680px) { .financeiro-forms { grid-template-columns: minmax(0, 1fr); gap: 0; } .central-financeiro { margin-top: 16px; padding: 0 12px 24px; } .central-financeiro h1 { font-size: 21px; } }
 @media (max-width: 680px) {
     #financeiro-movimentos table, #financeiro-movimentos tbody { display: block; }

@@ -67,11 +67,14 @@ export async function renderFinanceiro() {
         const rows = movements.filter(movement => !selected || movement.servico === selected).map(movement => {
             const quantity = Number(movement.quantidade);
             const description = movement.descricao || (quantity > 0 ? 'Adição à carteira' : 'Alocação de créditos');
+            const amount = document.createElement('span');
+            amount.className = `financeiro-movimento${quantity > 0 ? ' financeiro-credito' : quantity < 0 ? ' financeiro-debito' : ''}`;
+            amount.textContent = `${quantity > 0 ? '+' : ''}${format(quantity)}`;
+            amount.setAttribute('aria-label', `${quantity > 0 ? 'Crédito' : quantity < 0 ? 'Débito' : 'Sem movimentação'}: ${format(Math.abs(quantity))} créditos`);
             return [date(movement.criadoEmUtc), quantity < 0 ? `Alocação — ${description}` : description,
-                format(movement.saldoAnterior ?? Number(movement.saldoApos) - quantity),
-                quantity > 0 ? format(quantity) : '—', quantity < 0 ? format(-quantity) : '—', format(movement.saldoApos)];
+                amount, format(movement.saldoApos)];
         });
-        table(element('movimentos'), ['Data', 'Serviço / movimentação', 'Saldo anterior', 'Entrada', 'Saída', 'Saldo após'], rows);
+        table(element('movimentos'), ['Data', 'Serviço / movimentação', 'Movimentação', 'Saldo'], rows);
     }
     async function run(command, input = {}, success = '', onSuccess = null) {
         if (busy) return;
