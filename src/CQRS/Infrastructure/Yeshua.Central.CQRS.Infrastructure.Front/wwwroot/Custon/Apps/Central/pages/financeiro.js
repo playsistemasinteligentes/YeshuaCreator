@@ -1,4 +1,5 @@
 import { apiFetch, getApiErrorMessage, storeSessionToken } from '/spa/scripts/ServicesGlobal/apiFetch.js';
+import { getAuthenticationToken } from '/spa/scripts/application-context.js';
 
 export async function renderFinanceiro() {
     if (!document.getElementById('central-financeiro-css')) {
@@ -80,6 +81,8 @@ export async function renderFinanceiro() {
         if (busy) return;
         busy = true; status('Processando...'); host.querySelectorAll('button').forEach(button => button.disabled = true);
         try {
+            const centralToken = await getAuthenticationToken();
+            if (centralToken !== localStorage.getItem('token')) storeSessionToken(centralToken);
             const response = await apiFetch(`${environments.authenticationApi || '/yapi'}/Central/Financeiro${command}UseCase`,
                 { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(input) });
             const body = await response.json();
