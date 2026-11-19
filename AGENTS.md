@@ -1389,7 +1389,7 @@ O objetivo e reduzir custo e risco de mudanca, mantendo:
   Review aprovada nao e merge. Nao versionar na abertura/atualizacao da PR.
 - Nao usar Aplicativos:, tags por componente, version.json ou Version.cs.
 - A Central consulta uma unica vez por carregamento a versao compilada da API,
-  sem GitHub nem polling. Deploy usa tag existente e nunca calcula versao.
+  sem GitHub nem polling. Deploy segue a main mais recente e nunca calcula versao.
 - Respeitar protecao da main; permissao administrativa para o bot e externa
   ao codigo. Falha de permissao bloqueia publicacao, sem force push.
 - O aplicativo publica commit/push/PR em rascunho apos a resposta; nao contornar
@@ -2164,13 +2164,19 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   autenticacao do operador ou outro sistema de permissoes. `requestId` serve
   somente para deduplicacao e consulta. A ponte SSH com comando forcado chama
   exclusivamente `infra/docker/deploy.sh` (all para completo), com destinos
-  allowlist e tag global existente, sem orquestracao propria, socket Docker ou
+  allowlist, sem orquestracao propria, socket Docker ou
   root irrestrito. Recibos/logs privados ficam em
   `Storage/persistent/infra/deploy-bridge`, area administrativa do host coberta
   pelo backup existente, fora dos volumes volateis do agente. Estado incerto
   vira Interrupted, sem replay. Ver `infra/deploy-bridge/README.md` para a
   configuracao tecnica. Esta tarefa altera codigo/testes da PR existente; nao
   autoriza deploy, ativacao, alteracao do host ou merge.
+- Decisao de 2026-11-19 (issue #47): `yeshua_deploy` nao aceita `releaseTag`.
+  A ponte chama o deploy.sh existente somente com o alvo, sem env de tag ou
+  skip-update; o script atualiza pelo fluxo de main. Clientes antigos devem
+  omitir o campo. Recibos antigos seguem consultaveis por status, mas seus IDs
+  nao podem ser reutilizados como execucao de main. Idempotencia e locks ficam
+  no caminho existente, sem replay de execucao incerta.
 - A recuperacao administrativa `yeshua_agent_restart` exige pedido explicito,
   `confirm=true` e o par taskId/requestId de `activeExecution`. Ela interrompe
   somente o processo da ordem atual e persiste Interrupted, sem repetir trabalho,

@@ -7,7 +7,7 @@ inalteradas. Não há `confirm`, aprovação externa, `approvals` ou outra auten
 do operador. `requestId` é somente chave de deduplicação e consulta.
 
 ```json
-{"action":"execute","requestId":"deploy-001","target":"all","releaseTag":"1.2.3"}
+{"action":"execute","requestId":"deploy-001","target":"all"}
 ```
 ```json
 {"action":"status","requestId":"deploy-001"}
@@ -15,8 +15,13 @@ do operador. `requestId` é somente chave de deduplicação e consulta.
 
 Destinos: `all`, `central`, `clinica`, `aps-adm`, `fiscal`, `memorias`, `shared`.
 O helper chama somente `/bin/bash /root/YeshuaCreator/infra/docker/deploy.sh TARGET`,
-com `YESHUA_RELEASE_TAG`. Tag, atualização Git, lock, build, migrations e serviços
-continuam no script existente. Não aceita comandos, caminhos, flags ou env livres.
+sem argumento de tag nem `YESHUA_RELEASE_TAG` ou `YESHUA_SKIP_UPDATE` no ambiente.
+O script executa `git reset --hard`, `git clean -fd` e `git pull origin main`
+antes do build; a ponte não presume que o checkout local esteja atualizado.
+Atualização Git, lock, build, migrations e serviços continuam no script existente.
+`releaseTag` foi removido do schema de entrada e é recusado explicitamente,
+inclusive nulo: clientes antigos devem omitir o campo. Seleção por tag permanece
+desativada; todo novo deploy segue a versão mais recente de `main`. Não aceita comandos, caminhos, flags ou env livres.
 
 A API está no container sem socket Docker e com checkout do host somente leitura.
 Por isso SSH permanece apenas como transporte técnico com comando forçado, sem
@@ -39,7 +44,10 @@ Isso limita a capacidade da máquina; não é aprovação por execução ou logi
 do operador. Não alterar Compose, sandbox, Docker ou host para contornar falhas.
 
 Recibos privados são gravados atomicamente com fsync antes da execução. Mesmo
-requestId/destino/tag devolve o estado; conteúdo diferente é recusado. Após perda
+requestId/destino devolve o estado; destino diferente é recusado.
+Recibos antigos com `releaseTag` continuam legíveis por `status` (campo opcional
+no schema de saída apenas para histórico). Seus IDs são recusados em `execute`,
+sem replay nem conversão de uma execução antiga em deploy da `main`. Após perda
 da conexão, consultar o mesmo ID. Execuções da ponte são serializadas; após perda
 do processo/reboot, `Running` sem lock vira `Interrupted`, sem replay automático.
 O processo destacado sobrevive à conexão/API; encerramento do cgroup SSH também

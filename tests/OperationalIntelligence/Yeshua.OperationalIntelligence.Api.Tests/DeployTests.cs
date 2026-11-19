@@ -29,18 +29,19 @@ public sealed class DeployTests
         foreach (var command in new[]
         {
             new DeployCommand("execute", "test"),
-            new DeployCommand("execute", "test", "all; id", "1.0.0"),
-            new DeployCommand("execute", "../test", "all", "1.0.0"),
-            new DeployCommand("execute", "test", "all", "1.0.0; id"),
+            new DeployCommand("execute", "test", "all; id"),
+            new DeployCommand("execute", "../test", "all"),
             new DeployCommand("restart", "test"), new DeployCommand("status", "test", "all")
         })
             await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(command, default));
         Assert.AreEqual(0, bridge.Calls);
-        await receiver.ExecuteAsync(new("execute", "test", "all", "1.0.0"), default);
+        foreach (var target in DeployReceiver.Targets)
+            await receiver.ExecuteAsync(new("execute", "test", target), default);
         await receiver.ExecuteAsync(new("status", "test"), default);
-        Assert.AreEqual(2, bridge.Calls);
+        Assert.AreEqual(DeployReceiver.Targets.Length + 1, bridge.Calls);
         var schema = JsonSerializer.SerializeToElement(new DeployTool(receiver).InputSchema);
         Assert.IsFalse(schema.GetProperty("properties").TryGetProperty("confirm", out _));
+        Assert.IsFalse(schema.GetProperty("properties").TryGetProperty("releaseTag", out _));
     }
 
     [TestMethod]
@@ -55,7 +56,7 @@ public sealed class DeployTests
         context.Request.Headers["X-Forwarded-Port"] = "5729";
         var access = new McpAccessPolicy(new HttpContextAccessor { HttpContext = context }, Options.Create(new McpOptions()));
         var registry = new McpToolRegistry([tool], access);
-        var arguments = JsonSerializer.SerializeToElement(new { action = "execute", requestId = "test", target = "all", releaseTag = "1.0.0" });
+        var arguments = JsonSerializer.SerializeToElement(new { action = "execute", requestId = "test", target = "all" });
         Assert.AreEqual(0, registry.List().Count);
         Assert.IsTrue((await registry.CallAsync("yeshua_deploy", arguments, default)).IsError ?? false);
         Assert.AreEqual(0, bridge.Calls);
@@ -87,10 +88,13 @@ public sealed class DeployTests
         var tool = new DeployTool(new(bridge));
         foreach (var json in new[]
         {
-            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","command":"id"}""",
-            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0","confirm":true}""",
+            """{"action":"execute","requestId":"test","target":"all","command":"id"}""",
+            """{"action":"execute","requestId":"test","target":"all","confirm":true}""",
             """{"action":"status","requestId":"test","confirm":false}""",
-            """{"action":"status","requestId":15}"""
+            """{"action":"status","requestId":15}""",
+            """{"action":"execute","requestId":"test","target":"all","releaseTag":"1.0.0"}""",
+            """{"action":"execute","requestId":"test","target":"all","releaseTag":null}""",
+            """{"action":"execute","requestId":"test","target":15}"""
         })
             await Assert.ThrowsExceptionAsync<ArgumentException>(() => tool.CallAsync(JsonSerializer.Deserialize<JsonElement>(json), default));
         Assert.AreEqual(0, bridge.Calls);

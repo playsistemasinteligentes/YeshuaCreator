@@ -14,8 +14,7 @@ public sealed class DeployOptions
     public string KnownHostsFile { get; init; } = "";
 }
 
-public sealed record DeployCommand(string Action, string RequestId, string? Target = null,
-    string? ReleaseTag = null);
+public sealed record DeployCommand(string Action, string RequestId, string? Target = null);
 
 public interface IDeployBridge
 {
@@ -32,11 +31,10 @@ public sealed class DeployReceiver(IDeployBridge bridge)
             throw new ArgumentException("Invalid requestId.");
         if (command.Action == "execute")
         {
-            if (!Targets.Contains(command.Target, StringComparer.Ordinal) ||
-                command.ReleaseTag is null || !Regex.IsMatch(command.ReleaseTag, "\\A(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\z"))
-                throw new ArgumentException("Execution requires an allowed target and an existing global releaseTag. Full deployment uses all.");
+            if (!Targets.Contains(command.Target, StringComparer.Ordinal))
+                throw new ArgumentException("Execution requires an allowed target. Full deployment uses all.");
         }
-        else if (command.Action != "status" || command.Target is not null || command.ReleaseTag is not null)
+        else if (command.Action != "status" || command.Target is not null)
             throw new ArgumentException("Status requires only action and requestId.");
         return bridge.SendAsync(command, cancellationToken);
     }
@@ -74,7 +72,6 @@ public sealed class SshDeployBridge(IOptions<DeployOptions> options) : IDeployBr
             if (command.Action == "execute")
             {
                 payload["target"] = command.Target;
-                payload["releaseTag"] = command.ReleaseTag;
             }
             await process.StandardInput.WriteAsync(JsonSerializer.Serialize(payload).AsMemory(), deadline.Token);
             process.StandardInput.Close();
@@ -108,7 +105,7 @@ public sealed class DeployTool(DeployReceiver receiver) : IMcpTool
 {
     public string Name => "yeshua_deploy";
     public bool IsReadOnly => false;
-    public string Description => "Deploy through the existing private administrative MCP connection. Calls only infra/docker/deploy.sh with an allowed target (all for full deployment) and an existing global releaseTag. requestId prevents duplicate execution; reuse it to read status after connection loss. No extra approval or confirmation. No arbitrary commands, restart, merge or cleanup.";
+    public string Description => "Deploy through the existing private administrative MCP connection. Calls only infra/docker/deploy.sh with an allowed target (all for full deployment) using the latest main through the script's Git update flow. releaseTag is rejected; version selection is disabled. requestId prevents duplicate execution; reuse it to read status after connection loss. No extra approval or confirmation. No arbitrary commands, restart, merge or cleanup.";
     public object InputSchema => new
     {
         type = "object", additionalProperties = false, required = new[] { "action", "requestId" },
@@ -116,15 +113,16 @@ public sealed class DeployTool(DeployReceiver receiver) : IMcpTool
         {
             action = new { type = "string", @enum = new[] { "execute", "status" } },
             requestId = new { type = "string", pattern = "^[a-zA-Z0-9_-]{1,80}$" },
-            target = new { type = "string", @enum = DeployReceiver.Targets },
-            releaseTag = new { type = "string", pattern = "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)$" }
+            target = new { type = "string", @enum = DeployReceiver.Targets }
         }
     };
 
     public async Task<McpToolResult> CallAsync(JsonElement arguments, CancellationToken cancellationToken)
     {
+        if (arguments.TryGetProperty("releaseTag", out _))
+            throw new ArgumentException("releaseTag is no longer supported. Omit it; deploy uses the latest main.");
         foreach (var property in arguments.EnumerateObject())
-            if (property.Name is not ("action" or "requestId" or "target" or "releaseTag"))
+            if (property.Name is not ("action" or "requestId" or "target"))
                 throw new ArgumentException("Unsupported deploy argument.");
         string? Read(string name) => arguments.TryGetProperty(name, out var item) && item.ValueKind == JsonValueKind.String
             ? item.GetString() : arguments.TryGetProperty(name, out _) ? throw new ArgumentException("Invalid " + name) : null;
@@ -133,8 +131,7 @@ public sealed class DeployTool(DeployReceiver receiver) : IMcpTool
             throw new ArgumentException("Status requires only action and requestId.");
         try
         {
-            var result = await receiver.ExecuteAsync(new(action, Read("requestId") ?? "", Read("target"),
-                Read("releaseTag")), cancellationToken);
+            var result = await receiver.ExecuteAsync(new(action, Read("requestId") ?? "", Read("target")), cancellationToken);
             return result.TryGetProperty("status", out var status) && status.GetString() == "Blocked"
                 ? McpToolResult.Error("Deploy bridge unavailable. Check host bridge configuration and query the same requestId.", result)
                 : McpToolResult.Ok("Deploy receipt. Query status with the same requestId after any connection loss.", result);

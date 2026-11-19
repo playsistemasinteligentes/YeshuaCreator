@@ -45,3 +45,45 @@ test('skip update valida HEAD e props; nao retorna para main', () => {
   assert.notEqual(selection({ YESHUA_SKIP_UPDATE: '1', TEST_HEAD: 'another-sha' }).status, 0);
   assert.notEqual(selection({ YESHUA_SKIP_UPDATE: '1', DIRTY: '1' }).status, 0);
 });
+
+// Execute only the update stage in an isolated checkout. The environment loader
+// fixture stops the script before Docker/build/migrations can be reached.
+test('entrada publica atualiza checkout desatualizado pela main sem selecionar tag', () => {
+  const dir = mkdtempSync(path.join(tmpdir(), 'yeshua-main-deploy-'));
+  try {
+    const { mkdirSync } = require('node:fs');
+    const infra = path.join(dir, 'infra/docker');
+    mkdirSync(infra, { recursive: true });
+    const logfile = path.join(dir, 'calls');
+    const head = path.join(dir, 'head');
+    writeFileSync(head, 'stale-local-sha');
+    writeFileSync(path.join(dir, 'git'), `#!/usr/bin/env node
+const fs = require('node:fs');
+const args = process.argv.slice(4);
+fs.appendFileSync(process.env.CALLS, JSON.stringify(args)+'\\n');
+if (args.join(' ') === 'pull origin main') {
+  if (process.env.FAIL_PULL === '1') process.exit(1);
+  fs.writeFileSync(process.env.HEAD_FILE, 'latest-main-sha');
+}
+`, { mode: 0o755 });
+    writeFileSync(path.join(infra, 'load-deploy-env.sh'), `cat "$HEAD_FILE"; exit 0\n`);
+    const script = readFileSync(path.resolve('infra/docker/deploy.sh'), 'utf8')
+      .replace('APP_DIR="/root/YeshuaCreator"', `APP_DIR="${dir}"`)
+      .replace('/var/lock/yeshua-deploy.lock', path.join(dir, 'deploy.lock'));
+    const fixture = path.join(dir, 'deploy.sh');
+    writeFileSync(fixture, script);
+    const env = { ...process.env, PATH: `${dir}:${process.env.PATH}`,
+      CALLS: logfile, HEAD_FILE: head, YESHUA_SKIP_UPDATE: '0' };
+    delete env.YESHUA_RELEASE_TAG;
+    const result = spawnSync('bash', [fixture, 'all'], { env, encoding: 'utf8' });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout, 'latest-main-sha');
+    assert.deepEqual(readFileSync(logfile, 'utf8').trim().split('\n').map(JSON.parse),
+      [['reset', '--hard'], ['clean', '-fd'], ['pull', 'origin', 'main']]);
+    const failed = spawnSync('bash', [fixture, 'all'], {
+      env: { ...env, FAIL_PULL: '1' }, encoding: 'utf8'
+    });
+    assert.notEqual(failed.status, 0);
+    assert.equal(failed.stdout, '');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});

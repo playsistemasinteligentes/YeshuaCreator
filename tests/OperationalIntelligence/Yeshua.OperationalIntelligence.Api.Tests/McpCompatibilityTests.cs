@@ -33,8 +33,7 @@ public sealed class McpCompatibilityTests
         Assert.AreEqual(true, deploy.Annotations.DestructiveHint);
         var unconfiguredDeploy = await client.CallToolAsync("yeshua_deploy", new Dictionary<string, object?>
         {
-            ["action"] = "execute", ["requestId"] = "unconfigured-test", ["target"] = "all",
-            ["releaseTag"] = "1.0.0"
+            ["action"] = "execute", ["requestId"] = "unconfigured-test", ["target"] = "all"
         });
         Assert.AreEqual(true, unconfiguredDeploy.IsError);
         Assert.IsTrue(tools.Any(tool => tool.Name == "yeshua_storage_usage" && tool.ProtocolTool.Annotations!.ReadOnlyHint == true));

@@ -36,7 +36,9 @@ def save(path, value):
 
 
 def validate(value):
-    if not isinstance(value, dict) or set(value) - {'action', 'requestId', 'target', 'releaseTag'}:
+    if isinstance(value, dict) and 'releaseTag' in value:
+        raise ValueError('release_tag_not_supported_use_main')
+    if not isinstance(value, dict) or set(value) - {'action', 'requestId', 'target'}:
         raise ValueError('invalid_arguments')
     if value.get('action') not in {'execute', 'status'}:
         raise ValueError('invalid_action')
@@ -45,10 +47,9 @@ def validate(value):
     if value['action'] == 'status':
         if set(value) != {'action', 'requestId'}:
             raise ValueError('status_requires_only_request_id')
-    elif (set(value) != {'action', 'requestId', 'target', 'releaseTag'} or
-          not isinstance(value.get('target'), str) or value['target'] not in TARGETS or
-          not isinstance(value.get('releaseTag'), str) or not re.fullmatch(r'(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)', value.get('releaseTag', ''))):
-        raise ValueError('target_and_release_required')
+    elif (set(value) != {'action', 'requestId', 'target'} or
+          not isinstance(value.get('target'), str) or value['target'] not in TARGETS):
+        raise ValueError('allowed_target_required')
 
 
 def private_directory(path):
@@ -77,7 +78,7 @@ def read_status(path):
 def run(receipt, path, job_lock, global_lock):
     try:
         environment = {'PATH': '/usr/sbin:/usr/bin:/sbin:/bin', 'HOME': '/root',
-                       'LANG': 'C.UTF-8', 'YESHUA_RELEASE_TAG': receipt['releaseTag']}
+                       'LANG': 'C.UTF-8'}
         with path.with_suffix('.log').open('wb') as log:
             # This is the only executable operation: orchestration stays in deploy.sh.
             process = subprocess.Popen(['/bin/bash', str(SCRIPT), receipt['target']],
@@ -112,7 +113,8 @@ def dispatch(value, detach=True):
             return read_status(path)
         if path.exists():
             receipt = read_status(path)
-            if any(receipt[key] != value[key] for key in ('target', 'releaseTag')):
+            # Old tagged receipts remain queryable, but cannot become main executions.
+            if 'releaseTag' in receipt or receipt['target'] != value['target']:
                 raise ValueError('request_id_conflict')
             return receipt
         global_lock = (BASE / 'execution.lock').open('a')
@@ -123,7 +125,7 @@ def dispatch(value, detach=True):
             raise ValueError('another_deploy_is_running') from None
         job_lock = path.with_suffix('.lock').open('a')
         fcntl.flock(job_lock, fcntl.LOCK_EX)
-        receipt = {key: value[key] for key in ('requestId', 'target', 'releaseTag')}
+        receipt = {key: value[key] for key in ('requestId', 'target')}
         receipt.update(status='Running', startedAtUtc=now())
         save(path, receipt)  # Records requestId durably BEFORE any execution to prevent replay.
         if not detach:  # Test seam: same execution path with an isolated script fixture.
