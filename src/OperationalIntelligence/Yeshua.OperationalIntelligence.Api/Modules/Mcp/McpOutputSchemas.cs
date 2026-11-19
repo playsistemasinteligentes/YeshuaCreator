@@ -130,6 +130,7 @@ public static class McpOutputSchemas
                 ["properties"] = new JsonObject
                 {
                     ["requestId"] = text.DeepClone(), ["target"] = text.DeepClone(),
+                    // Optional legacy receipt field; never accepted for new execution.
                     ["releaseTag"] = text.DeepClone(), ["status"] = text.DeepClone(),
                     ["startedAtUtc"] = text.DeepClone(),
                     ["finishedAtUtc"] = text.DeepClone(), ["exitCode"] = integer.DeepClone(),

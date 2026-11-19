@@ -19,8 +19,8 @@ class BridgeTests(unittest.TestCase):
         self.base = Path(self.temp.name)
         (self.base / 'receipts').mkdir(mode=0o700)
         self.script = self.base / 'fixture.sh'
-        self.script.write_text('echo "$1:$YESHUA_RELEASE_TAG" >> calls\necho fixture-output\nexit 0\n')
-        self.command = dict(action='execute', requestId='test-1', target='all', releaseTag='1.2.3')
+        self.script.write_text('echo "$#:$1:${YESHUA_RELEASE_TAG-unset}:${YESHUA_SKIP_UPDATE-unset}" >> calls\necho fixture-output\nexit 0\n')
+        self.command = dict(action='execute', requestId='test-1', target='all')
         self.addCleanup(patch.stopall)
         patch.object(b, 'BASE', self.base).start()
         patch.object(b, 'SCRIPT', self.script).start()
@@ -30,22 +30,53 @@ class BridgeTests(unittest.TestCase):
     def dispatch(self, command=None):
         return b.dispatch(command or self.command, detach=False)
 
-    def test_runs_only_script_with_all_and_release_and_persists_success(self):
+    def test_runs_only_script_with_target_and_persists_success(self):
         result = self.dispatch()
         self.assertEqual('Succeeded', result['status'])
-        self.assertEqual('all:1.2.3\n', (self.base / 'calls').read_text())
+        self.assertEqual('1:all:unset:unset\n', (self.base / 'calls').read_text())
         self.assertFalse((self.base / 'approvals').exists())
         self.assertEqual('fixture-output\n', (self.base / 'receipts/test-1.log').read_text())
         self.assertEqual(0, result['exitCode'])
 
-    def test_duplicate_never_reexecutes_and_rejects_changed_target_or_release(self):
+    def test_duplicate_never_reexecutes_and_rejects_changed_target(self):
         self.dispatch()
         self.assertEqual('Succeeded', self.dispatch()['status'])
         self.assertEqual(1, len((self.base / 'calls').read_text().splitlines()))
         with self.assertRaises(ValueError):
             self.dispatch({**self.command, 'target': 'central'})
-        with self.assertRaises(ValueError):
-            self.dispatch({**self.command, 'releaseTag': '9.9.9'})
+
+    def test_all_targets_without_tag_ignore_inherited_version_and_skip_update(self):
+        with patch.dict(os.environ, YESHUA_RELEASE_TAG='9.9.9', YESHUA_SKIP_UPDATE='1'):
+            for target in sorted(b.TARGETS):
+                result = self.dispatch({**self.command, 'requestId': target, 'target': target})
+                self.assertEqual('Succeeded', result['status'])
+                self.assertNotIn('releaseTag', result)
+        self.assertEqual([f'1:{target}:unset:unset' for target in sorted(b.TARGETS)],
+                         (self.base / 'calls').read_text().splitlines())
+
+    def test_status_and_duplicate_after_success_never_reexecute(self):
+        first = self.dispatch()
+        self.assertEqual(first, self.dispatch({'action': 'status', 'requestId': 'test-1'}))
+        self.assertEqual(first, self.dispatch())
+        self.assertEqual(1, len((self.base / 'calls').read_text().splitlines()))
+
+    def test_legacy_receipts_remain_readable_and_cannot_replay_as_main(self):
+        for status in ('Succeeded', 'Failed', 'Interrupted', 'Running'):
+            with self.subTest(status=status):
+                path = self.base / 'receipts/test-1.json'
+                b.save(path, {**self.command, 'releaseTag': '1.2.3', 'status': status})
+                result = self.dispatch({'action': 'status', 'requestId': 'test-1'})
+                self.assertEqual('Interrupted' if status == 'Running' else status, result['status'])
+                self.assertEqual('1.2.3', result['releaseTag'])
+                with self.assertRaisesRegex(ValueError, 'request_id_conflict'):
+                    self.dispatch()
+        self.assertFalse((self.base / 'calls').exists())
+
+    def test_legacy_release_argument_is_explicitly_rejected(self):
+        for tag in ('1.2.3', '', None, 123):
+            with self.assertRaisesRegex(ValueError, 'release_tag_not_supported_use_main'):
+                self.dispatch({**self.command, 'releaseTag': tag})
+        self.assertFalse((self.base / 'calls').exists())
 
     def test_rejects_injection_extra_fields_and_status_mutation(self):
         for change in ({'target': 'all; id'}, {'requestId': '../escape'}, {'releaseTag': '1.0.0; id'},
@@ -79,7 +110,7 @@ class BridgeTests(unittest.TestCase):
             self.assertEqual('NotFound', self.dispatch({'action': 'status', 'requestId': 'test-1'})['status'])
 
     def test_detached_worker_survives_request_return_and_persists_receipt(self):
-        self.script.write_text('sleep 0.1\necho "$1:$YESHUA_RELEASE_TAG" >> calls\n')
+        self.script.write_text('sleep 0.1\necho "$#:$1:${YESHUA_RELEASE_TAG-unset}:${YESHUA_SKIP_UPDATE-unset}" >> calls\n')
         result = b.dispatch(self.command)
         self.assertEqual('Running', result['status'])
         deadline = time.monotonic() + 5
@@ -89,7 +120,7 @@ class BridgeTests(unittest.TestCase):
                 break
             time.sleep(0.02)
         self.assertEqual('Succeeded', result['status'])
-        self.assertEqual('all:1.2.3\n', (self.base / 'calls').read_text())
+        self.assertEqual('1:all:unset:unset\n', (self.base / 'calls').read_text())
         # Reap the isolated fixture worker in this test process.
         os.waitpid(-1, 0)
 

@@ -80,18 +80,24 @@ diferentes exige concluir o rollout para ter resposta uniforme.
 
 ## Deploy
 
-Selecionar explicitamente uma tag ja publicada:
+Por decisao operacional (issue #47), todo deploy segue a versao mais recente
+da `main`, sem selecao de tag, ate nova orientacao:
 
 ```sh
-YESHUA_RELEASE_TAG=1.0.1 bash infra/docker/deploy.sh central
+bash infra/docker/deploy.sh central
 ```
 
-O caminho publico existente e os deploys individuais de aplicativos reutilizam
-select-release.sh: fetch da tag exata, validacao de Version no commit e checkout
-detached desse commit, em lugar de pull da main. O build Docker ja copia o props
-da raiz e herda a versao; nenhuma numeracao e calculada. YESHUA_SKIP_UPDATE=1
-exige HEAD no commit da tag e props sem alteracao. Nenhum workflow de deploy e
-acionado pelo versionamento. Rollback e selecao de uma tag existente anterior.
+O caminho publico existente executa `git reset --hard`, `git clean -fd` e
+`git pull origin main` antes do build. O build Docker copia o props da raiz e
+herda a versao; nenhuma numeracao e calculada. A ponte MCP nao passa
+`YESHUA_SKIP_UPDATE`, reservado a chamadas internas coordenadas pelo script,
+nem `YESHUA_RELEASE_TAG`. O helper legado `select-release.sh` nao participa
+desse caminho. Nenhum workflow de deploy e acionado pelo versionamento.
+
+No MCP privado, usar `yeshua_deploy` com `action=execute`, `requestId` e `target`.
+`releaseTag` e recusado explicitamente, inclusive se nulo; clientes antigos devem
+omitir o campo. Consultar `action=status` com o mesmo `requestId` depois de perda
+de conexao, sem repetir a execucao com outro ID. Ver [ponte de deploy](../../infra/deploy-bridge/README.md).
 
 Referencias: [eventos do Actions](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows),
 [concorrencia](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency),
