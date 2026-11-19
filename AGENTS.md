@@ -2177,6 +2177,16 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   omitir o campo. Recibos antigos seguem consultaveis por status, mas seus IDs
   nao podem ser reutilizados como execucao de main. Idempotencia e locks ficam
   no caminho existente, sem replay de execucao incerta.
+- Decisao explicita de 2026-11-19 (issue #51): ativar a ponte de deploy na
+  estrutura atual, sem separar MCP/Codex nem criar containers. O provider privado
+  declara Deploy.Enabled; o loader fornece destino/caminhos fixos, o Compose
+  monta somente a chave dedicada em leitura, e o deploy Shared instala a conta
+  SSH restrita, helper e autorizacao no host. Reinstalacao recompõe esses itens
+  reutilizando a chave privada restaurada. A instancia atual permanece uma
+  unidade administrativa confiavel: nao prometer isolamento entre MCP e Codex
+  que compartilham usuario/container. A separacao fica para a frente futura de
+  agrupamento de agentes. A conexao privada continua sendo a autorizacao, sem
+  confirmacao adicional por deploy nem acesso geral ao host.
 - A recuperacao administrativa `yeshua_agent_restart` exige pedido explicito,
   `confirm=true` e o par taskId/requestId de `activeExecution`. Ela interrompe
   somente o processo da ordem atual e persiste Interrupted, sem repetir trabalho,

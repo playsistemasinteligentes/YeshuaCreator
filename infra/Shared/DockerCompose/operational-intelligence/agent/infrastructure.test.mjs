@@ -40,6 +40,10 @@ test('private MCP and tunnel administration are loopback only and never publishe
   assert.equal(operations.environment.STORAGE_ROOT, '/clinica-work');
   assert.ok(operations.volumes.includes('/root/YeshuaStorage/volatile/ia/transcriptions/output:/clinica-work/volatile/ia/transcriptions/output'));
   assert.equal(operations.volumes.some(binding => binding.includes('docker.sock')), false);
+  assert.ok(operations.volumes.some(binding => binding.endsWith('/integracoes/deploy-bridge:/run/yeshua-deploy:ro')));
+  assert.ok(operations.extra_hosts.includes('host.docker.internal:host-gateway'));
+  for (const option of ['Destination', 'IdentityFile', 'KnownHostsFile'])
+    assert.ok(operations.environment[`Mcp__Deploy__${option}`].endsWith(':-}'), 'Deploy stays disabled without private opt-in');
   const upstreams = readFileSync(resolve(shared, 'nginx/conf.d/00-upstreams.conf'), 'utf8');
   const route = readFileSync(resolve(shared, 'nginx/routes/30-operational-intelligence.conf'), 'utf8');
   assert.ok(upstreams.includes('server operational-intelligence:5728;'));
@@ -58,7 +62,7 @@ test('root bootstrap copies restricted source then drops privileges before runni
   assert.ok(entrypoint.includes('exec gosu agent "$@"'));
   assert.ok(entrypoint.includes('-L "$workspace"'));
   assert.ok(sync.includes('-L "$target_path"'));
-  assert.ok(sync.includes('--chown=agent:agent'));
+  assert.ok(sync.includes('chown -R agent:agent "$stage"'));
   assert.ok(deploy.includes('up -d --wait --wait-timeout 180'));
   assert.ok(deploy.includes("stat -c '%g' /var/run/docker.sock"));
   assert.ok(rootDeploy.includes("stat -c '%g' /var/run/docker.sock"));

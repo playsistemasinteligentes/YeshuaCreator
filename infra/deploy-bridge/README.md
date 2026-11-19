@@ -25,23 +25,48 @@ desativada; todo novo deploy segue a versão mais recente de `main`. Não aceita
 
 A API está no container sem socket Docker e com checkout do host somente leitura.
 Por isso SSH permanece apenas como transporte técnico com comando forçado, sem
-shell livre. Configuração no provider privado existente: `Mcp:Deploy:Destination`
-(`yeshua-deploy@HOST`), `IdentityFile` e `KnownHostsFile` absolutos. A chave do host
-deve estar fixada; a chave privada fica fora do Git e do sandbox do agente.
+shell livre. A ativação usa o provider privado existente
+`shared/OperationalAgent/integracoes/providers.json`, com `"Deploy": {"Enabled": true}`.
+O loader fornece as opções `Mcp:Deploy:Destination`, `IdentityFile` e
+`KnownHostsFile` com destino e caminhos fixos. A chave do host fica fixada e a
+chave privada permanece fora do Git, montada somente no container operacional.
 Ausência dessa configuração retorna indisponibilidade, sem mecanismo alternativo.
 
-A instalação técnica no host **não foi executada** nesta tarefa. Para uma ativação
-futura, instalar `bridge.py` em `/opt/yeshua-deploy/bridge.py`, root:root 0644,
-com ancestrais e checkout sem escrita do agente/usuário SSH. Criar
-`/root/YeshuaStorage/persistent/infra/deploy-bridge` e `receipts`, root:root 0700.
-Conta técnica `yeshua-deploy`: sem senha/grupo Docker/sudo genérico; única regra
-sudoers validada com visudo:
+## Instalação na estrutura atual
+
+O deploy Shared executa `infra/deploy-bridge/install.sh` depois de subir os
+serviços, quando a rede e a identidade do agente já existem. Não cria container,
+servidor, transporte nem mecanismo paralelo de deploy. Sem ativação explícita,
+as opções permanecem vazias; a instalação também revoga a chave autorizada da
+conta técnica quando desabilitada, preservando chave privada e recibos.
+
+O instalador cria a conta de sistema `yeshua-deploy`, com senha bloqueada e home
+controlado por root em `/var/lib/yeshua-deploy`. O único authorized_keys é
+controlado por root, com `restrict`, origem limitada à rede Docker `yeshua-net`
+e comando forçado. Não altera o acesso SSH dos outros usuários. A conta não
+pertence ao grupo Docker nem recebe sudo genérico. A única regra sudoers,
+validada por visudo, é:
 `yeshua-deploy ALL=(root) NOPASSWD: NOSETENV: /usr/bin/python3 -I /opt/yeshua-deploy/bridge.py`.
-Chave SSH exclusiva, arquivo de autorização controlado por root, com `restrict`,
-origem limitada e comando forçado `sudo -n /usr/bin/python3 -I /opt/yeshua-deploy/bridge.py`;
-sem forwarding, TTY ou user RC. Validar configuração efetiva do sshd e permissões.
-Isso limita a capacidade da máquina; não é aprovação por execução ou login adicional
-do operador. Não alterar Compose, sandbox, Docker ou host para contornar falhas.
+
+O helper é instalado em `/opt/yeshua-deploy/bridge.py`, root:root 0644, e os
+recibos em `/root/YeshuaStorage/persistent/infra/deploy-bridge/receipts`, root:root
+0700. A chave exclusiva fica em
+`YeshuaPrivate/<ambiente>/shared/OperationalAgent/integracoes/deploy-bridge`,
+montada somente leitura em `/run/yeshua-deploy`. Instalações repetidas reutilizam
+a mesma chave. O known_hosts usa a chave pública local do host, sem ssh-keyscan
+pela rede. O alias host.docker.internal usa host-gateway; não se fixa IP de container.
+
+Reconstrução: restaurar o diretório privado e o storage persistente pelo backup
+existente e executar o fluxo normal da infraestrutura. O instalador recompõe
+conta, autorização, helper e permissões; fixa a identidade do host reconstruído
+pela chave pública local. Não colocar a chave privada em imagem, Git ou resposta MCP.
+
+Decisão explícita de 19/11/2026: MCP e Codex continuam no mesmo container/usuário,
+tratados como uma instância administrativa confiável. Esta ativação não cria
+isolamento de privilégios entre eles. A lista de tools configurada no Codex é
+conveniência, não uma barreira de autorização. Separação de executores fica para
+a futura frente de agrupamento de agentes. Isso não torna deploy público nem
+libera acesso geral ao host: o limite do SSH continua sendo o script fixo.
 
 Recibos privados são gravados atomicamente com fsync antes da execução. Mesmo
 requestId/destino devolve o estado; destino diferente é recusado.

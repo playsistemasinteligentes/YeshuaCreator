@@ -25,6 +25,31 @@ def configured():
 
 
 class CredentialsTests(unittest.TestCase):
+    def test_mcp_deploy_requires_explicit_private_opt_in_and_exports_only_fixed_paths(self):
+        document = configured()
+        for config in ({}, {"Deploy": {"Enabled": False}}, {"Deploy": {"Enabled": True}}):
+            with patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+                 patch.object(credentials, "read_json", return_value=config):
+                enabled = config.get("Deploy", {}).get("Enabled", False)
+                result = credentials.environment(document, Path("/private"), "shared")
+                self.assertEqual(str(enabled).lower(), result["YESHUA_MCP_DEPLOY_ENABLED"])
+                self.assertEqual("yeshua-deploy@host.docker.internal" if enabled else "", result["YESHUA_MCP_DEPLOY_DESTINATION"])
+                self.assertEqual("/run/yeshua-deploy/id_ed25519" if enabled else "", result["YESHUA_MCP_DEPLOY_IDENTITY_FILE"])
+                self.assertEqual("/run/yeshua-deploy/known_hosts" if enabled else "", result["YESHUA_MCP_DEPLOY_KNOWN_HOSTS_FILE"])
+                isolated = credentials.environment(document, Path("/private"), "central")
+                self.assertEqual("false", isolated["YESHUA_MCP_DEPLOY_ENABLED"])
+                self.assertEqual("", isolated["YESHUA_MCP_DEPLOY_IDENTITY_FILE"])
+                restored = credentials.environment(document, Path("/restored"), "shared")
+                self.assertEqual(result["YESHUA_MCP_DEPLOY_DESTINATION"], restored["YESHUA_MCP_DEPLOY_DESTINATION"])
+                self.assertEqual(result["YESHUA_MCP_DEPLOY_IDENTITY_FILE"], restored["YESHUA_MCP_DEPLOY_IDENTITY_FILE"])
+
+    def test_mcp_deploy_rejects_implicit_truthy_configuration(self):
+        for value in (None, True, [], {"Enabled": "true"}, {"Enabled": 1}, {"Enabled": True, "Destination": "root@other-host"}):
+            with patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+                 patch.object(credentials, "read_json", return_value={"Deploy": value}):
+                with self.assertRaises(credentials.ConfigurationError):
+                    credentials.environment(configured(), Path("/private"), "shared")
+
     def test_billing_sandbox_is_explicit_and_survives_rebuild_without_leaking_to_other_apps(self):
         document = configured()
         self.assertEqual("false", credentials.environment(document, Path("/private"), "central")["YESHUA_BILLING_SANDBOX_ENABLED"])

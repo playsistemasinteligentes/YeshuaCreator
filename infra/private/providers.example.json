@@ -2,6 +2,7 @@
   "OpenAI": { "ApiKey": "" },
   "Anthropic": { "ApiKey": "" },
   "McpTunnel": { "Id": "", "ApiKey": "" },
+  "Deploy": { "Enabled": false },
   "AgentDevelopment": {
     "Enabled": false,
     "PublishPullRequests": false,
