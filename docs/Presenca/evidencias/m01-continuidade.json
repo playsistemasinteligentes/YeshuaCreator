@@ -1,0 +1,266 @@
+{
+  "collectedAtUtc": "2026-11-20T12:29:09.992954+00:00",
+  "workspace": "/workspace/tasks/820df3ced948494b8e74a0b7a280a8bc",
+  "head": "7333d5c9dbb2c3e2357e211a96d1ec68b9e8ae0b",
+  "commands": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain=v1"
+      ],
+      "exitCode": 0,
+      "stdout": "M AGENTS.md\n?? docs/Presenca/M01_CONTINUIDADE_WORKSPACE.md",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "7333d5c9dbb2c3e2357e211a96d1ec68b9e8ae0b",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "branch",
+        "--show-current"
+      ],
+      "exitCode": 0,
+      "stdout": "codex/task-820df3ced948494b8e74a0b7a280a8bc",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "config",
+        "--get-all",
+        "remote.origin.fetch"
+      ],
+      "exitCode": 0,
+      "stdout": "+refs/heads/main:refs/remotes/origin/main",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "--is-shallow-repository"
+      ],
+      "exitCode": 0,
+      "stdout": "false",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "cat-file",
+        "-t",
+        "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1"
+      ],
+      "exitCode": 128,
+      "stdout": "",
+      "stderr": "fatal: git cat-file: could not get object info"
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "--is-ancestor",
+        "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
+        "HEAD"
+      ],
+      "exitCode": 128,
+      "stdout": "",
+      "stderr": "fatal: Not a valid commit name 8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1"
+    },
+    {
+      "command": [
+        "git",
+        "merge-base",
+        "HEAD",
+        "origin/main"
+      ],
+      "exitCode": 0,
+      "stdout": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "rev-parse",
+        "HEAD^"
+      ],
+      "exitCode": 0,
+      "stdout": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "ls-remote",
+        "--exit-code",
+        "origin",
+        "refs/heads/codex/task-71ddf4aa021c4fa5b0f140accdb624f2",
+        "refs/pull/63/head",
+        "refs/pull/64/head"
+      ],
+      "exitCode": 0,
+      "stdout": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1\trefs/heads/codex/task-71ddf4aa021c4fa5b0f140accdb624f2\n8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1\trefs/pull/63/head\n7333d5c9dbb2c3e2357e211a96d1ec68b9e8ae0b\trefs/pull/64/head",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff-tree",
+        "--no-commit-id",
+        "--name-only",
+        "-r",
+        "HEAD"
+      ],
+      "exitCode": 0,
+      "stdout": "docs/Presenca/M01_REFINAMENTO.md\ndocs/Presenca/evidencias/m01-preflight.json\ndocs/Presenca/evidencias/m01-validacao.txt",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "reflog",
+        "-4",
+        "--format=%h %gs"
+      ],
+      "exitCode": 0,
+      "stdout": "7333d5c9d commit: Agent: Usuário autorizou seguir para os próximos movimentos do projeto Presença, mantendo revisão entre movimentos. M00\n0ee78f46d checkout: moving from main to codex/task-820df3ced948494b8e74a0b7a280a8bc\n0ee78f46d clone: from https://github.com/playsistemasinteligentes/YeshuaCreator.git",
+      "stderr": ""
+    }
+  ],
+  "remoteChecks": [
+    {
+      "url": "https://api.github.com/repos/playsistemasinteligentes/YeshuaCreator/pulls/63",
+      "httpStatus": 200,
+      "data": {
+        "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/63",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "headSha": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
+        "headRef": "codex/task-71ddf4aa021c4fa5b0f140accdb624f2",
+        "baseSha": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f",
+        "baseRef": "main"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/playsistemasinteligentes/YeshuaCreator/pulls/64",
+      "httpStatus": 200,
+      "data": {
+        "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/64",
+        "state": "open",
+        "draft": true,
+        "merged": false,
+        "headSha": "7333d5c9dbb2c3e2357e211a96d1ec68b9e8ae0b",
+        "headRef": "codex/task-820df3ced948494b8e74a0b7a280a8bc",
+        "baseSha": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f",
+        "baseRef": "main"
+      }
+    },
+    {
+      "url": "https://api.github.com/repos/playsistemasinteligentes/YeshuaCreator/pulls/64/files?per_page=100",
+      "httpStatus": 200,
+      "data": [
+        {
+          "path": "docs/Presenca/M01_REFINAMENTO.md",
+          "status": "added"
+        },
+        {
+          "path": "docs/Presenca/evidencias/m01-preflight.json",
+          "status": "added"
+        },
+        {
+          "path": "docs/Presenca/evidencias/m01-validacao.txt",
+          "status": "added"
+        }
+      ]
+    },
+    {
+      "url": "https://api.github.com/repos/playsistemasinteligentes/YeshuaCreator/issues/54",
+      "httpStatus": 200,
+      "data": {
+        "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/54",
+        "state": "open",
+        "updated_at": "2026-11-19T19:47:13Z"
+      }
+    }
+  ],
+  "credentialEnvironmentPresenceOnly": {
+    "GITHUB_TOKEN": false,
+    "GH_TOKEN": false,
+    "GIT_ASKPASS": false,
+    "SSH_ASKPASS": false,
+    "GIT_CONFIG_COUNT": false
+  },
+  "credentialConfigurationPresenceOnly": {
+    "credential.helper": false,
+    "credential.https://github.com.helper": false,
+    "http.https://github.com/.extraheader": false,
+    "core.askPass": false
+  },
+  "ghInstalled": false,
+  "gitPaths": {
+    ".git": {
+      "mode": "drwxr-xr-x",
+      "uid": 1655,
+      "gid": 1655,
+      "symlink": false
+    },
+    ".git/config": {
+      "mode": "-rw-r--r--",
+      "uid": 1655,
+      "gid": 1655,
+      "symlink": false
+    },
+    ".git/objects": {
+      "mode": "drwxr-xr-x",
+      "uid": 1655,
+      "gid": 1655,
+      "symlink": false
+    },
+    ".git/refs": {
+      "mode": "drwxr-xr-x",
+      "uid": 1655,
+      "gid": 1655,
+      "symlink": false
+    }
+  },
+  "gitAuxiliaryFilesPresence": {
+    ".git/shallow": false,
+    ".git/objects/info/alternates": false,
+    ".git/FETCH_HEAD": false
+  },
+  "sourceSha256": {
+    "src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/AgentGitWorkspace.cs": "bf2bfcacb0422783baebca46aabe526f55ff4685c9660736544b0895c11af815",
+    "src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/AgentTaskOptions.cs": "460cc60687eab0f637d59a9e535899b32f272775ccc7798c8f21cdaf465b03ec",
+    "src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/AgentTaskContracts.cs": "cf928285fd474051ced35b4630488e97a0edfbe992680b629d36261c3f4c9240",
+    "src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/AgentGitHubClient.cs": "390e3365e01dc34e8acb4a8eb51c76e2cb6552cbbe3438056425c589188abbdd",
+    "src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/CodexProcessEnvironment.cs": "c833688782840a58a26c4fc6b33d41372bab28ecc72fd0ad4e6c57faa8b5d59a",
+    "src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/CodexTaskExecutor.cs": "140aec9f53bb8ca21427dc8c05da6adb3989a4182f34866d9da93385b4b51e37"
+  },
+  "outcome": {
+    "baseRecovered": false,
+    "m00AncestryVerified": false,
+    "issueUpdated": false,
+    "implementationStarted": false,
+    "gitMutationsAttempted": false,
+    "privateCredentialsRead": false,
+    "functionalTestsExecuted": false,
+    "infrastructureModified": false,
+    "publicationOfThisRoundVerified": false
+  },
+  "validation": {
+    "readOnlyGitChecks": "completed with missing-object errors recorded",
+    "publicGitHubChecks": "passed",
+    "diagnosticAssertions": "passed"
+  }
+}
