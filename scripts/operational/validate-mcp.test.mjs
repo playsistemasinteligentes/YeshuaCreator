@@ -1,7 +1,32 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { McpClient, validate } from './validate-mcp.mjs';
+import { McpClient, validate, checkTaskBase } from './validate-mcp.mjs';
+
+test('task base readiness detects stale runtime without sending an order', async () => {
+  const received = [];
+  const tool = { name: 'yeshua_task_send', inputSchema: { type: 'object', properties: {} } };
+  const server = createServer(async (request, response) => {
+    let raw = ''; for await (const chunk of request) raw += chunk;
+    const message = JSON.parse(raw); received.push(message.method);
+    if (message.method === 'notifications/initialized') { response.writeHead(202).end(); return; }
+    const result = message.method === 'initialize' ? { protocolVersion: '2025-06-18' } : { tools: [tool] };
+    response.writeHead(200, { 'Content-Type': 'application/json' });
+    response.end(JSON.stringify({ jsonrpc: '2.0', id: message.id, result }));
+  });
+  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  try {
+    const options = { taskBaseUrl: `http://127.0.0.1:${server.address().port}/mcp` };
+    const stale = await checkTaskBase(options);
+    assert.equal(stale.status, 'failed');
+    assert.match(stale.error, /API em execucao nao anuncia baseRef/);
+    tool.inputSchema.properties.baseRef = { type: 'string', minLength: 1, maxLength: 200 };
+    assert.equal((await checkTaskBase(options)).status, 'passed');
+    tool.name = 'yeshua_health';
+    assert.match((await checkTaskBase(options)).error, /conexao MCP privada/);
+    assert.equal(received.includes('tools/call'), false);
+  } finally { await new Promise(resolve => server.close(resolve)); }
+});
 
 test('MCP transport negotiates, decodes SSE and validates the actual response', async () => {
   const received = [];
