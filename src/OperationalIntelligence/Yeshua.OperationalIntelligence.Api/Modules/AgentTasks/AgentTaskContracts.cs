@@ -1,12 +1,12 @@
 namespace Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 
 public sealed record SendAgentTaskCommand(
-    string RequestId, string Message, Guid? TaskId = null, string Mode = "observe", string? Title = null, string? BaseRef = null);
+    string RequestId, string Message, Guid? TaskId = null, string Mode = "observe", string? Title = null, string? BaseRef = null, string? BaseSha = null);
 public sealed record ReadAgentTaskQuery(Guid? TaskId = null, int Limit = 10);
 public sealed record RestartAgentCommand(Guid TaskId, string RequestId, bool Confirm = false);
 public sealed record AgentRestartReceipt(Guid TaskId, string RequestId, string Status, string Instruction);
 public sealed record AgentActiveExecution(Guid TaskId, string RequestId, bool RestartRequested);
-public sealed record AgentTaskReceipt(Guid TaskId, string RequestId, string Status, DateTimeOffset AcceptedAtUtc, bool Duplicate);
+public sealed record AgentTaskReceipt(Guid TaskId, string RequestId, string Status, DateTimeOffset AcceptedAtUtc, bool Duplicate, string? BaseRef = null, string? BaseSha = null);
 
 public sealed record AgentTaskSummary
 {
@@ -25,6 +25,9 @@ public sealed class AgentTaskMessage
     public string Message { get; set; } = "";
     public string Mode { get; set; } = "";
     public string? BaseRef { get; set; }
+    public string? BaseSha { get; set; }
+    public string? WorkspaceBaseSha { get; set; }
+    public string? WorkspaceHeadSha { get; set; }
     public string? Response { get; set; }
     public string? Progress { get; set; }
     public DateTimeOffset CreatedAtUtc { get; set; }
@@ -43,11 +46,14 @@ public sealed class AgentTaskWorkItem
     public string Message { get; set; } = "";
     public string Mode { get; set; } = "";
     public string? BaseRef { get; set; }
+    public string? BaseSha { get; set; }
+    public string? WorkspaceBaseSha { get; set; }
+    public string? WorkspaceHeadSha { get; set; }
     public string? ThreadId { get; set; }
     public bool IsContinuation { get; set; }
 }
 
-public sealed record AgentTaskProgress(string? ThreadId, string Description);
+public sealed record AgentTaskProgress(string? ThreadId, string Description, string? WorkspaceBaseSha = null, string? WorkspaceHeadSha = null);
 public sealed record AgentTaskExecutionResult(string Response, bool Success);
 
 public interface IAgentTaskRepository

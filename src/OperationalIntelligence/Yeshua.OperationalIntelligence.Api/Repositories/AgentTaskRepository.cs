@@ -19,7 +19,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
             IF @LockResult < 0 THROW 51000, 'Agent task submission unavailable.', 1;
             """, null, cancellationToken, transaction));
         var previous = await connection.QuerySingleOrDefaultAsync<StoredSubmission>(Command("""
-            SELECT TaskId, RequestId, Message, Mode, BaseRef, Status,
+            SELECT TaskId, RequestId, Message, Mode, BaseRef, BaseSha, Status,
                 TODATETIMEOFFSET(CreatedAtUtc, '+00:00') AS CreatedAtUtc
             FROM OI_AgentTaskMessages WHERE RequestId = @RequestId;
             """, new { command.RequestId }, cancellationToken, transaction));
@@ -28,10 +28,11 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
             if ((command.TaskId.HasValue && command.TaskId != previous.TaskId) ||
                 !string.Equals(command.Message, previous.Message, StringComparison.Ordinal) ||
                 !string.Equals(command.Mode, previous.Mode, StringComparison.Ordinal) ||
-                !string.Equals(command.BaseRef, previous.BaseRef, StringComparison.Ordinal))
+                !string.Equals(command.BaseRef, previous.BaseRef, StringComparison.Ordinal) ||
+                !string.Equals(command.BaseSha, previous.BaseSha, StringComparison.Ordinal))
                 throw new ArgumentException("requestId ja foi usado para outro pedido. Use outro identificador para uma nova ordem.");
             await transaction.CommitAsync(cancellationToken);
-            return new(previous.TaskId, previous.RequestId, previous.Status, previous.CreatedAtUtc, true);
+            return new(previous.TaskId, previous.RequestId, previous.Status, previous.CreatedAtUtc, true, previous.BaseRef, previous.BaseSha);
         }
 
         var pending = await connection.ExecuteScalarAsync<int>(Command(
@@ -65,11 +66,11 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
                 """, new { TaskId = taskId, Title = title, Now = now }, cancellationToken, transaction));
         }
         await connection.ExecuteAsync(Command("""
-            INSERT INTO OI_AgentTaskMessages(TaskId, RequestId, Message, Mode, BaseRef, Status, CreatedAtUtc, UpdatedAtUtc)
-            VALUES(@TaskId, @RequestId, @Message, @Mode, @BaseRef, 'Queued', @Now, @Now);
-            """, new { TaskId = taskId, command.RequestId, command.Message, command.Mode, command.BaseRef, Now = now }, cancellationToken, transaction));
+            INSERT INTO OI_AgentTaskMessages(TaskId, RequestId, Message, Mode, BaseRef, BaseSha, Status, CreatedAtUtc, UpdatedAtUtc)
+            VALUES(@TaskId, @RequestId, @Message, @Mode, @BaseRef, @BaseSha, 'Queued', @Now, @Now);
+            """, new { TaskId = taskId, command.RequestId, command.Message, command.Mode, command.BaseRef, command.BaseSha, Now = now }, cancellationToken, transaction));
         await transaction.CommitAsync(cancellationToken);
-        return new(taskId, command.RequestId, "Queued", now, false);
+        return new(taskId, command.RequestId, "Queued", now, false, command.BaseRef, command.BaseSha);
     }
 
     public async Task<AgentTaskReadResult> ReadAsync(ReadAgentTaskQuery query, CancellationToken cancellationToken)
@@ -85,7 +86,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
         IReadOnlyList<AgentTaskMessage> messages = [];
         if (query.TaskId.HasValue)
             messages = (await connection.QueryAsync<AgentTaskMessage>(Command("""
-                SELECT TOP (@Limit) RequestId, Message, Mode, BaseRef, Status, Response, Progress,
+                SELECT TOP (@Limit) RequestId, Message, Mode, BaseRef, BaseSha, WorkspaceBaseSha, WorkspaceHeadSha, Status, Response, Progress,
                     TODATETIMEOFFSET(CreatedAtUtc, '+00:00') AS CreatedAtUtc,
                     TODATETIMEOFFSET(UpdatedAtUtc, '+00:00') AS UpdatedAtUtc
                 FROM OI_AgentTaskMessages WHERE TaskId = @TaskId ORDER BY MessageId DESC;
@@ -113,7 +114,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
             UPDATE t SET Status = 'Running', UpdatedAtUtc = SYSUTCDATETIME()
                 FROM OI_AgentTasks t JOIN OI_AgentTaskMessages m ON m.TaskId = t.TaskId
                 WHERE m.MessageId = @MessageId;
-            SELECT m.MessageId, m.TaskId, m.RequestId, m.Message, m.Mode, m.BaseRef, t.ThreadId,
+            SELECT m.MessageId, m.TaskId, m.RequestId, m.Message, m.Mode, m.BaseRef, m.BaseSha, t.ThreadId,
                 CAST(CASE WHEN EXISTS(SELECT 1 FROM OI_AgentTaskMessages previous
                     WHERE previous.TaskId = m.TaskId AND previous.MessageId < m.MessageId)
                     THEN 1 ELSE 0 END AS BIT) AS IsContinuation
@@ -128,11 +129,13 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
     {
         await using var connection = await database.OpenConnectionAsync(cancellationToken);
         await connection.ExecuteAsync(Command("""
-            UPDATE OI_AgentTaskMessages SET Progress = @Progress, UpdatedAtUtc = SYSUTCDATETIME()
+            UPDATE OI_AgentTaskMessages SET Progress = @Progress,
+                WorkspaceBaseSha = COALESCE(@WorkspaceBaseSha, WorkspaceBaseSha),
+                WorkspaceHeadSha = COALESCE(@WorkspaceHeadSha, WorkspaceHeadSha), UpdatedAtUtc = SYSUTCDATETIME()
                 WHERE MessageId = @MessageId AND Status = 'Running';
             UPDATE OI_AgentTasks SET ThreadId = COALESCE(ThreadId, @ThreadId), UpdatedAtUtc = SYSUTCDATETIME()
                 WHERE TaskId = @TaskId;
-            """, new { item.MessageId, item.TaskId, progress.ThreadId, Progress = progress.Description[..Math.Min(progress.Description.Length, 300)] }, cancellationToken));
+            """, new { item.MessageId, item.TaskId, progress.ThreadId, progress.WorkspaceBaseSha, progress.WorkspaceHeadSha, Progress = progress.Description[..Math.Min(progress.Description.Length, 300)] }, cancellationToken));
     }
 
     public async Task CompleteAsync(AgentTaskWorkItem item, string status, string response, CancellationToken cancellationToken)
@@ -177,6 +180,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
         public string Message { get; set; } = "";
         public string Mode { get; set; } = "";
         public string? BaseRef { get; set; }
+        public string? BaseSha { get; set; }
         public string Status { get; set; } = "";
         public DateTimeOffset CreatedAtUtc { get; set; }
     }

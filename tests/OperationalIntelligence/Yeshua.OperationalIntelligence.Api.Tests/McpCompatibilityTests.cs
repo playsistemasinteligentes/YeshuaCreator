@@ -131,6 +131,38 @@ public sealed class McpCompatibilityTests
     }
 
     [TestMethod]
+    public async Task PrivateMcpAdvertisesEchoesAndSchedulesStructuredBaseWithoutLosingSha()
+    {
+        await using var host = await McpHost.StartAsync();
+        await using var client = await ConnectAsync(host.PrivateUrl);
+        var catalog = await client.ListToolsAsync();
+        var schema = catalog.Single(tool => tool.Name == "yeshua_task_send").ProtocolTool.InputSchema;
+        Assert.IsTrue(schema.GetProperty("properties").TryGetProperty("baseRef", out _));
+        Assert.IsTrue(schema.GetProperty("properties").TryGetProperty("baseSha", out _));
+        const string sha = "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1";
+        var arguments = new Dictionary<string, object?>
+        {
+            ["requestId"] = "m01-exact-base", ["message"] = "Implement M01",
+            ["mode"] = "workspace-write", ["baseRef"] = "refs/pull/63/head", ["baseSha"] = sha
+        };
+        var sent = await client.CallToolAsync("yeshua_task_send", arguments);
+        Assert.AreEqual(false, sent.IsError ?? false);
+        var receipt = sent.StructuredContent!.Value;
+        Assert.AreEqual("refs/pull/63/head", receipt.GetProperty("baseRef").GetString());
+        Assert.AreEqual(sha, receipt.GetProperty("baseSha").GetString());
+        await host.Executor.Started.Task.WaitAsync(TimeSpan.FromSeconds(10));
+        Assert.AreEqual(sha, host.Executor.Calls.Single().BaseSha);
+        Assert.AreEqual("refs/pull/63/head", host.Executor.Calls.Single().BaseRef);
+        var repeated = await client.CallToolAsync("yeshua_task_send", arguments);
+        Assert.IsTrue(repeated.StructuredContent!.Value.GetProperty("duplicate").GetBoolean());
+        arguments["baseSha"] = new string('0', 40);
+        Assert.AreEqual(true, (await client.CallToolAsync("yeshua_task_send", arguments)).IsError);
+        Assert.AreEqual(1, host.Repository.AcceptedCount);
+        host.Executor.Release.TrySetResult();
+        await WaitForCompletedAsync(client, receipt.GetProperty("taskId").GetGuid());
+    }
+
+    [TestMethod]
     public async Task LegacyInitializeIsHandledByStandardTransport()
     {
         await using var host = await McpHost.StartAsync();
@@ -308,7 +340,7 @@ public sealed class McpCompatibilityTests
             builder.Configuration.AddInMemoryCollection(new Dictionary<string, string?>
             {
                 ["Mcp:PrivatePort"] = privatePort.ToString(),
-                ["AgentTasks:Enabled"] = "true", ["AgentTasks:PollSeconds"] = "1",
+                ["AgentTasks:Enabled"] = "true", ["AgentTasks:AllowWorkspaceWrite"] = "true", ["AgentTasks:PollSeconds"] = "1",
                 ["AgentTasks:ChatGptAuthentication"] = authentication.ToString(), ["AgentTasks:CodexHomePath"] = authHome,
                 ["ConnectionStrings:OperationalIntelligence"] = "Server=127.0.0.1,1;Database=UnusedCompatibilityFixture;Integrated Security=true;Connect Timeout=1"
             });

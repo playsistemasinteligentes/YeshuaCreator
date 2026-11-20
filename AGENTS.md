@@ -2106,6 +2106,11 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   omissa usa o SHA fixado em refs/yeshua/base, sem reset/rebase/replay. Checkout
   existente que nao contem a base solicitada bloqueia preservando arquivos.
   O destino do PR continua BaseBranch; base de trabalho nao muda esse destino.
+  No fluxo operacional, `baseSha` opcional fixa o commit esperado apos buscar
+  `baseRef` (por exemplo refs/pull/63/head), sem depender de clone previo de main.
+  O recibo devolve baseRef/baseSha; o progresso persiste workspaceBaseSha e
+  workspaceHeadSha antes do Codex. Integracao na main nao ativa o binario:
+  conferir tools/list do servidor antes de agendar uma tarefa com base explicita.
 - O isolamento de comandos do agente usa perfil AppArmor/seccomp especifico
   instalado pelo deploy Shared, sem SYS_ADMIN, privileged ou socket Docker.
   Na VPS, Codex 0.164.0 usa seu executor nativo por stdio com PIDs e /proc do

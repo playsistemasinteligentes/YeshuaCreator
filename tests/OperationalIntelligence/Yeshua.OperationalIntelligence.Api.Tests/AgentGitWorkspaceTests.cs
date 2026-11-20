@@ -244,6 +244,71 @@ public sealed class AgentGitWorkspaceTests
             });
     }
 
+    [TestMethod]
+    public async Task StructuredTaskRunsAdapterOnlyAfterExactPrCommitAndPersistsWorkspaceEvidence()
+    {
+        using var fixture = new WorkspaceFixture();
+        await fixture.InitializeRemoteAsync();
+        var expected = await fixture.AddRemoteFeatureAsync();
+        // Move the PR ahead: baseSha must select the exact original commit, not its new head.
+        await fixture.SeedGitAsync("checkout", "feature/m00");
+        await fixture.AddRemoteFeatureAsync();
+        var repository = new AgentTaskTestRepository();
+        var receiver = new SendAgentTaskReceiver(repository, fixture.Options);
+        var tool = new SendAgentTaskTool(receiver, fixture.Options);
+        var args = System.Text.Json.JsonSerializer.SerializeToElement(new
+        {
+            requestId = "m01-pr-base", message = "M01 fixture", mode = "workspace-write",
+            baseRef = "refs/pull/63/head", baseSha = expected
+        });
+        await tool.CallAsync(args, default);
+        var work = (await repository.ClaimAsync(default))!;
+        var executor = new CodexTaskExecutor(fixture.Options, fixture.Workspaces);
+        var result = await executor.ExecuteAsync(work, (progress, token) => repository.ProgressAsync(work, progress, token), default);
+        Assert.IsTrue(result.Success);
+        Assert.AreEqual(expected, work.WorkspaceBaseSha);
+        Assert.AreEqual(expected, work.WorkspaceHeadSha);
+        await repository.CompleteAsync(work, "Completed", result.Response, default);
+        var message = (await repository.ReadAsync(new(work.TaskId), default)).Messages.Single();
+        Assert.AreEqual(expected, message.BaseSha);
+        Assert.AreEqual(expected, message.WorkspaceBaseSha);
+        Assert.AreEqual(expected, message.WorkspaceHeadSha);
+        StringAssert.Contains(result.Response, "fixture adapter completed");
+    }
+
+    [TestMethod]
+    public async Task WrongExpectedShaBlocksBeforeCreatingCheckout()
+    {
+        using var fixture = new WorkspaceFixture();
+        await fixture.InitializeRemoteAsync();
+        await fixture.AddRemoteFeatureAsync();
+        var work = fixture.Work();
+        work.IsContinuation = false;
+        work.BaseRef = "refs/pull/63/head";
+        work.BaseSha = new string('0', 40);
+        await Assert.ThrowsExceptionAsync<ArgumentException>(() => fixture.Workspaces.PrepareAsync(work, default));
+        Assert.IsFalse(Directory.Exists(fixture.Path));
+    }
+
+    [TestMethod]
+    public async Task OptionalRealM00RefIsFetchedAndCheckedOutByTheActualPreparer()
+    {
+        if (Environment.GetEnvironmentVariable("YESHUA_WORKSPACE_REMOTE_PROBE") != "1")
+            Assert.Inconclusive("Opt in to a read-only remote fetch into a disposable test workspace.");
+        using var fixture = new WorkspaceFixture();
+        var actual = new AgentGitWorkspace(fixture.Options, new AgentGitHubClient(new HttpClient(), fixture.Options));
+        var work = fixture.Work();
+        work.IsContinuation = false;
+        work.BaseRef = "refs/pull/63/head";
+        work.BaseSha = "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1";
+        using var timeout = new CancellationTokenSource(TimeSpan.FromMinutes(3));
+        await actual.PrepareAsync(work, timeout.Token);
+        Assert.AreEqual(work.BaseSha, work.WorkspaceBaseSha);
+        Assert.AreEqual(work.BaseSha, work.WorkspaceHeadSha);
+        Assert.AreEqual(work.BaseSha, (await fixture.GitAsync("rev-parse", "HEAD")).Trim());
+        Console.WriteLine($"Actual PR #63 fetched and validated: base={work.WorkspaceBaseSha}; HEAD={work.WorkspaceHeadSha}");
+    }
+
     // Only transport is redirected to a local fixture. All validation/checkout commands use real Git.
     private sealed class LocalGitWorkspace(IOptions<AgentTaskOptions> options, AgentGitHubClient github, string remote)
         : AgentGitWorkspace(options, github)
@@ -265,12 +330,15 @@ public sealed class AgentGitWorkspaceTests
         public string Remote => System.IO.Path.Combine(Root, "remote.git");
         public string Path => System.IO.Path.Combine(Root, TaskId.ToString("N"));
         public AgentGitWorkspace Workspaces { get; }
+        public IOptions<AgentTaskOptions> Options { get; }
         public WorkspaceFixture(bool authenticated = false, bool denyAccess = false)
         {
             Directory.CreateDirectory(Root);
-            var options = Options.Create(new AgentTaskOptions
+            var options = Microsoft.Extensions.Options.Options.Create(new AgentTaskOptions
             {
                 WorkspacePath = Seed,
+                Enabled = true, AllowWorkspaceWrite = true,
+                RuntimeScript = System.IO.Path.Combine(AppContext.BaseDirectory, "Fixtures", "agent-workspace.cjs"),
                 Git = new()
                 {
                     Enabled = true, WorkspacesRoot = Root,
@@ -279,6 +347,7 @@ public sealed class AgentGitWorkspaceTests
                     Token = authenticated ? "fixture-private-token" : ""
                 }
             });
+            Options = options;
             Workspaces = new LocalGitWorkspace(options, new AgentGitHubClient(new HttpClient(new GitHubAccessFixture(denyAccess)), options), Remote);
         }
         public AgentTaskWorkItem Work() => new() { TaskId = TaskId, Mode = "workspace-write", IsContinuation = true };

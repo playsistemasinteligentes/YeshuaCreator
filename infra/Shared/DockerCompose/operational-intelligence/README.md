@@ -335,7 +335,7 @@ Referencia: [tokens e limitacoes documentadas pelo GitHub](https://docs.github.c
 
 ### Base explicita de desenvolvimento
 
-`yeshua_task_send` aceita `baseRef` opcional somente em `workspace-write`.
+`yeshua_task_send` aceita `baseRef` e `baseSha` opcionais somente em `workspace-write`.
 O campo e estruturado: citar uma branch ou SHA em `message` nao altera a base.
 Exemplo de continuacao do trabalho da M00 em uma **nova task**:
 
@@ -343,7 +343,8 @@ Exemplo de continuacao do trabalho da M00 em uma **nova task**:
 {
   "requestId": "identificador-unico-da-ordem",
   "mode": "workspace-write",
-  "baseRef": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
+  "baseRef": "refs/pull/63/head",
+  "baseSha": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
   "message": "Implementar a proxima alteracao sobre a M00, preservando o trabalho existente."
 }
 ```
@@ -356,11 +357,16 @@ credencial do aplicativo quando configurada. Tokens permanecem no ambiente do
 processo Git, nunca em argumentos, remote, config ou respostas de erro. Helpers
 de credenciais e redirects HTTP estao desabilitados nesse processo.
 
-O preparador usa staging e clone/checkout proprio da task, valida `rev-parse
+`baseSha` fixa o commit exato esperado: apos buscar `baseRef`, o preparador
+prova que a ref contem esse commit e faz checkout nele, mesmo que a ref tenha
+avancado. Sem `baseRef`, `baseSha` e buscado diretamente. Recibos de criacao e
+repeticao devolvem ambos os campos; trocar qualquer um conflita com requestId.
+
+O preparador usa staging e checkout proprio da task, valida `rev-parse
 --verify ...^{commit}` e `merge-base --is-ancestor` antes de executar o agente.
 O SHA validado fica em `refs/yeshua/base`; `refs/yeshua/fetched-base` identifica
 a ultima busca, que pode ter sido recusada por ancestralidade. Na nova task,
-omitir `baseRef` mantem `BaseBranch` (`main` por padrao), buscada no remoto.
+omitir ambos os campos mantem `BaseBranch` (`main` por padrao), buscada no remoto.
 Na retomada, a omissao busca e valida o SHA fixado, mesmo se a branch remota
 avancou. Workspaces antigos sem marcador validam `BaseBranch` e passam a fixar
 o commit. Uma base explicita na retomada so e aceita se ja for ancestral de
@@ -410,6 +416,72 @@ Evidencia local desta correcao (2026-11-20):
 - M01/M02, producao, deploy e merge nao foram alterados/executados. Nao houve
   commit ou push pelo terminal no repositorio desta task. A publicacao pelo
   aplicativo ainda nao foi verificada; nao ha URL de PR confirmada nesta evidencia.
+
+### Correcao operacional apos PR #65 (2026-11-20)
+
+Diagnostico confirmado por leitura, sem mutacao de producao:
+
+- `tools/list` da conexao operacional ativa nao anunciava `baseRef`; `task_read`
+  tambem nao devolvia esse campo. O contrato ativo era anterior a PR #65,
+  embora o checkout da M01 ja contivesse sua integracao. Integrar codigo nao
+  atualiza o binario em execucao. Nao foi comprovada perda de campo dentro do
+  repository novo: a ordem nao dispunha do campo estruturado na interface ativa.
+- Pedido `presenca-m01-retomada-20261120-1131`, task
+  `6453ef6b-ebf6-42a3-96fe-b689a7f75f14`: citava o SHA somente em `message`
+  e explicitava a ausencia do campo na interface. HEAD local conferido:
+  `eb565840c30fb07cefd62d2a376144d3c3d79124`; sem refs/yeshua e sem o objeto M00.
+  O clone limitado a main desse fluxo nao buscou a ref da PR.
+- `git ls-remote` confirmou no GitHub que `refs/pull/63/head` aponta para
+  `8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1`. O commit existe no remoto.
+- O teste `OptionalRealM00RefIsFetchedAndCheckedOutByTheActualPreparer` fez
+  fetch real dessa ref usando o preparador corrigido, num workspace temporario
+  descartavel, e confirmou base e HEAD iguais a esse SHA. Nao houve publicacao,
+  alteracao do workspace M01 ou uso de credencial de producao nesse ensaio.
+
+Implementacao: `AgentTaskContracts.cs`, `AgentTaskTools.cs`,
+`SendAgentTaskReceiver.cs`, `AgentGitWorkspace.cs`, `CodexTaskExecutor.cs` e
+`AgentTaskProtocol.cs` no modulo AgentTasks; `Repositories/AgentTaskRepository.cs`,
+`Modules/Mcp/McpOutputSchemas.cs` e migration aditiva
+`Database/Migrations/006_agent_task_workspace_evidence.sql`, no projeto da API.
+`BaseSha` e os identificadores `WorkspaceBaseSha`/`WorkspaceHeadSha` pertencem
+as mensagens existentes. O executor grava a evidencia antes de iniciar o
+adaptador; progresso posterior e conclusao preservam esses campos.
+Com base explicita, o preparador inicia repositorio vazio e busca a ref, sem
+clonar main primeiro. O default e as protecoes de retomada permanecem.
+
+Testes alterados: `AgentGitWorkspaceTests.cs`, `McpCompatibilityTests.cs`,
+`AgentTaskTestRepository.cs` e fixture `Fixtures/agent-workspace.cjs` no projeto
+de testes da API. Validam descoberta MCP, recibo, idempotencia, agendamento,
+preparador real, SHA esperado, adaptador sem modelo e evidencia preservada.
+O repository de ensaio e em memoria; a migration nao foi aplicada contra SQL
+Server. Houve uma falha intermediaria de fixture (commit irmao em vez de
+avanco da PR), corrigida antes da suite final.
+
+Comando de verificacao (inclui fetch real, opt-in):
+
+```sh
+YESHUA_WORKSPACE_REMOTE_PROBE=1 dotnet test tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests --no-restore --verbosity minimal --logger 'trx;LogFileName=workspace-operational.trx' --results-directory /tmp/yeshua-workspace-operational-results
+```
+
+Resultado: **120 aprovados, 0 falhas, 2 ignorados** (Codex nativo e descoberta
+SQL opcionais). TRX temporario em
+`/tmp/yeshua-workspace-operational-results/workspace-operational.trx`, incluindo
+stdout com o SHA real da M00. HEAD de partida desta alteracao:
+`1ee385e621b52fd5e1ac8ec737597e32c5a691cc`. Publicacao pelo aplicativo nao
+verificada durante o turno; nao houve commit/push pelo terminal nem deploy.
+
+Para iniciar M01 efetivamente:
+
+1. Apos publicar/integrar, ativar o binario corrigido por deploy autorizado
+   separadamente. Esta tarefa nao executa deploy. Reabrir/atualizar a conexao
+   cliente se ela guardar o catalogo antigo.
+2. Consultar `tools/list` do endpoint ativo e conferir `baseRef` e `baseSha`
+   em `yeshua_task_send`. A presenca apenas no checkout nao e suficiente.
+3. Enviar **nova task**, omitindo taskId, com requestId novo, `workspace-write`
+   e o JSON acima. A task antiga nao sera resetada para outra base.
+4. Conferir os dois campos no recibo e `workspaceBaseSha`/`workspaceHeadSha`
+   no `task_read`: ambos devem ser o SHA da M00 na primeira execucao. Se o
+   contrato estiver antigo ou o fetch/validacao falhar, nao executar M01 em main.
 
 ## Persistencia E Recuperacao
 

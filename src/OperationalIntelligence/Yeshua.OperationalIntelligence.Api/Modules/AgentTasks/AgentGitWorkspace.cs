@@ -43,14 +43,20 @@ public class AgentGitWorkspace(IOptions<AgentTaskOptions> options, AgentGitHubCl
             throw new ArgumentException("baseRef invalida. Informe branch, ref qualificada ou SHA completo, sem expressoes Git.");
     }
 
-    private static bool IsSha(string value) => Regex.IsMatch(value, "^[a-fA-F0-9]{40}$");
+    private static bool IsSha(string value) => value.Length == 40 && Regex.IsMatch(value, "^[a-fA-F0-9]{40}$");
+
+    public static void ValidateBaseSha(string value)
+    {
+        if (!IsSha(value)) throw new ArgumentException("baseSha deve conter o SHA completo de 40 caracteres.");
+    }
 
     public async Task<string> PrepareAsync(AgentTaskWorkItem item, CancellationToken token)
     {
         if (item.BaseRef is not null) ValidateBaseRef(item.BaseRef);
+        if (item.BaseSha is not null) ValidateBaseSha(item.BaseSha);
         if (!Settings.Enabled)
         {
-            if (item.BaseRef is not null)
+            if (item.BaseRef is not null || item.BaseSha is not null)
                 throw new ArgumentException("baseRef exige o preparador Git habilitado; nenhuma execucao foi iniciada.");
             return options.Value.WorkspacePath;
         }
@@ -75,9 +81,10 @@ public class AgentGitWorkspace(IOptions<AgentTaskOptions> options, AgentGitHubCl
         {
             // Omitted base on resume uses the pinned commit, even when main has moved.
             var pinned = await RunAsync(path, null, token, "for-each-ref", "--format=%(objectname)", BaseCommitRef);
-            var requested = item.BaseRef ?? (pinned.Trim().Length > 0 ? pinned.Trim() : Settings.BaseBranch);
-            var sha = await FetchBaseAsync(path, remote, requested, identity, token);
-            await ValidateAncestryAsync(path, sha, token);
+            var requested = item.BaseRef ?? item.BaseSha ?? (pinned.Trim().Length > 0 ? pinned.Trim() : Settings.BaseBranch);
+            var sha = await FetchBaseAsync(path, remote, requested, item.BaseSha, identity, token);
+            item.WorkspaceHeadSha = await ValidateAncestryAsync(path, sha, token);
+            item.WorkspaceBaseSha = sha;
             await RunAsync(path, null, token, "update-ref", BaseCommitRef, sha);
         }
         else
@@ -86,14 +93,24 @@ public class AgentGitWorkspace(IOptions<AgentTaskOptions> options, AgentGitHubCl
             var stage = Path.Combine(Settings.WorkspacesRoot, ".prepare-" + Guid.NewGuid().ToString("N"));
             try
             {
-                // Clone remains isolated per task; the seed may contain only main.
-                await RunAsync(Settings.WorkspacesRoot, identity, token,
-                    "clone", "--no-checkout", "--no-hardlinks", "--single-branch", "--branch", Settings.BaseBranch, "--",
-                    identity is null ? options.Value.WorkspacePath : remote, stage);
-                await RunAsync(stage, null, token, "remote", "set-url", "origin", remote);
-                var sha = await FetchBaseAsync(stage, remote, item.BaseRef ?? Settings.BaseBranch, identity, token);
+                if (item.BaseRef is not null || item.BaseSha is not null)
+                {
+                    // An explicit base does not depend on main or the local seed having its objects.
+                    Directory.CreateDirectory(stage);
+                    await RunAsync(stage, null, token, "init");
+                    await RunAsync(stage, null, token, "remote", "add", "origin", remote);
+                }
+                else
+                {
+                    await RunAsync(Settings.WorkspacesRoot, identity, token,
+                        "clone", "--no-checkout", "--no-hardlinks", "--single-branch", "--branch", Settings.BaseBranch, "--",
+                        identity is null ? options.Value.WorkspacePath : remote, stage);
+                    await RunAsync(stage, null, token, "remote", "set-url", "origin", remote);
+                }
+                var sha = await FetchBaseAsync(stage, remote, item.BaseRef ?? item.BaseSha ?? Settings.BaseBranch, item.BaseSha, identity, token);
                 await RunAsync(stage, null, token, "checkout", "-b", Branch(item.TaskId), sha);
-                await ValidateAncestryAsync(stage, sha, token);
+                item.WorkspaceHeadSha = await ValidateAncestryAsync(stage, sha, token);
+                item.WorkspaceBaseSha = sha;
                 await RunAsync(stage, null, token, "update-ref", BaseCommitRef, sha);
                 await ValidateAsync(item.TaskId, stage, remote, token);
                 Directory.Move(stage, path);
@@ -107,7 +124,7 @@ public class AgentGitWorkspace(IOptions<AgentTaskOptions> options, AgentGitHubCl
         return path;
     }
 
-    private async Task<string> FetchBaseAsync(string path, string remote, string requested,
+    private async Task<string> FetchBaseAsync(string path, string remote, string requested, string? expectedSha,
         AgentGitIdentity? identity, CancellationToken token)
     {
         ValidateBaseRef(requested);
@@ -120,20 +137,30 @@ public class AgentGitWorkspace(IOptions<AgentTaskOptions> options, AgentGitHubCl
             var sha = (await RunAsync(path, null, token, "rev-parse", "--verify", "--end-of-options", FetchedBaseRef + "^{commit}")).Trim();
             if (!IsSha(sha) || (IsSha(requested) && !sha.Equals(requested, StringComparison.OrdinalIgnoreCase)))
                 throw new ArgumentException("O commit resolvido nao corresponde a base solicitada.");
+            if (expectedSha is not null)
+            {
+                // Fetch the advertised PR/branch first, then prove the exact expected commit belongs to it.
+                var expected = (await RunAsync(path, null, token, "rev-parse", "--verify", "--end-of-options", expectedSha + "^{commit}")).Trim();
+                if (!expected.Equals(expectedSha, StringComparison.OrdinalIgnoreCase))
+                    throw new ArgumentException("SHA esperado nao corresponde ao commit resolvido.");
+                await RunAsync(path, null, token, "merge-base", "--is-ancestor", expected, sha);
+                return expected;
+            }
             return sha;
         }
         catch (ArgumentException)
         {
-            throw new ArgumentException($"Nao foi possivel buscar e resolver a base '{requested}'. Ref ausente ou acesso Git indisponivel; execucao bloqueada, sem substituir o checkout. Credenciais e stderr omitidos.");
+            throw new ArgumentException($"Nao foi possivel buscar e resolver a base '{requested}'. Ref ausente ou acesso Git indisponivel; SHA esperado ausente/incompativel quando informado; execucao bloqueada, sem substituir o checkout. Credenciais e stderr omitidos.");
         }
     }
 
-    private async Task ValidateAncestryAsync(string path, string sha, CancellationToken token)
+    private async Task<string> ValidateAncestryAsync(string path, string sha, CancellationToken token)
     {
-        await RunAsync(path, null, token, "rev-parse", "--verify", "--end-of-options", "HEAD^{commit}");
+        var head = (await RunAsync(path, null, token, "rev-parse", "--verify", "--end-of-options", "HEAD^{commit}")).Trim();
         try
         {
             await RunAsync(path, null, token, "merge-base", "--is-ancestor", sha, "HEAD");
+            return head;
         }
         catch (ArgumentException)
         {

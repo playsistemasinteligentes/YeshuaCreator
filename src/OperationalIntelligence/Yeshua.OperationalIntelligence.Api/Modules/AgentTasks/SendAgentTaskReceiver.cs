@@ -22,11 +22,12 @@ public sealed class SendAgentTaskReceiver(IAgentTaskRepository repository, IOpti
             throw new ArgumentException("O servidor permite somente diagnostico. Escrita no workspace nao esta habilitada.");
         if (command.Title?.Length > 160)
             throw new ArgumentException("title deve ter ate 160 caracteres.");
-        if (command.BaseRef is not null)
+        if (command.BaseRef is not null || command.BaseSha is not null)
         {
             if (command.Mode != "workspace-write")
-                throw new ArgumentException("baseRef exige mode workspace-write.");
-            AgentGitWorkspace.ValidateBaseRef(command.BaseRef);
+                throw new ArgumentException("baseRef/baseSha exigem mode workspace-write.");
+            if (command.BaseRef is not null) AgentGitWorkspace.ValidateBaseRef(command.BaseRef);
+            if (command.BaseSha is not null) AgentGitWorkspace.ValidateBaseSha(command.BaseSha);
         }
         return repository.AcceptAsync(command, settings.MaxPendingMessages, cancellationToken);
     }

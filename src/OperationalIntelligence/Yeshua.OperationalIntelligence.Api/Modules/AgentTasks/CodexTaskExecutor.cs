@@ -18,6 +18,10 @@ public sealed class CodexTaskExecutor(IOptions<AgentTaskOptions> options, AgentG
         if (!Directory.Exists(settings.WorkspacePath) || !File.Exists(settings.RuntimeScript))
             throw new ArgumentException("Workspace ou adaptador Codex indisponivel no servidor.");
         var workspace = await git.PrepareAsync(item, cancellationToken);
+        if (item.WorkspaceBaseSha is not null)
+            await progress(new(item.ThreadId,
+                $"Workspace validado: base={item.WorkspaceBaseSha}; HEAD={item.WorkspaceHeadSha}.",
+                item.WorkspaceBaseSha, item.WorkspaceHeadSha), cancellationToken);
         var start = new ProcessStartInfo(settings.NodeExecutable)
         {
             UseShellExecute = false,
