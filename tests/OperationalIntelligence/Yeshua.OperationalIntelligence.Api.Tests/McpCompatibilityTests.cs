@@ -131,6 +131,38 @@ public sealed class McpCompatibilityTests
     }
 
     [TestMethod]
+    public async Task PrivateMcpAdvertisesBaseRefAndWorkerReceivesExactM00CommitOnce()
+    {
+        const string sha = "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1";
+        await using var host = await McpHost.StartAsync(workspaceWrite: true);
+        await using var client = await ConnectAsync(host.PrivateUrl);
+        var tools = await client.ListToolsAsync();
+        var schema = tools.Single(tool => tool.Name == "yeshua_task_send").ProtocolTool.InputSchema;
+        Assert.AreEqual("string", schema.GetProperty("properties").GetProperty("baseRef").GetProperty("type").GetString());
+        StringAssert.Contains(client.ServerInstructions!, "baseRef");
+        var arguments = new Dictionary<string, object?>
+        {
+            ["requestId"] = "m01-on-m00", ["message"] = "Iniciar M01 Presenca", ["mode"] = "workspace-write", ["baseRef"] = sha
+        };
+        var sent = await client.CallToolAsync("yeshua_task_send", arguments);
+        Assert.AreEqual(false, sent.IsError ?? false);
+        var taskId = sent.StructuredContent!.Value.GetProperty("taskId").GetGuid();
+        await host.Executor.Started.Task.WaitAsync(TimeSpan.FromSeconds(10));
+        Assert.AreEqual(sha, host.Executor.Calls.Single().BaseRef);
+        Assert.IsFalse(host.Executor.Calls.Single().IsContinuation);
+        var duplicate = await client.CallToolAsync("yeshua_task_send", arguments);
+        Assert.IsTrue(duplicate.StructuredContent!.Value.GetProperty("duplicate").GetBoolean());
+        arguments["baseRef"] = "main";
+        Assert.AreEqual(true, (await client.CallToolAsync("yeshua_task_send", arguments)).IsError);
+        var read = await client.CallToolAsync("yeshua_task_read", new Dictionary<string, object?> { ["taskId"] = taskId.ToString() });
+        Assert.AreEqual(sha, read.StructuredContent!.Value.GetProperty("messages")[0].GetProperty("baseRef").GetString());
+        host.Executor.Release.TrySetResult();
+        await WaitForCompletedAsync(client, taskId);
+        Assert.AreEqual(1, host.Executor.Calls.Count);
+        Assert.AreEqual(1, host.Repository.AcceptedCount);
+    }
+
+    [TestMethod]
     public async Task LegacyInitializeIsHandledByStandardTransport()
     {
         await using var host = await McpHost.StartAsync();
@@ -291,7 +323,7 @@ public sealed class McpCompatibilityTests
         public ControlledExecutor Executor => executor;
         public CodexAccountTestFactory Accounts => accounts;
 
-        public static async Task<McpHost> StartAsync(bool productionCatalog = false, bool authentication = false)
+        public static async Task<McpHost> StartAsync(bool productionCatalog = false, bool authentication = false, bool workspaceWrite = false)
         {
             var authHome = Path.Combine(Path.GetTempPath(), "yeshua-mcp-auth-test-" + Guid.NewGuid());
             using var reservation = new TcpListener(IPAddress.Loopback, 0);
@@ -309,6 +341,7 @@ public sealed class McpCompatibilityTests
             {
                 ["Mcp:PrivatePort"] = privatePort.ToString(),
                 ["AgentTasks:Enabled"] = "true", ["AgentTasks:PollSeconds"] = "1",
+                ["AgentTasks:AllowWorkspaceWrite"] = workspaceWrite.ToString(),
                 ["AgentTasks:ChatGptAuthentication"] = authentication.ToString(), ["AgentTasks:CodexHomePath"] = authHome,
                 ["ConnectionStrings:OperationalIntelligence"] = "Server=127.0.0.1,1;Database=UnusedCompatibilityFixture;Integrated Security=true;Connect Timeout=1"
             });

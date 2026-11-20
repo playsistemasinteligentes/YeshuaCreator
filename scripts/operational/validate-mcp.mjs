@@ -76,6 +76,27 @@ export class McpClient {
 
 function requireEvidence(condition, message) { if (!condition) throw new Error(message); }
 
+export function inspectTaskBaseSupport(tools) {
+  const tool = tools.find(item => item.name === 'yeshua_task_send');
+  if (!tool) return { status: 'failed', error: 'yeshua_task_send ausente; use a conexao MCP privada autorizada.' };
+  const base = tool.inputSchema?.properties?.baseRef;
+  if (base?.type !== 'string') return { status: 'failed', error:
+    'A API em execucao nao anuncia baseRef estruturado. Atualize a API pelo fluxo autorizado e confira tools/list novamente; nao envie a task sem baseRef.' };
+  return { status: 'passed', baseRef: base, instruction:
+    'Nova task: omita taskId, use novo requestId, mode=workspace-write e baseRef=SHA completo. Esta consulta nao valida acesso Git nem checkout e nao envia tarefas.' };
+}
+
+export async function checkTaskBase(options) {
+  const client = await new McpClient(options.taskBaseUrl).connect();
+  const report = { checkedAtUtc: new Date().toISOString(), ...inspectTaskBaseSupport(client.tools), calls: client.calls };
+  if (options.output) {
+    const directory = resolve(options.output);
+    await mkdir(directory, { recursive: true });
+    await writeFile(join(directory, 'task-base-report.json'), JSON.stringify(report, null, 2));
+  }
+  return report;
+}
+
 export async function runAcceptance(options) {
   const directory = resolve(options.output ?? 'artifacts/operational-mcp-validation/live');
   await mkdir(directory, { recursive: true });
@@ -167,6 +188,11 @@ export async function runAcceptance(options) {
       requireEvidence(admin.tools.filter(tool => tool.annotations?.readOnlyHint === false).length === 3, 'Mutation annotations mismatch');
       for (const tool of admin.tools) requireEvidence(tool.outputSchema?.properties || tool.outputSchema?.anyOf, `${tool.name}: no output contract`);
     });
+    await check('private.task-base-ref', async () => {
+      const result = inspectTaskBaseSupport(admin.tools);
+      requireEvidence(result.status === 'passed', result.error);
+      return result;
+    });
     const toUtc = new Date().toISOString(), fromUtc = new Date(Date.now() - 180000).toISOString();
     const filtered = { application: app, fromUtc, toUtc, limit: 2, text: '__yeshua_acceptance_no_personal_data__' };
     for (const name of ['yeshua_logs_query', 'yeshua_errors_query']) await check(`private.${name}`, async () => {
@@ -214,14 +240,20 @@ if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1]
   const options = {};
   for (let index = 2; index < process.argv.length; index += 2) {
     const key = { '--public-url': 'publicUrl', '--private-url': 'privateUrl', '--application': 'application',
-      '--sql-connection': 'sqlConnection', '--output': 'output' }[process.argv[index]];
+      '--sql-connection': 'sqlConnection', '--output': 'output', '--check-task-base-url': 'taskBaseUrl' }[process.argv[index]];
     if (!key || !process.argv[index + 1]) throw new Error('Unknown or missing argument');
     options[key] = process.argv[index + 1];
   }
   try {
-    const report = await runAcceptance(options);
-    console.log(JSON.stringify({ status: report.status, passed: report.checks.filter(item => item.status === 'passed').length,
-      failed: report.checks.filter(item => item.status === 'failed').map(item => ({ name: item.name, error: item.error })), output: options.output }));
-    if (report.status !== 'passed') process.exitCode = 1;
+    if (options.taskBaseUrl) {
+      const report = await checkTaskBase(options);
+      console.log(JSON.stringify(report));
+      if (report.status !== 'passed') process.exitCode = 1;
+    } else {
+      const report = await runAcceptance(options);
+      console.log(JSON.stringify({ status: report.status, passed: report.checks.filter(item => item.status === 'passed').length,
+        failed: report.checks.filter(item => item.status === 'failed').map(item => ({ name: item.name, error: item.error })), output: options.output }));
+      if (report.status !== 'passed') process.exitCode = 1;
+    }
   } catch (error) { console.error(JSON.stringify({ status: 'failed', stage: 'transport-or-discovery', error: error.message })); process.exitCode = 1; }
 }

@@ -41,6 +41,11 @@ public static class AgentTaskProtocol
         Use yeshua_task_send apenas para uma ordem real do usuario. Omita taskId somente
         quando ele pedir nova tarefa; para continuar, envie a taskId selecionada.
         Cada ordem nova recebe novo requestId; numa repeticao do mesmo envio reutilize-o.
+        Para iniciar desenvolvimento sobre outra base, envie baseRef como argumento estruturado
+        de yeshua_task_send com mode=workspace-write; mencionar PR/SHA em message nao seleciona a base.
+        Prefira o SHA completo para fixar o commit. Omita taskId para uma nova task.
+        Confira baseRef no schema anunciado por tools/list antes do envio. Se estiver ausente,
+        a API em execucao precisa receber a versao com esse suporte; nao reenvie sem a base.
         mode=workspace-write exige habilitacao explicita no servidor. No modo de desenvolvimento,
         o aplicativo prepara um workspace/branch proprio da task e pode abrir um PR em rascunho
         pela conta GitHub do agente configurada no cofre privado. Essa ordem nao autoriza merge nem deploy. O modo observe

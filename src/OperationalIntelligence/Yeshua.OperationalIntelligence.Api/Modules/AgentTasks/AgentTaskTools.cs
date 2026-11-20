@@ -7,7 +7,7 @@ namespace Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 public sealed class SendAgentTaskTool(SendAgentTaskReceiver receiver, IOptions<AgentTaskOptions> options) : IMcpTool
 {
     public string Name => "yeshua_task_send";
-    public string Description => "Envia uma ordem ao Codex do servidor e retorna um recibo sem esperar a execucao. Omita taskId somente se o usuario pedir nova tarefa; para continuar informe a taskId selecionada nesta conversa. Nunca use o numero de uma lista como taskId. Selecionar ou ler uma tarefa nao e uma ordem de execucao. Gere requestId unico por ordem e reutilize em repeticoes. observe faz diagnostico; workspace-write exige habilitacao do servidor. Para andamento use yeshua_task_read, nunca reenvie a ordem. Disponivel apenas na conexao privada autorizada.";
+    public string Description => "Envia uma ordem ao Codex do servidor e retorna um recibo sem esperar a execucao. Omita taskId somente se o usuario pedir nova tarefa; para continuar informe a taskId selecionada nesta conversa. Nunca use o numero de uma lista como taskId. Selecionar ou ler uma tarefa nao e uma ordem de execucao. Gere requestId unico por ordem e reutilize em repeticoes. observe faz diagnostico; workspace-write exige habilitacao do servidor. Para outra base de desenvolvimento envie baseRef estruturado, preferindo SHA completo; PR/SHA em message nao seleciona a base. Para andamento use yeshua_task_read, nunca reenvie a ordem. Disponivel apenas na conexao privada autorizada.";
     public bool IsReadOnly => false;
     public object InputSchema => new
     {
