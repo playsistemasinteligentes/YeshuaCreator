@@ -1,3 +1,4 @@
+using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging.Abstractions;
@@ -20,6 +21,47 @@ public sealed class AgentTaskReceiverTests
             new SendAgentTaskCommand("3", "Teste", Mode: "workspace-write"),
             new SendAgentTaskCommand("4", "Teste", Guid.Empty),
             new SendAgentTaskCommand("5", new string('x', 16001))
+        })
+            await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(command, default));
+        Assert.AreEqual(0, repository.AcceptedCount);
+    }
+
+    [TestMethod]
+    public async Task ExplicitBaseFlowsThroughToolQueueAndReadAndParticipatesInIdempotency()
+    {
+        var repository = new AgentTaskTestRepository();
+        var settings = Options.Create(new AgentTaskOptions { Enabled = true, AllowWorkspaceWrite = true });
+        var receiver = new SendAgentTaskReceiver(repository, settings);
+        var tool = new SendAgentTaskTool(receiver, settings);
+        var command = new SendAgentTaskCommand("base-request", "Continue M00", Mode: "workspace-write",
+            BaseRef: "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1");
+        // Null optional fields are omitted by real MCP clients.
+        using var document = JsonDocument.Parse("""
+            {"requestId":"base-request","message":"Continue M00","mode":"workspace-write",
+             "baseRef":"8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1"}
+            """);
+        await tool.CallAsync(document.RootElement, default);
+        var repeated = await receiver.ExecuteAsync(command, default);
+        Assert.IsTrue(repeated.Duplicate);
+        Assert.AreEqual(1, repository.AcceptedCount);
+        await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(command with { BaseRef = "main" }, default));
+        var work = await repository.ClaimAsync(default);
+        Assert.AreEqual(command.BaseRef, work!.BaseRef);
+        var read = await repository.ReadAsync(new(repeated.TaskId), default);
+        Assert.AreEqual(command.BaseRef, read.Messages.Single().BaseRef);
+    }
+
+    [TestMethod]
+    public async Task InvalidBaseNeverQueuesWork()
+    {
+        var repository = new AgentTaskTestRepository();
+        var receiver = new SendAgentTaskReceiver(repository,
+            Options.Create(new AgentTaskOptions { Enabled = true, AllowWorkspaceWrite = true }));
+        foreach (var command in new[]
+        {
+            new SendAgentTaskCommand("observe-base", "Test", BaseRef: "main"),
+            new SendAgentTaskCommand("empty-base", "Test", Mode: "workspace-write", BaseRef: ""),
+            new SendAgentTaskCommand("unsafe-base", "Test", Mode: "workspace-write", BaseRef: "main:refs/heads/main")
         })
             await Assert.ThrowsExceptionAsync<ArgumentException>(() => receiver.ExecuteAsync(command, default));
         Assert.AreEqual(0, repository.AcceptedCount);

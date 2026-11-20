@@ -170,7 +170,7 @@ public static class McpOutputSchemas
                 ("acceptedAtUtc", text), ("duplicate", boolean)),
             ["yeshua_task_read"] = Object(("tasks", Array(Object(("selectionNumber", Nullable(integer)),
                     ("taskId", text), ("title", text), ("status", text), ("createdAtUtc", text), ("updatedAtUtc", text)))),
-                ("messages", Array(Object(("requestId", text), ("status", text), ("message", text), ("mode", text),
+                ("messages", Array(Object(("requestId", text), ("status", text), ("message", text), ("mode", text), ("baseRef", Nullable(text)),
                     ("response", Nullable(text)), ("progress", Nullable(text)), ("createdAtUtc", text), ("updatedAtUtc", text)))),
                 ("instruction", text), ("activeExecution", Nullable(Object(("taskId", text), ("requestId", text), ("restartRequested", boolean))))),
             ["yeshua_agent_restart"] = Object(("taskId", text), ("requestId", text), ("status", text), ("instruction", text)),

@@ -1,7 +1,7 @@
 namespace Yeshua.OperationalIntelligence.Api.Modules.AgentTasks;
 
 public sealed record SendAgentTaskCommand(
-    string RequestId, string Message, Guid? TaskId = null, string Mode = "observe", string? Title = null);
+    string RequestId, string Message, Guid? TaskId = null, string Mode = "observe", string? Title = null, string? BaseRef = null);
 public sealed record ReadAgentTaskQuery(Guid? TaskId = null, int Limit = 10);
 public sealed record RestartAgentCommand(Guid TaskId, string RequestId, bool Confirm = false);
 public sealed record AgentRestartReceipt(Guid TaskId, string RequestId, string Status, string Instruction);
@@ -24,6 +24,7 @@ public sealed class AgentTaskMessage
     public string Status { get; set; } = "";
     public string Message { get; set; } = "";
     public string Mode { get; set; } = "";
+    public string? BaseRef { get; set; }
     public string? Response { get; set; }
     public string? Progress { get; set; }
     public DateTimeOffset CreatedAtUtc { get; set; }
@@ -41,6 +42,7 @@ public sealed class AgentTaskWorkItem
     public string RequestId { get; set; } = "";
     public string Message { get; set; } = "";
     public string Mode { get; set; } = "";
+    public string? BaseRef { get; set; }
     public string? ThreadId { get; set; }
     public bool IsContinuation { get; set; }
 }

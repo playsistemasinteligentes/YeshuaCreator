@@ -17,7 +17,7 @@ internal sealed class AgentTaskTestRepository : IAgentTaskRepository
             var previous = _messages.FirstOrDefault(entry => entry.Work.RequestId == command.RequestId);
             if (previous.Work is not null)
             {
-                if (previous.Work.Message != command.Message || previous.Work.Mode != command.Mode ||
+                if (previous.Work.Message != command.Message || previous.Work.Mode != command.Mode || previous.Work.BaseRef != command.BaseRef ||
                     (command.TaskId.HasValue && command.TaskId != previous.Work.TaskId))
                     throw new ArgumentException("requestId ja foi usado para outro pedido.");
                 return Task.FromResult(new AgentTaskReceipt(previous.Work.TaskId, command.RequestId,
@@ -30,8 +30,8 @@ internal sealed class AgentTaskTestRepository : IAgentTaskRepository
             var taskId = command.TaskId ?? Guid.NewGuid();
             var now = DateTime.UtcNow;
             _tasks[taskId] = new() { TaskId = taskId, Title = command.Title ?? command.Message, Status = "Queued", CreatedAtUtc = now, UpdatedAtUtc = now };
-            var work = new AgentTaskWorkItem { TaskId = taskId, MessageId = _messages.Count + 1, RequestId = command.RequestId, Message = command.Message, Mode = command.Mode };
-            _messages.Add((work, new() { RequestId = command.RequestId, Message = command.Message, Mode = command.Mode, Status = "Queued", CreatedAtUtc = now, UpdatedAtUtc = now }));
+            var work = new AgentTaskWorkItem { TaskId = taskId, MessageId = _messages.Count + 1, RequestId = command.RequestId, Message = command.Message, Mode = command.Mode, BaseRef = command.BaseRef };
+            _messages.Add((work, new() { RequestId = command.RequestId, Message = command.Message, Mode = command.Mode, BaseRef = command.BaseRef, Status = "Queued", CreatedAtUtc = now, UpdatedAtUtc = now }));
             return Task.FromResult(new AgentTaskReceipt(taskId, command.RequestId, "Queued", now, false));
         }
     }
@@ -46,7 +46,7 @@ internal sealed class AgentTaskTestRepository : IAgentTaskRepository
             IReadOnlyList<AgentTaskMessage> messages = query.TaskId is null ? [] : _messages.Where(entry => entry.Work.TaskId == query.TaskId)
                 .Reverse().Take(query.Limit).Select(entry => new AgentTaskMessage
                 {
-                    RequestId = entry.Message.RequestId, Message = entry.Message.Message, Mode = entry.Message.Mode,
+                    RequestId = entry.Message.RequestId, Message = entry.Message.Message, Mode = entry.Message.Mode, BaseRef = entry.Message.BaseRef,
                     Status = entry.Message.Status, Response = entry.Message.Response, Progress = entry.Message.Progress,
                     CreatedAtUtc = entry.Message.CreatedAtUtc, UpdatedAtUtc = entry.Message.UpdatedAtUtc
                 }).ToArray();
