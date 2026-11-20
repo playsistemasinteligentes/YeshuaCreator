@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="fa5e1d71-c7da-4c04-9c84-8685a185c469" name="@adcfbf15059d 2026-11-20 11:33:25" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-20T11:33:25.9965157+00:00" queuing="2026-11-20T11:33:25.9965159+00:00" start="2026-11-20T11:33:22.8755299+00:00" finish="2026-11-20T11:33:40.7609407+00:00" />
+  <TestSettings name="default" id="104ec919-8497-4eeb-991a-dbc31dcf0c95">
+    <Deployment runDeploymentRoot="_adcfbf15059d_2026-11-20_11_33_25" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="fb00ca9a-92f3-431d-a54c-29250fa23d7e" testId="956fef56-b06c-2c61-9ec2-6943d160efa3" testName="AppSolutionGenerateCreatesApplicationDomainProject" computerName="adcfbf15059d" duration="00:00:15.9452331" startTime="2026-11-20T11:33:24.6665748+00:00" endTime="2026-11-20T11:33:40.6180155+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb00ca9a-92f3-431d-a54c-29250fa23d7e">
+      <Output>
+        <ErrorInfo>
+          <Message>StringAssert.Contains failed. String '&lt;Project Sdk="Microsoft.NET.Sdk"&gt;
+
+  &lt;PropertyGroup&gt;
+    &lt;TargetFramework&gt;net8.0&lt;/TargetFramework&gt;
+    &lt;ImplicitUsings&gt;enable&lt;/ImplicitUsings&gt;
+    &lt;Nullable&gt;enable&lt;/Nullable&gt;
+  &lt;/PropertyGroup&gt;
+
+  &lt;ItemGroup&gt;
+    &lt;ProjectReference Include="../Yeshua.CQRS.Domain/Yeshua.CQRS.Domain.csproj" /&gt;
+  &lt;/ItemGroup&gt;
+
+&lt;/Project&gt;' does not contain string '..\Yeshua.CQRS.Domain\Yeshua.CQRS.Domain.csproj'. .</Message>
+          <StackTrace>   at TestMigration.ApplicationDomainProjectGenerationTests.AppSolutionGenerateCreatesApplicationDomainProject() in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 228
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b5d4f8e0-dd9e-42b5-9caf-e9f4c5079c09" testId="77e89917-0499-2e1d-42c9-894bc172560a" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeFactory.cs)" computerName="adcfbf15059d" duration="00:00:00.0084953" startTime="2026-11-20T11:33:24.6437050+00:00" endTime="2026-11-20T11:33:24.6524629+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5d4f8e0-dd9e-42b5-9caf-e9f4c5079c09" />
+    <UnitTestResult executionId="e4d04945-26de-4e8e-acf8-67767572b86d" testId="98fefac8-4aea-79c3-33e5-b9427428aaa5" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntity.cs)" computerName="adcfbf15059d" duration="00:00:00.0120425" startTime="2026-11-20T11:33:24.6199201+00:00" endTime="2026-11-20T11:33:24.6324221+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e4d04945-26de-4e8e-acf8-67767572b86d" />
+    <UnitTestResult executionId="2bb5c1d2-352c-430d-8865-482580d44940" testId="b24fab2f-9364-09c5-4242-0f790ee633cd" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntityDecorator.cs)" computerName="adcfbf15059d" duration="00:00:00.0092251" startTime="2026-11-20T11:33:24.6329237+00:00" endTime="2026-11-20T11:33:24.6424400+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2bb5c1d2-352c-430d-8865-482580d44940" />
+    <UnitTestResult executionId="42784a15-8424-4287-a3ca-eb43f614ae94" testId="1921aa92-fe21-ed46-9d58-3d1ddf6d926d" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,IMDFeEntity.cs)" computerName="adcfbf15059d" duration="00:00:00.0802361" startTime="2026-11-20T11:33:24.4905843+00:00" endTime="2026-11-20T11:33:24.6095804+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="42784a15-8424-4287-a3ca-eb43f614ae94" />
+    <UnitTestResult executionId="62f55bb1-6be0-4689-bc03-fec92cbe2c40" testId="8e0bd82e-ebed-89c2-a722-5794dc25c433" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Behaviors,MDFeDomainBehavior.cs)" computerName="adcfbf15059d" duration="00:00:00.0115320" startTime="2026-11-20T11:33:24.6546039+00:00" endTime="2026-11-20T11:33:24.6664426+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="62f55bb1-6be0-4689-bc03-fec92cbe2c40" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntity.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="98fefac8-4aea-79c3-33e5-b9427428aaa5">
+      <Execution id="e4d04945-26de-4e8e-acf8-67767572b86d" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="AppSolutionGenerateCreatesApplicationDomainProject" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="956fef56-b06c-2c61-9ec2-6943d160efa3">
+      <Execution id="fb00ca9a-92f3-431d-a54c-29250fa23d7e" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="AppSolutionGenerateCreatesApplicationDomainProject" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntityDecorator.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="b24fab2f-9364-09c5-4242-0f790ee633cd">
+      <Execution id="2bb5c1d2-352c-430d-8865-482580d44940" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Behaviors,MDFeDomainBehavior.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="8e0bd82e-ebed-89c2-a722-5794dc25c433">
+      <Execution id="62f55bb1-6be0-4689-bc03-fec92cbe2c40" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeFactory.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="77e89917-0499-2e1d-42c9-894bc172560a">
+      <Execution id="b5d4f8e0-dd9e-42b5-9caf-e9f4c5079c09" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,IMDFeEntity.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="1921aa92-fe21-ed46-9d58-3d1ddf6d926d">
+      <Execution id="42784a15-8424-4287-a3ca-eb43f614ae94" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="956fef56-b06c-2c61-9ec2-6943d160efa3" executionId="fb00ca9a-92f3-431d-a54c-29250fa23d7e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="77e89917-0499-2e1d-42c9-894bc172560a" executionId="b5d4f8e0-dd9e-42b5-9caf-e9f4c5079c09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="98fefac8-4aea-79c3-33e5-b9427428aaa5" executionId="e4d04945-26de-4e8e-acf8-67767572b86d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b24fab2f-9364-09c5-4242-0f790ee633cd" executionId="2bb5c1d2-352c-430d-8865-482580d44940" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1921aa92-fe21-ed46-9d58-3d1ddf6d926d" executionId="42784a15-8424-4287-a3ca-eb43f614ae94" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e0bd82e-ebed-89c2-a722-5794dc25c433" executionId="62f55bb1-6be0-4689-bc03-fec92cbe2c40" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="6" executed="6" passed="5" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

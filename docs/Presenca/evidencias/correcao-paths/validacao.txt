@@ -1,0 +1,14 @@
+Links relativos e whitespace dos dois documentos M00: OK.
+Caminhos existentes do inventário: 37 conferidos.
+TRX baseline: total=1, passed=0, failed=1; hash e XML OK.
+TRX regression-before: total=5, passed=0, failed=5; hash e XML OK.
+TRX affected-intermediate: total=6, passed=5, failed=1; hash e XML OK.
+TRX affected: total=6, passed=6, failed=0; hash e XML OK.
+TRX engine: total=34, passed=34, failed=0; hash e XML OK.
+TRX shared: total=5, passed=5, failed=0; hash e XML OK.
+Hashes dos dois arquivos de código finais correspondem ao resumo dos testes.
+Evidências iniciais da M00 preservadas; hashes TRX originais OK.
+Diff do gerador: exatamente 104 linhas, somente composição de caminhos com barras Windows; número de linhas preservado.
+Diff rastreado limitado ao gerador, teste e dois documentos M00. Novos arquivos somente evidências em docs/Presenca/evidencias/correcao-paths/.
+git diff --check: exit 0.
+Windows: não executado. Sem homologação dos dois sistemas ou aprovação do coordenador.

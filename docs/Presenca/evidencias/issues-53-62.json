@@ -1,0 +1,116 @@
+{
+  "repository": "playsistemasinteligentes/YeshuaCreator",
+  "source": "GitHub REST API GET /repos/playsistemasinteligentes/YeshuaCreator/issues/{number} e /comments?per_page=100",
+  "issues": [
+    {
+      "number": 53,
+      "title": "[Presença] M00 — Reconhecimento e especificação técnica",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/53",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:11Z",
+      "updated_at": "2026-11-19T19:47:11Z",
+      "body": "## Objetivo e escopo\nInspecionar repositório, DSL, Engine, Shared, apps, Migration/Custon, CQRS, repositories, Inbox/Outbox, workers, segurança, deploy e testes. Mapear componentes reutilizáveis e lacunas. Entregar ADRs, contratos propostos, matriz de dependências, riscos e decomposição técnica das M01–M09. Não alterar produção nem iniciar implementação funcional.\n\n## Dependências\nNenhuma. É a única issue inicialmente liberada para investigação.\n\n## Critérios de aceite\nInventário com caminhos e commit SHA; evidências do código; fluxo de colaboração entre agentes validado em teste controlado; plano técnico revisável.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Liberada para reconhecimento; não autorizada implantação ou alteração estrutural.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.111074+00:00"
+    },
+    {
+      "number": 54,
+      "title": "[Presença] M01 — Fundação do domínio e contratos",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/54",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:13Z",
+      "updated_at": "2026-11-19T19:47:13Z",
+      "body": "## Objetivo e escopo\nImplementar identidade publicadora, canal, plataforma/capacidade, pauta/origem, conteúdo/versão, material, aprovação, publicação/destino e auditoria conforme DSL real. Definir autorização por identidade e contratos de entrada idempotentes. Não implementar Academia internamente.\n\n## Dependências\nM00 concluída e revisada; M01 depende do inventário técnico de M00.\n\n## Critérios de aceite\nMigrações e código gerado corretos, APIs/commands validados, isolamento por identidade, testes de persistência, autorização e duplicação.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.089358+00:00"
+    },
+    {
+      "number": 55,
+      "title": "[Presença] M02 — Redação e entrada manual",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/55",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:15Z",
+      "updated_at": "2026-11-19T19:47:15Z",
+      "body": "## Objetivo e escopo\nCriar fluxo de pauta jornalística manual com manchete, corpo, fontes, mídia, classificação principal/secundária, tags, rascunho e versionamento; sugestões por IA somente quando explicitamente configuradas. Criar telas seguindo padrões do Front.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M01 conforme arquitetura real.\n\n## Critérios de aceite\nUsuário autorizado cria, edita, consulta e versiona pauta; dados persistem; testes de validação, histórico e autorização.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.127887+00:00"
+    },
+    {
+      "number": 56,
+      "title": "[Presença] M03 — Revisão, aprovação e segurança editorial",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/56",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:17Z",
+      "updated_at": "2026-11-19T19:47:17Z",
+      "body": "## Objetivo e escopo\nImplementar estados editoriais, revisão, aprovação vinculada a versão, política por identidade e proteção contra vazamento de dados internos. Correções após aprovação exigem nova versão e revalidação. Registrar auditoria.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M02 conforme arquitetura real.\n\n## Critérios de aceite\nMáquina de estados testada; publicação sem aprovação impedida; alterações pós-aprovação não saem silenciosamente; trilha de auditoria verificável.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.078341+00:00"
+    },
+    {
+      "number": 57,
+      "title": "[Presença] M04 — Portal estático da Play Sistemas",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/57",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:18Z",
+      "updated_at": "2026-11-19T19:47:18Z",
+      "body": "## Objetivo e escopo\nGerar HTML estático para portal Play Sistemas, seção Yeshua e produtos, artigos/notícias, URLs permanentes, sitemap, robots, canonical, metadados sociais e structured data apropriado. Publicação atômica, rollback, redirects e links internos. Não presumir domínio/deploy sem verificação.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M03 conforme arquitetura real.\n\n## Critérios de aceite\nBuild estático reproduzível, navegação acessível, páginas indexáveis sem login, teste de links/SEO, rollback e publicação sem estado parcial.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.620588+00:00"
+    },
+    {
+      "number": 58,
+      "title": "[Presença] M05 — Integração assíncrona com a fábrica",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/58",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:20Z",
+      "updated_at": "2026-11-19T19:47:20Z",
+      "body": "## Objetivo e escopo\nReceber movimentos de issues, PRs, releases e deploys via contrato explícito sem bloquear a fábrica. Distinguir evento duplicado de novo movimento, correlacionar origem e filtrar dados internos antes de criar pauta pública.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M04 conforme arquitetura real.\n\n## Critérios de aceite\nEventos geram pautas rastreáveis, replay idempotente, falha do Presença não bloqueia fluxo original, testes de privacidade e resiliência.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.709610+00:00"
+    },
+    {
+      "number": 59,
+      "title": "[Presença] M06 — Integração com módulo Academia independente",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/59",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:21Z",
+      "updated_at": "2026-11-19T19:47:21Z",
+      "body": "## Objetivo e escopo\nDefinir contrato de solicitação de publicação educacional pela Academia (aula aprovada, versão, autoria, conteúdo público, referência externa), callback/evento de status e URL pública. Não criar matrícula, grade, cursos ou alunos no Presença; permitir testes com produtor simulado até Academia existir.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M05 conforme arquitetura real.\n\n## Critérios de aceite\nAula simulada autorizada publica no portal, atualização/versionamento e retorno de status testados; desacoplamento demonstrado.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.725333+00:00"
+    },
+    {
+      "number": 60,
+      "title": "[Presença] M07 — Distribuição externa Telegram e GitHub Discussions",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/60",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:23Z",
+      "updated_at": "2026-11-19T19:47:23Z",
+      "body": "## Objetivo e escopo\nImplementar adaptadores por plataforma, contas/canais autorizados, formatos, agendamento quando aplicável, idempotência, rate limits, retries com backoff, reconciliação de resultado incerto, identificador externo e auditoria. Credenciais protegidas e uso de APIs oficiais.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M06 conforme arquitetura real.\n\n## Critérios de aceite\nConector de teste + testes reais quando credenciais autorizadas; falha parcial não bloqueia demais destinos; nenhum reenvio cego; resultados documentados.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:49.745240+00:00"
+    },
+    {
+      "number": 61,
+      "title": "[Presença] M08 — Operação, observabilidade e recuperação",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/61",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:25Z",
+      "updated_at": "2026-11-19T19:47:25Z",
+      "body": "## Objetivo e escopo\nImplementar painel de estados, falhas, filas, tentativas, reprocessamento autorizado, métricas/logs/traces e alertas reutilizando observabilidade Yeshua. Políticas de retenção e limpeza; testes de indisponibilidade e concorrência.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M07 conforme arquitetura real.\n\n## Critérios de aceite\nFalhas identificáveis por correlação; reprocessamento seguro; métricas úteis; testes de carga moderada, recuperação e privacidade.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:50.052837+00:00"
+    },
+    {
+      "number": 62,
+      "title": "[Presença] M09 — Homologação integrada e entrega",
+      "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/62",
+      "state": "open",
+      "created_at": "2026-11-19T19:47:27Z",
+      "updated_at": "2026-11-19T19:47:27Z",
+      "body": "## Objetivo e escopo\nValidar ponta a ponta três origens: notícia manual, movimento da fábrica, aula autorizada via integração Academia. Todas publicadas no portal estático; Telegram/GitHub em contas autorizadas. Executar regressão, segurança, SEO, falhas, duplicações, rollback e verificação pós-deploy aprovado.\n\n## Dependências\nM00 concluída e revisada; verificar dependências de M01–M08 conforme arquitetura real.\n\n## Critérios de aceite\nRelatório com evidências e URLs, testes e versões; nenhum bloqueio ocultado; produção apenas com autorização explícita; checklist de pronto preenchido.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente.",
+      "comments": [],
+      "retrievedAtUtc": "2026-11-20T01:10:50.141118+00:00"
+    }
+  ]
+}
