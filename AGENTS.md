@@ -2098,6 +2098,14 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   workspace/branch por task e faz commit, push somente da branch `codex/task-*`
   e PR em rascunho. A ponte continua `yeshua_task_send`/`yeshua_task_read`;
   nao adicionar ferramentas Git nem autorizar merge/deploy ao agente.
+- Decisao de 2026-11-20: a ponte de desenvolvimento aceita `baseRef` explicita
+  (branch, ref qualificada ou SHA completo) no command/MCP, persistida por pedido
+  e incluida na idempotencia. O preparador faz fetch autorizado e checkout isolado
+  por task, resolve o commit com rev-parse e verifica merge-base antes de executar.
+  Sem base explicita, uma nova task usa BaseBranch (main por padrao); retomada
+  omissa usa o SHA fixado em refs/yeshua/base, sem reset/rebase/replay. Checkout
+  existente que nao contem a base solicitada bloqueia preservando arquivos.
+  O destino do PR continua BaseBranch; base de trabalho nao muda esse destino.
 - O isolamento de comandos do agente usa perfil AppArmor/seccomp especifico
   instalado pelo deploy Shared, sem SYS_ADMIN, privileged ou socket Docker.
   Na VPS, Codex 0.164.0 usa seu executor nativo por stdio com PIDs e /proc do

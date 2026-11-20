@@ -18,6 +18,7 @@ public sealed class SendAgentTaskTool(SendAgentTaskReceiver receiver, IOptions<A
             message = new { type = "string", minLength = 1, maxLength = options.Value.MaxMessageChars },
             taskId = new { type = "string", format = "uuid" },
             title = new { type = "string", maxLength = 160 },
+            baseRef = new { type = "string", minLength = 1, maxLength = 200, description = "Base explicita: branch, refs/heads/..., refs/pull/.../head, tag qualificada ou SHA completo. Omitida: main na nova task; base fixada na retomada. Nao interpreta o texto de message como base." },
             mode = new { type = "string", @enum = new[] { "observe", "workspace-write" }, @default = "observe" }
         },
         required = new[] { "requestId", "message" },
@@ -30,7 +31,7 @@ public sealed class SendAgentTaskTool(SendAgentTaskReceiver receiver, IOptions<A
         var message = AgentTaskToolArguments.String(arguments, "message") ?? "";
         var command = new SendAgentTaskCommand(requestId, message,
             AgentTaskToolArguments.TaskId(arguments), AgentTaskToolArguments.String(arguments, "mode") ?? "observe",
-            AgentTaskToolArguments.String(arguments, "title"));
+            AgentTaskToolArguments.String(arguments, "title"), AgentTaskToolArguments.String(arguments, "baseRef"));
         var receipt = await receiver.ExecuteAsync(command, cancellationToken);
         return McpToolResult.Ok("Pedido recebido. Guarde taskId e requestId e consulte yeshua_task_read para obter a resposta.", receipt);
     }

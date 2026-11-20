@@ -19,7 +19,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
             IF @LockResult < 0 THROW 51000, 'Agent task submission unavailable.', 1;
             """, null, cancellationToken, transaction));
         var previous = await connection.QuerySingleOrDefaultAsync<StoredSubmission>(Command("""
-            SELECT TaskId, RequestId, Message, Mode, Status,
+            SELECT TaskId, RequestId, Message, Mode, BaseRef, Status,
                 TODATETIMEOFFSET(CreatedAtUtc, '+00:00') AS CreatedAtUtc
             FROM OI_AgentTaskMessages WHERE RequestId = @RequestId;
             """, new { command.RequestId }, cancellationToken, transaction));
@@ -27,7 +27,8 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
         {
             if ((command.TaskId.HasValue && command.TaskId != previous.TaskId) ||
                 !string.Equals(command.Message, previous.Message, StringComparison.Ordinal) ||
-                !string.Equals(command.Mode, previous.Mode, StringComparison.Ordinal))
+                !string.Equals(command.Mode, previous.Mode, StringComparison.Ordinal) ||
+                !string.Equals(command.BaseRef, previous.BaseRef, StringComparison.Ordinal))
                 throw new ArgumentException("requestId ja foi usado para outro pedido. Use outro identificador para uma nova ordem.");
             await transaction.CommitAsync(cancellationToken);
             return new(previous.TaskId, previous.RequestId, previous.Status, previous.CreatedAtUtc, true);
@@ -64,9 +65,9 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
                 """, new { TaskId = taskId, Title = title, Now = now }, cancellationToken, transaction));
         }
         await connection.ExecuteAsync(Command("""
-            INSERT INTO OI_AgentTaskMessages(TaskId, RequestId, Message, Mode, Status, CreatedAtUtc, UpdatedAtUtc)
-            VALUES(@TaskId, @RequestId, @Message, @Mode, 'Queued', @Now, @Now);
-            """, new { TaskId = taskId, command.RequestId, command.Message, command.Mode, Now = now }, cancellationToken, transaction));
+            INSERT INTO OI_AgentTaskMessages(TaskId, RequestId, Message, Mode, BaseRef, Status, CreatedAtUtc, UpdatedAtUtc)
+            VALUES(@TaskId, @RequestId, @Message, @Mode, @BaseRef, 'Queued', @Now, @Now);
+            """, new { TaskId = taskId, command.RequestId, command.Message, command.Mode, command.BaseRef, Now = now }, cancellationToken, transaction));
         await transaction.CommitAsync(cancellationToken);
         return new(taskId, command.RequestId, "Queued", now, false);
     }
@@ -84,7 +85,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
         IReadOnlyList<AgentTaskMessage> messages = [];
         if (query.TaskId.HasValue)
             messages = (await connection.QueryAsync<AgentTaskMessage>(Command("""
-                SELECT TOP (@Limit) RequestId, Message, Mode, Status, Response, Progress,
+                SELECT TOP (@Limit) RequestId, Message, Mode, BaseRef, Status, Response, Progress,
                     TODATETIMEOFFSET(CreatedAtUtc, '+00:00') AS CreatedAtUtc,
                     TODATETIMEOFFSET(UpdatedAtUtc, '+00:00') AS UpdatedAtUtc
                 FROM OI_AgentTaskMessages WHERE TaskId = @TaskId ORDER BY MessageId DESC;
@@ -112,7 +113,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
             UPDATE t SET Status = 'Running', UpdatedAtUtc = SYSUTCDATETIME()
                 FROM OI_AgentTasks t JOIN OI_AgentTaskMessages m ON m.TaskId = t.TaskId
                 WHERE m.MessageId = @MessageId;
-            SELECT m.MessageId, m.TaskId, m.RequestId, m.Message, m.Mode, t.ThreadId,
+            SELECT m.MessageId, m.TaskId, m.RequestId, m.Message, m.Mode, m.BaseRef, t.ThreadId,
                 CAST(CASE WHEN EXISTS(SELECT 1 FROM OI_AgentTaskMessages previous
                     WHERE previous.TaskId = m.TaskId AND previous.MessageId < m.MessageId)
                     THEN 1 ELSE 0 END AS BIT) AS IsContinuation
@@ -175,6 +176,7 @@ public sealed class AgentTaskRepository(OperationalIntelligenceDatabase database
         public string RequestId { get; set; } = "";
         public string Message { get; set; } = "";
         public string Mode { get; set; } = "";
+        public string? BaseRef { get; set; }
         public string Status { get; set; } = "";
         public DateTimeOffset CreatedAtUtc { get; set; }
     }

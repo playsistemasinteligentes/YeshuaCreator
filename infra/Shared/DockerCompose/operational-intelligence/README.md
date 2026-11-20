@@ -333,6 +333,84 @@ ou bloqueio. Nao invocar outro runner nem contornar `.git` para antecipar a etap
 
 Referencia: [tokens e limitacoes documentadas pelo GitHub](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens).
 
+### Base explicita de desenvolvimento
+
+`yeshua_task_send` aceita `baseRef` opcional somente em `workspace-write`.
+O campo e estruturado: citar uma branch ou SHA em `message` nao altera a base.
+Exemplo de continuacao do trabalho da M00 em uma **nova task**:
+
+```json
+{
+  "requestId": "identificador-unico-da-ordem",
+  "mode": "workspace-write",
+  "baseRef": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
+  "message": "Implementar a proxima alteracao sobre a M00, preservando o trabalho existente."
+}
+```
+
+Tambem aceita `feature/m00`, `refs/heads/feature/m00`, `refs/pull/63/head`
+e tags qualificadas (`refs/tags/...`). SHA exige os 40 caracteres; expressoes
+como `HEAD~1`, refspecs e URLs sao recusadas. O fetch busca somente a ref
+necessaria no repositorio configurado, sem tags/submodulos automaticos, com
+credencial do aplicativo quando configurada. Tokens permanecem no ambiente do
+processo Git, nunca em argumentos, remote, config ou respostas de erro. Helpers
+de credenciais e redirects HTTP estao desabilitados nesse processo.
+
+O preparador usa staging e clone/checkout proprio da task, valida `rev-parse
+--verify ...^{commit}` e `merge-base --is-ancestor` antes de executar o agente.
+O SHA validado fica em `refs/yeshua/base`; `refs/yeshua/fetched-base` identifica
+a ultima busca, que pode ter sido recusada por ancestralidade. Na nova task,
+omitir `baseRef` mantem `BaseBranch` (`main` por padrao), buscada no remoto.
+Na retomada, a omissao busca e valida o SHA fixado, mesmo se a branch remota
+avancou. Workspaces antigos sem marcador validam `BaseBranch` e passam a fixar
+o commit. Uma base explicita na retomada so e aceita se ja for ancestral de
+HEAD; nao ha reset, rebase, merge, reaplicacao da M00 ou troca de workspace.
+Base ausente/inacessivel bloqueia antes do agente, sem fallback para main.
+
+A migration aditiva `005_agent_task_base_ref.sql` adiciona `BaseRef` nullable
+por pedido, sem reescrever historico. Repetir requestId com outra base e
+conflito, nao outra execucao. O read devolve a base solicitada. O PR permanece
+em rascunho e aponta para `Git.BaseBranch`; uma base de trabalho SHA/ref nao
+e um novo destino de PR. A publicacao compara commits com a base fixada para
+nao publicar somente os commits herdados. As protecoes de `.git`, branch da
+task e origem Git permanecem vigentes.
+
+Evidencia local desta correcao (2026-11-20):
+
+- Branch preparada: `codex/task-4a5dce144ce841c289c511440c798b00`.
+  HEAD anterior as alteracoes: `0ee78f46dc0bcd0b85750e75e55ecf157d792b2f`.
+  Nao e o SHA de um novo commit desta correcao; publicacao cabe ao aplicativo.
+- Preparador real: `Modules/AgentTasks/AgentGitWorkspace.cs`. Contratos, tool e
+  receiver no mesmo modulo; persistencia em `Repositories/AgentTaskRepository.cs`,
+  migration `Database/Migrations/005_agent_task_base_ref.sql` e schema de leitura
+  em `Modules/Mcp/McpOutputSchemas.cs`, relativos ao projeto da API.
+- Testes: `AgentGitWorkspaceTests.cs`, `AgentTaskReceiverTests.cs` e suporte
+  `AgentTaskTestRepository.cs` no projeto de testes da API. Git real 2.39.5,
+  .NET SDK 8.0.428, repositorios temporarios e HTTP GitHub simulado, sem producao.
+  Apenas o transporte Git e redirecionado na fixture; resolucao, checkout,
+  ancestralidade, isolamento, configuracao e preservacao usam Git real.
+- Comando final executado a partir da raiz:
+  `dotnet test tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests --no-restore --verbosity minimal --logger 'trx;LogFileName=workspace-preparer.trx' --results-directory /tmp/yeshua-workspace-preparer-results`.
+  Resultado: **116 aprovados, 0 falhas, 2 ignorados**, 118 no total. Ignorados:
+  `OptionalNativeCodexProbeUsesEmptyHomeAndDoesNotStartLoginOrModel` e
+  `SqlDiscoveryPinsBuildsReadsStoredCodeAndBoundsCyclicRelations`.
+  `git diff --check` tambem passou.
+- TRX local: `/tmp/yeshua-workspace-preparer-results/workspace-preparer.trx`;
+  SHA-256: `81bdf16dd7b54e09d373c1be829e45b5531319cc96fb7e25752bb2e250699977`.
+  Esse arquivo temporario nao e um artefato persistente do servidor.
+- Houve falhas intermediarias nas fixtures, corrigidas: nove por redirect de
+  URL interferindo na validacao de origem/branch preexistente, depois uma por
+  esperar acesso remoto ao buscar SHA ja disponivel localmente. O ensaio final
+  de indisponibilidade busca a branch `main`; o resultado final acima passou.
+- O objeto real `8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1` nao existe neste
+  checkout (`git cat-file -t` falhou). Nao houve fetch desse objeto no workspace
+  desta task nem validacao remota da PR #63; o comportamento equivalente foi
+  comprovado com commits de fixture fora de main. Migration SQL compilada como
+  recurso, mas nao aplicada nem homologada contra SQL Server nesta execucao.
+- M01/M02, producao, deploy e merge nao foram alterados/executados. Nao houve
+  commit ou push pelo terminal no repositorio desta task. A publicacao pelo
+  aplicativo ainda nao foi verificada; nao ha URL de PR confirmada nesta evidencia.
+
 ## Persistencia E Recuperacao
 
 `OI_AgentTasks` e `OI_AgentTaskMessages` guardam os pedidos, recibos, progresso,

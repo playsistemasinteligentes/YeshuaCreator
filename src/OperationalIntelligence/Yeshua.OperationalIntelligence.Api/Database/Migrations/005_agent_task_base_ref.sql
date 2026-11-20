@@ -1,0 +1,1 @@
+ALTER TABLE OI_AgentTaskMessages ADD BaseRef NVARCHAR(200) COLLATE Latin1_General_100_BIN2 NULL;
