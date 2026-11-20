@@ -1,12 +1,15 @@
 # Yeshua Presença M00 reconhecimento e plano técnico
 
-Entrega de desenvolvimento da [issue 53](https://github.com/playsistemasinteligentes/YeshuaCreator/issues/53), preparada para revisão pelo coordenador ChatGPT. Somente investigação e documentação. M01 permanece fechada para execução até revisão explícita desta M00. Academia permanece módulo independente, com contrato de integração e produtor simulado; cursos, alunos, matrícula e grade não pertencem ao Presença.
+Entrega de desenvolvimento da [issue 53](https://github.com/playsistemasinteligentes/YeshuaCreator/issues/53), preparada para revisão pelo coordenador ChatGPT. Reconhecimento e documentação, acrescidos exclusivamente da correção de caminhos multiplataforma da Engine autorizada na revisão da PR #63. M01 permanece fechada para execução até revisão explícita desta M00. Academia permanece módulo independente, com contrato de integração e produtor simulado; cursos, alunos, matrícula e grade não pertencem ao Presença.
+
+A falha original foi reproduzida e corrigida em Linux: testes afetados 6/6, seleção Engine da M00 34/34 (29 anteriores + 5 regressões), Shared 5/5. A regressão usa diretórios nativos em Windows/Linux; execução real em Windows está pendente por indisponibilidade de executor. Resultados e limitações em [verificações da M00](M00_VERIFICACOES.md#correção-autorizada-dos-caminhos-multiplataforma). Esses resultados não representam aprovação do coordenador.
 
 ## Base e rastreabilidade
 
 - Data: 2026-11-20 UTC. Workspace novo: `/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2`.
 - Branch preparada: `codex/task-71ddf4aa021c4fa5b0f140accdb624f2`.
 - SHA inspecionado: `0ee78f46dc0bcd0b85750e75e55ecf157d792b2f`. As referências de código abaixo pertencem a esse SHA, e não a uma versão publicada do Presença.
+- Base da continuação corretiva: `951879449da6b6e4b2e11a22405ebef9133d5cb4`, mesma branch, checkout inicialmente limpo. [PR #63](https://github.com/playsistemasinteligentes/YeshuaCreator/pull/63) consultada diretamente no GitHub: aberta e em rascunho, com head nesse SHA; atualização desta correção pelo aplicativo ainda não verificada.
 - Origem: `https://github.com/playsistemasinteligentes/YeshuaCreator`. Estado inicial de `git status --short`: vazio.
 - Workspace anterior `c8a7378b-318f-4556-abb7-1c18d28efb96` indisponível conforme operador. Nenhum arquivo ou conclusão daquela execução foi tratado como recuperado.
 - Issues #53–#62 e seus comentários consultados diretamente por GET na API GitHub, com HTTP 200. Todas abertas, sem comentários no instante registrado. Corpos, datas e URLs preservados em [snapshot das issues](evidencias/issues-53-62.json).
@@ -136,7 +139,7 @@ Paralelismo futuro possível após estabilizar M01/M03: investigar M05 e contrat
 | --- | --- | --- |
 | Alta | Requisitos não definem atores, concessão por identidade, autoaprovação ou política de revisão | Coordenador aprova P02/P03 antes de M01/M03; negar acesso por padrão. |
 | Alta | Atomicidade de estado/Outbox não é garantia universal da Engine | Selecionar o caminho transacional existente e provar rollback/concorrência em SQL descartável antes de implementar entrega. Evolução genérica só se fixture demonstrar lacuna. |
-| Alta | Teste real de geração falhou no Linux: 28/29 passaram | Gerador usa barras Windows no caminho de entidade (`CSharpCQRS.cs`:881). Causa apontada por leitura; corrigir e retestar em movimento autorizado antes de homologar geração/M01. M00 documental entregue com pendência, não aceite integral. |
+| Em revisão | Falha original de geração Linux corrigida no escopo autorizado | `CSharpCQRS.cs` passou a compor diretórios separadamente, incluindo saídas posteriores verificadas pelo mesmo teste. Engine M00 34/34 e Shared 5/5; teste independente do separador disponível para Windows/Linux, mas sem execução Windows nesta rodada. Aceite integral permanece com o coordenador. |
 | Alta | Domínio, rota e hospedagem pública não verificados; raiz atual é Central | Resolver P05/P06 sem alterar gateway existente nesta tarefa; não anunciar URL pública presumida. |
 | Alta | Dados internos ou rascunho vazam por geração, mídia, IA ou evento | Allowlist de campos públicos, sanitização e revisão humana; testar artefato sem token/conteúdo privado. IA não recebe conteúdo por configuração implícita. |
 | Alta | Provedor aceita pedido e conexão cai | ResultadoIncerto + reconciliação; não prometer entrega única nem reenvio seguro sem capacidade provada do provedor. |
@@ -154,13 +157,15 @@ Execuções e revisão independente estão em [verificações da M00](M00_VERIFI
 
 - [x] Workspace novo e branch própria identificados; SHA base e estado inicial registrados.
 - [x] Issues #53–#62 e comentários lidos diretamente do GitHub; snapshot preservado.
-- [x] Arquitetura real inventariada com fontes, propriedade e lacunas; nenhum código funcional alterado.
+- [x] Arquitetura real inventariada com fontes, propriedade e lacunas; sem implementação funcional de Presença/Academia. Correção posterior restrita aos caminhos da Engine e testes.
 - [x] Academia preservada como módulo independente; simulador limitado a teste proposto.
 - [x] ADRs, contratos, dependências, riscos e decomposição M01–M09 preparados para revisão.
 - [x] Agentes receberam escopos somente leitura e confirmaram identificadores; revisão independente registrada nas verificações.
 - [ ] Coordenador aceita ou modifica ADRs/contratos e políticas pendentes.
-- [ ] Falha real de geração Linux resolvida e retestada em escopo autorizado; protocolo das issues exige corrigir falhas antes de concluir o aceite integral.
-- [ ] Complemento das issues aplicado e publicação de branch/PR em rascunho verificada pelo aplicativo, se habilitada.
+- [x] Falha real de geração Linux corrigida e retestada em escopo autorizado; resultados anteriores preservados e regressão documentada.
+- [ ] Execução real da regressão em Windows e revisão dos resultados pelo coordenador.
+- [x] PR #63 existente, aberta e em rascunho, verificada por GET direto no GitHub antes desta correção.
+- [ ] Complemento das issues aplicado e atualização desta correção na PR verificada após publicação pelo aplicativo, se habilitada.
 - [ ] Revisão da M00 concluída e liberação explícita de M01. Até lá, parar nesta documentação.
 
 Não houve merge, push, commit ou deploy pelo terminal. Publicação posterior pelo aplicativo é etapa externa cujo resultado precisa ser consultado; fim do turno não prova sucesso, falha nem bloqueio.

@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="9fcfaec8-fedd-4c9e-b70f-e8dcc3b25422" name="@adcfbf15059d 2026-11-20 11:32:04" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-20T11:32:04.7503172+00:00" queuing="2026-11-20T11:32:04.7503173+00:00" start="2026-11-20T11:32:01.9864557+00:00" finish="2026-11-20T11:32:04.7607650+00:00" />
+  <TestSettings name="default" id="4edd8e82-ece2-421a-bebe-04377342b15c">
+    <Deployment runDeploymentRoot="_adcfbf15059d_2026-11-20_11_32_04" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c370abcc-bb0e-414c-a193-2bca9a5cad8d" testId="77e89917-0499-2e1d-42c9-894bc172560a" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeFactory.cs)" computerName="adcfbf15059d" duration="00:00:00.0037368" startTime="2026-11-20T11:32:04.1451635+00:00" endTime="2026-11-20T11:32:04.1491918+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c370abcc-bb0e-414c-a193-2bca9a5cad8d">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/2991e1a0e9224257a5f60e77167a1239/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/MDFeFactory.cs</Message>
+          <StackTrace>   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32
+   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="39e94b8f-2819-4a44-ab7d-1f65716d4415" testId="1921aa92-fe21-ed46-9d58-3d1ddf6d926d" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,IMDFeEntity.cs)" computerName="adcfbf15059d" duration="00:00:00.1145165" startTime="2026-11-20T11:32:03.9261951+00:00" endTime="2026-11-20T11:32:04.0932781+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="39e94b8f-2819-4a44-ab7d-1f65716d4415">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/370c40ff0fbc4e3683c62ad285e53af1/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/IMDFeEntity.cs</Message>
+          <StackTrace>   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="a612380b-8c6f-4fe5-9b01-ba35e1f7efb7" testId="8e0bd82e-ebed-89c2-a722-5794dc25c433" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Behaviors,MDFeDomainBehavior.cs)" computerName="adcfbf15059d" duration="00:00:00.0045221" startTime="2026-11-20T11:32:04.1493156+00:00" endTime="2026-11-20T11:32:04.1585927+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a612380b-8c6f-4fe5-9b01-ba35e1f7efb7">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/3e05e747f55f4a17b2c6a1ccf5d62917/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Behaviors/Migration/MDFe/MDFeDomainBehavior.cs</Message>
+          <StackTrace>   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32
+   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="73a3bac2-4aad-4aba-9fc8-4e50e1a0c271" testId="b24fab2f-9364-09c5-4242-0f790ee633cd" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntityDecorator.cs)" computerName="adcfbf15059d" duration="00:00:00.0092611" startTime="2026-11-20T11:32:04.1351860+00:00" endTime="2026-11-20T11:32:04.1450504+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="73a3bac2-4aad-4aba-9fc8-4e50e1a0c271">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/143bf7ef87904c01b282838ef470a77c/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/MDFeEntityDecorator.cs</Message>
+          <StackTrace>   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32
+   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="856576df-75c9-432f-a17f-410db83caf27" testId="98fefac8-4aea-79c3-33e5-b9427428aaa5" testName="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntity.cs)" computerName="adcfbf15059d" duration="00:00:00.0089556" startTime="2026-11-20T11:32:04.1238815+00:00" endTime="2026-11-20T11:32:04.1340306+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="856576df-75c9-432f-a17f-410db83caf27">
+      <Output>
+        <ErrorInfo>
+          <Message>Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/018b4daa622349ec95da66fed18586ce/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/MDFeEntity.cs</Message>
+          <StackTrace>   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32
+   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntity.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="98fefac8-4aea-79c3-33e5-b9427428aaa5">
+      <Execution id="856576df-75c9-432f-a17f-410db83caf27" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntityDecorator.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="b24fab2f-9364-09c5-4242-0f790ee633cd">
+      <Execution id="73a3bac2-4aad-4aba-9fc8-4e50e1a0c271" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Behaviors,MDFeDomainBehavior.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="8e0bd82e-ebed-89c2-a722-5794dc25c433">
+      <Execution id="a612380b-8c6f-4fe5-9b01-ba35e1f7efb7" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeFactory.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="77e89917-0499-2e1d-42c9-894bc172560a">
+      <Execution id="c370abcc-bb0e-414c-a193-2bca9a5cad8d" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+    <UnitTest name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,IMDFeEntity.cs)" storage="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="1921aa92-fe21-ed46-9d58-3d1ddf6d926d">
+      <Execution id="39e94b8f-2819-4a44-ab7d-1f65716d4415" />
+      <TestMethod codeBase="/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.ApplicationDomainProjectGenerationTests" name="DomainGenerationUsesNativeDirectoriesAndPreservesCuston" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="77e89917-0499-2e1d-42c9-894bc172560a" executionId="c370abcc-bb0e-414c-a193-2bca9a5cad8d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1921aa92-fe21-ed46-9d58-3d1ddf6d926d" executionId="39e94b8f-2819-4a44-ab7d-1f65716d4415" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e0bd82e-ebed-89c2-a722-5794dc25c433" executionId="a612380b-8c6f-4fe5-9b01-ba35e1f7efb7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b24fab2f-9364-09c5-4242-0f790ee633cd" executionId="73a3bac2-4aad-4aba-9fc8-4e50e1a0c271" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="98fefac8-4aea-79c3-33e5-b9427428aaa5" executionId="856576df-75c9-432f-a17f-410db83caf27" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="5" executed="5" passed="0" failed="5" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>
