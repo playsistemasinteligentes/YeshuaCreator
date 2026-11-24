@@ -11,12 +11,20 @@ public static class OutboxRecordScope
   var policy=logger.Evaluate("Outbox","Deliver","yOutbox",recordId,parent.OperationId,tenant,actor);
   if(!policy.Enabled)return Empty.Instance;
   var scope=context.BeginOperationalExecution(parent,"Outbox.Record");
+  var previousActivity=Activity.Current;
   var activity=OperationalActivity.StartRoot("Outbox.Record");
+  if(activity is not null)Activity.Current=activity;
   activity?.SetTag("yeshua.component","Outbox");activity?.SetTag("yeshua.tenant_id",tenant);activity?.SetTag("enduser.id",actor);
   if(context.TryGetOperationalIdentity(out var identity))OperationalActivity.SetIdentity(activity,identity);
-  return new Active(scope,activity);
+  return new Active(scope,activity,previousActivity);
  }
  private sealed class Empty:IDisposable {public static readonly Empty Instance=new();public void Dispose(){} }
- private sealed class Active(IDisposable scope,Activity? activity):IDisposable
- {public void Dispose(){activity?.Dispose();scope.Dispose();}}
+ private sealed class Active(IDisposable scope,Activity? activity,Activity? previous):IDisposable
+ {
+  public void Dispose()
+  {
+   try {activity?.Dispose();}
+   finally {Activity.Current=previous;scope.Dispose();}
+  }
+ }
 }

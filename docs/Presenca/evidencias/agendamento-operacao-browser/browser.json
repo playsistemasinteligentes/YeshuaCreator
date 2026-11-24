@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "browser": "145.0.7632.6",
+  "checks": [
+    "Snapshot title is rendered as text, without script execution",
+    "Manual draft submission and refreshed history",
+    "Lost response retry keeps the same idempotency key, input and version",
+    "Editorial rejection from API is presented without losing the form",
+    "Uncertain publication exposes reconciliation only, without blind resend",
+    "Reconciliation sends the selected delivery and expected attempt count",
+    "Callback recovery sends explicit reason, callback ID and expected attempt",
+    "Audit projection is rendered as text",
+    "History pagination sends the next offset",
+    "Cancelling identity switch preserves dirty draft and selected publisher"
+  ],
+  "api": "in-memory fixture, not SQL/API integration",
+  "externalRequests": [],
+  "errors": []
+}

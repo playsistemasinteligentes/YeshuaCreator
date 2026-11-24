@@ -1,0 +1,72 @@
+{
+  "scope": "Prepared scheduling and local M08/M09 verification; no production activation or external publication",
+  "scheduledConfiguration": {
+    "location": "Existing unified private credentials.json -> Apps.Presenca.Factory",
+    "example": {
+      "Enabled": false,
+      "TenantId": 0,
+      "IdentidadeId": "<explicit publisher 64 hex>",
+      "Repository": "playsistemasinteligentes/YeshuaCreator",
+      "Pages": 1
+    },
+    "deliveryConfiguration": [
+      "Apps.Presenca.IngressUrl",
+      "Shared.ModuleAuthentication.SharedKey"
+    ],
+    "requirements": [
+      "Explicit positive tenant and publisher binding, technical identity with Integrar grant",
+      "Factory.Enabled must be boolean true; missing/false/string/integer stays disabled",
+      "Persistent spool dedicated to this source; no credentials in command arguments or unit environment",
+      "Normal Presenca API/worker + migrations/scopes and configured approvals/destinations required separately"
+    ]
+  },
+  "systemd": {
+    "preparedFiles": [
+      "infra/Presenca/Factory/yeshua-presenca-factory@.service",
+      "infra/Presenca/Factory/yeshua-presenca-factory-collect.timer",
+      "infra/Presenca/Factory/yeshua-presenca-factory-deliver.timer"
+    ],
+    "installed": false,
+    "enabled": false,
+    "runtimeValidation": "Definitions checked by Python tests only; systemd-analyze/systemd unavailable in this container",
+    "deploymentPrerequisites": [
+      "Code under /opt/yeshua-presenca/current including scripts/presenca and infra/private loader",
+      "Existing private configuration at /root/YeshuaPrivate/production/credentials.json",
+      "Separate operator-authorized host installation/activation; no changes to Shared/gateway deployment in this increment"
+    ],
+    "behavior": "Collection after boot 5min / every 30min with jitter; delivery after boot 2min / every minute with jitter. Each invocation limited to 120s/256M/25% CPU, separate nonblocking locks, spool 0700, umask 0077. No network dependency from factory completion. Delivery remains possible during GitHub outage."
+  },
+  "manualVerificationCommands": [
+    "python3 -m unittest discover -s tests/Presenca/Python -v",
+    "dotnet test tests/Presenca/Yeshua.Presenca.Tests",
+    "PRESENCA_PORTAL_EVIDENCE=/tmp/presenca-portal-browser dotnet test tests/Presenca/Yeshua.Presenca.Tests",
+    "PRESENCA_PLAYWRIGHT_MODULE=<absolute playwright/index.mjs> PRESENCA_BROWSER_EVIDENCE=<evidence directory> node tests/Presenca/Browser/redacao.mjs",
+    "PRESENCA_PLAYWRIGHT_MODULE=<absolute playwright/index.mjs> PRESENCA_PORTAL_EVIDENCE=/tmp/presenca-portal-browser PRESENCA_BROWSER_EVIDENCE=<evidence directory> node tests/Presenca/Browser/portal.mjs"
+  ],
+  "browserDependencies": {
+    "package": "playwright@1.58.2",
+    "chromium": "145.0.7632.6",
+    "installationThisRun": "npm cache, browser binary and extracted Debian runtime libraries only under /tmp. No global installation. Default cache and missing-library launch failures resolved with temporary paths."
+  },
+  "retentionAndRecovery": {
+    "policy": "Keep source pending/sent messages and retry metadata, editorial versions/approvals/receipts/audit, and immutable portal releases; no automatic purge/cleanup introduced. Retention duration/size cap requires explicit policy. No cleanup executed.",
+    "sourceRetry": "Unconfirmed messages remain pending with bounded backoff; timeouts/restarts use same message ID. Independent delivery scheduler, scoped action lock, sanitized failure summary.",
+    "externalDelivery": "Ambiguous Telegram/Discussions outcomes require reconciliation; no blind automatic resend. Authorized normal Commands handle final failures/callback recovery.",
+    "traceFix": "Enabled OutboxRecordScope makes the independent record Activity current for downstream HTTP spans, then restores polling Activity. Off performs no identity/scope/activity creation; tests cover both and retry causation."
+  },
+  "validationLimits": [
+    "SQL integration still skipped: no explicitly configured disposable SQL environment. No production SQL used.",
+    "Editorial Chromium suite uses actual Front page with an in-memory API fixture; it does not establish server authorization/persistence.",
+    "Portal Chromium suite uses actual generated/activated three-origin portal files with a mock approval repository; it does not establish full API/SQL E2E.",
+    "Telegram/Discussions adapters tested with local mocked HTTP only; no real external posts or account mutation.",
+    "No deploy, timer activation, merge, new branch or new PR.",
+    "Factory bounded snapshot collection can miss intermediate movements; scheduling does not turn it into a lossless event stream."
+  ],
+  "remaining": [
+    "Provision authorized disposable SQL and run ingestion/approval/version/concurrency/lease/retry integration tests",
+    "Real API/SQL browser journey and full independent Academia callback simulation",
+    "Moderate load and operational queue-health/alerts recovery with persisted test records",
+    "Optional authorized channel sandbox integration; real external publications remain outside this run",
+    "Operator-reviewed host scheduling activation and retention policy"
+  ]
+}

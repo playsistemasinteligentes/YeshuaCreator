@@ -1,0 +1,22 @@
+  Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite.dll
+  Yeshua.Presenca.Tests -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll
+Test run for /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:01.02]     Presenca.Tests.OutboxScopeTests.Enabled_record_is_an_independent_current_root_and_restores_polling_context [FAIL]
+  Failed Presenca.Tests.OutboxScopeTests.Enabled_record_is_an_independent_current_root_and_restores_polling_context [65 ms]
+  Error Message:
+   Assert.Equal() Failure: Strings differ
+           ↓ (pos 0)
+Expected: "Outbox.Record"
+Actual:   "poll"
+           ↑ (pos 0)
+  Stack Trace:
+     at Presenca.Tests.OutboxScopeTests.Enabled_record_is_an_independent_current_root_and_restores_polling_context() in /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/OutboxScopeTests.cs:line 30
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:     1, Passed:     1, Skipped:     0, Total:     2, Duration: 167 ms - Yeshua.Presenca.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

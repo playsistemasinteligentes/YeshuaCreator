@@ -30,6 +30,16 @@ public class ThreeOriginPortalTests
    Assert.Equal(receipt.IdExterno,new DirectoryInfo(Path.Combine(root,"current")).LinkTarget);
    foreach(var article in repo.Items)Assert.True(File.Exists(Path.Combine(root,"current","noticias",article.PautaId,"index.html")));
    Assert.Equal(3,Directory.GetDirectories(Path.Combine(root,"current","noticias")).Length);
+   var export=Environment.GetEnvironmentVariable("PRESENCA_PORTAL_EVIDENCE");
+   if(!string.IsNullOrWhiteSpace(export))
+   {
+    var source=Path.Combine(root,receipt.IdExterno);
+    foreach(var file in Directory.EnumerateFiles(source,"*",SearchOption.AllDirectories))
+    {
+     var target=Path.Combine(Path.GetFullPath(export),Path.GetRelativePath(source,file));
+     Directory.CreateDirectory(Path.GetDirectoryName(target)!);File.Copy(file,target,true);
+    }
+   }
    var replay=await strategy.DeliverAsync(DistributionTests.Request(academy),default);Assert.Equal(receipt,replay!.result.Deserialize(IntegracaoJson.Default.ReciboDistribuicao));
   }
   finally{if(Directory.Exists(root))Directory.Delete(root,true);}

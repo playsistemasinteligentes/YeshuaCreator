@@ -9,6 +9,16 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Agendamento/M08-M09 na continuidade da PR #67: incremento M05-M07
+  confirmado publicado em 2a2a89fe7. Timers systemd de coleta e entrega
+  independentes preparados em infra/Presenca/Factory, sem instalacao/ativacao.
+  scheduled.py reutiliza spool/transportes e o validador privado unico;
+  exige Apps.Presenca.Factory.Enabled booleano true e vinculo explicito.
+  OutboxRecordScope passa a tornar o trace independente do registro ativo
+  durante a entrega e restaura o polling ao sair. Ensaios Chromium locais
+  usam API/repositorio de aprovacao simulados; nao comprovam SQL nem producao.
+  Evidencias atuais em docs/Presenca/evidencias/agendamento-operacao-browser.
+
 - Continuidade PR #67: checkpoint anterior confirmado no commit a2d5a4a00.
   `scripts/presenca/factory.py` le registros publicos GitHub da fabrica e
   grava o spool existente sem chamar Presenca; snapshots limitados podem perder

@@ -26,8 +26,14 @@ def public_hash(content):
     return hashlib.sha256(''.join(str(len(f.encode('utf-8'))) + ':' + f for f in fields).encode('utf-8')).hexdigest().upper()
 
 
+def valid_repository(repository):
+    return (isinstance(repository, str) and len(repository) <= 120
+            and re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository) is not None
+            and all(part not in ('.', '..') for part in repository.split('/')))
+
+
 def factory_input(repository, identity, event):
-    if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository) or len(repository) > 120:
+    if not valid_repository(repository):
         raise ValueError('Repository invalid.')
     kind, action, number, revision = (event[k] for k in ('kind', 'action', 'id', 'revision'))
     if kind not in ('issue', 'pull_request', 'release', 'deploy') or action not in ('opened', 'updated', 'closed', 'merged', 'published', 'completed'):
@@ -137,6 +143,13 @@ def deliver(spool, endpoint, shared_key):
             temporary = state_path.with_suffix('.retry.tmp'); temporary.write_text(json.dumps(state)); os.replace(temporary, state_path)
 
 
+def private_document(path):
+    # The unified private-file validator remains the only credential loader.
+    spec = importlib.util.spec_from_file_location('yeshua_credentials', Path(__file__).resolve().parents[2] / 'infra/private/credentials.py')
+    module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
+    return module.read_json(module.validate_access(path))
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('action', choices=['fabrica', 'academia', 'deliver'])
@@ -145,9 +158,7 @@ def main():
     args = parser.parse_args()
     if args.action == 'deliver':
         # Reuse the unified private-file validation. No secondary credential file or provider.
-        spec = importlib.util.spec_from_file_location('yeshua_credentials', Path(__file__).resolve().parents[2] / 'infra/private/credentials.py')
-        module = importlib.util.module_from_spec(spec); spec.loader.exec_module(module)
-        document = module.read_json(module.validate_access(args.credentials))
+        document = private_document(args.credentials)
         config = document.get('Apps', {}).get('Presenca', {})
         deliver(args.spool, config['IngressUrl'], document['Shared']['ModuleAuthentication']['SharedKey'])
     else:

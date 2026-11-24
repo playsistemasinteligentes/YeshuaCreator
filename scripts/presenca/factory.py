@@ -27,7 +27,7 @@ def github_get(path):
 
 
 def collect(spool, tenant, identity, repository, get=github_get, pages=1):
-    if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository) or len(repository) > 120:
+    if not feed.valid_repository(repository):
         raise ValueError('Explicit repository invalid.')
     if type(pages) is not int or not 1 <= pages <= 10:
         raise ValueError('Collection page limit must be between 1 and 10.')
