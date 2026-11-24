@@ -1,0 +1,3 @@
+Initial portal suite: 23 passed / 1 failed.
+System.IO.FileNotFoundException from File.Move on directory symlink in PortalEstatico.Ativar.
+Replaced with Linux rename; subsequent activation and rollback test passed.

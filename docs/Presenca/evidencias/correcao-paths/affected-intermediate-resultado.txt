@@ -1,0 +1,33 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Yeshua.Engine -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/Engine/Yeshua.Engine/bin/Debug/net8.0/Yeshua.Engine.dll
+  Yeshua.Engine.Tests -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll
+Test run for /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+  Failed AppSolutionGenerateCreatesApplicationDomainProject [15 s]
+  Error Message:
+   StringAssert.Contains failed. String '<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="../Yeshua.CQRS.Domain/Yeshua.CQRS.Domain.csproj" />
+  </ItemGroup>
+
+</Project>' does not contain string '..\Yeshua.CQRS.Domain\Yeshua.CQRS.Domain.csproj'. .
+  Stack Trace:
+     at TestMigration.ApplicationDomainProjectGenerationTests.AppSolutionGenerateCreatesApplicationDomainProject() in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 228
+   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Results File: /tmp/presenca-m00-paths/affected.trx
+
+Failed!  - Failed:     1, Passed:     5, Skipped:     0, Total:     6, Duration: 16 s - Yeshua.Engine.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

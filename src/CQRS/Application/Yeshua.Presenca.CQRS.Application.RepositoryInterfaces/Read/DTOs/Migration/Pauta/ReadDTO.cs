@@ -1,0 +1,32 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+// </yeshua>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repositorio.Outputs
+{
+    public partial record PautaDTO
+    {
+    public string id { get; set; } = string.Empty;
+    public string identidadeid { get; set; } = string.Empty;
+    public int versaoatual { get; set; }
+    public string origem { get; set; } = string.Empty;
+    public int tenantid { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

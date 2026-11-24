@@ -9,6 +9,46 @@ namespace TestMigration;
 [TestClass]
 public class ApplicationDomainProjectGenerationTests
 {
+    // Run unchanged on Windows and Linux: expected paths use native directory components.
+    [DataTestMethod]
+    [DataRow("Entitys", "IMDFeEntity.cs")]
+    [DataRow("Entitys", "MDFeEntity.cs")]
+    [DataRow("Entitys", "MDFeEntityDecorator.cs")]
+    [DataRow("Entitys", "MDFeFactory.cs")]
+    [DataRow("Behaviors", "MDFeDomainBehavior.cs")]
+    public void DomainGenerationUsesNativeDirectoriesAndPreservesCuston(string area, string fileName)
+    {
+        var directory = Path.Combine(Path.GetTempPath(), "Yeshua.Engine.Tests", "workspace with spaces", Guid.NewGuid().ToString("N"));
+        try
+        {
+            var migration = new ApplicationWithoutSagaMigration();
+            migration.Up();
+            var generator = new CSharpCQRS("Fiscal.MDFe", directory);
+            generator.AppDominioGenerateDominioEntitys(migration);
+
+            var domainDirectory = Path.Combine(directory, "src", "CQRS", "Domain", "Yeshua.Fiscal.MDFe.CQRS.Domain");
+            var generatedPath = Path.Combine(domainDirectory, area, "Migration", "MDFe", fileName);
+            var custonPath = Path.Combine(domainDirectory, area, "Custon", "MDFe", fileName);
+            Assert.IsTrue(File.Exists(generatedPath), generatedPath);
+            Assert.IsTrue(File.Exists(custonPath), custonPath);
+
+            var generated = File.ReadAllText(generatedPath);
+            var custon = File.ReadAllText(custonPath) + Environment.NewLine + "// Preserved customization";
+            File.WriteAllText(generatedPath, "// Regenerable output");
+            File.WriteAllText(custonPath, custon);
+            generator.AppDominioGenerateDominioEntitys(migration);
+
+            Assert.AreEqual(generated, File.ReadAllText(generatedPath));
+            Assert.AreEqual(custon, File.ReadAllText(custonPath));
+            Assert.AreEqual(10, Directory.GetFiles(domainDirectory, "*.cs", SearchOption.AllDirectories).Length);
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, true);
+        }
+    }
+
     [TestMethod]
     public void DependencInjectionRegistersYeshuaOperationalTelemetry()
     {
@@ -186,7 +226,7 @@ public class ApplicationDomainProjectGenerationTests
                 "MDFeEntity.cs")));
             var applicationProjectContent = File.ReadAllText(applicationProjectPath);
             StringAssert.Contains(
-                applicationProjectContent,
+                applicationProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.CQRS.Domain\Yeshua.CQRS.Domain.csproj");
 
             var applicationRepositoryInterfacesProjectPath = Path.Combine(
@@ -222,10 +262,10 @@ public class ApplicationDomainProjectGenerationTests
             var applicationRepositoryInterfacesProjectContent = File.ReadAllText(
                 applicationRepositoryInterfacesProjectPath);
             StringAssert.Contains(
-                applicationRepositoryInterfacesProjectContent,
+                applicationRepositoryInterfacesProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.CQRS.Application.RepositoryInterfaces\Yeshua.CQRS.Application.RepositoryInterfaces.csproj");
             StringAssert.Contains(
-                applicationRepositoryInterfacesProjectContent,
+                applicationRepositoryInterfacesProjectContent.Replace('/', '\\'),
                 @"..\..\Domain\Yeshua.Fiscal.MDFe.CQRS.Domain\Yeshua.Fiscal.MDFe.CQRS.Domain.csproj");
 
             var applicationCommandProjectPath = Path.Combine(
@@ -270,13 +310,13 @@ public class ApplicationDomainProjectGenerationTests
 
             var applicationCommandProjectContent = File.ReadAllText(applicationCommandProjectPath);
             StringAssert.Contains(
-                applicationCommandProjectContent,
+                applicationCommandProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.CQRS.Application.Command\Yeshua.CQRS.Application.Command.csproj");
             StringAssert.Contains(
-                applicationCommandProjectContent,
+                applicationCommandProjectContent.Replace('/', '\\'),
                 @"..\..\Domain\Yeshua.Fiscal.MDFe.CQRS.Domain\Yeshua.Fiscal.MDFe.CQRS.Domain.csproj");
             StringAssert.Contains(
-                applicationCommandProjectContent,
+                applicationCommandProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces.csproj");
 
             var applicationInfrastructureRepositoryReadProjectPath = Path.Combine(
@@ -314,16 +354,16 @@ public class ApplicationDomainProjectGenerationTests
             var applicationInfrastructureRepositoryReadProjectContent = File.ReadAllText(
                 applicationInfrastructureRepositoryReadProjectPath);
             StringAssert.Contains(
-                applicationInfrastructureRepositoryReadProjectContent,
+                applicationInfrastructureRepositoryReadProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.CQRS.Infrastructure.Shared\Yeshua.CQRS.Infrastructure.Shared.csproj");
             StringAssert.Contains(
-                applicationInfrastructureRepositoryReadProjectContent,
+                applicationInfrastructureRepositoryReadProjectContent.Replace('/', '\\'),
                 @"..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.Command\Yeshua.Fiscal.MDFe.CQRS.Application.Command.csproj");
             StringAssert.Contains(
-                applicationInfrastructureRepositoryReadProjectContent,
+                applicationInfrastructureRepositoryReadProjectContent.Replace('/', '\\'),
                 @"..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces.csproj");
             Assert.IsFalse(
-                applicationInfrastructureRepositoryReadProjectContent.Contains(
+                applicationInfrastructureRepositoryReadProjectContent.Replace('/', '\\').Contains(
                     @"..\Yeshua.CQRS.Infrastructure.RepositoryRead\Yeshua.CQRS.Infrastructure.RepositoryRead.csproj"),
                 "O RepositoryRead do aplicativo nao deve depender do projeto legado compartilhado.");
 
@@ -362,13 +402,13 @@ public class ApplicationDomainProjectGenerationTests
             var applicationInfrastructureRepositoryWriteProjectContent = File.ReadAllText(
                 applicationInfrastructureRepositoryWriteProjectPath);
             StringAssert.Contains(
-                applicationInfrastructureRepositoryWriteProjectContent,
+                applicationInfrastructureRepositoryWriteProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.CQRS.Infrastructure.Shared\Yeshua.CQRS.Infrastructure.Shared.csproj");
             StringAssert.Contains(
-                applicationInfrastructureRepositoryWriteProjectContent,
+                applicationInfrastructureRepositoryWriteProjectContent.Replace('/', '\\'),
                 @"..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.Command\Yeshua.Fiscal.MDFe.CQRS.Application.Command.csproj");
             StringAssert.Contains(
-                applicationInfrastructureRepositoryWriteProjectContent,
+                applicationInfrastructureRepositoryWriteProjectContent.Replace('/', '\\'),
                 @"..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces.csproj");
             Assert.IsFalse(
                 applicationInfrastructureRepositoryWriteProjectContent.Contains(
@@ -387,13 +427,13 @@ public class ApplicationDomainProjectGenerationTests
             var applicationInfrastructureSharedProjectContent = File.ReadAllText(
                 applicationInfrastructureSharedProjectPath);
             StringAssert.Contains(
-                applicationInfrastructureSharedProjectContent,
+                applicationInfrastructureSharedProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.CQRS.Infrastructure.Shared\Yeshua.CQRS.Infrastructure.Shared.csproj");
             StringAssert.Contains(
-                applicationInfrastructureSharedProjectContent,
+                applicationInfrastructureSharedProjectContent.Replace('/', '\\'),
                 @"..\..\Domain\Yeshua.Fiscal.MDFe.CQRS.Domain\Yeshua.Fiscal.MDFe.CQRS.Domain.csproj");
             StringAssert.Contains(
-                applicationInfrastructureSharedProjectContent,
+                applicationInfrastructureSharedProjectContent.Replace('/', '\\'),
                 @"..\..\Application\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces\Yeshua.Fiscal.MDFe.CQRS.Application.RepositoryInterfaces.csproj");
             Assert.IsTrue(File.Exists(Path.Combine(
                 Path.GetDirectoryName(applicationInfrastructureSharedProjectPath)!,
@@ -458,16 +498,16 @@ public class ApplicationDomainProjectGenerationTests
             var applicationInfrastructureApiProjectContent =
                 File.ReadAllText(applicationInfrastructureApiProjectPath);
             StringAssert.Contains(
-                applicationInfrastructureApiProjectContent,
+                applicationInfrastructureApiProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared.csproj");
             StringAssert.Contains(
-                applicationInfrastructureApiProjectContent,
+                applicationInfrastructureApiProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead.csproj");
             StringAssert.Contains(
-                applicationInfrastructureApiProjectContent,
+                applicationInfrastructureApiProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite.csproj");
             StringAssert.Contains(
-                applicationInfrastructureApiProjectContent,
+                applicationInfrastructureApiProjectContent.Replace('/', '\\'),
                 @"..\..\Domain\Yeshua.Fiscal.MDFe.CQRS.Domain\Yeshua.Fiscal.MDFe.CQRS.Domain.csproj");
             Assert.IsFalse(
                 applicationInfrastructureApiProjectContent.Contains("Yeshua.Engine", StringComparison.OrdinalIgnoreCase),
@@ -508,13 +548,13 @@ public class ApplicationDomainProjectGenerationTests
             var applicationInfrastructureWorkerProjectContent =
                 File.ReadAllText(applicationInfrastructureWorkerProjectPath);
             StringAssert.Contains(
-                applicationInfrastructureWorkerProjectContent,
+                applicationInfrastructureWorkerProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.Shared.csproj");
             StringAssert.Contains(
-                applicationInfrastructureWorkerProjectContent,
+                applicationInfrastructureWorkerProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryRead.csproj");
             StringAssert.Contains(
-                applicationInfrastructureWorkerProjectContent,
+                applicationInfrastructureWorkerProjectContent.Replace('/', '\\'),
                 @"..\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite\Yeshua.Fiscal.MDFe.CQRS.Infrastructure.RepositoryWrite.csproj");
             Assert.IsFalse(
                 applicationInfrastructureWorkerProjectContent.Contains("Yeshua.Engine", StringComparison.OrdinalIgnoreCase),

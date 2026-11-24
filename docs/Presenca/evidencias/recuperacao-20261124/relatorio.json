@@ -1,0 +1,240 @@
+{
+  "recordedAtUtc": "2026-11-24T15:26:01.762218+00:00",
+  "requestedTask": "eb4cf6c8-7519-4945-b715-b7cc6e54ec98",
+  "workspace": "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113",
+  "branch": "codex/task-3c3a6c9944b44a55b4eefe8b278ba113",
+  "head": "84d41c853318c3cebd76535664098327d3e0cd9e",
+  "recovered": [
+    {
+      "workspace": "/workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2",
+      "head": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
+      "pr": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/63",
+      "remoteState": "open, draft, not merged",
+      "content": "M00 documents, evidence, Engine native-path correction and regression tests"
+    },
+    {
+      "workspace": "/workspace/tasks/820df3ced948494b8e74a0b7a280a8bc",
+      "head": "20c0e440ab295378b54e6c8addb9d0c5b6e466ec",
+      "pr": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/64",
+      "remoteState": "open, draft, not merged",
+      "content": "M01 refinement and continuity report; no functional implementation"
+    }
+  ],
+  "gitContinuity": {
+    "originalTaskDirectoryFound": false,
+    "originalSessionRecovered": false,
+    "originalBranchReused": false,
+    "reason": "Checkout is the branch prepared by the application. No available tool switches it without Git metadata writes. Existing branches and directories were read without mutation.",
+    "m00FilesIntegrated": true,
+    "m00GitAncestryEstablished": false,
+    "terminalGitMetadataWrites": false,
+    "incrementalCommitsCreated": false,
+    "newPushVerified": false,
+    "newOrUpdatedDraftPrVerified": false,
+    "merge": false,
+    "deploy": false
+  },
+  "issuesRead": [
+    53,
+    54,
+    55,
+    56,
+    57,
+    58,
+    59,
+    60,
+    61,
+    62
+  ],
+  "deliveries": [
+    {
+      "movement": "M01",
+      "issue": 54,
+      "status": "PARTIAL",
+      "implemented": "Studio and DSL, 14 internal tenant-scoped entities; generated CQRS projects; identity grants; durable hashed receipts with conflict and actor checks; transactional SQL effect/audit/receipt; version snapshots",
+      "outstanding": "First administrator provision; SQL migration/concurrency/atomicity/isolation integration; standard private configuration loading for hosts; independent review"
+    },
+    {
+      "movement": "M02",
+      "issue": 55,
+      "status": "PARTIAL",
+      "implemented": "Front Central editor, custom page and catalog entry; headline/text/sources/classification/tags/material metadata; draft/history queries; no AI invocation",
+      "outstanding": "Browser E2E; real API/SQL persistence/authorization; complete history pagination; gateway and application entitlement provisioning"
+    },
+    {
+      "movement": "M03",
+      "issue": 56,
+      "status": "PARTIAL",
+      "implemented": "Version state transitions; explicit public confirmation; separate author/approver; exact version/hash and destinations; edits create drafts; delivery keys and transactional audit",
+      "outstanding": "SQL concurrent editing/approval/publication and full bypass checks; audit projection; policy review"
+    },
+    {
+      "movement": "M04",
+      "issue": 57,
+      "status": "LOCAL LIBRARY; INTEGRATION PENDING",
+      "implemented": "Deterministic escaped HTML; permanent URLs; SEO, JSON-LD, sitemap/robots; static redirects; material validation; immutable releases; Linux atomic activation/rollback with hash and approval revalidation",
+      "outstanding": "Durable editorial processing integration; approval map from real repository; verified public origin/host/gateway; HTTP redirect status at host; withdrawal and retention policy"
+    },
+    {
+      "movement": "M05",
+      "issue": 58,
+      "status": "NOT IMPLEMENTED",
+      "implemented": "",
+      "outstanding": "Asynchronous factory producer, durable Inbox ingestion, public allowlist, replay/privacy/resilience integration"
+    },
+    {
+      "movement": "M06",
+      "issue": 59,
+      "status": "NOT IMPLEMENTED",
+      "implemented": "",
+      "outstanding": "Independent Academia module events, versioned educational input, status/URL Outbox and simulated producer"
+    },
+    {
+      "movement": "M07",
+      "issue": 60,
+      "status": "NOT IMPLEMENTED",
+      "implemented": "",
+      "outstanding": "Telegram/Discussions strategies, protected credentials, rate limits/backoff, reconciliation and operational sender"
+    },
+    {
+      "movement": "M08",
+      "issue": 61,
+      "status": "NOT IMPLEMENTED",
+      "implemented": "Only bounded destination queries and guarded retry/reconciliation commands exist; no end-to-end operation",
+      "outstanding": "Queue health/polling worker, full recovery dashboard, alerts and approved retention policy"
+    },
+    {
+      "movement": "M09",
+      "issue": 62,
+      "status": "NOT IMPLEMENTED",
+      "implemented": "",
+      "outstanding": "Integrated three-origin SQL/API/portal/distribution homologation and authorized post-deploy verification"
+    }
+  ],
+  "limitations": [
+    "No issue marked completed or closed. Sequential completion NOT achieved.",
+    "First publisher and administrator need explicit provisioning. Local yTenant.UserId changes at every application entry and is NOT proof of tenant ownership.",
+    "SolicitarPublicacao persists pending destinations only; no operational sender consumes them in this delivery.",
+    "API build is not running/deployed HTTP evidence. Front JS syntax checks are not browser tests.",
+    "Docker executable/socket unavailable and YESHUA_TEST_SQL not configured. No customer or host database was used.",
+    "No host disk diagnosis or cleanup performed.",
+    "Copied M00/M01 documents and results retain historical dates and are not evidence of tests rerun today.",
+    "No independent implementation review performed in this turn."
+  ],
+  "officialReferencesConsulted": [
+    "https://core.telegram.org/bots/api",
+    "https://docs.github.com/en/graphql/guides/using-the-graphql-api-for-discussions"
+  ],
+  "tests": [
+    {
+      "command": "dotnet test tests/Presenca/Yeshua.Presenca.Tests --nologo --logger trx --results-directory artifacts/presenca",
+      "evidence": "presenca.trx",
+      "counters": {
+        "total": "29",
+        "executed": "28",
+        "passed": "28",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "23c9edede5dcbc715a7833106e688579ac673bdbce4ba152d25cf1fcd21a949a"
+    },
+    {
+      "command": "dotnet test tests/Engine/Yeshua.Engine.Tests --filter 'FullyQualifiedName~ApplicationDomainProjectGenerationTests|FullyQualifiedName~InternalEntityGenerationTests' --nologo --logger trx --results-directory artifacts/presenca",
+      "evidence": "engine-presenca.trx",
+      "counters": {
+        "total": "30",
+        "executed": "30",
+        "passed": "30",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "bdd774fe724657e2bd04dc4c1129eb8f132949b04852e37cc12bee0102dec3b3"
+    },
+    {
+      "command": "dotnet test tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests --filter 'FullyQualifiedName~YeshuaModuleAuthenticationTests' --nologo --logger trx --results-directory artifacts/presenca",
+      "evidence": "shared-presenca.trx",
+      "counters": {
+        "total": "3",
+        "executed": "3",
+        "passed": "3",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "sha256": "9179af82b1cd13ae87e8511b1639b857ccdd2977ee318136d0645f2c39c0d9f7"
+    },
+    {
+      "build": "api",
+      "command": "dotnet build src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api --nologo",
+      "summary": [
+        "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Patterns/Strategy/Migration/INotification/Message.cs(17,19): warning CS8618: Non-nullable property 'Destination' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Yeshua.Presenca.CQRS.Infrastructure.Shared.csproj]",
+        "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Patterns/Strategy/Migration/INotification/Message.cs(18,19): warning CS8618: Non-nullable property 'Body' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Yeshua.Presenca.CQRS.Infrastructure.Shared.csproj]",
+        "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Patterns/Strategy/Migration/INotification/Message.cs(19,19): warning CS8618: Non-nullable property 'Subject' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Yeshua.Presenca.CQRS.Infrastructure.Shared.csproj]",
+        "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Patterns/Strategy/Migration/INotification/Message.cs(20,19): warning CS8618: Non-nullable property 'Attachment' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Yeshua.Presenca.CQRS.Infrastructure.Shared.csproj]",
+        "    26 Warning(s)",
+        "    0 Error(s)",
+        "",
+        "Time Elapsed 00:00:19.52"
+      ]
+    },
+    {
+      "build": "worker",
+      "command": "dotnet build src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker --nologo",
+      "summary": [
+        "  Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead.dll",
+        "  Yeshua.Presenca.CQRS.Infrastructure.Worker -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.Worker.dll",
+        "",
+        "Build succeeded.",
+        "    0 Warning(s)",
+        "    0 Error(s)",
+        "",
+        "Time Elapsed 00:00:14.57"
+      ]
+    },
+    {
+      "check": "Front JavaScript syntax and applications.json JSON parsing",
+      "result": "passed; browser not executed"
+    },
+    {
+      "check": "git diff --check",
+      "result": "passed for tracked diff; generated source whitespace follows existing Engine templates"
+    },
+    {
+      "check": "regeneration",
+      "result": "1515 files unchanged including 722 Custon files and 767 Migration files; no literal backslash paths",
+      "evidence": "regeneracao.json"
+    }
+  ]
+}

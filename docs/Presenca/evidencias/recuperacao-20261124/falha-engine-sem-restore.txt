@@ -1,0 +1,2 @@
+First Engine test invocation with --no-restore exited 1 before running tests: NETSDK1004, missing project.assets.json.
+Re-run with restore: 30 passed / 0 failed.

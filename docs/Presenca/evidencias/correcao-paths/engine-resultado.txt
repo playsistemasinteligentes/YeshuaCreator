@@ -1,0 +1,13 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Yeshua.Engine -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/Engine/Yeshua.Engine/bin/Debug/net8.0/Yeshua.Engine.dll
+  Yeshua.Engine.Tests -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll
+Test run for /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /tmp/presenca-m00-paths/engine.trx
+
+Passed!  - Failed:     0, Passed:    34, Skipped:     0, Total:    34, Duration: 7 s - Yeshua.Engine.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

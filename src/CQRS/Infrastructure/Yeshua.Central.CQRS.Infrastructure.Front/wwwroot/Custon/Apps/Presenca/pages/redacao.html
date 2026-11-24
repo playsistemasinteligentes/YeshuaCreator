@@ -1,0 +1,43 @@
+<section data-help-screen="presenca-redacao" data-help-title="Redação do Presença" class="p-6 max-w-5xl mx-auto">
+<h1 class="text-2xl font-bold">Redação</h1>
+<p>Escreva, revise e aprove cada versão antes de solicitar a publicação.</p>
+<label>Identidade publicadora <select id="presenca-identidade"></select></label>
+<button type="button" id="presenca-atualizar">Atualizar</button>
+<p id="presenca-status" role="status" aria-live="polite"></p>
+<div id="presenca-lista"></div>
+<button type="button" id="presenca-nova">Nova pauta</button>
+<form id="presenca-form" class="grid gap-3 my-4">
+<h2 id="presenca-versao">Nova pauta</h2>
+<label>Manchete <input name="Manchete" maxlength="200" required class="border p-2 w-full"></label>
+<label>Texto <textarea name="Corpo" rows="12" maxlength="50000" required class="border p-2 w-full"></textarea></label>
+<label>Autoria pública <input name="AutorPublico" maxlength="120" required class="border p-2 w-full"></label>
+<label>Classificação principal <input name="ClassificacaoPrincipal" maxlength="80" required class="border p-2 w-full"></label>
+<label>Classificações secundárias (uma por linha) <textarea name="ClassificacoesSecundarias" class="border p-2 w-full"></textarea></label>
+<label>Tags (uma por linha) <textarea name="Tags" class="border p-2 w-full"></textarea></label>
+<label>Fontes HTTPS (uma por linha) <textarea name="Fontes" class="border p-2 w-full"></textarea></label>
+<p>Materiais vinculados: <span id="presenca-materiais">Nenhum</span></p>
+<fieldset><legend>Vincular material já armazenado</legend>
+<label>Chave do arquivo <input id="presenca-material-chave" maxlength="200"></label>
+<label>SHA-256 do arquivo <input id="presenca-material-hash" maxlength="64"></label>
+<label>Tamanho em bytes <input id="presenca-material-tamanho" type="number" min="1" max="25000000"></label>
+<label>Formato <select id="presenca-material-tipo"><option value="image/png">PNG</option><option value="image/jpeg">JPEG</option><option value="image/webp">WebP</option></select></label>
+<label>Autor <input id="presenca-material-autor" maxlength="120"></label>
+<label>Licença de uso <input id="presenca-material-licenca" maxlength="200"></label>
+<label>Descrição acessível <input id="presenca-material-alt" maxlength="300"></label>
+<button type="button" id="presenca-material-adicionar">Vincular material</button>
+<button type="button" id="presenca-material-limpar">Remover vínculos desta versão</button>
+</fieldset>
+<button type="submit">Salvar nova versão</button>
+</form>
+<fieldset><legend>Revisão da versão selecionada</legend>
+<label>Destinos autorizados <select id="presenca-canais" multiple></select></label>
+<label><input type="checkbox" id="presenca-publicavel">Revisei a versão e confirmo que contém somente informação pública autorizada.</label>
+<label>Motivo de rejeição <input id="presenca-motivo" maxlength="500"></label>
+<div class="flex gap-3 flex-wrap">
+<button type="button" data-operation="SubmeterRevisao">Submeter à revisão</button>
+<button type="button" data-operation="AprovarVersao">Aprovar versão</button>
+<button type="button" data-operation="RejeitarVersao">Rejeitar versão</button>
+<button type="button" data-operation="SolicitarPublicacao">Solicitar publicação</button>
+</div></fieldset>
+<details><summary>Operação das entregas</summary><button type="button" id="presenca-operacao">Atualizar entregas</button><div id="presenca-entregas"></div></details>
+</section>

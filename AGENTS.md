@@ -7,6 +7,27 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   sem publicar. Push, PR, merge e deploy aguardam autorizacao explicita do
   operador; nao inferir permissao de publicacao de uma solicitacao de correcao.
 
+## Presenca Em Desenvolvimento
+
+- Recuperacao de 2026-11-24: M00 preservada na PR draft #63 e refinamento M01
+  na #64; nenhuma delas estava integrada a main 84d41c853. A task atual usa
+  a branch preparada pelo aplicativo; importar arquivos nao estabelece
+  ancestralidade Git com essas branches. Nao declarar commits ou PR novos
+  sem confirmacao do aplicativo.
+- Presenca usa Studio proprio, entidades editoriais internas e Commands normais.
+  Tenant/ator vem do contexto; vinculos por identidade governam as operacoes.
+  `yTenant.UserId` local NAO comprova propriedade: OpenApplicationSession o
+  regrava a cada entrada. A primeira identidade/vinculo administrativo exige
+  provisionamento explicito; nao conceder acesso ao primeiro chamador nem
+  inferir autoridade do papel Admin generico do token.
+- Versoes editoriais preservam snapshots; alterar conteudo cria outro rascunho.
+  Aprovacao exige outro ator, confirmacao publica e destinos explicitos; ela
+  nunca e herdada pela versao seguinte. Solicitar publicacao apenas persiste
+  destinos pendentes nesta entrega; ainda nao ha transportador operacional.
+- PortalEstatico e biblioteca local de build/validacao/ativacao em Linux, sem
+  ligacao ao gateway ou deploy. Ativacao e rollback revalidam hashes e aprovacoes.
+  Nao tratar testes locais como portal publicado, nem como entrega das M05-M09.
+
 ## Cobranca E Direitos De Uso
 
 - Decisao de 2026-11-18: a interface usa Carteira de creditos, com Adicionar

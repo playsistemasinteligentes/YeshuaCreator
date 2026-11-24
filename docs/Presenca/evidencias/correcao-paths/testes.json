@@ -1,0 +1,243 @@
+{
+  "recordedAtUtc": "2026-11-20T11:35:33.982056+00:00",
+  "baseCommit": "951879449da6b6e4b2e11a22405ebef9133d5cb4",
+  "branch": "codex/task-71ddf4aa021c4fa5b0f140accdb624f2",
+  "platformExecuted": "Debian 12 Linux x64, .NET SDK 8.0.428",
+  "windowsExecution": "Não executada: executor Windows não disponível neste workspace. Testes usam componentes nativos e podem ser executados sem alteração em Windows.",
+  "sourceSha256": {
+    "src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/CSharpCQRS.cs": "d25cf60763b62cd3c1bbbcf3e319dce727fdebc8a945e98ebf1ae5eff3a0bafb",
+    "tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs": "a35528e80834426687dbdf5f0a4dc948ec8a5b8a0658e2c0036a495315bff180"
+  },
+  "runs": [
+    {
+      "name": "baseline",
+      "exitCode": 1,
+      "times": {
+        "creation": "2026-11-20T11:31:30.6640837+00:00",
+        "queuing": "2026-11-20T11:31:30.6640839+00:00",
+        "start": "2026-11-20T11:31:16.7647684+00:00",
+        "finish": "2026-11-20T11:31:30.6763724+00:00"
+      },
+      "counters": {
+        "total": "1",
+        "executed": "1",
+        "passed": "0",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "trxSha256": "f0c4cbe5f3a1ceb2242220f4936e4fd7ec9a3b3c5f775413476cf9b8d9f32341",
+      "failures": [
+        {
+          "test": "AppSolutionGenerateCreatesApplicationDomainProject",
+          "outcome": "Failed",
+          "message": "Assert.IsTrue failed. ",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.AppSolutionGenerateCreatesApplicationDomainProject() in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 175\n   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)\n"
+        }
+      ]
+    },
+    {
+      "name": "regression-before",
+      "exitCode": 1,
+      "times": {
+        "creation": "2026-11-20T11:32:04.7503172+00:00",
+        "queuing": "2026-11-20T11:32:04.7503173+00:00",
+        "start": "2026-11-20T11:32:01.9864557+00:00",
+        "finish": "2026-11-20T11:32:04.7607650+00:00"
+      },
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "0",
+        "failed": "5",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "trxSha256": "888aeb1e8341816c24bbd9a63695900eff4495b545fca6f1fcdff63dbc622937",
+      "failures": [
+        {
+          "test": "DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeFactory.cs)",
+          "outcome": "Failed",
+          "message": "Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/2991e1a0e9224257a5f60e77167a1239/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/MDFeFactory.cs",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32\n   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n"
+        },
+        {
+          "test": "DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,IMDFeEntity.cs)",
+          "outcome": "Failed",
+          "message": "Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/370c40ff0fbc4e3683c62ad285e53af1/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/IMDFeEntity.cs",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32\n   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n   at System.Reflection.MethodBaseInvoker.InvokeDirectByRefWithFewArgs(Object obj, Span`1 copyOfArgs, BindingFlags invokeAttr)\n"
+        },
+        {
+          "test": "DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Behaviors,MDFeDomainBehavior.cs)",
+          "outcome": "Failed",
+          "message": "Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/3e05e747f55f4a17b2c6a1ccf5d62917/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Behaviors/Migration/MDFe/MDFeDomainBehavior.cs",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32\n   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n"
+        },
+        {
+          "test": "DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntityDecorator.cs)",
+          "outcome": "Failed",
+          "message": "Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/143bf7ef87904c01b282838ef470a77c/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/MDFeEntityDecorator.cs",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32\n   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n"
+        },
+        {
+          "test": "DomainGenerationUsesNativeDirectoriesAndPreservesCuston (Entitys,MDFeEntity.cs)",
+          "outcome": "Failed",
+          "message": "Assert.IsTrue failed. /tmp/Yeshua.Engine.Tests/workspace with spaces/018b4daa622349ec95da66fed18586ce/src/CQRS/Domain/Yeshua.Fiscal.MDFe.CQRS.Domain/Entitys/Migration/MDFe/MDFeEntity.cs",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(String area, String fileName) in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 32\n   at InvokeStub_ApplicationDomainProjectGenerationTests.DomainGenerationUsesNativeDirectoriesAndPreservesCuston(Object, Span`1)\n   at System.Reflection.MethodBaseInvoker.InvokeWithFewArgs(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)\n"
+        }
+      ]
+    },
+    {
+      "name": "affected-intermediate",
+      "exitCode": 1,
+      "times": {
+        "creation": "2026-11-20T11:33:25.9965157+00:00",
+        "queuing": "2026-11-20T11:33:25.9965159+00:00",
+        "start": "2026-11-20T11:33:22.8755299+00:00",
+        "finish": "2026-11-20T11:33:40.7609407+00:00"
+      },
+      "counters": {
+        "total": "6",
+        "executed": "6",
+        "passed": "5",
+        "failed": "1",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "trxSha256": "b9c6622f9c48de095811c3612f80417c9da0eac7cf4b7a1d9c2c92a14016e6ec",
+      "failures": [
+        {
+          "test": "AppSolutionGenerateCreatesApplicationDomainProject",
+          "outcome": "Failed",
+          "message": "StringAssert.Contains failed. String '<Project Sdk=\"Microsoft.NET.Sdk\">\n\n  <PropertyGroup>\n    <TargetFramework>net8.0</TargetFramework>\n    <ImplicitUsings>enable</ImplicitUsings>\n    <Nullable>enable</Nullable>\n  </PropertyGroup>\n\n  <ItemGroup>\n    <ProjectReference Include=\"../Yeshua.CQRS.Domain/Yeshua.CQRS.Domain.csproj\" />\n  </ItemGroup>\n\n</Project>' does not contain string '..\\Yeshua.CQRS.Domain\\Yeshua.CQRS.Domain.csproj'. .",
+          "stack": "   at TestMigration.ApplicationDomainProjectGenerationTests.AppSolutionGenerateCreatesApplicationDomainProject() in /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs:line 228\n   at System.RuntimeMethodHandle.InvokeMethod(Object target, Void** arguments, Signature sig, Boolean isConstructor)\n   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)\n"
+        }
+      ]
+    },
+    {
+      "name": "affected",
+      "exitCode": 0,
+      "times": {
+        "creation": "2026-11-20T11:34:33.3490992+00:00",
+        "queuing": "2026-11-20T11:34:33.3490993+00:00",
+        "start": "2026-11-20T11:34:31.0242114+00:00",
+        "finish": "2026-11-20T11:34:39.1238388+00:00"
+      },
+      "counters": {
+        "total": "6",
+        "executed": "6",
+        "passed": "6",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "trxSha256": "9774228ee69a94f8a2d08ed4d92c682934617aeabc6a90b1a36eb0fa35f86950",
+      "failures": []
+    },
+    {
+      "name": "engine",
+      "exitCode": 0,
+      "times": {
+        "creation": "2026-11-20T11:34:58.4036190+00:00",
+        "queuing": "2026-11-20T11:34:58.4036191+00:00",
+        "start": "2026-11-20T11:34:56.2211579+00:00",
+        "finish": "2026-11-20T11:35:05.0349309+00:00"
+      },
+      "counters": {
+        "total": "34",
+        "executed": "34",
+        "passed": "34",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "trxSha256": "8b4646bc8de60e07463c40d07abaae85b5a1667a77ee128f2772ff4f5eb69709",
+      "failures": []
+    },
+    {
+      "name": "shared",
+      "exitCode": 0,
+      "times": {
+        "creation": "2026-11-20T11:33:44.8668399+00:00",
+        "queuing": "2026-11-20T11:33:44.8668400+00:00",
+        "start": "2026-11-20T11:33:42.4922707+00:00",
+        "finish": "2026-11-20T11:33:44.8931608+00:00"
+      },
+      "counters": {
+        "total": "5",
+        "executed": "5",
+        "passed": "5",
+        "failed": "0",
+        "error": "0",
+        "timeout": "0",
+        "aborted": "0",
+        "inconclusive": "0",
+        "passedButRunAborted": "0",
+        "notRunnable": "0",
+        "notExecuted": "0",
+        "disconnected": "0",
+        "warning": "0",
+        "completed": "0",
+        "inProgress": "0",
+        "pending": "0"
+      },
+      "trxSha256": "cff3e7e59e4f0a82b6e65c8ab91076787aad2bb1c9aafbda0364f890be3e7fe7",
+      "failures": []
+    }
+  ],
+  "intermediateBuild": {
+    "exitCode": 1,
+    "testsExecuted": false,
+    "errors": 26
+  }
+}
