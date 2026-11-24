@@ -396,6 +396,8 @@ builder.Services.AddTransient<Command.Receivers.UseCase.ProcessarPresencaHandler
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarAuditoriaHandler>();
 
+builder.Services.AddTransient<Command.Receivers.UseCase.ReprocessarStatusEducacionalHandler>();
+
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.SendFileHandler>();

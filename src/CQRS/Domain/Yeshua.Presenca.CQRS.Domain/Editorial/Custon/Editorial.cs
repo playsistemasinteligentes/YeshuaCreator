@@ -60,6 +60,14 @@ public sealed class ResultadoEditorial
  public List<CanalEditorial> Canais {get;set;}=[];
  public List<VersaoEditorial> Versoes {get;set;}=[];
  public List<EntregaEditorial> Entregas {get;set;}=[];
+ public List<RetornoEducacionalEditorial> RetornosEducacionais {get;set;}=[];
+}
+public sealed class RetornoEducacionalEditorial
+{
+ public string Id {get;set;}="";
+ public string Estado {get;set;}="";
+ public int Tentativas {get;set;}
+ public string CodigoErro {get;set;}="";
 }
 public sealed class EntregaEditorial
 {
@@ -87,7 +95,7 @@ public static class RegrasEditoriais
   "AprovarVersao" => PermissaoEditorial.Aprovar,
   "RejeitarVersao" => PermissaoEditorial.Revisar,
   "SolicitarPublicacao" => PermissaoEditorial.Publicar,
-  "ReprocessarEntrega" or "ReconciliarEntrega" or "ConsultarOperacao" => PermissaoEditorial.Operar,
+  "ReprocessarEntrega" or "ReprocessarStatusEducacional" or "ReconciliarEntrega" or "ConsultarOperacao" => PermissaoEditorial.Operar,
   "CriarIdentidade" or "DefinirVinculo" or "ConfigurarCanal" => PermissaoEditorial.Administrar,
   "ConsultarRedacao" or "ConsultarAuditoria" => PermissaoEditorial.Ler,
   _ => throw new EditorialException("PRESENCA_OPERATION_INVALID") };

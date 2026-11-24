@@ -9,6 +9,16 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Continuidade PR #67: checkpoint anterior confirmado no commit a2d5a4a00.
+  `scripts/presenca/factory.py` le registros publicos GitHub da fabrica e
+  grava o spool existente sem chamar Presenca; snapshots limitados podem perder
+  movimentos intermediarios e nao substituem stream de auditoria. Sem ativacao
+  de agendamento. Recuperacao de status Academia usa Command normal gerado
+  ReprocessarStatusEducacional, vinculo Operar, tenant/identidade/escopo e
+  tentativa esperada; reagenda a mesma mensagem sem republicar conteudo.
+  Integracao SQL segue sem execucao por ausencia de ambiente descartavel
+  configurado. Evidencias em `docs/Presenca/evidencias/continuacao-m05-m06`.
+
 - Checkpoint PR #67 de 2026-11-24: HEAD local 3773bf0e3 preservado, mais
   trabalho nao commitado recuperado de M05-M09. O produtor independente
   `scripts/presenca/feed.py` possui spool duravel, allowlist publica e entrega

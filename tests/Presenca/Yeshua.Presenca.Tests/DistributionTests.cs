@@ -58,6 +58,40 @@ public class DistributionTests
   await new StatusCallbackStrategy(options,client).DeliverAsync(new(message,"",2,1,""),default);
   Assert.Contains("stable-status-id",captured);Assert.Contains("PublicacaoEducacionalAtualizada.v1",captured);Assert.DoesNotContain("Aluno",captured);
  }
+ [Theory][InlineData("not-json")][InlineData("[]")][InlineData("{\"parameters\":{\"retry_after\":1}}")]
+ public async Task Confirmed_rate_limit_remains_retryable_with_malformed_or_smaller_optional_body(string body)
+ {
+  var e=Delivery("Telegram");using var client=new HttpClient(new Handler(_=>
+  {
+   var response=new HttpResponseMessage(HttpStatusCode.TooManyRequests){Content=new StringContent(body)};
+   response.Headers.RetryAfter=new System.Net.Http.Headers.RetryConditionHeaderValue(TimeSpan.FromSeconds(120));return Task.FromResult(response);
+  }));
+  var error=await Assert.ThrowsAsync<OutboxDeliveryException>(()=>new CanalHttpStrategy("Telegram",Options(e),client).DeliverAsync(Request(e),default));
+  Assert.Equal("PRESENCA_RATE_LIMIT",error.Code);Assert.True(error.Retryable);Assert.Equal(TimeSpan.FromSeconds(120),error.RetryAfter);
+ }
+ [Fact] public async Task Callback_retry_preserves_the_educational_version_and_message_identity()
+ {
+  var bodies=new List<string>();var attempts=0;
+  using var client=new HttpClient(new Handler(async m=>
+  {
+   bodies.Add(await m.Content!.ReadAsStringAsync());attempts++;
+   return new(attempts==1?HttpStatusCode.ServiceUnavailable:HttpStatusCode.Accepted);
+  }));
+  var strategy=new StatusCallbackStrategy(new(){AcademiaBaseUrl="https://academia.example.org/"},client);
+  var status=new StatusEducacionalV1("lesson-1",2,"Publicada","https://public.example.org/lesson/1/","");
+  var message=new QueueMessage("PublicacaoEducacionalAtualizada.v1",status){MenssageId="status:"+RegrasEditoriais.Id("stable"),CorrelationId="lesson-1"};
+  var request=new OutboxDeliveryRequest(message,"",2,1,"");
+  var failed=await Assert.ThrowsAsync<OutboxDeliveryException>(()=>strategy.DeliverAsync(request,default));Assert.True(failed.Retryable);
+  Assert.NotNull(await strategy.DeliverAsync(request,default));Assert.Equal(2,bodies.Count);Assert.Equal(bodies[0],bodies[1]);
+  using var envelope=JsonDocument.Parse(bodies[1]);using var payload=JsonDocument.Parse(envelope.RootElement.GetProperty("Payload").GetString()!);
+  Assert.Equal(2,payload.RootElement.GetProperty("Revisao").GetInt32());Assert.Equal(message.MenssageId,envelope.RootElement.GetProperty("MessageId").GetString());
+ }
+ [Theory][InlineData("ReprocessarStatusEducacional")][InlineData("ReprocessarEntrega")]
+ public void Recovery_is_an_operator_permission_and_never_a_writer_privilege(string operation)
+ {
+  Assert.Equal(PermissaoEditorial.Operar,RegrasEditoriais.Permissao(operation));
+  Assert.Throws<EditorialException>(()=>RegrasEditoriais.Autorizar(1,10,(int)PermissaoEditorial.Redigir,RegrasEditoriais.Permissao(operation)));
+ }
  internal sealed class Handler(Func<HttpRequestMessage,Task<HttpResponseMessage>> action):HttpMessageHandler
  {protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,CancellationToken cancellationToken)=>action(request);}
 }

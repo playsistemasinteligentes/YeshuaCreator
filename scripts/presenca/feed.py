@@ -27,7 +27,7 @@ def public_hash(content):
 
 
 def factory_input(repository, identity, event):
-    if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository):
+    if not re.fullmatch(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+', repository) or len(repository) > 120:
         raise ValueError('Repository invalid.')
     kind, action, number, revision = (event[k] for k in ('kind', 'action', 'id', 'revision'))
     if kind not in ('issue', 'pull_request', 'release', 'deploy') or action not in ('opened', 'updated', 'closed', 'merged', 'published', 'completed'):
@@ -41,12 +41,16 @@ def factory_input(repository, identity, event):
     if not isinstance(reference, str):
         raise ValueError('A verified public source URL is required for release/deploy.')
     parsed = urllib.parse.urlsplit(reference)
-    if parsed.scheme != 'https' or parsed.netloc != 'github.com' or not parsed.path.startswith('/' + repository + '/') or parsed.query or parsed.fragment:
+    allowed_reference = (parsed.netloc == 'github.com' and parsed.path.startswith('/' + repository + '/')) or (kind == 'deploy' and parsed.netloc == 'api.github.com' and parsed.path == f'/repos/{repository}/deployments/{number}')
+    if parsed.scheme != 'https' or not allowed_reference or parsed.query or parsed.fragment:
         raise ValueError('Public source URL does not belong to the explicit repository.')
     content = {'Manchete': f'{kind} {action} - {repository}',
                'Corpo': f'Um movimento publico autorizado ({kind}/{action}) foi recebido. Revisar o fato e suas fontes antes de publicar.',
                'Fontes': [reference], 'ClassificacaoPrincipal': 'Fabrica', 'ClassificacoesSecundarias': [], 'Tags': [kind], 'Materiais': [], 'AutorPublico': 'Play Sistemas'}
-    return {'IdentidadeId': identity, 'Produtor': repository, 'MovimentoId': f'{repository}:{kind}:{number}:{action}:{revision}',
+    movement = f'{repository}:{kind}:{number}:{action}:{revision}'
+    if len(movement) > 120:
+        movement = kind + ':' + hashlib.sha256(movement.encode()).hexdigest().upper()
+    return {'IdentidadeId': identity, 'Produtor': repository, 'MovimentoId': movement,
             'Referencia': reference, 'Revisao': 1, 'Tipo': kind, 'AprovadaNaOrigem': False, 'Conteudo': content, 'Hash': public_hash(content)}
 
 

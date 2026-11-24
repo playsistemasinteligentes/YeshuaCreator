@@ -28,6 +28,14 @@ public partial class IdentidadePublicadoraReadRepository
   else if(p.Operacao=="ConsultarAuditoria")
    result.AuditoriaJson=System.Text.Json.JsonSerializer.Serialize(_unitOfWork.Query<AuditoriaEditorialInfo>("SELECT TOP(100) Operacao,RegistroId,UserId,Changed FROM AuditoriaEditorial WHERE TenantID=@tenant AND IdentidadeId=@IdentidadeId AND Deleted=0 ORDER BY Changed DESC,Id",new {tenant,p.IdentidadeId}).ToList(),IntegracaoJson.Default.ListAuditoriaEditorialInfo);
   else throw new EditorialException("PRESENCA_OPERATION_INVALID");
+  if(p.Operacao=="ConsultarOperacao")
+   result.RetornosEducacionais=_unitOfWork.Query<RetornoEducacionalEditorial>(@"SELECT TOP(100) SUBSTRING(o.MessageId,8,64) Id,
+     CASE o.Status WHEN 0 THEN 'Pendente' WHEN 1 THEN 'Confirmado' WHEN 2 THEN 'Processando' ELSE 'FalhaFinal' END Estado,
+     o.RetryCount Tentativas,o.LastError CodigoErro FROM yOutbox o
+    WHERE o.Type='PublicacaoEducacionalAtualizada.v1' AND o.TenantID=@tenant AND o.ProcessingScope=@scope AND o.Deleted=0
+     AND (EXISTS(SELECT 1 FROM Pauta p WHERE p.Id=o.EntityId AND p.TenantID=o.TenantID AND p.IdentidadeId=@IdentidadeId AND p.Deleted=0)
+      OR EXISTS(SELECT 1 FROM PublicacaoDestino d WHERE d.Id=o.EntityId AND d.TenantID=o.TenantID AND d.IdentidadeId=@IdentidadeId AND d.Deleted=0))
+    ORDER BY o.CreatedAt DESC,o.Id",new {tenant,p.IdentidadeId,scope=_executionContext.ProcessingScope}).ToList();
   result.Canais=_unitOfWork.Query<CanalEditorial>("SELECT TOP(100) Id,Plataforma,Destino FROM Canal WHERE TenantID=@tenant AND IdentidadeId=@IdentidadeId AND Deleted=0 ORDER BY Plataforma,Destino",new {tenant,p.IdentidadeId}).ToList();
   result.TemMais=result.Versoes.Count>50;
   if(result.TemMais)result.Versoes.RemoveAt(50);

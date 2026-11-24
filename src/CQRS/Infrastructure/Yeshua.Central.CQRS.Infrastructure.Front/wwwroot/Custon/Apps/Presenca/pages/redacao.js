@@ -103,6 +103,22 @@ export async function renderRedacao() {
             }
             el('entregas').append(row);
         }
+        for (const callback of result.RetornosEducacionais || []) {
+            const row = document.createElement('fieldset'), heading = document.createElement('legend');
+            heading.textContent = `Retorno à Academia · ${callback.Estado} · ${callback.Tentativas} tentativa(s) · ${callback.CodigoErro || ''}`;
+            row.append(heading);
+            if (callback.Estado === 'FalhaFinal') {
+                const label = document.createElement('label'), reason = document.createElement('input');
+                reason.maxLength = 500; label.append(document.createTextNode('Motivo da recuperação '), reason); row.append(label);
+                const button = document.createElement('button'); button.type = 'button'; button.textContent = 'Reagendar retorno à Academia';
+                button.onclick = safe(async () => {
+                    if (!reason.value.trim()) throw new Error('Informe o motivo da recuperação.');
+                    const receipt = await call('ReprocessarStatusEducacional', { Motivo: reason.value }, false, { RegistroId: callback.Id, VersaoEsperada: callback.Tentativas });
+                    if (receipt) { status('Retorno reagendado. Atualize a operação para acompanhar.'); button.disabled = true; }
+                }); row.append(button);
+            }
+            el('entregas').append(row);
+        }
     });
     el('auditoria').onclick = safe(async () => {
         const result = await call('ConsultarAuditoria', {}, true); if (!result) return;

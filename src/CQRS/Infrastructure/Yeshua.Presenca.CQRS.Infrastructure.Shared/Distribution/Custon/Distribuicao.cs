@@ -50,11 +50,18 @@ public sealed class CanalHttpStrategy(string platform,PresencaOptions options,Ht
    // Only explicit rejection is safe to resend. A timeout/5xx/ambiguous 2xx can have committed.
    if(response.StatusCode==HttpStatusCode.TooManyRequests || response.StatusCode==HttpStatusCode.Forbidden&&response.Headers.RetryAfter!=null)
    {
-    var delay=response.Headers.RetryAfter?.Delta;
+    var retryAfter=response.Headers.RetryAfter;
+    var delay=retryAfter?.Delta??(retryAfter?.Date is {} date?date-DateTimeOffset.UtcNow:(TimeSpan?)null);
     if(platform=="Telegram")
     {
-     using var doc=JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
-     if(doc.RootElement.TryGetProperty("parameters",out var par)&&par.TryGetProperty("retry_after",out var seconds)&&seconds.TryGetInt32(out var n))delay=TimeSpan.FromSeconds(Math.Clamp(n,1,86400));
+     // HTTP already confirmed rejection. An optional malformed error body cannot make it uncertain.
+     try
+     {
+      using var doc=JsonDocument.Parse(await response.Content.ReadAsStringAsync(cancellationToken));
+      if(doc.RootElement.TryGetProperty("parameters",out var par)&&par.TryGetProperty("retry_after",out var seconds)&&seconds.TryGetInt32(out var n))
+       delay=TimeSpan.FromSeconds(Math.Max(delay?.TotalSeconds??0,Math.Clamp(n,1,86400)));
+     }
+     catch(Exception error) when(error is JsonException or InvalidOperationException or HttpRequestException or OperationCanceledException) { }
     }
     throw new OutboxDeliveryException("PRESENCA_RATE_LIMIT","Limite de envio.",true,delay??TimeSpan.FromMinutes(1));
    }
@@ -77,7 +84,7 @@ public sealed class CanalHttpStrategy(string platform,PresencaOptions options,Ht
    }
   }
   catch(OutboxDeliveryException){throw;}
-  catch(Exception ex) when(ex is HttpRequestException or OperationCanceledException or JsonException or InvalidOperationException or KeyNotFoundException){throw Incerto();}
+  catch(Exception ex) when(ex is HttpRequestException or OperationCanceledException or JsonException or InvalidOperationException or KeyNotFoundException or FormatException or OverflowException){throw Incerto();}
  }
  private static OutboxDeliveryException Incerto()=>new("PRESENCA_RESULT_UNCERTAIN","Resultado exige reconciliação; não reenviar.",false);
 }

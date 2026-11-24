@@ -96,6 +96,17 @@ public partial class IdentidadePublicadoraWriteRepository
     }
     foreach(var channel in d.Canais)EnfileirarPublicacao(tenant,actor,identidade,approved,channel,processingScope,d.AgendadaParaUtc);
     result=new(){Id=p.RegistroId,Versao=approved.Numero,Estado="Pendente"};break;
+   case "ReprocessarStatusEducacional":
+    RegrasEditoriais.Texto(d.Motivo,500);Escopo(processingScope);
+    if(_UnitOfWork.Execute(@"UPDATE o SET Status=0,NextAttemptAt=SYSUTCDATETIME(),ProcessingAt=NULL,LastError=NULL,
+      TransportData=JSON_MODIFY(COALESCE(o.TransportData,'{}'),'$.ManualRetryBase',o.RetryCount)
+      FROM yOutbox o WHERE o.MessageId=@message AND o.TenantID=@tenant AND o.ProcessingScope=@scope
+       AND o.Type='PublicacaoEducacionalAtualizada.v1' AND o.Status=3 AND o.RetryCount=@expected AND o.Deleted=0
+       AND (EXISTS(SELECT 1 FROM Pauta p WHERE p.Id=o.EntityId AND p.TenantID=o.TenantID AND p.IdentidadeId=@identidade AND p.Deleted=0)
+        OR EXISTS(SELECT 1 FROM PublicacaoDestino d WHERE d.Id=o.EntityId AND d.TenantID=o.TenantID AND d.IdentidadeId=@identidade AND d.Deleted=0))",
+      new {message="status:"+p.RegistroId,tenant,scope=processingScope,expected=p.VersaoEsperada,identidade})!=1)
+      throw new EditorialException("PRESENCA_CALLBACK_RETRY_CONFLICT",409);
+    result.Estado="Pendente";break;
    case "ReprocessarEntrega":
     RegrasEditoriais.Texto(d.Motivo,500);
     var affected=_UnitOfWork.Execute("UPDATE d SET Estado='Pendente',CodigoErro='',Changed=SYSUTCDATETIME() FROM PublicacaoDestino d JOIN yOutbox o ON o.EntityId=d.Id AND o.TenantID=d.TenantID AND o.Type='Presenca.Publicacao.v1' AND o.ProcessingScope=@processingScope WHERE d.Id=@Id AND d.TenantID=@tenant AND d.IdentidadeId=@identidade AND d.Estado='FalhaFinal' AND d.Tentativas=@expected",new {Id=p.RegistroId,tenant,identidade,processingScope,expected=p.VersaoEsperada});

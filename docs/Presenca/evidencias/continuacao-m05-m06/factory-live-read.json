@@ -1,0 +1,11 @@
+{
+  "observed": 67,
+  "truncatedResources": [],
+  "coverage": "public snapshots; intermediate changes between polls can be missed",
+  "presencaContacted": false,
+  "recordedAtUtc": "2026-11-24T16:46:22.183647+00:00",
+  "repository": "playsistemasinteligentes/YeshuaCreator",
+  "publisher": "synthetic fixture only",
+  "destinationContacted": false,
+  "liveActions": "public GitHub GET only; temporary local spool; no source or destination writes"
+}

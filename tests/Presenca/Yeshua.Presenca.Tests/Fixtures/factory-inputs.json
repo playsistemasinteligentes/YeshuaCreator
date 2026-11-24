@@ -1,0 +1,98 @@
+[
+  {
+    "IdentidadeId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "Produtor": "example/repo",
+    "MovimentoId": "example/repo:issue:7:updated:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "Referencia": "https://github.com/example/repo/issues/7",
+    "Revisao": 1,
+    "Tipo": "issue",
+    "AprovadaNaOrigem": false,
+    "Conteudo": {
+      "Manchete": "issue updated - example/repo",
+      "Corpo": "Um movimento publico autorizado (issue/updated) foi recebido. Revisar o fato e suas fontes antes de publicar.",
+      "Fontes": [
+        "https://github.com/example/repo/issues/7"
+      ],
+      "ClassificacaoPrincipal": "Fabrica",
+      "ClassificacoesSecundarias": [],
+      "Tags": [
+        "issue"
+      ],
+      "Materiais": [],
+      "AutorPublico": "Play Sistemas"
+    },
+    "Hash": "4CF38830C973551EC3DC2C8DC4F2980B0B86A68D230680E310F3D60122FC8877"
+  },
+  {
+    "IdentidadeId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "Produtor": "example/repo",
+    "MovimentoId": "example/repo:pull_request:8:merged:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "Referencia": "https://github.com/example/repo/pull/8",
+    "Revisao": 1,
+    "Tipo": "pull_request",
+    "AprovadaNaOrigem": false,
+    "Conteudo": {
+      "Manchete": "pull_request merged - example/repo",
+      "Corpo": "Um movimento publico autorizado (pull_request/merged) foi recebido. Revisar o fato e suas fontes antes de publicar.",
+      "Fontes": [
+        "https://github.com/example/repo/pull/8"
+      ],
+      "ClassificacaoPrincipal": "Fabrica",
+      "ClassificacoesSecundarias": [],
+      "Tags": [
+        "pull_request"
+      ],
+      "Materiais": [],
+      "AutorPublico": "Play Sistemas"
+    },
+    "Hash": "D99396C36C71938041C7954A708D6CF1ED88EC7B1D9BC3F1802373447442D5DF"
+  },
+  {
+    "IdentidadeId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "Produtor": "example/repo",
+    "MovimentoId": "example/repo:release:9:published:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "Referencia": "https://github.com/example/repo/releases/tag/v1",
+    "Revisao": 1,
+    "Tipo": "release",
+    "AprovadaNaOrigem": false,
+    "Conteudo": {
+      "Manchete": "release published - example/repo",
+      "Corpo": "Um movimento publico autorizado (release/published) foi recebido. Revisar o fato e suas fontes antes de publicar.",
+      "Fontes": [
+        "https://github.com/example/repo/releases/tag/v1"
+      ],
+      "ClassificacaoPrincipal": "Fabrica",
+      "ClassificacoesSecundarias": [],
+      "Tags": [
+        "release"
+      ],
+      "Materiais": [],
+      "AutorPublico": "Play Sistemas"
+    },
+    "Hash": "9AFCEBD75AC24845D1B5B7E02FA700666C53B3A2D0FBB36EA615468C1C6CDF76"
+  },
+  {
+    "IdentidadeId": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "Produtor": "example/repo",
+    "MovimentoId": "example/repo:deploy:10:completed:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "Referencia": "https://api.github.com/repos/example/repo/deployments/10",
+    "Revisao": 1,
+    "Tipo": "deploy",
+    "AprovadaNaOrigem": false,
+    "Conteudo": {
+      "Manchete": "deploy completed - example/repo",
+      "Corpo": "Um movimento publico autorizado (deploy/completed) foi recebido. Revisar o fato e suas fontes antes de publicar.",
+      "Fontes": [
+        "https://api.github.com/repos/example/repo/deployments/10"
+      ],
+      "ClassificacaoPrincipal": "Fabrica",
+      "ClassificacoesSecundarias": [],
+      "Tags": [
+        "deploy"
+      ],
+      "Materiais": [],
+      "AutorPublico": "Play Sistemas"
+    },
+    "Hash": "6414DE65EF3B902DB0F21237A5BE8E7A897CDF430464B31CA0C37246222D04BE"
+  }
+]
