@@ -13,6 +13,9 @@ using Shered.Services;
 using RepositoryInterfaces.Services;
 using Command.Patterns;
 using Command.Interfaces;
+using RepositoryInterfaces.Patterns.Saga;
+using Command.Receivers.Migration.Saga;
+using Command.Patterns.OutBox;
 using Command.Receivers;
 using RepositoryInterfaces.Patterns.UnitOfWork;
 using Shered.DB.Connection;
@@ -69,6 +72,10 @@ public static void MapDependencInjection(WebApplicationBuilder builder)
                         sp.GetRequiredService<Shered.Logger.Logger>());
                     builder.Services.AddTransient<ISagaExecutor, SagaExecutor>();
                     builder.Services.AddTransient<ISagaStepInvoker, SagaStepInvoker>();
+                    builder.Services.AddTransient<SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaResolverRegistry, SagaResolverRegistry>();
+                    builder.Services.AddTransient<ISagaStepContinuation, SagaStepContinuation>();
+                    builder.Services.AddScoped<OutboxService>();
 
 
 builder.Services.AddTransient<IRepository.Write.IIdentidadePublicadoraWriteRepository, Input.Repository.IdentidadePublicadora.IdentidadePublicadoraWriteRepository>();
@@ -351,6 +358,9 @@ builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKPerfilIdRec
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKGrantIdReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKTenantIDReceiver>();
 builder.Services.AddTransient<Command.Receivers.Read.yUserGrantReadFKUserIdReceiver>();
+builder.Services.AddTransient<Dominio.Saga.ReceberOrigemEditorialSaga>();
+builder.Services.AddTransient<Command.Receivers.ReceberOrigemEditorialSagaHandlerResolver>();
+builder.Services.AddTransient<RegistrarPautaDeOrigemHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.CriarIdentidadeHandler>();
 
@@ -381,6 +391,10 @@ builder.Services.AddTransient<Command.Receivers.UseCase.ReprocessarEntregaHandle
 builder.Services.AddTransient<Command.Receivers.UseCase.ReconciliarEntregaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.ExecutarEditorialHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ProcessarPresencaHandler>();
+
+builder.Services.AddTransient<Command.Receivers.UseCase.ConsultarAuditoriaHandler>();
 
 builder.Services.AddTransient<Command.Receivers.UseCase.StarSessionUploadHandler>();
 

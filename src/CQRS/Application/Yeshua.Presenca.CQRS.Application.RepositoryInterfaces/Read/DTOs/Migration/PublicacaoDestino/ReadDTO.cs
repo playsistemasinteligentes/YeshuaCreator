@@ -32,6 +32,9 @@ namespace Repositorio.Outputs
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
+    public string codigoerro { get; set; } = string.Empty;
+    public string naturezafalha { get; set; } = string.Empty;
+    public bool retrypossivel { get; set; }
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

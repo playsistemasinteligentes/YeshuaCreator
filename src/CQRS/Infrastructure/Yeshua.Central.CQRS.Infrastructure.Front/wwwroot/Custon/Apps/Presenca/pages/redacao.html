@@ -4,7 +4,7 @@
 <label>Identidade publicadora <select id="presenca-identidade"></select></label>
 <button type="button" id="presenca-atualizar">Atualizar</button>
 <p id="presenca-status" role="status" aria-live="polite"></p>
-<div id="presenca-lista"></div>
+<div id="presenca-lista"></div><button type="button" id="presenca-mais" hidden>Carregar mais versões</button>
 <button type="button" id="presenca-nova">Nova pauta</button>
 <form id="presenca-form" class="grid gap-3 my-4">
 <h2 id="presenca-versao">Nova pauta</h2>
@@ -37,7 +37,9 @@
 <button type="button" data-operation="SubmeterRevisao">Submeter à revisão</button>
 <button type="button" data-operation="AprovarVersao">Aprovar versão</button>
 <button type="button" data-operation="RejeitarVersao">Rejeitar versão</button>
+<label>Agendar envio (opcional, até 30 dias) <input type="datetime-local" id="presenca-agenda"></label>
 <button type="button" data-operation="SolicitarPublicacao">Solicitar publicação</button>
 </div></fieldset>
 <details><summary>Operação das entregas</summary><button type="button" id="presenca-operacao">Atualizar entregas</button><div id="presenca-entregas"></div></details>
+<details><summary>Auditoria editorial</summary><button type="button" id="presenca-auditoria">Consultar histórico de ações</button><div id="presenca-acoes"></div></details>
 </section>

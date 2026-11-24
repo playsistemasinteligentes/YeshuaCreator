@@ -34,6 +34,9 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    string? CodigoErro { get; set; }
+    string? NaturezaFalha { get; set; }
+    bool? RetryPossivel { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

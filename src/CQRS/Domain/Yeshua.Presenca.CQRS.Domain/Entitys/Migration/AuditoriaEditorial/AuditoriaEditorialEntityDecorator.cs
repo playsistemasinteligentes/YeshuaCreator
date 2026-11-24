@@ -29,6 +29,7 @@
             public const ulong Changed = 1UL << 6;
             public const ulong UserId = 1UL << 7;
             public const ulong OperationalEntityId = 1UL << 8;
+            public const ulong Motivo = 1UL << 9;
         }
 
         public static class AuditoriaEditorialOperationalFields
@@ -42,6 +43,7 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Motivo = Dominio.Operational.OperationalDataClassification.NeverCapture;
         }
 
         public partial class AuditoriaEditorialDecorator : IAuditoriaEditorialEntity
@@ -191,6 +193,20 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+
+                                    public string? Motivo
+                                    {
+                                        get => _inner.Motivo;
+                                        set
+                                        {
+                                            if (_inner.Motivo != value)
+                                            {
+                                                _inner.Motivo = value;
+                                                if ((_trackingMask & AuditoriaEditorialTrackingFields.Motivo) != 0UL)
+                                                    _logger.DomainValueChanged("AuditoriaEditorial", "Motivo", _trackingTraceId, _trackingOperation, _trackingRecordId, value, AuditoriaEditorialOperationalFields.Motivo, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

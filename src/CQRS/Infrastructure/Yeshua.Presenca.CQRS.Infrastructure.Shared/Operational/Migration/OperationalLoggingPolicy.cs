@@ -572,6 +572,14 @@ private OperationalLoggingDecision Evaluate(
                         mask |= OrigemPautaTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "OrigemPauta", operation, recordId, "OperationalEntityId"))
                         mask |= OrigemPautaTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "OrigemPauta", operation, recordId, "Referencia"))
+                        mask |= OrigemPautaTrackingFields.Referencia;
+                    if (DomainFieldTracked(policy, "OrigemPauta", operation, recordId, "Revisao"))
+                        mask |= OrigemPautaTrackingFields.Revisao;
+                    if (DomainFieldTracked(policy, "OrigemPauta", operation, recordId, "Hash"))
+                        mask |= OrigemPautaTrackingFields.Hash;
+                    if (DomainFieldTracked(policy, "OrigemPauta", operation, recordId, "Contrato"))
+                        mask |= OrigemPautaTrackingFields.Contrato;
                     return mask;
                 }
 
@@ -630,6 +638,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= ConteudoVersaoTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "ConteudoVersao", operation, recordId, "OperationalEntityId"))
                         mask |= ConteudoVersaoTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "ConteudoVersao", operation, recordId, "OrigemRevisao"))
+                        mask |= ConteudoVersaoTrackingFields.OrigemRevisao;
                     return mask;
                 }
 
@@ -754,6 +764,12 @@ private OperationalLoggingDecision Evaluate(
                         mask |= PublicacaoDestinoTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "PublicacaoDestino", operation, recordId, "OperationalEntityId"))
                         mask |= PublicacaoDestinoTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "PublicacaoDestino", operation, recordId, "CodigoErro"))
+                        mask |= PublicacaoDestinoTrackingFields.CodigoErro;
+                    if (DomainFieldTracked(policy, "PublicacaoDestino", operation, recordId, "NaturezaFalha"))
+                        mask |= PublicacaoDestinoTrackingFields.NaturezaFalha;
+                    if (DomainFieldTracked(policy, "PublicacaoDestino", operation, recordId, "RetryPossivel"))
+                        mask |= PublicacaoDestinoTrackingFields.RetryPossivel;
                     return mask;
                 }
 
@@ -781,6 +797,8 @@ private OperationalLoggingDecision Evaluate(
                         mask |= AuditoriaEditorialTrackingFields.UserId;
                     if (DomainFieldTracked(policy, "AuditoriaEditorial", operation, recordId, "OperationalEntityId"))
                         mask |= AuditoriaEditorialTrackingFields.OperationalEntityId;
+                    if (DomainFieldTracked(policy, "AuditoriaEditorial", operation, recordId, "Motivo"))
+                        mask |= AuditoriaEditorialTrackingFields.Motivo;
                     return mask;
                 }
 

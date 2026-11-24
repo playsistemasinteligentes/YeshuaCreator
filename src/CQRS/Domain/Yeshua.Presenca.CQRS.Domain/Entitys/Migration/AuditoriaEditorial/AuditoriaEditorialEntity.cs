@@ -29,12 +29,14 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public string? Motivo { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal AuditoriaEditorialEntity(string? id, string? identidadeid, string? operacao, string? registroid ){
+ internal AuditoriaEditorialEntity(string? id, string? identidadeid, string? operacao, string? registroid, string? motivo ){
  Id = id; 
  IdentidadeId = identidadeid; 
  Operacao = operacao; 
  RegistroId = registroid; 
+ Motivo = motivo; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

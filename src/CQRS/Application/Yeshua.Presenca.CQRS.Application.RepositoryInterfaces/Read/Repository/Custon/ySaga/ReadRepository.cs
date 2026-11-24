@@ -1,4 +1,4 @@
-﻿// <yeshua>
+// <yeshua>
 // artifact: DSL_SEEDED_CUSTOM_OWNED_BY_DEV
 // createdBy: DSL
 // ownership: IA_DEV
@@ -7,5 +7,22 @@
 // sourceOfTruth: THIS_FILE
 // generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration
 // </yeshua>
+
+using Repositorio.Outputs;
+using System;
+using System.Collections.Generic;
+
+namespace IRepository.Read
+{
+    public partial interface IySagaReadRepository
+    {
+        bool TryClaimSagaForExecution(int sagaId, string lockedBy, DateTime lockedAt, DateTime nextExecutionAt);
+        void ReleaseLock(int sagaId, string workerId);
+        ySagaDTO? GetByIdWithSteps(int sagaId);
+        ySagaDTO GetByCorrelationId(string correlationId);
+        ySagaDTO? GetLatestByTypeEntity(string type, string entityType, string? entityId, string? correlationId);
+        ySagaDTO? GetLatestByTypeEntityAndStatus(string type, string entityType, string? entityId, int status);
+    }
+}
 
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadMigration

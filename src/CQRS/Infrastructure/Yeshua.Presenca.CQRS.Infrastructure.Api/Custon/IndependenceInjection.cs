@@ -14,6 +14,7 @@ public static class DependenceInjectionCuston
 {
     public static void MapDependenceInjection(WebApplicationBuilder builder)
     {
+        Presenca.Distribution.PresencaRegistration.AddPresenca(builder.Services,builder.Configuration);
         builder.Services.AddHttpContextAccessor();
         builder.Services.AddScoped<IExecutionContext, executionContextHttp>();
 

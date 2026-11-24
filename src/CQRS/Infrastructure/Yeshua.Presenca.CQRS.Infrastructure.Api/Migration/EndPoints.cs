@@ -25,6 +25,33 @@ namespace API.Migrations
 {
 public static class Endpoints
 {
+private static readonly HashSet<string> YeshuaModuleIngressTypes = new(StringComparer.Ordinal)
+{
+    "MovimentoFabricaDisponivel.v1",
+    "SolicitacaoPublicacaoEducacional.v1",
+};
+
+private static readonly HashSet<(string Source, string Type)> YeshuaModuleIngressSources = new()
+{
+    ("Fabrica", "MovimentoFabricaDisponivel.v1"),
+    ("Academia", "SolicitacaoPublicacaoEducacional.v1"),
+};
+
+public sealed record YeshuaModuleEventIngress(
+    int TenantId,
+    string MessageId,
+    string Type,
+    string EntityType,
+    string EntityId,
+    string CorrelationId,
+    string Payload,
+    string Source,
+    string Transport,
+    string? RootOperationId,
+    string? OperationId,
+    string? ExecutionId,
+    string? CausationId);
+
 public static void MapEndpoints(this WebApplication app)
 {
 app.MapGet("/yapi/operational/identity", ([FromServices] IRuntimeIdentityProvider identityProvider) =>
@@ -486,6 +513,112 @@ app.MapGet("/yapi/health/ready", ([FromServices] IRuntimeIdentityProvider identi
         ObservedAtUtc = DateTimeOffset.UtcNow
     }))
     .AllowAnonymous();
+
+app.MapPost("/yapi/Presenca/Inbox/YeshuaModuleEvent", async (
+    HttpContext httpContext,
+    [FromServices] Shared.ModuleTransport.IYeshuaModuleRequestAuthenticator authenticator,
+    [FromServices] IRepository.Read.IyTenantReadRepository tenantRepository,
+    [FromServices] IRepository.Read.IyUserReadRepository userRepository,
+    [FromServices] Command.Patterns.OutBox.OutboxService outboxService,
+    [FromServices] RepositoryInterfaces.Patterns.UnitOfWork.IUnitOfWork unitOfWork,
+    [FromServices] Aplication.Interfaces.Services.IExecutionContext executionContext) =>
+{
+    using var reader = new StreamReader(httpContext.Request.Body, Encoding.UTF8, false, leaveOpen: true);
+    var requestBody = await reader.ReadToEndAsync(httpContext.RequestAborted);
+    var sourceModule = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.SourceModule].ToString();
+    var headerMessageId = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.MessageId].ToString();
+    var timestamp = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.Timestamp].ToString();
+    var signature = httpContext.Request.Headers[YeshuaModuleAuthenticationHeaders.Signature].ToString();
+    var pathAndQuery = $"{httpContext.Request.PathBase}{httpContext.Request.Path}{httpContext.Request.QueryString}";
+    var authentication = authenticator.Authenticate(
+        httpContext.Request.Method,
+        pathAndQuery,
+        sourceModule,
+        headerMessageId,
+        timestamp,
+        signature,
+        requestBody);
+    if (!authentication.Succeeded)
+        return authentication.ErrorCode == "ModuleAuthenticationNotConfigured"
+            ? Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: authentication.ErrorCode)
+            : Results.Unauthorized();
+
+    YeshuaModuleEventIngress? envelope;
+    try
+    {
+        envelope = JsonSerializer.Deserialize<YeshuaModuleEventIngress>(
+            requestBody,
+            new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+    }
+    catch (JsonException)
+    {
+        return Results.BadRequest(new { Error = "YeshuaModuleEvent envelope must be valid JSON." });
+    }
+
+    if (envelope is null || envelope.TenantId <= 0 || string.IsNullOrWhiteSpace(envelope.MessageId))
+        return Results.BadRequest(new { Error = "TenantId and MessageId are required." });
+    if (!string.Equals(headerMessageId, envelope.MessageId, StringComparison.Ordinal))
+        return Results.Unauthorized();
+    if (string.IsNullOrWhiteSpace(envelope.Type) || !YeshuaModuleIngressTypes.Contains(envelope.Type))
+        return Results.BadRequest(new { Error = "YeshuaModuleEvent contract is not declared by the target module." });
+
+    if (!YeshuaModuleIngressSources.Contains((sourceModule, envelope.Type)) || !string.Equals(envelope.Source, sourceModule, StringComparison.Ordinal))
+        return Results.Unauthorized();
+    if (!tenantRepository.ExistsById(envelope.TenantId, true))
+        return Results.Conflict(new { Error = "TenantNotProvisioned", envelope.TenantId });
+    if (authenticator.TechnicalUserId <= 0)
+        return Results.Problem(statusCode: StatusCodes.Status503ServiceUnavailable, title: "ModuleTechnicalUserNotConfigured");
+    if (!userRepository.ExistsById(authenticator.TechnicalUserId, true))
+        return Results.Conflict(new { Error = "ModuleTechnicalUserNotProvisioned", UserId = authenticator.TechnicalUserId });
+
+    executionContext.SetTenantId(envelope.TenantId);
+    executionContext.SetUserId(authenticator.TechnicalUserId);
+    var parentIdentity = new Dominio.Operational.OperationalExecutionIdentity(
+        envelope.RootOperationId,
+        envelope.OperationId,
+        envelope.ExecutionId,
+        envelope.CausationId);
+    using var executionScope = string.IsNullOrWhiteSpace(parentIdentity.RootOperationId)
+        ? executionContext.BeginOperationalExecution("Inbox.YeshuaModuleEvent")
+        : executionContext.BeginOperationalExecution(parentIdentity, "Inbox.YeshuaModuleEvent");
+
+    JsonElement payload;
+    try
+    {
+        using var payloadDocument = JsonDocument.Parse(envelope.Payload);
+        payload = payloadDocument.RootElement.Clone();
+    }
+    catch (JsonException)
+    {
+        return Results.BadRequest(new { Error = "YeshuaModuleEvent payload must be valid JSON." });
+    }
+
+    var messageId = envelope.MessageId;
+    unitOfWork.BeginTran();
+    try
+    {
+        outboxService.AddInboxEvent(
+            envelope.Type,
+            payload,
+            envelope.EntityType,
+            envelope.EntityId,
+            messageId,
+            envelope.CorrelationId);
+        unitOfWork.Commit();
+    }
+    catch
+    {
+        unitOfWork.Rollback();
+        throw;
+    }
+
+    return Results.Accepted("/yapi/Presenca/Inbox/YeshuaModuleEvent/" + messageId, new
+    {
+        MessageId = messageId,
+        envelope.Type,
+        Accepted = true
+    });
+}).AllowAnonymous();
 
 app.MapPost("/yapi/yFileUpload/PostyFileUpload", async ([FromServices] Command.Receivers.Write.InsertyFileUploadReceiver receiver, [FromBody] Command.Write.yFileUploadCrudCommand command) =>
 {
@@ -3776,6 +3909,27 @@ return Results.Problem(ex.Message);
 
 
 app.MapPost("/yapi/Presenca/EditorialReconciliarEntregaUseCase", async ([FromServices] Command.Receivers.UseCase.ReconciliarEntregaHandler receiver, [FromBody] Command.UseCase.ReconciliarEntregaInputCommand command) =>
+{
+try
+{
+var result = await receiver.ExecuteAsync(command);
+if (result.StatusCode == 200)
+    return Results.Ok(result.Data);
+else if (result.StatusCode == 403)
+    return Results.Json(result, statusCode: 403);
+else if (result.StatusCode == 409)
+    return Results.Json(result, statusCode: 409);
+else
+    return Results.BadRequest(result);
+}
+catch (Exception ex)
+{
+return Results.Problem(ex.Message);
+}
+}).RequireAuthorization();
+
+
+app.MapPost("/yapi/Presenca/EditorialConsultarAuditoriaUseCase", async ([FromServices] Command.Receivers.UseCase.ConsultarAuditoriaHandler receiver, [FromBody] Command.UseCase.ConsultarAuditoriaInputCommand command) =>
 {
 try
 {

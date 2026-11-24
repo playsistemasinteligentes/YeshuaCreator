@@ -249,6 +249,8 @@ public sealed class OperationalEvidenceGenerationTests
             StringAssert.Contains(content, "CargaProntaParaEmissaoFiscal.v1");
             StringAssert.Contains(content, "/yapi/Fiscal/Inbox/YeshuaModuleEvent");
             StringAssert.Contains(content, "YeshuaModuleIngressTypes.Contains(envelope.Type)");
+            StringAssert.Contains(content, "YeshuaModuleIngressSources.Contains((sourceModule, envelope.Type))");
+            StringAssert.Contains(content, "string.Equals(envelope.Source, sourceModule, StringComparison.Ordinal)");
             StringAssert.Contains(content, "BeginOperationalExecution(parentIdentity, \"Inbox.YeshuaModuleEvent\")");
             StringAssert.Contains(content, "outboxService.AddInboxEvent(");
             StringAssert.Contains(content, "unitOfWork.Commit();");

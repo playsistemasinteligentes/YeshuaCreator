@@ -106,6 +106,9 @@ public sealed class ApiSmokeCrudSuiteTests
             deleteSteps.Push(step17.DeleteAsync);
             await step17.ExecuteAsync();
 
+            var step18 = new Saga.ReceberOrigemEditorial.ReceberOrigemEditorialSagaApiSmokeTests();
+            await step18.ReceberOrigemEditorial_saga_should_run_with_real_api_and_infrastructure();
+
         }
         catch (Exception ex)
         {

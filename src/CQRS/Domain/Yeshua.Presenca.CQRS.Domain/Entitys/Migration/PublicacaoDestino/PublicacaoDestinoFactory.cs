@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IPublicacaoDestinoEntity Create(string? id, string? identidadeid, string? versaoid, string? canalid, string? estado, int? tentativas, DateTime? proximatentativautc, string? reciboexterno, string? urlpublica )
+                                    } public IPublicacaoDestinoEntity Create(string? id, string? identidadeid, string? versaoid, string? canalid, string? estado, int? tentativas, DateTime? proximatentativautc, string? reciboexterno, string? urlpublica, string? codigoerro, string? naturezafalha, bool? retrypossivel )
                             {
-                                return Create(null, id, identidadeid, versaoid, canalid, estado, tentativas, proximatentativautc, reciboexterno, urlpublica);
+                                return Create(null, id, identidadeid, versaoid, canalid, estado, tentativas, proximatentativautc, reciboexterno, urlpublica, codigoerro, naturezafalha, retrypossivel);
                             }
 
                             public IPublicacaoDestinoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? versaoid, string? canalid, string? estado, int? tentativas, DateTime? proximatentativautc, string? reciboexterno, string? urlpublica, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? versaoid, string? canalid, string? estado, int? tentativas, DateTime? proximatentativautc, string? reciboexterno, string? urlpublica, string? codigoerro, string? naturezafalha, bool? retrypossivel, ulong? trackingMask = null )
                             {
-                            var entity = new PublicacaoDestinoEntity(id, identidadeid, versaoid, canalid, estado, tentativas, proximatentativautc, reciboexterno, urlpublica );
+                            var entity = new PublicacaoDestinoEntity(id, identidadeid, versaoid, canalid, estado, tentativas, proximatentativautc, reciboexterno, urlpublica, codigoerro, naturezafalha, retrypossivel );
 
 
                             var effectiveTrackingMask = trackingMask ??

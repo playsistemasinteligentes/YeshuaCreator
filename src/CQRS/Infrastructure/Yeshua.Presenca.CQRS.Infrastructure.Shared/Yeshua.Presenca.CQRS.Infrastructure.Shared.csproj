@@ -12,4 +12,4 @@
     <ProjectReference Include="..\..\Domain\Yeshua.Presenca.CQRS.Domain\Yeshua.Presenca.CQRS.Domain.csproj" />
     <ProjectReference Include="..\..\Application\Yeshua.Presenca.CQRS.Application.RepositoryInterfaces\Yeshua.Presenca.CQRS.Application.RepositoryInterfaces.csproj" />
   </ItemGroup>
-</Project>
+<ItemGroup><FrameworkReference Include="Microsoft.AspNetCore.App" /></ItemGroup></Project>

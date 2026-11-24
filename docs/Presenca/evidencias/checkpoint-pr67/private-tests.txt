@@ -1,0 +1,309 @@
+test_all_deployment_models_with_synthetic_credentials (test_compose_configuration.ComposeConfigurationTests.test_all_deployment_models_with_synthetic_credentials) ... skipped 'Docker Compose CLI required; no daemon or server is used.'
+test_agent_git_does_not_inherit_a_different_accounts_token (test_credentials.CredentialsTests.test_agent_git_does_not_inherit_a_different_accounts_token) ... ok
+test_agent_git_rejects_incomplete_or_implicitly_enabled_publishing (test_credentials.CredentialsTests.test_agent_git_rejects_incomplete_or_implicitly_enabled_publishing) ... ok
+test_agent_git_uses_dedicated_identity_only_from_private_providers (test_credentials.CredentialsTests.test_agent_git_uses_dedicated_identity_only_from_private_providers) ... ok
+test_all_checks_later_apps_before_deploy (test_credentials.CredentialsTests.test_all_checks_later_apps_before_deploy) ... ok
+test_all_consumers_and_independent_connections (test_credentials.CredentialsTests.test_all_consumers_and_independent_connections) ... ok
+test_billing_sandbox_is_explicit_and_survives_rebuild_without_leaking_to_other_apps (test_credentials.CredentialsTests.test_billing_sandbox_is_explicit_and_survives_rebuild_without_leaking_to_other_apps) ... ok
+test_clinica_can_select_queue_without_changing_the_private_secret_source (test_credentials.CredentialsTests.test_clinica_can_select_queue_without_changing_the_private_secret_source) ... ok
+test_clinica_codex_summary_is_disabled_by_default_and_explicitly_enabled (test_credentials.CredentialsTests.test_clinica_codex_summary_is_disabled_by_default_and_explicitly_enabled) ... ok
+test_clinica_executor_does_not_inherit_provider_secret (test_credentials.CredentialsTests.test_clinica_executor_does_not_inherit_provider_secret) ... ok
+test_clinica_executor_uses_app_owned_private_configuration (test_credentials.CredentialsTests.test_clinica_executor_uses_app_owned_private_configuration) ... ok
+test_clinica_general_credentials_are_authoritative_even_when_old_file_exists (test_credentials.CredentialsTests.test_clinica_general_credentials_are_authoritative_even_when_old_file_exists) ... ok
+test_clinica_groq_does_not_inherit_secrets_or_openai_profile (test_credentials.CredentialsTests.test_clinica_groq_does_not_inherit_secrets_or_openai_profile) ... ok
+test_clinica_groq_profile_is_isolated_from_openai_and_other_apps (test_credentials.CredentialsTests.test_clinica_groq_profile_is_isolated_from_openai_and_other_apps) ... ok
+test_clinica_groq_supports_explicit_model_and_endpoint (test_credentials.CredentialsTests.test_clinica_groq_supports_explicit_model_and_endpoint) ... ok
+test_clinica_rejects_unknown_delivery_provider (test_credentials.CredentialsTests.test_clinica_rejects_unknown_delivery_provider) ... ok
+test_duplicate_keys_are_rejected_without_values (test_credentials.CredentialsTests.test_duplicate_keys_are_rejected_without_values) ... ok
+test_empty_example_is_not_deployable (test_credentials.CredentialsTests.test_empty_example_is_not_deployable) ... ok
+test_existing_vault_is_not_hidden_by_an_empty_new_directory (test_credentials.CredentialsTests.test_existing_vault_is_not_hidden_by_an_empty_new_directory) ... ok
+test_gateway_needs_shared_configuration_not_app_credentials (test_credentials.CredentialsTests.test_gateway_needs_shared_configuration_not_app_credentials) ... ok
+test_import_preserves_values_and_vault_mount_without_generating_keys (test_credentials.CredentialsTests.test_import_preserves_values_and_vault_mount_without_generating_keys) ... ERROR
+test_import_recognizes_unified_operational_service_and_renamed_observability (test_credentials.CredentialsTests.test_import_recognizes_unified_operational_service_and_renamed_observability) ... ERROR
+test_import_rejects_mismatching_existing_signing_keys (test_credentials.CredentialsTests.test_import_rejects_mismatching_existing_signing_keys) ... ERROR
+test_invalid_youtube_protection_key_is_rejected_without_replacement (test_credentials.CredentialsTests.test_invalid_youtube_protection_key_is_rejected_without_replacement) ... ERROR
+test_mcp_deploy_rejects_implicit_truthy_configuration (test_credentials.CredentialsTests.test_mcp_deploy_rejects_implicit_truthy_configuration) ... ok
+test_mcp_deploy_requires_explicit_private_opt_in_and_exports_only_fixed_paths (test_credentials.CredentialsTests.test_mcp_deploy_requires_explicit_private_opt_in_and_exports_only_fixed_paths) ... ok
+test_missing_key_cannot_come_from_inherited_environment (test_credentials.CredentialsTests.test_missing_key_cannot_come_from_inherited_environment) ... ok
+test_optional_providers_do_not_block_environment (test_credentials.CredentialsTests.test_optional_providers_do_not_block_environment) ... ok
+test_partial_tunnel_configuration_is_rejected_without_exposing_key (test_credentials.CredentialsTests.test_partial_tunnel_configuration_is_rejected_without_exposing_key) ... ERROR
+test_read_is_non_mutating_and_existing_file_is_never_overwritten (test_credentials.CredentialsTests.test_read_is_non_mutating_and_existing_file_is_never_overwritten) ... ERROR
+test_real_windows_acl (test_credentials.CredentialsTests.test_real_windows_acl) ... skipped 'Windows ACL test'
+test_schema_types_and_control_characters (test_credentials.CredentialsTests.test_schema_types_and_control_characters) ... ok
+test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key (test_credentials.CredentialsTests.test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key) ... ERROR
+test_tunnel_configuration_uses_private_provider_file_only_for_shared (test_credentials.CredentialsTests.test_tunnel_configuration_uses_private_provider_file_only_for_shared) ... ERROR
+test_youtube_bootstrap_is_app_owned_and_can_be_partial (test_credentials.CredentialsTests.test_youtube_bootstrap_is_app_owned_and_can_be_partial) ... ERROR
+test_existing_file_cannot_be_replaced_by_a_runtime_directory (test_credentials.UnifiedInitializationTests.test_existing_file_cannot_be_replaced_by_a_runtime_directory) ... ok
+test_import_cannot_replace_a_restored_configuration (test_credentials.UnifiedInitializationTests.test_import_cannot_replace_a_restored_configuration) ... ERROR
+test_missing_explicit_youtube_directory_is_not_recreated (test_credentials.UnifiedInitializationTests.test_missing_explicit_youtube_directory_is_not_recreated) ... ok
+test_new_environment_stops_until_credentials_are_completed (test_credentials.UnifiedInitializationTests.test_new_environment_stops_until_credentials_are_completed) ... FAIL
+test_restored_environment_and_youtube_files_are_reused_unchanged (test_credentials.UnifiedInitializationTests.test_restored_environment_and_youtube_files_are_reused_unchanged) ... ERROR
+test_child_failure_restores_parent_environment (test_launcher.LauncherTests.test_child_failure_restores_parent_environment) ... skipped 'Windows PowerShell launcher tests'
+test_each_application_gets_its_own_connection_and_scope (test_launcher.LauncherTests.test_each_application_gets_its_own_connection_and_scope) ... skipped 'Windows PowerShell launcher tests'
+test_existing_scope_is_not_replaced_when_no_override_is_requested (test_launcher.LauncherTests.test_existing_scope_is_not_replaced_when_no_override_is_requested) ... skipped 'Windows PowerShell launcher tests'
+test_invalid_scope_does_not_start_child_or_change_environment (test_launcher.LauncherTests.test_invalid_scope_does_not_start_child_or_change_environment) ... skipped 'Windows PowerShell launcher tests'
+test_missing_file_does_not_start_child_or_change_environment (test_launcher.LauncherTests.test_missing_file_does_not_start_child_or_change_environment) ... skipped 'Windows PowerShell launcher tests'
+test_missing_technical_actor_or_implicit_truthy_enable_is_rejected (test_presenca_credentials.PresencaCredentialsTests.test_missing_technical_actor_or_implicit_truthy_enable_is_rejected) ... ok
+test_presenca_without_queue_does_not_require_rabbit_credentials (test_presenca_credentials.PresencaCredentialsTests.test_presenca_without_queue_does_not_require_rabbit_credentials) ... ok
+test_profiles_use_the_same_private_document_and_do_not_cross_app_boundaries (test_presenca_credentials.PresencaCredentialsTests.test_profiles_use_the_same_private_document_and_do_not_cross_app_boundaries) ... ok
+test_cancel_and_eof_preserve_incomplete_configuration (test_setup_credentials.SetupCredentialsTests.test_cancel_and_eof_preserve_incomplete_configuration) ... 
+  test_cancel_and_eof_preserve_incomplete_configuration (test_setup_credentials.SetupCredentialsTests.test_cancel_and_eof_preserve_incomplete_configuration) (answer='CANCELAR\n') ... ERROR
+  test_cancel_and_eof_preserve_incomplete_configuration (test_setup_credentials.SetupCredentialsTests.test_cancel_and_eof_preserve_incomplete_configuration) (answer='') ... ERROR
+test_explicit_vault_must_be_supplied_without_creating_it (test_setup_credentials.SetupCredentialsTests.test_explicit_vault_must_be_supplied_without_creating_it) ... ERROR
+test_invalid_json_is_not_displayed_and_not_replaced_automatically (test_setup_credentials.SetupCredentialsTests.test_invalid_json_is_not_displayed_and_not_replaced_automatically) ... ERROR
+test_missing_file_waits_then_continues_in_same_process (test_setup_credentials.SetupCredentialsTests.test_missing_file_waits_then_continues_in_same_process) ... FAIL
+test_missing_terminal_fails_early_leaving_only_private_example (test_setup_credentials.SetupCredentialsTests.test_missing_terminal_fails_early_leaving_only_private_example) ... FAIL
+test_permissions_must_be_repaired_by_operator_not_automatically (test_setup_credentials.SetupCredentialsTests.test_permissions_must_be_repaired_by_operator_not_automatically) ... ERROR
+test_ready_retries_validation_without_generating_or_overwriting_credentials (test_setup_credentials.SetupCredentialsTests.test_ready_retries_validation_without_generating_or_overwriting_credentials) ... ERROR
+test_repository_destination_is_rejected_without_creating_file (test_setup_credentials.SetupCredentialsTests.test_repository_destination_is_rejected_without_creating_file) ... ok
+test_terminal_interrupt_is_sanitized (test_setup_credentials.SetupCredentialsTests.test_terminal_interrupt_is_sanitized) ... ok
+test_terminal_open_failure_or_redirected_handle_is_rejected (test_setup_credentials.SetupCredentialsTests.test_terminal_open_failure_or_redirected_handle_is_rejected) ... ok
+test_terminal_opens_dev_tty_not_standard_input (test_setup_credentials.SetupCredentialsTests.test_terminal_opens_dev_tty_not_standard_input) ... ok
+test_typo_never_counts_as_confirmation (test_setup_credentials.SetupCredentialsTests.test_typo_never_counts_as_confirmation) ... ERROR
+test_valid_restored_file_does_not_ask_or_overwrite (test_setup_credentials.SetupCredentialsTests.test_valid_restored_file_does_not_ask_or_overwrite) ... ERROR
+test_wait_cannot_import_or_export_secrets (test_setup_credentials.SetupCredentialsTests.test_wait_cannot_import_or_export_secrets) ... ok
+test_additional_accounts_are_explicit_and_passwords_not_rotated_or_printed (test_sql_access.SqlAccessTests.test_additional_accounts_are_explicit_and_passwords_not_rotated_or_printed) ... ok
+test_admin_not_ready_retries_only_connection_not_mutations (test_sql_access.SqlAccessTests.test_admin_not_ready_retries_only_connection_not_mutations) ... ok
+test_ambiguous_names_and_malformed_sections_are_rejected (test_sql_access.SqlAccessTests.test_ambiguous_names_and_malformed_sections_are_rejected) ... ok
+test_create_database_permission_requires_explicit_declaration (test_sql_access.SqlAccessTests.test_create_database_permission_requires_explicit_declaration) ... ok
+test_database_access_repairs_orphan_mapping_and_grants_only_declared_roles (test_sql_access.SqlAccessTests.test_database_access_repairs_orphan_mapping_and_grants_only_declared_roles) ... ok
+test_entire_manifest_is_validated_before_any_sql (test_sql_access.SqlAccessTests.test_entire_manifest_is_validated_before_any_sql) ... ok
+test_missing_database_is_deferred_only_before_its_migration (test_sql_access.SqlAccessTests.test_missing_database_is_deferred_only_before_its_migration) ... ok
+test_new_login_password_is_not_exported_to_apps (test_sql_access.SqlAccessTests.test_new_login_password_is_not_exported_to_apps) ... ok
+test_sa_only_needs_no_new_declaration_and_no_mutation (test_sql_access.SqlAccessTests.test_sa_only_needs_no_new_declaration_and_no_mutation) ... ok
+test_secrets_stay_in_stdin_and_admin_environment_not_argv (test_sql_access.SqlAccessTests.test_secrets_stay_in_stdin_and_admin_environment_not_argv) ... ok
+test_setup_hook_remains_between_migration_and_service_start (test_sql_access.SqlAccessTests.test_setup_hook_remains_between_migration_and_service_start) ... ok
+test_unsafe_roles_names_and_passwords_are_rejected_without_values (test_sql_access.SqlAccessTests.test_unsafe_roles_names_and_passwords_are_rejected_without_values) ... ok
+
+======================================================================
+ERROR: test_import_preserves_values_and_vault_mount_without_generating_keys (test_credentials.CredentialsTests.test_import_preserves_values_and_vault_mount_without_generating_keys)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 369, in test_import_preserves_values_and_vault_mount_without_generating_keys
+    document = credentials.from_containers(template, services)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 514, in from_containers
+    document["Apps"][app]["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
+    ~~~~~~~~~~~~~~~~^^^^^
+KeyError: 'Presenca'
+
+======================================================================
+ERROR: test_import_recognizes_unified_operational_service_and_renamed_observability (test_credentials.CredentialsTests.test_import_recognizes_unified_operational_service_and_renamed_observability)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 186, in test_import_recognizes_unified_operational_service_and_renamed_observability
+    result = credentials.from_containers(template, services)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 514, in from_containers
+    document["Apps"][app]["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
+    ~~~~~~~~~~~~~~~~^^^^^
+KeyError: 'Presenca'
+
+======================================================================
+ERROR: test_import_rejects_mismatching_existing_signing_keys (test_credentials.CredentialsTests.test_import_rejects_mismatching_existing_signing_keys)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 380, in test_import_rejects_mismatching_existing_signing_keys
+    credentials.from_containers(template, services)
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 514, in from_containers
+    document["Apps"][app]["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
+    ~~~~~~~~~~~~~~~~^^^^^
+KeyError: 'Presenca'
+
+======================================================================
+ERROR: test_invalid_youtube_protection_key_is_rejected_without_replacement (test_credentials.CredentialsTests.test_invalid_youtube_protection_key_is_rejected_without_replacement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 335, in test_invalid_youtube_protection_key_is_rejected_without_replacement
+    credentials.write_new_json(bootstrap, {"EncryptionKey": "fixture-not-a-protection-key"})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_partial_tunnel_configuration_is_rejected_without_exposing_key (test_credentials.CredentialsTests.test_partial_tunnel_configuration_is_rejected_without_exposing_key)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 174, in test_partial_tunnel_configuration_is_rejected_without_exposing_key
+    credentials.write_new_json(providers, {"McpTunnel": {"ApiKey": "do-not-display"}})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_read_is_non_mutating_and_existing_file_is_never_overwritten (test_credentials.CredentialsTests.test_read_is_non_mutating_and_existing_file_is_never_overwritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 344, in test_read_is_non_mutating_and_existing_file_is_never_overwritten
+    credentials.write_new_json(path, configured())
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key (test_credentials.CredentialsTests.test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 76, in test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key
+    other = credentials.environment(document, Path("/private"), "memorias")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 288, in environment
+    if legacy.is_dir() and any(legacy.iterdir()) and not get(document, "Apps", "Memorias", "PrivateRoot"):
+       ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/pathlib.py", line 1251, in is_dir
+    return S_ISDIR(self.stat().st_mode)
+                   ^^^^^^^^^^^
+  File "/usr/lib/python3.11/pathlib.py", line 1014, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/root/YeshuaMemoriasSecrets'
+
+======================================================================
+ERROR: test_tunnel_configuration_uses_private_provider_file_only_for_shared (test_credentials.CredentialsTests.test_tunnel_configuration_uses_private_provider_file_only_for_shared)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 164, in test_tunnel_configuration_uses_private_provider_file_only_for_shared
+    credentials.write_new_json(providers, {"McpTunnel": {"Id": "tunnel_fixture", "ApiKey": "fixture-tunnel-key"}})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_youtube_bootstrap_is_app_owned_and_can_be_partial (test_credentials.CredentialsTests.test_youtube_bootstrap_is_app_owned_and_can_be_partial)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 323, in test_youtube_bootstrap_is_app_owned_and_can_be_partial
+    credentials.write_new_json(bootstrap, {"ClientSecret": "fixture-secret", "ConfigurationAdminTenantId": 10})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_import_cannot_replace_a_restored_configuration (test_credentials.UnifiedInitializationTests.test_import_cannot_replace_a_restored_configuration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 429, in test_import_cannot_replace_a_restored_configuration
+    credentials.write_new_json(path, configured())
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_restored_environment_and_youtube_files_are_reused_unchanged (test_credentials.UnifiedInitializationTests.test_restored_environment_and_youtube_files_are_reused_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 408, in test_restored_environment_and_youtube_files_are_reused_unchanged
+    credentials.write_new_json(path, configured())
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_cancel_and_eof_preserve_incomplete_configuration (test_setup_credentials.SetupCredentialsTests.test_cancel_and_eof_preserve_incomplete_configuration) (answer='CANCELAR\n')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 146, in test_cancel_and_eof_preserve_incomplete_configuration
+    credentials.write_new_json(self.path, {})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_cancel_and_eof_preserve_incomplete_configuration (test_setup_credentials.SetupCredentialsTests.test_cancel_and_eof_preserve_incomplete_configuration) (answer='')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 146, in test_cancel_and_eof_preserve_incomplete_configuration
+    credentials.write_new_json(self.path, {})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_explicit_vault_must_be_supplied_without_creating_it (test_setup_credentials.SetupCredentialsTests.test_explicit_vault_must_be_supplied_without_creating_it)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 132, in test_explicit_vault_must_be_supplied_without_creating_it
+    credentials.write_new_json(self.path, document)
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_invalid_json_is_not_displayed_and_not_replaced_automatically (test_setup_credentials.SetupCredentialsTests.test_invalid_json_is_not_displayed_and_not_replaced_automatically)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 94, in test_invalid_json_is_not_displayed_and_not_replaced_automatically
+    credentials.write_new_json(self.path, {})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_permissions_must_be_repaired_by_operator_not_automatically (test_setup_credentials.SetupCredentialsTests.test_permissions_must_be_repaired_by_operator_not_automatically)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 119, in test_permissions_must_be_repaired_by_operator_not_automatically
+    credentials.write_new_json(self.path, configured())
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_ready_retries_validation_without_generating_or_overwriting_credentials (test_setup_credentials.SetupCredentialsTests.test_ready_retries_validation_without_generating_or_overwriting_credentials)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 106, in test_ready_retries_validation_without_generating_or_overwriting_credentials
+    credentials.write_new_json(self.path, {})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_typo_never_counts_as_confirmation (test_setup_credentials.SetupCredentialsTests.test_typo_never_counts_as_confirmation)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 155, in test_typo_never_counts_as_confirmation
+    credentials.write_new_json(self.path, {})
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+ERROR: test_valid_restored_file_does_not_ask_or_overwrite (test_setup_credentials.SetupCredentialsTests.test_valid_restored_file_does_not_ask_or_overwrite)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 67, in test_valid_restored_file_does_not_ask_or_overwrite
+    credentials.write_new_json(self.path, document)
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/infra/private/credentials.py", line 449, in write_new_json
+    raise ConfigurationError("Arquivo real de credenciais deve ficar fora do repositorio.")
+credentials.ConfigurationError: Arquivo real de credenciais deve ficar fora do repositorio.
+
+======================================================================
+FAIL: test_new_environment_stops_until_credentials_are_completed (test_credentials.UnifiedInitializationTests.test_new_environment_stops_until_credentials_are_completed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_credentials.py", line 395, in test_new_environment_stops_until_credentials_are_completed
+    self.assertEqual(0, self.run_init(path)[0])
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_missing_file_waits_then_continues_in_same_process (test_setup_credentials.SetupCredentialsTests.test_missing_file_waits_then_continues_in_same_process)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 83, in test_missing_file_waits_then_continues_in_same_process
+    self.assertEqual(0, result, stderr)
+AssertionError: 0 != 1 : Arquivo real de credenciais deve ficar fora do repositorio.
+
+
+======================================================================
+FAIL: test_missing_terminal_fails_early_leaving_only_private_example (test_setup_credentials.SetupCredentialsTests.test_missing_terminal_fails_early_leaving_only_private_example)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Infrastructure/PrivateConfig/test_setup_credentials.py", line 165, in test_missing_terminal_fails_early_leaving_only_private_example
+    self.assertIn("terminal interativo privado", stderr)
+AssertionError: 'terminal interativo privado' not found in 'Arquivo real de credenciais deve ficar fora do repositorio.\n'
+
+----------------------------------------------------------------------
+Ran 74 tests in 0.296s
+
+FAILED (failures=3, errors=19, skipped=7)

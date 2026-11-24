@@ -32,6 +32,7 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    int? OrigemRevisao { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

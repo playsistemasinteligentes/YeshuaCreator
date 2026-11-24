@@ -141,6 +141,8 @@ public static class StaticYeshuaModuleContinuations
     static StaticYeshuaModuleContinuations()
     {
         Continuations.Clear();
+        Continuations.Add(new ModuleContinuation("Fabrica", "MovimentosFabrica", "publicarMovimento", "MovimentoFabricaDisponivel", 1, "Presenca", "ReceberOrigemEditorial", true, "StartsFrom", "", "", ""));
+        Continuations.Add(new ModuleContinuation("Academia", "PublicarAula", "solicitarPublicacao", "SolicitacaoPublicacaoEducacional", 1, "Presenca", "ReceberOrigemEditorial", true, "StartsFrom", "", "", ""));
     }
 }
 public static class StaticUsageRights

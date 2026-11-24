@@ -33,7 +33,7 @@ public class EditorialSqlTests
   ResultadoEditorial Run(int tenant,int actor,PedidoEditorial request)
   {
    using var work=Work();work.BeginTran();
-   try{var result=new IdentidadePublicadoraWriteRepository(work).Executar(tenant,actor,request);work.Commit();return result;}
+   try{var result=new IdentidadePublicadoraWriteRepository(work).Executar(tenant,actor,request,"presenca-tests");work.Commit();return result;}
    catch{work.Rollback();throw;}
   }
   try
@@ -45,6 +45,9 @@ public class EditorialSqlTests
     var migration=new M000001();migration.Up();MigrationBuilder.ValidateInternalEntities([migration]);MigrationBuilder.ApplyStandardFields([standard,migration]);
     var schema=new SqlServerSchema(null!,"Presenca");
     foreach(var entity in migration.Entitys)work.Execute(schema.CreateTable(entity).Query);
+    foreach(var entity in standard.Entitys.Where(e=>new[]{"yOutbox","yInbox","ySaga","ySagaStep"}.Contains(e.EntityName)))work.Execute(schema.CreateTable(entity).Query);
+    var evolution=new M000002();evolution.Up();
+    foreach(var query in schema.ApplyMigration(evolution))work.Execute(query.Query);
     foreach(var identity in new[]{publisher,other})
      work.Execute("INSERT INTO IdentidadePublicadora(Id,Nome,Ativa,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@identity,'Explicit test publisher',1,1,10,0,SYSUTCDATETIME(),LEFT(@identity,32))",new {identity});
     foreach(var actor in new[]{10,20})
@@ -70,7 +73,7 @@ public class EditorialSqlTests
    Assert.Equal(409,Assert.Throws<EditorialException>(()=>Run(1,10,Pedido("CriarPautaManual","manual-1",changed))).Status);
    using(var work=Work())
    {
-    work.BeginTran();new IdentidadePublicadoraWriteRepository(work).Executar(1,10,Pedido("CriarPautaManual","rollback",data));work.Rollback();
+    work.BeginTran();new IdentidadePublicadoraWriteRepository(work).Executar(1,10,Pedido("CriarPautaManual","rollback",data),"presenca-tests");work.Rollback();
     Assert.Equal(1,work.ExecuteScalar<int>("SELECT COUNT(*) FROM Pauta"));
    }
    var channel=Run(1,10,Pedido("ConfigurarCanal","portal",new(){Plataforma="Portal",Destino="portal-test",Conexao="explicit-test-profile"}));

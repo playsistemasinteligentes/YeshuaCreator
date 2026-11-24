@@ -34,6 +34,9 @@
             public const ulong Changed = 1UL << 11;
             public const ulong UserId = 1UL << 12;
             public const ulong OperationalEntityId = 1UL << 13;
+            public const ulong CodigoErro = 1UL << 14;
+            public const ulong NaturezaFalha = 1UL << 15;
+            public const ulong RetryPossivel = 1UL << 16;
         }
 
         public static class PublicacaoDestinoOperationalFields
@@ -52,6 +55,9 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification CodigoErro = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification NaturezaFalha = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification RetryPossivel = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class PublicacaoDestinoDecorator : IPublicacaoDestinoEntity
@@ -271,6 +277,48 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+
+                                    public string? CodigoErro
+                                    {
+                                        get => _inner.CodigoErro;
+                                        set
+                                        {
+                                            if (_inner.CodigoErro != value)
+                                            {
+                                                _inner.CodigoErro = value;
+                                                if ((_trackingMask & PublicacaoDestinoTrackingFields.CodigoErro) != 0UL)
+                                                    _logger.DomainValueChanged("PublicacaoDestino", "CodigoErro", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoDestinoOperationalFields.CodigoErro, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? NaturezaFalha
+                                    {
+                                        get => _inner.NaturezaFalha;
+                                        set
+                                        {
+                                            if (_inner.NaturezaFalha != value)
+                                            {
+                                                _inner.NaturezaFalha = value;
+                                                if ((_trackingMask & PublicacaoDestinoTrackingFields.NaturezaFalha) != 0UL)
+                                                    _logger.DomainValueChanged("PublicacaoDestino", "NaturezaFalha", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoDestinoOperationalFields.NaturezaFalha, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public bool? RetryPossivel
+                                    {
+                                        get => _inner.RetryPossivel;
+                                        set
+                                        {
+                                            if (_inner.RetryPossivel != value)
+                                            {
+                                                _inner.RetryPossivel = value;
+                                                if ((_trackingMask & PublicacaoDestinoTrackingFields.RetryPossivel) != 0UL)
+                                                    _logger.DomainValueChanged("PublicacaoDestino", "RetryPossivel", _trackingTraceId, _trackingOperation, _trackingRecordId, value, PublicacaoDestinoOperationalFields.RetryPossivel, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();

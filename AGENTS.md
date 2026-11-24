@@ -9,6 +9,14 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Checkpoint PR #67 de 2026-11-24: HEAD local 3773bf0e3 preservado, mais
+  trabalho nao commitado recuperado de M05-M09. O produtor independente
+  `scripts/presenca/feed.py` possui spool duravel, allowlist publica e entrega
+  HTTP assinada com replay/backoff. Nao esta conectado ao fluxo operacional
+  da fabrica. Evidencias atuais em `docs/Presenca/evidencias/checkpoint-pr67`;
+  testes locais nao comprovam integracao SQL nem publicacao real. As notas
+  abaixo descrevem a entrega anterior e permanecem como historico.
+
 - Recuperacao de 2026-11-24: M00 preservada na PR draft #63 e refinamento M01
   na #64; nenhuma delas estava integrada a main 84d41c853. A task atual usa
   a branch preparada pelo aplicativo; importar arquivos nao estabelece

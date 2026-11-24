@@ -24,10 +24,16 @@ public partial class ExecutarEditorialHandler
    var pedido=new PedidoEditorial(comand.Operacao,comand.IdentidadeId??"",comand.RegistroId??"",comand.Chave??"",comand.VersaoEsperada,comand.Dados??"");
    _work.BeginTran();transaction=true;
    ResultadoEditorial result;
-   if(pedido.Operacao is "ConsultarIdentidades" or "ConsultarRedacao" or "ConsultarOperacao")result=_read.Consultar(_executionContext.TenantID,_executionContext.UserId,pedido);
+   if(pedido.Operacao=="ProvisionarInicial")
+   {
+    var data=RegrasEditoriais.Dados(pedido.Dados);
+    _write.ProvisionarInicial(_executionContext.TenantID,_executionContext.UserId,pedido.IdentidadeId,data.Nome);
+    result=new(){Id=pedido.IdentidadeId,Estado="Provisionada"};
+   }
+   else if(pedido.Operacao is "ConsultarIdentidades" or "ConsultarRedacao" or "ConsultarOperacao" or "ConsultarAuditoria")result=_read.Consultar(_executionContext.TenantID,_executionContext.UserId,pedido);
    else
    {
-    result=_write.Executar(_executionContext.TenantID,_executionContext.UserId,pedido);
+    result=_write.Executar(_executionContext.TenantID,_executionContext.UserId,pedido,_executionContext.ProcessingScope);
 
    }
    cancellationToken.ThrowIfCancellationRequested();_work.Commit();transaction=false;

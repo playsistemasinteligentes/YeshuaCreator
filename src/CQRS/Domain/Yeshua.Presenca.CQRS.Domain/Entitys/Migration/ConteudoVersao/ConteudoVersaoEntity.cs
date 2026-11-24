@@ -32,8 +32,9 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public int? OrigemRevisao { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal ConteudoVersaoEntity(string? id, string? identidadeid, string? pautaid, int? numero, string? hash, string? estado, string? snapshot ){
+ internal ConteudoVersaoEntity(string? id, string? identidadeid, string? pautaid, int? numero, string? hash, string? estado, string? snapshot, int? origemrevisao ){
  Id = id; 
  IdentidadeId = identidadeid; 
  PautaId = pautaid; 
@@ -41,6 +42,7 @@
  Hash = hash; 
  Estado = estado; 
  Snapshot = snapshot; 
+ OrigemRevisao = origemrevisao; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

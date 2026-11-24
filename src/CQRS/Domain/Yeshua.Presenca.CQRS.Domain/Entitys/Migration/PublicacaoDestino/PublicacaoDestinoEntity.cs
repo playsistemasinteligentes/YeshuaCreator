@@ -34,8 +34,11 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public string? CodigoErro { get; set; }
+    public string? NaturezaFalha { get; set; }
+    public bool? RetryPossivel { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal PublicacaoDestinoEntity(string? id, string? identidadeid, string? versaoid, string? canalid, string? estado, int? tentativas, DateTime? proximatentativautc, string? reciboexterno, string? urlpublica ){
+ internal PublicacaoDestinoEntity(string? id, string? identidadeid, string? versaoid, string? canalid, string? estado, int? tentativas, DateTime? proximatentativautc, string? reciboexterno, string? urlpublica, string? codigoerro, string? naturezafalha, bool? retrypossivel ){
  Id = id; 
  IdentidadeId = identidadeid; 
  VersaoId = versaoid; 
@@ -45,6 +48,9 @@
  ProximaTentativaUtc = proximatentativautc.HasValue && proximatentativautc.Value < (new DateTime(1800, 1, 1)) ? DateTime.Now : proximatentativautc; 
  ReciboExterno = reciboexterno; 
  UrlPublica = urlpublica; 
+ CodigoErro = codigoerro; 
+ NaturezaFalha = naturezafalha; 
+ RetryPossivel = retrypossivel; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

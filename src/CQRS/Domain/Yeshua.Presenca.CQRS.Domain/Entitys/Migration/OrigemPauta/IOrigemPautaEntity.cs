@@ -30,6 +30,10 @@
     DateTime? Changed { get; set; }
     int? UserId { get; set; }
     string OperationalEntityId { get; }
+    string? Referencia { get; set; }
+    int? Revisao { get; set; }
+    string? Hash { get; set; }
+    string? Contrato { get; set; }
     
                     bool isValidInsert();
                     bool isValidUpdate();

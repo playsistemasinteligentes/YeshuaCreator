@@ -7,13 +7,13 @@ export async function renderRedacao() {
     host.innerHTML = await template.text(); host.classList.remove('hidden');
     document.getElementById('crud-container')?.classList.add('hidden');
     const el = id => host.querySelector(`#presenca-${id}`), form = el('form');
-    let selected = null, materials = [], busy = false, pending = null, dirty = false;
+    let selected = null, materials = [], busy = false, pending = null, dirty = false, offset = 0;
     const lines = name => form.elements[name].value.split('\n').map(s => s.trim()).filter(Boolean);
     const status = message => { el('status').textContent = message; };
     const uuid = () => [...crypto.getRandomValues(new Uint8Array(16))].map(n => n.toString(16).padStart(2, '0')).join('');
-    async function call(operation, data = {}, read = false) {
+    async function call(operation, data = {}, read = false, overrides = {}) {
         if (busy) return null;
-        const input = { IdentidadeId: el('identidade').value, RegistroId: selected?.PautaId || '', VersaoEsperada: selected?.Numero || 0, Dados: JSON.stringify(data) };
+        const input = { IdentidadeId: el('identidade').value, RegistroId: selected?.PautaId || '', VersaoEsperada: selected?.Numero || 0, Dados: JSON.stringify(data), ...overrides };
         const signature = JSON.stringify({ operation, input });
         if (!read) {
             if (pending && pending.signature !== signature) throw new Error('Há um pedido sem confirmação. Repita a mesma ação ou atualize antes de mudar os dados.');
@@ -40,9 +40,11 @@ export async function renderRedacao() {
         el('materiais').textContent = materials.map(m => m.TextoAlternativo).join(', ') || 'Nenhum';
         el('versao').textContent = `Versão ${version.Numero} · ${version.Estado}`;
     }
-    async function refresh() {
-        const result = await call('ConsultarRedacao', {}, true); if (!result) return;
-        el('lista').replaceChildren();
+    async function refresh(reset = true) {
+        if (reset) offset = 0;
+        const result = await call('ConsultarRedacao', { Offset: offset }, true); if (!result) return;
+        if (reset) el('lista').replaceChildren();
+        el('mais').hidden = !result.TemMais; offset += result.Versoes.length;
         for (const version of result.Versoes) {
             const button = document.createElement('button');
             button.type = 'button'; button.className = 'block my-2 underline';
@@ -70,18 +72,42 @@ export async function renderRedacao() {
     });
     el('nova').onclick = () => { if (dirty && !confirm('Descartar alterações ainda não salvas?')) return; selected = null; materials = []; dirty = false; form.reset(); el('versao').textContent = 'Nova pauta'; el('materiais').textContent = 'Nenhum'; };
     el('atualizar').onclick = safe(refresh);
+    el('mais').onclick = safe(() => refresh(false));
     let activeIdentity = '';
     el('identidade').onchange = safe(async () => {
         if ((dirty || pending) && !confirm('Há alterações ou um pedido sem confirmação. Trocar de identidade descarta a edição local.')) { el('identidade').value = activeIdentity; return; }
         activeIdentity = el('identidade').value; pending = null; selected = null; materials = []; dirty = false; form.reset(); await refresh(); });
     host.querySelectorAll('[data-operation]').forEach(button => { button.onclick = safe(async () => {
         if (!selected || dirty) throw new Error('Salve e selecione uma versão antes de revisar.');
-        const result = await call(button.dataset.operation, { Canais: [...el('canais').selectedOptions].map(o => o.value), Publicavel: el('publicavel').checked, Motivo: el('motivo').value });
+        const result = await call(button.dataset.operation, { Canais: [...el('canais').selectedOptions].map(o => o.value), Publicavel: el('publicavel').checked, Motivo: el('motivo').value, AgendadaParaUtc: button.dataset.operation === 'SolicitarPublicacao' && el('agenda').value ? new Date(el('agenda').value).toISOString() : '' });
         if (!result) return; status(result.Estado); el('publicavel').checked = false; await refresh();
     }); });
     el('operacao').onclick = safe(async () => {
         const result = await call('ConsultarOperacao', {}, true); if (!result) return; el('entregas').replaceChildren();
-        for (const delivery of result.Entregas) { const p = document.createElement('p'); p.textContent = `${delivery.Estado} · ${delivery.Tentativas} tentativa(s)`; el('entregas').append(p); }
+        for (const delivery of result.Entregas) {
+            const row = document.createElement('fieldset'), heading = document.createElement('legend');
+            heading.textContent = `${delivery.Estado} · ${delivery.Tentativas} tentativa(s) · ${delivery.CodigoErro || ''}`; row.append(heading);
+            if (delivery.UrlPublica && /^https:\/\//.test(delivery.UrlPublica)) { const link = document.createElement('a'); link.href = delivery.UrlPublica; link.rel = 'noopener noreferrer'; link.target = '_blank'; link.textContent = 'Abrir publicação confirmada'; row.append(link); }
+            const input = label => { const element = document.createElement('label'), field = document.createElement('input'); element.append(document.createTextNode(label), field); row.append(element); return field; };
+            if (delivery.Estado === 'FalhaFinal' || delivery.Estado === 'ResultadoIncerto') {
+                const reason = input('Motivo da intervenção '); reason.maxLength = 500;
+                const external = delivery.Estado === 'ResultadoIncerto' ? input('Recibo externo confirmado ') : null;
+                const url = delivery.Estado === 'ResultadoIncerto' ? input('URL pública confirmada (quando houver) ') : null;
+                const button = document.createElement('button'); button.type = 'button';
+                button.textContent = external ? 'Confirmar entrega após reconciliação' : 'Agendar nova tentativa';
+                button.onclick = safe(async () => {
+                    if (!reason.value.trim() || external && !external.value.trim()) throw new Error('Informe o motivo e a evidência da intervenção.');
+                    const result = await call(external ? 'ReconciliarEntrega' : 'ReprocessarEntrega', { Motivo: reason.value, ReciboExterno: external?.value || '', UrlPublica: url?.value || '' }, false, { RegistroId: delivery.Id, VersaoEsperada: delivery.Tentativas });
+                    if (result) { status(result.Estado); button.disabled = true; }
+                }); row.append(button);
+            }
+            el('entregas').append(row);
+        }
+    });
+    el('auditoria').onclick = safe(async () => {
+        const result = await call('ConsultarAuditoria', {}, true); if (!result) return;
+        el('acoes').replaceChildren();
+        for (const action of JSON.parse(result.AuditoriaJson)) { const p = document.createElement('p'); p.textContent = `${new Date(action.Changed).toLocaleString('pt-BR')} · ${action.Operacao} · autor ${action.UserId}`; el('acoes').append(p); }
     });
     await safe(async () => {
         const result = await call('ConsultarIdentidades', {}, true); if (!result) return;

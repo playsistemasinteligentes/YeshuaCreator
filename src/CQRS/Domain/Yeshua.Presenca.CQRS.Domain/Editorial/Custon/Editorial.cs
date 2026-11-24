@@ -6,11 +6,13 @@ using System.Text.Json.Serialization;
 namespace Presenca.Editorial;
 
 [Flags]
-public enum PermissaoEditorial { Ler=1, Redigir=2, Revisar=4, Aprovar=8, Publicar=16, Operar=32, Administrar=64 }
+public enum PermissaoEditorial { Ler=1, Redigir=2, Revisar=4, Aprovar=8, Publicar=16, Operar=32, Administrar=64, Integrar=128 }
 public sealed class EditorialException(string code, int status=400) : Exception(code) { public int Status {get;}=status; }
 public sealed record PedidoEditorial(string Operacao, string IdentidadeId, string RegistroId, string Chave, int VersaoEsperada, string Dados);
 public sealed class DadosEditorial
 {
+ public int Offset {get;set;}
+ public string AgendadaParaUtc {get;set;}="";
  public string Nome {get;set;}="";
  public int UsuarioId {get;set;}
  public int Permissoes {get;set;}
@@ -52,6 +54,8 @@ public sealed class ResultadoEditorial
  public string Id {get;set;}="";
  public int Versao {get;set;}
  public string Estado {get;set;}="";
+ public bool TemMais {get;set;}
+ public string AuditoriaJson {get;set;}="[]";
  public List<IdentidadeEditorial> Identidades {get;set;}=[];
  public List<CanalEditorial> Canais {get;set;}=[];
  public List<VersaoEditorial> Versoes {get;set;}=[];
@@ -61,6 +65,8 @@ public sealed class EntregaEditorial
 {
  public string Id {get;set;}="";
  public string VersaoId {get;set;}="";
+ public string CodigoErro {get;set;}="";
+ public string NaturezaFalha {get;set;}="";
  public string CanalId {get;set;}="";
  public string Estado {get;set;}="";
  public int Tentativas {get;set;}
@@ -83,7 +89,7 @@ public static class RegrasEditoriais
   "SolicitarPublicacao" => PermissaoEditorial.Publicar,
   "ReprocessarEntrega" or "ReconciliarEntrega" or "ConsultarOperacao" => PermissaoEditorial.Operar,
   "CriarIdentidade" or "DefinirVinculo" or "ConfigurarCanal" => PermissaoEditorial.Administrar,
-  "ConsultarRedacao" => PermissaoEditorial.Ler,
+  "ConsultarRedacao" or "ConsultarAuditoria" => PermissaoEditorial.Ler,
   _ => throw new EditorialException("PRESENCA_OPERATION_INVALID") };
  public static DadosEditorial Dados(string json)
  {

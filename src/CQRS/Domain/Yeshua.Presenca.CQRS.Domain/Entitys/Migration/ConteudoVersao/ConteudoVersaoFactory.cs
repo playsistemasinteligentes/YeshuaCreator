@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IConteudoVersaoEntity Create(string? id, string? identidadeid, string? pautaid, int? numero, string? hash, string? estado, string? snapshot )
+                                    } public IConteudoVersaoEntity Create(string? id, string? identidadeid, string? pautaid, int? numero, string? hash, string? estado, string? snapshot, int? origemrevisao )
                             {
-                                return Create(null, id, identidadeid, pautaid, numero, hash, estado, snapshot);
+                                return Create(null, id, identidadeid, pautaid, numero, hash, estado, snapshot, origemrevisao);
                             }
 
                             public IConteudoVersaoEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? pautaid, int? numero, string? hash, string? estado, string? snapshot, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? pautaid, int? numero, string? hash, string? estado, string? snapshot, int? origemrevisao, ulong? trackingMask = null )
                             {
-                            var entity = new ConteudoVersaoEntity(id, identidadeid, pautaid, numero, hash, estado, snapshot );
+                            var entity = new ConteudoVersaoEntity(id, identidadeid, pautaid, numero, hash, estado, snapshot, origemrevisao );
 
 
                             var effectiveTrackingMask = trackingMask ??

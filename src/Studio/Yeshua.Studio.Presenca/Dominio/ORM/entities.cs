@@ -111,6 +111,10 @@ namespace Yeshua.Studio.Presenca.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? Referencia { get; set; }
+        public int? Revisao { get; set; }
+        public string? Hash { get; set; }
+        public string? Contrato { get; set; }
 
         public static MyApp.QueryBuilder.Query<OrigemPauta> Query() => new MyApp.QueryBuilder.Query<OrigemPauta>();
     }
@@ -147,6 +151,7 @@ namespace Yeshua.Studio.Presenca.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public int? OrigemRevisao { get; set; }
 
         public static MyApp.QueryBuilder.Query<ConteudoVersao> Query() => new MyApp.QueryBuilder.Query<ConteudoVersao>();
     }
@@ -223,6 +228,9 @@ namespace Yeshua.Studio.Presenca.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? CodigoErro { get; set; }
+        public string? NaturezaFalha { get; set; }
+        public bool? RetryPossivel { get; set; }
 
         public static MyApp.QueryBuilder.Query<PublicacaoDestino> Query() => new MyApp.QueryBuilder.Query<PublicacaoDestino>();
     }
@@ -240,6 +248,7 @@ namespace Yeshua.Studio.Presenca.Domain.Entities
         public int? UserId { get; set; }
         public yUser yUser { get; set; }
         public string OperationalEntityId { get; set; }
+        public string? Motivo { get; set; }
 
         public static MyApp.QueryBuilder.Query<AuditoriaEditorial> Query() => new MyApp.QueryBuilder.Query<AuditoriaEditorial>();
     }

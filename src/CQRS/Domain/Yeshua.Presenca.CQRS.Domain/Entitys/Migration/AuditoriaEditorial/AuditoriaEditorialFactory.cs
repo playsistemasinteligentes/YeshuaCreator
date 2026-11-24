@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IAuditoriaEditorialEntity Create(string? id, string? identidadeid, string? operacao, string? registroid )
+                                    } public IAuditoriaEditorialEntity Create(string? id, string? identidadeid, string? operacao, string? registroid, string? motivo )
                             {
-                                return Create(null, id, identidadeid, operacao, registroid);
+                                return Create(null, id, identidadeid, operacao, registroid, motivo);
                             }
 
                             public IAuditoriaEditorialEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? operacao, string? registroid, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? operacao, string? registroid, string? motivo, ulong? trackingMask = null )
                             {
-                            var entity = new AuditoriaEditorialEntity(id, identidadeid, operacao, registroid );
+                            var entity = new AuditoriaEditorialEntity(id, identidadeid, operacao, registroid, motivo );
 
 
                             var effectiveTrackingMask = trackingMask ??

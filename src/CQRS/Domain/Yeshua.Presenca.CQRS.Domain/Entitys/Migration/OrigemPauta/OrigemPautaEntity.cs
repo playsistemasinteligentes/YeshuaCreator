@@ -30,13 +30,21 @@
     public DateTime? Changed { get; set; }
     public int? UserId { get; set; }
     public string OperationalEntityId { get; set; }
+    public string? Referencia { get; set; }
+    public int? Revisao { get; set; }
+    public string? Hash { get; set; }
+    public string? Contrato { get; set; }
     private List<string> _erroMensagem = new List<string>();
- internal OrigemPautaEntity(string? id, string? identidadeid, string? pautaid, string? produtor, string? movimentoid ){
+ internal OrigemPautaEntity(string? id, string? identidadeid, string? pautaid, string? produtor, string? movimentoid, string? referencia, int? revisao, string? hash, string? contrato ){
  Id = id; 
  IdentidadeId = identidadeid; 
  PautaId = pautaid; 
  Produtor = produtor; 
  MovimentoId = movimentoid; 
+ Referencia = referencia; 
+ Revisao = revisao; 
+ Hash = hash; 
+ Contrato = contrato; 
  Deleted = false; 
  Changed = DateTime.Now; 
  OperationalEntityId = Guid.NewGuid().ToString("N"); 

@@ -28,15 +28,15 @@
                                     {
                                         _logger = logger;
                                         _trackingPolicy = trackingPolicy;
-                                    } public IOrigemPautaEntity Create(string? id, string? identidadeid, string? pautaid, string? produtor, string? movimentoid )
+                                    } public IOrigemPautaEntity Create(string? id, string? identidadeid, string? pautaid, string? produtor, string? movimentoid, string? referencia, int? revisao, string? hash, string? contrato )
                             {
-                                return Create(null, id, identidadeid, pautaid, produtor, movimentoid);
+                                return Create(null, id, identidadeid, pautaid, produtor, movimentoid, referencia, revisao, hash, contrato);
                             }
 
                             public IOrigemPautaEntity Create(
-                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? pautaid, string? produtor, string? movimentoid, ulong? trackingMask = null )
+                                Dominio.Patterns.Domain.DomainOperationContext? context, string? id, string? identidadeid, string? pautaid, string? produtor, string? movimentoid, string? referencia, int? revisao, string? hash, string? contrato, ulong? trackingMask = null )
                             {
-                            var entity = new OrigemPautaEntity(id, identidadeid, pautaid, produtor, movimentoid );
+                            var entity = new OrigemPautaEntity(id, identidadeid, pautaid, produtor, movimentoid, referencia, revisao, hash, contrato );
 
 
                             var effectiveTrackingMask = trackingMask ??

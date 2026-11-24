@@ -6,7 +6,7 @@ public partial class IdentidadePublicadoraWriteRepository
 {
  // Caller opens a transaction. Lock order is tenant, identity, grant, receipt, aggregate.
  // Tenant lock also serializes explicit administration and concurrent revocation.
- public ResultadoEditorial Executar(int tenant,int actor,PedidoEditorial p)
+ public ResultadoEditorial Executar(int tenant,int actor,PedidoEditorial p,string processingScope="")
  {
   RegrasEditoriais.ValidarPedido(p);
   if(tenant<=0||actor<=0)throw new EditorialException("PRESENCA_FORBIDDEN",403);
@@ -34,14 +34,14 @@ public partial class IdentidadePublicadoraWriteRepository
   {
    case "CriarIdentidade":
     RegrasEditoriais.Texto(d.Nome,120);
-    if(d.UsuarioId<=0||(d.Permissoes&~127)!=0||(d.Permissoes&64)!=64)throw new EditorialException("PRESENCA_INITIAL_ADMIN_REQUIRED");
+    if(d.UsuarioId<=0||(d.Permissoes&~255)!=0||(d.Permissoes&64)!=64)throw new EditorialException("PRESENCA_INITIAL_ADMIN_REQUIRED");
     if(_UnitOfWork.ExecuteScalar<int>("SELECT COUNT(*) FROM yUser WITH(HOLDLOCK) WHERE Id=@UsuarioId AND TenantID=@tenant AND Deleted=0",new {d.UsuarioId,tenant})!=1)throw new EditorialException("PRESENCA_FORBIDDEN",403);
     _UnitOfWork.Execute("INSERT INTO IdentidadePublicadora(Id,Nome,Ativa,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@identidade,@Nome,1,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@identidade,32))",new {identidade,d.Nome,tenant,actor});
     var initialGrant=RegrasEditoriais.Id(tenant.ToString(CultureInfo.InvariantCulture),identidade,d.UsuarioId.ToString(CultureInfo.InvariantCulture));
     _UnitOfWork.Execute("INSERT INTO VinculoIdentidadePublicadora(Id,IdentidadeId,UsuarioId,Permissoes,Versao,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@initialGrant,@identidade,@UsuarioId,@Permissoes,1,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@initialGrant,32))",new {initialGrant,identidade,d.UsuarioId,d.Permissoes,tenant,actor});
     result.Id=identidade;result.Estado="Ativa";break;
    case "DefinirVinculo":
-    if(d.UsuarioId<=0||(d.Permissoes&~127)!=0||d.Permissoes<0)throw new EditorialException("PRESENCA_GRANT_INVALID");
+    if(d.UsuarioId<=0||(d.Permissoes&~255)!=0||d.Permissoes<0)throw new EditorialException("PRESENCA_GRANT_INVALID");
     if(_UnitOfWork.ExecuteScalar<int>("SELECT COUNT(*) FROM yUser WITH(HOLDLOCK) WHERE Id=@UsuarioId AND TenantID=@tenant AND Deleted=0",new {d.UsuarioId,tenant})!=1)throw new EditorialException("PRESENCA_FORBIDDEN",403);
     var vinculo=RegrasEditoriais.Id(tenant.ToString(CultureInfo.InvariantCulture),identidade,d.UsuarioId.ToString(CultureInfo.InvariantCulture));
     var grantVersion=_UnitOfWork.Query<int>("SELECT Versao FROM VinculoIdentidadePublicadora WITH(UPDLOCK,HOLDLOCK) WHERE Id=@vinculo AND TenantID=@tenant",new {vinculo,tenant}).SingleOrDefault();
@@ -55,6 +55,8 @@ public partial class IdentidadePublicadoraWriteRepository
     // Account and credential are references only. No network access or secret in the DTO.
     if(d.Plataforma is not ("Portal" or "Telegram" or "GitHubDiscussions"))throw new EditorialException("PRESENCA_PLATFORM_INVALID");
     RegrasEditoriais.Texto(d.Destino,200);RegrasEditoriais.Texto(d.Conexao,120);
+    var platformId=RegrasEditoriais.Id(tenant.ToString(CultureInfo.InvariantCulture),d.Plataforma);
+    _UnitOfWork.Execute("IF NOT EXISTS(SELECT 1 FROM Plataforma WITH(UPDLOCK,HOLDLOCK) WHERE Id=@platformId AND TenantID=@tenant) INSERT INTO Plataforma(Id,Codigo,Capacidades,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@platformId,@Plataforma,@capabilities,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@platformId,32))",new {platformId,d.Plataforma,capabilities=d.Plataforma=="Portal"?"StaticHtml":d.Plataforma=="Telegram"?"PlainText4096":"Discussion",tenant,actor});
     var canal=RegrasEditoriais.Id(tenant.ToString(CultureInfo.InvariantCulture),identidade,d.Plataforma,d.Destino);
     if(_UnitOfWork.ExecuteScalar<int>("SELECT COUNT(*) FROM Canal WHERE Id=@canal AND TenantID=@tenant",new {canal,tenant})!=0)throw new EditorialException("PRESENCA_CHANNEL_EXISTS",409);
     _UnitOfWork.Execute("INSERT INTO Canal(Id,IdentidadeId,Plataforma,Destino,Conexao,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@canal,@identidade,@Plataforma,@Destino,@Conexao,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@canal,32))",new {canal,identidade,d.Plataforma,d.Destino,d.Conexao,tenant,actor});
@@ -81,6 +83,7 @@ public partial class IdentidadePublicadoraWriteRepository
     if(approved.Estado!="Aprovada")throw new EditorialException("PRESENCA_APPROVAL_REQUIRED",409);
     var approval=_UnitOfWork.Query<AprovacaoRow>("SELECT Hash,Destinos FROM Aprovacao WITH(HOLDLOCK) WHERE Id=@Id AND TenantID=@tenant AND IdentidadeId=@identidade",new {approved.Id,tenant,identidade}).SingleOrDefault();
     if(approval==null||approval.Hash!=approved.Hash)throw new EditorialException("PRESENCA_APPROVAL_REQUIRED",409);
+    _UnitOfWork.Execute("IF NOT EXISTS(SELECT 1 FROM Publicacao WITH(UPDLOCK,HOLDLOCK) WHERE Id=@Id AND TenantID=@tenant) INSERT INTO Publicacao(Id,IdentidadeId,VersaoId,Hash,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@Id,@identidade,@Id,@Hash,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@Id,32))",new {approved.Id,identidade,approved.Hash,tenant,actor});
     var allowed=JsonSerializer.Deserialize(approval.Destinos,EditorialJson.Default.StringArray)!;
     if(d.Canais is null||d.Canais.Length is <1 or >10||d.Canais.Distinct().Count()!=d.Canais.Length||d.Canais.Any(c=>!allowed.Contains(c)))throw new EditorialException("PRESENCA_CHANNEL_INVALID");
     foreach(var channel in d.Canais)
@@ -91,21 +94,25 @@ public partial class IdentidadePublicadoraWriteRepository
        INSERT INTO PublicacaoDestino(Id,IdentidadeId,VersaoId,CanalId,Estado,Tentativas,TenantID,UserId,Deleted,Changed,OperationalEntityId)
        VALUES(@delivery,@identidade,@Id,@channel,'Pendente',0,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@delivery,32))",new {delivery,identidade,approved.Id,channel,tenant,actor});
     }
+    foreach(var channel in d.Canais)EnfileirarPublicacao(tenant,actor,identidade,approved,channel,processingScope,d.AgendadaParaUtc);
     result=new(){Id=p.RegistroId,Versao=approved.Numero,Estado="Pendente"};break;
    case "ReprocessarEntrega":
     RegrasEditoriais.Texto(d.Motivo,500);
-    var affected=_UnitOfWork.Execute("UPDATE PublicacaoDestino SET Estado='Pendente',Changed=SYSUTCDATETIME() WHERE Id=@Id AND TenantID=@tenant AND IdentidadeId=@identidade AND Estado='FalhaFinal' AND Tentativas=@expected",new {Id=p.RegistroId,tenant,identidade,expected=p.VersaoEsperada});
+    var affected=_UnitOfWork.Execute("UPDATE d SET Estado='Pendente',CodigoErro='',Changed=SYSUTCDATETIME() FROM PublicacaoDestino d JOIN yOutbox o ON o.EntityId=d.Id AND o.TenantID=d.TenantID AND o.Type='Presenca.Publicacao.v1' AND o.ProcessingScope=@processingScope WHERE d.Id=@Id AND d.TenantID=@tenant AND d.IdentidadeId=@identidade AND d.Estado='FalhaFinal' AND d.Tentativas=@expected",new {Id=p.RegistroId,tenant,identidade,processingScope,expected=p.VersaoEsperada});
     if(affected!=1)throw new EditorialException("PRESENCA_RETRY_DENIED",409);
+    _UnitOfWork.Execute("UPDATE yOutbox SET Status=0,NextAttemptAt=SYSUTCDATETIME(),LastError=NULL,TransportData=JSON_MODIFY(COALESCE(TransportData,'{}'),'$.ManualRetryBase',RetryCount) WHERE EntityId=@Id AND TenantID=@tenant AND ProcessingScope=@processingScope AND Type='Presenca.Publicacao.v1' AND Status=3",new {Id=p.RegistroId,tenant,processingScope});
     result.Estado="Pendente";break;
    case "ReconciliarEntrega":
     RegrasEditoriais.Texto(d.Motivo,500);RegrasEditoriais.Texto(d.ReciboExterno,200);
-    if(!RegrasEditoriais.UrlSegura(d.UrlPublica))throw new EditorialException("PRESENCA_URL_INVALID");
-    var changed=_UnitOfWork.Execute("UPDATE PublicacaoDestino SET Estado='Publicada',ReciboExterno=@ReciboExterno,UrlPublica=@UrlPublica,Changed=SYSUTCDATETIME() WHERE Id=@Id AND TenantID=@tenant AND IdentidadeId=@identidade AND Estado='ResultadoIncerto' AND Tentativas=@expected",new {d.ReciboExterno,d.UrlPublica,Id=p.RegistroId,tenant,identidade,expected=p.VersaoEsperada});
+    if(d.UrlPublica.Length>0&&!RegrasEditoriais.UrlSegura(d.UrlPublica))throw new EditorialException("PRESENCA_URL_INVALID");
+    var changed=_UnitOfWork.Execute("UPDATE d SET Estado='Publicada',ReciboExterno=@ReciboExterno,UrlPublica=@UrlPublica,Changed=SYSUTCDATETIME() FROM PublicacaoDestino d JOIN yOutbox o ON o.EntityId=d.Id AND o.TenantID=d.TenantID AND o.Type='Presenca.Publicacao.v1' AND o.ProcessingScope=@processingScope WHERE d.Id=@Id AND d.TenantID=@tenant AND d.IdentidadeId=@identidade AND d.Estado='ResultadoIncerto' AND d.Tentativas=@expected",new {d.ReciboExterno,d.UrlPublica,Id=p.RegistroId,tenant,identidade,processingScope,expected=p.VersaoEsperada});
     if(changed!=1)throw new EditorialException("PRESENCA_RECONCILIATION_DENIED",409);
+    _UnitOfWork.Execute("UPDATE yOutbox SET Status=1,SentAt=SYSUTCDATETIME(),LastError=NULL WHERE EntityId=@Id AND TenantID=@tenant AND ProcessingScope=@processingScope AND Type='Presenca.Publicacao.v1' AND Status=3",new {Id=p.RegistroId,tenant,processingScope});
+    Callback(tenant,p.RegistroId,processingScope,"Publicada",d.UrlPublica,"");
     result.Estado="Publicada";break;
    default:throw new EditorialException("PRESENCA_OPERATION_INVALID");
   }
-  _UnitOfWork.Execute("INSERT INTO AuditoriaEditorial(Id,IdentidadeId,Operacao,RegistroId,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@recibo,@identidade,@Operacao,@Id,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@recibo,32))",new {recibo,identidade,p.Operacao,result.Id,tenant,actor});
+  _UnitOfWork.Execute("INSERT INTO AuditoriaEditorial(Id,IdentidadeId,Operacao,RegistroId,Motivo,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@recibo,@identidade,@Operacao,@Id,@Motivo,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@recibo,32))",new {recibo,identidade,p.Operacao,result.Id,d.Motivo,tenant,actor});
   _UnitOfWork.Execute("INSERT INTO ReciboEntrada(Id,IdentidadeId,Operacao,Hash,Resultado,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@recibo,@identidade,@Operacao,@hash,@Resultado,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@recibo,32))",new {recibo,identidade,p.Operacao,hash,Resultado=JsonSerializer.Serialize(result,EditorialJson.Default.ResultadoEditorial),tenant,actor});
   return result;
  }
@@ -118,6 +125,12 @@ public partial class IdentidadePublicadoraWriteRepository
   var id=RegrasEditoriais.Id(tenant.ToString(CultureInfo.InvariantCulture),identidade,pauta,number.ToString(CultureInfo.InvariantCulture));
   var snapshot=JsonSerializer.Serialize(conteudo,EditorialJson.Default.ConteudoPublico);
   _UnitOfWork.Execute("INSERT INTO ConteudoVersao(Id,IdentidadeId,PautaId,Numero,Hash,Estado,Snapshot,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@id,@identidade,@pauta,@number,@hash,'Rascunho',@snapshot,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@id,32))",new {id,identidade,pauta,number,hash=RegrasEditoriais.Hash(snapshot),snapshot,tenant,actor});
+  _UnitOfWork.Execute("IF NOT EXISTS(SELECT 1 FROM Conteudo WITH(UPDLOCK,HOLDLOCK) WHERE Id=@pauta AND TenantID=@tenant) INSERT INTO Conteudo(Id,IdentidadeId,PautaId,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@pauta,@identidade,@pauta,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@pauta,32))",new {pauta,identidade,tenant,actor});
+  foreach(var material in conteudo.Materiais.DistinctBy(m=>m.StorageKey))
+  {
+   var materialId=RegrasEditoriais.Id(id,material.StorageKey);
+   _UnitOfWork.Execute("INSERT INTO Material(Id,IdentidadeId,VersaoId,StorageKey,Hash,Licenca,TenantID,UserId,Deleted,Changed,OperationalEntityId) VALUES(@materialId,@identidade,@id,@StorageKey,@Hash,@Licenca,@tenant,@actor,0,SYSUTCDATETIME(),LEFT(@materialId,32))",new {materialId,identidade,id,material.StorageKey,material.Hash,material.Licenca,tenant,actor});
+  }
   _UnitOfWork.Execute("UPDATE Pauta SET VersaoAtual=@number,Changed=SYSUTCDATETIME() WHERE Id=@pauta AND TenantID=@tenant AND IdentidadeId=@identidade",new {number,pauta,tenant,identidade});
   return new(){Id=pauta,Versao=number,Estado="Rascunho"};
  }

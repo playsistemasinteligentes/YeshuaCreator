@@ -28,6 +28,10 @@ namespace Repositorio.Outputs
     public DateTime changed { get; set; }
     public int userid { get; set; }
     public string operationalentityid { get; set; } = string.Empty;
+    public string referencia { get; set; } = string.Empty;
+    public int revisao { get; set; }
+    public string hash { get; set; } = string.Empty;
+    public string contrato { get; set; } = string.Empty;
     }
 }
 //Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

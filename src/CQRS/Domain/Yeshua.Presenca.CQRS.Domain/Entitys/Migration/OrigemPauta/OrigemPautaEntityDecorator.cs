@@ -30,6 +30,10 @@
             public const ulong Changed = 1UL << 7;
             public const ulong UserId = 1UL << 8;
             public const ulong OperationalEntityId = 1UL << 9;
+            public const ulong Referencia = 1UL << 10;
+            public const ulong Revisao = 1UL << 11;
+            public const ulong Hash = 1UL << 12;
+            public const ulong Contrato = 1UL << 13;
         }
 
         public static class OrigemPautaOperationalFields
@@ -44,6 +48,10 @@
             public const Dominio.Operational.OperationalDataClassification Changed = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification UserId = Dominio.Operational.OperationalDataClassification.Internal;
             public const Dominio.Operational.OperationalDataClassification OperationalEntityId = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Referencia = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Revisao = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Hash = Dominio.Operational.OperationalDataClassification.Internal;
+            public const Dominio.Operational.OperationalDataClassification Contrato = Dominio.Operational.OperationalDataClassification.Internal;
         }
 
         public partial class OrigemPautaDecorator : IOrigemPautaEntity
@@ -207,6 +215,62 @@
                                         }
                                     }
     public string OperationalEntityId => _inner.OperationalEntityId;
+
+                                    public string? Referencia
+                                    {
+                                        get => _inner.Referencia;
+                                        set
+                                        {
+                                            if (_inner.Referencia != value)
+                                            {
+                                                _inner.Referencia = value;
+                                                if ((_trackingMask & OrigemPautaTrackingFields.Referencia) != 0UL)
+                                                    _logger.DomainValueChanged("OrigemPauta", "Referencia", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrigemPautaOperationalFields.Referencia, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public int? Revisao
+                                    {
+                                        get => _inner.Revisao;
+                                        set
+                                        {
+                                            if (_inner.Revisao != value)
+                                            {
+                                                _inner.Revisao = value;
+                                                if ((_trackingMask & OrigemPautaTrackingFields.Revisao) != 0UL)
+                                                    _logger.DomainValueChanged("OrigemPauta", "Revisao", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrigemPautaOperationalFields.Revisao, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? Hash
+                                    {
+                                        get => _inner.Hash;
+                                        set
+                                        {
+                                            if (_inner.Hash != value)
+                                            {
+                                                _inner.Hash = value;
+                                                if ((_trackingMask & OrigemPautaTrackingFields.Hash) != 0UL)
+                                                    _logger.DomainValueChanged("OrigemPauta", "Hash", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrigemPautaOperationalFields.Hash, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
+
+                                    public string? Contrato
+                                    {
+                                        get => _inner.Contrato;
+                                        set
+                                        {
+                                            if (_inner.Contrato != value)
+                                            {
+                                                _inner.Contrato = value;
+                                                if ((_trackingMask & OrigemPautaTrackingFields.Contrato) != 0UL)
+                                                    _logger.DomainValueChanged("OrigemPauta", "Contrato", _trackingTraceId, _trackingOperation, _trackingRecordId, value, OrigemPautaOperationalFields.Contrato, _trackingExecutionIdentity);
+                                            }
+                                        }
+                                    }
 
                         public bool isValidInsert() => _inner.isValidInsert();
                         public bool isValidUpdate() => _inner.isValidUpdate();
