@@ -123,6 +123,15 @@ public class EditorialSqlTests
     Assert.Equal(0,work.ExecuteScalar<int>("SELECT COUNT(*) FROM Aprovacao WHERE VersaoId IN(SELECT Id FROM ConteudoVersao WHERE PautaId=@Id)",new {imported.Id}));
     var callback=work.Query<string>("SELECT MessageId FROM yOutbox WHERE Type='PublicacaoEducacionalAtualizada.v1' AND EntityId=@Id ORDER BY Id",new {imported.Id}).First();
     work.Execute("UPDATE yOutbox SET Status=3,RetryCount=5 WHERE MessageId=@callback",new {callback});
+    var context=new Moq.Mock<Aplication.Interfaces.Services.IExecutionContext>();
+    context.SetupGet(c=>c.ProcessingScope).Returns("presenca-tests");
+    var read=new Read.Repository.IdentidadePublicadoraReadRepository(work,context.Object);
+    var health=read.Consultar(1,10,Pedido("ConsultarOperacao","",new()));
+    Assert.Equal(3,health.SaudeFilas.Count);
+    Assert.Equal(1,health.SaudeFilas.Single(q=>q.Fila=="Distribuicao").FalhasFinais);
+    Assert.True(health.SaudeFilas.Single(q=>q.Fila=="Distribuicao").Prontas>=1);
+    Assert.Equal(0,health.SaudeFilas.Single(q=>q.Fila=="Entrada").Prontas);
+    Assert.True(health.SaudeConsultadaEmUtc>DateTimeOffset.UtcNow.AddMinutes(-1));
     var retry=Pedido("ReprocessarStatusEducacional","callback-recovery",new(){Motivo="Confirmed recovery"},callback[7..],5);
     Assert.Equal(409,Assert.Throws<EditorialException>(()=>Run(1,10,retry with {VersaoEsperada=4})).Status);
     Assert.Equal(403,Assert.Throws<EditorialException>(()=>Run(1,30,retry)).Status);

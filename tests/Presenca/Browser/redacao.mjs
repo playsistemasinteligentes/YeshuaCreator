@@ -38,6 +38,7 @@ const server = createServer(async (req, res) => {
    else if (operation === 'AprovarVersao') { respond(res,409,{statusCode:409,message:'PRESENCA_APPROVER_MUST_DIFFER'}); return; }
    else if (operation === 'ConsultarOperacao') output = {
     Entregas: [{Id:'E'.repeat(64),Estado:'ResultadoIncerto',Tentativas:3,CodigoErro:'PRESENCA_RESULT_UNCERTAIN'}, {Id:'F'.repeat(64),Estado:'FalhaFinal',Tentativas:5,CodigoErro:'PRESENCA_RATE_LIMIT'}],
+    SaudeConsultadaEmUtc:'2026-11-24T17:00:00Z',SaudeFilas:[{Fila:'Entrada',Prontas:2},{Fila:'Editorial',EmProcessamento:1},{Fila:'Distribuicao',Agendadas:3,FalhasFinais:1,ResultadosIncertos:1,MaisAntigaSegundos:90}],
     RetornosEducacionais:[{Id:'1'.repeat(64),Estado:'FalhaFinal',Tentativas:5,CodigoErro:'PRESENCA_CALLBACK_UNAVAILABLE'}]
    };
    else if (operation === 'ConsultarAuditoria') output = {AuditoriaJson:JSON.stringify([{Changed:'2026-11-24T10:00:00Z',Operacao:'<script>window.injection=true</script>',UserId:10}])};
@@ -77,6 +78,7 @@ try {
  await page.getByRole('status').filter({hasText:'PRESENCA_APPROVER_MUST_DIFFER'}).waitFor();checks.push('Editorial rejection from API is presented without losing the form');
  await page.getByText('Operação das entregas',{exact:true}).click();
  await page.getByRole('button',{name:'Atualizar entregas',exact:true}).click();
+ await page.locator('#presenca-saude tbody tr').first().waitFor();assert.equal(await page.locator('#presenca-saude tbody tr').count(),3);assert.match(await page.locator('#presenca-saude').innerText(),/Registros persistidos desta identidade e ambiente/);checks.push('Scoped queue health displays persisted counts, waiting work and uncertainty separately');
  const uncertain=page.locator('#presenca-entregas fieldset').filter({has:page.locator('legend').filter({hasText:'ResultadoIncerto'})});
  assert.equal(await uncertain.getByRole('button',{name:'Agendar nova tentativa',exact:true}).count(),0);checks.push('Uncertain publication exposes reconciliation only, without blind resend');
  await uncertain.locator('input').nth(0).fill('Entrega conferida no teste');await uncertain.locator('input').nth(1).fill('receipt-test-1');await uncertain.locator('input').nth(2).fill('https://public.example.org/test/');

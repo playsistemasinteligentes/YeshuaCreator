@@ -9,6 +9,16 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Saude/homologacao PR #67: ultimo incremento anterior confirmado em c192bb723.
+  ConsultarOperacao projeta yInbox/ySaga/yOutbox por tenant, identidade e escopo;
+  nao grava saude em entidades nem retorna payload. Saga reutiliza o predicado
+  de claim gerado e Outbox a projecao do worker. Datas/contagens nao comprovam
+  que um worker esteja ativo. API real com JWT e destinos/repositorios simulados
+  exercita publicacao parcial e recuperacao assinada de callback. Duas suites
+  SQL descartaveis estao preparadas, mas nao executadas sem YESHUA_TEST_SQL.
+  Roteiro de ativacao dos timers em infra/Presenca/Factory/ATIVACAO.txt;
+  nenhuma instalacao/ativacao feita. Evidencias: docs/Presenca/evidencias/saude-homologacao.
+
 - Agendamento/M08-M09 na continuidade da PR #67: incremento M05-M07
   confirmado publicado em 2a2a89fe7. Timers systemd de coleta e entrega
   independentes preparados em infra/Presenca/Factory, sem instalacao/ativacao.

@@ -1,0 +1,45 @@
+  Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead.dll
+  Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite.dll
+  Yeshua.Presenca.CQRS.Infrastructure.Shared -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.Shared.dll
+  Yeshua.Presenca.CQRS.Infrastructure.Api -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.Api.dll
+  Yeshua.Presenca.Tests -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll
+Test run for /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:04.42]     Presenca.Tests.ApiPrototypeTests.Real_api_and_worker_preserve_partial_failure_with_simulated_storage_and_channels [FAIL]
+  Failed Presenca.Tests.ApiPrototypeTests.Real_api_and_worker_preserve_partial_failure_with_simulated_storage_and_channels [3 s]
+  Error Message:
+   System.ArgumentException : IDX10703: Cannot create a 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey', key length is zero.
+  Stack Trace:
+     at Microsoft.IdentityModel.Tokens.SymmetricSecurityKey..ctor(Byte[] key)
+   at Program.<>c__DisplayClass0_0.<<Main>$>b__2(JwtBearerOptions options) in /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Program.cs:line 48
+   at Microsoft.Extensions.Options.ConfigureNamedOptions`1.Configure(String name, TOptions options)
+   at Microsoft.Extensions.Options.OptionsFactory`1.Create(String name)
+   at Microsoft.Extensions.Options.OptionsMonitor`1.<>c.<Get>b__10_0(String name, IOptionsFactory`1 factory)
+   at Microsoft.Extensions.Options.OptionsCache`1.<>c__DisplayClass3_1`1.<GetOrAdd>b__2()
+   at System.Lazy`1.ViaFactory(LazyThreadSafetyMode mode)
+   at System.Lazy`1.ExecutionAndPublication(LazyHelper executionAndPublication, Boolean useDefaultConstructor)
+   at System.Lazy`1.CreateValue()
+   at Microsoft.Extensions.Options.OptionsCache`1.GetOrAdd[TArg](String name, Func`3 createOptions, TArg factoryArgument)
+   at Microsoft.Extensions.Options.OptionsMonitor`1.Get(String name)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandler`1.InitializeAsync(AuthenticationScheme scheme, HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationHandlerProvider.GetHandlerAsync(HttpContext context, String authenticationScheme)
+   at Microsoft.AspNetCore.Authentication.AuthenticationService.AuthenticateAsync(HttpContext context, String scheme)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Swashbuckle.AspNetCore.SwaggerUI.SwaggerUIMiddleware.Invoke(HttpContext httpContext)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext, ISwaggerProvider swaggerProvider)
+   at Microsoft.AspNetCore.TestHost.HttpContextBuilder.<>c__DisplayClass23_0.<<SendAsync>g__RunRequestAsync|0>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.TestHost.ClientHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Mvc.Testing.Handlers.CookieContainerHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at Microsoft.AspNetCore.Mvc.Testing.Handlers.RedirectHandler.SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+   at System.Net.Http.HttpClient.<SendAsync>g__Core|83_0(HttpRequestMessage request, HttpCompletionOption completionOption, CancellationTokenSource cts, Boolean disposeCts, CancellationTokenSource pendingRequestsCts, CancellationToken originalCancellationToken)
+   at Presenca.Tests.ApiPrototypeTests.Real_api_and_worker_preserve_partial_failure_with_simulated_storage_and_channels() in /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/ApiPrototypeTests.cs:line 33
+   at Presenca.Tests.ApiPrototypeTests.Real_api_and_worker_preserve_partial_failure_with_simulated_storage_and_channels() in /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/ApiPrototypeTests.cs:line 54
+--- End of stack trace from previous location ---
+Results File: /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/docs/Presenca/evidencias/saude-homologacao/api.trx
+
+Failed!  - Failed:     1, Passed:     0, Skipped:     0, Total:     1, Duration: 3 s - Yeshua.Presenca.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

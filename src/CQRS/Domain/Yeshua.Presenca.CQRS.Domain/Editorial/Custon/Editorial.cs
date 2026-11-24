@@ -56,11 +56,24 @@ public sealed class ResultadoEditorial
  public string Estado {get;set;}="";
  public bool TemMais {get;set;}
  public string AuditoriaJson {get;set;}="[]";
+ public DateTimeOffset SaudeConsultadaEmUtc {get;set;}
+ public List<SaudeFilaEditorial> SaudeFilas {get;set;}=[];
  public List<IdentidadeEditorial> Identidades {get;set;}=[];
  public List<CanalEditorial> Canais {get;set;}=[];
  public List<VersaoEditorial> Versoes {get;set;}=[];
  public List<EntregaEditorial> Entregas {get;set;}=[];
  public List<RetornoEducacionalEditorial> RetornosEducacionais {get;set;}=[];
+}
+public sealed class SaudeFilaEditorial
+{
+ public string Fila {get;set;}="";
+ public long Prontas {get;set;}
+ public long Agendadas {get;set;}
+ public long EmProcessamento {get;set;}
+ public long Concluidas {get;set;}
+ public long FalhasFinais {get;set;}
+ public long ResultadosIncertos {get;set;}
+ public long MaisAntigaSegundos {get;set;}
 }
 public sealed class RetornoEducacionalEditorial
 {

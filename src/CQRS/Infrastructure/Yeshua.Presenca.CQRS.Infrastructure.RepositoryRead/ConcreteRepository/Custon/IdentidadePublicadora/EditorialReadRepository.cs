@@ -16,6 +16,7 @@ public partial class IdentidadePublicadoraReadRepository
   var grant=_unitOfWork.ExecuteScalar<int>(@"SELECT v.Permissoes FROM VinculoIdentidadePublicadora v WITH(HOLDLOCK) JOIN IdentidadePublicadora i WITH(HOLDLOCK) ON i.Id=v.IdentidadeId AND i.TenantID=v.TenantID AND i.Ativa=1 AND i.Deleted=0
     WHERE v.IdentidadeId=@IdentidadeId AND v.UsuarioId=@actor AND v.TenantID=@tenant AND v.Deleted=0",new {p.IdentidadeId,actor,tenant});
   RegrasEditoriais.Autorizar(tenant,actor,grant,RegrasEditoriais.Permissao(p.Operacao));
+  if(p.Operacao=="ConsultarOperacao"&&string.IsNullOrWhiteSpace(_executionContext.ProcessingScope))throw new EditorialException("PRESENCA_SCOPE_REQUIRED",503);
   var offset=RegrasEditoriais.Dados(string.IsNullOrEmpty(p.Dados)?"{}":p.Dados).Offset;
   if(offset<0||offset>10000)throw new EditorialException("PRESENCA_PAGE_INVALID");
   var result=new ResultadoEditorial {Id=p.RegistroId};
@@ -36,6 +37,11 @@ public partial class IdentidadePublicadoraReadRepository
      AND (EXISTS(SELECT 1 FROM Pauta p WHERE p.Id=o.EntityId AND p.TenantID=o.TenantID AND p.IdentidadeId=@IdentidadeId AND p.Deleted=0)
       OR EXISTS(SELECT 1 FROM PublicacaoDestino d WHERE d.Id=o.EntityId AND d.TenantID=o.TenantID AND d.IdentidadeId=@IdentidadeId AND d.Deleted=0))
     ORDER BY o.CreatedAt DESC,o.Id",new {tenant,p.IdentidadeId,scope=_executionContext.ProcessingScope}).ToList();
+  if(p.Operacao=="ConsultarOperacao")
+  {
+   result.SaudeFilas=SaudeOperacao(tenant,p.IdentidadeId);
+   result.SaudeConsultadaEmUtc=DateTimeOffset.UtcNow;
+  }
   result.Canais=_unitOfWork.Query<CanalEditorial>("SELECT TOP(100) Id,Plataforma,Destino FROM Canal WHERE TenantID=@tenant AND IdentidadeId=@IdentidadeId AND Deleted=0 ORDER BY Plataforma,Destino",new {tenant,p.IdentidadeId}).ToList();
   result.TemMais=result.Versoes.Count>50;
   if(result.TemMais)result.Versoes.RemoveAt(50);

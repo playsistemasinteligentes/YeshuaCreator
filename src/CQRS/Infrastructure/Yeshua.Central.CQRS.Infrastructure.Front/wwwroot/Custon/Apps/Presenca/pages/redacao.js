@@ -84,6 +84,24 @@ export async function renderRedacao() {
     }); });
     el('operacao').onclick = safe(async () => {
         const result = await call('ConsultarOperacao', {}, true); if (!result) return; el('entregas').replaceChildren();
+        const health = el('saude'); health.replaceChildren();
+        if (!result.SaudeFilas?.length) health.textContent = 'Saúde das filas indisponível nesta consulta.';
+        else {
+            const updated = document.createElement('p');
+            updated.textContent = `Registros persistidos desta identidade e ambiente · consulta em ${new Date(result.SaudeConsultadaEmUtc).toLocaleString('pt-BR')}`; health.append(updated);
+            const table = document.createElement('table'), header = document.createElement('tr');
+            const columns = [['Fila', 'Fila'], ['Prontas', 'Prontas'], ['Agendadas', 'Agendadas'], ['EmProcessamento', 'Processando'], ['Concluidas', 'Concluídas/aceitas'], ['FalhasFinais', 'Falhas finais'], ['ResultadosIncertos', 'Incertas'], ['MaisAntigaSegundos', 'Maior espera (s)']];
+            const names = { Entrada: 'Entrada', Editorial: 'Processamento editorial', Distribuicao: 'Distribuição' };
+            for (const [, title] of columns) { const th = document.createElement('th'); th.scope = 'col'; th.textContent = title; header.append(th); }
+            const thead = document.createElement('thead'); thead.append(header); table.append(thead);
+            const body = document.createElement('tbody');
+            for (const queue of result.SaudeFilas) {
+                const row = document.createElement('tr');
+                for (const [key] of columns) { const cell = document.createElement('td'); cell.textContent = key === 'Fila' ? names[queue[key]] || queue[key] : Math.max(0, Number(queue[key]) || 0).toLocaleString('pt-BR'); row.append(cell); }
+                body.append(row);
+            }
+            table.append(body); health.append(table);
+        }
         for (const delivery of result.Entregas) {
             const row = document.createElement('fieldset'), heading = document.createElement('legend');
             heading.textContent = `${delivery.Estado} · ${delivery.Tentativas} tentativa(s) · ${delivery.CodigoErro || ''}`; row.append(heading);

@@ -1,0 +1,12 @@
+  Yeshua.Presenca.CQRS.Infrastructure.Api -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.Api.dll
+  Yeshua.Presenca.Tests -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll
+Test run for /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+WARNING: Overwriting results file: /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/docs/Presenca/evidencias/saude-homologacao/api.trx
+Results File: /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/docs/Presenca/evidencias/saude-homologacao/api.trx
+
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 1 s - Yeshua.Presenca.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

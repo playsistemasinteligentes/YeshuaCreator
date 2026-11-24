@@ -2,12 +2,13 @@ using RepositoryInterfaces.Patterns.Worker;
 namespace Read.Repository;
 public partial class IdentidadePublicadoraReadRepository
 {
- private const string QueueProjection=@"WITH q AS(SELECT o.Id,o.TenantID,o.Status,o.RetryCount,o.CreatedAt,o.NextAttemptAt,o.ProcessingAt,o.OperationalEntityId,o.RootOperationId,o.ExecutionId,o.LastError,CASE WHEN d.NaturezaFalha IN('Technical','Business') THEN d.NaturezaFalha ELSE 'Unknown' END FailureCategory,
+ private const string QueueProjectionBody=@"WITH q AS(SELECT d.Estado DeliveryState,o.EntityId,o.Type,o.Id,o.TenantID,o.Status,o.RetryCount,o.CreatedAt,o.NextAttemptAt,o.ProcessingAt,o.OperationalEntityId,o.RootOperationId,o.ExecutionId,o.LastError,CASE WHEN d.NaturezaFalha IN('Technical','Business') THEN d.NaturezaFalha ELSE 'Unknown' END FailureCategory,
   CASE WHEN o.Status=0 AND (o.NextAttemptAt IS NULL OR o.NextAttemptAt<=SYSUTCDATETIME()) THEN 1 ELSE 0 END Eligible,
   COALESCE(o.NextAttemptAt,o.CreatedAt) EligibleSince,
   CASE WHEN o.Status=3 THEN 5 WHEN o.Status=2 AND o.ProcessingAt<DATEADD(second,-120,SYSUTCDATETIME()) THEN 2
    WHEN o.Status<>1 AND o.RetryCount>=2 THEN 4 WHEN o.Status=0 AND COALESCE(o.NextAttemptAt,o.CreatedAt)<DATEADD(second,-900,SYSUTCDATETIME()) THEN 1 ELSE 0 END Disease
-  FROM yOutbox o LEFT JOIN PublicacaoDestino d ON d.Id=o.EntityId AND d.TenantID=o.TenantID WHERE o.ProcessingScope=@scope AND o.Deleted=0 AND o.Type IN('Presenca.Publicacao.v1','PublicacaoEducacionalAtualizada.v1')) ";
+  FROM yOutbox o LEFT JOIN PublicacaoDestino d ON d.Id=o.EntityId AND d.TenantID=o.TenantID WHERE o.ProcessingScope=@scope AND o.Deleted=0 AND o.Type IN('Presenca.Publicacao.v1','PublicacaoEducacionalAtualizada.v1')";
+ private const string QueueProjection=QueueProjectionBody+") ";
  public WorkerQueueHealthSnapshot SaudeDistribuicao()
  {
   var r=_unitOfWork.Query<HealthRow>(QueueProjection+@"SELECT COALESCE(SUM(Eligible),0) Eligible,COALESCE(MAX(CASE WHEN Eligible=1 THEN DATEDIFF_BIG(second,EligibleSince,SYSUTCDATETIME()) ELSE 0 END),0) Age,
