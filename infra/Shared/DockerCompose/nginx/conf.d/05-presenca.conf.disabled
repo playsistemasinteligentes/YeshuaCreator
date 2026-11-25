@@ -1,0 +1,9 @@
+upstream presenca_api_pool {
+    least_conn;
+    server presenca-api:7214;
+}
+
+upstream presenca_worker_pool {
+    least_conn;
+    server presenca-worker:7215;
+}

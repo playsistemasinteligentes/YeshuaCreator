@@ -12,7 +12,7 @@ class PresencaCredentialsTests(unittest.TestCase):
   doc=self.document();env=credentials.environment(doc,Path('/private'),'presenca')
   self.assertEqual('private-fixture-token',env['Presenca__Canais__telegram__Token']);self.assertEqual('fixture-read',env['MYCONFIG__READCONECTIONSTRING']);self.assertEqual('isolated-presenca',env['YeshuaProcessing__Scope']);self.assertEqual('22',env['YeshuaModules__Authentication__TechnicalUserId'])
   with patch.dict(os.environ,{'Presenca__Canais__telegram__Token':'inherited-secret'}):
-   other=credentials.environment(doc,Path('/private'),'central');self.assertEqual('',other['Presenca__Canais__telegram__Token'])
+   other=credentials.environment(doc,Path('/private'),'central');self.assertEqual('',{key.casefold():value for key,value in other.items()}['presenca__canais__telegram__token'])
  def test_missing_technical_actor_or_implicit_truthy_enable_is_rejected(self):
   for value in [0,-1,'22',None]:
    doc=self.document();doc['Apps']['Presenca']['TechnicalUserId']=value

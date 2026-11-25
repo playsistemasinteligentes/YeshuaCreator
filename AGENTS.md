@@ -3,11 +3,28 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
-- Preferencia expressa do operador em 2026-11-17: preparar e testar alteracoes
-  sem publicar. Push, PR, merge e deploy aguardam autorizacao explicita do
-  operador; nao inferir permissao de publicacao de uma solicitacao de correcao.
+- Esclarecimento do operador em 2026-11-25 para esta preparacao: commitar,
+  enviar ao GitHub e integrar as correcoes na main estao autorizados. A ordem
+  "sem publicar" neste trabalho impede o DEPLOY, que o operador executara ou
+  autorizara separadamente; nao deixar correcoes apenas locais por esse motivo.
 
 ## Presenca Em Desenvolvimento
+
+- Preparacao de infraestrutura em 2026-11-25: Presenca segue o Compose por app
+  existente (API, Worker e migration), com destino proprio e inclusao em all
+  quando Apps.Presenca estiver configurado. O gateway condiciona as rotas aos
+  servicos e o runtime usa exportacoes do MESMO credentials.json. O env_file
+  temporario e privado, derivado e removido ao sair; nao e outra fonte de segredo.
+  Bootstrap editorial continua explicito e unico, pelo command ja existente;
+  nunca roda automaticamente em cada deploy. Nenhuma regra de negocio mudou.
+  Perfil privado preparado local/servidor para catalogo exclusivo, escopo e ator
+  escolhido pelo operador; nao comprova banco criado, migration ou publicacao.
+  Validacao: builds API/Worker/Studio aprovados, 4 testes do contrato MCP, 39 do
+  leitor privado existente, 11 de configuracao Presenca, 3 do fluxo de deploy e
+  12 da ponte aprovados. Compose e sintaxe Nginx validados, sem reload ou deploy.
+  O destino presenca tambem atualiza Central, que fornece o Front compartilhado.
+  Envio e integracao no Git autorizados; deploy aguarda ordem explicita.
+  Roteiro: infra/Presenca/DockerCompose/README.md.
 
 - Pre-publicacao solicitada em 2026-11-25: PR #67 draft/open, HEAD publicado
   77ba76cde, sem merge. Publicacao operacional nao aplicada: alias Presenca
@@ -2066,7 +2083,9 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   manutencao; deploy.sh permanece o caminho unico de publicacao cotidiana,
   sem mudar rotas por essa integracao.
 - `deploy.sh` sem argumento executa `all`; `central`, `clinica`, `aps-adm`,
-  `fiscal` e `shared` limitam o destino.
+  `fiscal`, `memorias`, `presenca` e `shared` limitam o destino. `presenca`
+  inclui Central para atualizar o Front compartilhado; all inclui Presenca
+  quando seu perfil privado estiver configurado.
 - A infraestrutura da Clinica fica em `infra/Clinica/DockerCompose`.
 - A infraestrutura Fiscal fica em `infra/Fiscal/DockerCompose`.
 - A infraestrutura compartilhada fica em `infra/Shared/DockerCompose`.

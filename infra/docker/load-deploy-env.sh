@@ -21,7 +21,7 @@ if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
 fi
 _yeshua_config_file="${YESHUA_DEPLOY_SECRETS_FILE:-/root/YeshuaPrivate/production/credentials.json}"
 if ! _yeshua_config_values="$("${YESHUA_PYTHON:-python3}" "$APP_DIR/infra/private/credentials.py" export \
-  --file "$_yeshua_config_file" --target "$_yeshua_config_target" "${_yeshua_config_options[@]}")"; then
+  --file "$_yeshua_config_file" --target "$_yeshua_config_target" --format shell "${_yeshua_config_options[@]}")"; then
   unset _yeshua_config_values
   return 1
 fi

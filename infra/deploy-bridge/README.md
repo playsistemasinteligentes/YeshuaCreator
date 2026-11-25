@@ -13,7 +13,7 @@ do operador. `requestId` é somente chave de deduplicação e consulta.
 {"action":"status","requestId":"deploy-001"}
 ```
 
-Destinos: `all`, `central`, `clinica`, `aps-adm`, `fiscal`, `memorias`, `shared`.
+Destinos: `all`, `central`, `clinica`, `aps-adm`, `fiscal`, `memorias`, `presenca`, `shared`.
 O helper chama somente `/bin/bash /root/YeshuaCreator/infra/docker/deploy.sh TARGET`,
 sem argumento de tag nem `YESHUA_RELEASE_TAG` ou `YESHUA_SKIP_UPDATE` no ambiente.
 O script executa `git reset --hard`, `git clean -fd` e `git pull origin main`

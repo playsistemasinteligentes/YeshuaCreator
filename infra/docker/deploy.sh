@@ -8,6 +8,7 @@ CLINICA_DIR="$APP_DIR/infra/Clinica/DockerCompose"
 APS_ADM_DIR="$APP_DIR/infra/APS.ADM/DockerCompose"
 FISCAL_DIR="$APP_DIR/infra/Fiscal/DockerCompose"
 MEMORIAS_DIR="$APP_DIR/infra/Memorias/DockerCompose"
+PRESENCA_DIR="$APP_DIR/infra/Presenca/DockerCompose"
 DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
 TARGET="${1:-all}"
 
@@ -39,6 +40,9 @@ chmod +x \
   "$APS_ADM_DIR"/*.sh \
   "$FISCAL_DIR"/*.sh \
   "$MEMORIAS_DIR"/*.sh
+if [[ -d "$PRESENCA_DIR" ]]; then
+  chmod +x "$PRESENCA_DIR"/*.sh
+fi
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
@@ -124,6 +128,25 @@ playsis-fiscal fiscal-worker
 playsis-memorias memorias-api
 playsis-memorias memorias-worker
 EOF
+  if [[ -n "${YESHUA_SQL_PRESENCA_READ:-}" ]]; then
+    for service in presenca-api presenca-worker; do
+      if [[ -z "$(docker ps --filter 'label=com.docker.compose.project=playsis-presenca' \
+        --filter "label=com.docker.compose.service=$service" --format '{{.ID}}')" ]]; then
+        return 1
+      fi
+    done
+  fi
+}
+
+prepare_presenca_routes() {
+  local upstream="$SHARED_DIR/nginx/conf.d/05-presenca.conf"
+  local routes="$SHARED_DIR/nginx/routes/20-presenca.conf"
+  if [[ -n "${YESHUA_SQL_PRESENCA_READ:-}" ]]; then
+    cp "$upstream.disabled" "$upstream"
+    cp "$routes.disabled" "$routes"
+  else
+    rm -f "$upstream" "$routes"
+  fi
 }
 
 deploy_gateway() {
@@ -134,6 +157,7 @@ deploy_gateway() {
     return
   fi
 
+  prepare_presenca_routes
   cd "$SHARED_DIR"
   docker compose up -d nginx
   docker exec yeshua-nginx nginx -t
@@ -169,6 +193,10 @@ deploy_memorias() {
     bash "$MEMORIAS_DIR/deploy.sh"
 }
 
+deploy_presenca() {
+  YESHUA_SKIP_LOCK=1 YESHUA_SKIP_UPDATE=1 YESHUA_SKIP_SHARED=1 bash "$PRESENCA_DIR/deploy.sh"
+}
+
 case "${TARGET,,}" in
   all)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
@@ -177,6 +205,9 @@ case "${TARGET,,}" in
     deploy_aps_adm
     deploy_fiscal
     deploy_memorias
+    if [[ -n "${YESHUA_SQL_PRESENCA_READ:-}" ]]; then
+      deploy_presenca
+    fi
     deploy_gateway
     ;;
   central)
@@ -204,12 +235,19 @@ case "${TARGET,,}" in
     deploy_memorias
     deploy_gateway
     ;;
+  presenca)
+    bash "$SHARED_DIR/deploy.sh"
+    # The shared Central front serves this application's interface and catalog.
+    deploy_central
+    deploy_presenca
+    deploy_gateway
+    ;;
   shared)
     YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
     deploy_gateway
     ;;
   *)
-    echo "Destino invalido: $TARGET. Use all, central, clinica, aps-adm, fiscal, memorias ou shared." >&2
+    echo "Destino invalido: $TARGET. Use all, central, clinica, aps-adm, fiscal, memorias, presenca ou shared." >&2
     exit 1
     ;;
 esac
