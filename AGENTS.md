@@ -9,6 +9,19 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Pre-publicacao solicitada em 2026-11-25: PR #67 draft/open, HEAD publicado
+  77ba76cde, sem merge. Publicacao operacional nao aplicada: alias Presenca
+  ainda ausente no MCP, arquivo privado inacessivel e catalogo exclusivo nao
+  identificado. A instancia acessada por Central nao lista nome contendo
+  presen, com VIEW ANY DATABASE confirmado; nao presumir outra instancia/nome.
+  Fluxo oficial infra/docker/deploy.sh e ponte privada nao incluem destino
+  presenca; faltam Compose/deploy de API/Worker e integracao de rota. Nao chamar
+  Shared/all para contornar essa ausencia. Suite ampla neste executor: 47
+  passaram, 26 erros ambientais (25 home somente leitura, 1 legado /root sem
+  acesso), 6 skips; nao aprovada. Redirecionar fixtures privadas ao repositorio
+  aciona corretamente a protecao do loader. Requer runner privado adequado,
+  sem enfraquecer permissoes/guards. Evidencias: docs/Presenca/evidencias/pre-publicacao.
+
 - Alias operacional preparado na continuidade da PR #67: exportador/importador
   agora cobrem DB_KEYS inteiro, incluindo Presenca, e Compose Shared referencia
   YESHUA_SQL_MCP_PRESENCA. Shared/gateway/all exigem a conexao explicita em
