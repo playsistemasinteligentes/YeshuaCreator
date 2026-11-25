@@ -90,6 +90,36 @@ autenticacao RabbitMQ, JWT, chave entre modulos, Grafana e assinatura de upload
 Clinica. Conexoes diferentes permanecem independentes; nenhuma e deduzida de
 outra no deploy. Ao mudar um banco, alterar suas conexoes privadas explicitamente.
 
+### Alias operacional do Presenca
+
+O cadastro preparado na PR #67 usa a mesma cadeia dos seis aliases anteriores:
+`Shared.OperationalIntelligence.DatabaseQueries.Presenca` ->
+`YESHUA_SQL_MCP_PRESENCA` -> `Mcp__DatabaseQuery__Connections__Presenca`.
+A importacao explicita de containers reconhece a mesma chave. O exemplo
+versionado deixa o valor vazio; nao define servidor, catalogo, login ou senha.
+As conexoes `Apps.Presenca.MyConfig.ReadConectionString` e
+`WriteConectionString` sao configuracoes independentes e nao servem como fallback.
+
+Como os demais aliases, o novo valor e obrigatorio na validacao de Shared,
+gateway, all ou include_shared. Um arquivo privado antigo sem a chave bloqueia
+essa validacao antes de subir servicos; validar um aplicativo isolado continua
+sem exigir a configuracao Shared. A ausencia de Apps.Presenca permanece aceita
+quando o aplicativo nao foi provisionado. Nenhuma validacao cria banco ou login.
+
+Antes de uma atualizacao operacional futura, o operador deve confirmar instancia
+e catalogo exclusivos do Presenca e cadastrar uma conexao de leitura autorizada
+no arquivo privado unico. Depois, validar o exportador e o modelo Compose no
+host autorizado. Nao usar a conexao de outro aplicativo, presumir nome de banco
+ou ampliar permissoes do executor para preencher essa lacuna. Aplicar a nova
+configuracao ao servico operacional exige operacao posterior explicitamente
+autorizada; commit/PR nao atualiza os aliases em execucao. Conferir o alias por
+`yeshua_database_select` com apenas `SELECT DB_NAME()` apos essa operacao.
+
+O MCP continua limitado a SELECT/metadados. A homologacao aditiva API/SQL deve
+rodar no ambiente autorizado com acesso ao arquivo privado pelo roteiro
+`infra/Presenca/HOMOLOGACAO.txt`; adicionar o alias nao entrega credenciais SQL
+ao executor nem habilita escrita pelo MCP.
+
 "Centralizado" nao significa gerenciado pelo aplicativo Central. O arquivo e
 administrativo, lido no host, nunca montado inteiro nos containers. O Compose
 entrega a cada servico somente as variaveis declaradas para ele. O Front nao

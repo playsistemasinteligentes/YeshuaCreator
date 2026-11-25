@@ -198,7 +198,7 @@ def exports(document, root, target, include_shared=False):
             result[key] = get(document, "Apps", app, "MyConfig", mode + "ConectionString")
             if app in selected:
                 required(result[key], "Apps." + app + ".MyConfig." + mode + "ConectionString")
-    for name in [*(name for name in DB_KEYS if name != "Presenca"), "OperationalIntelligence"]:
+    for name in [*DB_KEYS, "OperationalIntelligence"]:
         key = "YESHUA_SQL_MCP_" + DB_KEYS.get(name, "OPERATIONAL_INTELLIGENCE")
         result[key] = get(document, "Shared", "OperationalIntelligence", "DatabaseQueries", name)
         if shared:
@@ -506,12 +506,14 @@ def from_containers(template, services):
     shared["Grafana"].update(UserName=grafana.get("GF_SECURITY_ADMIN_USER", ""), Password=grafana.get("GF_SECURITY_ADMIN_PASSWORD", ""))
     ops = env("operational-intelligence") or env("operational-intelligence-api")
     shared["OperationalIntelligence"]["ConnectionString"] = ops.get("ConnectionStrings__OperationalIntelligence", "")
-    for name in [*(name for name in DB_KEYS if name != "Presenca"), "OperationalIntelligence"]:
+    for name in [*DB_KEYS, "OperationalIntelligence"]:
         shared["OperationalIntelligence"]["DatabaseQueries"][name] = ops.get("Mcp__DatabaseQuery__Connections__" + ("ApsAdm" if name == "APS.ADM" else name), "")
     jwt, module = set(), set()
     for target, app in APPS.items():
         api = env(target + "-api")
-        document["Apps"][app]["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
+        if app not in document["Apps"] and not api:
+            continue  # Optional applications absent from both template and running services stay absent.
+        document["Apps"].setdefault(app, {})["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
         if api.get("JwtSettings__SecretKey"):
             jwt.add(api["JwtSettings__SecretKey"])
         if api.get("YeshuaModules__Authentication__SharedKey"):

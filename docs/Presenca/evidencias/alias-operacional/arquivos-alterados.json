@@ -1,0 +1,13 @@
+[
+  " M AGENTS.md",
+  " M infra/Shared/DockerCompose/docker-compose.yml",
+  " M infra/private/README.md",
+  " M infra/private/credentials.example.json",
+  " M infra/private/credentials.py",
+  " M src/Engine/Yeshua.Engine/Dominio/CodeGeneration/Templates/Infrastructure/CSharpCQRS/DockerCompose/README.md",
+  " M tests/Infrastructure/PrivateConfig/test_compose_configuration.py",
+  " M tests/Infrastructure/PrivateConfig/test_presenca_credentials.py",
+  "?? docs/Presenca/evidencias/alias-operacional/checkpoint.json",
+  "?? docs/Presenca/evidencias/alias-operacional/loader.txt",
+  "?? docs/Presenca/evidencias/alias-operacional/testes-focados.txt"
+]

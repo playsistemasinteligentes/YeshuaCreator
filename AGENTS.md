@@ -9,6 +9,17 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Alias operacional preparado na continuidade da PR #67: exportador/importador
+  agora cobrem DB_KEYS inteiro, incluindo Presenca, e Compose Shared referencia
+  YESHUA_SQL_MCP_PRESENCA. Shared/gateway/all exigem a conexao explicita em
+  Shared.OperationalIntelligence.DatabaseQueries.Presenca, sem fallback para
+  Apps.Presenca ou outro banco. Arquivo privado antigo precisa ser completado
+  pelo operador antes de atualizar Shared; nada aplicado ao ambiente real.
+  Cadastro e por aplicativo/banco, nao por AddModule de dominio. Studio nao
+  altera a infraestrutura Shared existente. Teste de cobertura detecta novos
+  aplicativos sem alias; checklist automatico na inicializacao da infraestrutura
+  e proposta futura, sem geracao de segredos nem sobrescrita de configuracao.
+
 - Continuidade PR #67 em 2026-11-25: incremento 098c7adc0 confirmado publicado.
   Operador autorizou homologacao no banco de producao EXCLUSIVO do Presenca,
   sem reset/descarte, terceiros, merge/deploy, timers ou envios externos reais.

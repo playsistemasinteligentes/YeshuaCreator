@@ -22,3 +22,32 @@ class PresencaCredentialsTests(unittest.TestCase):
  def test_presenca_without_queue_does_not_require_rabbit_credentials(self):
   doc=self.document();doc['Shared']['RabbitMq']['UserName']='';doc['Shared']['RabbitMq']['Password']=''
   env=credentials.environment(doc,Path('/private'),'presenca');self.assertEqual('true',env['Presenca__Enabled'])
+ def test_mcp_presenca_connection_is_explicit_and_independent_from_application_connections(self):
+  doc=self.document();doc['Shared']['OperationalIntelligence']['DatabaseQueries']['Presenca']='fixture-mcp-presenca-only'
+  env=credentials.exports(doc,Path('/private'),'shared')
+  self.assertEqual('fixture-mcp-presenca-only',env['YESHUA_SQL_MCP_PRESENCA'])
+  self.assertEqual('fixture-read',env['YESHUA_SQL_PRESENCA_READ'])
+  self.assertEqual('fixture-write',env['YESHUA_SQL_PRESENCA_WRITE'])
+ def test_shared_requires_mcp_alias_without_fallback_to_app_inherited_environment_or_other_database(self):
+  for missing in ('absent','empty'):
+   doc=self.document();queries=doc['Shared']['OperationalIntelligence']['DatabaseQueries']
+   if missing=='absent':queries.pop('Presenca')
+   else:queries['Presenca']=''
+   with self.subTest(missing=missing),patch.dict(os.environ,{'YESHUA_SQL_MCP_PRESENCA':'inherited-secret'}):
+    with self.assertRaises(credentials.ConfigurationError) as error:credentials.exports(doc,Path('/private'),'shared')
+    self.assertIn('Shared.OperationalIntelligence.DatabaseQueries.Presenca',str(error.exception))
+    self.assertNotIn('inherited-secret',str(error.exception));self.assertNotIn('fixture-write',str(error.exception))
+    # Unrelated app validation does not require the Shared alias to be provisioned yet.
+    credentials.exports(doc,Path('/private'),'central')
+ def test_import_preserves_explicit_presenca_alias_without_inventing_application_configuration(self):
+  template=configured()
+  services={'operational-intelligence':({'Mcp__DatabaseQuery__Connections__Presenca':'fixture-mcp-import'},[])}
+  imported=credentials.from_containers(template,services)
+  self.assertEqual('fixture-mcp-import',imported['Shared']['OperationalIntelligence']['DatabaseQueries']['Presenca'])
+  self.assertNotIn('Presenca',imported['Apps'])
+ def test_missing_import_alias_stays_empty_instead_of_reusing_application_connection(self):
+  template=self.document()
+  services={'presenca-api':({'MYCONFIG__READCONECTIONSTRING':'fixture-app-read','MYCONFIG__WRITECONECTIONSTRING':'fixture-app-write'},[])}
+  imported=credentials.from_containers(template,services)
+  self.assertEqual('',imported['Shared']['OperationalIntelligence']['DatabaseQueries']['Presenca'])
+  self.assertEqual('fixture-app-write',imported['Apps']['Presenca']['MyConfig']['WriteConectionString'])
