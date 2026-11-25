@@ -1,9 +1,13 @@
 # Deploy Da Plataforma
 
 Este diretorio concentra o orquestrador atual. `deploy.sh` coordena Shared,
-Central, Clinica, APS.ADM, Fiscal e Memorias. Sem argumento, executa `all`,
+Central, Clinica, APS.ADM, Fiscal, Memorias e Presenca quando configurado. Sem argumento, executa `all`,
 preservando o comportamento historico. Os argumentos `central`, `clinica`,
-`aps-adm`, `fiscal`, `memorias` e `shared` limitam o destino.
+`aps-adm`, `fiscal`, `memorias`, `presenca` e `shared` limitam o destino.
+O destino `presenca` tambem atualiza a Central, que fornece o Front compartilhado.
+
+O [roteiro para novos aplicativos](../../docs/operational/INCLUSAO_DE_APLICATIVOS_YESHUA.md)
+reune os pontos de registro e diferencia geracao, migration, deploy e primeiro acesso.
 
 O `docker-compose.yml` permanece apenas como compatibilidade para inspecao da
 Clinica. A operacao normal deve usar `deploy.sh`.
@@ -34,9 +38,10 @@ bash infra/docker/deploy.sh all
 
 ## Bancos
 
-Os nomes dos bancos da instalacao ficam centralizados em `deploy.env`. API,
-Worker e Migration usam os mesmos valores. Para iniciar uma instalacao em
-bancos vazios, altere os nomes nesse arquivo antes do deploy completo. O script
+`deploy.env` documenta a nomenclatura dos bancos. As conexoes efetivas de API,
+Worker e Migration sao configuradas em `Apps.<Aplicativo>.MyConfig` no JSON
+privado. Alterar apenas o nome documentado em `deploy.env` nao muda o catalogo
+dessas conexoes. A migration cria o catalogo configurado quando ausente; o deploy
 nao apaga nem renomeia bancos existentes.
 
 ## Cache De Build

@@ -10,6 +10,15 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Roteiro de inclusao de aplicativos em
+  docs/operational/INCLUSAO_DE_APLICATIVOS_YESHUA.md. Reutilizar migration SQL,
+  projecao CentralAuthorizationSchema e deploy existentes. A migration nao
+  configura Docker/Nginx/segredos nem concede acesso. PR #68 integrado na main
+  sem deploy nesta tarefa. Pendencia identificada: Studio Presenca ainda nao
+  registra a projecao CentralAuthorizationSchema, embora declare modulo/scope.
+  Conferir compatibilidade do carregador instalado antes de ativar novo perfil
+  privado; validacao do JSON sozinha nao garante compatibilidade com shell/Compose.
+
 - Preparacao de infraestrutura em 2026-11-25: Presenca segue o Compose por app
   existente (API, Worker e migration), com destino proprio e inclusao em all
   quando Apps.Presenca estiver configurado. O gateway condiciona as rotas aos

@@ -3,6 +3,11 @@
 A infraestrutura e mantida manualmente e em paralelo aos Studios. Executar a
 Engine nao altera Compose, Dockerfiles, nginx ou scripts de deploy.
 
+Para incluir um aplicativo, seguir o
+[roteiro de inclusao de aplicativos](../docs/operational/INCLUSAO_DE_APLICATIVOS_YESHUA.md).
+Ele separa o preparo do banco pela migration, a infraestrutura, a configuracao
+privada e o primeiro acesso, e registra as lacunas da automacao atual.
+
 O servidor atual hospeda N aplicativos por meio dos projetos Compose ativos:
 
 - `infra/Shared/DockerCompose`: SQL Server, Redis, RabbitMQ, Operational Intelligence API, nginx e rede.
