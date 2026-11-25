@@ -14,8 +14,10 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   docs/operational/INCLUSAO_DE_APLICATIVOS_YESHUA.md. Reutilizar migration SQL,
   projecao CentralAuthorizationSchema e deploy existentes. A migration nao
   configura Docker/Nginx/segredos nem concede acesso. PR #68 integrado na main
-  sem deploy nesta tarefa. Pendencia identificada: Studio Presenca ainda nao
-  registra a projecao CentralAuthorizationSchema, embora declare modulo/scope.
+  sem deploy nesta tarefa. Studio Presenca agora liga SqlServerSchema e
+  CentralAuthorizationSchema em --database-only, exigindo conexoes explicitas
+  antes de abrir o banco. A projecao registra definicoes com historico, sem
+  concessoes de acesso ou bootstrap implicitos; codegen-only permanece separado.
   Conferir compatibilidade do carregador instalado antes de ativar novo perfil
   privado; validacao do JSON sozinha nao garante compatibilidade com shell/Compose.
 
