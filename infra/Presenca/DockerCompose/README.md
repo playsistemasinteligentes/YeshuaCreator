@@ -25,6 +25,12 @@ Usar o `credentials.json` existente, fora do Git:
 
 JWT, autenticacao entre modulos e autorizacao Central continuam vindo dos campos
 compartilhados existentes. As credenciais dos demais aplicativos nao mudam.
+O Studio exige as conexoes de escrita do Presenca e de autorizacao Central antes
+de abrir o banco. A segunda vem de `Shared.CentralAuthorization.ConnectionString`
+no mesmo arquivo privado e ja e entregue pelo Compose da migration.
+`--database-only` aplica o schema local e projeta os modulos e
+scopes pela `CentralAuthorizationSchema` existente. A projecao respeita seu
+historico e nao concede acesso a usuarios/tenants nem executa bootstrap editorial.
 
 O loader tem dois formatos de exportacao para esta implantacao: `shell` entrega
 as variaveis de infraestrutura com nomes validos para Bash; `application-env`

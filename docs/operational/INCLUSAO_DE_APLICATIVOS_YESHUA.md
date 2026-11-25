@@ -113,10 +113,11 @@ a migration de domínio.
 
 - O PR #68 integrou o carregador corrigido, Compose, rotas e destinos de deploy.
   Isso disponibiliza a infraestrutura no Git; não comprova implantação no VPS.
-- O Studio Presença registra `SqlServerSchema` em `--database-only`, mas ainda
-  não registra `CentralAuthorizationSchema`. Sua DSL declara o módulo `PRESENCA`
-  e o scope `presenca.editorial`. Ligar a projeção existente é uma pendência de
-  integração a tratar antes de considerar o primeiro acesso completo.
+- O Studio Presença registra `SqlServerSchema` e `CentralAuthorizationSchema`
+  em `--database-only`. As conexões de escrita local e de autorização da Central
+  são obrigatórias antes de abrir o banco. Sua DSL declara o módulo `PRESENCA`
+  e o scope `presenca.editorial`, projetados com histórico pela Engine. As
+  concessões de acesso ao tenant continuam sendo uma etapa explícita.
 - O perfil privado já contém banco exclusivo, escopo, ator técnico e bootstrap
   escolhidos pelo operador. Essa configuração não representa uma concessão
   automática nem bootstrap executado.
