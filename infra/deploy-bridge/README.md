@@ -14,11 +14,21 @@ do operador. `requestId` é somente chave de deduplicação e consulta.
 ```
 
 Destinos: `all`, `central`, `clinica`, `aps-adm`, `fiscal`, `memorias`, `presenca`, `shared`.
-O helper chama somente `/bin/bash /root/YeshuaCreator/infra/docker/deploy.sh TARGET`,
-sem argumento de tag nem `YESHUA_RELEASE_TAG` ou `YESHUA_SKIP_UPDATE` no ambiente.
-O script executa `git reset --hard`, `git clean -fd` e `git pull origin main`
-antes do build; a ponte não presume que o checkout local esteja atualizado.
-Atualização Git, lock, build, migrations e serviços continuam no script existente.
+O helper executa o mesmo comando oficial usado manualmente, com URL fixa e alvo
+da allowlist:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh | bash -s -- all
+```
+
+Para deploy direcionado, somente `all` muda para o alvo permitido. A ponte usa
+`pipefail` para registrar falha também quando o download falhar. Não abre o
+deploy.sh do checkout local nem faz fallback para uma cópia anterior. URL e
+comando não são parâmetros MCP; o alvo passa como argumento posicional.
+O script baixado executa `git reset --hard`, `git clean -fd` e `git pull origin main`
+antes do build. Atualização Git, lock, build, migrations e serviços continuam
+nesse script, sem orquestração própria da ponte. Não há argumento de tag nem
+`YESHUA_RELEASE_TAG` ou `YESHUA_SKIP_UPDATE` no ambiente.
 `releaseTag` foi removido do schema de entrada e é recusado explicitamente,
 inclusive nulo: clientes antigos devem omitir o campo. Seleção por tag permanece
 desativada; todo novo deploy segue a versão mais recente de `main`. Não aceita comandos, caminhos, flags ou env livres.
@@ -39,6 +49,12 @@ serviços, quando a rede e a identidade do agente já existem. Não cria contain
 servidor, transporte nem mecanismo paralelo de deploy. Sem ativação explícita,
 as opções permanecem vazias; a instalação também revoga a chave autorizada da
 conta técnica quando desabilitada, preservando chave privada e recibos.
+
+Uma correção somente da ponte pode ser instalada pelo mesmo `install.sh`, com
+o checkout atualizado pela main, sem deploy em andamento e com a configuração
+privada carregada por `source infra/docker/load-deploy-env.sh shared`. Executar
+`bash infra/deploy-bridge/install.sh` atualiza o helper e suas permissões; não
+inicia o deploy dos aplicativos nem exige reconstruir o container MCP.
 
 O instalador cria a conta de sistema `yeshua-deploy`, com senha bloqueada e home
 controlado por root em `/var/lib/yeshua-deploy`. O único authorized_keys é

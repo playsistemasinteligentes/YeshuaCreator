@@ -11,7 +11,9 @@ import subprocess
 import sys
 
 BASE = Path('/root/YeshuaStorage/persistent/infra/deploy-bridge')
-SCRIPT = Path('/root/YeshuaCreator/infra/docker/deploy.sh')
+DEPLOY_URL = 'https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/refs/heads/main/infra/docker/deploy.sh'
+CURL = '/usr/bin/curl'
+WORKING_DIRECTORY = Path('/root')
 TARGETS = {'all', 'central', 'clinica', 'aps-adm', 'fiscal', 'memorias', 'presenca', 'shared'}
 MAX_LOG = 1024 * 1024
 ROOT_UID = 0
@@ -80,9 +82,12 @@ def run(receipt, path, job_lock, global_lock):
         environment = {'PATH': '/usr/sbin:/usr/bin:/sbin:/bin', 'HOME': '/root',
                        'LANG': 'C.UTF-8'}
         with path.with_suffix('.log').open('wb') as log:
-            # This is the only executable operation: orchestration stays in deploy.sh.
-            process = subprocess.Popen(['/bin/bash', str(SCRIPT), receipt['target']],
-                                       cwd=SCRIPT.parent, env=environment, stdin=subprocess.DEVNULL,
+            # Same entry command as the operator: download main before starting Bash.
+            # Arguments are positional and fixed/allowlisted, never request-supplied shell text.
+            process = subprocess.Popen(['/bin/bash', '-o', 'pipefail', '-c',
+                                        '"$1" -fsSL "$2" | /bin/bash -s -- "$3"',
+                                        'yeshua-deploy', CURL, DEPLOY_URL, receipt['target']],
+                                       cwd=WORKING_DIRECTORY, env=environment, stdin=subprocess.DEVNULL,
                                        stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
             remaining = MAX_LOG
             while chunk := process.stdout.read(8192):
@@ -128,7 +133,7 @@ def dispatch(value, detach=True):
         receipt = {key: value[key] for key in ('requestId', 'target')}
         receipt.update(status='Running', startedAtUtc=now())
         save(path, receipt)  # Records requestId durably BEFORE any execution to prevent replay.
-        if not detach:  # Test seam: same execution path with an isolated script fixture.
+        if not detach:  # Test seam: same execution path with an isolated download fixture.
             run(receipt, path, job_lock, global_lock)
             return read_status(path)
         try:
