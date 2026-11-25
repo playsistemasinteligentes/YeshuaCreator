@@ -12,7 +12,7 @@ import sys
 
 BASE = Path('/root/YeshuaStorage/persistent/infra/deploy-bridge')
 SCRIPT = Path('/root/YeshuaCreator/infra/docker/deploy.sh')
-TARGETS = {'all', 'central', 'clinica', 'aps-adm', 'fiscal', 'memorias', 'shared'}
+TARGETS = {'all', 'central', 'clinica', 'aps-adm', 'fiscal', 'memorias', 'presenca', 'shared'}
 MAX_LOG = 1024 * 1024
 ROOT_UID = 0
 

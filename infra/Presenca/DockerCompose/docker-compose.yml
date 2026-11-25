@@ -1,0 +1,63 @@
+name: playsis-presenca
+
+x-runtime: &runtime
+  env_file:
+    - path: "${YESHUA_PRESENCA_RUNTIME_ENV_FILE:?Execute o deploy padrao do Presenca}"
+      format: raw
+  environment: &runtime-environment
+    ASPNETCORE_ENVIRONMENT: "Production"
+    JwtSettings__SecretKey: "${YESHUA_JWT_SECRET:?Configure credentials.json}"
+    MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_PRESENCA_READ:?Configure credentials.json}"
+    MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_PRESENCA_WRITE:?Configure credentials.json}"
+    MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
+    OpenTelemetry__ExportMode: "${YESHUA_TELEMETRY_EXPORT_MODE:-ConsoleJsonl}"
+    OpenTelemetry__Otlp__Endpoint: "${YESHUA_TELEMETRY_OTLP_ENDPOINT:-http://yeshua-observability:4317}"
+  restart: unless-stopped
+  networks: [yeshua-net]
+
+services:
+  presenca-api:
+    <<: *runtime
+    build:
+      context: ../../..
+      dockerfile: infra/Presenca/DockerCompose/Dockerfile
+      target: api
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+    environment:
+      <<: *runtime-environment
+      ASPNETCORE_URLS: "http://0.0.0.0:7214"
+    expose: ["7214"]
+
+  presenca-worker:
+    <<: *runtime
+    build:
+      context: ../../..
+      dockerfile: infra/Presenca/DockerCompose/Dockerfile
+      target: worker
+      args:
+        YESHUA_COMMIT_SHA: "${YESHUA_COMMIT_SHA:-UNSET}"
+    environment:
+      <<: *runtime-environment
+      ASPNETCORE_URLS: "http://0.0.0.0:7215"
+      OperationalControl__Enabled: "true"
+      OperationalControl__ApplicationApiBaseUrl: "http://presenca-api:7214"
+      OperationalControl__RefreshSeconds: "5"
+    expose: ["7215"]
+
+  presenca-migration:
+    build:
+      context: ../../..
+      dockerfile: infra/Presenca/DockerCompose/Dockerfile
+      target: migration
+    environment:
+      MYCONFIG__READCONECTIONSTRING: "${YESHUA_SQL_PRESENCA_READ:?Configure credentials.json}"
+      MYCONFIG__WRITECONECTIONSTRING: "${YESHUA_SQL_PRESENCA_WRITE:?Configure credentials.json}"
+      MYCONFIG__CENTRALAUTHORIZATIONCONECTIONSTRING: "${YESHUA_SQL_CENTRAL_AUTHORIZATION:?Configure credentials.json}"
+    restart: "no"
+    networks: [yeshua-net]
+
+networks:
+  yeshua-net:
+    external: true
+    name: yeshua-net

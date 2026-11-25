@@ -26,6 +26,7 @@ public sealed class DeployTests
     {
         var bridge = new Bridge();
         var receiver = new DeployReceiver(bridge);
+        CollectionAssert.Contains(DeployReceiver.Targets, "presenca");
         foreach (var command in new[]
         {
             new DeployCommand("execute", "test"),

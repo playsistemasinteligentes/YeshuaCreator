@@ -23,7 +23,7 @@ public interface IDeployBridge
 
 public sealed class DeployReceiver(IDeployBridge bridge)
 {
-    public static readonly string[] Targets = ["all", "central", "clinica", "aps-adm", "fiscal", "memorias", "shared"];
+    public static readonly string[] Targets = ["all", "central", "clinica", "aps-adm", "fiscal", "memorias", "presenca", "shared"];
 
     public Task<JsonElement> ExecuteAsync(DeployCommand command, CancellationToken cancellationToken)
     {

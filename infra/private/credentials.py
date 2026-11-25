@@ -636,12 +636,18 @@ def main():
     parser.add_argument("--file", default=os.environ.get("YESHUA_DEPLOY_SECRETS_FILE", DEFAULT_FILE))
     parser.add_argument("--target", default="all", choices=[*APPS, "shared", "all", "gateway"])
     parser.add_argument("--include-shared", action="store_true")
+    parser.add_argument("--format", choices=["base64", "shell", "application-env"], default="base64",
+                        help="export: shell entrega variaveis Bash; application-env entrega somente o runtime do Presenca para Compose.")
     parser.add_argument("--from-running-containers", action="store_true")
     parser.add_argument("--from-development-source", action="store_true")
     parser.add_argument("--test-profile", choices=["Smoke", "Seed"])
     parser.add_argument("--wait", action="store_true", help="init: aguarda preparo do arquivo em terminal privado, sem ler segredos do stdin.")
     args = parser.parse_args()
     try:
+        if args.format != "base64" and args.action != "export":
+            raise ConfigurationError("--format e exclusivo de export.")
+        if args.format == "application-env" and (args.target != "presenca" or args.test_profile):
+            raise ConfigurationError("application-env exige o aplicativo presenca, sem perfil de testes.")
         if args.wait and (args.action != "init" or args.from_running_containers or args.from_development_source
                           or args.test_profile or args.target != "all" or args.include_shared):
             raise ConfigurationError("--wait e exclusivo de init para todos os aplicativos, sem importacao.")
@@ -697,7 +703,13 @@ def main():
             values = environment(document, path.parent, args.target, args.include_shared)
         if args.action == "export":
             for key, value in values.items():
-                print(key + "\t" + base64.b64encode(value.encode("utf-8")).decode("ascii"))
+                if args.format == "shell" and not re.fullmatch(r"[A-Z][A-Z0-9_]*", key):
+                    continue
+                if args.format == "application-env":
+                    if key.startswith(("Presenca__", "YeshuaProcessing__", "YeshuaModules__")):
+                        print(key + "=" + value)
+                else:
+                    print(key + "\t" + base64.b64encode(value.encode("utf-8")).decode("ascii"))
         else:
             print("Configuracao privada valida para " + args.target + ". Nenhum segredo exibido.")
         return 0
