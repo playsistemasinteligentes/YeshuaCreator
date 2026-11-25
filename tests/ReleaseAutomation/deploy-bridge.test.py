@@ -1,10 +1,11 @@
-"""Workspace-only bridge tests: deploy.sh is always replaced by a harmless fixture."""
+"""Workspace-only bridge tests: curl returns harmless fixtures, never real deploy code."""
 import importlib.util
 import os
 from pathlib import Path
 import tempfile
 import time
 import unittest
+import shlex
 from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('bridge', Path(__file__).parents[2] / 'infra/deploy-bridge/bridge.py')
@@ -20,23 +21,45 @@ class BridgeTests(unittest.TestCase):
         (self.base / 'receipts').mkdir(mode=0o700)
         self.script = self.base / 'fixture.sh'
         self.script.write_text('echo "$#:$1:${YESHUA_RELEASE_TAG-unset}:${YESHUA_SKIP_UPDATE-unset}" >> calls\necho fixture-output\nexit 0\n')
+        self.downloads = self.base / 'downloads'
+        self.curl = self.base / 'curl'
+        self.curl.write_text('#!/bin/sh\nprintf "%s\\n" "$*" >> ' + shlex.quote(str(self.downloads)) +
+                             '\ncat ' + shlex.quote(str(self.script)) + '\n')
+        self.curl.chmod(0o700)
         self.command = dict(action='execute', requestId='test-1', target='all')
         self.addCleanup(patch.stopall)
         patch.object(b, 'BASE', self.base).start()
-        patch.object(b, 'SCRIPT', self.script).start()
+        patch.object(b, 'CURL', str(self.curl)).start()
+        patch.object(b, 'WORKING_DIRECTORY', self.base).start()
         # Unit tests work under non-root too; production requires uid=0.
         patch.object(b, 'ROOT_UID', os.getuid()).start()
 
     def dispatch(self, command=None):
         return b.dispatch(command or self.command, detach=False)
 
-    def test_runs_only_script_with_target_and_persists_success(self):
+    def test_downloads_official_main_entry_with_target_and_persists_success(self):
         result = self.dispatch()
         self.assertEqual('Succeeded', result['status'])
         self.assertEqual('1:all:unset:unset\n', (self.base / 'calls').read_text())
         self.assertFalse((self.base / 'approvals').exists())
         self.assertEqual('fixture-output\n', (self.base / 'receipts/test-1.log').read_text())
         self.assertEqual(0, result['exitCode'])
+        self.assertEqual('-fsSL '+b.DEPLOY_URL+'\n', self.downloads.read_text())
+
+    def test_each_new_request_downloads_the_current_entry_instead_of_reusing_local_code(self):
+        self.dispatch()
+        self.script.write_text('echo "new-entry:$1" >> calls\n')
+        result = self.dispatch({**self.command, 'requestId': 'new-request'})
+        self.assertEqual('Succeeded', result['status'])
+        self.assertEqual(['1:all:unset:unset', 'new-entry:all'], (self.base / 'calls').read_text().splitlines())
+        self.assertEqual(['-fsSL '+b.DEPLOY_URL]*2, self.downloads.read_text().splitlines())
+
+    def test_download_failure_is_failed_without_falling_back_to_local_entry(self):
+        self.curl.write_text('#!/bin/sh\nexit 22\n')
+        result = self.dispatch()
+        self.assertEqual('Failed', result['status'])
+        self.assertEqual(22, result['exitCode'])
+        self.assertFalse((self.base / 'calls').exists())
 
     def test_duplicate_never_reexecutes_and_rejects_changed_target(self):
         self.dispatch()
@@ -81,7 +104,7 @@ class BridgeTests(unittest.TestCase):
     def test_rejects_injection_extra_fields_and_status_mutation(self):
         for change in ({'target': 'all; id'}, {'requestId': '../escape'}, {'releaseTag': '1.0.0; id'},
                        {'confirm': True}, {'target': []}, {'releaseTag': 123}, {'command': 'id'}, {'action': 'restart'},
-                       {'action': 'status'}):
+                       {'action': 'status'}, {'url': 'https://example.invalid/deploy.sh'}):
             with self.assertRaises(ValueError):
                 self.dispatch({**self.command, **change})
         self.assertFalse((self.base / 'calls').exists())

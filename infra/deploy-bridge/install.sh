@@ -20,7 +20,7 @@ if [[ "${YESHUA_MCP_DEPLOY_ENABLED:-false}" != "true" ]]; then
   exit 0
 fi
 
-for executable in /usr/bin/ssh-keygen /usr/bin/python3 /usr/bin/sudo /usr/sbin/visudo /usr/sbin/sshd; do
+for executable in /usr/bin/curl /usr/bin/ssh-keygen /usr/bin/python3 /usr/bin/sudo /usr/sbin/visudo /usr/sbin/sshd; do
   [[ -x "$executable" ]] || { echo "Dependencia ausente: $executable" >&2; exit 1; }
 done
 for directory in /opt/yeshua-deploy "$BASE" "$BASE/receipts" "$ACCOUNT_HOME" "$ACCOUNT_HOME/.ssh"; do

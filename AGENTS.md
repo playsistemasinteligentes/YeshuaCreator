@@ -8,6 +8,13 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   "sem publicar" neste trabalho impede o DEPLOY, que o operador executara ou
   autorizara separadamente; nao deixar correcoes apenas locais por esse motivo.
 
+- Correcao do deploy MCP solicitada em 2026-11-25: a ponte deve executar a
+  MESMA entrada manual, `curl -fsSL` da URL oficial main de infra/docker/deploy.sh
+  seguido de `bash -s -- alvo`. Nunca abrir primeiro a copia do checkout local.
+  URL/comando fixos, alvo na allowlist, pipefail para falha de download, sem
+  fallback, nova orquestracao ou mudanca no contrato MCP. Commit/push/merge
+  autorizados; nao executar deploy dos aplicativos sem ordem.
+
 ## Presenca Em Desenvolvimento
 
 - Roteiro de inclusao de aplicativos em
@@ -2307,8 +2314,8 @@ aplicativos sem misturar registries, rotas, sagas ou dependencias.
   configuracao tecnica. Esta tarefa altera codigo/testes da PR existente; nao
   autoriza deploy, ativacao, alteracao do host ou merge.
 - Decisao de 2026-11-19 (issue #47): `yeshua_deploy` nao aceita `releaseTag`.
-  A ponte chama o deploy.sh existente somente com o alvo, sem env de tag ou
-  skip-update; o script atualiza pelo fluxo de main. Clientes antigos devem
+  A ponte baixa a entrada deploy.sh oficial da main e a executa somente com o
+  alvo, sem env de tag ou skip-update; o script atualiza pelo fluxo de main. Clientes antigos devem
   omitir o campo. Recibos antigos seguem consultaveis por status, mas seus IDs
   nao podem ser reutilizados como execucao de main. Idempotencia e locks ficam
   no caminho existente, sem replay de execucao incerta.
