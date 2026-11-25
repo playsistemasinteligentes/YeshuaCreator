@@ -26,6 +26,17 @@ namespace Presenca.Tests;
 public sealed class ApiPrototypeTests
 {
  private const string Key="private-test-only-api-jwt-signing-key-000000000000000000000000";
+ [BrowserJourneyFact]
+ public async Task Browser_reads_real_api_health_after_simulated_channel_partial_failure()
+ {
+  var store=new Store();await using var app=new Factory(store);using var client=app.CreateClient();
+  client.DefaultRequestHeaders.Authorization=new AuthenticationHeaderValue("Bearer",Token(1));
+  var response=await client.PostAsJsonAsync("/yapi/Presenca/EditorialSolicitarPublicacaoUseCase",new{IdentidadeId=store.Publisher,RegistroId=RegrasEditoriais.Id("pauta"),Chave="browser-publication",VersaoEsperada=1,Dados="{}"});
+  Assert.Equal(HttpStatusCode.OK,response.StatusCode);
+  using(var scope=app.Services.CreateScope())await scope.ServiceProvider.GetRequiredService<ProcessarPresencaHandler>().ExecuteAsync(new ProcessarPresencaInputCommand());
+  await BrowserApiJourney.Run(client,store.Publisher,"PRESENCA_HOMOLOG_memory",1,false);
+  Assert.Equal(2,store.HttpCalls.Count);
+ }
  [Fact] public async Task Real_api_and_worker_preserve_partial_failure_with_simulated_storage_and_channels()
  {
   var store=new Store();await using var app=new Factory(store);using var client=app.CreateClient();
@@ -121,13 +132,13 @@ public sealed class ApiPrototypeTests
    await new Microsoft.Data.SqlClient.SqlCommand($"ALTER DATABASE [{database}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE; DROP DATABASE [{database}];",admin).ExecuteNonQueryAsync();
   }
  }
- private static string Token(int tenant,int actor=10)=>new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(claims:[new Claim(ClaimTypes.NameIdentifier,actor.ToString()),new Claim("tenantId",tenant.ToString()),new Claim("tokenOrigin","Application"),new Claim("application","Presenca")],expires:DateTime.UtcNow.AddMinutes(10),signingCredentials:new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key)),SecurityAlgorithms.HmacSha256)));
- private sealed class Factory(Store store,string? sqlConnection=null):WebApplicationFactory<global::Program>
+ internal static string Token(int tenant,int actor=10)=>new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(claims:[new Claim(ClaimTypes.NameIdentifier,actor.ToString()),new Claim("tenantId",tenant.ToString()),new Claim("tokenOrigin","Application"),new Claim("application","Presenca")],expires:DateTime.UtcNow.AddMinutes(10),signingCredentials:new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Key)),SecurityAlgorithms.HmacSha256)));
+ internal sealed class Factory(Store store,string? sqlConnection=null,string processingScope="prototype-tests"):WebApplicationFactory<global::Program>
  {
   protected override void ConfigureWebHost(IWebHostBuilder builder)
   {
    builder.UseEnvironment("Testing");
-   builder.ConfigureAppConfiguration((_,configuration)=>configuration.AddInMemoryCollection(new Dictionary<string,string?>{{"JwtSettings:SecretKey",Key},{"YeshuaProcessing:Scope","prototype-tests"},{"Presenca:Enabled","true"},{"OperationalLogging:Level","Off"}}));
+   builder.ConfigureAppConfiguration((_,configuration)=>configuration.AddInMemoryCollection(new Dictionary<string,string?>{{"JwtSettings:SecretKey",Key},{"YeshuaProcessing:Scope",processingScope},{"Presenca:Enabled","true"},{"OperationalLogging:Level","Off"}}));
    builder.ConfigureServices(services=>
    {
     // Minimal host captured this settings instance before WAF applied its late configuration.
@@ -157,9 +168,9 @@ public sealed class ApiPrototypeTests
    });
   }
  }
- private sealed class Store:IHttpClientFactory
+ internal sealed class Store:IHttpClientFactory
  {
-  public string Publisher=>RegrasEditoriais.Id("publisher");
+  public string Publisher {get;init;}=RegrasEditoriais.Id("publisher");
   public Queue<TrabalhoEditorial> Pending {get;}=new();public Dictionary<int,string> States {get;}=[];public List<string> HttpCalls {get;}=[];public List<string> CallbackBodies {get;}=[];public bool CallbackSignatureVerified {get;private set;}
   public PresencaOptions Options {get;}=new(){Enabled=true,AcademiaBaseUrl="https://academia.example.org/"};private bool queued,callbackQueued;
   private static readonly YeshuaModuleAuthenticationSettings ModuleSettings=new("Presenca",new string('k',64),300,22);
@@ -191,7 +202,9 @@ public sealed class ApiPrototypeTests
   }
   public ResultadoEditorial Read(int tenant,PedidoEditorial p)
   {
+   if(tenant==1&&p.Operacao=="ConsultarIdentidades")return new(){Identidades=[new(){Id=Publisher,Nome="PRESENCA_HOMOLOG_memory"}]};
    if(tenant!=1||p.IdentidadeId!=Publisher)throw new EditorialException("PRESENCA_FORBIDDEN",403);
+   if(p.Operacao=="ConsultarRedacao")return new();
    return new(){Entregas=States.Select(s=>new EntregaEditorial{Id=s.Key.ToString(),Estado=s.Value}).ToList(),SaudeConsultadaEmUtc=DateTimeOffset.UtcNow,SaudeFilas=[new(){Fila="Distribuicao",Concluidas=States.Values.Count(s=>s=="Publicada"),ResultadosIncertos=States.Values.Count(s=>s=="ResultadoIncerto")}]};
   }
   public HttpClient CreateClient(string name)

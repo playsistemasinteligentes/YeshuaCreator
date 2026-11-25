@@ -1,0 +1,19 @@
+VERIFICACOES REALMENTE EXECUTADAS
+
+git status/log/diff: mesma branch, HEAD 098c7adc0; workspace inicialmente limpo.
+GET publico GitHub PR 67: draft/open, head igual ao local.
+MCP health: saudavel; database_select Presenca: alias nao configurado.
+SELECT sys.databases por Central, nomes PRESENCA/%presen%: zero linhas; visibilidade limitada nao prova ausencia.
+Arquivo privado padrao: PermissionError; nenhuma variavel SQL/configuracao privada exposta.
+python3 scripts/presenca/homologate.py com caminho privado padrao: bloqueado antes de SQL (identidades de ensaio nao confirmadas).
+dotnet test tests/Presenca/Yeshua.Presenca.Tests --no-restore com Chromium preparado: 61 passed, 3 SQL skipped, 0 failed.
+dotnet test ... --filter FullyQualifiedName~ExistingDatabaseHomologationTests apos ultimas alteracoes: 6 passed, 1 skipped, 0 failed.
+dotnet test tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests --filter FullyQualifiedName~OperationalMetricsTests: 12 passed.
+python3 -m unittest discover -s tests/Presenca/Python -p test_*.py: 24 passed.
+node --check tests/Presenca/Browser/api-journey.mjs: passed.
+git diff --check: passed.
+
+Chromium 145.0.7632.6 -> Front real -> relay efemero em loopback -> API/JWT/receivers reais -> repositorios simulados. Worker/estrategias reais, destinos HTTP simulados. Zero requisicoes externas. Nao comprova SQL.
+Nenhuma escrita SQL, criacao/descarte de banco, merge/deploy, ativacao de timers ou envio externo real.
+As compilacoes iniciais emitiram warnings preexistentes de nulabilidade/outros projetos; nenhuma falha de teste.
+Publicacao deste novo incremento depende do aplicativo apos o turno; ainda nao verificada.

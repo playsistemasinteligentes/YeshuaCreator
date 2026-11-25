@@ -1,0 +1,41 @@
+{
+  "recordedAtUtc": "2026-11-25T11:43:06.657229+00:00",
+  "head": "098c7adc0fe71ea263b87be93b09cc010ae8a6eb",
+  "previousIncrementPublished": true,
+  "pr": 67,
+  "draft": true,
+  "workspaceInitiallyClean": true,
+  "authorization": "Operator explicitly authorized existing production Presenca SQL only; no reset, drop, third-party writes, timer activation, deploy or real sends.",
+  "sqlPreflight": {
+    "privateFile": "PermissionError at standard private path; not read or bypassed",
+    "environment": "No SQL/YESHUA/private configuration variables exposed",
+    "mcp": "Healthy, read-only; Presenca alias not configured",
+    "metadata": "Central alias SELECT sys.databases returned 0 matching names; limited visibility cannot establish absence or exclusive database identity",
+    "writesExecuted": false
+  },
+  "status": "Implementation checkpoint: guarded additive SQL harness compiled; actual SQL unavailable. Real browser/API with simulated storage/channels passed.",
+  "publicationThisTurnVerified": false,
+  "updatedAtUtc": "2026-11-25T11:52:04.975086+00:00",
+  "checks": {
+    "presenca": "61 passed, 3 SQL cases skipped, 0 failed; includes real Chromium/API test",
+    "sharedMetrics": "12 passed, 0 failed; local MeterListener, not live SQL/Prometheus proof",
+    "python": "24 passed",
+    "syntax": "node --check and git diff --check passed",
+    "finalGuardCompilation": "6 passed, existing-database scenario skipped, 0 failed after final metadata/fencing changes"
+  },
+  "deliveries": [
+    "Separate additive existing-database fixture with SELECT-only default preflight, explicit server/database/schema/tenant/actor verification",
+    "Actual API/SQL/idempotent concurrent requests, concurrent claims and stale/scope fencing scenario prepared; not executed",
+    "Persistent labelled test records and sanitized early checkpoints; no database reset or cleanup path",
+    "Real Chromium Front -> actual API/JWT/receivers -> simulated repository after actual worker/simulated channel partial success; no external requests",
+    "Existing-database operator runbook and unified private configuration launcher"
+  ],
+  "remaining": [
+    "Provide access to existing unified private file/connections for the dedicated Presenca database in this executor",
+    "Confirm actual database identity/isolation and labelled preprovisioned test tenant/actors before any SQL writes",
+    "Execute existing-database API/SQL/persistence/concurrency/fencing/browser scenario",
+    "Validate queue metrics publication from real SQL/worker and live collector; expired-lease recovery and sustained load",
+    "Independent Academia producer journey; bounded factory source snapshots can miss intermediate movements; timers remain inactive"
+  ],
+  "suggestedCommitMessage": "test(presenca): prepare additive SQL homologation and connect browser to real API"
+}

@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6e7da9e8-4224-44de-a681-b6af171661f7" name="@1b587aa5ec9a 2026-11-25 11:47:26" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-25T11:47:26.7630611+00:00" queuing="2026-11-25T11:47:26.7630612+00:00" start="2026-11-25T11:47:17.2612556+00:00" finish="2026-11-25T11:47:26.7888467+00:00" />
+  <TestSettings name="default" id="9d1ee12e-e280-40f8-88c3-cff6dfae843d">
+    <Deployment runDeploymentRoot="_1b587aa5ec9a_2026-11-25_11_47_26" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="09f86c1b-1483-476e-bee6-346ddc93ac74" testId="3afe7602-5f4e-d421-b6ac-a4649db774ba" testName="Presenca.Tests.ApiPrototypeTests.Browser_reads_real_api_health_after_simulated_channel_partial_failure" computerName="1b587aa5ec9a" duration="00:00:06.4252584" startTime="2026-11-25T11:47:19.9858522+00:00" endTime="2026-11-25T11:47:26.4381754+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="09f86c1b-1483-476e-bee6-346ddc93ac74" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Presenca.Tests.ApiPrototypeTests.Browser_reads_real_api_health_after_simulated_channel_partial_failure" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="3afe7602-5f4e-d421-b6ac-a4649db774ba">
+      <Execution id="09f86c1b-1483-476e-bee6-346ddc93ac74" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ApiPrototypeTests" name="Browser_reads_real_api_health_after_simulated_channel_partial_failure" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="3afe7602-5f4e-d421-b6ac-a4649db774ba" executionId="09f86c1b-1483-476e-bee6-346ddc93ac74" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.01] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 8.0.34)
+[xUnit.net 00:00:00.28]   Discovering: Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.48]   Discovered:  Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.57]   Starting:    Yeshua.Presenca.Tests
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {af5ae37e-8d36-4c66-bb47-603c42c9d708} with creation date 2026-11-25 11:47:20Z, activation date 2026-11-25 11:47:20Z, and expiration date 2027-02-23 11:47:20Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {af5ae37e-8d36-4c66-bb47-603c42c9d708} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialSolicitarPublicacaoUseCase - application/json;+charset=utf-8 225
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /yapi/Presenca/EditorialSolicitarPublicacaoUseCase'
+{"TimestampUtc":"2026-11-25T11:47:22.742067+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.SolicitarPublicacaoInputCommand","TraceId":"0HNQAT7EVKLRT","RootOperationId":"dc4508fc80644096b55d09c07e80f07e","OperationId":"04c5f8dc057d4900b50feeb513edb876","ExecutionId":"dee2886a611443558bee7afcdafe6f1c","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.SolicitarPublicacaoInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:22.7512241+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLRT","RootOperationId":"dc4508fc80644096b55d09c07e80f07e","OperationId":"e215b441bf5c4ff7a5775c786668f289","ExecutionId":"92447c6041964a58b27b36eeae7cbb4e","CausationId":"dee2886a611443558bee7afcdafe6f1c","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:22.8453876+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLRT","RootOperationId":"dc4508fc80644096b55d09c07e80f07e","OperationId":"e215b441bf5c4ff7a5775c786668f289","ExecutionId":"92447c6041964a58b27b36eeae7cbb4e","CausationId":"dee2886a611443558bee7afcdafe6f1c","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"completed","DurationMs":91,"StatusCode":200}}
+{"TimestampUtc":"2026-11-25T11:47:22.8460907+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.SolicitarPublicacaoInputCommand","TraceId":"0HNQAT7EVKLRT","RootOperationId":"dc4508fc80644096b55d09c07e80f07e","OperationId":"04c5f8dc057d4900b50feeb513edb876","ExecutionId":"dee2886a611443558bee7afcdafe6f1c","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.SolicitarPublicacaoInputCommand","Phase":"completed","DurationMs":132,"StatusCode":200}}
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[1]
+      Setting HTTP status code 200.
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[3]
+      Writing value of type 'SolicitarPublicacaoOutputCommand' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /yapi/Presenca/EditorialSolicitarPublicacaoUseCase'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialSolicitarPublicacaoUseCase - 200 - application/json;+charset=utf-8 670.8031ms
+{"TimestampUtc":"2026-11-25T11:47:22.915662+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ProcessarPresencaInputCommand","TraceId":"657267153f284550a2c36e2b0267179c","RootOperationId":"d8b502aea54b45f18d35c2b3c9c539d9","OperationId":"06f84f49d9a74e649f3792a97bba6da8","ExecutionId":"5453a75b479b4bd09afdfecf64f49a9a","EventName":"Command.Completed","Command":"Command.UseCase.ProcessarPresencaInputCommand","Phase":"completed","DurationMs":42,"StatusCode":200,"BatchLimit":10,"Claimed":2,"Processed":1,"Failed":1}}
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialConsultarIdentidadesUseCase - application/json;+charset=utf-8 78
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /yapi/Presenca/EditorialConsultarIdentidadesUseCase'
+{"TimestampUtc":"2026-11-25T11:47:25.3993676+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ConsultarIdentidadesInputCommand","TraceId":"0HNQAT7EVKLRU","RootOperationId":"ad2a97290aa849c9b0df1bf9c09d3ef2","OperationId":"1abefc86e7124745b248b31eadadcc34","ExecutionId":"db59af1dc5314a9a96fafc88c7850d1b","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ConsultarIdentidadesInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:25.4039921+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLRU","RootOperationId":"ad2a97290aa849c9b0df1bf9c09d3ef2","OperationId":"efa4b8c48849421d8a62feb8c960e08b","ExecutionId":"576b3c0b941c4a8e97b502bb3be721b4","CausationId":"db59af1dc5314a9a96fafc88c7850d1b","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:25.4068751+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLRU","RootOperationId":"ad2a97290aa849c9b0df1bf9c09d3ef2","OperationId":"efa4b8c48849421d8a62feb8c960e08b","ExecutionId":"576b3c0b941c4a8e97b502bb3be721b4","CausationId":"db59af1dc5314a9a96fafc88c7850d1b","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"completed","DurationMs":3,"StatusCode":200}}
+{"TimestampUtc":"2026-11-25T11:47:25.4072503+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ConsultarIdentidadesInputCommand","TraceId":"0HNQAT7EVKLRU","RootOperationId":"ad2a97290aa849c9b0df1bf9c09d3ef2","OperationId":"1abefc86e7124745b248b31eadadcc34","ExecutionId":"db59af1dc5314a9a96fafc88c7850d1b","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ConsultarIdentidadesInputCommand","Phase":"completed","DurationMs":7,"StatusCode":200}}
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[1]
+      Setting HTTP status code 200.
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[3]
+      Writing value of type 'ConsultarIdentidadesOutputCommand' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /yapi/Presenca/EditorialConsultarIdentidadesUseCase'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialConsultarIdentidadesUseCase - 200 - application/json;+charset=utf-8 38.8374ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialConsultarRedacaoUseCase - application/json;+charset=utf-8 154
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /yapi/Presenca/EditorialConsultarRedacaoUseCase'
+{"TimestampUtc":"2026-11-25T11:47:25.5403764+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ConsultarRedacaoInputCommand","TraceId":"0HNQAT7EVKLRV","RootOperationId":"1b3f74f451d840059c579ad27dd3b2c0","OperationId":"df4821f2cf6e439f91ca2941d3d7fe8e","ExecutionId":"d4689d2e01174c1b8786a90b7aea3fbe","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ConsultarRedacaoInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:25.5437033+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLRV","RootOperationId":"1b3f74f451d840059c579ad27dd3b2c0","OperationId":"5798c10a42704ac8bb6149f5a43cc3df","ExecutionId":"bc6084634ecd4a5f89758fabb5f8e519","CausationId":"d4689d2e01174c1b8786a90b7aea3fbe","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:25.5455964+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLRV","RootOperationId":"1b3f74f451d840059c579ad27dd3b2c0","OperationId":"5798c10a42704ac8bb6149f5a43cc3df","ExecutionId":"bc6084634ecd4a5f89758fabb5f8e519","CausationId":"d4689d2e01174c1b8786a90b7aea3fbe","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"completed","DurationMs":1,"StatusCode":200}}
+{"TimestampUtc":"2026-11-25T11:47:25.5463611+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ConsultarRedacaoInputCommand","TraceId":"0HNQAT7EVKLRV","RootOperationId":"1b3f74f451d840059c579ad27dd3b2c0","OperationId":"df4821f2cf6e439f91ca2941d3d7fe8e","ExecutionId":"d4689d2e01174c1b8786a90b7aea3fbe","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ConsultarRedacaoInputCommand","Phase":"completed","DurationMs":6,"StatusCode":200}}
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[1]
+      Setting HTTP status code 200.
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[3]
+      Writing value of type 'ConsultarRedacaoOutputCommand' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /yapi/Presenca/EditorialConsultarRedacaoUseCase'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialConsultarRedacaoUseCase - 200 - application/json;+charset=utf-8 23.1599ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialConsultarOperacaoUseCase - application/json;+charset=utf-8 142
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /yapi/Presenca/EditorialConsultarOperacaoUseCase'
+{"TimestampUtc":"2026-11-25T11:47:25.786506+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ConsultarOperacaoInputCommand","TraceId":"0HNQAT7EVKLS0","RootOperationId":"51a7592d79024f4f9e2b0e7a10de77d0","OperationId":"f7f01da2da6a407db6e2b82436c04de5","ExecutionId":"807c29e48ab0494db40a9bab38d11134","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ConsultarOperacaoInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:25.78828+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"NotEvaluated","BusinessOutcome":"NotEvaluated","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLS0","RootOperationId":"51a7592d79024f4f9e2b0e7a10de77d0","OperationId":"ea28b29c5c08439195c6291a385ebb35","ExecutionId":"0ec1f60a91594df5a57b8bcd3b61c79e","CausationId":"807c29e48ab0494db40a9bab38d11134","TenantId":1,"UserId":10,"EventName":"Command.Started","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"started"}}
+{"TimestampUtc":"2026-11-25T11:47:25.7922371+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ExecutarEditorialInputCommand","TraceId":"0HNQAT7EVKLS0","RootOperationId":"51a7592d79024f4f9e2b0e7a10de77d0","OperationId":"ea28b29c5c08439195c6291a385ebb35","ExecutionId":"0ec1f60a91594df5a57b8bcd3b61c79e","CausationId":"807c29e48ab0494db40a9bab38d11134","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ExecutarEditorialInputCommand","Phase":"completed","DurationMs":3,"StatusCode":200}}
+{"TimestampUtc":"2026-11-25T11:47:25.7925546+00:00","Level":"Information","Category":"Command","Depth":"D0","TechnicalOutcome":"Succeeded","BusinessOutcome":"Accepted","Application":"UNSET","Environment":"Testing","Version":"UNSET","CommitSha":"UNSET","Data":{"Operation":"Command.UseCase.ConsultarOperacaoInputCommand","TraceId":"0HNQAT7EVKLS0","RootOperationId":"51a7592d79024f4f9e2b0e7a10de77d0","OperationId":"f7f01da2da6a407db6e2b82436c04de5","ExecutionId":"807c29e48ab0494db40a9bab38d11134","TenantId":1,"UserId":10,"EventName":"Command.Completed","Command":"Command.UseCase.ConsultarOperacaoInputCommand","Phase":"completed","DurationMs":6,"StatusCode":200}}
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[1]
+      Setting HTTP status code 200.
+info: Microsoft.AspNetCore.Http.Result.OkObjectResult[3]
+      Writing value of type 'ConsultarOperacaoOutputCommand' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /yapi/Presenca/EditorialConsultarOperacaoUseCase'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/yapi/Presenca/EditorialConsultarOperacaoUseCase - 200 - application/json;+charset=utf-8 18.2943ms
+{"timestamp":"2026-11-25T11:47:22.8805708Z","signal":"trace","source":"Yeshua.Operational","name":"Outbox.Record","kind":"Internal","traceId":"585da140ef1dd0dda9ecc9720d1cd095","spanId":"31cfd4c541505e5f","durationMs":20.4474,"status":"Unset","resource":{"service.name":"UNSET","deployment.environment.name":"Testing","service.version":"UNSET","service.commit.sha":"UNSET"},"attributes":{"yeshua.component":"Outbox","yeshua.tenant_id":1,"enduser.id":10,"yeshua.root_operation_id":"d8b502aea54b45f18d35c2b3c9c539d9","yeshua.operation_id":"0866b29973b343bdae7c210ef6148dc6","yeshua.execution_id":"26a80ab736ed4ff39a208b86a6071228"}}
+{"timestamp":"2026-11-25T11:47:22.9039185Z","signal":"trace","source":"Yeshua.Operational","name":"Outbox.Record","kind":"Internal","traceId":"8a71d5d510d772ec987fae36c516dbaa","spanId":"830dd4cd43c4b68c","durationMs":11.0732,"status":"Unset","resource":{"service.name":"UNSET","deployment.environment.name":"Testing","service.version":"UNSET","service.commit.sha":"UNSET"},"attributes":{"yeshua.component":"Outbox","yeshua.tenant_id":1,"enduser.id":10,"yeshua.root_operation_id":"d8b502aea54b45f18d35c2b3c9c539d9","yeshua.operation_id":"75ad8dab037f45738c2e672009c71310","yeshua.execution_id":"b8940fc61dc14f3f8b4d1e7a953da529"}}
+{"timestamp":"2026-11-25T11:47:22.8735262Z","signal":"trace","source":"Yeshua.Operational","name":"Command.UseCase.ProcessarPresencaInputCommand","kind":"Internal","traceId":"283593a3228b538b82dbb559eee28eca","spanId":"164e720cd602566c","durationMs":42.3155,"status":"Ok","resource":{"service.name":"UNSET","deployment.environment.name":"Testing","service.version":"UNSET","service.commit.sha":"UNSET"},"attributes":{"yeshua.component":"Command","yeshua.operation":"Command.UseCase.ProcessarPresencaInputCommand","yeshua.trace_id":"657267153f284550a2c36e2b0267179c","yeshua.depth":"D0","yeshua.root_operation_id":"d8b502aea54b45f18d35c2b3c9c539d9","yeshua.operation_id":"06f84f49d9a74e649f3792a97bba6da8","yeshua.execution_id":"5453a75b479b4bd09afdfecf64f49a9a","http.response.status_code":200,"yeshua.technical_outcome":"Succeeded","yeshua.business_outcome":"Accepted"}}
+[xUnit.net 00:00:07.10]   Finished:    Yeshua.Presenca.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

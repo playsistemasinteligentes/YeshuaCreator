@@ -9,6 +9,20 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
 
 ## Presenca Em Desenvolvimento
 
+- Continuidade PR #67 em 2026-11-25: incremento 098c7adc0 confirmado publicado.
+  Operador autorizou homologacao no banco de producao EXCLUSIVO do Presenca,
+  sem reset/descarte, terceiros, merge/deploy, timers ou envios externos reais.
+  Nesta execucao nao foi possivel confirmar/acessar esse banco: alias Presenca
+  ausente no MCP, configuracao privada nao legivel no workspace, sem variaveis
+  SQL expostas. Consulta limitada de metadados por Central nao comprova ausencia.
+  scripts/presenca/homologate.py reutiliza o loader privado unico e seleciona
+  somente Category=ExistingDatabase; preflight SELECT por padrao, --exercise
+  aditivo com tenant/atores preexistentes explicitamente marcados, --browser
+  opcional. Nao apontar suites descartaveis para producao: elas contem DROP.
+  Chromium -> API/JWT real passou com repositorios e canais simulados; nao
+  comprova SQL. Roteiro infra/Presenca/HOMOLOGACAO.txt; evidencias/checkpoint em
+  docs/Presenca/evidencias/homologacao-banco-existente. Nenhuma escrita SQL feita.
+
 - Saude/homologacao PR #67: ultimo incremento anterior confirmado em c192bb723.
   ConsultarOperacao projeta yInbox/ySaga/yOutbox por tenant, identidade e escopo;
   nao grava saude em entidades nem retorna payload. Saga reutiliza o predicado

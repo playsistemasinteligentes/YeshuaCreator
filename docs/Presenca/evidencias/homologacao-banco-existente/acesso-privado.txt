@@ -1,0 +1,1 @@
+{"status": "blocked", "code": "PRESENCA_HOMOLOGATION_CONFIGURATION_UNAVAILABLE", "writesExecuted": false}

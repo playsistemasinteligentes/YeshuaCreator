@@ -1,0 +1,85 @@
+HOMOLOGACAO PRESENCA EM BANCO EXISTENTE — SEM RESET OU DESCARTE
+
+Autorizacao do operador nesta continuidade: banco exclusivo do Presenca pode ser
+usado mesmo em producao. Isso nao autoriza afetar terceiros, descartar banco,
+ativar timers, fazer deploy ou enviar mensagens externas reais.
+
+Estado desta execucao
+- HEAD anterior 098c7adc0 confirmado na PR draft 67.
+- Workspace sem configuracao SQL exposta. Caminho padrao privado nao legivel.
+- MCP saudavel, somente SELECT; alias Presenca nao configurado. Consulta limitada
+  a sys.databases por alias Central nao encontrou nomes contendo presen; isso
+  nao prova inexistencia, pois a visibilidade do login pode ser limitada.
+- Identidade/exclusividade do banco NAO confirmadas; nenhuma escrita SQL feita.
+  Este documento e o ensaio preparado nao substituem a homologacao real.
+
+Pre-requisitos do ensaio aditivo
+1. Disponibilizar ao executor autorizado o arquivo privado unico existente,
+   com permissoes aceitas por infra/private/credentials.py. Nao copiar senhas
+   para fonte, comandos, evidencias, chat ou outro arquivo de configuracao.
+2. Informar a identidade real esperada da instancia (SERVERPROPERTY ServerName)
+   e o nome exato do catalogo exclusivo do Presenca. O ensaio compara ambos
+   pelas conexoes explicitas Apps.Presenca.MyConfig.Read/WriteConectionString.
+3. Um tenant local de teste ja provisionado e dois atores distintos, ativos,
+   pertencentes a ele. Nome do tenant: PRESENCA_HOMOLOG_<identificador>.
+   Nome dos atores: <mesmo marcador>_autor e <mesmo marcador>_aprovador.
+   Nao reaproveitar tenant de cliente nem renomear registros existentes para
+   passar no teste. O ensaio nao provisiona/edita yTenant ou yUser nem Central.
+   Se esse tenant/atores nao existirem, registrar a pendencia de provisionamento
+   explicito pelo caminho operacional existente; nao criar IDs globais soltos.
+4. Migrations do Presenca ja aplicadas pelo processo autorizado existente.
+   O ensaio nao aplica DDL, migration nem reset. Exige VIEW DEFINITION, modulos
+   somente ADM/PRESENCA, tabelas standard/Presenca conhecidas, sem synonyms nem
+   triggers ativos. Divergencias bloqueiam ANTES dos inserts e exigem revisao.
+   Outro app configurado com o mesmo catalogo tambem bloqueia por seguranca.
+5. Para navegador: Chromium/Playwright preparados fora do repositorio;
+   PRESENCA_PLAYWRIGHT_MODULE aponta para seu modulo. Dependencias de sistema
+   devem estar disponiveis. O teste nao instala navegador nem ativa servicos.
+
+Execucao (substituir placeholders por identidades verificadas, nao senhas)
+
+python3 scripts/presenca/homologate.py \
+  --credentials <caminho-absoluto-do-arquivo-unico> \
+  --database <catalogo-Presenca> --server <identidade-instancia-SQL> \
+  --tenant <tenant-homologacao> --author <ator-autor> --approver <ator-aprovador> \
+  --marker PRESENCA_HOMOLOG_<identificador> --evidence <novo-checkpoint.json>
+
+Sem --exercise: apenas SELECT/preflight. Nao afirmar que isso testou gravacao.
+Acrescentar --exercise para a jornada aditiva, e --browser para incluir Chromium.
+--evidence deve ser um arquivo NOVO; checkpoints anteriores sao preservados.
+O runner seleciona somente Category=ExistingDatabase e remove YESHUA_TEST_SQL
+herdado. NUNCA apontar as suites Category=SqlIntegration existentes para esse
+banco: elas sao exclusivas para ambientes descartaveis e contem CREATE/DROP.
+
+Com --exercise, depois do preflight
+- Cria publicadora e dois vinculos explicitos NOVOS no tenant de teste, usando
+  marcador + GUID; nao altera vinculos/identidades preexistentes.
+- Usa API local real com chave JWT sintetica (invalida na producao), repositories
+  SQL reais e ProcessingScope exclusivo por execucao. Nenhum host publicado e
+  chamado nem iniciado. A API nao executa migrations.
+- Disputa oito requisicoes idempotentes simultaneas, comprova unico recibo/pauta
+  em nova conexao; revisa e aprova com outro ator, persiste duas entregas.
+- Disputa tres claims em conexoes distintas, comprova dois IDs unicos, recusa
+  confirmacao por outro escopo/tentativa e reagenda apenas os claims proprios
+  pela politica normal de falha retentavel, sem reset de filas.
+- Processa GitHub e Telegram com estrategias reais e HTTP inteiramente simulado;
+  comprova sucesso parcial, resultado incerto e saude persistida por identidade.
+- --browser usa relay efemero em loopback para Front -> API real -> SQL; cria
+  outro rascunho identificado e consulta as entregas/saude. Nao e deploy.
+  Conexoes SQL/segredos nao sao herdados pelo processo Node. Browser bloqueia
+  outras origens e os transportes simulados rejeitam destinos desconhecidos.
+- Checkpoint sanitizado guarda run/publicadora/tenant/escopo apos provisionamento
+  e no final. Falhas deixam esses registros para inspecao. Nenhum finally apaga
+  dados, banco, tenants, auditoria, recibos ou releases. Eventual descarte e
+  decisao operacional separada; este roteiro nao contem comando de limpeza.
+
+Limites restantes
+- O ensaio acima esta compilado, mas seu caminho SQL NAO foi executado aqui.
+- Metricas compartilhadas foram verificadas localmente com MeterListener;
+  captura por worker/Prometheus de registros SQL reais, recuperacao por lease
+  vencido e carga sustentada continuam pendentes de ambiente acessivel.
+- O browser com API real passou usando repositories simulados. Esse resultado
+  nao valida transacao, persistencia ou concorrencia do SQL.
+- Fabric polling limitado pode perder movimentos intermediarios. Academia
+  independente, origem publicada e timers permanecem sem ativacao/homologacao.
+  Ativacao futura: infra/Presenca/Factory/ATIVACAO.txt; nada ativado nesta tarefa.

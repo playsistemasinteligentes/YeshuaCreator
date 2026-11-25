@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "browser": "145.0.7632.6",
+  "api": "actual API/JWT/endpoints via loopback test bridge",
+  "storage": "simulated repository: not SQL evidence",
+  "calls": [
+    "/yapi/Presenca/EditorialConsultarIdentidadesUseCase",
+    "/yapi/Presenca/EditorialConsultarRedacaoUseCase",
+    "/yapi/Presenca/EditorialConsultarOperacaoUseCase"
+  ],
+  "externalRequests": 0,
+  "errors": []
+}

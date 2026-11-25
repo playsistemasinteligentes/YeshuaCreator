@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2c5f7f69-4866-42a3-bee5-4e1e564451ac" name="@1b587aa5ec9a 2026-11-25 11:48:27" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-25T11:48:27.4375130+00:00" queuing="2026-11-25T11:48:27.4375130+00:00" start="2026-11-25T11:48:24.5382915+00:00" finish="2026-11-25T11:48:27.5054569+00:00" />
+  <TestSettings name="default" id="1d90c8e1-e9a3-4e23-aaa8-0c3a77e5164d">
+    <Deployment runDeploymentRoot="_1b587aa5ec9a_2026-11-25_11_48_27" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="c05e65ba-6116-4c0d-9fcb-45e5b6c4d2a7" testId="a44f611f-29a2-f2c4-9ae3-e018f9ca4048" testName="QueueHealth_ExportsOnlyTheLatestSnapshot" computerName="1b587aa5ec9a" duration="00:00:00.0126821" startTime="2026-11-25T11:48:27.1677887+00:00" endTime="2026-11-25T11:48:27.1807135+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c05e65ba-6116-4c0d-9fcb-45e5b6c4d2a7" />
+    <UnitTestResult executionId="91d3f5ae-50f7-4fdb-9488-6aec21348fbf" testId="b1e7b80d-2972-11e0-fe34-239d1df7b604" testName="BusinessRejection_DoesNotBecomeTechnicalFailure" computerName="1b587aa5ec9a" duration="00:00:00.0009143" startTime="2026-11-25T11:48:27.2776883+00:00" endTime="2026-11-25T11:48:27.2808024+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="91d3f5ae-50f7-4fdb-9488-6aec21348fbf" />
+    <UnitTestResult executionId="f931484f-6fa8-42ad-9ca8-511ac0cfc5d5" testId="ced23db0-2eb9-f14f-a78d-9d159ad6932f" testName="WorkerHealth_ExportsOnlyTheLatestRuntimeState" computerName="1b587aa5ec9a" duration="00:00:00.0179387" startTime="2026-11-25T11:48:27.1443876+00:00" endTime="2026-11-25T11:48:27.1668931+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f931484f-6fa8-42ad-9ca8-511ac0cfc5d5" />
+    <UnitTestResult executionId="16384dfc-3cb2-46f8-8a5b-562b7cc72202" testId="c39dd28f-7467-2cea-6664-81008cf03e97" testName="Command_EmitsExecutionDurationActiveAndWorkerMetrics" computerName="1b587aa5ec9a" duration="00:00:00.0893716" startTime="2026-11-25T11:48:26.9440158+00:00" endTime="2026-11-25T11:48:27.0899146+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="16384dfc-3cb2-46f8-8a5b-562b7cc72202" />
+    <UnitTestResult executionId="562e6a1e-b9d0-4654-a874-2856bde08ae3" testId="cdbe30d7-a927-09bf-a6a7-29adad766d52" testName="Repository_UsesOnlyBoundedOperationalTags" computerName="1b587aa5ec9a" duration="00:00:00.0052029" startTime="2026-11-25T11:48:27.1107425+00:00" endTime="2026-11-25T11:48:27.1180106+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="562e6a1e-b9d0-4654-a874-2856bde08ae3" />
+    <UnitTestResult executionId="0761836b-477d-4d85-a57f-cd273ec87323" testId="46f75e99-52ae-28d7-62eb-aee2673c8a80" testName="SagaRetry_EmitsOneRetryAndMeasuresTheStepOutcome" computerName="1b587aa5ec9a" duration="00:00:00.0007052" startTime="2026-11-25T11:48:27.2535040+00:00" endTime="2026-11-25T11:48:27.2544497+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0761836b-477d-4d85-a57f-cd273ec87323" />
+    <UnitTestResult executionId="3c75ac76-4870-48f0-9f15-e1706b175e45" testId="b1d50f2c-2d8e-00ff-60e9-328bb2911eb0" testName="QueueItemHealth_ExportsOnlyAggregatedDiseaseCounts" computerName="1b587aa5ec9a" duration="00:00:00.0010207" startTime="2026-11-25T11:48:27.1863968+00:00" endTime="2026-11-25T11:48:27.1885648+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c75ac76-4870-48f0-9f15-e1706b175e45" />
+    <UnitTestResult executionId="d9cfb463-041a-4c87-9a34-39605c6c95cb" testId="656d71d6-16a5-1fa5-962f-a4f1cf8953d9" testName="CurrentValue_ExportsLatestValueAsObservableGauge" computerName="1b587aa5ec9a" duration="00:00:00.0209481" startTime="2026-11-25T11:48:27.1231941+00:00" endTime="2026-11-25T11:48:27.1442887+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9cfb463-041a-4c87-9a34-39605c6c95cb" />
+    <UnitTestResult executionId="9eacfa79-05e1-4cb6-bee9-40e48d348d65" testId="7298281a-4695-3948-c21f-bfb1992f88a5" testName="QueueHealth_SuccessfulSnapshotClearsPreviousProbeFailure" computerName="1b587aa5ec9a" duration="00:00:00.0043110" startTime="2026-11-25T11:48:27.1808172+00:00" endTime="2026-11-25T11:48:27.1862819+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9eacfa79-05e1-4cb6-bee9-40e48d348d65" />
+    <UnitTestResult executionId="841d14bb-436d-4533-8f89-e11b2513980c" testId="525bd9ab-5ab3-dd5a-83a4-0949f7a784bc" testName="DisabledDecision_DoesNotEnterTheMetricsHotPath" computerName="1b587aa5ec9a" duration="00:00:00.0228438" startTime="2026-11-25T11:48:27.2545865+00:00" endTime="2026-11-25T11:48:27.2775835+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="841d14bb-436d-4533-8f89-e11b2513980c" />
+    <UnitTestResult executionId="3e078809-4a16-48b4-bc56-d140116491af" testId="9d390466-39b1-a17e-c094-3bef6023b810" testName="WorkerCycle_ReachingBatchLimit_EmitsBacklogPressureSignal" computerName="1b587aa5ec9a" duration="00:00:00.0003978" startTime="2026-11-25T11:48:27.1224801+00:00" endTime="2026-11-25T11:48:27.1231280+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3e078809-4a16-48b4-bc56-d140116491af" />
+    <UnitTestResult executionId="05e78702-37bc-4eb5-a710-fe1eb010d876" testId="f33973f6-ee7e-9d25-b396-1f78f1123c60" testName="WorkerHealth_WorkResetsConsecutiveEmptyCycles" computerName="1b587aa5ec9a" duration="00:00:00.0005569" startTime="2026-11-25T11:48:27.1670190+00:00" endTime="2026-11-25T11:48:27.1677469+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="05e78702-37bc-4eb5-a710-fe1eb010d876" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Command_EmitsExecutionDurationActiveAndWorkerMetrics" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="c39dd28f-7467-2cea-6664-81008cf03e97">
+      <Execution id="16384dfc-3cb2-46f8-8a5b-562b7cc72202" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="Command_EmitsExecutionDurationActiveAndWorkerMetrics" />
+    </UnitTest>
+    <UnitTest name="QueueHealth_ExportsOnlyTheLatestSnapshot" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="a44f611f-29a2-f2c4-9ae3-e018f9ca4048">
+      <Execution id="c05e65ba-6116-4c0d-9fcb-45e5b6c4d2a7" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="QueueHealth_ExportsOnlyTheLatestSnapshot" />
+    </UnitTest>
+    <UnitTest name="WorkerCycle_ReachingBatchLimit_EmitsBacklogPressureSignal" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="9d390466-39b1-a17e-c094-3bef6023b810">
+      <Execution id="3e078809-4a16-48b4-bc56-d140116491af" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="WorkerCycle_ReachingBatchLimit_EmitsBacklogPressureSignal" />
+    </UnitTest>
+    <UnitTest name="BusinessRejection_DoesNotBecomeTechnicalFailure" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="b1e7b80d-2972-11e0-fe34-239d1df7b604">
+      <Execution id="91d3f5ae-50f7-4fdb-9488-6aec21348fbf" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="BusinessRejection_DoesNotBecomeTechnicalFailure" />
+    </UnitTest>
+    <UnitTest name="QueueItemHealth_ExportsOnlyAggregatedDiseaseCounts" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="b1d50f2c-2d8e-00ff-60e9-328bb2911eb0">
+      <Execution id="3c75ac76-4870-48f0-9f15-e1706b175e45" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="QueueItemHealth_ExportsOnlyAggregatedDiseaseCounts" />
+    </UnitTest>
+    <UnitTest name="DisabledDecision_DoesNotEnterTheMetricsHotPath" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="525bd9ab-5ab3-dd5a-83a4-0949f7a784bc">
+      <Execution id="841d14bb-436d-4533-8f89-e11b2513980c" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="DisabledDecision_DoesNotEnterTheMetricsHotPath" />
+    </UnitTest>
+    <UnitTest name="WorkerHealth_WorkResetsConsecutiveEmptyCycles" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="f33973f6-ee7e-9d25-b396-1f78f1123c60">
+      <Execution id="05e78702-37bc-4eb5-a710-fe1eb010d876" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="WorkerHealth_WorkResetsConsecutiveEmptyCycles" />
+    </UnitTest>
+    <UnitTest name="WorkerHealth_ExportsOnlyTheLatestRuntimeState" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="ced23db0-2eb9-f14f-a78d-9d159ad6932f">
+      <Execution id="f931484f-6fa8-42ad-9ca8-511ac0cfc5d5" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="WorkerHealth_ExportsOnlyTheLatestRuntimeState" />
+    </UnitTest>
+    <UnitTest name="Repository_UsesOnlyBoundedOperationalTags" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="cdbe30d7-a927-09bf-a6a7-29adad766d52">
+      <Execution id="562e6a1e-b9d0-4654-a874-2856bde08ae3" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="Repository_UsesOnlyBoundedOperationalTags" />
+    </UnitTest>
+    <UnitTest name="SagaRetry_EmitsOneRetryAndMeasuresTheStepOutcome" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="46f75e99-52ae-28d7-62eb-aee2673c8a80">
+      <Execution id="0761836b-477d-4d85-a57f-cd273ec87323" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="SagaRetry_EmitsOneRetryAndMeasuresTheStepOutcome" />
+    </UnitTest>
+    <UnitTest name="QueueHealth_SuccessfulSnapshotClearsPreviousProbeFailure" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="7298281a-4695-3948-c21f-bfb1992f88a5">
+      <Execution id="9eacfa79-05e1-4cb6-bee9-40e48d348d65" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="QueueHealth_SuccessfulSnapshotClearsPreviousProbeFailure" />
+    </UnitTest>
+    <UnitTest name="CurrentValue_ExportsLatestValueAsObservableGauge" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="656d71d6-16a5-1fa5-962f-a4f1cf8953d9">
+      <Execution id="d9cfb463-041a-4c87-9a34-39605c6c95cb" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.OperationalMetricsTests" name="CurrentValue_ExportsLatestValueAsObservableGauge" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a44f611f-29a2-f2c4-9ae3-e018f9ca4048" executionId="c05e65ba-6116-4c0d-9fcb-45e5b6c4d2a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b1e7b80d-2972-11e0-fe34-239d1df7b604" executionId="91d3f5ae-50f7-4fdb-9488-6aec21348fbf" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ced23db0-2eb9-f14f-a78d-9d159ad6932f" executionId="f931484f-6fa8-42ad-9ca8-511ac0cfc5d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c39dd28f-7467-2cea-6664-81008cf03e97" executionId="16384dfc-3cb2-46f8-8a5b-562b7cc72202" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cdbe30d7-a927-09bf-a6a7-29adad766d52" executionId="562e6a1e-b9d0-4654-a874-2856bde08ae3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="46f75e99-52ae-28d7-62eb-aee2673c8a80" executionId="0761836b-477d-4d85-a57f-cd273ec87323" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b1d50f2c-2d8e-00ff-60e9-328bb2911eb0" executionId="3c75ac76-4870-48f0-9f15-e1706b175e45" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="656d71d6-16a5-1fa5-962f-a4f1cf8953d9" executionId="d9cfb463-041a-4c87-9a34-39605c6c95cb" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7298281a-4695-3948-c21f-bfb1992f88a5" executionId="9eacfa79-05e1-4cb6-bee9-40e48d348d65" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="525bd9ab-5ab3-dd5a-83a4-0949f7a784bc" executionId="841d14bb-436d-4533-8f89-e11b2513980c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d390466-39b1-a17e-c094-3bef6023b810" executionId="3e078809-4a16-48b4-bc56-d140116491af" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f33973f6-ee7e-9d25-b396-1f78f1123c60" executionId="05e78702-37bc-4eb5-a710-fe1eb010d876" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="12" executed="12" passed="12" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>
