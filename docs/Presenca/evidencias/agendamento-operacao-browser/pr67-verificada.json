@@ -1,0 +1,26 @@
+{
+  "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/67",
+  "state": "open",
+  "draft": true,
+  "merged": false,
+  "updated_at": "2026-11-24T16:53:23Z",
+  "head": {
+    "ref": "codex/task-3c3a6c9944b44a55b4eefe8b278ba113",
+    "sha": "2a2a89fe72b8e1d4c95b72ea956dd1d54468cdcc"
+  },
+  "commits": [
+    {
+      "sha": "3773bf0e3fbfffbd35812b7ca3e03583da48d81e",
+      "title": "Agent: Abra nova sessão para recuperar o trabalho da tarefa interrompida eb4cf6c8-7519-4945-b715-b7cc6e54ec98, cuja sess"
+    },
+    {
+      "sha": "a2d5a4a0004e4b6ff27ebafaf44cce530ed2027d",
+      "title": "Agent: A execução anterior excedeu 30 minutos. Antes de alterar, inspecione git status, diff, commits e workspace preser"
+    },
+    {
+      "sha": "2a2a89fe72b8e1d4c95b72ea956dd1d54468cdcc",
+      "title": "Agent: Continue na mesma branch e PR draft 67. Verifique primeiro o checkpoint M05 e se as alterações foram efetivamente"
+    }
+  ],
+  "verifiedAtUtc": "2026-11-24T17:12:46.420638+00:00"
+}

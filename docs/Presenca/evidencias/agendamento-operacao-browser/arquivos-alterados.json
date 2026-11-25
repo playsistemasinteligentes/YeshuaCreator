@@ -1,0 +1,38 @@
+{
+  "trackedModified": [
+    "AGENTS.md",
+    "scripts/presenca/factory.py",
+    "scripts/presenca/feed.py",
+    "src/CQRS/Application/Yeshua.CQRS.Application.Command/Patterns/OutBox/OutboxRecordScope.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/ThreeOriginPortalTests.cs"
+  ],
+  "untracked": [
+    "docs/Presenca/evidencias/agendamento-operacao-browser/api-resumo.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/arquivos-alterados.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/browser-failure.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/browser-resumo.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/browser.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/checkpoint.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/portal-browser-resumo.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/portal-browser.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/portal.png",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/pr67-verificada.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/presenca-resumo.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/presenca.trx",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/private-presenca-tests.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/python-falha-inicial.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/python-tests.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/redacao.png",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/runbook.json",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/scope-falha-inicial.txt",
+    "docs/Presenca/evidencias/agendamento-operacao-browser/worker-resumo.txt",
+    "infra/Presenca/Factory/yeshua-presenca-factory-collect.timer",
+    "infra/Presenca/Factory/yeshua-presenca-factory-deliver.timer",
+    "infra/Presenca/Factory/yeshua-presenca-factory@.service",
+    "scripts/presenca/scheduled.py",
+    "tests/Presenca/Browser/portal.mjs",
+    "tests/Presenca/Browser/redacao.mjs",
+    "tests/Presenca/Python/test_scheduled.py",
+    "tests/Presenca/Yeshua.Presenca.Tests/OutboxScopeTests.cs"
+  ]
+}

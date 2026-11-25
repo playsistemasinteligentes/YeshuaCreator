@@ -62,6 +62,7 @@ services:
       Mcp__DatabaseQuery__Connections__ApsAdm: "${YESHUA_SQL_MCP_APS_ADM:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Fiscal: "${YESHUA_SQL_MCP_FISCAL:?Configure credentials.json}"
       Mcp__DatabaseQuery__Connections__Memorias: "${YESHUA_SQL_MCP_MEMORIAS:?Configure credentials.json}"
+      Mcp__DatabaseQuery__Connections__Presenca: "${YESHUA_SQL_MCP_PRESENCA:?Configure credentials.json}"
       Mcp__PrivatePort: "5729"
       Mcp__Deploy__Destination: "${YESHUA_MCP_DEPLOY_DESTINATION:-}"
       Mcp__Deploy__IdentityFile: "${YESHUA_MCP_DEPLOY_IDENTITY_FILE:-}"

@@ -622,6 +622,12 @@ namespace Dominio.Schemas.CQRS
             }
             sb.AppendLine("};");
             sb.AppendLine("");
+            sb.AppendLine("private static readonly HashSet<(string Source, string Type)> YeshuaModuleIngressSources = new()");
+            sb.AppendLine("{");
+            foreach (var contract in contracts)
+                sb.AppendLine($"    (\"{EscapeLiteral(contract.SourceModule)}\", \"{EscapeLiteral(contract.Contract)}.v{contract.ContractVersion}\"),");
+            sb.AppendLine("};");
+            sb.AppendLine("");
             sb.AppendLine("public sealed record YeshuaModuleEventIngress(");
             sb.AppendLine("    int TenantId,");
             sb.AppendLine("    string MessageId,");
@@ -693,6 +699,8 @@ namespace Dominio.Schemas.CQRS
             sb.AppendLine("    if (string.IsNullOrWhiteSpace(envelope.Type) || !YeshuaModuleIngressTypes.Contains(envelope.Type))");
             sb.AppendLine("        return Results.BadRequest(new { Error = \"YeshuaModuleEvent contract is not declared by the target module.\" });");
             sb.AppendLine("");
+            sb.AppendLine("    if (!YeshuaModuleIngressSources.Contains((sourceModule, envelope.Type)) || !string.Equals(envelope.Source, sourceModule, StringComparison.Ordinal))");
+            sb.AppendLine("        return Results.Unauthorized();");
             sb.AppendLine("    if (!tenantRepository.ExistsById(envelope.TenantId, true))");
             sb.AppendLine("        return Results.Conflict(new { Error = \"TenantNotProvisioned\", envelope.TenantId });");
             sb.AppendLine("    if (authenticator.TechnicalUserId <= 0)");
@@ -759,6 +767,7 @@ namespace Dominio.Schemas.CQRS
                 .Where(continuation => continuation.Direction == "StartsFrom")
                 .GroupBy(continuation => new
                 {
+                    continuation.SourceModule,
                     continuation.Contract,
                     continuation.ContractVersion
                 })

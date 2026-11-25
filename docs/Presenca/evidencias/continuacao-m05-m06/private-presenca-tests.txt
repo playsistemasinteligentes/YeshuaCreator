@@ -1,0 +1,8 @@
+test_missing_technical_actor_or_implicit_truthy_enable_is_rejected (test_presenca_credentials.PresencaCredentialsTests.test_missing_technical_actor_or_implicit_truthy_enable_is_rejected) ... ok
+test_presenca_without_queue_does_not_require_rabbit_credentials (test_presenca_credentials.PresencaCredentialsTests.test_presenca_without_queue_does_not_require_rabbit_credentials) ... ok
+test_profiles_use_the_same_private_document_and_do_not_cross_app_boundaries (test_presenca_credentials.PresencaCredentialsTests.test_profiles_use_the_same_private_document_and_do_not_cross_app_boundaries) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.006s
+
+OK

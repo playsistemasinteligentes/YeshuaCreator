@@ -1,0 +1,45 @@
+Validação documental local 2026-11-20
+SHA base 0ee78f46dc0bcd0b85750e75e55ecf157d792b2f
+Caminhos existentes checados: 37
+infra/Central/DockerCompose/deploy.sh
+infra/Shared/DockerCompose/docker-compose.yml
+infra/Shared/DockerCompose/nginx/routes/10-applications.conf
+infra/Shared/DockerCompose/observability/grafana/dashboards/yeshua-queue-health.json
+infra/Shared/DockerCompose/observability/otelcol-config.yaml
+infra/docker/deploy.sh
+src/CQRS/Application/Yeshua.CQRS.Application.Command
+src/CQRS/Application/Yeshua.CQRS.Application.Command/Patterns/Command/ReciverBase.cs
+src/CQRS/Application/Yeshua.CQRS.Application.Command/Patterns/OutBox/OutboxDelivery.cs
+src/CQRS/Application/Yeshua.CQRS.Application.Command/Patterns/Saga/SagaExecutor.cs
+src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared
+src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/DB/Connection/RepositoryTelemetry.cs
+src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/ModuleTransport/YeshuaModuleAuthentication.cs
+src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front
+src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/Program.cs
+src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/applications.json
+src/Engine/Yeshua.Engine/AGENTS.md
+src/Engine/Yeshua.Engine/Dominio
+src/Engine/Yeshua.Engine/Dominio/Column.cs
+src/Engine/Yeshua.Engine/Dominio/Entity.cs
+src/Engine/Yeshua.Engine/Dominio/Migration/MigrationBase.cs
+src/Engine/Yeshua.Engine/Dominio/Migration/MigrationBuilder.cs
+src/Engine/Yeshua.Engine/Dominio/Module.cs
+src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/CSharpCQRS.cs
+src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeApplicationSagaWorker.cs
+src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureAPIEndpointsMigration.cs
+src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureReadConcreteRepositoryMigration.cs
+src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureWriteConcreteRepositoryMigration.cs
+src/Engine/Yeshua.Engine/Dominio/SourceCodeBase.cs
+src/OperationalIntelligence/Yeshua.OperationalIntelligence.Api/Modules/AgentTasks/AgentGitWorkspace.cs
+src/Studio/Yeshua.Studio.APS.ADM/Migrations/M000004.cs
+src/Studio/Yeshua.Studio.Fiscal/Migrations/M000001.cs
+src/Studio/Yeshua.Studio.Memorias/Migrations/M000001.cs
+src/Studio/Yeshua.Studio.Memorias/Program.cs
+tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/YeshuaModuleAuthenticationTests.cs
+tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs
+tests/Engine/Yeshua.Engine.Tests/SagaQueueGenerationTests.cs
+Snapshot GitHub: 10 issues únicas #53–#62; comentários vazios conforme consulta.
+TRX: hashes SHA-256 e contagens consistentes.
+Links relativos e whitespace: verificados.
+Primeira rodada acusou link ao próprio relatório ainda ausente; relatório criado e validação repetida.
+Erros finais: 0

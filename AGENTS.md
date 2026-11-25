@@ -7,6 +7,103 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   sem publicar. Push, PR, merge e deploy aguardam autorizacao explicita do
   operador; nao inferir permissao de publicacao de uma solicitacao de correcao.
 
+## Presenca Em Desenvolvimento
+
+- Pre-publicacao solicitada em 2026-11-25: PR #67 draft/open, HEAD publicado
+  77ba76cde, sem merge. Publicacao operacional nao aplicada: alias Presenca
+  ainda ausente no MCP, arquivo privado inacessivel e catalogo exclusivo nao
+  identificado. A instancia acessada por Central nao lista nome contendo
+  presen, com VIEW ANY DATABASE confirmado; nao presumir outra instancia/nome.
+  Fluxo oficial infra/docker/deploy.sh e ponte privada nao incluem destino
+  presenca; faltam Compose/deploy de API/Worker e integracao de rota. Nao chamar
+  Shared/all para contornar essa ausencia. Suite ampla neste executor: 47
+  passaram, 26 erros ambientais (25 home somente leitura, 1 legado /root sem
+  acesso), 6 skips; nao aprovada. Redirecionar fixtures privadas ao repositorio
+  aciona corretamente a protecao do loader. Requer runner privado adequado,
+  sem enfraquecer permissoes/guards. Evidencias: docs/Presenca/evidencias/pre-publicacao.
+
+- Alias operacional preparado na continuidade da PR #67: exportador/importador
+  agora cobrem DB_KEYS inteiro, incluindo Presenca, e Compose Shared referencia
+  YESHUA_SQL_MCP_PRESENCA. Shared/gateway/all exigem a conexao explicita em
+  Shared.OperationalIntelligence.DatabaseQueries.Presenca, sem fallback para
+  Apps.Presenca ou outro banco. Arquivo privado antigo precisa ser completado
+  pelo operador antes de atualizar Shared; nada aplicado ao ambiente real.
+  Cadastro e por aplicativo/banco, nao por AddModule de dominio. Studio nao
+  altera a infraestrutura Shared existente. Teste de cobertura detecta novos
+  aplicativos sem alias; checklist automatico na inicializacao da infraestrutura
+  e proposta futura, sem geracao de segredos nem sobrescrita de configuracao.
+
+- Continuidade PR #67 em 2026-11-25: incremento 098c7adc0 confirmado publicado.
+  Operador autorizou homologacao no banco de producao EXCLUSIVO do Presenca,
+  sem reset/descarte, terceiros, merge/deploy, timers ou envios externos reais.
+  Nesta execucao nao foi possivel confirmar/acessar esse banco: alias Presenca
+  ausente no MCP, configuracao privada nao legivel no workspace, sem variaveis
+  SQL expostas. Consulta limitada de metadados por Central nao comprova ausencia.
+  scripts/presenca/homologate.py reutiliza o loader privado unico e seleciona
+  somente Category=ExistingDatabase; preflight SELECT por padrao, --exercise
+  aditivo com tenant/atores preexistentes explicitamente marcados, --browser
+  opcional. Nao apontar suites descartaveis para producao: elas contem DROP.
+  Chromium -> API/JWT real passou com repositorios e canais simulados; nao
+  comprova SQL. Roteiro infra/Presenca/HOMOLOGACAO.txt; evidencias/checkpoint em
+  docs/Presenca/evidencias/homologacao-banco-existente. Nenhuma escrita SQL feita.
+
+- Saude/homologacao PR #67: ultimo incremento anterior confirmado em c192bb723.
+  ConsultarOperacao projeta yInbox/ySaga/yOutbox por tenant, identidade e escopo;
+  nao grava saude em entidades nem retorna payload. Saga reutiliza o predicado
+  de claim gerado e Outbox a projecao do worker. Datas/contagens nao comprovam
+  que um worker esteja ativo. API real com JWT e destinos/repositorios simulados
+  exercita publicacao parcial e recuperacao assinada de callback. Duas suites
+  SQL descartaveis estao preparadas, mas nao executadas sem YESHUA_TEST_SQL.
+  Roteiro de ativacao dos timers em infra/Presenca/Factory/ATIVACAO.txt;
+  nenhuma instalacao/ativacao feita. Evidencias: docs/Presenca/evidencias/saude-homologacao.
+
+- Agendamento/M08-M09 na continuidade da PR #67: incremento M05-M07
+  confirmado publicado em 2a2a89fe7. Timers systemd de coleta e entrega
+  independentes preparados em infra/Presenca/Factory, sem instalacao/ativacao.
+  scheduled.py reutiliza spool/transportes e o validador privado unico;
+  exige Apps.Presenca.Factory.Enabled booleano true e vinculo explicito.
+  OutboxRecordScope passa a tornar o trace independente do registro ativo
+  durante a entrega e restaura o polling ao sair. Ensaios Chromium locais
+  usam API/repositorio de aprovacao simulados; nao comprovam SQL nem producao.
+  Evidencias atuais em docs/Presenca/evidencias/agendamento-operacao-browser.
+
+- Continuidade PR #67: checkpoint anterior confirmado no commit a2d5a4a00.
+  `scripts/presenca/factory.py` le registros publicos GitHub da fabrica e
+  grava o spool existente sem chamar Presenca; snapshots limitados podem perder
+  movimentos intermediarios e nao substituem stream de auditoria. Sem ativacao
+  de agendamento. Recuperacao de status Academia usa Command normal gerado
+  ReprocessarStatusEducacional, vinculo Operar, tenant/identidade/escopo e
+  tentativa esperada; reagenda a mesma mensagem sem republicar conteudo.
+  Integracao SQL segue sem execucao por ausencia de ambiente descartavel
+  configurado. Evidencias em `docs/Presenca/evidencias/continuacao-m05-m06`.
+
+- Checkpoint PR #67 de 2026-11-24: HEAD local 3773bf0e3 preservado, mais
+  trabalho nao commitado recuperado de M05-M09. O produtor independente
+  `scripts/presenca/feed.py` possui spool duravel, allowlist publica e entrega
+  HTTP assinada com replay/backoff. Nao esta conectado ao fluxo operacional
+  da fabrica. Evidencias atuais em `docs/Presenca/evidencias/checkpoint-pr67`;
+  testes locais nao comprovam integracao SQL nem publicacao real. As notas
+  abaixo descrevem a entrega anterior e permanecem como historico.
+
+- Recuperacao de 2026-11-24: M00 preservada na PR draft #63 e refinamento M01
+  na #64; nenhuma delas estava integrada a main 84d41c853. A task atual usa
+  a branch preparada pelo aplicativo; importar arquivos nao estabelece
+  ancestralidade Git com essas branches. Nao declarar commits ou PR novos
+  sem confirmacao do aplicativo.
+- Presenca usa Studio proprio, entidades editoriais internas e Commands normais.
+  Tenant/ator vem do contexto; vinculos por identidade governam as operacoes.
+  `yTenant.UserId` local NAO comprova propriedade: OpenApplicationSession o
+  regrava a cada entrada. A primeira identidade/vinculo administrativo exige
+  provisionamento explicito; nao conceder acesso ao primeiro chamador nem
+  inferir autoridade do papel Admin generico do token.
+- Versoes editoriais preservam snapshots; alterar conteudo cria outro rascunho.
+  Aprovacao exige outro ator, confirmacao publica e destinos explicitos; ela
+  nunca e herdada pela versao seguinte. Solicitar publicacao apenas persiste
+  destinos pendentes nesta entrega; ainda nao ha transportador operacional.
+- PortalEstatico e biblioteca local de build/validacao/ativacao em Linux, sem
+  ligacao ao gateway ou deploy. Ativacao e rollback revalidam hashes e aprovacoes.
+  Nao tratar testes locais como portal publicado, nem como entrega das M05-M09.
+
 ## Cobranca E Direitos De Uso
 
 - Decisao de 2026-11-18: a interface usa Carteira de creditos, com Adicionar

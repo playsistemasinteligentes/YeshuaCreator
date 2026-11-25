@@ -1,0 +1,62 @@
+{
+  "recordedAtUtc": "2026-11-24T19:51:44.352030+00:00",
+  "head": "c192bb723af359fe6e741b32a5cad7887d2becb9",
+  "previousIncrementPublished": true,
+  "pr": 67,
+  "draftVerified": true,
+  "workspaceInitiallyClean": true,
+  "scope": "M08 scoped queue health projection; M09 real API simulated destinations; timer activation instructions",
+  "sql": "YESHUA_TEST_SQL absent; Docker executable/socket and local SQL Server unavailable. No production database used. Both disposable SQL scenarios skipped; prepared API/SQL scenario was not executed.",
+  "publicationThisTurnVerified": false,
+  "checks": [
+    {
+      "name": "Presenca tests (actual API host + simulated storage/HTTP, callback signature/recovery, health guards, domain/portal)",
+      "result": "54 passed, 2 SQL integration tests skipped, 0 failed"
+    },
+    {
+      "name": "Python source/scheduling",
+      "result": "19 passed"
+    },
+    {
+      "name": "Private config",
+      "result": "3 passed"
+    },
+    {
+      "name": "Editorial Chromium",
+      "result": "11 checks passed, no external browser requests; mock API"
+    },
+    {
+      "name": "JavaScript syntax and git diff --check",
+      "result": "Passed"
+    },
+    {
+      "name": "Worker build",
+      "result": "Succeeded, 0 warnings, 0 errors"
+    },
+    {
+      "name": "Generated portal Chromium",
+      "result": "6 checks across 3 articles passed, no external requests; real generated files, mock approval repository"
+    }
+  ],
+  "updatedAtUtc": "2026-11-24T23:35:26.724385+00:00",
+  "deliveries": [
+    "Scoped persisted-record health projection prepared for Inbox/editorial saga/Outbox, with actual shared saga claim predicate and separate ready/scheduled/uncertain counts",
+    "Real API host + real JWT/endpoints/receivers/processor/strategies tested with simulated repositories and HTTP channels",
+    "Operator-only health authorization/missing-scope guards tested before data query",
+    "Chromium editorial health table passed, 11 checks and no external requests",
+    "Reviewable host activation/verification/stop instructions prepared in infra/Presenca/Factory/ATIVACAO.txt; not executed",
+    "Prepared actual API/SQL/worker/channel scenario in a unique disposable database, gated and skipped without explicit test SQL connection",
+    "Actual host API scenario additionally exercises signed callback recovery with unchanged message and revision"
+  ],
+  "correctedTestFailure": "Initial real API host test had an empty captured JWT fixture key. Corrected fixture only; actual JWT authentication retained and test passed.",
+  "preparedSqlScenario": "Creates unique database, migrates fixture schema, uses actual JWT/API/commands/repositories, distinct approver, two simulated providers, persisted queue health before/after processing, drops only its generated database in finally.",
+  "apiSimulationLimits": "Passing actual API scenario substitutes repositories/UnitOfWork with in-memory test doubles. It verifies HTTP/JWT/endpoint/receiver/worker/strategy integration and signed callback transport, not SQL transaction or concurrency behavior.",
+  "activationInstructions": "infra/Presenca/Factory/ATIVACAO.txt; prepared only, no host/timer changes.",
+  "suggestedCommitMessage": "feat(presenca): expose scoped queue health and validate real API prototype",
+  "publishedCommitsVerified": [
+    "3773bf0e3fbfffbd35812b7ca3e03583da48d81e",
+    "a2d5a4a0004e4b6ff27ebafaf44cce530ed2027d",
+    "2a2a89fe72b8e1d4c95b72ea956dd1d54468cdcc",
+    "c192bb723af359fe6e741b32a5cad7887d2becb9"
+  ]
+}

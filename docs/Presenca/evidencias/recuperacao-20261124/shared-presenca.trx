@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="b0def6ca-32dc-4577-aa42-5a03c531b5ea" name="@1b587aa5ec9a 2026-11-24 15:24:51" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-24T15:24:51.5772342+00:00" queuing="2026-11-24T15:24:51.5772343+00:00" start="2026-11-24T15:24:48.5372725+00:00" finish="2026-11-24T15:24:51.5889120+00:00" />
+  <TestSettings name="default" id="d8685b37-7a6f-4ec1-8243-a6837f042e7b">
+    <Deployment runDeploymentRoot="_1b587aa5ec9a_2026-11-24_15_24_51" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f775acc6-9f2b-40b3-8e64-ccc70b4ad94c" testId="75078b36-6b06-1d77-9694-8c125bad3d5d" testName="HandlerAndAuthenticatorAcceptTheSameSignedBody" computerName="1b587aa5ec9a" duration="00:00:00.0813062" startTime="2026-11-24T15:24:51.0403824+00:00" endTime="2026-11-24T15:24:51.1642808+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f775acc6-9f2b-40b3-8e64-ccc70b4ad94c" />
+    <UnitTestResult executionId="c872a59f-c783-49ce-bd41-087d475d8c62" testId="7495e795-f3b2-c323-e885-1f123f9c59c2" testName="AuthenticatorRejectsTamperedBody" computerName="1b587aa5ec9a" duration="00:00:00.0048036" startTime="2026-11-24T15:24:51.1792443+00:00" endTime="2026-11-24T15:24:51.1853048+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c872a59f-c783-49ce-bd41-087d475d8c62" />
+    <UnitTestResult executionId="93a38f70-ad2b-4ece-a93b-fd1bdc6a4dca" testId="464b0914-ba21-5fe3-e525-0a1ba36b69d3" testName="AuthenticatorRejectsExpiredSignature" computerName="1b587aa5ec9a" duration="00:00:00.0009387" startTime="2026-11-24T15:24:51.1870739+00:00" endTime="2026-11-24T15:24:51.1939443+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="93a38f70-ad2b-4ece-a93b-fd1bdc6a4dca" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="AuthenticatorRejectsExpiredSignature" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="464b0914-ba21-5fe3-e525-0a1ba36b69d3">
+      <Execution id="93a38f70-ad2b-4ece-a93b-fd1bdc6a4dca" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.YeshuaModuleAuthenticationTests" name="AuthenticatorRejectsExpiredSignature" />
+    </UnitTest>
+    <UnitTest name="AuthenticatorRejectsTamperedBody" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="7495e795-f3b2-c323-e885-1f123f9c59c2">
+      <Execution id="c872a59f-c783-49ce-bd41-087d475d8c62" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.YeshuaModuleAuthenticationTests" name="AuthenticatorRejectsTamperedBody" />
+    </UnitTest>
+    <UnitTest name="HandlerAndAuthenticatorAcceptTheSameSignedBody" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/cqrs/yeshua.cqrs.infrastructure.shared.tests/bin/debug/net8.0/yeshua.cqrs.infrastructure.shared.tests.dll" id="75078b36-6b06-1d77-9694-8c125bad3d5d">
+      <Execution id="f775acc6-9f2b-40b3-8e64-ccc70b4ad94c" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Yeshua.CQRS.Infrastructure.Shared.Tests.YeshuaModuleAuthenticationTests" name="HandlerAndAuthenticatorAcceptTheSameSignedBody" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="75078b36-6b06-1d77-9694-8c125bad3d5d" executionId="f775acc6-9f2b-40b3-8e64-ccc70b4ad94c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7495e795-f3b2-c323-e885-1f123f9c59c2" executionId="c872a59f-c783-49ce-bd41-087d475d8c62" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="464b0914-ba21-5fe3-e525-0a1ba36b69d3" executionId="93a38f70-ad2b-4ece-a93b-fd1bdc6a4dca" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="3" executed="3" passed="3" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

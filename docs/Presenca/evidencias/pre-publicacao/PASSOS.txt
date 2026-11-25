@@ -1,0 +1,14 @@
+PUBLICACAO PRESENCA INTERROMPIDA ANTES DE APLICAR
+
+PR 67: draft/open; HEAD confirmado 77ba76cdef9191fc855a0a93a73627159691eca0; sem merge.
+A solicitacao do operador autoriza avaliar/aplicar pelo fluxo oficial se os pre-requisitos forem satisfeitos. Os bloqueios sao tecnicos; nao foi solicitada nova aprovacao intermediaria.
+
+1. Identificar instancia/catalogo exclusivos do Presenca. A instancia acessada por Central nao mostrou catalogo com nome contendo presen. Nao presumir existencia em outra instancia ou inventar nome. Se inexistente, decidir explicitamente o provisionamento antes de aplicar migrations.
+2. No host autorizado, completar o arquivo privado unico com conexoes reais independentes de leitura/escrita e Shared.OperationalIntelligence.DatabaseQueries.Presenca. Confirmar ProcessingScope e tenant/atores de homologacao identificados. Nao expor valores ao agente, alterar permissoes de /root ou reutilizar banco/credencial de outro modulo. O executor atual nao le esse arquivo e nao recebeu writer privado.
+3. Executar credentials.py validate --target shared e validacao do aplicativo/Compose no host autorizado, sem imprimir exportacao de segredos. A revisao da PR exige novo alias; Shared/all nao podem ser aplicados antes dessa validacao.
+4. Concluir os artefatos de implantacao do Presenca: Compose/Dockerfiles e migration/deploy de API/Worker, destino no script oficial e ponte restrita, rotas/upstreams e healthchecks pertinentes. Nao executar Shared/all como substituto do destino ausente. Alias MCP nao implanta o aplicativo.
+5. Investigar/validar suite privada em runner suportado: home seguro e gravavel fora do repositorio, fixture de legado isolada. Neste executor, 79 testes: 47 passed, 26 errors, 6 skipped. Nenhuma assertion failure nessa repeticao; suite NAO aprovada. As tres falhas antigas vieram de fixtures redirecionadas para o repositorio, corretamente rejeitadas pelo loader.
+6. Executar homologacao aditiva real API/SQL/concorrencia/navegador pelo roteiro HOMOLOGACAO.txt. Destinos externos simulados, registros identificados preservados. Nao usar suites SQL descartaveis nesse banco.
+7. Somente com gates satisfeitos: revisar/integrar a PR na main pelo mecanismo autorizado e publicar pelo fluxo oficial com recibo e verificacao de revisao/saude. A ponte atual aceita apenas main e nao tem target presenca. A ferramenta de deploy nao esta anunciada nesta conexao; nao foi usado transporte alternativo.
+
+Nenhum merge, deploy, restart, timer, escrita SQL, envio externo ou alteracao privada real executado. Apenas AGENTS.md e evidencias desta investigacao foram alterados. Publicacao desses novos arquivos pelo aplicativo ainda nao verificada.

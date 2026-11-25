@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "application": "APS.ADM",
     "title": "APS.ADM",
@@ -53,6 +53,17 @@
     "modules": [
       "ADM",
       "MEM"
+    ]
+  },
+  {
+    "application": "Presenca",
+    "title": "Presença",
+    "apiBasePath": "/apps/presenca/yapi",
+    "menuEndpoint": "/getMenu",
+    "customAssetsPath": "/Custon/Apps/Presenca",
+    "modules": [
+      "ADM",
+      "PRESENCA"
     ]
   }
 ]

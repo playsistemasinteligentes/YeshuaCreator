@@ -1,0 +1,48 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration
+// </yeshua>
+
+using Shered.DB;
+using Dominio.Entitys;
+namespace IQuery.Write
+{
+
+    public interface IySagaStepQueryWrite 
+     {
+        public QueryModel InserirySagaStepQuery(IySagaStepEntity ySagaStep);
+        public QueryModel UpdateySagaStepQuery(IySagaStepEntity ySagaStep);
+        QueryModel UpdateSagaId(int id, int value);
+        QueryModel UpdateStepKey(int id, string value);
+        QueryModel UpdateIndexOrder(int id, int value);
+        QueryModel UpdateCorrelationId(int id, string value);
+        QueryModel UpdateStatus(int id, int value);
+        QueryModel UpdateExecutionCount(int id, int value);
+        QueryModel UpdateLastExecutionAt(int id, DateTime value);
+        QueryModel UpdateCompletedAt(int id, DateTime value);
+        QueryModel UpdateErrorMessage(int id, string value);
+        QueryModel UpdatePayload(int id, string value);
+        QueryModel UpdateRetryCount(int id, int value);
+        QueryModel UpdateRootOperationId(int id, string value);
+        QueryModel UpdateOperationId(int id, string value);
+        QueryModel UpdateExecutionId(int id, string value);
+        QueryModel UpdateCausationId(int id, string value);
+        QueryModel UpdateTenantID(int id, int value);
+        QueryModel UpdateDeleted(int id, bool value);
+        QueryModel UpdateChanged(int id, DateTime value);
+        QueryModel UpdateUserId(int id, int value);
+        QueryModel UpdateOperationalEntityId(int id, string value);
+        QueryModel UpdateFailureNature(int id, string value);
+        QueryModel UpdateFailureTransience(int id, string value);
+        QueryModel UpdateFailureOrigin(int id, string value);
+        QueryModel UpdateFailureRetryable(int id, bool value);
+        QueryModel UpdateFailureCode(int id, string value);
+        public QueryModel DeleteySagaStepQuery(IySagaStepEntity ySagaStep);
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeInfraestructureQueryWriteMigration

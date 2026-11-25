@@ -1,0 +1,27 @@
+{
+  "scope": "M05 isolated producer prototype; no operational activation performed",
+  "enqueueExample": "python3 scripts/presenca/feed.py fabrica --spool /private/presenca-spool --tenant 1 --identity <64hex> --repository owner/repo --input <authorized-public-event.json>",
+  "eventExample": {
+    "kind": "issue",
+    "action": "opened",
+    "id": 7,
+    "revision": "r1"
+  },
+  "deliverExample": "python3 scripts/presenca/feed.py deliver --spool /private/presenca-spool --credentials <unified-private-credentials.json>",
+  "requiredPrivateConfig": [
+    "Apps.Presenca.IngressUrl (explicit HTTPS /yapi/Presenca/Inbox/YeshuaModuleEvent)",
+    "Shared.ModuleAuthentication.SharedKey (at least 32 UTF-8 bytes)"
+  ],
+  "prerequisites": [
+    "Explicit tenant/publisher and provisioned technical identity with Integrar permission",
+    "Migrated Presenca database and ProcessingScope configured",
+    "Scheduled producer invocation outside original factory completion path; not installed by this checkpoint"
+  ],
+  "pending": [
+    "SQL-backed ingestion/saga/authorization and concurrency validation",
+    "Actual authorized factory integration",
+    "M06: recover failed educational callbacks and verify status/version behavior",
+    "M07/M08/M09 preserved code needs remaining integration/homologation"
+  ],
+  "retention": "No source spool, audit, or production files cleaned. Sent receipts retained for replay detection."
+}

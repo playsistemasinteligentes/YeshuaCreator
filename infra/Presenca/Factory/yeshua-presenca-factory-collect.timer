@@ -1,0 +1,12 @@
+[Unit]
+Description=Collect public factory snapshots independently of factory task completion
+
+[Timer]
+OnBootSec=5min
+OnUnitInactiveSec=30min
+RandomizedDelaySec=2min
+AccuracySec=30s
+Unit=yeshua-presenca-factory@collect.service
+
+[Install]
+WantedBy=timers.target

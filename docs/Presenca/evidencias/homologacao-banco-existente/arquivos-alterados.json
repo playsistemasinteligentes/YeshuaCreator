@@ -1,0 +1,23 @@
+[
+  " M AGENTS.md",
+  " M tests/Presenca/Yeshua.Presenca.Tests/ApiPrototypeTests.cs",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/acesso-privado.txt",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/api-journey.json",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/api-journey.png",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/arquivos-alterados.json",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/browser-api.trx",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/checkpoint.json",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/guardas-final.trx",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/homologacao.trx",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/metrics.trx",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/pr67-verificada.json",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/presenca-final.trx",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/python-tests.txt",
+  "?? docs/Presenca/evidencias/homologacao-banco-existente/verificacao.txt",
+  "?? infra/Presenca/HOMOLOGACAO.txt",
+  "?? scripts/presenca/homologate.py",
+  "?? tests/Presenca/Browser/api-journey.mjs",
+  "?? tests/Presenca/Python/test_homologate.py",
+  "?? tests/Presenca/Yeshua.Presenca.Tests/BrowserApiJourney.cs",
+  "?? tests/Presenca/Yeshua.Presenca.Tests/ExistingDatabaseHomologationTests.cs"
+]

@@ -1,0 +1,65 @@
+{
+  "recordedAtUtc": "2026-11-25T12:55:55.228379+00:00",
+  "status": "BLOCKED_BEFORE_APPLY",
+  "pr": {
+    "url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/67",
+    "head": "77ba76cdef9191fc855a0a93a73627159691eca0",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeableState": "clean; not an acceptance or deployment result"
+  },
+  "localBranch": "codex/task-3c3a6c9944b44a55b4eefe8b278ba113",
+  "authorization": "Operator requests publication conditional on verified prerequisites. No further approval is being requested; prerequisites are not met.",
+  "preflight": {
+    "mcp": "healthy",
+    "presencaAlias": "not configured; existing six aliases remain listed",
+    "privateConfiguration": "Official credentials.py validate --target shared returned unavailable; path inaccessible, no SQL/private variables or alternative secret mount available",
+    "database": "Central metadata connection resolves to instance 29f1f197bc1d and YESHUA_CENTRAL; VIEW ANY DATABASE=1; no catalog name matching %presen% in that instance. Dedicated Presenca database/instance not identified; other names/instances remain unknown.",
+    "sqlWrites": false,
+    "privateConfigurationChanged": false
+  },
+  "officialPublicationFlow": {
+    "script": "infra/docker/deploy.sh deploys current main only; Presenca target absent",
+    "bridge": "infra/deploy-bridge/bridge.py TARGETS does not contain presenca",
+    "applicationArtifacts": "No infra/Presenca/DockerCompose API/Worker/migration/deploy definitions; no Presenca gateway upstream/route in operational nginx sources",
+    "availableTools": "No yeshua_deploy or private configuration writer announced. No alternate SSH/bridge invocation attempted.",
+    "sharedSafety": "Required Presenca alias in source must be configured and validated before any Shared update; no Shared/all operation executed."
+  },
+  "suite": {
+    "run": 79,
+    "passed": 47,
+    "errors": 26,
+    "failures": 0,
+    "skipped": 6,
+    "accepted": false,
+    "causes": "25 OSError read-only /home/agent fixture directories; 1 PermissionError legacy /root/YeshuaMemoriasSecrets probe",
+    "previousThreeFailures": "Earlier Path.home redirection placed private fixtures under repository. write_new_json rejects such paths before creating a file; confirmed by isolated negative probe. Do not redirect fixtures into source tree or weaken loader protections.",
+    "isolatedLegacyDiagnostic": "The affected support test passes when only LEGACY_MEMORIAS_ROOT is patched to an absent test fixture; production code unchanged.",
+    "remaining": "Run private-file/permission tests on a supported runner with writable secure home outside repository and isolated legacy fixture. No claim those tests passed here."
+  },
+  "otherChecks": [
+    "Loader Bash fixture passed; no real provisioning",
+    "git diff --check passed",
+    "Official private validation failed before reading values; no secrets printed"
+  ],
+  "sqlHomologation": "NOT EXECUTED; no credentials, identified exclusive database or preprovisioned marked tenant/actors available",
+  "applied": {
+    "merge": false,
+    "deploy": false,
+    "restart": false,
+    "timers": false,
+    "privateAliasWrite": false,
+    "externalSends": false
+  },
+  "nextSteps": [
+    "Identify actual exclusive Presenca SQL instance/catalog, or obtain an explicit provisioning decision if absent; do not invent the catalog",
+    "Authorized host operator completes existing private configuration via documented mechanism: dedicated MCP read alias and independent application read/write profiles, processing scope and explicitly provisioned actors",
+    "Run official private validation and synthetic/real configuration checks on authorized runner; no up/restart with missing alias",
+    "Finish targeted Presenca deployment packaging, official target/bridge and gateway integration without overwriting existing application setup; review/test before application",
+    "Execute additive API/SQL/persistence/concurrency/browser acceptance with simulated external channels using infra/Presenca/HOMOLOGACAO.txt, retain labelled records",
+    "Review/integrate PR into main only after required validation and perform controlled official deployment with receipts and post-deploy version/health checks; current script cannot deploy an unmerged draft branch"
+  ],
+  "publicationThisIncrementVerified": false,
+  "suggestedCommitMessage": "docs(presenca): record publication prerequisites and private-suite diagnosis"
+}

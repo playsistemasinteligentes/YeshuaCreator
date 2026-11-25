@@ -1,0 +1,62 @@
+{
+  "recordedAtUtc": "2026-11-24T16:15:41.652855+00:00",
+  "branch": "codex/task-3c3a6c9944b44a55b4eefe8b278ba113",
+  "head": "3773bf0e3fbfffbd35812b7ca3e03583da48d81e",
+  "scope": "M05: durable factory producer transport and essential verification",
+  "preservedWork": "M00–M04 in HEAD; uncommitted M05–M09 work from interrupted execution preserved. No reset or Git metadata writes.",
+  "publication": "Application publication not yet verified",
+  "nextModule": "M05 SQL Inbox/saga-to-pauta verification and actual producer hookup remain before M06 status recovery closure",
+  "checks": [
+    {
+      "name": "Presenca dotnet tests",
+      "result": "41 passed, 1 SQL skipped, 0 failed"
+    },
+    {
+      "name": "Producer Python tests",
+      "result": "8 passed after correcting redirect test fixture; initial failure retained"
+    },
+    {
+      "name": "Presenca private configuration tests",
+      "result": "3 passed"
+    },
+    {
+      "name": "All private configuration tests with test-home patch",
+      "result": "FAILED: 74 run, 3 failures, 19 errors, 7 skipped; fixture path inside repository rejected and restricted outside paths; not a passing validation"
+    },
+    {
+      "name": "Worker build",
+      "result": "Succeeded: 42 warnings, 0 errors"
+    },
+    {
+      "name": "Front JS syntax",
+      "result": "Passed node --check"
+    },
+    {
+      "name": "git diff --check",
+      "result": "FAILED: 9 trailing whitespace lines from existing entity-generation template; generated files not edited by hand"
+    },
+    {
+      "name": "API build",
+      "result": "Succeeded: 0 warnings, 0 errors"
+    },
+    {
+      "name": "Engine targeted regressions",
+      "result": "18 passed, 0 failed"
+    }
+  ],
+  "updatedAtUtc": "2026-11-24T16:17:54.102538+00:00",
+  "deliveredThisExecution": [
+    "M05 transport: only explicit HTTPS module ingress receives signed public envelope",
+    "Durable event retained on outage; replay preserves message/body; confirmed delivery moves pending to sent",
+    "Retry-After respected; redirects disabled; eight Python tests including resilience/privacy/deduplication"
+  ],
+  "m05Status": "PROTOTYPE PARTIAL: producer transport verified locally; factory activation and SQL Inbox-to-pauta integration not verified",
+  "preservedUnfinishedModules": [
+    "M06 contract/status callback and simulated producer",
+    "M07 channel strategies",
+    "M08 operation/health",
+    "M09 local three-origin portal fixture"
+  ],
+  "incrementalCommit": "Prepared for application publication only; no terminal commit or push; no new commit verified",
+  "suggestedCommitMessage": "feat(presenca): checkpoint recovered pipeline and verify durable M05 producer"
+}

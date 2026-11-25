@@ -1,0 +1,12 @@
+  Yeshua.Presenca.CQRS.Application.RepositoryInterfaces -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces.dll
+  Yeshua.Presenca.CQRS.Application.Command -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Application.Command.dll
+  Yeshua.Presenca.CQRS.Infrastructure.Shared -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.Shared.dll
+  Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead.dll
+  Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite.dll
+  Yeshua.Presenca.CQRS.Infrastructure.Worker -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/bin/Debug/net8.0/Yeshua.Presenca.CQRS.Infrastructure.Worker.dll
+
+Build succeeded.
+    0 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:11.32

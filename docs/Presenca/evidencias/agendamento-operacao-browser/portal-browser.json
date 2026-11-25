@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "browser": "145.0.7632.6",
+  "articleCount": 3,
+  "checks": [
+    "Anonymous static home, Portuguese language and main heading",
+    "Static article 28475E91241886337E096937450C44AE304F9030BD919B6B3C32F3F40A7BCD59: heading, canonical, JSON-LD and no executable script",
+    "Static article A65C7AB4294234B9695990CDFBE86B9B6BC9007B484FC3C1D624E93085513926: heading, canonical, JSON-LD and no executable script",
+    "Static article F476D8EED0915D156117473316FA05EB7C6B30C5FFB2728999FEEF272995931A: heading, canonical, JSON-LD and no executable script",
+    "All local navigation targets return 200",
+    "Robots and sitemap include public canonical URLs for the three origins"
+  ],
+  "externalRequests": [],
+  "errors": [],
+  "persistence": "Mock approval repository; real builder/activation; no SQL, gateway or deploy"
+}

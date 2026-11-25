@@ -1,0 +1,18 @@
+{
+  "number": 63,
+  "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/63",
+  "state": "open",
+  "draft": true,
+  "title": "Agent: Executar M00 issue #53 do Yeshua Presença em workspace de desenvolvimento novo, pois o workspace da tarefa anteri",
+  "updated_at": "2026-11-20T01:18:05Z",
+  "body": "Alteracao preparada pelo agente operacional.\n\nTask: `71ddf4aa-021c-4fa5-b0f1-40accdb624f2`\n\nM00 preparada no workspace novo para revisão, com **Academia independente e M01 não iniciada**. Issues #53–#62 lidas diretamente no GitHub.\n\nArquivos adicionados:\n\n- [Plano M00](docs/Presenca/M00_RECONHECIMENTO.md): inventário com SHA/caminhos, ADRs propostas, contratos, dependências, riscos e checklist.\n- [Verificações](docs/Presenca/M00_VERIFICACOES.md): testes executados e colaboração controlada entre dois agentes, incluindo revisão independente.\n- `docs/Presenca/evidencias/`: snapshot das issues, TRX, resultados e validação documental.\n\nResultados: **Shared 5/5 passaram; Engine 28/29 passaram, 1 falhou**. A falha de geração aponta para caminhos Windows no Linux; ficou documentada, sem correção de código nesta M00. Conferência documental de 37 caminhos, links e hashes passou.\n\nO aceite integral permanece pendente da falha e da revisão do coordenador. Nenhum código funcional, commit, push, merge ou deploy foi executado. A publicação pelo aplicativo ainda não foi verificada; nenhuma URL de PR foi confirmada.\n\nRevisao e deploy permanecem com o operador.",
+  "head": {
+    "ref": "codex/task-71ddf4aa021c4fa5b0f140accdb624f2",
+    "sha": "951879449da6b6e4b2e11a22405ebef9133d5cb4"
+  },
+  "base": {
+    "ref": "main",
+    "sha": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f"
+  },
+  "retrievedAtUtcNote": "Consultada diretamente nesta continuação antes da correção; não comprova atualização posterior pelo aplicativo."
+}

@@ -1,0 +1,56 @@
+{
+  "implementation": [
+    "scripts/presenca/factory.py: public repository collector -> existing durable Fabrica envelopes",
+    "scripts/presenca/feed.py: bounded movement IDs and public GitHub deployment API references",
+    "M000003 DSL -> standard ReprocessarStatusEducacional command/receiver/API/DI",
+    "Existing editorial write/read repositories: authorized callback retry and scoped operation projection",
+    "Central Presenca redacao.js: failed educational callback recovery",
+    "CanalHttpStrategy: retain safe retry classification on malformed optional rate-limit JSON"
+  ],
+  "factory": {
+    "collectExample": "python3 scripts/presenca/factory.py --spool <persistent-source-spool> --tenant <authorized-tenant> --identity <explicit-publisher-64hex> --repository owner/repo --pages 1",
+    "deliverExample": "python3 scripts/presenca/feed.py deliver --spool <same-spool> --credentials <existing-unified-private-credentials.json>",
+    "privateConfiguration": [
+      "Apps.Presenca.IngressUrl",
+      "Shared.ModuleAuthentication.SharedKey"
+    ],
+    "operationalPrerequisites": [
+      "Provision technical integrator against explicit publisher; no implicit first caller privileges",
+      "Migrate Presenca and configure matching processing scopes",
+      "Run collection independently of factory task completion; run delivery independently so GitHub outage does not pause pending deliveries"
+    ],
+    "coverage": "Public current snapshots, bounded 100 records per page/resource and 1–10 pages; truncation reported; intermediate movements can be missed. Not a lossless event stream. No scheduler or production activation performed.",
+    "sourceDocumentation": [
+      "https://docs.github.com/en/rest/issues/issues",
+      "https://docs.github.com/en/rest/pulls/pulls",
+      "https://docs.github.com/en/rest/releases/releases",
+      "https://docs.github.com/en/rest/deployments/deployments",
+      "https://docs.github.com/en/rest/deployments/statuses"
+    ]
+  },
+  "educationalRecovery": {
+    "command": "POST /yapi/Presenca/EditorialReprocessarStatusEducacionalUseCase",
+    "preconditions": [
+      "Normal authenticated application session",
+      "Operar grant on active selected publisher",
+      "Failed callback in same tenant/publisher/ProcessingScope",
+      "RegistroId = 64 hex suffix of callback MessageId (status:<suffix>)",
+      "VersaoEsperada = observed RetryCount; nonempty Motivo; unique idempotency Chave"
+    ],
+    "effect": "Atomically requeues same Outbox record/message ID, retaining payload/version and total retry count; resets per-manual-retry budget; records normal receipt/audit. Worker sends asynchronously. No content republication.",
+    "ui": "Operação lists educational callbacks; FalhaFinal exposes reason and Reagendar retorno à Academia."
+  },
+  "sql": {
+    "command": "dotnet test tests/Presenca/Yeshua.Presenca.Tests --filter Category=SqlIntegration",
+    "prerequisite": "Explicit YESHUA_TEST_SQL administrative connection for authorized test server; optional YESHUA_TEST_SQL_PASSWORD. No values in repository/chat.",
+    "lifecycle": "Creates unique YESHUA_PRESENCA_TEST_<guid> DB and drops only that DB in finally; requires SQL Server available externally or separately provisioned.",
+    "actualResult": "NOT EXECUTED: no test connection, Docker or local SQL Server available in this workspace. Unit test of migration-generated schema passed; does not prove SQL execution."
+  },
+  "pending": [
+    "M05 actual SQL Inbox -> saga -> pauta/approval/version tests and source scheduling activation",
+    "M06 SQL-backed callback recovery, duplicate/status ordering validation and full Academia simulation through actual hosts",
+    "M07 external account tests with authorized credentials; no remote posts made",
+    "M08 concurrency/load and operational alert recovery against real test persistence; retention/cleanup remains unchanged",
+    "M09 browser/full API+SQL E2E and authorized environment validation; no deployment performed"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "recordedAtUtc": "2026-11-24T16:44:56.144010+00:00",
+  "head": "a2d5a4a0004e4b6ff27ebafaf44cce530ed2027d",
+  "priorCheckpointPublished": true,
+  "pr": 67,
+  "draftVerified": true,
+  "workspaceInitiallyClean": true,
+  "sqlEnvironment": {
+    "testConnectionConfigured": false,
+    "dockerAvailable": false,
+    "dockerSocketAvailable": false,
+    "localSqlServerAvailable": false,
+    "unifiedPrivateFileAvailable": false
+  },
+  "scope": "M05 public factory integration; M06 callback recovery; preserve later module work",
+  "publicationThisTurnVerified": false,
+  "updatedAtUtc": "2026-11-24T16:52:58.059027+00:00",
+  "m05": {
+    "implemented": "Bounded read-only public GitHub factory collector for issues/PRs/releases/successful deployments -> existing durable spool; transport remains independently drainable",
+    "verified": "13 Python tests; live GET of selected repository produced 67 spool records with synthetic publisher; no Presenca contact",
+    "limits": "Snapshot polling can miss intermediate movements. No scheduler installed. SQL Inbox/saga persistence not executed."
+  },
+  "m06": {
+    "implemented": "Operator-only ReprocessarStatusEducacional normal generated command; scoped ownership/attempt fence; preserved message ID and total retry count; receipt/audit; operation projection and UI recovery",
+    "verification": "Local transport/version/identity and operator permission tests passed; SQL recovery and browser E2E remain unverified."
+  },
+  "m07": "Malformed optional Telegram rate-limit body remains retryable; minimum Retry-After preserved; tested locally. No real account delivery.",
+  "checkpointKind": "Filesystem checkpoint prepared; application publishes incremental commit after turn; no terminal Git writes",
+  "checks": [
+    {
+      "name": "Python producer/collector tests",
+      "result": "13 passed"
+    },
+    {
+      "name": "Presenca tests including cross-language fixtures and callback/rate-limit cases",
+      "result": "49 passed, 1 SQL integration skipped, 0 failed"
+    },
+    {
+      "name": "Specific private configuration tests",
+      "result": "3 passed"
+    },
+    {
+      "name": "API build",
+      "result": "0 warnings, 0 errors"
+    },
+    {
+      "name": "Front JavaScript syntax",
+      "result": "passed"
+    },
+    {
+      "name": "git diff --check for this increment",
+      "result": "passed"
+    },
+    {
+      "name": "Final Worker build",
+      "result": "0 warnings, 0 errors"
+    },
+    {
+      "name": "Presenca regeneration",
+      "result": "1477 files including 716 Custon files unchanged; passed"
+    }
+  ],
+  "preparedIncrement": "M05 public factory collector; M06 educational callback recovery; M07 safe rate-limit handling",
+  "suggestedCommitMessage": "feat(presenca): connect factory snapshots and recover educational callbacks"
+}

@@ -1,0 +1,38 @@
+{
+  "trackedModified": [
+    "AGENTS.md",
+    "src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Editorial/Custon/Editorial.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/Custon/Apps/Presenca/pages/redacao.html",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/Custon/Apps/Presenca/pages/redacao.js",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/IdentidadePublicadora/EditorialReadRepository.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/IdentidadePublicadora/SaudeDistribuicaoRepository.cs",
+    "tests/Presenca/Browser/redacao.mjs",
+    "tests/Presenca/Yeshua.Presenca.Tests/EditorialSqlTests.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/Yeshua.Presenca.Tests.csproj"
+  ],
+  "untracked": [
+    "docs/Presenca/evidencias/saude-homologacao/api-falha-inicial.txt",
+    "docs/Presenca/evidencias/saude-homologacao/api-simulado-resumo.txt",
+    "docs/Presenca/evidencias/saude-homologacao/api.trx",
+    "docs/Presenca/evidencias/saude-homologacao/browser-resumo.txt",
+    "docs/Presenca/evidencias/saude-homologacao/browser.json",
+    "docs/Presenca/evidencias/saude-homologacao/checkpoint.json",
+    "docs/Presenca/evidencias/saude-homologacao/portal-browser-resumo.txt",
+    "docs/Presenca/evidencias/saude-homologacao/portal-browser.json",
+    "docs/Presenca/evidencias/saude-homologacao/portal.png",
+    "docs/Presenca/evidencias/saude-homologacao/pr67-verificada.json",
+    "docs/Presenca/evidencias/saude-homologacao/presenca-resumo.txt",
+    "docs/Presenca/evidencias/saude-homologacao/presenca.trx",
+    "docs/Presenca/evidencias/saude-homologacao/private-presenca-tests.txt",
+    "docs/Presenca/evidencias/saude-homologacao/prontidao.json",
+    "docs/Presenca/evidencias/saude-homologacao/python-tests.txt",
+    "docs/Presenca/evidencias/saude-homologacao/redacao.png",
+    "docs/Presenca/evidencias/saude-homologacao/worker-resumo.txt",
+    "infra/Presenca/Factory/ATIVACAO.txt",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Custon/Program.Testability.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/IdentidadePublicadora/SaudeOperacaoRepository.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/ySaga/SaudeEditorialPredicate.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/ApiPrototypeTests.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/QueueHealthAuthorizationTests.cs"
+  ]
+}

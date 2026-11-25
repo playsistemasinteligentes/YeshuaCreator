@@ -397,7 +397,7 @@ namespace Command.Patterns
                         failed++;
                         recordActivity?.SetStatus(ActivityStatusCode.Error, ex.Message);
                         OperationalActivity.RecordException(recordActivity, ex);
-                        Console.WriteLine($"Erro na saga {sagaId}: {ex.Message}");
+                        // Structured worker outcome and authorized trace evidence report this failure.
                     }
                     finally
                     {

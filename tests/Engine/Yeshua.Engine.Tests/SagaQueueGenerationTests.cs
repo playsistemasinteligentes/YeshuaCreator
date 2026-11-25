@@ -72,6 +72,19 @@ public sealed class SagaQueueGenerationTests
     }
 
     [TestMethod]
+    public void Transactional_saga_without_topology_has_no_queue_worker_source()
+    {
+        var migration=new InternalMigration();migration.Up();migration.ConfigureSagaWorkers(1000,generateQueueWorkers:true);
+        var inbox=Generate(new SourceCodeApplicationSagaQueueWorkers(migration,true));
+        var outbox=Generate(new SourceCodeApplicationSagaQueueWorkers(migration,false));
+        Assert.IsFalse(inbox.Contains("class InboxListenerHandler"));
+        Assert.IsFalse(outbox.Contains("class yOutBoxWorkerHandler"));
+        var executor=Generate(new SourceCodeApplicationSagaWorker(false,true));
+        StringAssert.Contains(executor,"const bool TransactionalStepWrites = true;");
+        Assert.IsFalse(executor.Contains("Console.WriteLine"));
+    }
+
+    [TestMethod]
     public void Saga_repository_generation_uses_one_predicate_for_claim_and_health()
     {
         var entity = new Entity("ySaga");

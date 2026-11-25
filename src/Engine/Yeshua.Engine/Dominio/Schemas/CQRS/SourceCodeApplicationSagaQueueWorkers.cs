@@ -14,6 +14,9 @@ public sealed class SourceCodeApplicationSagaQueueWorkers : SourceCodeBase
         Path.Combine(Path.GetDirectoryName(path)!, "Custon", Path.GetFileName(path)));
     protected override StringBuilder GenerateCode()
     {
+        var steps = _migration.UseCaseGroup.SelectMany(g=>g.UseCaseSubGroup).SelectMany(s=>s.Saga).SelectMany(s=>s.SagaStepGroup).SelectMany(g=>g.Steps);
+        if (!steps.Any(s=>_inbox ? s.InboxQueueTopology != null : s.OutboxQueueTopology != null))
+            return new StringBuilder("// No declared queue topology: no queue transport worker is generated.");
         var routes = new StringBuilder();
         var contracts = new StringBuilder();
         var operations = new Dictionary<string, string>(StringComparer.Ordinal);

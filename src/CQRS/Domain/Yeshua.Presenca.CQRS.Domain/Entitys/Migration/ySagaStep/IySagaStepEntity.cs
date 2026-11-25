@@ -1,0 +1,57 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeEntityMigration
+// </yeshua>
+
+
+                using System;
+                using Dominio.TiposPrimitivos;
+                using System.Collections.Generic;
+                using System.Linq;
+                using System.Text;
+                using System.Threading.Tasks;
+
+                namespace Dominio.Entitys
+                {
+                    public interface IySagaStepEntity
+{
+    int? Id { get; set; }
+    int SagaId { get; set; }
+    string StepKey { get; set; }
+    int IndexOrder { get; set; }
+    string CorrelationId { get; set; }
+    int Status { get; set; }
+    int ExecutionCount { get; set; }
+    DateTime? LastExecutionAt { get; set; }
+    DateTime? CompletedAt { get; set; }
+    string? ErrorMessage { get; set; }
+    string? Payload { get; set; }
+    int RetryCount { get; set; }
+    string? RootOperationId { get; set; }
+    string? OperationId { get; set; }
+    string? ExecutionId { get; set; }
+    string? CausationId { get; set; }
+    int? TenantID { get; set; }
+    bool? Deleted { get; set; }
+    DateTime? Changed { get; set; }
+    int? UserId { get; set; }
+    string OperationalEntityId { get; }
+    string? FailureNature { get; set; }
+    string? FailureTransience { get; set; }
+    string? FailureOrigin { get; set; }
+    bool? FailureRetryable { get; set; }
+    string? FailureCode { get; set; }
+    
+                    bool isValidInsert();
+                    bool isValidUpdate();
+                    bool isValidDelete();
+                    List<string> getErroMensagens();
+                
+
+                }
+            }//Dominio.Schemas.CQRS.SourceCodeEntityMigration

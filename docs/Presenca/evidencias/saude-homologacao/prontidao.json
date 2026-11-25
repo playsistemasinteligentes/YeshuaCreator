@@ -1,0 +1,41 @@
+{
+  "recordedAtUtc": "2026-11-24T23:34:22.389789+00:00",
+  "status": "Locally testable prototype; database-backed acceptance and live operational activation remain unverified",
+  "delivered": [
+    "Persisted-record queue projections for Entrada/Editorial/Distribuicao, filtered by operator tenant/publisher/configured scope; source of truth remains yInbox/ySaga/yOutbox",
+    "Saga readiness reuses generated repository claim predicate; distribution readiness shares worker query body; future scheduled items and uncertain outcomes remain separate",
+    "Operator UI shows bounded queue summary and timestamp; absent scope rejected before data reads; read-only grants cannot read operation health",
+    "Actual ASP.NET API/JWT/endpoints/receivers/worker plus two simulated official HTTP adapters; partial ambiguous failure does not block other destination or cause blind resend",
+    "Actual API callback recovery path plus signed Academia message retaining ID and educational revision, using simulated persistence",
+    "Optional actual API/SQL safe integration scenario prepared behind explicit disposable SQL connection; not run",
+    "Host timer install/manual verification/enable/stop instructions prepared, not executed"
+  ],
+  "verificationLayers": {
+    "domainAndBuilder": "Passed local unit/fixture tests",
+    "realApiAndChannels": "Passed actual host/JWT/receivers/worker/strategies with in-memory repositories and in-process simulated HTTP handlers",
+    "browser": "Passed actual Front against mock API and actual generated portal files against mock approval repository; no external browser requests",
+    "sqlRepositories": "Not executed: no authorized test server configured",
+    "systemdHost": "Not installed/enabled; static definitions tested previously, host verification pending",
+    "productionAndRemoteChannels": "No merge/deploy/timer activation or real external post"
+  },
+  "remainingM05M07": [
+    "Factory snapshots can miss intermediate movements; no lossless stream guarantee",
+    "Host scheduling awaits separate authorized installation/activation after database/identity/ingress prerequisites",
+    "Academia full independent producer/database callback/retry journey not homologated",
+    "Actual channel sandbox integration requires dedicated authorized accounts/credentials; no real channel used"
+  ],
+  "remainingM08": [
+    "Execute repository/API SQL scenarios including scope isolation and recovery on disposable server",
+    "Exercise queue-health metric/alert publication, concurrent workers, stale leases and moderate load against persisted records",
+    "Retention duration/limits/cleanup policy still pending; all receipts/audits/releases/source spool preserved"
+  ],
+  "remainingM09": [
+    "Single full browser -> actual API -> SQL -> worker -> portal journey is not proven by separate mocked layers",
+    "Verify host timer units and approved staging origin/gateway only during separately authorized environment setup"
+  ],
+  "disposableSqlCommands": [
+    "Set YESHUA_TEST_SQL securely to explicit administrative connection of authorized test server; optional YESHUA_TEST_SQL_PASSWORD. Never print values.",
+    "dotnet test tests/Presenca/Yeshua.Presenca.Tests --filter Category=SqlIntegration"
+  ],
+  "sqlSafety": "Each SQL scenario only creates/drops its unique YESHUA_PRESENCA_TEST_<guid> database, with prefix guard and finally cleanup. No production credentials or production DB fallback."
+}

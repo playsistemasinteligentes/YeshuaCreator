@@ -16,9 +16,9 @@ import subprocess
 import sys
 
 APPS = {"central": "Central", "clinica": "Clinica", "aps-adm": "APS.ADM",
-        "fiscal": "Fiscal", "memorias": "Memorias"}
+        "fiscal": "Fiscal", "memorias": "Memorias", "presenca": "Presenca"}
 DB_KEYS = {"Central": "CENTRAL", "Clinica": "CLINICA", "APS.ADM": "APS_ADM",
-           "Fiscal": "FISCAL", "Memorias": "MEMORIAS"}
+           "Fiscal": "FISCAL", "Memorias": "MEMORIAS", "Presenca": "PRESENCA"}
 DEFAULT_FILE = "/root/YeshuaPrivate/production/credentials.json"
 LEGACY_MEMORIAS_ROOT = Path("/root/YeshuaMemoriasSecrets")
 
@@ -175,7 +175,7 @@ def exports(document, root, target, include_shared=False):
         raise ConfigurationError("SchemaVersion deve ser 1.")
     if target not in {*APPS, "shared", "all", "gateway"}:
         raise ConfigurationError("Destino de configuracao desconhecido.")
-    selected = set(APPS.values()) if target == "all" else {APPS[target]} if target in APPS else set()
+    selected = {a for a in APPS.values() if a != "Presenca" or "Presenca" in document.get("Apps", {})} if target == "all" else {APPS[target]} if target in APPS else set()
     shared = target in ("all", "shared", "gateway") or include_shared
     if shared:
         sql_logins(document)
@@ -205,13 +205,14 @@ def exports(document, root, target, include_shared=False):
             required(result[key], "Shared.OperationalIntelligence.DatabaseQueries." + name)
     needed = []
     if selected:
-        needed += ["YESHUA_RABBITMQ_USERNAME", "YESHUA_RABBITMQ_PASSWORD",
-                   "YESHUA_SQL_CENTRAL_AUTHORIZATION", "YESHUA_JWT_SECRET"]
+        needed += ["YESHUA_SQL_CENTRAL_AUTHORIZATION", "YESHUA_JWT_SECRET"]
+    if selected - {"Presenca"}:
+        needed += ["YESHUA_RABBITMQ_USERNAME", "YESHUA_RABBITMQ_PASSWORD"]
     if shared:
         needed += ["YESHUA_SQL_SA_PASSWORD", "YESHUA_RABBITMQ_USERNAME", "YESHUA_RABBITMQ_PASSWORD",
                    "YESHUA_TELEMETRY_GRAFANA_USER", "YESHUA_TELEMETRY_GRAFANA_PASSWORD",
                    "YESHUA_SQL_OPERATIONAL_INTELLIGENCE"]
-    if selected.intersection({"APS.ADM", "Fiscal"}):
+    if selected.intersection({"APS.ADM", "Fiscal", "Presenca"}):
         needed.append("YESHUA_MODULE_SHARED_KEY")
     if "Clinica" in selected:
         needed.append("YESHUA_CLINICA_UPLOAD_SIGNING_KEY")
@@ -257,6 +258,7 @@ def exports(document, root, target, include_shared=False):
 
 def environment(document, root, target, include_shared=False):
     result = exports(document, root, target, include_shared)
+    result.update({key: "" for key in os.environ if key.lower().startswith("presenca__")})
     if target in ("memorias", "all"):
         bootstrap = root / "apps" / "Memorias" / "integracoes" / "youtube" / "bootstrap.json"
         if bootstrap.exists():
@@ -379,6 +381,36 @@ def environment(document, root, target, include_shared=False):
         })
         if result["CENTRAL_TRANSCRIPTION_PROVIDER"] not in ("OpenAI", "Queue", "Groq"):
             raise ConfigurationError("Transcription.Provider deve ser OpenAI, Queue ou Groq.")
+    if target in ("presenca", "all") and "Presenca" in document.get("Apps", {}):
+        app = document["Apps"]["Presenca"]
+        distribution = app.get("Distribution", {})
+        if not isinstance(distribution, dict):
+            raise ConfigurationError("Apps.Presenca.Distribution deve ser objeto.")
+        if type(distribution.get("Enabled", False)) is not bool:
+            raise ConfigurationError("Apps.Presenca.Distribution.Enabled deve ser booleano.")
+        def flatten(prefix, value):
+            if isinstance(value, dict):
+                for name, child in value.items():
+                    if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z0-9_-]+", name):
+                        raise ConfigurationError("Chave de configuracao Presenca invalida.")
+                    flatten(prefix + "__" + name, child)
+            elif type(value) in (str, int, bool):
+                text = str(value).lower() if type(value) is bool else str(value)
+                if any(char in text for char in "\0\r\n"):
+                    raise ConfigurationError("Configuracao Presenca deve ser de uma unica linha.")
+                result[prefix] = text
+            else:
+                raise ConfigurationError("Valor de configuracao Presenca invalido.")
+        flatten("Presenca", distribution)
+        flatten("Presenca__Bootstrap", app.get("Bootstrap", {}))
+        result["YeshuaProcessing__Scope"] = required(get(app, "ProcessingScope"), "Apps.Presenca.ProcessingScope")
+        result["YeshuaModules__Authentication__SourceModule"] = "Presenca"
+        result["YeshuaModules__Authentication__SharedKey"] = get(document, "Shared", "ModuleAuthentication", "SharedKey")
+        technical = app.get("TechnicalUserId", 0)
+        if type(technical) is not int or technical <= 0:
+            raise ConfigurationError("Apps.Presenca.TechnicalUserId explicito obrigatorio.")
+        result["YeshuaModules__Authentication__TechnicalUserId"] = str(technical)
+        result["JwtSettings__SecretKey"] = get(document, "Shared", "Jwt", "SecretKey")
     return result
 
 
@@ -479,7 +511,9 @@ def from_containers(template, services):
     jwt, module = set(), set()
     for target, app in APPS.items():
         api = env(target + "-api")
-        document["Apps"][app]["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
+        if app not in document["Apps"] and not api:
+            continue  # Optional applications absent from both template and running services stay absent.
+        document["Apps"].setdefault(app, {})["MyConfig"] = {mode + "ConectionString": api.get("MYCONFIG__" + mode.upper() + "CONECTIONSTRING", "") for mode in ("Read", "Write")}
         if api.get("JwtSettings__SecretKey"):
             jwt.add(api["JwtSettings__SecretKey"])
         if api.get("YeshuaModules__Authentication__SharedKey"):

@@ -1,0 +1,17 @@
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  Yeshua.CQRS.Domain -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/CQRS/Domain/Yeshua.CQRS.Domain/bin/Debug/net8.0/Yeshua.CQRS.Domain.dll
+  Yeshua.CQRS.Application.RepositoryInterfaces -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/CQRS/Application/Yeshua.CQRS.Application.RepositoryInterfaces/bin/Debug/net8.0/Yeshua.CQRS.Application.RepositoryInterfaces.dll
+  Yeshua.CQRS.Application.Command -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/CQRS/Application/Yeshua.CQRS.Application.Command/bin/Debug/net8.0/Yeshua.CQRS.Application.Command.dll
+  Yeshua.CQRS.Infrastructure.Shared -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.Shared/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.dll
+  Yeshua.CQRS.Infrastructure.RepositoryWrite -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/src/CQRS/Infrastructure/Yeshua.CQRS.Infrastructure.RepositoryWrite/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.RepositoryWrite.dll
+  Yeshua.CQRS.Infrastructure.Shared.Tests -> /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll
+Test run for /workspace/tasks/71ddf4aa021c4fa5b0f140accdb624f2/tests/CQRS/Yeshua.CQRS.Infrastructure.Shared.Tests/bin/Debug/net8.0/Yeshua.CQRS.Infrastructure.Shared.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /tmp/presenca-m00-paths/shared.trx
+
+Passed!  - Failed:     0, Passed:     5, Skipped:     0, Total:     5, Duration: 321 ms - Yeshua.CQRS.Infrastructure.Shared.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

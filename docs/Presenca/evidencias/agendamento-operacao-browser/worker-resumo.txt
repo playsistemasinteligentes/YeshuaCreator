@@ -1,0 +1,8 @@
+
+Build succeeded.
+
+/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/ySaga/ySagaReadRepository.cs(95,24): warning CS8603: Possible null reference return. [/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead.csproj]
+    1 Warning(s)
+    0 Error(s)
+
+Time Elapsed 00:00:16.16

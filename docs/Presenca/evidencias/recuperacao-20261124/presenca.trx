@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4693da22-f736-49ff-bf3b-330bbaa83a8e" name="@1b587aa5ec9a 2026-11-24 15:27:44" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-24T15:27:44.4236218+00:00" queuing="2026-11-24T15:27:44.4236219+00:00" start="2026-11-24T15:27:42.5669245+00:00" finish="2026-11-24T15:27:44.6145210+00:00" />
+  <TestSettings name="default" id="1e5c3211-8dc5-47ee-80f2-733856d66bd6">
+    <Deployment runDeploymentRoot="_1b587aa5ec9a_2026-11-24_15_27_44" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="78e8fdc2-8601-4b77-a6ba-2891d3e8454d" testId="cbb494ea-925c-d679-15d0-cf127607c306" testName="Presenca.Tests.EditorialTests.Scope_hash_is_not_ambiguous_and_is_tenant_specific" computerName="1b587aa5ec9a" duration="00:00:00.0053698" startTime="2026-11-24T15:27:43.9520776+00:00" endTime="2026-11-24T15:27:43.9557038+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="78e8fdc2-8601-4b77-a6ba-2891d3e8454d" />
+    <UnitTestResult executionId="34e56d92-7709-416d-a76d-7649c5dd6de4" testId="38c655d3-acb7-9c74-71db-be0316fc5362" testName="Presenca.Tests.EditorialTests.Invalid_transitions_fail(state: &quot;Rejeitada&quot;, operation: &quot;AprovarVersao&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0006056" startTime="2026-11-24T15:27:43.9563101+00:00" endTime="2026-11-24T15:27:43.9572095+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="34e56d92-7709-416d-a76d-7649c5dd6de4" />
+    <UnitTestResult executionId="7b69322a-9788-4817-9fe8-3aedf2fd93c6" testId="6c37a02c-e014-50d6-6929-c0ca37e012cc" testName="Presenca.Tests.EditorialTests.Stale_revision_fails" computerName="1b587aa5ec9a" duration="00:00:00.0004296" startTime="2026-11-24T15:27:44.2699250+00:00" endTime="2026-11-24T15:27:44.2700129+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7b69322a-9788-4817-9fe8-3aedf2fd93c6" />
+    <UnitTestResult executionId="f16feb09-c8e6-49e8-a24c-89c89a3a50a8" testId="0fb04c69-f93a-0e00-c1e0-999c2cba5742" testName="Presenca.Tests.EditorialTests.Explicit_json_nulls_are_rejected(json: &quot;{\&quot;Manchete\&quot;:null}&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0437222" startTime="2026-11-24T15:27:43.9139474+00:00" endTime="2026-11-24T15:27:43.9450007+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f16feb09-c8e6-49e8-a24c-89c89a3a50a8" />
+    <UnitTestResult executionId="0267d385-019f-443e-a500-36ee32763e41" testId="3213ea49-af06-0864-b47d-e6c1053fe451" testName="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 0, actor: 1, grant: 127)" computerName="1b587aa5ec9a" duration="00:00:00.0000269" startTime="2026-11-24T15:27:44.2643231+00:00" endTime="2026-11-24T15:27:44.2644317+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0267d385-019f-443e-a500-36ee32763e41" />
+    <UnitTestResult executionId="0742543a-7f7d-40c5-9121-1e1486331c2c" testId="13fb562a-c6e7-d016-4cdf-6eebd4121cc8" testName="Presenca.Tests.PortalTests.Corrupt_snapshot_is_not_rendered" computerName="1b587aa5ec9a" duration="00:00:00.0005918" startTime="2026-11-24T15:27:44.3971163+00:00" endTime="2026-11-24T15:27:44.3983911+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0742543a-7f7d-40c5-9121-1e1486331c2c" />
+    <UnitTestResult executionId="461179ba-6c10-47ee-b346-d34b1ebb35e7" testId="e84b9e05-5fd3-0d3a-d5b4-4d91743bc1e8" testName="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 1, actor: 0, grant: 127)" computerName="1b587aa5ec9a" duration="00:00:00.0003953" startTime="2026-11-24T15:27:44.2635618+00:00" endTime="2026-11-24T15:27:44.2637961+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="461179ba-6c10-47ee-b346-d34b1ebb35e7" />
+    <UnitTestResult executionId="715717c8-053d-41d9-af1d-9ab0cf7872fe" testId="333d8e54-54d8-35f4-e85e-3db735e6c78c" testName="Presenca.Tests.PortalTests.Redirects_only_target_existing_local_pages" computerName="1b587aa5ec9a" duration="00:00:00.0300271" startTime="2026-11-24T15:27:44.3679527+00:00" endTime="2026-11-24T15:27:44.3967261+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="715717c8-053d-41d9-af1d-9ab0cf7872fe" />
+    <UnitTestResult executionId="ce75a7a7-2152-4c53-8d3f-cceab9365347" testId="c6ceb95d-c365-02f4-bc06-b3e9b3911e26" testName="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;https://user:password@example.org&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0024552" startTime="2026-11-24T15:27:44.2428933+00:00" endTime="2026-11-24T15:27:44.2430468+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce75a7a7-2152-4c53-8d3f-cceab9365347" />
+    <UnitTestResult executionId="12916d8e-6375-4390-b7f3-72c332806c8e" testId="38a65c32-d07d-c965-a34c-b439479cb5a4" testName="Presenca.Tests.PortalTests.Approval_is_revalidated_on_activation_and_rollback" computerName="1b587aa5ec9a" duration="00:00:00.1098057" startTime="2026-11-24T15:27:44.2708493+00:00" endTime="2026-11-24T15:27:44.3676029+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="12916d8e-6375-4390-b7f3-72c332806c8e" />
+    <UnitTestResult executionId="f2d0c387-b44d-4bb3-9c7b-7348f3906be4" testId="4b89f88d-0647-661d-d320-ab11ae8b55e1" testName="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;https://localhost/file&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0007286" startTime="2026-11-24T15:27:44.2457663+00:00" endTime="2026-11-24T15:27:44.2458755+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2d0c387-b44d-4bb3-9c7b-7348f3906be4" />
+    <UnitTestResult executionId="291b9a38-d8d3-4d4c-a90d-d8b1fb7cc0aa" testId="10405db5-1efb-cc16-d899-3b531da773c1" testName="Presenca.Tests.EditorialTests.Invalid_transitions_fail(state: &quot;Rascunho&quot;, operation: &quot;AprovarVersao&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0002877" startTime="2026-11-24T15:27:43.9575521+00:00" endTime="2026-11-24T15:27:43.9587747+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="291b9a38-d8d3-4d4c-a90d-d8b1fb7cc0aa" />
+    <UnitTestResult executionId="15a7a505-b8f8-43e1-8f95-d275dcf94b66" testId="fad0466f-bb33-b51b-02c3-125acbcea2ac" testName="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 1, actor: 1, grant: 1)" computerName="1b587aa5ec9a" duration="00:00:00.0000727" startTime="2026-11-24T15:27:44.2640483+00:00" endTime="2026-11-24T15:27:44.2641326+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15a7a505-b8f8-43e1-8f95-d275dcf94b66" />
+    <UnitTestResult executionId="265c6184-f830-492e-8d30-f50810ed9555" testId="57ed5890-ad66-1b71-46a0-d2b90a584c3a" testName="Presenca.Tests.EditorialTests.Invalid_transitions_fail(state: &quot;Aprovada&quot;, operation: &quot;SubmeterRevisao&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0000310" startTime="2026-11-24T15:27:43.9589778+00:00" endTime="2026-11-24T15:27:43.9590745+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="265c6184-f830-492e-8d30-f50810ed9555" />
+    <UnitTestResult executionId="db808628-1cf9-45d1-af8b-caaa518cd8e6" testId="6256363a-d6bb-0d25-0fca-c6e03b2bdf7b" testName="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 1, actor: 1, grant: 0)" computerName="1b587aa5ec9a" duration="00:00:00.0074863" startTime="2026-11-24T15:27:44.2519895+00:00" endTime="2026-11-24T15:27:44.2520676+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db808628-1cf9-45d1-af8b-caaa518cd8e6" />
+    <UnitTestResult executionId="b428606c-1f5c-40f7-bd51-1992d47cac8b" testId="9489f6da-1784-e9e0-7d95-817d13b92fad" testName="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;javascript:alert(1)&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0000519" startTime="2026-11-24T15:27:44.2463158+00:00" endTime="2026-11-24T15:27:44.2464246+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b428606c-1f5c-40f7-bd51-1992d47cac8b" />
+    <UnitTestResult executionId="4299aa14-1062-4d85-a502-6595b40b54a3" testId="db5842e1-094d-addb-d0eb-f2f8e078734e" testName="Presenca.Tests.EditorialTests.Private_or_unknown_properties_are_not_silently_ingested" computerName="1b587aa5ec9a" duration="00:00:00.0011532" startTime="2026-11-24T15:27:44.2509063+00:00" endTime="2026-11-24T15:27:44.2510716+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4299aa14-1062-4d85-a502-6595b40b54a3" />
+    <UnitTestResult executionId="04991a6f-40f6-4903-ad7f-c6527ccb9c8a" testId="1d055673-1c87-8d98-b2bb-e5989668a432" testName="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;http://example.org&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0000523" startTime="2026-11-24T15:27:44.2460808+00:00" endTime="2026-11-24T15:27:44.2461602+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04991a6f-40f6-4903-ad7f-c6527ccb9c8a" />
+    <UnitTestResult executionId="2cdffe85-18cd-441b-bfc0-35e70dedd37e" testId="a3daf6b3-c709-b2fc-231c-2f5760feb534" testName="Presenca.Tests.EditorialTests.Public_snapshot_excludes_administration_and_receipts" computerName="1b587aa5ec9a" duration="00:00:00.0160917" startTime="2026-11-24T15:27:44.2702965+00:00" endTime="2026-11-24T15:27:44.2703746+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2cdffe85-18cd-441b-bfc0-35e70dedd37e" />
+    <UnitTestResult executionId="96620489-5430-4f3e-a21e-f55ee96c2c52" testId="04b38c44-4f06-3864-8a6c-066ed527aa32" testName="Presenca.Tests.EditorialSqlTests.Durable_receipts_authorization_versions_concurrency_and_rollback_use_a_disposable_database" computerName="1b587aa5ec9a" duration="00:00:00.0010000" startTime="2026-11-24T15:27:43.8761115+00:00" endTime="2026-11-24T15:27:43.8828066+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="96620489-5430-4f3e-a21e-f55ee96c2c52">
+      <Output>
+        <ErrorInfo>
+          <Message>YESHUA_TEST_SQL not configured: disposable SQL integration was NOT executed.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5b2ba70c-101a-43f0-86b1-d64a0854401e" testId="df547721-dec1-0ea5-fa7e-35d296989536" testName="Presenca.Tests.EditorialTests.Dsl_is_tenant_scoped_and_has_no_public_entity_crud" computerName="1b587aa5ec9a" duration="00:00:00.2484821" startTime="2026-11-24T15:27:44.2667995+00:00" endTime="2026-11-24T15:27:44.2669074+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5b2ba70c-101a-43f0-86b1-d64a0854401e" />
+    <UnitTestResult executionId="5fc14149-06de-4e9b-9ad9-57eb6131c519" testId="4f5678fe-f2c7-e0a5-300b-fe3fa112b136" testName="Presenca.Tests.EditorialTests.Grants_do_not_imply_other_roles" computerName="1b587aa5ec9a" duration="00:00:00.0021467" startTime="2026-11-24T15:27:44.2513524+00:00" endTime="2026-11-24T15:27:44.2514295+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5fc14149-06de-4e9b-9ad9-57eb6131c519" />
+    <UnitTestResult executionId="9a3b47b7-4888-4bb1-9bbd-2623497fe045" testId="e3f4f22b-bc87-4b1c-53c1-968f0d793c81" testName="Presenca.Tests.EditorialTests.Canonical_input_ignores_json_property_order" computerName="1b587aa5ec9a" duration="00:00:00.0095454" startTime="2026-11-24T15:27:43.9593283+00:00" endTime="2026-11-24T15:27:43.9678237+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a3b47b7-4888-4bb1-9bbd-2623497fe045" />
+    <UnitTestResult executionId="f9dbe510-7a05-40f2-8b0b-f86016392792" testId="7b719dc7-c688-1449-f950-69f6963a6962" testName="Presenca.Tests.PortalTests.Static_build_is_deterministic_with_canonical_links_and_no_script_injection" computerName="1b587aa5ec9a" duration="00:00:00.0034632" startTime="2026-11-24T15:27:44.4118150+00:00" endTime="2026-11-24T15:27:44.4119303+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f9dbe510-7a05-40f2-8b0b-f86016392792" />
+    <UnitTestResult executionId="2b43ec0d-52a0-43f5-a3fd-a874acb70d4c" testId="1bf07223-a017-8d70-382c-a263213005dc" testName="Presenca.Tests.EditorialTests.Approval_is_explicit_and_separates_author_and_reviewer" computerName="1b587aa5ec9a" duration="00:00:00.0003943" startTime="2026-11-24T15:27:44.2516831+00:00" endTime="2026-11-24T15:27:44.2517682+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2b43ec0d-52a0-43f5-a3fd-a874acb70d4c" />
+    <UnitTestResult executionId="3047e010-669c-401f-a7b2-57bb638ce550" testId="d1b0303e-03f1-b6ea-ca82-aef2d5f3bb32" testName="Presenca.Tests.EditorialTests.Explicit_json_nulls_are_rejected(json: &quot;{\&quot;Canais\&quot;:null}&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0002863" startTime="2026-11-24T15:27:43.9516935+00:00" endTime="2026-11-24T15:27:43.9517781+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3047e010-669c-401f-a7b2-57bb638ce550" />
+    <UnitTestResult executionId="7525f872-523a-458c-af67-d24558be6f66" testId="0fb257a1-8dba-f421-2885-31251e6ddcb1" testName="Presenca.Tests.EditorialTests.Explicit_json_nulls_are_rejected(json: &quot;{\&quot;Materiais\&quot;:null}&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0027904" startTime="2026-11-24T15:27:43.9480787+00:00" endTime="2026-11-24T15:27:43.9489481+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7525f872-523a-458c-af67-d24558be6f66" />
+    <UnitTestResult executionId="3b71f48e-4833-4230-8e42-c2354acdd9b7" testId="17795261-5e53-2e1a-3356-31dc6a215c76" testName="Presenca.Tests.EditorialTests.Material_traversal_fails" computerName="1b587aa5ec9a" duration="00:00:00.0004897" startTime="2026-11-24T15:27:44.2494619+00:00" endTime="2026-11-24T15:27:44.2496235+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3b71f48e-4833-4230-8e42-c2354acdd9b7" />
+    <UnitTestResult executionId="d7f160f0-6654-4a38-abce-0e7d6cb7db68" testId="96628627-5530-c8aa-3d5e-630ee04abd11" testName="Presenca.Tests.PortalTests.Every_internal_link_points_to_a_built_page" computerName="1b587aa5ec9a" duration="00:00:00.0052668" startTime="2026-11-24T15:27:44.4010232+00:00" endTime="2026-11-24T15:27:44.4114508+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d7f160f0-6654-4a38-abce-0e7d6cb7db68" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Presenca.Tests.EditorialTests.Invalid_transitions_fail(state: &quot;Rascunho&quot;, operation: &quot;AprovarVersao&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="10405db5-1efb-cc16-d899-3b531da773c1">
+      <Execution id="291b9a38-d8d3-4d4c-a90d-d8b1fb7cc0aa" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Invalid_transitions_fail" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Material_traversal_fails" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="17795261-5e53-2e1a-3356-31dc6a215c76">
+      <Execution id="3b71f48e-4833-4230-8e42-c2354acdd9b7" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Material_traversal_fails" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Approval_is_explicit_and_separates_author_and_reviewer" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="1bf07223-a017-8d70-382c-a263213005dc">
+      <Execution id="2b43ec0d-52a0-43f5-a3fd-a874acb70d4c" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Approval_is_explicit_and_separates_author_and_reviewer" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Private_or_unknown_properties_are_not_silently_ingested" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="db5842e1-094d-addb-d0eb-f2f8e078734e">
+      <Execution id="4299aa14-1062-4d85-a502-6595b40b54a3" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Private_or_unknown_properties_are_not_silently_ingested" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.PortalTests.Redirects_only_target_existing_local_pages" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="333d8e54-54d8-35f4-e85e-3db735e6c78c">
+      <Execution id="715717c8-053d-41d9-af1d-9ab0cf7872fe" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.PortalTests" name="Redirects_only_target_existing_local_pages" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Public_snapshot_excludes_administration_and_receipts" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="a3daf6b3-c709-b2fc-231c-2f5760feb534">
+      <Execution id="2cdffe85-18cd-441b-bfc0-35e70dedd37e" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Public_snapshot_excludes_administration_and_receipts" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Scope_hash_is_not_ambiguous_and_is_tenant_specific" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="cbb494ea-925c-d679-15d0-cf127607c306">
+      <Execution id="78e8fdc2-8601-4b77-a6ba-2891d3e8454d" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Scope_hash_is_not_ambiguous_and_is_tenant_specific" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Grants_do_not_imply_other_roles" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="4f5678fe-f2c7-e0a5-300b-fe3fa112b136">
+      <Execution id="5fc14149-06de-4e9b-9ad9-57eb6131c519" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Grants_do_not_imply_other_roles" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.PortalTests.Every_internal_link_points_to_a_built_page" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="96628627-5530-c8aa-3d5e-630ee04abd11">
+      <Execution id="d7f160f0-6654-4a38-abce-0e7d6cb7db68" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.PortalTests" name="Every_internal_link_points_to_a_built_page" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.PortalTests.Static_build_is_deterministic_with_canonical_links_and_no_script_injection" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="7b719dc7-c688-1449-f950-69f6963a6962">
+      <Execution id="f9dbe510-7a05-40f2-8b0b-f86016392792" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.PortalTests" name="Static_build_is_deterministic_with_canonical_links_and_no_script_injection" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Dsl_is_tenant_scoped_and_has_no_public_entity_crud" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="df547721-dec1-0ea5-fa7e-35d296989536">
+      <Execution id="5b2ba70c-101a-43f0-86b1-d64a0854401e" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Dsl_is_tenant_scoped_and_has_no_public_entity_crud" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;http://example.org&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="1d055673-1c87-8d98-b2bb-e5989668a432">
+      <Execution id="04991a6f-40f6-4903-ad7f-c6527ccb9c8a" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Unsafe_sources_fail" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Invalid_transitions_fail(state: &quot;Aprovada&quot;, operation: &quot;SubmeterRevisao&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="57ed5890-ad66-1b71-46a0-d2b90a584c3a">
+      <Execution id="265c6184-f830-492e-8d30-f50810ed9555" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Invalid_transitions_fail" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Invalid_transitions_fail(state: &quot;Rejeitada&quot;, operation: &quot;AprovarVersao&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="38c655d3-acb7-9c74-71db-be0316fc5362">
+      <Execution id="34e56d92-7709-416d-a76d-7649c5dd6de4" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Invalid_transitions_fail" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 1, actor: 1, grant: 1)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="fad0466f-bb33-b51b-02c3-125acbcea2ac">
+      <Execution id="15a7a505-b8f8-43e1-8f95-d275dcf94b66" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Missing_identity_or_permission_denies" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Canonical_input_ignores_json_property_order" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="e3f4f22b-bc87-4b1c-53c1-968f0d793c81">
+      <Execution id="9a3b47b7-4888-4bb1-9bbd-2623497fe045" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Canonical_input_ignores_json_property_order" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.PortalTests.Approval_is_revalidated_on_activation_and_rollback" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="38a65c32-d07d-c965-a34c-b439479cb5a4">
+      <Execution id="12916d8e-6375-4390-b7f3-72c332806c8e" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.PortalTests" name="Approval_is_revalidated_on_activation_and_rollback" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 1, actor: 1, grant: 0)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="6256363a-d6bb-0d25-0fca-c6e03b2bdf7b">
+      <Execution id="db808628-1cf9-45d1-af8b-caaa518cd8e6" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Missing_identity_or_permission_denies" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;https://localhost/file&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="4b89f88d-0647-661d-d320-ab11ae8b55e1">
+      <Execution id="f2d0c387-b44d-4bb3-9c7b-7348f3906be4" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Unsafe_sources_fail" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 1, actor: 0, grant: 127)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="e84b9e05-5fd3-0d3a-d5b4-4d91743bc1e8">
+      <Execution id="461179ba-6c10-47ee-b346-d34b1ebb35e7" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Missing_identity_or_permission_denies" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Explicit_json_nulls_are_rejected(json: &quot;{\&quot;Canais\&quot;:null}&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="d1b0303e-03f1-b6ea-ca82-aef2d5f3bb32">
+      <Execution id="3047e010-669c-401f-a7b2-57bb638ce550" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Explicit_json_nulls_are_rejected" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialSqlTests.Durable_receipts_authorization_versions_concurrency_and_rollback_use_a_disposable_database" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="04b38c44-4f06-3864-8a6c-066ed527aa32">
+      <Execution id="96620489-5430-4f3e-a21e-f55ee96c2c52" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialSqlTests" name="Durable_receipts_authorization_versions_concurrency_and_rollback_use_a_disposable_database" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Explicit_json_nulls_are_rejected(json: &quot;{\&quot;Manchete\&quot;:null}&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="0fb04c69-f93a-0e00-c1e0-999c2cba5742">
+      <Execution id="f16feb09-c8e6-49e8-a24c-89c89a3a50a8" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Explicit_json_nulls_are_rejected" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Missing_identity_or_permission_denies(tenant: 0, actor: 1, grant: 127)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="3213ea49-af06-0864-b47d-e6c1053fe451">
+      <Execution id="0267d385-019f-443e-a500-36ee32763e41" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Missing_identity_or_permission_denies" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Stale_revision_fails" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="6c37a02c-e014-50d6-6929-c0ca37e012cc">
+      <Execution id="7b69322a-9788-4817-9fe8-3aedf2fd93c6" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Stale_revision_fails" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Explicit_json_nulls_are_rejected(json: &quot;{\&quot;Materiais\&quot;:null}&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="0fb257a1-8dba-f421-2885-31251e6ddcb1">
+      <Execution id="7525f872-523a-458c-af67-d24558be6f66" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Explicit_json_nulls_are_rejected" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;javascript:alert(1)&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="9489f6da-1784-e9e0-7d95-817d13b92fad">
+      <Execution id="b428606c-1f5c-40f7-bd51-1992d47cac8b" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Unsafe_sources_fail" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.PortalTests.Corrupt_snapshot_is_not_rendered" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="13fb562a-c6e7-d016-4cdf-6eebd4121cc8">
+      <Execution id="0742543a-7f7d-40c5-9121-1e1486331c2c" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.PortalTests" name="Corrupt_snapshot_is_not_rendered" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.EditorialTests.Unsafe_sources_fail(url: &quot;https://user:password@example.org&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="c6ceb95d-c365-02f4-bc06-b3e9b3911e26">
+      <Execution id="ce75a7a7-2152-4c53-8d3f-cceab9365347" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.EditorialTests" name="Unsafe_sources_fail" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="cbb494ea-925c-d679-15d0-cf127607c306" executionId="78e8fdc2-8601-4b77-a6ba-2891d3e8454d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38c655d3-acb7-9c74-71db-be0316fc5362" executionId="34e56d92-7709-416d-a76d-7649c5dd6de4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6c37a02c-e014-50d6-6929-c0ca37e012cc" executionId="7b69322a-9788-4817-9fe8-3aedf2fd93c6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0fb04c69-f93a-0e00-c1e0-999c2cba5742" executionId="f16feb09-c8e6-49e8-a24c-89c89a3a50a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3213ea49-af06-0864-b47d-e6c1053fe451" executionId="0267d385-019f-443e-a500-36ee32763e41" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="13fb562a-c6e7-d016-4cdf-6eebd4121cc8" executionId="0742543a-7f7d-40c5-9121-1e1486331c2c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e84b9e05-5fd3-0d3a-d5b4-4d91743bc1e8" executionId="461179ba-6c10-47ee-b346-d34b1ebb35e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="333d8e54-54d8-35f4-e85e-3db735e6c78c" executionId="715717c8-053d-41d9-af1d-9ab0cf7872fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c6ceb95d-c365-02f4-bc06-b3e9b3911e26" executionId="ce75a7a7-2152-4c53-8d3f-cceab9365347" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="38a65c32-d07d-c965-a34c-b439479cb5a4" executionId="12916d8e-6375-4390-b7f3-72c332806c8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b89f88d-0647-661d-d320-ab11ae8b55e1" executionId="f2d0c387-b44d-4bb3-9c7b-7348f3906be4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="10405db5-1efb-cc16-d899-3b531da773c1" executionId="291b9a38-d8d3-4d4c-a90d-d8b1fb7cc0aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fad0466f-bb33-b51b-02c3-125acbcea2ac" executionId="15a7a505-b8f8-43e1-8f95-d275dcf94b66" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="57ed5890-ad66-1b71-46a0-d2b90a584c3a" executionId="265c6184-f830-492e-8d30-f50810ed9555" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6256363a-d6bb-0d25-0fca-c6e03b2bdf7b" executionId="db808628-1cf9-45d1-af8b-caaa518cd8e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9489f6da-1784-e9e0-7d95-817d13b92fad" executionId="b428606c-1f5c-40f7-bd51-1992d47cac8b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="db5842e1-094d-addb-d0eb-f2f8e078734e" executionId="4299aa14-1062-4d85-a502-6595b40b54a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1d055673-1c87-8d98-b2bb-e5989668a432" executionId="04991a6f-40f6-4903-ad7f-c6527ccb9c8a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3daf6b3-c709-b2fc-231c-2f5760feb534" executionId="2cdffe85-18cd-441b-bfc0-35e70dedd37e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="04b38c44-4f06-3864-8a6c-066ed527aa32" executionId="96620489-5430-4f3e-a21e-f55ee96c2c52" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df547721-dec1-0ea5-fa7e-35d296989536" executionId="5b2ba70c-101a-43f0-86b1-d64a0854401e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4f5678fe-f2c7-e0a5-300b-fe3fa112b136" executionId="5fc14149-06de-4e9b-9ad9-57eb6131c519" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e3f4f22b-bc87-4b1c-53c1-968f0d793c81" executionId="9a3b47b7-4888-4bb1-9bbd-2623497fe045" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7b719dc7-c688-1449-f950-69f6963a6962" executionId="f9dbe510-7a05-40f2-8b0b-f86016392792" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1bf07223-a017-8d70-382c-a263213005dc" executionId="2b43ec0d-52a0-43f5-a3fd-a874acb70d4c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d1b0303e-03f1-b6ea-ca82-aef2d5f3bb32" executionId="3047e010-669c-401f-a7b2-57bb638ce550" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0fb257a1-8dba-f421-2885-31251e6ddcb1" executionId="7525f872-523a-458c-af67-d24558be6f66" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="17795261-5e53-2e1a-3356-31dc6a215c76" executionId="3b71f48e-4833-4230-8e42-c2354acdd9b7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="96628627-5530-c8aa-3d5e-630ee04abd11" executionId="d7f160f0-6654-4a38-abce-0e7d6cb7db68" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="29" executed="28" passed="28" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.01] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 8.0.34)
+[xUnit.net 00:00:00.18]   Discovering: Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.33]   Discovered:  Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.38]   Starting:    Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.43]       YESHUA_TEST_SQL not configured: disposable SQL integration was NOT executed.
+Test 'Presenca.Tests.EditorialSqlTests.Durable_receipts_authorization_versions_concurrency_and_rollback_use_a_disposable_database' was skipped in the test run.
+[xUnit.net 00:00:00.97]   Finished:    Yeshua.Presenca.Tests
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="1b587aa5ec9a" outcome="Warning" timestamp="2026-11-24T15:27:43.8843839+00:00">
+        <Text>[xUnit.net 00:00:00.43]     Presenca.Tests.EditorialSqlTests.Durable_receipts_authorization_versions_concurrency_and_rollback_use_a_disposable_database [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

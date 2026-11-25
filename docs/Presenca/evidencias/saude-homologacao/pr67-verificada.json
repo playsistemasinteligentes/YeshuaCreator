@@ -1,0 +1,18 @@
+{
+  "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/67",
+  "state": "open",
+  "draft": true,
+  "merged": false,
+  "updated_at": "2026-11-24T17:13:38Z",
+  "head": {
+    "ref": "codex/task-3c3a6c9944b44a55b4eefe8b278ba113",
+    "sha": "c192bb723af359fe6e741b32a5cad7887d2becb9"
+  },
+  "commits": [
+    "3773bf0e3fbfffbd35812b7ca3e03583da48d81e",
+    "a2d5a4a0004e4b6ff27ebafaf44cce530ed2027d",
+    "2a2a89fe72b8e1d4c95b72ea956dd1d54468cdcc",
+    "c192bb723af359fe6e741b32a5cad7887d2becb9"
+  ],
+  "verifiedAtUtc": "2026-11-24T23:34:49.990283+00:00"
+}

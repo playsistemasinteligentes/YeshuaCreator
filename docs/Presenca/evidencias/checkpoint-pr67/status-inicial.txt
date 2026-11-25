@@ -1,0 +1,93 @@
+ M infra/private/credentials.py
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Custon/UseCases/Presenca/Editorial/ExecutarEditorialHandler.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/DTOs/Migration/AuditoriaEditorial/ReadDTO.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/DTOs/Migration/ConteudoVersao/ReadDTO.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/DTOs/Migration/OrigemPauta/ReadDTO.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/DTOs/Migration/PublicacaoDestino/ReadDTO.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/Repository/Custon/IdentidadePublicadora/IIdentidadePublicadoraReadRepository.Editorial.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/Repository/Custon/ySaga/ReadRepository.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/Repository/Custon/ySagaStep/ReadRepository.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/Repository/Migration/ySaga/ReadRepository.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Write/Repository/Custon/IdentidadePublicadora/IIdentidadePublicadoraWriteRepository.Editorial.cs
+ M src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Write/Repository/Custon/ySaga/WriteRepository.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Editorial/Custon/Editorial.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/AuditoriaEditorial/AuditoriaEditorialEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/AuditoriaEditorial/AuditoriaEditorialEntityDecorator.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/AuditoriaEditorial/AuditoriaEditorialFactory.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/AuditoriaEditorial/IAuditoriaEditorialEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/ConteudoVersao/ConteudoVersaoEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/ConteudoVersao/ConteudoVersaoEntityDecorator.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/ConteudoVersao/ConteudoVersaoFactory.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/ConteudoVersao/IConteudoVersaoEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/OrigemPauta/IOrigemPautaEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/OrigemPauta/OrigemPautaEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/OrigemPauta/OrigemPautaEntityDecorator.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/OrigemPauta/OrigemPautaFactory.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/PublicacaoDestino/IPublicacaoDestinoEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/PublicacaoDestino/PublicacaoDestinoEntity.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/PublicacaoDestino/PublicacaoDestinoEntityDecorator.cs
+ M src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Entitys/Migration/PublicacaoDestino/PublicacaoDestinoFactory.cs
+ M src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/Custon/Apps/Presenca/pages/redacao.html
+ M src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/Custon/Apps/Presenca/pages/redacao.js
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Custon/IndependenceInjection.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Migration/DependencInjection.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Migration/EndPoints.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Migration/Modules.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/IdentidadePublicadora/EditorialReadRepository.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/ySaga/ySagaReadRepository.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Migration/ySaga/ySagaReadRepository.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/ConcreteRepository/Custon/IdentidadePublicadora/EditorialRepository.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/ConcreteRepository/Custon/ySaga/ySagaWriteRepository.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Operational/Migration/OperationalLoggingPolicy.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Yeshua.Presenca.CQRS.Infrastructure.Shared.csproj
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/Custon/DependencInjection.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/Migration/DependencInjection.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/Migration/WorkersBuilder.cs
+ M src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/Program.cs
+ M src/Engine/Yeshua.Engine/Dominio/ORM/entities.cs
+ M src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeApplicationSagaQueueWorkers.cs
+ M src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeApplicationSagaWorker.cs
+ M src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureAPIEndpointsMigration.cs
+ M src/Studio/Yeshua.Studio.Presenca/Dominio/ORM/entities.cs
+ M src/Studio/Yeshua.Studio.Presenca/Program.cs
+ M tests/CQRS/Yeshua.Presenca.CQRS.Tests.Integration.Api.Smoke/Migration/ApiSmokeCrudSuiteTests.cs
+ M tests/Engine/Yeshua.Engine.Tests/OperationalEvidenceGenerationTests.cs
+ M tests/Engine/Yeshua.Engine.Tests/SagaQueueGenerationTests.cs
+ M tests/Presenca/Yeshua.Presenca.Tests/EditorialSqlTests.cs
+?? docs/Presenca/evidencias/checkpoint-pr67/
+?? scripts/presenca/
+?? src/CQRS/Application/Yeshua.CQRS.Application.Command/Patterns/OutBox/OutboxRecordScope.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Custon/UseCases/Presenca/Editorial/CicloPresenca.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Custon/UseCases/Presenca/Editorial/ConsultarAuditoriaCommands.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Custon/UseCases/Presenca/Editorial/ProcessarPresencaCommands.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Migration/UseCases/Presenca/Editorial/ConsultarAuditoriaCommands.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Migration/UseCases/Presenca/Editorial/ProcessarPresencaCommands.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Patterns/Custon/
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Patterns/Migration/
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Patterns/OutBox/Custon/InboxListenerHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Patterns/OutBox/Custon/OutboxWorkerHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Patterns/OutBox/InboxListenerHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Patterns/OutBox/OutboxWorkerHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Custon/Saga/
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Custon/UseCases/Presenca/Editorial/ConsultarAuditoriaHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Custon/UseCases/Presenca/Editorial/ProcessarPresencaHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Migration/Saga/
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Migration/UseCases/Presenca/Editorial/ConsultarAuditoriaHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Migration/UseCases/Presenca/Editorial/ProcessarPresencaHandler.cs
+?? src/CQRS/Application/Yeshua.Presenca.CQRS.Application.RepositoryInterfaces/Read/DTOs/Custon/ySaga/ySagaReadDTO.cs
+?? src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Editorial/Custon/IntegracaoEditorial.cs
+?? src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Editorial/Custon/PresencaOptions.cs
+?? src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Saga/
+?? src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/IdentidadePublicadora/SaudeDistribuicaoRepository.cs
+?? src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/ySagaStep/EntradaSagaRepository.cs
+?? src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/ConcreteRepository/Custon/IdentidadePublicadora/EntregasRepository.cs
+?? src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/ConcreteRepository/Custon/IdentidadePublicadora/OrigensRepository.cs
+?? src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Distribution/
+?? src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/Custon/PresencaQueueHealthProbe.cs
+?? src/Studio/Yeshua.Studio.Presenca/Migrations/M000002.cs
+?? tests/CQRS/Yeshua.Presenca.CQRS.Tests.Integration.Api.Smoke/Custon/Saga/
+?? tests/CQRS/Yeshua.Presenca.CQRS.Tests.Integration.Api.Smoke/Migration/Saga/
+?? tests/Infrastructure/PrivateConfig/test_presenca_credentials.py
+?? tests/Presenca/Python/
+?? tests/Presenca/Yeshua.Presenca.Tests/DistributionTests.cs
+?? tests/Presenca/Yeshua.Presenca.Tests/ThreeOriginPortalTests.cs

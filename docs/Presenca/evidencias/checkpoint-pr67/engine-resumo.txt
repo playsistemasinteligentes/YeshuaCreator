@@ -1,0 +1,10 @@
+  Yeshua.Engine.Tests -> /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll
+Test run for /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/docs/Presenca/evidencias/checkpoint-pr67/engine.trx
+
+Passed!  - Failed:     0, Passed:    18, Skipped:     0, Total:    18, Duration: 453 ms - Yeshua.Engine.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

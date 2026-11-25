@@ -1,0 +1,39 @@
+{
+  "trackedModified": [
+    "AGENTS.md",
+    "scripts/presenca/feed.py",
+    "src/CQRS/Domain/Yeshua.Presenca.CQRS.Domain/Editorial/Custon/Editorial.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Front/wwwroot/Custon/Apps/Presenca/pages/redacao.js",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Migration/DependencInjection.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Api/Migration/EndPoints.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryRead/ConcreteRepository/Custon/IdentidadePublicadora/EditorialReadRepository.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.RepositoryWrite/ConcreteRepository/Custon/IdentidadePublicadora/EditorialRepository.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Shared/Distribution/Custon/Distribuicao.cs",
+    "src/CQRS/Infrastructure/Yeshua.Presenca.CQRS.Infrastructure.Worker/Migration/DependencInjection.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/DistributionTests.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/EditorialSqlTests.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/Yeshua.Presenca.Tests.csproj"
+  ],
+  "untracked": [
+    "docs/Presenca/evidencias/continuacao-m05-m06/api-resumo.txt",
+    "docs/Presenca/evidencias/continuacao-m05-m06/checkpoint.json",
+    "docs/Presenca/evidencias/continuacao-m05-m06/factory-live-read.json",
+    "docs/Presenca/evidencias/continuacao-m05-m06/pr67-verificada.json",
+    "docs/Presenca/evidencias/continuacao-m05-m06/presenca-resumo.txt",
+    "docs/Presenca/evidencias/continuacao-m05-m06/presenca.trx",
+    "docs/Presenca/evidencias/continuacao-m05-m06/private-presenca-tests.txt",
+    "docs/Presenca/evidencias/continuacao-m05-m06/python-tests.txt",
+    "docs/Presenca/evidencias/continuacao-m05-m06/regeneracao.json",
+    "docs/Presenca/evidencias/continuacao-m05-m06/runbook.json",
+    "docs/Presenca/evidencias/continuacao-m05-m06/worker-resumo.txt",
+    "scripts/presenca/factory.py",
+    "src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Custon/UseCases/Presenca/Editorial/ReprocessarStatusEducacionalCommands.cs",
+    "src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Commands/Migration/UseCases/Presenca/Editorial/ReprocessarStatusEducacionalCommands.cs",
+    "src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Custon/UseCases/Presenca/Editorial/ReprocessarStatusEducacionalHandler.cs",
+    "src/CQRS/Application/Yeshua.Presenca.CQRS.Application.Command/Receivers/Migration/UseCases/Presenca/Editorial/ReprocessarStatusEducacionalHandler.cs",
+    "src/Studio/Yeshua.Studio.Presenca/Migrations/M000003.cs",
+    "tests/Presenca/Python/test_factory.py",
+    "tests/Presenca/Yeshua.Presenca.Tests/FactoryContractTests.cs",
+    "tests/Presenca/Yeshua.Presenca.Tests/Fixtures/factory-inputs.json"
+  ]
+}

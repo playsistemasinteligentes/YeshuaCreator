@@ -1,0 +1,49 @@
+﻿// <yeshua>
+// artifact: GENERATED_REGENERABLE
+// createdBy: DSL
+// ownership: ENGINE
+// editable: false
+// regeneration: REPLACE
+// sourceOfTruth: DSL_OR_ENGINE_TEMPLATE
+// generator: Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration
+// </yeshua>
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Repositorio.Outputs
+{
+    public partial record ySagaStepDTO
+    {
+    public int id { get; set; }
+    public int sagaid { get; set; }
+    public string stepkey { get; set; } = string.Empty;
+    public int indexorder { get; set; }
+    public string correlationid { get; set; } = string.Empty;
+    public int status { get; set; }
+    public int executioncount { get; set; }
+    public DateTime lastexecutionat { get; set; }
+    public DateTime completedat { get; set; }
+    public string errormessage { get; set; } = string.Empty;
+    public string payload { get; set; } = string.Empty;
+    public int retrycount { get; set; }
+    public string rootoperationid { get; set; } = string.Empty;
+    public string operationid { get; set; } = string.Empty;
+    public string executionid { get; set; } = string.Empty;
+    public string causationid { get; set; } = string.Empty;
+    public int tenantid { get; set; }
+    public bool deleted { get; set; }
+    public DateTime changed { get; set; }
+    public int userid { get; set; }
+    public string operationalentityid { get; set; } = string.Empty;
+    public string failurenature { get; set; } = string.Empty;
+    public string failuretransience { get; set; } = string.Empty;
+    public string failureorigin { get; set; } = string.Empty;
+    public bool failureretryable { get; set; }
+    public string failurecode { get; set; } = string.Empty;
+    }
+}
+//Dominio.Schemas.CQRS.SourceCodeAplicationRepositoryInterfacesReadDTOsMigration

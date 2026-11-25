@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="6ff06091-d083-4aaf-8e45-3157262795cb" name="@1b587aa5ec9a 2026-11-25 11:51:18" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-25T11:51:18.3794672+00:00" queuing="2026-11-25T11:51:18.3794673+00:00" start="2026-11-25T11:51:16.1902783+00:00" finish="2026-11-25T11:51:18.3924460+00:00" />
+  <TestSettings name="default" id="114a5be1-7332-4f7f-997f-811ff65b2a19">
+    <Deployment runDeploymentRoot="_1b587aa5ec9a_2026-11-25_11_51_18" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="59c3b630-5f06-421d-a288-adfa4ee7a54a" testId="a4927bc5-c4e4-71eb-cd03-e8706a6a7286" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_requires_actual_read_and_write_server_identity" computerName="1b587aa5ec9a" duration="00:00:00.0004716" startTime="2026-11-25T11:51:18.0820093+00:00" endTime="2026-11-25T11:51:18.0821070+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="59c3b630-5f06-421d-a288-adfa4ee7a54a" />
+    <UnitTestResult executionId="915e4961-49e2-425c-a1b5-7c0d00e86a7d" testId="e7881960-b4b1-fd6e-91f3-2a94218bbba6" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;catalog&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0000894" startTime="2026-11-25T11:51:18.0776602+00:00" endTime="2026-11-25T11:51:18.0777556+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="915e4961-49e2-425c-a1b5-7c0d00e86a7d" />
+    <UnitTestResult executionId="c6395db0-fa43-40e2-99c8-c236b6e41d62" testId="f9d2c7f3-268c-de68-09eb-16f90a0e513e" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;peer&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.1059027" startTime="2026-11-25T11:51:17.9969117+00:00" endTime="2026-11-25T11:51:18.0767667+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c6395db0-fa43-40e2-99c8-c236b6e41d62" />
+    <UnitTestResult executionId="82d79197-365b-4bb9-8685-6b982b41bf67" testId="a451ecac-7a52-6955-3e6b-b70ec32f116d" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Preflight_then_optional_additive_api_sql_concurrency_and_simulated_channels" computerName="1b587aa5ec9a" duration="00:00:00.0010000" startTime="2026-11-25T11:51:18.0824339+00:00" endTime="2026-11-25T11:51:18.0851230+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82d79197-365b-4bb9-8685-6b982b41bf67">
+      <Output>
+        <ErrorInfo>
+          <Message>Existing Presenca database binding unavailable: no preflight or writes executed. Use scripts/presenca/homologate.py with the unified private file.</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="15cfd522-158a-4ce8-95e6-28c4c79ebfae" testId="c563162b-09f9-5f33-2555-95f7003b1849" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;marker&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0129429" startTime="2026-11-25T11:51:17.9429713+00:00" endTime="2026-11-25T11:51:17.9680817+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="15cfd522-158a-4ce8-95e6-28c4c79ebfae" />
+    <UnitTestResult executionId="6788254e-4891-4dc6-b812-074535830e95" testId="9d6e408f-fbb0-d7ad-fc6e-37504f39b54d" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;server&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0000505" startTime="2026-11-25T11:51:18.0782000+00:00" endTime="2026-11-25T11:51:18.0782834+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6788254e-4891-4dc6-b812-074535830e95" />
+    <UnitTestResult executionId="ed897bea-8763-4108-9af5-14bdbe96e1d1" testId="e19161bd-d5a0-056b-1096-45072c35a01e" testName="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;actor&quot;)" computerName="1b587aa5ec9a" duration="00:00:00.0000307" startTime="2026-11-25T11:51:18.0779339+00:00" endTime="2026-11-25T11:51:18.0780495+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ed897bea-8763-4108-9af5-14bdbe96e1d1" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;marker&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="c563162b-09f9-5f33-2555-95f7003b1849">
+      <Execution id="15cfd522-158a-4ce8-95e6-28c4c79ebfae" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;catalog&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="e7881960-b4b1-fd6e-91f3-2a94218bbba6">
+      <Execution id="915e4961-49e2-425c-a1b5-7c0d00e86a7d" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;peer&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="f9d2c7f3-268c-de68-09eb-16f90a0e513e">
+      <Execution id="c6395db0-fa43-40e2-99c8-c236b6e41d62" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Preflight_then_optional_additive_api_sql_concurrency_and_simulated_channels" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="a451ecac-7a52-6955-3e6b-b70ec32f116d">
+      <Execution id="82d79197-365b-4bb9-8685-6b982b41bf67" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Preflight_then_optional_additive_api_sql_concurrency_and_simulated_channels" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_requires_actual_read_and_write_server_identity" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="a4927bc5-c4e4-71eb-cd03-e8706a6a7286">
+      <Execution id="59c3b630-5f06-421d-a288-adfa4ee7a54a" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Existing_database_guard_requires_actual_read_and_write_server_identity" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;actor&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="e19161bd-d5a0-056b-1096-45072c35a01e">
+      <Execution id="ed897bea-8763-4108-9af5-14bdbe96e1d1" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting" />
+    </UnitTest>
+    <UnitTest name="Presenca.Tests.ExistingDatabaseHomologationTests.Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting(mismatch: &quot;server&quot;)" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/presenca/yeshua.presenca.tests/bin/debug/net8.0/yeshua.presenca.tests.dll" id="9d6e408f-fbb0-d7ad-fc6e-37504f39b54d">
+      <Execution id="6788254e-4891-4dc6-b812-074535830e95" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Presenca/Yeshua.Presenca.Tests/bin/Debug/net8.0/Yeshua.Presenca.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Presenca.Tests.ExistingDatabaseHomologationTests" name="Existing_database_guard_refuses_ambiguous_or_shared_identity_before_connecting" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a4927bc5-c4e4-71eb-cd03-e8706a6a7286" executionId="59c3b630-5f06-421d-a288-adfa4ee7a54a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e7881960-b4b1-fd6e-91f3-2a94218bbba6" executionId="915e4961-49e2-425c-a1b5-7c0d00e86a7d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f9d2c7f3-268c-de68-09eb-16f90a0e513e" executionId="c6395db0-fa43-40e2-99c8-c236b6e41d62" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a451ecac-7a52-6955-3e6b-b70ec32f116d" executionId="82d79197-365b-4bb9-8685-6b982b41bf67" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c563162b-09f9-5f33-2555-95f7003b1849" executionId="15cfd522-158a-4ce8-95e6-28c4c79ebfae" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9d6e408f-fbb0-d7ad-fc6e-37504f39b54d" executionId="6788254e-4891-4dc6-b812-074535830e95" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e19161bd-d5a0-056b-1096-45072c35a01e" executionId="ed897bea-8763-4108-9af5-14bdbe96e1d1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="7" executed="6" passed="6" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 8.0.34)
+[xUnit.net 00:00:00.19]   Discovering: Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.33]   Discovered:  Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.41]   Starting:    Yeshua.Presenca.Tests
+[xUnit.net 00:00:00.63]       Existing Presenca database binding unavailable: no preflight or writes executed. Use scripts/presenca/homologate.py with the unified private file.
+[xUnit.net 00:00:00.63]   Finished:    Yeshua.Presenca.Tests
+Test 'Presenca.Tests.ExistingDatabaseHomologationTests.Preflight_then_optional_additive_api_sql_concurrency_and_simulated_channels' was skipped in the test run.
+</StdOut>
+    </Output>
+    <RunInfos>
+      <RunInfo computerName="1b587aa5ec9a" outcome="Warning" timestamp="2026-11-25T11:51:18.0878880+00:00">
+        <Text>[xUnit.net 00:00:00.62]     Presenca.Tests.ExistingDatabaseHomologationTests.Preflight_then_optional_additive_api_sql_concurrency_and_simulated_channels [SKIP]</Text>
+      </RunInfo>
+    </RunInfos>
+  </ResultSummary>
+</TestRun>

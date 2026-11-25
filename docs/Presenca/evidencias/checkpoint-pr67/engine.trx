@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="256b2625-a8c4-416c-85a4-43eaede5e4f8" name="@1b587aa5ec9a 2026-11-24 16:17:38" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-24T16:17:38.5806509+00:00" queuing="2026-11-24T16:17:38.5806510+00:00" start="2026-11-24T16:17:36.4593860+00:00" finish="2026-11-24T16:17:38.6585886+00:00" />
+  <TestSettings name="default" id="0f63169b-2641-4943-afd8-d543d8919a61">
+    <Deployment runDeploymentRoot="_1b587aa5ec9a_2026-11-24_16_17_38" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="e6629546-bcc6-45c0-bc17-68f287c417e6" testId="a70beeba-1ae0-5cc0-51a0-794d5902eed7" testName="Saga_repository_operations_are_not_generated_without_declared_sagas" computerName="1b587aa5ec9a" duration="00:00:00.0031287" startTime="2026-11-24T16:17:38.5242374+00:00" endTime="2026-11-24T16:17:38.5299151+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e6629546-bcc6-45c0-bc17-68f287c417e6" />
+    <UnitTestResult executionId="3a88effb-f93b-4837-a834-d05ac208ea39" testId="586c5fd1-21f6-085d-2294-acdbe492994c" testName="OperationalPolicyGenerationDoesNotExposeGlobalExecutionMode" computerName="1b587aa5ec9a" duration="00:00:00.0105644" startTime="2026-11-24T16:17:38.1360544+00:00" endTime="2026-11-24T16:17:38.1468752+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3a88effb-f93b-4837-a834-d05ac208ea39" />
+    <UnitTestResult executionId="d4ffd27b-fec6-454e-af44-5e11f63c78a9" testId="b924192c-5356-fe6b-cdcd-b332a5e27b38" testName="CrudReceiverGenerationPropagatesSynchronousExecutionIdentity" computerName="1b587aa5ec9a" duration="00:00:00.0123435" startTime="2026-11-24T16:17:38.1470954+00:00" endTime="2026-11-24T16:17:38.1596876+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d4ffd27b-fec6-454e-af44-5e11f63c78a9" />
+    <UnitTestResult executionId="4996dfd5-685e-4224-92e6-a622b402780c" testId="a0462113-5be6-1040-f830-08e0287a3727" testName="Sagas_without_queue_policy_do_not_generate_queue_transport_workers" computerName="1b587aa5ec9a" duration="00:00:00.0014407" startTime="2026-11-24T16:17:38.5061062+00:00" endTime="2026-11-24T16:17:38.5077367+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4996dfd5-685e-4224-92e6-a622b402780c" />
+    <UnitTestResult executionId="80c5edd2-e263-4c96-bb35-c49c6d9397a5" testId="6c92dc36-95df-795e-8feb-230e7eb90c25" testName="Saga_repository_generation_uses_one_predicate_for_claim_and_health" computerName="1b587aa5ec9a" duration="00:00:00.0131070" startTime="2026-11-24T16:17:38.5108242+00:00" endTime="2026-11-24T16:17:38.5241346+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="80c5edd2-e263-4c96-bb35-c49c6d9397a5" />
+    <UnitTestResult executionId="748ad81d-e0bc-4352-8aa6-951bd311fe69" testId="084f61f4-cfcd-39a0-9895-10af6bce8a9b" testName="FileUploadEndpointUsesMultipartBinding" computerName="1b587aa5ec9a" duration="00:00:00.0077004" startTime="2026-11-24T16:17:38.4020527+00:00" endTime="2026-11-24T16:17:38.4100149+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="748ad81d-e0bc-4352-8aa6-951bd311fe69" />
+    <UnitTestResult executionId="bcf29a50-485d-42e6-8875-a67f7b7fdb17" testId="6c697792-c225-345a-c03b-2e1e4e0abda4" testName="GlobalUserIdentityAllocatorIsGeneratedOnlyForCentral" computerName="1b587aa5ec9a" duration="00:00:00.0045946" startTime="2026-11-24T16:17:38.4643681+00:00" endTime="2026-11-24T16:17:38.4692403+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bcf29a50-485d-42e6-8875-a67f7b7fdb17" />
+    <UnitTestResult executionId="0b748a69-1a24-4ea8-ba9f-7dd3ad1cee86" testId="f154ab5a-b371-df0e-b70b-2422ee64baaf" testName="EntityDecoratorGeneratesStaticClassificationsWithoutReflection" computerName="1b587aa5ec9a" duration="00:00:00.0207084" startTime="2026-11-24T16:17:38.1141089+00:00" endTime="2026-11-24T16:17:38.1352890+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0b748a69-1a24-4ea8-ba9f-7dd3ad1cee86" />
+    <UnitTestResult executionId="effc4ef8-c747-443d-a450-355fb77626ff" testId="fd5acbc3-a0d5-fc2f-5b6d-59f13e3433b0" testName="OutboxGenerationCopiesTheCurrentOperationalIdentity" computerName="1b587aa5ec9a" duration="00:00:00.0018475" startTime="2026-11-24T16:17:38.2237757+00:00" endTime="2026-11-24T16:17:38.2258715+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="effc4ef8-c747-443d-a450-355fb77626ff" />
+    <UnitTestResult executionId="f6b93922-9374-430e-b4ba-cd5349389384" testId="b3c97d55-6bb4-2cc9-c936-be8a2aa8f7f4" testName="OptionalOperationalIdentityIsCopiedByCrudAndPersistedByInsert" computerName="1b587aa5ec9a" duration="00:00:00.0014924" startTime="2026-11-24T16:17:38.4693264+00:00" endTime="2026-11-24T16:17:38.4713074+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f6b93922-9374-430e-b4ba-cd5349389384" />
+    <UnitTestResult executionId="bdd522e0-7dea-4460-ad08-0b3424d7a995" testId="630c02e0-8047-bc46-5a77-db8fbe162b80" testName="SagaWorkerGenerationStartsOneCausalExecutionPerRecord" computerName="1b587aa5ec9a" duration="00:00:00.0029732" startTime="2026-11-24T16:17:38.2203151+00:00" endTime="2026-11-24T16:17:38.2236728+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bdd522e0-7dea-4460-ad08-0b3424d7a995" />
+    <UnitTestResult executionId="0c47783e-0d02-40cd-937c-bdeac9f1556a" testId="9292bb00-7e39-a1db-9954-77e26c10b80b" testName="AsyncOperationalIdentityIsStandardForSagaOutboxAndInbox" computerName="1b587aa5ec9a" duration="00:00:00.0601639" startTime="2026-11-24T16:17:38.1597759+00:00" endTime="2026-11-24T16:17:38.2201696+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0c47783e-0d02-40cd-937c-bdeac9f1556a" />
+    <UnitTestResult executionId="6231a7fa-66a8-4f50-a31e-2799cad04e7d" testId="2b6aff06-ff3d-bf10-85a9-7b470a0456e5" testName="OperationalUserLookupIsGeneratedAsAnAuthenticatedMinimalProjection" computerName="1b587aa5ec9a" duration="00:00:00.0319616" startTime="2026-11-24T16:17:38.2599326+00:00" endTime="2026-11-24T16:17:38.2921859+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6231a7fa-66a8-4f50-a31e-2799cad04e7d" />
+    <UnitTestResult executionId="3fe14d89-cb5b-452d-8b63-ee7dbe89698e" testId="6299221b-7181-ad4d-feb1-fb4603993c3f" testName="GlobalTenantIdentityGenerationUsesExplicitKeyAndCentralSequence" computerName="1b587aa5ec9a" duration="00:00:00.0488962" startTime="2026-11-24T16:17:38.4101166+00:00" endTime="2026-11-24T16:17:38.4642765+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3fe14d89-cb5b-452d-8b63-ee7dbe89698e" />
+    <UnitTestResult executionId="fefd769d-6a6b-456c-b993-e1b9308e5f02" testId="6f03af37-b294-5e3d-687a-190dd4613afa" testName="Generated_queue_workers_are_explicit_and_use_only_declared_queues" computerName="1b587aa5ec9a" duration="00:00:00.0341109" startTime="2026-11-24T16:17:38.4713826+00:00" endTime="2026-11-24T16:17:38.5060047+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fefd769d-6a6b-456c-b993-e1b9308e5f02" />
+    <UnitTestResult executionId="92bbaeeb-2e9e-4d06-a4c9-8054f40b240d" testId="8184701c-3c02-d552-305f-400188d262e6" testName="Transactional_saga_without_topology_has_no_queue_worker_source" computerName="1b587aa5ec9a" duration="00:00:00.0027896" startTime="2026-11-24T16:17:38.5078005+00:00" endTime="2026-11-24T16:17:38.5107548+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="92bbaeeb-2e9e-4d06-a4c9-8054f40b240d" />
+    <UnitTestResult executionId="4baea401-be29-427f-8a6c-c13227cae46d" testId="a955b885-0414-53fa-4322-1f8f8c24db0a" testName="ModuleIngressEndpointIsGeneratedFromDeclaredContracts" computerName="1b587aa5ec9a" duration="00:00:00.0336455" startTime="2026-11-24T16:17:38.2259515+00:00" endTime="2026-11-24T16:17:38.2598271+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4baea401-be29-427f-8a6c-c13227cae46d" />
+    <UnitTestResult executionId="883e230e-5c49-4a00-8c7d-01eb4a2865f7" testId="d92fda33-6ca6-b464-6e0c-3ac23808c0f6" testName="ClassificationConventionUsesMetadataNamesAndExplicitOverrides" computerName="1b587aa5ec9a" duration="00:00:00.0098558" startTime="2026-11-24T16:17:38.0761187+00:00" endTime="2026-11-24T16:17:38.1049976+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="883e230e-5c49-4a00-8c7d-01eb4a2865f7" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="OperationalPolicyGenerationDoesNotExposeGlobalExecutionMode" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="586c5fd1-21f6-085d-2294-acdbe492994c">
+      <Execution id="3a88effb-f93b-4837-a834-d05ac208ea39" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="OperationalPolicyGenerationDoesNotExposeGlobalExecutionMode" />
+    </UnitTest>
+    <UnitTest name="Sagas_without_queue_policy_do_not_generate_queue_transport_workers" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="a0462113-5be6-1040-f830-08e0287a3727">
+      <Execution id="4996dfd5-685e-4224-92e6-a622b402780c" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.SagaQueueGenerationTests" name="Sagas_without_queue_policy_do_not_generate_queue_transport_workers" />
+    </UnitTest>
+    <UnitTest name="EntityDecoratorGeneratesStaticClassificationsWithoutReflection" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="f154ab5a-b371-df0e-b70b-2422ee64baaf">
+      <Execution id="0b748a69-1a24-4ea8-ba9f-7dd3ad1cee86" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="EntityDecoratorGeneratesStaticClassificationsWithoutReflection" />
+    </UnitTest>
+    <UnitTest name="FileUploadEndpointUsesMultipartBinding" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="084f61f4-cfcd-39a0-9895-10af6bce8a9b">
+      <Execution id="748ad81d-e0bc-4352-8aa6-951bd311fe69" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="FileUploadEndpointUsesMultipartBinding" />
+    </UnitTest>
+    <UnitTest name="Saga_repository_generation_uses_one_predicate_for_claim_and_health" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="6c92dc36-95df-795e-8feb-230e7eb90c25">
+      <Execution id="80c5edd2-e263-4c96-bb35-c49c6d9397a5" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.SagaQueueGenerationTests" name="Saga_repository_generation_uses_one_predicate_for_claim_and_health" />
+    </UnitTest>
+    <UnitTest name="Transactional_saga_without_topology_has_no_queue_worker_source" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="8184701c-3c02-d552-305f-400188d262e6">
+      <Execution id="92bbaeeb-2e9e-4d06-a4c9-8054f40b240d" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.SagaQueueGenerationTests" name="Transactional_saga_without_topology_has_no_queue_worker_source" />
+    </UnitTest>
+    <UnitTest name="AsyncOperationalIdentityIsStandardForSagaOutboxAndInbox" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="9292bb00-7e39-a1db-9954-77e26c10b80b">
+      <Execution id="0c47783e-0d02-40cd-937c-bdeac9f1556a" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="AsyncOperationalIdentityIsStandardForSagaOutboxAndInbox" />
+    </UnitTest>
+    <UnitTest name="OptionalOperationalIdentityIsCopiedByCrudAndPersistedByInsert" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="b3c97d55-6bb4-2cc9-c936-be8a2aa8f7f4">
+      <Execution id="f6b93922-9374-430e-b4ba-cd5349389384" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="OptionalOperationalIdentityIsCopiedByCrudAndPersistedByInsert" />
+    </UnitTest>
+    <UnitTest name="OperationalUserLookupIsGeneratedAsAnAuthenticatedMinimalProjection" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="2b6aff06-ff3d-bf10-85a9-7b470a0456e5">
+      <Execution id="6231a7fa-66a8-4f50-a31e-2799cad04e7d" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="OperationalUserLookupIsGeneratedAsAnAuthenticatedMinimalProjection" />
+    </UnitTest>
+    <UnitTest name="GlobalTenantIdentityGenerationUsesExplicitKeyAndCentralSequence" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="6299221b-7181-ad4d-feb1-fb4603993c3f">
+      <Execution id="3fe14d89-cb5b-452d-8b63-ee7dbe89698e" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="GlobalTenantIdentityGenerationUsesExplicitKeyAndCentralSequence" />
+    </UnitTest>
+    <UnitTest name="ModuleIngressEndpointIsGeneratedFromDeclaredContracts" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="a955b885-0414-53fa-4322-1f8f8c24db0a">
+      <Execution id="4baea401-be29-427f-8a6c-c13227cae46d" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="ModuleIngressEndpointIsGeneratedFromDeclaredContracts" />
+    </UnitTest>
+    <UnitTest name="Saga_repository_operations_are_not_generated_without_declared_sagas" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="a70beeba-1ae0-5cc0-51a0-794d5902eed7">
+      <Execution id="e6629546-bcc6-45c0-bc17-68f287c417e6" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.SagaQueueGenerationTests" name="Saga_repository_operations_are_not_generated_without_declared_sagas" />
+    </UnitTest>
+    <UnitTest name="GlobalUserIdentityAllocatorIsGeneratedOnlyForCentral" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="6c697792-c225-345a-c03b-2e1e4e0abda4">
+      <Execution id="bcf29a50-485d-42e6-8875-a67f7b7fdb17" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="GlobalUserIdentityAllocatorIsGeneratedOnlyForCentral" />
+    </UnitTest>
+    <UnitTest name="SagaWorkerGenerationStartsOneCausalExecutionPerRecord" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="630c02e0-8047-bc46-5a77-db8fbe162b80">
+      <Execution id="bdd522e0-7dea-4460-ad08-0b3424d7a995" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="SagaWorkerGenerationStartsOneCausalExecutionPerRecord" />
+    </UnitTest>
+    <UnitTest name="OutboxGenerationCopiesTheCurrentOperationalIdentity" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="fd5acbc3-a0d5-fc2f-5b6d-59f13e3433b0">
+      <Execution id="effc4ef8-c747-443d-a450-355fb77626ff" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="OutboxGenerationCopiesTheCurrentOperationalIdentity" />
+    </UnitTest>
+    <UnitTest name="Generated_queue_workers_are_explicit_and_use_only_declared_queues" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="6f03af37-b294-5e3d-687a-190dd4613afa">
+      <Execution id="fefd769d-6a6b-456c-b993-e1b9308e5f02" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.SagaQueueGenerationTests" name="Generated_queue_workers_are_explicit_and_use_only_declared_queues" />
+    </UnitTest>
+    <UnitTest name="CrudReceiverGenerationPropagatesSynchronousExecutionIdentity" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="b924192c-5356-fe6b-cdcd-b332a5e27b38">
+      <Execution id="d4ffd27b-fec6-454e-af44-5e11f63c78a9" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="CrudReceiverGenerationPropagatesSynchronousExecutionIdentity" />
+    </UnitTest>
+    <UnitTest name="ClassificationConventionUsesMetadataNamesAndExplicitOverrides" storage="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/engine/yeshua.engine.tests/bin/debug/net8.0/yeshua.engine.tests.dll" id="d92fda33-6ca6-b464-6e0c-3ac23808c0f6">
+      <Execution id="883e230e-5c49-4a00-8c7d-01eb4a2865f7" />
+      <TestMethod codeBase="/workspace/tasks/3c3a6c9944b44a55b4eefe8b278ba113/tests/Engine/Yeshua.Engine.Tests/bin/Debug/net8.0/Yeshua.Engine.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="TestMigration.OperationalEvidenceGenerationTests" name="ClassificationConventionUsesMetadataNamesAndExplicitOverrides" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a70beeba-1ae0-5cc0-51a0-794d5902eed7" executionId="e6629546-bcc6-45c0-bc17-68f287c417e6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="586c5fd1-21f6-085d-2294-acdbe492994c" executionId="3a88effb-f93b-4837-a834-d05ac208ea39" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b924192c-5356-fe6b-cdcd-b332a5e27b38" executionId="d4ffd27b-fec6-454e-af44-5e11f63c78a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a0462113-5be6-1040-f830-08e0287a3727" executionId="4996dfd5-685e-4224-92e6-a622b402780c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6c92dc36-95df-795e-8feb-230e7eb90c25" executionId="80c5edd2-e263-4c96-bb35-c49c6d9397a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="084f61f4-cfcd-39a0-9895-10af6bce8a9b" executionId="748ad81d-e0bc-4352-8aa6-951bd311fe69" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6c697792-c225-345a-c03b-2e1e4e0abda4" executionId="bcf29a50-485d-42e6-8875-a67f7b7fdb17" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f154ab5a-b371-df0e-b70b-2422ee64baaf" executionId="0b748a69-1a24-4ea8-ba9f-7dd3ad1cee86" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fd5acbc3-a0d5-fc2f-5b6d-59f13e3433b0" executionId="effc4ef8-c747-443d-a450-355fb77626ff" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b3c97d55-6bb4-2cc9-c936-be8a2aa8f7f4" executionId="f6b93922-9374-430e-b4ba-cd5349389384" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="630c02e0-8047-bc46-5a77-db8fbe162b80" executionId="bdd522e0-7dea-4460-ad08-0b3424d7a995" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9292bb00-7e39-a1db-9954-77e26c10b80b" executionId="0c47783e-0d02-40cd-937c-bdeac9f1556a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2b6aff06-ff3d-bf10-85a9-7b470a0456e5" executionId="6231a7fa-66a8-4f50-a31e-2799cad04e7d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6299221b-7181-ad4d-feb1-fb4603993c3f" executionId="3fe14d89-cb5b-452d-8b63-ee7dbe89698e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6f03af37-b294-5e3d-687a-190dd4613afa" executionId="fefd769d-6a6b-456c-b993-e1b9308e5f02" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8184701c-3c02-d552-305f-400188d262e6" executionId="92bbaeeb-2e9e-4d06-a4c9-8054f40b240d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a955b885-0414-53fa-4322-1f8f8c24db0a" executionId="4baea401-be29-427f-8a6c-c13227cae46d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d92fda33-6ca6-b464-6e0c-3ac23808c0f6" executionId="883e230e-5c49-4a00-8c7d-01eb4a2865f7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="18" executed="18" passed="18" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

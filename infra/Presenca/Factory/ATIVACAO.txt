@@ -1,0 +1,87 @@
+ATIVACAO DOS TIMERS DO PRESENCA — roteiro revisavel, nao executado
+
+Estado desta entrega
+Os arquivos estao preparados no repositorio. Nenhum timer foi instalado/ativado.
+Estes comandos alteram o host: executa-los somente numa implantacao autorizada.
+A validacao SQL e a jornada com banco real continuam pendentes quando nao houver
+conexao YESHUA_TEST_SQL explicitamente configurada para servidor descartavel.
+
+1. Pre-condicoes antes de instalar
+Usar host Linux com systemd e Python 3, e versao revisada do repositorio completo
+em /opt/yeshua-presenca/current (incluindo scripts/presenca e infra/private).
+A fonte unica de configuracao continua sendo o arquivo privado existente
+/root/YeshuaPrivate/production/credentials.json; o nome da pasta nao autoriza
+apontar este ensaio para producao. Para outro perfil, preparar um drop-in que
+substitua ExecStart com o caminho do MESMO loader/arquivo privado daquele ambiente.
+Nao copiar chaves para unit files, ambiente de shell, Git ou este roteiro.
+
+Configurar Apps.Presenca.Factory no arquivo privado:
+  Enabled: booleano false inicialmente
+  TenantId: ID positivo do tenant de homologacao
+  IdentidadeId: identidade publicadora explicita, 64 hexadecimais
+  Repository: repositorio GitHub publico autorizado, owner/repo
+  Pages: 1 (limite de 100 registros por recurso; permitido 1 a 10)
+
+Apps.Presenca.IngressUrl deve ser HTTPS e terminar exatamente em
+/yapi/Presenca/Inbox/YeshuaModuleEvent. Usar ingress de HOMOLOGACAO isolado.
+Shared.ModuleAuthentication.SharedKey e a chave existente, pelo loader unico.
+API e Worker precisam do mesmo escopo de homologacao. O ator tecnico configurado
+na autenticacao entre modulos precisa do vinculo Integrar na identidade indicada.
+Admin generico/token ou primeiro chamador nao provisionam esse vinculo.
+
+Ter aplicado as migrations do Studio em banco de teste e validado autorizacao,
+recepcao, saga e persistencia antes de habilitar entrega automatica. O ensaio
+padrao nao deve ter canais reais/autorizacoes editoriais pendentes. A recepcao
+da fabrica cria rascunhos; nao aprova nem publica conteudo automaticamente.
+
+2. Validacao local das definicoes (apos preparar os caminhos)
+  systemd-analyze verify /opt/yeshua-presenca/current/infra/Presenca/Factory/yeshua-presenca-factory@.service /opt/yeshua-presenca/current/infra/Presenca/Factory/yeshua-presenca-factory-collect.timer /opt/yeshua-presenca/current/infra/Presenca/Factory/yeshua-presenca-factory-deliver.timer
+Este container de desenvolvimento nao tem systemd-analyze; nao tratar os testes
+Python das definicoes como prova de que units foram carregadas no host.
+
+3. Instalacao no host, somente na implantacao autorizada
+  install -m 0644 /opt/yeshua-presenca/current/infra/Presenca/Factory/yeshua-presenca-factory@.service /etc/systemd/system/yeshua-presenca-factory@.service
+  install -m 0644 /opt/yeshua-presenca/current/infra/Presenca/Factory/yeshua-presenca-factory-collect.timer /etc/systemd/system/yeshua-presenca-factory-collect.timer
+  install -m 0644 /opt/yeshua-presenca/current/infra/Presenca/Factory/yeshua-presenca-factory-deliver.timer /etc/systemd/system/yeshua-presenca-factory-deliver.timer
+  systemctl daemon-reload
+Enquanto Factory.Enabled nao for booleano true, os jobs informam disabled sem
+criar spool nem fazer rede. StateDirectory prepara o spool persistente em
+/var/lib/yeshua-presenca-factory com modo 0700; UMask=0077 protege os arquivos.
+Nao usar o spool de outro ambiente/identidade para uma homologacao nova.
+
+4. Ensaio manual isolado, antes dos timers
+Depois de revisar o perfil e passar as pre-condicoes, configurar Enabled=true
+no MESMO arquivo privado. A coleta apenas le GitHub e grava envelopes publicos:
+  systemctl start yeshua-presenca-factory@collect.service
+  systemctl show yeshua-presenca-factory@collect.service -p Result -p ExecMainStatus
+  journalctl -u yeshua-presenca-factory@collect.service --since "30 min ago" --no-pager
+Conferir observed e truncatedResources. Snapshots podem perder movimentos
+intermediarios entre coletas; nao sao um stream de auditoria sem perdas.
+
+A entrega abaixo escreve somente no ingress configurado. Executar apenas quando
+essa borda for do ambiente de teste autorizado, sem publicacoes externas reais:
+  systemctl start yeshua-presenca-factory@deliver.service
+  systemctl show yeshua-presenca-factory@deliver.service -p Result -p ExecMainStatus
+  journalctl -u yeshua-presenca-factory@deliver.service --since "30 min ago" --no-pager
+Conferir pending/retrying e a Operacao da Redacao. completed significa que o ciclo
+terminou, nao que o conteudo foi publicado ou todos os destinos confirmaram.
+PRESENCA_FACTORY_JOB_FAILED e sanitizado: verificar perfil privado e dependencias
+no ambiente autorizado, sem publicar credenciais nem corpos de mensagens em logs.
+
+5. Habilitar agendamento depois do ensaio aprovado
+  systemctl enable --now yeshua-presenca-factory-collect.timer yeshua-presenca-factory-deliver.timer
+  systemctl list-timers 'yeshua-presenca-factory-*'
+Coleta: apos boot 5min e a cada 30min desde a conclusao, jitter ate 2min.
+Entrega: apos boot 2min e a cada 1min desde a conclusao, jitter ate 10s.
+Cada processo tem 120s/256M/25% CPU. Locks separados evitam sobreposicao da mesma
+acao; indisponibilidade do GitHub nao impede escoar mensagens ja pendentes.
+HTTP de entrega e idempotente por MessageId; timeout preserva .pending para replay.
+
+6. Interromper agendamento sem apagar trabalho
+  systemctl disable --now yeshua-presenca-factory-collect.timer yeshua-presenca-factory-deliver.timer
+Configurar Factory.Enabled=false impede novos ciclos manuais/automaticos. Isso
+nao cancela trabalho ja aceito na API/Worker. Nao apagar .pending/.sent/.retry,
+recibos, versoes, auditoria ou releases para tentar recuperar uma falha.
+Reprocessar falhas finais e callbacks pela Operacao; resultado externo incerto
+exige reconciliacao, nunca reenvio cego. Limpeza/retencao exigem politica e ordem
+explicitas; nenhum purge automatico foi incluido.

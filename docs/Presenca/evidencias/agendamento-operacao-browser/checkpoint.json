@@ -1,0 +1,64 @@
+{
+  "recordedAtUtc": "2026-11-24T17:03:53.334641+00:00",
+  "head": "2a2a89fe72b8e1d4c95b72ea956dd1d54468cdcc",
+  "previousIncrementPublished": true,
+  "pr": 67,
+  "prDraftVerified": true,
+  "workspaceInitiallyClean": true,
+  "publicationThisTurnVerified": false,
+  "scope": "Scheduled factory collection/delivery; local browser and operational verification",
+  "sql": "No YESHUA_TEST_SQL connection, Docker executable or local SQL Server available. No production SQL used.",
+  "checks": [
+    {
+      "name": "Python producer/scheduled jobs",
+      "result": "19 passed"
+    },
+    {
+      "name": "Presenca .NET tests",
+      "result": "51 passed, 1 authorized disposable SQL integration skipped, 0 failed"
+    },
+    {
+      "name": "Editorial Chromium browser",
+      "result": "10 checks passed; real page, mock API, zero external requests"
+    },
+    {
+      "name": "Generated portal Chromium browser",
+      "result": "6 checks passed across 3 articles; real generated files, mock approval repository, zero external requests"
+    },
+    {
+      "name": "Presenca private config",
+      "result": "3 passed"
+    },
+    {
+      "name": "Browser JavaScript syntax and git diff --check",
+      "result": "passed"
+    },
+    {
+      "name": "Worker build",
+      "result": "Succeeded, 1 nullable warning, 0 errors"
+    },
+    {
+      "name": "API build",
+      "result": "Succeeded, 0 warnings, 0 errors"
+    }
+  ],
+  "updatedAtUtc": "2026-11-24T17:13:22.634871+00:00",
+  "deliveries": [
+    "Prepared independent bounded systemd collection/delivery timers; explicit Factory.Enabled opt-in; not installed or enabled",
+    "Scheduled actions reuse existing producer/spool/transport and unified private validator; separate nonblocking locks and sanitized failure summary",
+    "Editorial Chromium: 10 checks passed against actual page and mock API; no external requests",
+    "Portal Chromium: 6 checks passed across 3 actual generated/activated articles from mock approval repository; no external requests",
+    "M08 independent current Outbox root trace fixed; retry causation, polling restoration and disabled-policy behavior passed"
+  ],
+  "correctedFailures": [
+    "Repository dot-segment validation rejected by new test; corrected through shared valid_repository helper; final Python suite passed",
+    "Outbox Activity was created as root but not current during delivery; regression failed before shared-edge fix and passed after fix",
+    "Browser prerequisites initially unavailable at default cache / missing libraries; downloaded/extracted under /tmp and final browser suites passed"
+  ],
+  "suggestedCommitMessage": "feat(presenca): prepare scheduled factory jobs and verify operation in Chromium",
+  "publishedCommitsVerified": [
+    "3773bf0e3fbfffbd35812b7ca3e03583da48d81e",
+    "a2d5a4a0004e4b6ff27ebafaf44cce530ed2027d",
+    "2a2a89fe72b8e1d4c95b72ea956dd1d54468cdcc"
+  ]
+}
