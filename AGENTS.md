@@ -139,6 +139,22 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   ligacao ao gateway ou deploy. Ativacao e rollback revalidam hashes e aprovacoes.
   Nao tratar testes locais como portal publicado, nem como entrega das M05-M09.
 
+## Preflight De Movimentos Sequenciais
+
+- Antes de implementar um movimento dependente de PR ainda nao merged, registrar
+  remoto, branch, HEAD e SHA exato do predecessor autorizado. Conferir o SHA
+  remoto e executar `git cat-file -t <SHA>` e
+  `git merge-base --is-ancestor <SHA> HEAD`; somente exit 0 na ancestralidade
+  libera a base. Objeto ausente e ancestralidade negativa sao bloqueios distintos.
+- Nova task nao herda automaticamente a branch da task anterior. Na ponte atual,
+  PrepareAsync clona somente Git.BaseBranch e a continuacao apenas reutiliza o
+  workspace. Nao inferir integracao pelo texto da ordem, existencia da PR ou
+  leitura remota de arquivos. Preparacao Git deve ocorrer pelo mecanismo
+  administrativo autorizado, preservando historico e protecao de .git.
+- Registrar tambem a integracao autenticada necessaria para atualizar a issue;
+  publicacao posterior de PR pelo aplicativo nao disponibiliza essa capacidade
+  ao agente. Diagnostico e protocolo: docs/Presenca/M01_CONTINUIDADE_WORKSPACE.md.
+
 ## Cobranca E Direitos De Uso
 
 - Decisao de 2026-11-18: a interface usa Carteira de creditos, com Adicionar

@@ -1,0 +1,169 @@
+{
+  "collectedAtUtc": "2026-11-20T11:49:48.073942+00:00",
+  "purpose": "M01 preflight only; not implementation acceptance",
+  "workspace": "/workspace/tasks/820df3ced948494b8e74a0b7a280a8bc",
+  "branch": "codex/task-820df3ced948494b8e74a0b7a280a8bc",
+  "head": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f",
+  "issue": {
+    "httpStatus": 200,
+    "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/54",
+    "number": 54,
+    "title": "[Presença] M01 — Fundação do domínio e contratos",
+    "state": "open",
+    "updated_at": "2026-11-19T19:47:13Z",
+    "body": "## Objetivo e escopo\nImplementar identidade publicadora, canal, plataforma/capacidade, pauta/origem, conteúdo/versão, material, aprovação, publicação/destino e auditoria conforme DSL real. Definir autorização por identidade e contratos de entrada idempotentes. Não implementar Academia internamente.\n\n## Dependências\nM00 concluída e revisada; M01 depende do inventário técnico de M00.\n\n## Critérios de aceite\nMigrações e código gerado corretos, APIs/commands validados, isolamento por identidade, testes de persistência, autorização e duplicação.\n\n## Protocolo de execução\n1. Antes de executar, complementar esta issue com caminhos, contratos, arquivos, testes e riscos apurados nos movimentos anteriores.\n2. Implementar em branch/worktree isolada e abrir PR com evidências.\n3. Executar testes automatizados e revisão independente; corrigir falhas antes de concluir.\n4. Não modificar código gerado manualmente, nem implantar em produção sem autorização.\n5. Registrar commit SHA, decisões, pendências e bloqueios reais.\n\n**Estado inicial:** Planejada, NÃO liberada para implementação antes do refinamento técnico.\n\n**Projeto:** Yeshua Presença; portal estático da Play Sistemas; Academia é módulo independente."
+  },
+  "pullRequestM00": {
+    "httpStatus": 200,
+    "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/63",
+    "number": 63,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "headSha": "8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1",
+    "baseSha": "0ee78f46dc0bcd0b85750e75e55ecf157d792b2f",
+    "filesHttpStatus": 200,
+    "files": [
+      {
+        "path": "docs/Presenca/M00_RECONHECIMENTO.md",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/M00_VERIFICACOES.md",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/affected-intermediate-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/affected-intermediate.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/affected-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/affected.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/baseline-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/baseline.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/compilacao-intermediaria-erros.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/engine-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/engine.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/pr-63-antes.json",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/regression-before-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/regression-before.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/shared-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/shared.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/testes.json",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/correcao-paths/validacao.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/engine-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/engine.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/issues-53-62.json",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/shared-resultado.txt",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/shared.trx",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/testes.json",
+        "status": "added"
+      },
+      {
+        "path": "docs/Presenca/evidencias/validacao-documental.txt",
+        "status": "added"
+      },
+      {
+        "path": "src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/CSharpCQRS.cs",
+        "status": "modified"
+      },
+      {
+        "path": "tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs",
+        "status": "modified"
+      }
+    ]
+  },
+  "M00DocumentsRead": {
+    "M00_RECONHECIMENTO.md": {
+      "url": "https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1/docs/Presenca/M00_RECONHECIMENTO.md",
+      "sha256": "e872ef8b0fb9978f2d656f9ebc29d3aaeab15de2b63cad7a66674f07adf5f19e",
+      "bytes": 28937
+    },
+    "M00_VERIFICACOES.md": {
+      "url": "https://raw.githubusercontent.com/playsistemasinteligentes/YeshuaCreator/8d628fcc7d9f02aa9c14a4e4e3195766c787a4d1/docs/Presenca/M00_VERIFICACOES.md",
+      "sha256": "c12e73fb547db0b066e37276b560a91fa0ff28c45198e6667b5caabc701c398c",
+      "bytes": 16281
+    }
+  },
+  "localReferencesChecked": [
+    "src/Studio/Yeshua.Studio.Memorias/Program.cs",
+    "src/Studio/Yeshua.Studio.Memorias/Migrations/M000001.cs",
+    "src/Studio/Yeshua.Studio.AppClinicas/Migrations/M000009.cs",
+    "src/Engine/Yeshua.Engine/Dominio/Entity.cs",
+    "src/Engine/Yeshua.Engine/Dominio/SourceCodeBase.cs",
+    "src/Engine/Yeshua.Engine/Dominio/Migration/MigrationBase.cs",
+    "src/Engine/Yeshua.Engine/Dominio/Migration/MigrationBuilder.InternalEntities.cs",
+    "src/Engine/Yeshua.Engine/Dominio/Insdex.cs",
+    "src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/CSharpCQRS.cs",
+    "src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureAPIEndpointsMigration.cs",
+    "src/CQRS/Infrastructure/Yeshua.Clinica.CQRS.Infrastructure.RepositoryWrite/ConcreteRepository/Custon/PlanoRecorrenciaConsulta/RecorrenciaConsultasRepository.cs",
+    "tests/Engine/Yeshua.Engine.Tests/InternalEntityGenerationTests.cs",
+    "tests/Engine/Yeshua.Engine.Tests/ApplicationDomainProjectGenerationTests.cs"
+  ],
+  "functionalTestsExecuted": false,
+  "sqlAvailabilityChecked": false,
+  "issueUpdated": false,
+  "gitWritesExecuted": false,
+  "newPullRequestVerified": false
+}
