@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if ! declare -F deploy_step >/dev/null; then
+  deploy_step() { shift 2; "$@"; }
+fi
+
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/Clinica/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
@@ -17,7 +21,7 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" pull origin main
 fi
 
-source "$APP_DIR/infra/docker/load-deploy-env.sh" clinica
+deploy_step clinica configuration source "$APP_DIR/infra/docker/load-deploy-env.sh" clinica
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
@@ -26,12 +30,12 @@ if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
 fi
 
 cd "$COMPOSE_DIR"
-docker compose build clinica-migration
-docker compose build clinica-api clinica-worker
+deploy_step clinica build-clinica-migration docker compose build clinica-migration
+deploy_step clinica build-runtime docker compose build clinica-api clinica-worker
 echo "Executando migration Clinica no banco ${YESHUA_DB_CLINICA:-YESHUA_CLINICA}..."
-docker compose run --rm clinica-migration
-yeshua_setup_sql_access
-docker compose up -d --remove-orphans \
+deploy_step clinica migration docker compose run --rm clinica-migration
+deploy_step clinica sql-access yeshua_setup_sql_access
+deploy_step clinica containers docker compose up -d --remove-orphans \
   clinica-api \
   clinica-worker
 
@@ -42,4 +46,4 @@ docker compose up -d --remove-orphans \
 #   clinica-ai-worker \
 #   clinica-ai-summarizer
 
-docker compose ps
+deploy_step clinica status docker compose ps

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if ! declare -F deploy_step >/dev/null; then
+  deploy_step() { shift 2; "$@"; }
+fi
+
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/Fiscal/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
@@ -17,7 +21,7 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" pull origin main
 fi
 
-source "$APP_DIR/infra/docker/load-deploy-env.sh" fiscal
+deploy_step fiscal configuration source "$APP_DIR/infra/docker/load-deploy-env.sh" fiscal
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
@@ -36,13 +40,13 @@ if [[ "${YESHUA_DOCKER_BUILD_PULL:-0}" == "1" ]]; then
   BUILD_OPTIONS+=(--pull)
 fi
 
-docker compose build "${BUILD_OPTIONS[@]}" fiscal-migration
-docker compose build "${BUILD_OPTIONS[@]}" fiscal-api fiscal-worker
+deploy_step fiscal build-runtime docker compose build "${BUILD_OPTIONS[@]}" fiscal-migration
+deploy_step fiscal build-runtime docker compose build "${BUILD_OPTIONS[@]}" fiscal-api fiscal-worker
 echo "Executando migration Fiscal no banco ${YESHUA_DB_FISCAL:-YESHUA_FISCAL}..."
-docker compose run --rm fiscal-migration
-yeshua_setup_sql_access
-docker compose up -d --remove-orphans \
+deploy_step fiscal migration docker compose run --rm fiscal-migration
+deploy_step fiscal sql-access yeshua_setup_sql_access
+deploy_step fiscal containers docker compose up -d --remove-orphans \
   fiscal-api \
   fiscal-worker
 
-docker compose ps
+deploy_step fiscal status docker compose ps

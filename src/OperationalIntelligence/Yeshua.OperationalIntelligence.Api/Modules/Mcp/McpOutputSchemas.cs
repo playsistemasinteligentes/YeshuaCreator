@@ -122,6 +122,29 @@ public static class McpOutputSchemas
         var searchArguments = JsonSerializer.SerializeToNode(McpToolSchemas.SourceSearch())!;
         foreach (var name in new[] { "application", "version", "buildId", "query", "file", "line", "endLine" })
             searchArguments["properties"]![name] = Nullable(searchArguments["properties"]![name]!);
+        var deployStep = new JsonObject
+        {
+            ["type"] = "object", ["properties"] = new JsonObject
+            {
+                ["module"] = text.DeepClone(), ["stage"] = text.DeepClone(), ["timestampUtc"] = text.DeepClone(),
+                ["durationSeconds"] = number.DeepClone(), ["exitCode"] = integer.DeepClone(),
+                ["images"] = strings.DeepClone(), ["diagnostic"] = text.DeepClone()
+            },
+            ["required"] = new JsonArray("module", "stage"), ["additionalProperties"] = false
+        };
+        var deployEvent = new JsonObject
+        {
+            ["type"] = "object", ["properties"] = new JsonObject
+            {
+                ["event"] = text.DeepClone(), ["requestId"] = text.DeepClone(), ["target"] = text.DeepClone(),
+                ["environment"] = text.DeepClone(), ["module"] = text.DeepClone(), ["stage"] = text.DeepClone(),
+                ["timestampUtc"] = text.DeepClone(), ["sequence"] = integer.DeepClone(), ["sha"] = text.DeepClone(),
+                ["durationSeconds"] = number.DeepClone(), ["exitCode"] = integer.DeepClone(),
+                ["status"] = text.DeepClone(), ["startedAtUtc"] = text.DeepClone(),
+                ["elapsedSeconds"] = number.DeepClone(), ["images"] = strings.DeepClone(), ["message"] = text.DeepClone()
+            },
+            ["required"] = new JsonArray("event", "sequence", "timestampUtc"), ["additionalProperties"] = false
+        };
         var schemas = new Dictionary<string, JsonNode>(StringComparer.Ordinal)
         {
             ["yeshua_deploy"] = new JsonObject
@@ -134,7 +157,15 @@ public static class McpOutputSchemas
                     ["releaseTag"] = text.DeepClone(), ["status"] = text.DeepClone(),
                     ["startedAtUtc"] = text.DeepClone(),
                     ["finishedAtUtc"] = text.DeepClone(), ["exitCode"] = integer.DeepClone(),
-                    ["instruction"] = text.DeepClone()
+                    ["instruction"] = text.DeepClone(),
+                    ["sha"] = text.DeepClone(), ["durationSeconds"] = number.DeepClone(),
+                    ["currentStep"] = deployStep.DeepClone(), ["lastCompletedStep"] = deployStep.DeepClone(),
+                    ["lastProgressUtc"] = text.DeepClone(), ["lastHeartbeatUtc"] = text.DeepClone(),
+                    ["heartbeatStale"] = boolean.DeepClone(), ["error"] = deployStep.DeepClone(),
+                    ["checkpoints"] = Array(deployEvent), ["nextCursor"] = text.DeepClone(),
+                    ["hasMore"] = boolean.DeepClone(), ["cursorTruncated"] = boolean.DeepClone(),
+                    ["telemetrySource"] = text.DeepClone(),
+                    ["observability"] = Object(("dashboardUid", text), ("logsQuery", text), ("metricsQuery", text), ("available", boolean), ("data", json))
                 },
                 ["required"] = new JsonArray("status"), ["additionalProperties"] = false
             },

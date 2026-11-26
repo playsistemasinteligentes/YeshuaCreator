@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if ! declare -F deploy_step >/dev/null; then
+  deploy_step() { shift 2; "$@"; }
+fi
+
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/APS.ADM/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
@@ -17,7 +21,7 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" pull origin main
 fi
 
-source "$APP_DIR/infra/docker/load-deploy-env.sh" aps-adm
+deploy_step aps-adm configuration source "$APP_DIR/infra/docker/load-deploy-env.sh" aps-adm
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
@@ -26,13 +30,13 @@ if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
 fi
 
 cd "$COMPOSE_DIR"
-docker compose build aps-adm-migration
-docker compose build aps-adm-api aps-adm-worker
+deploy_step aps-adm build-aps-adm-migration docker compose build aps-adm-migration
+deploy_step aps-adm build-runtime docker compose build aps-adm-api aps-adm-worker
 echo "Executando migration APS.ADM no banco ${YESHUA_DB_APS_ADM:-YESHUA_APS_ADM}..."
-docker compose run --rm aps-adm-migration
-yeshua_setup_sql_access
-docker compose up -d --remove-orphans \
+deploy_step aps-adm migration docker compose run --rm aps-adm-migration
+deploy_step aps-adm sql-access yeshua_setup_sql_access
+deploy_step aps-adm containers docker compose up -d --remove-orphans \
   aps-adm-api \
   aps-adm-worker
 
-docker compose ps
+deploy_step aps-adm status docker compose ps

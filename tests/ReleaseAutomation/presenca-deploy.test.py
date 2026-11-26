@@ -28,6 +28,7 @@ class PresencaDeploymentTests(unittest.TestCase):
                 deploy = root/'infra/docker/deploy.sh'
                 deploy.parent.mkdir(parents=True)
                 deploy.write_text(script)
+                shutil.copyfile(ROOT/'infra/docker/deploy-observability.py', deploy.parent/'deploy-observability.py')
                 for app in ('Shared', 'Central', 'Clinica', 'APS.ADM', 'Fiscal', 'Memorias', 'Presenca'):
                     folder = root/f'infra/{app}/DockerCompose'
                     folder.mkdir(parents=True)
@@ -44,6 +45,9 @@ class PresencaDeploymentTests(unittest.TestCase):
                     shutil.copyfile(ROOT/relative, target)
                 binary = root/'bin'
                 binary.mkdir()
+                git = binary/'git'
+                git.write_text('#!/bin/sh\nprintf fixture-sha\\n\n')
+                git.chmod(0o755)
                 docker = binary/'docker'
                 docker.write_text('''#!/bin/sh
 if [ "$1" = ps ]; then printf 'fixture-container\\n'; fi
@@ -57,7 +61,9 @@ exit 0
                 environment = {key: value for key, value in os.environ.items() if not key.startswith('YESHUA_')}
                 environment.update(PATH=str(binary)+os.pathsep+os.environ['PATH'],
                                    YESHUA_SKIP_UPDATE='1', YESHUA_COMMIT_SHA='fixture-sha',
-                                   YESHUA_DOCKER_SOCKET_GID='999', FIXTURE_APPLICATIONS=str(calls))
+                                   YESHUA_DOCKER_SOCKET_GID='999', FIXTURE_APPLICATIONS=str(calls),
+                                   YESHUA_DEPLOY_JOURNAL=str(root/'receipt.events.jsonl'),
+                                   YESHUA_DEPLOY_OTLP_ENDPOINT='http://127.0.0.1:1', YESHUA_DEPLOY_CAPTURE='bridge')
                 cases = (
                     ('all', 'fixture', ['Shared', 'Central', 'Clinica', 'APS.ADM', 'Fiscal', 'Memorias', 'Presenca']),
                     ('all', '', ['Shared', 'Central', 'Clinica', 'APS.ADM', 'Fiscal', 'Memorias']),

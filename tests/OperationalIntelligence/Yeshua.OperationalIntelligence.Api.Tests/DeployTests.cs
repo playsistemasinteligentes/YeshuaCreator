@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Yeshua.OperationalIntelligence.Api.Modules.Deploy;
+using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Clients;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp;
 
 namespace Yeshua.OperationalIntelligence.Api.Tests;
@@ -14,10 +15,15 @@ public sealed class DeployTests
     private sealed class Bridge : IDeployBridge
     {
         public int Calls;
+        public DeployCommand? LastCommand;
         public Task<JsonElement> SendAsync(DeployCommand command, CancellationToken cancellationToken)
         {
             Calls++;
-            return Task.FromResult(JsonSerializer.SerializeToElement(new { requestId = command.RequestId, status = "Running" }));
+            LastCommand = command;
+            return Task.FromResult(JsonSerializer.SerializeToElement(new { requestId = command.RequestId, status = "Running", sha = "abc", heartbeatStale = true,
+                currentStep = new { module = "central", stage = "build-runtime", timestampUtc = "2026-11-26T00:00:00Z", images = new[] { "central-api" } },
+                checkpoints = new[] { new { @event = "step_started", sequence = 123L, timestampUtc = "2026-11-26T00:00:00Z", module = "central", stage = "build-runtime" } },
+                nextCursor = "123", hasMore = false, cursorTruncated = false, telemetrySource = "persisted-script-journal" }));
         }
     }
 
@@ -80,6 +86,58 @@ public sealed class DeployTests
             new DeployOptions { Destination = "yeshua-deploy@host", IdentityFile = "/private/key", KnownHostsFile = "relative" }
         })
             await Assert.ThrowsExceptionAsync<ArgumentException>(() => new SshDeployBridge(Options.Create(config)).SendAsync(new("status", "test"), default));
+    }
+
+
+    private sealed class LokiHandler(bool unavailable) : HttpMessageHandler
+    {
+        public Uri? Requested;
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken token)
+        {
+            Requested = request.RequestUri;
+            if (unavailable) throw new HttpRequestException("isolated unavailable fixture");
+            return Task.FromResult(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("""{"status":"success","data":{"resultType":"streams","result":[]}}""")
+            });
+        }
+    }
+
+    [TestMethod]
+    public async Task StatusUsesSameLokiEventsAndKeepsReceiptWhenObservabilityUnavailable()
+    {
+        foreach (var unavailable in new[] { false, true })
+        {
+            var bridge = new Bridge();
+            var handler = new LokiHandler(unavailable);
+            var loki = new LokiClient(new HttpClient(handler) { BaseAddress = new Uri("http://fixture") });
+            var tool = new DeployTool(new(bridge), loki);
+            var result = await tool.CallAsync(JsonSerializer.Deserialize<JsonElement>(
+                """{"action":"status","requestId":"test","cursor":"123"}"""), default);
+            Assert.IsFalse(result.IsError);
+            Assert.AreEqual("123", bridge.LastCommand!.Cursor);
+            var body = (JsonElement)result.StructuredContent!;
+            Assert.AreEqual("Running", body.GetProperty("status").GetString());
+            Assert.AreEqual(!unavailable, body.GetProperty("observability").GetProperty("available").GetBoolean());
+            Assert.AreEqual("yeshua-deploy", body.GetProperty("observability").GetProperty("dashboardUid").GetString());
+            StringAssert.Contains(Uri.UnescapeDataString(handler.Requested!.Query), "requestId=\"test\"");
+            McpOutputContractTests.Validate(McpOutputSchemas.For(tool.Name), body);
+            Assert.AreEqual(1, bridge.Calls);
+        }
+    }
+
+    [TestMethod]
+    public async Task CursorCannotMutateExecutionOrContainFreeformInput()
+    {
+        var bridge = new Bridge();
+        var tool = new DeployTool(new(bridge));
+        foreach (var input in new[] {
+            """{"action":"execute","requestId":"test","target":"all","cursor":"0"}""",
+            """{"action":"status","requestId":"test","cursor":"../x"}""",
+            """{"action":"status","requestId":"test","cursor":12}""",
+            """{"action":"status","requestId":"test","cursor":"-1"}""" })
+            await Assert.ThrowsExceptionAsync<ArgumentException>(() => tool.CallAsync(JsonSerializer.Deserialize<JsonElement>(input), default));
+        Assert.AreEqual(0, bridge.Calls);
     }
 
     [TestMethod]

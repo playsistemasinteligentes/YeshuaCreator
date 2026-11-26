@@ -26,7 +26,7 @@ done
 for directory in /opt/yeshua-deploy "$BASE" "$BASE/receipts" "$ACCOUNT_HOME" "$ACCOUNT_HOME/.ssh"; do
   [[ ! -L "$directory" ]] || { echo "Diretorio administrativo nao pode ser link simbolico." >&2; exit 1; }
 done
-for file in "$CLIENT/id_ed25519" "$CLIENT/id_ed25519.pub" "$CLIENT/known_hosts" /opt/yeshua-deploy/bridge.py /etc/sudoers.d/yeshua-deploy "$ACCOUNT_HOME/.ssh/authorized_keys"; do
+for file in "$CLIENT/id_ed25519" "$CLIENT/id_ed25519.pub" "$CLIENT/known_hosts" /opt/yeshua-deploy/bridge.py /opt/yeshua-deploy/deploy-observability.py /etc/sudoers.d/yeshua-deploy "$ACCOUNT_HOME/.ssh/authorized_keys"; do
   [[ ! -L "$file" && ( ! -e "$file" || -f "$file" ) ]] || { echo "Arquivo administrativo invalido." >&2; exit 1; }
 done
 [[ ! -e "$ACCOUNT_HOME/.ssh/authorized_keys2" && ! -L "$ACCOUNT_HOME/.ssh/authorized_keys2" ]] || { echo "Conta tecnica possui outra autorizacao SSH; revise antes de ativar." >&2; exit 1; }
@@ -51,6 +51,7 @@ fi
 usermod --lock "$ACCOUNT"
 install -d -o root -g root -m 0755 /opt/yeshua-deploy "$ACCOUNT_HOME" "$ACCOUNT_HOME/.ssh"
 install -d -o root -g root -m 0700 "$BASE" "$BASE/receipts"
+install -o root -g root -m 0644 "$SOURCE_DIR/../docker/deploy-observability.py" /opt/yeshua-deploy/deploy-observability.py
 install -o root -g root -m 0644 "$SOURCE_DIR/bridge.py" /opt/yeshua-deploy/bridge.py
 
 sudoers="$(mktemp)"

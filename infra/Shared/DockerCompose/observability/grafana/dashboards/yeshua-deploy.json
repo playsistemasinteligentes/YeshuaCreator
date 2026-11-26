@@ -1,0 +1,444 @@
+{
+  "uid": "yeshua-deploy",
+  "title": "Yeshua - Acompanhamento de deploy",
+  "description": "Checkpoints do executor oficial, sem orquestracao Grafana. Filtre requestId para correlacionar estado, SHA, duracao, heartbeat e erros. Dados atrasados nao confirmam falha.",
+  "id": null,
+  "version": 1,
+  "schemaVersion": 41,
+  "editable": false,
+  "tags": [
+    "yeshua",
+    "deploy",
+    "operational"
+  ],
+  "timezone": "utc",
+  "refresh": "15s",
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "environment",
+        "label": "Ambiente",
+        "type": "custom",
+        "query": "Production",
+        "current": {
+          "text": "Production",
+          "value": "Production"
+        },
+        "includeAll": false,
+        "multi": false
+      },
+      {
+        "name": "execution",
+        "label": "Execucao (requestId)",
+        "type": "textbox",
+        "query": ".*",
+        "current": {
+          "text": ".*",
+          "value": ".*"
+        }
+      },
+      {
+        "name": "module",
+        "label": "Modulo",
+        "type": "custom",
+        "query": "host,shared,central,clinica,aps-adm,fiscal,memorias,presenca,gateway",
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Estado atual, etapa, modulo e SHA",
+      "type": "table",
+      "description": "**O que mede:** Ultimo evento global da execucao (o filtro de modulo atua nos detalhes): status, modulo, etapa, SHA, timestamp UTC e elapsedSeconds. Escolha uma execucao para acompanhamento individual.\n\n**Como interpretar:** Consulte status e timestamps; ausencia de heartbeat pede investigacao, sem confirmar falha. O recibo persistido do MCP continua autoritativo quando a telemetria faltar.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{service_name=\"yeshua-deploy\", deployment_environment_name=~\"$environment\"} | json | requestId=~\"$execution\" | event!=\"output\"",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code",
+          "maxLines": 1
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line",
+            "format": "json",
+            "replace": true,
+            "keepTime": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Heartbeat ausente durante execucao (segundos)",
+      "type": "stat",
+      "description": "**O que mede:** Idade da ultima observacao somente para destinos em execucao. Mais de 45 segundos sinaliza observacao atrasada; nao declara falha.\n\n**Como interpretar:** Agregado por dimensoes estaveis; nao seleciona uma execucao individual. Use logs para requestId e SHA.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 45
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "(time() - max by (environment, target) (yeshua_deploy_heartbeat_seconds{environment=~\"$environment\"})) and on (environment, target) (yeshua_deploy_state{environment=~\"$environment\"} == 0)",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Timeline de checkpoints por execucao",
+      "type": "table",
+      "description": "**O que mede:** Sequencia UTC das etapas reais, com requestId, modulo, etapa, resultado, exitCode e durationSeconds. A tabela mostra ate 500 checkpoints na janela.\n\n**Como interpretar:** Consulte status e timestamps; ausencia de heartbeat pede investigacao, sem confirmar falha. O recibo persistido do MCP continua autoritativo quando a telemetria faltar.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{service_name=\"yeshua-deploy\", deployment_environment_name=~\"$environment\"} | json | requestId=~\"$execution\" | module=~\"$module\" | event=~\"step_started|step_completed|step_failed|finished\"",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code",
+          "maxLines": 500
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line",
+            "format": "json",
+            "replace": true,
+            "keepTime": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Duracao por modulo e etapa",
+      "type": "timeseries",
+      "description": "**O que mede:** Duracao observada da ultima etapa por modulo e resultado; nao soma gauges nem usa IDs como labels.\n\n**Como interpretar:** Agregado por dimensoes estaveis; nao seleciona uma execucao individual. Use logs para requestId e SHA.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 9,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (module, stage, result) (yeshua_deploy_duration_seconds{environment=~\"$environment\",module=~\"$module\"})",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Historico de conclusoes e SHA",
+      "type": "table",
+      "description": "**O que mede:** Conclusoes reais do script: sucesso/falha, SHA do checkout, duracao total, exitCode e requestId. Succeeded significa saida zero, nao homologacao funcional.\n\n**Como interpretar:** Consulte status e timestamps; ausencia de heartbeat pede investigacao, sem confirmar falha. O recibo persistido do MCP continua autoritativo quando a telemetria faltar.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{service_name=\"yeshua-deploy\", deployment_environment_name=~\"$environment\"} | json | requestId=~\"$execution\" | event=\"finished\"",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code",
+          "maxLines": 500
+        }
+      ],
+      "transformations": [
+        {
+          "id": "extractFields",
+          "options": {
+            "source": "Line",
+            "format": "json",
+            "replace": true,
+            "keepTime": true
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Sucessos e falhas na janela",
+      "type": "timeseries",
+      "description": "**O que mede:** Quantidade de eventos finais por resultado; reexportacao apos confirmacao perdida pode duplicar eventos. O recibo e a fonte para contagem exata.\n\n**Como interpretar:** Consulte status e timestamps; ausencia de heartbeat pede investigacao, sem confirmar falha. O recibo persistido do MCP continua autoritativo quando a telemetria faltar.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 18,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "multi"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "sum by (status) (count_over_time({service_name=\"yeshua-deploy\", deployment_environment_name=~\"$environment\"} | json | requestId=~\"$execution\" | event=\"finished\" [$__interval]))",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Logs correlacionados por requestId",
+      "type": "logs",
+      "description": "**O que mede:** Ultimas linhas sanitizadas de stdout/stderr. Linhas sensiveis sao ocultadas antes da persistencia/exportacao; nao inclui payload ou comando completo.\n\n**Como interpretar:** Consulte status e timestamps; ausencia de heartbeat pede investigacao, sem confirmar falha. O recibo persistido do MCP continua autoritativo quando a telemetria faltar.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 27,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true,
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{service_name=\"yeshua-deploy\", deployment_environment_name=~\"$environment\"} | json | requestId=~\"$execution\" | module=~\"$module\" | event=\"output\"",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "Erros e etapa com falha",
+      "type": "logs",
+      "description": "**O que mede:** Falha confirmada pelo exit code, com etapa/modulo e duracao. Consulte tambem a saida sanitizada para diagnostico; um heartbeat atrasado nao entra nesta lista.\n\n**Como interpretar:** Consulte status e timestamps; ausencia de heartbeat pede investigacao, sem confirmar falha. O recibo persistido do MCP continua autoritativo quando a telemetria faltar.",
+      "datasource": {
+        "type": "loki",
+        "uid": "loki"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 27,
+        "w": 12,
+        "h": 9
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "options": {
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true,
+        "enableLogDetails": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "loki",
+            "uid": "loki"
+          },
+          "expr": "{service_name=\"yeshua-deploy\", deployment_environment_name=~\"$environment\"} | json | requestId=~\"$execution\" | module=~\"$module\" | event=~\"step_failed|finished\" | exitCode != 0",
+          "queryType": "range",
+          "range": true,
+          "editorMode": "code"
+        }
+      ]
+    }
+  ],
+  "links": [],
+  "annotations": {
+    "list": []
+  }
+}
