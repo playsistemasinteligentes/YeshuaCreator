@@ -55,6 +55,32 @@ public sealed class ObservabilityDashboardCatalogTests
         }
     }
 
+
+    [TestMethod]
+    public async Task VersionedDeployDashboardIsDiscoveredWithoutPerPanelAdapter()
+    {
+        var root = new DirectoryInfo(AppContext.BaseDirectory);
+        while (root is not null && !File.Exists(Path.Combine(root.FullName, "AGENTS.md"))) root = root.Parent;
+        Assert.IsNotNull(root);
+        var catalog = new ObservabilityDashboardCatalog(Options.Create(new McpOptions {
+            DashboardCatalogPath = Path.Combine(root.FullName, "infra/Shared/DockerCompose/observability/grafana/dashboards")
+        }));
+        var list = await catalog.ListAsync(default);
+        Assert.IsTrue(list.Dashboards.Any(d => d.Uid == "yeshua-deploy"));
+        var contract = await catalog.GetAsync("yeshua-deploy", true, default);
+        Assert.IsNotNull(contract);
+        Assert.AreEqual(8, contract.PanelCount);
+        CollectionAssert.AreEquivalent(new[] { "environment", "execution", "module" }, contract.Variables.Select(v => v.Name).ToArray());
+        foreach (var panel in contract.Panels)
+        {
+            Assert.AreEqual("complete", panel.NormalizationStatus, panel.Title);
+            Assert.IsTrue(panel.SemanticSections.ContainsKey("whatItMeasures"));
+            Assert.IsTrue(panel.Technical.Targets.All(t => t.QueryLanguage is "LogQL" or "PromQL"));
+        }
+        McpOutputContractTests.Validate(McpOutputSchemas.For("yeshua_observability_dashboard_get"),
+            JsonSerializer.SerializeToElement(contract, new JsonSerializerOptions(JsonSerializerDefaults.Web)));
+    }
+
     private static string Fixture(bool includeSecondPanel)
     {
         var second = includeSecondPanel

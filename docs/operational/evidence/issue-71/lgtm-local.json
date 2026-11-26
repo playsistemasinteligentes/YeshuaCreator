@@ -1,0 +1,51 @@
+{
+  "result": "passed",
+  "scope": "isolated loopback services; actual deploy scripts with harmless command fixtures",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Estado atual, etapa, modulo e SHA",
+      "seriesOrStreams": 95
+    },
+    {
+      "id": 2,
+      "title": "Heartbeat ausente durante execucao (segundos)",
+      "seriesOrStreams": 0
+    },
+    {
+      "id": 3,
+      "title": "Timeline de checkpoints por execucao",
+      "seriesOrStreams": 93
+    },
+    {
+      "id": 4,
+      "title": "Duracao por modulo e etapa",
+      "seriesOrStreams": 32
+    },
+    {
+      "id": 5,
+      "title": "Historico de conclusoes e SHA",
+      "seriesOrStreams": 2
+    },
+    {
+      "id": 6,
+      "title": "Sucessos e falhas na janela",
+      "seriesOrStreams": 2
+    },
+    {
+      "id": 7,
+      "title": "Logs correlacionados por requestId",
+      "seriesOrStreams": 5
+    },
+    {
+      "id": 8,
+      "title": "Erros e etapa com falha",
+      "seriesOrStreams": 2
+    }
+  ],
+  "finalStatuses": [
+    "Failed",
+    "Succeeded"
+  ],
+  "traces": "Collector file exporter verified; Tempo not started"
+}

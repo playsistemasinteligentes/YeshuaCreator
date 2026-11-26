@@ -15,6 +15,16 @@ Refinar este documento sempre que uma decisao arquitetural importante ficar mais
   fallback, nova orquestracao ou mudanca no contrato MCP. Commit/push/merge
   autorizados; nao executar deploy dos aplicativos sem ordem.
 
+- Issue #71 (2026-11-26): observabilidade pertence a entrada publica de deploy,
+  com funcoes herdadas pelos scripts reais de modulo, sem executor paralelo.
+  Journal/checkpoints privados persistentes alimentam status MCP paginado e
+  exportacao OTLP assincrona; falha do Collector nunca decide o resultado.
+  Heartbeat de 15 s e progresso sao evidencias diferentes; ausencia nao confirma
+  falha. requestId/SHA pertencem a logs/traces, nunca labels de metricas.
+  Dashboard versionado yeshua-deploy entra pelo provisionamento e catalogo
+  semantico genericos existentes. Contrato e limites de recuperacao/retencao:
+  docs/operational/DEPLOY_OBSERVABILITY.md. Nenhum deploy/merge nesta tarefa.
+
 ## Presenca Em Desenvolvimento
 
 - Roteiro de inclusao de aplicativos em

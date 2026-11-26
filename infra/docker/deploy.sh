@@ -13,36 +13,121 @@ DEPLOY_ENV="$APP_DIR/infra/docker/deploy.env"
 TARGET="${1:-all}"
 
 exec 9>/var/lock/yeshua-deploy.lock
-flock 9
+
+# Observation is embedded in the official entry so the first Git update is visible
+# even when the checkout has not yet received the Python exporter.
+umask 077
+export YESHUA_DEPLOY_REQUEST_ID="${YESHUA_DEPLOY_REQUEST_ID:-manual-$(date -u +%Y%m%dT%H%M%S)-$$}"
+[[ "$YESHUA_DEPLOY_REQUEST_ID" =~ ^[a-zA-Z0-9_-]{1,80}$ ]] || exit 1
+export YESHUA_DEPLOY_TARGET="${TARGET,,}"
+export YESHUA_DEPLOY_JOURNAL="${YESHUA_DEPLOY_JOURNAL:-/root/YeshuaStorage/persistent/infra/deploy-bridge/receipts/$YESHUA_DEPLOY_REQUEST_ID.events.jsonl}"
+export YESHUA_DEPLOY_OBSERVER="$APP_DIR/infra/docker/deploy-observability.py"
+deploy_emit() {
+  if [[ -f "$YESHUA_DEPLOY_OBSERVER" ]]; then
+    python3 -B "$YESHUA_DEPLOY_OBSERVER" emit "$YESHUA_DEPLOY_JOURNAL" "$@" || :
+  else
+    # Bootstrap journal only; no checkout code, network or orchestration required.
+    python3 - "$@" <<'BOOTSTRAP' || :
+import datetime, fcntl, json, os, pathlib, sys, time
+path = pathlib.Path(os.environ['YESHUA_DEPLOY_JOURNAL'])
+try:
+    path.parent.mkdir(mode=0o700, parents=True, exist_ok=True)
+    with path.with_suffix('.journal-lock').open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        with path.open('a') as stream:
+            json.dump(dict(event=sys.argv[1], module=sys.argv[2], stage=sys.argv[3], exitCode=int(sys.argv[4]),
+                durationSeconds=max(0, time.time()-float(sys.argv[5])), sequence=time.time_ns(),
+                timestampUtc=datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                requestId=os.environ['YESHUA_DEPLOY_REQUEST_ID'], target=os.environ['YESHUA_DEPLOY_TARGET'],
+                environment='Production', sha=os.environ.get('YESHUA_COMMIT_SHA', '')), stream)
+            stream.write('\n'); stream.flush(); os.fsync(stream.fileno())
+except Exception:
+    pass
+BOOTSTRAP
+  fi
+}
+deploy_step() {
+  local module="$1" stage="$2" started
+  shift 2
+  local -x YESHUA_DEPLOY_IMAGES=""
+  local argument
+  if [[ "${1:-}" == docker && "${2:-}" == compose && "${3:-}" == build ]]; then
+    for argument in "${@:4}"; do
+      if [[ "$argument" =~ ^[a-z][a-z0-9-]{0,79}$ ]]; then
+        YESHUA_DEPLOY_IMAGES+="${YESHUA_DEPLOY_IMAGES:+,}$argument"
+      fi
+    done
+  fi
+  started="$(date +%s)"
+  deploy_emit step_started "$module" "$stage" 0 "$started"
+  "$@"
+  deploy_emit step_completed "$module" "$stage" 0 "$started"
+}
+export -f deploy_emit deploy_step
+_deploy_started="$(date +%s)"
+deploy_emit started host deployment 0 "$_deploy_started"
+# Heartbeat means the script is alive, not that a build has made progress.
+(
+  trap 'kill "${sleeper:-}" 2>/dev/null || :; exit 0' TERM
+  while true; do
+    sleep 15 & sleeper=$!
+    wait "$sleeper"
+    deploy_emit heartbeat host deployment 0 "$_deploy_started"
+  done
+) 9>&- &
+_deploy_heartbeat=$!
+deploy_finish() {
+  local code="$?"
+  trap - EXIT
+  kill "$_deploy_heartbeat" 2>/dev/null || :
+  wait "$_deploy_heartbeat" 2>/dev/null || :
+  deploy_emit finished host deployment "$code" "$_deploy_started"
+  exit "$code"
+}
+trap deploy_finish EXIT
+
+deploy_step host lock flock 9
 
 if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
-  git -C "$APP_DIR" reset --hard
-  git -C "$APP_DIR" clean -fd
-  git -C "$APP_DIR" pull origin main
+  deploy_step host git-reset git -C "$APP_DIR" reset --hard
+  deploy_step host git-clean git -C "$APP_DIR" clean -fd
+  deploy_step host git-update git -C "$APP_DIR" pull origin main
+fi
+
+export YESHUA_COMMIT_SHA="$(git -C "$APP_DIR" rev-parse HEAD)"
+if [[ -f "$YESHUA_DEPLOY_OBSERVER" ]]; then
+  if [[ "${YESHUA_DEPLOY_CAPTURE:-}" != "bridge" ]]; then
+    exec > >(python3 -B "$YESHUA_DEPLOY_OBSERVER" capture "$YESHUA_DEPLOY_JOURNAL") 2>&1
+  fi
+  # Exporter observes only the durable journal. It never executes deploy commands.
+  python3 -B "$YESHUA_DEPLOY_OBSERVER" export "$YESHUA_DEPLOY_JOURNAL" "$$" "${YESHUA_DEPLOY_OTLP_ENDPOINT:-http://127.0.0.1:4318}" </dev/null >/dev/null 2>&1 9>&- &
 fi
 
 case "${TARGET,,}" in
   aps|aps_adm) TARGET="aps-adm" ;;
 esac
-source "$APP_DIR/infra/docker/load-deploy-env.sh" "${TARGET,,}"
+deploy_step host configuration source "$APP_DIR/infra/docker/load-deploy-env.sh" "${TARGET,,}"
 
-if [[ ! -S /var/run/docker.sock ]]; then
-  echo "Socket do Docker nao encontrado em /var/run/docker.sock." >&2
-  exit 1
-fi
-export YESHUA_DOCKER_SOCKET_GID="${YESHUA_DOCKER_SOCKET_GID:-$(stat -c '%g' /var/run/docker.sock)}"
-python3 -B "$APP_DIR/infra/docker/configure-build-cache.py"
+prepare_deploy() {
+  if [[ ! -S /var/run/docker.sock ]]; then
+    echo "Socket do Docker nao encontrado em /var/run/docker.sock." >&2
+    exit 1
+  fi
+  export YESHUA_DOCKER_SOCKET_GID="${YESHUA_DOCKER_SOCKET_GID:-$(stat -c '%g' /var/run/docker.sock)}"
+  deploy_step host build-cache python3 -B "$APP_DIR/infra/docker/configure-build-cache.py"
 
-chmod +x \
-  "$SHARED_DIR"/*.sh \
-  "$CENTRAL_DIR"/*.sh \
-  "$CLINICA_DIR"/*.sh \
-  "$APS_ADM_DIR"/*.sh \
-  "$FISCAL_DIR"/*.sh \
-  "$MEMORIAS_DIR"/*.sh
-if [[ -d "$PRESENCA_DIR" ]]; then
-  chmod +x "$PRESENCA_DIR"/*.sh
-fi
+  chmod +x \
+    "$SHARED_DIR"/*.sh \
+    "$CENTRAL_DIR"/*.sh \
+    "$CLINICA_DIR"/*.sh \
+    "$APS_ADM_DIR"/*.sh \
+    "$FISCAL_DIR"/*.sh \
+    "$MEMORIAS_DIR"/*.sh
+  if [[ -d "$PRESENCA_DIR" ]]; then
+    chmod +x "$PRESENCA_DIR"/*.sh
+  fi
+}
+deploy_step host preparation prepare_deploy
 
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
@@ -150,20 +235,20 @@ prepare_presenca_routes() {
 }
 
 deploy_gateway() {
-  prepare_https_config
+  deploy_step gateway preparation prepare_https_config
 
   if ! gateway_dependencies_ready; then
     echo "Nginx aguardando os aplicativos configurados no servidor."
     return
   fi
 
-  prepare_presenca_routes
+  deploy_step gateway routes prepare_presenca_routes
   cd "$SHARED_DIR"
-  docker compose up -d nginx
-  docker exec yeshua-nginx nginx -t
-  docker exec yeshua-nginx nginx -s reload
-  assert_https_config
-  assert_central_front_route
+  deploy_step gateway containers docker compose up -d nginx
+  deploy_step gateway health-config docker exec yeshua-nginx nginx -t
+  deploy_step gateway reload docker exec yeshua-nginx nginx -s reload
+  deploy_step gateway health-https assert_https_config
+  deploy_step gateway health-front assert_central_front_route
   echo "Gateway reconciliado: configuracao validada e recarregada."
 }
 
@@ -199,52 +284,52 @@ deploy_presenca() {
 
 case "${TARGET,,}" in
   all)
-    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
-    deploy_central
-    deploy_clinica
-    deploy_aps_adm
-    deploy_fiscal
-    deploy_memorias
+    YESHUA_BUILD_SHARED=1 deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step central deployment deploy_central
+    deploy_step clinica deployment deploy_clinica
+    deploy_step aps-adm deployment deploy_aps_adm
+    deploy_step fiscal deployment deploy_fiscal
+    deploy_step memorias deployment deploy_memorias
     if [[ -n "${YESHUA_SQL_PRESENCA_READ:-}" ]]; then
-      deploy_presenca
+      deploy_step presenca deployment deploy_presenca
     fi
-    deploy_gateway
+    deploy_step gateway deployment deploy_gateway
     ;;
   central)
-    bash "$SHARED_DIR/deploy.sh"
-    deploy_central
-    deploy_gateway
+    deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step central deployment deploy_central
+    deploy_step gateway deployment deploy_gateway
     ;;
   clinica)
-    bash "$SHARED_DIR/deploy.sh"
-    deploy_clinica
-    deploy_gateway
+    deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step clinica deployment deploy_clinica
+    deploy_step gateway deployment deploy_gateway
     ;;
   aps|aps-adm|aps_adm)
-    bash "$SHARED_DIR/deploy.sh"
-    deploy_aps_adm
-    deploy_gateway
+    deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step aps-adm deployment deploy_aps_adm
+    deploy_step gateway deployment deploy_gateway
     ;;
   fiscal)
-    bash "$SHARED_DIR/deploy.sh"
-    deploy_fiscal
-    deploy_gateway
+    deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step fiscal deployment deploy_fiscal
+    deploy_step gateway deployment deploy_gateway
     ;;
   memorias)
-    bash "$SHARED_DIR/deploy.sh"
-    deploy_memorias
-    deploy_gateway
+    deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step memorias deployment deploy_memorias
+    deploy_step gateway deployment deploy_gateway
     ;;
   presenca)
-    bash "$SHARED_DIR/deploy.sh"
+    deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
     # The shared Central front serves this application's interface and catalog.
-    deploy_central
-    deploy_presenca
-    deploy_gateway
+    deploy_step central deployment deploy_central
+    deploy_step presenca deployment deploy_presenca
+    deploy_step gateway deployment deploy_gateway
     ;;
   shared)
-    YESHUA_BUILD_SHARED=1 bash "$SHARED_DIR/deploy.sh"
-    deploy_gateway
+    YESHUA_BUILD_SHARED=1 deploy_step shared deployment bash "$SHARED_DIR/deploy.sh"
+    deploy_step gateway deployment deploy_gateway
     ;;
   *)
     echo "Destino invalido: $TARGET. Use all, central, clinica, aps-adm, fiscal, memorias, presenca ou shared." >&2

@@ -93,9 +93,23 @@ da conexão, consultar o mesmo ID. Execuções da ponte são serializadas; após
 do processo/reboot, `Running` sem lock vira `Interrupted`, sem replay automático.
 O processo destacado sobrevive à conexão/API; encerramento do cgroup SSH também
 pode interrompê-lo. `Succeeded` significa saída zero do script, não homologação.
-Saída bruta fica somente em `receipts/ID.log`, até 1 MiB, nunca na resposta MCP.
+Saída sanitizada fica em `receipts/ID.log`, até 1 MiB, e no journal limitado consultável pelo MCP.
 Não apagar recibos para reutilizar IDs. Não há limpeza automática.
 
 Testes locais usam fixture inofensiva, nunca o deploy real:
 `python3 -B tests/ReleaseAutomation/deploy-bridge.test.py` e
 `dotnet test tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests`.
+
+## Checkpoints e OpenTelemetry (issue #71)
+
+O contrato atualizado inclui paginação opcional `cursor` apenas em `status`,
+etapa atual/última concluída, SHA, duração, timestamps de progresso/heartbeat,
+erro contextual e últimas linhas sanitizadas. O journal persistente do script
+alimenta o OTLP e o status, preservando consulta quando o Collector/Loki faltam.
+A API complementa a resposta com os mesmos eventos Loki e referência ao dashboard
+versionado `yeshua-deploy`; a evidência do backend não sobrescreve o recibo.
+Ausência de heartbeat nunca confirma falha. Retenção, recuperação, schemas,
+consultas e ensaios seguros: [DEPLOY_OBSERVABILITY.md](../../docs/operational/DEPLOY_OBSERVABILITY.md).
+Novas execuções armazenam somente saída sanitizada, com janela de checkpoints
+limitada/paginada. Recibos legados continuam consultáveis sem replay.
+O instalador agora copia também `deploy-observability.py` para `/opt/yeshua-deploy`.

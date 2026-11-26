@@ -1,8 +1,10 @@
 using System.Diagnostics;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Options;
 using Yeshua.OperationalIntelligence.Api.Modules.Mcp;
+using Yeshua.OperationalIntelligence.Api.Modules.Mcp.Clients;
 
 namespace Yeshua.OperationalIntelligence.Api.Modules.Deploy;
 
@@ -14,7 +16,7 @@ public sealed class DeployOptions
     public string KnownHostsFile { get; init; } = "";
 }
 
-public sealed record DeployCommand(string Action, string RequestId, string? Target = null);
+public sealed record DeployCommand(string Action, string RequestId, string? Target = null, string? Cursor = null);
 
 public interface IDeployBridge
 {
@@ -29,6 +31,8 @@ public sealed class DeployReceiver(IDeployBridge bridge)
     {
         if (!Regex.IsMatch(command.RequestId, "\\A[a-zA-Z0-9_-]{1,80}\\z"))
             throw new ArgumentException("Invalid requestId.");
+        if (command.Cursor is not null && (command.Action != "status" || !Regex.IsMatch(command.Cursor, "\\A[0-9]{1,20}\\z")))
+            throw new ArgumentException("Cursor is supported only for status and must be a decimal sequence.");
         if (command.Action == "execute")
         {
             if (!Targets.Contains(command.Target, StringComparer.Ordinal))
@@ -69,6 +73,7 @@ public sealed class SshDeployBridge(IOptions<DeployOptions> options) : IDeployBr
             var output = ReadBoundedAsync(process.StandardOutput, deadline.Token);
             var errors = ReadBoundedAsync(process.StandardError, deadline.Token);
             var payload = new Dictionary<string, object?> { ["action"] = command.Action, ["requestId"] = command.RequestId };
+            if (command.Cursor is not null) payload["cursor"] = command.Cursor;
             if (command.Action == "execute")
             {
                 payload["target"] = command.Target;
@@ -89,7 +94,7 @@ public sealed class SshDeployBridge(IOptions<DeployOptions> options) : IDeployBr
 
     private static async Task<string> ReadBoundedAsync(StreamReader reader, CancellationToken token)
     {
-        var buffer = new char[8193];
+        var buffer = new char[32769];
         var length = 0;
         while (length < buffer.Length)
         {
@@ -101,11 +106,11 @@ public sealed class SshDeployBridge(IOptions<DeployOptions> options) : IDeployBr
     }
 }
 
-public sealed class DeployTool(DeployReceiver receiver) : IMcpTool
+public sealed class DeployTool(DeployReceiver receiver, LokiClient? loki = null) : IMcpTool
 {
     public string Name => "yeshua_deploy";
     public bool IsReadOnly => false;
-    public string Description => "Deploy through the existing private administrative MCP connection. Calls only infra/docker/deploy.sh with an allowed target (all for full deployment) using the latest main through the script's Git update flow. releaseTag is rejected; version selection is disabled. requestId prevents duplicate execution; reuse it to read status after connection loss. No extra approval or confirmation. No arbitrary commands, restart, merge or cleanup.";
+    public string Description => "Deploy through the existing private administrative MCP connection. Calls only infra/docker/deploy.sh with an allowed target (all for full deployment) using the latest main through the script's Git update flow. releaseTag is rejected; version selection is disabled. requestId prevents duplicate execution; reuse it to read status after connection loss. No extra approval or confirmation. Status includes persisted checkpoints and sanitized output; optional cursor pages forward without executing. Heartbeat stale means missing evidence, never confirmed failure. Observability uses the same Loki events and versioned yeshua-deploy dashboard with persistent fallback. No arbitrary commands, restart, merge or cleanup.";
     public object InputSchema => new
     {
         type = "object", additionalProperties = false, required = new[] { "action", "requestId" },
@@ -113,7 +118,8 @@ public sealed class DeployTool(DeployReceiver receiver) : IMcpTool
         {
             action = new { type = "string", @enum = new[] { "execute", "status" } },
             requestId = new { type = "string", pattern = "^[a-zA-Z0-9_-]{1,80}$" },
-            target = new { type = "string", @enum = DeployReceiver.Targets }
+            target = new { type = "string", @enum = DeployReceiver.Targets },
+            cursor = new { type = "string", pattern = "^[0-9]{1,20}$" }
         }
     };
 
@@ -122,16 +128,34 @@ public sealed class DeployTool(DeployReceiver receiver) : IMcpTool
         if (arguments.TryGetProperty("releaseTag", out _))
             throw new ArgumentException("releaseTag is no longer supported. Omit it; deploy uses the latest main.");
         foreach (var property in arguments.EnumerateObject())
-            if (property.Name is not ("action" or "requestId" or "target"))
+            if (property.Name is not ("action" or "requestId" or "target" or "cursor"))
                 throw new ArgumentException("Unsupported deploy argument.");
         string? Read(string name) => arguments.TryGetProperty(name, out var item) && item.ValueKind == JsonValueKind.String
             ? item.GetString() : arguments.TryGetProperty(name, out _) ? throw new ArgumentException("Invalid " + name) : null;
         var action = Read("action") ?? "";
-        if (action == "status" && arguments.EnumerateObject().Any(p => p.Name is not ("action" or "requestId")))
+        if (action == "status" && arguments.EnumerateObject().Any(p => p.Name is not ("action" or "requestId" or "cursor")))
             throw new ArgumentException("Status requires only action and requestId.");
         try
         {
-            var result = await receiver.ExecuteAsync(new(action, Read("requestId") ?? "", Read("target")), cancellationToken);
+            var result = await receiver.ExecuteAsync(new(action, Read("requestId") ?? "", Read("target"), Read("cursor")), cancellationToken);
+            if (action == "status" && result.TryGetProperty("requestId", out var id))
+            {
+                var query = "{service_name=\"yeshua-deploy\"} | json | requestId=\"" + id.GetString() + "\"";
+                using var deadline = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+                deadline.CancelAfter(TimeSpan.FromSeconds(1));
+                var end = DateTimeOffset.UtcNow;
+                var logs = loki is null ? null : await loki.QueryRangeAsync(query, end.AddHours(-24), end, 5, deadline.Token);
+                var enriched = JsonNode.Parse(result.GetRawText())!.AsObject();
+                enriched["observability"] = JsonSerializer.SerializeToNode(new
+                {
+                    dashboardUid = "yeshua-deploy", logsQuery = query,
+                    metricsQuery = "{__name__=~\"yeshua_deploy_.+\"}",
+                    available = logs?.HttpStatusCode == 200,
+                    // Evidence from Loki complements the durable receipt; it never decides process state.
+                    data = logs?.HttpStatusCode == 200 ? logs.Data : null
+                });
+                result = JsonSerializer.SerializeToElement(enriched);
+            }
             return result.TryGetProperty("status", out var status) && status.GetString() == "Blocked"
                 ? McpToolResult.Error("Deploy bridge unavailable. Check host bridge configuration and query the same requestId.", result)
                 : McpToolResult.Ok("Deploy receipt. Query status with the same requestId after any connection loss.", result);

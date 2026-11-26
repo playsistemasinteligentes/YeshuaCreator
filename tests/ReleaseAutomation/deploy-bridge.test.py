@@ -114,7 +114,9 @@ class BridgeTests(unittest.TestCase):
         result = self.dispatch()
         self.assertEqual('Failed', result['status'])
         self.assertEqual(7, result['exitCode'])
-        self.assertEqual(b.MAX_LOG, (self.base / 'receipts/test-1.log').stat().st_size)
+        self.assertLessEqual((self.base / 'receipts/test-1.log').stat().st_size, b.MAX_LOG)
+        self.assertLessEqual((self.base / 'receipts/test-1.events.jsonl').stat().st_size, b.observation.MAX_JOURNAL)
+        self.assertLessEqual(len(result['checkpoints']), b.observation.PAGE_SIZE)
         self.assertNotIn('output', result)
 
     def test_crash_or_reboot_marks_interrupted_and_never_replays(self):
@@ -153,6 +155,35 @@ class BridgeTests(unittest.TestCase):
         with path.with_suffix('.lock').open('a') as lock:
             b.fcntl.flock(lock, b.fcntl.LOCK_EX)
             self.assertEqual('Running', self.dispatch({'action': 'status', 'requestId': 'test-1'})['status'])
+
+
+    def test_status_cursor_pages_sanitized_output_and_reconnect_does_not_replay(self):
+        self.script.write_text('for n in $(seq 1 25); do echo "safe line $n"; done\necho "Password=do-not-leak" >&2\nexit 6\n')
+        result = self.dispatch()
+        self.assertEqual('Failed', result['status'])
+        rows = []
+        cursor = '0'
+        while True:
+            page = self.dispatch({'action': 'status', 'requestId': 'test-1', 'cursor': cursor})
+            rows.extend(page['checkpoints'])
+            cursor = page['nextCursor']
+            if not page['hasMore']:
+                break
+        self.assertEqual(26, len(rows))
+        self.assertNotIn('do-not-leak', str(rows))
+        self.assertNotIn('do-not-leak', (self.base/'receipts/test-1.log').read_text())
+        for cursor in ('../x', '-1', '', 10, None):
+            with self.assertRaises(ValueError):
+                self.dispatch({'action': 'status', 'requestId': 'test-1', 'cursor': cursor})
+        with self.assertRaises(ValueError):
+            self.dispatch({**self.command, 'cursor': '0'})
+
+    def test_observation_failure_cannot_replace_deploy_exit_code(self):
+        self.script.write_text('echo fixture-output\nexit 9\n')
+        with patch.object(b.observation, 'append', side_effect=OSError('disk fixture')):
+            result = self.dispatch()
+        self.assertEqual('Failed', result['status'])
+        self.assertEqual(9, result['exitCode'])
 
 
 if __name__ == '__main__':

@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+if ! declare -F deploy_step >/dev/null; then
+  deploy_step() { shift 2; "$@"; }
+fi
+
 APP_DIR="/root/YeshuaCreator"
 COMPOSE_DIR="$APP_DIR/infra/Presenca/DockerCompose"
 SHARED_DIR="$APP_DIR/infra/Shared/DockerCompose"
@@ -14,7 +18,7 @@ if [[ "${YESHUA_SKIP_UPDATE:-0}" != "1" ]]; then
   git -C "$APP_DIR" clean -fd
   git -C "$APP_DIR" pull origin main
 fi
-source "$APP_DIR/infra/docker/load-deploy-env.sh" presenca
+deploy_step presenca configuration source "$APP_DIR/infra/docker/load-deploy-env.sh" presenca
 export YESHUA_COMMIT_SHA="${YESHUA_COMMIT_SHA:-$(git -C "$APP_DIR" rev-parse HEAD)}"
 
 # Runtime values come from the same private document. The derived Compose file
@@ -31,9 +35,9 @@ if [[ "${YESHUA_SKIP_SHARED:-0}" != "1" ]]; then
   bash "$SHARED_DIR/deploy.sh"
 fi
 cd "$COMPOSE_DIR"
-docker compose build presenca-migration
-docker compose build presenca-api presenca-worker
-docker compose run --rm presenca-migration
-yeshua_setup_sql_access
-docker compose up -d --remove-orphans --wait --wait-timeout 180 presenca-api presenca-worker
-docker compose ps
+deploy_step presenca build-presenca-migration docker compose build presenca-migration
+deploy_step presenca build-runtime docker compose build presenca-api presenca-worker
+deploy_step presenca migration docker compose run --rm presenca-migration
+deploy_step presenca sql-access yeshua_setup_sql_access
+deploy_step presenca containers docker compose up -d --remove-orphans --wait --wait-timeout 180 presenca-api presenca-worker
+deploy_step presenca status docker compose ps
