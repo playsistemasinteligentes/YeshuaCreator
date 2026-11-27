@@ -1,5 +1,12 @@
 # OAuth para agentes externos
 
+Atualização da issue #76: protocolo funcional implementado sobre OpenIddict,
+reutilizando a resolução convencional de permissões. Esta primeira descrição é
+histórico da etapa inicial; seu estado e pendências de implementação foram
+substituídos por [AGENT_OAUTH.md](../AGENT_OAUTH.md) e pelas
+[evidências da continuidade](../evidencias/issue-76/VALIDATION.md). A delegação
+entre humanos da #77 permanece [somente planejada](DELEGACAO_HUMANA_77.md).
+
 Data: 2026-11-27. Descritor local integrado ao
 [MCP central de negócio](MCP_CENTRAL_NEGOCIO.md). Estado: **resource server de
 laboratório implementado; authorization server e delegação real pendentes**.

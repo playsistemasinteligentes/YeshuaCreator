@@ -1,0 +1,216 @@
+test_agent_git_does_not_inherit_a_different_accounts_token (test_credentials.CredentialsTests.test_agent_git_does_not_inherit_a_different_accounts_token) ... ok
+test_agent_git_rejects_incomplete_or_implicitly_enabled_publishing (test_credentials.CredentialsTests.test_agent_git_rejects_incomplete_or_implicitly_enabled_publishing) ... ok
+test_agent_git_uses_dedicated_identity_only_from_private_providers (test_credentials.CredentialsTests.test_agent_git_uses_dedicated_identity_only_from_private_providers) ... ok
+test_all_checks_later_apps_before_deploy (test_credentials.CredentialsTests.test_all_checks_later_apps_before_deploy) ... ok
+test_all_consumers_and_independent_connections (test_credentials.CredentialsTests.test_all_consumers_and_independent_connections) ... ok
+test_billing_sandbox_is_explicit_and_survives_rebuild_without_leaking_to_other_apps (test_credentials.CredentialsTests.test_billing_sandbox_is_explicit_and_survives_rebuild_without_leaking_to_other_apps) ... ok
+test_clinica_can_select_queue_without_changing_the_private_secret_source (test_credentials.CredentialsTests.test_clinica_can_select_queue_without_changing_the_private_secret_source) ... ok
+test_clinica_codex_summary_is_disabled_by_default_and_explicitly_enabled (test_credentials.CredentialsTests.test_clinica_codex_summary_is_disabled_by_default_and_explicitly_enabled) ... ok
+test_clinica_executor_does_not_inherit_provider_secret (test_credentials.CredentialsTests.test_clinica_executor_does_not_inherit_provider_secret) ... ok
+test_clinica_executor_uses_app_owned_private_configuration (test_credentials.CredentialsTests.test_clinica_executor_uses_app_owned_private_configuration) ... ok
+test_clinica_general_credentials_are_authoritative_even_when_old_file_exists (test_credentials.CredentialsTests.test_clinica_general_credentials_are_authoritative_even_when_old_file_exists) ... ok
+test_clinica_groq_does_not_inherit_secrets_or_openai_profile (test_credentials.CredentialsTests.test_clinica_groq_does_not_inherit_secrets_or_openai_profile) ... ok
+test_clinica_groq_profile_is_isolated_from_openai_and_other_apps (test_credentials.CredentialsTests.test_clinica_groq_profile_is_isolated_from_openai_and_other_apps) ... ok
+test_clinica_groq_supports_explicit_model_and_endpoint (test_credentials.CredentialsTests.test_clinica_groq_supports_explicit_model_and_endpoint) ... ok
+test_clinica_rejects_unknown_delivery_provider (test_credentials.CredentialsTests.test_clinica_rejects_unknown_delivery_provider) ... ok
+test_duplicate_keys_are_rejected_without_values (test_credentials.CredentialsTests.test_duplicate_keys_are_rejected_without_values) ... ok
+test_empty_example_is_not_deployable (test_credentials.CredentialsTests.test_empty_example_is_not_deployable) ... ok
+test_existing_vault_is_not_hidden_by_an_empty_new_directory (test_credentials.CredentialsTests.test_existing_vault_is_not_hidden_by_an_empty_new_directory) ... ERROR
+test_gateway_needs_shared_configuration_not_app_credentials (test_credentials.CredentialsTests.test_gateway_needs_shared_configuration_not_app_credentials) ... ok
+test_import_preserves_values_and_vault_mount_without_generating_keys (test_credentials.CredentialsTests.test_import_preserves_values_and_vault_mount_without_generating_keys) ... ok
+test_import_recognizes_unified_operational_service_and_renamed_observability (test_credentials.CredentialsTests.test_import_recognizes_unified_operational_service_and_renamed_observability) ... ok
+test_import_rejects_mismatching_existing_signing_keys (test_credentials.CredentialsTests.test_import_rejects_mismatching_existing_signing_keys) ... ok
+test_invalid_youtube_protection_key_is_rejected_without_replacement (test_credentials.CredentialsTests.test_invalid_youtube_protection_key_is_rejected_without_replacement) ... ERROR
+test_mcp_deploy_rejects_implicit_truthy_configuration (test_credentials.CredentialsTests.test_mcp_deploy_rejects_implicit_truthy_configuration) ... ok
+test_mcp_deploy_requires_explicit_private_opt_in_and_exports_only_fixed_paths (test_credentials.CredentialsTests.test_mcp_deploy_requires_explicit_private_opt_in_and_exports_only_fixed_paths) ... ok
+test_missing_key_cannot_come_from_inherited_environment (test_credentials.CredentialsTests.test_missing_key_cannot_come_from_inherited_environment) ... ok
+test_optional_providers_do_not_block_environment (test_credentials.CredentialsTests.test_optional_providers_do_not_block_environment) ... ok
+test_partial_tunnel_configuration_is_rejected_without_exposing_key (test_credentials.CredentialsTests.test_partial_tunnel_configuration_is_rejected_without_exposing_key) ... ERROR
+test_read_is_non_mutating_and_existing_file_is_never_overwritten (test_credentials.CredentialsTests.test_read_is_non_mutating_and_existing_file_is_never_overwritten) ... ERROR
+test_real_windows_acl (test_credentials.CredentialsTests.test_real_windows_acl) ... skipped 'Windows ACL test'
+test_schema_types_and_control_characters (test_credentials.CredentialsTests.test_schema_types_and_control_characters) ... ok
+test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key (test_credentials.CredentialsTests.test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key) ... ERROR
+test_tunnel_configuration_uses_private_provider_file_only_for_shared (test_credentials.CredentialsTests.test_tunnel_configuration_uses_private_provider_file_only_for_shared) ... ERROR
+test_youtube_bootstrap_is_app_owned_and_can_be_partial (test_credentials.CredentialsTests.test_youtube_bootstrap_is_app_owned_and_can_be_partial) ... ERROR
+test_existing_file_cannot_be_replaced_by_a_runtime_directory (test_credentials.UnifiedInitializationTests.test_existing_file_cannot_be_replaced_by_a_runtime_directory) ... ERROR
+test_import_cannot_replace_a_restored_configuration (test_credentials.UnifiedInitializationTests.test_import_cannot_replace_a_restored_configuration) ... ERROR
+test_missing_explicit_youtube_directory_is_not_recreated (test_credentials.UnifiedInitializationTests.test_missing_explicit_youtube_directory_is_not_recreated) ... ERROR
+test_new_environment_stops_until_credentials_are_completed (test_credentials.UnifiedInitializationTests.test_new_environment_stops_until_credentials_are_completed) ... ERROR
+test_restored_environment_and_youtube_files_are_reused_unchanged (test_credentials.UnifiedInitializationTests.test_restored_environment_and_youtube_files_are_reused_unchanged) ... ERROR
+
+======================================================================
+ERROR: test_existing_vault_is_not_hidden_by_an_empty_new_directory (test_credentials.CredentialsTests.test_existing_vault_is_not_hidden_by_an_empty_new_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 305, in test_existing_vault_is_not_hidden_by_an_empty_new_directory
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-0a4pmz3i'
+
+======================================================================
+ERROR: test_invalid_youtube_protection_key_is_rejected_without_replacement (test_credentials.CredentialsTests.test_invalid_youtube_protection_key_is_rejected_without_replacement)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 332, in test_invalid_youtube_protection_key_is_rejected_without_replacement
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-4eynmtor'
+
+======================================================================
+ERROR: test_partial_tunnel_configuration_is_rejected_without_exposing_key (test_credentials.CredentialsTests.test_partial_tunnel_configuration_is_rejected_without_exposing_key)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 171, in test_partial_tunnel_configuration_is_rejected_without_exposing_key
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-r4frgi3k'
+
+======================================================================
+ERROR: test_read_is_non_mutating_and_existing_file_is_never_overwritten (test_credentials.CredentialsTests.test_read_is_non_mutating_and_existing_file_is_never_overwritten)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 342, in test_read_is_non_mutating_and_existing_file_is_never_overwritten
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-gfocs4ch'
+
+======================================================================
+ERROR: test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key (test_credentials.CredentialsTests.test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 76, in test_support_reuses_provider_and_has_separate_rebuild_stable_upload_key
+    other = credentials.environment(document, Path("/private"), "memorias")
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/infra/private/credentials.py", line 288, in environment
+    if legacy.is_dir() and any(legacy.iterdir()) and not get(document, "Apps", "Memorias", "PrivateRoot"):
+       ^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/pathlib.py", line 1251, in is_dir
+    return S_ISDIR(self.stat().st_mode)
+                   ^^^^^^^^^^^
+  File "/usr/lib/python3.11/pathlib.py", line 1014, in stat
+    return os.stat(self, follow_symlinks=follow_symlinks)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: '/root/YeshuaMemoriasSecrets'
+
+======================================================================
+ERROR: test_tunnel_configuration_uses_private_provider_file_only_for_shared (test_credentials.CredentialsTests.test_tunnel_configuration_uses_private_provider_file_only_for_shared)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 161, in test_tunnel_configuration_uses_private_provider_file_only_for_shared
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-lbq0x_iu'
+
+======================================================================
+ERROR: test_youtube_bootstrap_is_app_owned_and_can_be_partial (test_credentials.CredentialsTests.test_youtube_bootstrap_is_app_owned_and_can_be_partial)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 320, in test_youtube_bootstrap_is_app_owned_and_can_be_partial
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-boysqb_v'
+
+======================================================================
+ERROR: test_existing_file_cannot_be_replaced_by_a_runtime_directory (test_credentials.UnifiedInitializationTests.test_existing_file_cannot_be_replaced_by_a_runtime_directory)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 447, in test_existing_file_cannot_be_replaced_by_a_runtime_directory
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-ajnf73nq'
+
+======================================================================
+ERROR: test_import_cannot_replace_a_restored_configuration (test_credentials.UnifiedInitializationTests.test_import_cannot_replace_a_restored_configuration)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 426, in test_import_cannot_replace_a_restored_configuration
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-8kzuyt0m'
+
+======================================================================
+ERROR: test_missing_explicit_youtube_directory_is_not_recreated (test_credentials.UnifiedInitializationTests.test_missing_explicit_youtube_directory_is_not_recreated)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 437, in test_missing_explicit_youtube_directory_is_not_recreated
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-w20zt886'
+
+======================================================================
+ERROR: test_new_environment_stops_until_credentials_are_completed (test_credentials.UnifiedInitializationTests.test_new_environment_stops_until_credentials_are_completed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 392, in test_new_environment_stops_until_credentials_are_completed
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-hchthd8q'
+
+======================================================================
+ERROR: test_restored_environment_and_youtube_files_are_reused_unchanged (test_credentials.UnifiedInitializationTests.test_restored_environment_and_youtube_files_are_reused_unchanged)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Infrastructure/PrivateConfig/test_credentials.py", line 404, in test_restored_environment_and_youtube_files_are_reused_unchanged
+    with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 1009, in __init__
+    self.name = mkdtemp(suffix, prefix, dir)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/tempfile.py", line 523, in mkdtemp
+    _os.mkdir(file, 0o700)
+OSError: [Errno 30] Read-only file system: '/home/agent/.yeshua-config-test-b8tzbbs8'
+
+----------------------------------------------------------------------
+Ran 39 tests in 0.044s
+
+FAILED (errors=12, skipped=1)

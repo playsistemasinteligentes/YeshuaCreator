@@ -3,7 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Central.BusinessMcp;
 
-public sealed class DelegatedAccess(IDelegationRepository repository, TimeProvider clock)
+public sealed class DelegatedAccess(IDelegationRepository repository, TimeProvider clock, DelegationValidationOptions? options = null)
 {
     // Signature, issuer, audience and lifetime are checked by the dedicated bearer
     // scheme before this method. All entry points also re-read consent/revocation.
@@ -15,13 +15,20 @@ public sealed class DelegatedAccess(IDelegationRepository repository, TimeProvid
             || string.IsNullOrWhiteSpace(Claim("delegation_id"))
             || !int.TryParse(Claim("tenantId"), out var tenant) || tenant <= 0)
             throw new BusinessAccessException("invalid_token");
+        if (options?.UseShortLivedTokenSnapshot == true)
+        {
+            if (!long.TryParse(Claim("exp"), out var expiration) || DateTimeOffset.FromUnixTimeSeconds(expiration) <= clock.GetUtcNow())
+                throw new BusinessAccessException("invalid_token");
+            return new(Claim("sub")!, tenant, Claim("client_id")!, Claim("delegation_id")!,
+                (Claim("scope") ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.Ordinal)) { Principal = principal };
+        }
         var delegation = await repository.FindAsync(Claim("delegation_id")!, ct);
         var scopes = (Claim("scope") ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.Ordinal);
         if (delegation is null || delegation.Revoked || delegation.ExpiresAt <= clock.GetUtcNow()
             || delegation.Subject != Claim("sub") || delegation.TenantId != tenant
             || delegation.ClientId != Claim("client_id") || !scopes.IsSubsetOf(delegation.Scopes))
             throw new BusinessAccessException("invalid_token");
-        return new(delegation.Subject, tenant, delegation.ClientId, delegation.Id, scopes);
+        return new(delegation.Subject, tenant, delegation.ClientId, delegation.Id, scopes) { Principal = principal };
     }
 }
 

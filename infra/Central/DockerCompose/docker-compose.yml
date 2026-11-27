@@ -28,6 +28,7 @@ services:
       ASPNETCORE_URLS: "http://0.0.0.0:7214"
       ASPNETCORE_ENVIRONMENT: "Production"
       YeshuaProcessing__Scope: "production"
+      AgentOAuth__ProfileJson: "${YESHUA_CENTRAL_AGENT_OAUTH_JSON:-}"
       Billing__SandboxEnabled: "${YESHUA_BILLING_SANDBOX_ENABLED:-false}"
       UploadTokens__SigningKey: "${CENTRAL_UPLOAD_SIGNING_KEY:?Configure credentials.json}"
       Storage__Providers__Disk__Root: "/storage"

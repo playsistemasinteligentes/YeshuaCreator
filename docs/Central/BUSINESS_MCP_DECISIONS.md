@@ -1,5 +1,11 @@
 # Decisões do MCP de negócio e OAuth
 
+Continuidade da issue #76: [decisão e implementação OAuth atuais](AGENT_OAUTH.md).
+A decisão 4 e os impedimentos de protocolo abaixo registram a etapa inicial e
+foram superados pelo OpenIddict com persistência apenas de protocolo no banco
+Central existente. O catálogo real de operações continua fechado. A #77 permanece
+somente planejada; não foi implementada delegação entre usuários humanos.
+
 2026-11-27, base `eb20c50ad50be21b2bc6d36825df2953f98fa616`, branch preparada
 `codex/task-85374af22c2449068d7c25b90bb3122e`.
 

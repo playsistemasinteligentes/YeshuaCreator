@@ -1,5 +1,10 @@
 # MCP central de negócio
 
+Continuidade com prioridade exclusiva OAuth na issue #76: [AGENT_OAUTH.md](../AGENT_OAUTH.md).
+O transporte pode usar os tokens emitidos pelo novo fluxo; a publicação do catálogo
+real de operações permanece fora dessa continuidade. As pendências de servidor
+OAuth desta descrição inicial foram substituídas pelo runbook e evidências atuais.
+
 Data: 2026-11-27. Descritor local de desenvolvimento, no formato de escopo,
 reconhecimento, decisões, critérios e evidências usado pelos planos em `docs`.
 Não foi encontrado um formato estruturado único de descritor de tarefa no repositório.

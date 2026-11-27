@@ -6,7 +6,11 @@ namespace Central.BusinessMcp;
 // This module is intentionally opt-in. Production adapters must use the existing
 // Central identity/catalogue repositories; a token claim is never a permission store.
 public sealed record DelegatedIdentity(string Subject, int TenantId, string ClientId,
-    string DelegationId, IReadOnlySet<string> Scopes);
+    string DelegationId, IReadOnlySet<string> Scopes)
+{
+    public ClaimsPrincipal? Principal { get; init; }
+}
+public sealed record DelegationValidationOptions(bool UseShortLivedTokenSnapshot = false);
 public sealed record Delegation(string Id, string Subject, int TenantId, string ClientId,
     DateTimeOffset ExpiresAt, bool Revoked, IReadOnlySet<string> Scopes);
 public interface IDelegationRepository

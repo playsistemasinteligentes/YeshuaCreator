@@ -1,0 +1,13 @@
+{
+  "number": 75,
+  "title": "Agent: Implementar duas tarefas integradas no Yeshua. 1. MCP central de negócio: investigar primeiro código existente da",
+  "body": "Alteracao preparada pelo agente operacional.\n\nTask: `85374af2-2c24-4906-8d7c-25b90bb3122e`\n\nBase Git validada: `eb20c50ad50be21b2bc6d36825df2953f98fa616`\n\nHEAD: `07268d103cf9ce9681a08ca7a466c9058a632390`\n\nImplementei uma primeira etapa, **ainda sem concluir integralmente as duas tarefas**.\n\n- MCP de negócio opt-in na Central: descoberta, catálogo confiável, schemas, executor, validação, autorização delegada, auditoria e correlação.\n- Engine: identificadores estáveis, descrição e resposta tipada no OpenAPI existente.\n- Recurso OAuth: validação dedicada de assinatura, issuer, audiência, expiração e delegação.\n- Dois descritores, decisões arquiteturais e evidências documentados. MCP administrativo preservado.\n\n**Verificações finais:** 49 testes novos, 69 da Engine e 12 do MCP operacional passaram. Build do Studio Central aprovado. Uma compilação intermediária dos testes falhou e foi corrigida.\n\n**Pendências:** autorização real por operação, repositories persistentes, credencial delegada de destino, authorization code com PKCE, consentimento, revogação persistente e acompanhamento assíncrono. O módulo permanece desativado; a integração demonstrada usa duas APIs sintéticas, sem homologação real.\n\nConsulte os [arquivos alterados](docs/Central/evidencias/business-mcp/files.json), [resultados](docs/Central/evidencias/business-mcp/VALIDATION.md) e [decisões e impedimentos](docs/Central/BUSINESS_MCP_DECISIONS.md).\n\nSem deploy ou operações reais. A publicação pelo aplicativo ainda não foi verificada; não há PR confirmada.\n\nRevisao e deploy permanecem com o operador.",
+  "state": "open",
+  "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/75",
+  "draft": true,
+  "head": {
+    "ref": "codex/task-85374af22c2449068d7c25b90bb3122e",
+    "sha": "07268d103cf9ce9681a08ca7a466c9058a632390"
+  },
+  "checkedAtUtc": "2026-11-27T20:18:07.422137+00:00"
+}

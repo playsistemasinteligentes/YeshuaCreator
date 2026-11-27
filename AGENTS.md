@@ -3,6 +3,23 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Continuidade issue #76: OAuth funcional de agente externo implementado com
+  OpenIddict 7.9, PKCE S256, consentimento, refresh rotativo e revogacao de
+  renovacao; access token residual de ate 5 minutos no MCP, sem lookup extra de
+  concessao por operacao. Login convencional e OAuth usam CentralLoginSessionReader
+  com os mesmos repositories, catalogos vigentes e direitos; perfis/grants nao
+  passaram a ter outro resolvedor. Quatro tabelas oficiais de protocolo EF no
+  banco Central sao excecao especifica de infraestrutura OAuth, sem ASP.NET
+  Identity, usuarios/perfis paralelos ou SQL em receivers. DDL e registro de
+  clientes sao explicitos; nao executam em startup. Perfil AgentOAuth desativado
+  por padrao no credentials.json unico; RSA privada no mesmo perfil, criptografia
+  derivada da raiz JWT existente. APIs preservam policies/dominio e a troca
+  getMenu existente; bearer MCP nunca e repassado. Catalogo real de operacoes
+  continua fechado. Issue #77 e somente plano, sem delegacao entre humanos.
+  Reutilizada branch/PR #75; sem merge/deploy. Runbook e limites atuais em
+  docs/Central/AGENT_OAUTH.md e evidencias em docs/Central/evidencias/issue-76.
+  O registro seguinte e historico da etapa inicial, anterior a essa continuidade.
+
 - MCP de negocio/OAuth externo em 2026-11-27: incremento opt-in em
   Central.Api/Custon/BusinessMcp, sem registro no Program nem exposicao real.
   OpenAPI continua a fonte unica de schemas; o gerador de endpoints acrescenta

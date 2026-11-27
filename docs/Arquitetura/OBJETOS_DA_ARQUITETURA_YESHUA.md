@@ -676,3 +676,25 @@ inferir exposição de operações a partir do menu, Swagger ou papel Admin.
 Esse incremento é opt-in, não registrado no host de produção, e não conclui o
 servidor OAuth. Decisões e critérios restantes em
 [BUSINESS_MCP_DECISIONS.md](../Central/BUSINESS_MCP_DECISIONS.md).
+
+
+### Continuidade #76: protocolo OAuth de agente externo
+
+`AgentOAuthReceiver` coordena consentimento, emissão/renovação e revogação por
+meio dos managers oficiais do OpenIddict. O store oficial EF Core contém apenas
+clientes, autorizações, scopes e tokens de protocolo no mesmo banco da Central.
+Essa integração de infraestrutura é uma exceção explícita à geração de tabelas
+pela DSL: evita implementar criptografia/protocolo/stores próprios. Não contém
+usuários, tenants, perfis ou permissões de negócio e não usa ASP.NET Identity.
+SQL continua fora dos receivers; DDL/cadastro de cliente são ações explícitas.
+
+`CentralLoginSessionReader` reúne a resolução convencional já existente, usada
+por login e OAuth: repositories atuais, catálogo vigente do tenant e direitos de
+uso. Scopes OAuth somente restringem essa autoridade. `AgentApplicationSender`
+reutiliza getMenu para identidade local e conserva titular/cliente/concessão;
+não repassa tokens MCP nem adiciona papel Admin. Revogação mínima bloqueia
+renovação e aceita a janela residual documentada de cinco minutos no recurso.
+
+Somente `external_agent` é implementado. A #77 permanece documento de projeto,
+sem união de permissões ou delegação humana/transitiva. Detalhes e evidências em
+[AGENT_OAUTH.md](../Central/AGENT_OAUTH.md).

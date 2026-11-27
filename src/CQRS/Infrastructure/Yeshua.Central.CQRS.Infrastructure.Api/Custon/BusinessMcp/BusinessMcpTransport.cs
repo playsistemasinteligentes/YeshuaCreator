@@ -110,12 +110,14 @@ public static class BusinessMcpTransport
             }
             await next(context);
         });
-        app.MapGet(new Uri(MetadataUri(resource)).AbsolutePath, (HttpContext context) =>
+        var agentOAuth = app.Services.GetService<Central.AgentOAuth.AgentOAuthOptions>();
+        if (agentOAuth is null) app.MapGet(new Uri(MetadataUri(resource)).AbsolutePath, (HttpContext context) =>
         {
             context.Response.Headers.CacheControl = "no-store";
             return Results.Json(resource.Metadata());
         }).AllowAnonymous();
-        app.MapMcp(resource.Resource.AbsolutePath).RequireAuthorization(BusinessOAuthResource.Policy);
+        app.MapMcp(resource.Resource.AbsolutePath).RequireAuthorization(agentOAuth is null
+            ? BusinessOAuthResource.Policy : Central.AgentOAuth.AgentOAuthOptions.ResourcePolicy);
     }
     private static string MetadataUri(BusinessOAuthResource resource) =>
         resource.Resource.GetLeftPart(UriPartial.Authority) + "/.well-known/oauth-protected-resource" + resource.Resource.AbsolutePath;

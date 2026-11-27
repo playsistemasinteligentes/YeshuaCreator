@@ -30,7 +30,8 @@ public sealed class TrustedBusinessCatalog
             foreach (var exposure in source.Exposures)
             {
                 if (string.IsNullOrWhiteSpace(exposure.Grant) || string.IsNullOrWhiteSpace(exposure.OperationId)
-                    || !exposure.Scope.StartsWith("business:operation:", StringComparison.Ordinal))
+                    || !(exposure.Scope.StartsWith("business:operation:", StringComparison.Ordinal)
+                        || exposure.Scope == "application:" + source.Application))
                     throw new ArgumentException("An explicit business grant and delegated scope are required.");
                 var matches = doc.GetProperty("paths").EnumerateObject()
                     .SelectMany(path => path.Value.EnumerateObject().Select(method => (path, method)))
