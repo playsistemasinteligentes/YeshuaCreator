@@ -1,5 +1,6 @@
 using Central.Repository.AgentOAuth;
 using Central.BusinessMcp;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.AspNetCore.HttpOverrides;
 using Command.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -29,9 +30,14 @@ public static class AgentOAuthRegistration
         services.AddScoped<CentralLoginSessionReader>();
         services.AddScoped<ICentralAgentIdentity, CentralAgentIdentity>();
         services.AddScoped<AgentOAuthReceiver>();
-        services.AddMemoryCache();
-        services.AddSingleton(new DelegationValidationOptions(UseShortLivedTokenSnapshot: true));
-        services.AddScoped<IDelegationRepository, AgentGrantReader>();
+        services.TryAddSingleton(TimeProvider.System);
+        services.TryAddSingleton(new TrustedBusinessCatalog([]));
+        services.AddSingleton<AgentApplicationCredentials>();
+        // No manager/repository is resolved by authorization on MCP requests.
+        services.AddScoped<DelegatedAccess>(sp => new DelegatedAccess(null, sp.GetRequiredService<TimeProvider>(),
+            new DelegationValidationOptions(UseShortLivedTokenSnapshot: true)));
+        services.AddHttpClient<AgentApplicationPreparation>(http => http.Timeout = TimeSpan.FromSeconds(30))
+            .ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler { AllowAutoRedirect = false, UseCookies = false });
         services.AddScoped<IBusinessPermissionReader, AgentBusinessPermissionReader>();
         services.AddScoped<IBusinessAuditWriter, AgentBusinessAudit>();
         services.AddHttpClient<IApplicationDelegationSender, AgentApplicationSender>(http => http.Timeout = TimeSpan.FromSeconds(30))

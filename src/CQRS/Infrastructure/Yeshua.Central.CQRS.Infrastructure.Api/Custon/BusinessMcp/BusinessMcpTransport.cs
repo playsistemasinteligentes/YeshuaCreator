@@ -6,6 +6,7 @@ using ModelContextProtocol.Protocol;
 using Json.Schema;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Central.BusinessMcp;
 
@@ -21,8 +22,11 @@ public static class BusinessMcpTransport
         services.AddSingleton(catalog);
         services.AddSingleton(TimeProvider.System);
         services.AddHttpContextAccessor();
-        services.AddScoped<DelegatedAccess>();
+        services.TryAddScoped<DelegatedAccess>();
         services.AddScoped<BusinessMcpReceiver>();
+        // The Agent OAuth resource uses a fixed local key configuration. Do not
+        // register a second Authority/JWKS lookup path for its business requests.
+        if (!services.Any(s => s.ServiceType == typeof(Central.AgentOAuth.AgentOAuthOptions)))
         services.AddAuthentication().AddJwtBearer(BusinessOAuthResource.Scheme, options =>
         {
             options.Authority = resource.Issuer.AbsoluteUri;

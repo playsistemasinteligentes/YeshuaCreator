@@ -698,3 +698,30 @@ renovação e aceita a janela residual documentada de cinco minutos no recurso.
 Somente `external_agent` é implementado. A #77 permanece documento de projeto,
 sem união de permissões ou delegação humana/transitiva. Detalhes e evidências em
 [AGENT_OAUTH.md](../Central/AGENT_OAUTH.md).
+
+
+### Complemento aprovado #76: snapshot autocontido e zero I/O de autorização
+
+A troca existente de sessão (`getMenu`) e a leitura das permissões atuais passam
+para emissão/code exchange e renovação, não para a primeira operação. Não há
+sessão de autorização em cache nem cache remoto a consultar nas requisições.
+
+`AgentApplicationPreparation` prepara credenciais curtas somente para os destinos
+do catálogo confiável e scopes efetivos. `AgentApplicationCredentials` protege
+o conjunto em JWE padrão dentro do JWT MCP assinado, vinculando identidade,
+tenant, cliente, concessão, origem/audience e prazo. Não é novo repository,
+emissor de permissões ou transporte: usa as mesmas chaves privadas/policies e
+as bibliotecas JWT já presentes. Impede que o agente extraia o bearer do app.
+`AgentApplicationSender` apenas valida/abre esse snapshot local e entrega o
+Command, sem leitor de identidade, grant store, cache, introspecção ou getMenu.
+
+No perfil OAuth, bearer e `DelegatedAccess` usam chaves/claims locais; o esquema
+isolado com Authority remoto e leitor de revogação por requisição não é
+registrado. Nenhum fallback pode reintroduzir I/O quando um snapshot é inválido,
+ausente, grande demais ou expirado. Revogação é conferida na emissão/renovação;
+a janela residual de tokens emitidos é curta e explícita. I/O normal do domínio,
+entrega de negócio e auditoria seguem seus contratos existentes.
+
+Provas com interceptores EF e backends bloqueados, negativos e medição de CPU
+contra fluxo convencional/MCP anterior com cache aquecido:
+[evidências zero I/O](../Central/evidencias/issue-76-zero-io/VALIDATION.md).

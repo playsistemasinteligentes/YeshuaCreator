@@ -121,7 +121,103 @@ public sealed class AgentOAuthFlowTests
         Assert.True(result.IsError);
         Assert.Contains("destination_denied", ((TextContentBlock)result.Content[0]).Text);
         Assert.Equal(2, host.Destination.Calls);
-        Assert.Equal(2, host.Identity.ResolveCalls); // Issuance + once for the app session, no permission query per operation.
+        Assert.Equal(1, host.Identity.ResolveCalls); // Issuance only, including the very first operation.
+    }
+    [Fact]
+    public async Task FirstAndRepeatedMcpRequestsHaveZeroAuthorizationIoEvenWithBackendsOffline()
+    {
+        await using var host = await Host.Start(mcp: true, executableFixture: true, fixtureApplication: "Clinica");
+        var databaseCommandsBeforeIssuance = host.Probe.DatabaseCommands;
+        using var browser = host.Client();
+        var authorization = Authorization(); authorization["scope"] = "business:discover application:Clinica offline_access";
+        using var consent = await host.Consent(browser, authorization);
+        var tokens = await host.Exchange(DecodeQuery(consent.Headers.Location!)["code"]);
+        Assert.True(tokens.TryGetProperty("access_token", out var access), tokens.GetRawText());
+        Assert.Equal(1, host.Identity.ResolveCalls); Assert.Equal(1, host.Destination.SessionExchanges);
+        Assert.True(host.Probe.DatabaseCommands > databaseCommandsBeforeIssuance); // Prove the DB interceptor is active during issuance.
+        var issued = new JwtSecurityTokenHandler().ReadJwtToken(access.GetString());
+        var grant = issued.Claims.Single(c => c.Type == "delegation_id").Value;
+        using var owner = host.Client(); owner.DefaultRequestHeaders.Authorization = new("Bearer", OwnerToken());
+        using var revoked = await owner.PostAsync("/yapi/agents/revoke", new StringContent(JsonSerializer.Serialize(new { authorizationId = grant }), Encoding.UTF8, "application/json"));
+        Assert.Equal(HttpStatusCode.NoContent, revoked.StatusCode);
+        Assert.Equal("invalid_grant", (await host.Refresh(tokens.GetProperty("refresh_token").GetString()!)).GetProperty("error").GetString());
+        var commands = host.Probe.DatabaseCommands; var opens = host.Probe.ConnectionOpens;
+        await host.ForbidAuthorizationIo();
+        using var http = host.Client(); http.DefaultRequestHeaders.Authorization = new("Bearer", access.GetString());
+        await using var mcp = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
+            { Endpoint = new Uri(Resource), TransportMode = HttpTransportMode.StreamableHttp }, http, ownsHttpClient: false));
+        Assert.Equal(3, (await mcp.ListToolsAsync()).Count);
+        var apps = await mcp.CallToolAsync("yeshua_business_applications", new Dictionary<string, object?>());
+        Assert.False(apps.IsError ?? false);
+        var operations = await mcp.CallToolAsync("yeshua_business_operations", new Dictionary<string, object?> { ["application"] = "Clinica" });
+        Assert.False(operations.IsError ?? false);
+        var arguments = new Dictionary<string, object?> { ["application"] = "Clinica", ["operation"] = "Sample.Commands.Execute",
+            ["parameters"] = new { quantity = 2, items = new[] { new { kind = "A" } } } };
+        for (var i = 0; i < 3; i++)
+            Assert.False((await mcp.CallToolAsync("yeshua_business_execute", arguments)).IsError ?? false);
+        host.Destination.Allowed = false;
+        Assert.True((await mcp.CallToolAsync("yeshua_business_execute", arguments)).IsError);
+        Assert.Equal(4, host.Destination.Calls);
+        Assert.Equal(commands, host.Probe.DatabaseCommands); Assert.Equal(opens, host.Probe.ConnectionOpens);
+        Assert.Equal(1, host.Identity.ResolveCalls); Assert.Equal(1, host.Destination.SessionExchanges);
+        var schemes = await host.App.Services.GetRequiredService<Microsoft.AspNetCore.Authentication.IAuthenticationSchemeProvider>().GetAllSchemesAsync();
+        Assert.DoesNotContain(schemes, scheme => scheme.Name == BusinessOAuthResource.Scheme);
+        var evidence = new
+        {
+            scenario = "Actual OAuth code/PKCE -> official MCP client -> mapped app. Grant revoked and renewal denied, then authorization backends disabled before the first MCP request.",
+            databaseCommandsDuringConsentAndIssuance = commands - databaseCommandsBeforeIssuance,
+            priorDatabaseCommands = commands, databaseCommandsOnBusinessRequests = host.Probe.DatabaseCommands - commands,
+            databaseConnectionsOpenedOnBusinessRequests = host.Probe.ConnectionOpens - opens,
+            priorCentralIdentityReads = 1, centralIdentityReadsOnBusinessRequests = host.Identity.ResolveCalls - 1,
+            priorSessionExchanges = 1, sessionExchangesOnBusinessRequests = host.Destination.SessionExchanges - 1,
+            actualBusinessDeliveries = host.Destination.Calls, localApplicationIdentity = 99,
+            forbiddenIoWouldThrow = true, revocationBlocksRenewal = true, issuedJwtRemainsValidWithinFiveMinutes = true
+        };
+        var directory = Environment.GetEnvironmentVariable("YESHUA_AGENT_AUTH_EVIDENCE_DIR");
+        if (!string.IsNullOrWhiteSpace(directory))
+        {
+            Directory.CreateDirectory(directory);
+            File.WriteAllText(Path.Combine(directory, "zero-authorization-io.json"), JsonSerializer.Serialize(evidence, new JsonSerializerOptions { WriteIndented = true }) + Environment.NewLine);
+        }
+    }
+    [Fact]
+    public async Task RefreshPreparesFreshApplicationIdentityBeforeAnyBusinessRequest()
+    {
+        await using var host = await Host.Start(mcp: true, executableFixture: true, fixtureApplication: "Clinica");
+        using var browser = host.Client(); var authorization = Authorization();
+        authorization["scope"] = "business:discover application:Clinica offline_access";
+        using var consent = await host.Consent(browser, authorization);
+        var original = await host.Exchange(DecodeQuery(consent.Headers.Location!)["code"]);
+        Assert.True(original.TryGetProperty("refresh_token", out var refresh), original.GetRawText());
+        host.Destination.LocalUserId = 101; // Changed mapping returned by the existing app session boundary.
+        var renewed = await host.Refresh(refresh.GetString()!);
+        Assert.True(renewed.TryGetProperty("access_token", out var access), renewed.GetRawText());
+        Assert.Equal(2, host.Identity.ResolveCalls); Assert.Equal(2, host.Destination.SessionExchanges);
+        var commands = host.Probe.DatabaseCommands; var opens = host.Probe.ConnectionOpens;
+        await host.ForbidAuthorizationIo();
+        using var http = host.Client(); http.DefaultRequestHeaders.Authorization = new("Bearer", access.GetString());
+        await using var mcp = await McpClient.CreateAsync(new HttpClientTransport(new HttpClientTransportOptions
+            { Endpoint = new Uri(Resource), TransportMode = HttpTransportMode.StreamableHttp }, http, ownsHttpClient: false));
+        var result = await mcp.CallToolAsync("yeshua_business_execute", new Dictionary<string, object?> { ["application"] = "Clinica", ["operation"] = "Sample.Commands.Execute",
+            ["parameters"] = new { quantity = 2, items = new[] { new { kind = "A" } } } });
+        Assert.False(result.IsError ?? false);
+        Assert.Equal(1, host.Destination.Calls);
+        Assert.Equal(commands, host.Probe.DatabaseCommands); Assert.Equal(opens, host.Probe.ConnectionOpens);
+        Assert.Equal(2, host.Identity.ResolveCalls); Assert.Equal(2, host.Destination.SessionExchanges);
+    }
+    [Fact]
+    public async Task DestinationSessionDeniedDuringEmissionCannotBeDeferredUntilBusinessExecution()
+    {
+        await using var host = await Host.Start(mcp: true, executableFixture: true, fixtureApplication: "Clinica");
+        using var browser = host.Client(); var authorization = Authorization();
+        authorization["scope"] = "business:discover application:Clinica offline_access";
+        using var consent = await host.Consent(browser, authorization);
+        host.Destination.DenySession = true;
+        var result = await host.Exchange(DecodeQuery(consent.Headers.Location!)["code"]);
+        Assert.Equal("invalid_grant", result.GetProperty("error").GetString());
+        Assert.False(result.TryGetProperty("access_token", out _));
+        Assert.Equal(1, host.Identity.ResolveCalls); Assert.Equal(1, host.Destination.SessionExchanges);
+        Assert.Equal(0, host.Destination.Calls);
     }
     [Theory]
     [InlineData("wrong-verifier")]
@@ -324,18 +420,36 @@ public sealed class AgentOAuthFlowTests
         expires: DateTime.UtcNow.AddMinutes(5), signingCredentials: new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)), SecurityAlgorithms.HmacSha256)));
     private sealed class Destination : HttpMessageHandler
     {
-        public int Calls; public bool Allowed = true;
+        public int Calls, SessionExchanges;
+        public bool Allowed = true, ForbidSessions, DenySession;
+        public int LocalUserId = 99;
+        public string Application = "Central";
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
-            Calls++;
             var handler = new JwtSecurityTokenHandler();
             var principal = handler.ValidateToken(request.Headers.Authorization!.Parameter!, new TokenValidationParameters
-            { ValidateIssuer = false, ValidateAudience = true, ValidAudience = "https://destination.test", ValidateLifetime = true,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)) }, out _);
-            Assert.Equal("17", principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            { ValidateIssuer = false, ValidateAudience = true,
+                ValidAudience = request.RequestUri!.AbsolutePath == "/yapi/getMenu" ? "https://destination.test/yapi/getMenu" : "https://destination.test",
+                ValidateLifetime = true, ClockSkew = TimeSpan.Zero, IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)) }, out _);
+            if (request.RequestUri.AbsolutePath == "/yapi/getMenu")
+            {
+                SessionExchanges++;
+                if (ForbidSessions) throw new InvalidOperationException("Session exchange is forbidden after issuance.");
+                Assert.Equal("17", principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+                Assert.Equal("7", principal.FindFirst("tenantId")?.Value);
+                if (DenySession) return Task.FromResult(new HttpResponseMessage(HttpStatusCode.Forbidden));
+                var appClaims = new Claim[] { new(ClaimTypes.NameIdentifier, LocalUserId.ToString()), new("tenantId", "7"), new("application", Application),
+                    new("tokenOrigin", "Application"), new(ClaimTypes.Role, "Admin") };
+                var response = new HttpResponseMessage(HttpStatusCode.OK);
+                response.Headers.Add("X-Yeshua-Application-Token", new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
+                    claims: appClaims, expires: DateTime.UtcNow.AddMinutes(10), signingCredentials: new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)), SecurityAlgorithms.HmacSha256))));
+                return Task.FromResult(response);
+            }
+            Calls++;
+            Assert.Equal(Application == "Central" ? "17" : LocalUserId.ToString(), principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             Assert.Equal("17", principal.FindFirst("owner_sub")?.Value);
             Assert.Equal("7", principal.FindFirst("tenantId")?.Value);
-            Assert.Equal("Central", principal.FindFirst("application")?.Value);
+            Assert.Equal(Application, principal.FindFirst("application")?.Value);
             Assert.Equal("test-agent", principal.FindFirst("client_id")?.Value);
             Assert.DoesNotContain(principal.Claims, c => c.Type == ClaimTypes.Role);
             return Task.FromResult(new HttpResponseMessage(Allowed ? HttpStatusCode.OK : HttpStatusCode.Forbidden)
@@ -345,35 +459,46 @@ public sealed class AgentOAuthFlowTests
     private sealed class Identity : ICentralAgentIdentity
     {
         public int LoginCalls, ResolveCalls;
+        public bool ForbidReads;
         public int Tenant = 7;
         public List<string> Catalogs = ["Central", "Clinica"];
         public Task<LoginOutputCommand?> LoginAsync(string username, string password, CancellationToken ct)
-        { LoginCalls++; return Task.FromResult(username == "owner@example.test" && password == "synthetic-password" ? Snapshot() : null); }
+        { LoginCalls++; if (ForbidReads) throw new InvalidOperationException("Central login is unavailable."); return Task.FromResult(username == "owner@example.test" && password == "synthetic-password" ? Snapshot() : null); }
         public Task<LoginOutputCommand?> ResolveAsync(int owner, int tenant, CancellationToken ct)
-        { ResolveCalls++; return Task.FromResult(owner == 17 && tenant == Tenant ? Snapshot() : null); }
+        { ResolveCalls++; if (ForbidReads) throw new InvalidOperationException("Central permission reads are unavailable."); return Task.FromResult(owner == 17 && tenant == Tenant ? Snapshot() : null); }
         private LoginOutputCommand Snapshot() => new() { UserId = 17, tenantId = 7, catalogos = Catalogs, modulos = [], email = "owner@example.test", userName = "Synthetic" };
     }
-    private sealed class Host(WebApplication app, SqliteConnection connection, Identity identity, Destination destination) : IAsyncDisposable
+    private sealed class Host(WebApplication app, SqliteConnection connection, Identity identity, Destination destination, AuthorizationIoProbe probe) : IAsyncDisposable
     {
         public WebApplication App = app; public Identity Identity = identity; public Destination Destination = destination;
+        public AuthorizationIoProbe Probe = probe;
+        public async Task ForbidAuthorizationIo()
+        {
+            Probe.Forbidden = true; Identity.ForbidReads = true; Destination.ForbidSessions = true;
+            await connection.CloseAsync();
+        }
         public HttpClient Client() { var client = App.GetTestClient(); client.BaseAddress = new Uri(Issuer); return client; }
-        public static async Task<Host> Start(bool mcp = false, string? databasePath = null, bool executableFixture = false)
+        public static async Task<Host> Start(bool mcp = false, string? databasePath = null, bool executableFixture = false, string fixtureApplication = "Central")
         {
             var connection = new SqliteConnection("Data Source=" + (databasePath ?? ":memory:")); await connection.OpenAsync();
             var builder = WebApplication.CreateBuilder(); builder.WebHost.UseTestServer(); builder.Logging.ClearProviders();
             var options = new AgentOAuthOptions { Enabled = true, Issuer = Issuer, Resource = Resource, SigningPrivateKeyPem = SigningPem,
                 Clients = [new() { ClientId = "test-agent", DisplayName = "Synthetic agent", RedirectUris = [Callback], Applications = ["Central", "Clinica"] }] };
-            builder.Services.AddCentralAgentOAuth(options, Root, db => db.UseSqlite(connection));
+            var probe = new AuthorizationIoProbe();
+            builder.Services.AddCentralAgentOAuth(options, Root, db => db.UseSqlite(connection)
+                .AddInterceptors(new AuthorizationCommandProbe(probe), new AuthorizationConnectionProbe(probe)));
             builder.Services.AddSingleton(new JwtSettings { SecretKey = Root });
             if (mcp)
             {
-                var catalogue = executableFixture ? new TrustedBusinessCatalog([new("Central", new Uri("https://destination.test/"),
-                    Json(BusinessMcpTests.Document), [new("Sample.Commands.Execute", "existing-domain-policy", "application:Central")])]) : new TrustedBusinessCatalog([]);
+                var catalogue = executableFixture ? new TrustedBusinessCatalog([new(fixtureApplication, new Uri("https://destination.test/"),
+                    Json(BusinessMcpTests.Document), [new("Sample.Commands.Execute", "existing-domain-policy", AgentOAuthOptions.ApplicationScope(fixtureApplication))])]) : new TrustedBusinessCatalog([]);
                 builder.Services.AddCentralBusinessMcp(new(new Uri(Resource), new Uri(Issuer)), catalogue);
             }
-            var destination = new Destination();
+            var destination = new Destination { Application = fixtureApplication };
+            if (executableFixture) builder.Services.AddTransient<AgentApplicationPreparation>(sp => new AgentApplicationPreparation(new HttpClient(destination),
+                sp.GetRequiredService<TrustedBusinessCatalog>(), sp.GetRequiredService<AgentApplicationCredentials>(), sp.GetRequiredService<JwtSettings>(), TimeProvider.System));
             if (executableFixture) builder.Services.AddScoped<IApplicationDelegationSender>(sp => new AgentApplicationSender(new HttpClient(destination),
-                sp.GetRequiredService<ICentralAgentIdentity>(), sp.GetRequiredService<IMemoryCache>(), sp.GetRequiredService<JwtSettings>()));
+                sp.GetRequiredService<AgentApplicationCredentials>()));
             var identity = new Identity(); builder.Services.AddSingleton<ICentralAgentIdentity>(identity);
             builder.Services.AddAuthentication("conventional").AddJwtBearer("conventional", bearer => bearer.TokenValidationParameters = new()
             { ValidateIssuer = false, ValidateAudience = false, IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)) });
@@ -385,7 +510,7 @@ public sealed class AgentOAuthFlowTests
             else app.MapGet("/business/mcp", (HttpContext http) => Results.Json(new { owner = http.User.FindFirst("sub")?.Value,
                 tenant = http.User.FindFirst("tenantId")?.Value, client = http.User.FindFirst("client_id")?.Value }))
                 .RequireAuthorization(AgentOAuthOptions.ResourcePolicy);
-            await app.StartAsync(); return new(app, connection, identity, destination);
+            await app.StartAsync(); return new(app, connection, identity, destination, probe);
         }
         public async Task<HttpResponseMessage> Consent(HttpClient client, Dictionary<string, string> fields, string decision = "allow")
         {

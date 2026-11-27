@@ -1,5 +1,10 @@
 # OAuth para agentes externos
 
+Complemento aprovado #76: **zero I/O adicional por requisição para autorização
+e delegação**, inclusive primeira chamada; resolução somente na emissão/renovação
+e JWT assinado autocontido. [Evidências atuais](../evidencias/issue-76-zero-io/VALIDATION.md).
+Não há nova implementação paralela ou delegação humana.
+
 Atualização da issue #76: protocolo funcional implementado sobre OpenIddict,
 reutilizando a resolução convencional de permissões. Esta primeira descrição é
 histórico da etapa inicial; seu estado e pendências de implementação foram

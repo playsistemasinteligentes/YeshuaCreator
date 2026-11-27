@@ -3,6 +3,22 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Complemento aprovado #76: zero I/O ADICIONAL de autorizacao/delegacao em
+  requisicoes, inclusive primeira chamada e apos reinicio. A preparacao getMenu
+  e a leitura atual de identidade/permissoes ocorrem apenas no code exchange e
+  refresh. JWT MCP assinado autocontido leva credenciais de destino ja emitidas
+  em parte protegida JWE, vinculada a titular/tenant/cliente/concessao/app/origem.
+  Sender so abre/valida localmente e entrega o Command; sem repository, cache,
+  introspeccao, renovacao ou sessao sob demanda. Chaves locais derivam do mesmo
+  arquivo privado. Perfil OAuth nao registra leitor de grants por requisicao
+  nem esquema Authority remoto. Falha/expiracao/ausencia nega sem fallback.
+  Revogacao impede novas emissoes/renovacoes da concessao, com janela residual
+  de ate cinco minutos, sem prometer revogacao instantanea. I/O de negocio e
+  validacoes existentes permanecem. Prova com banco/identidade/sessoes bloqueados
+  apos emissao e comparacao de CPU local em docs/Central/evidencias/issue-76-zero-io.
+  Esta regra substitui a sessao/cache sob demanda descrita na etapa anterior.
+  Mesma branch/PR #75; sem delegacao humana, merge ou deploy.
+
 - Continuidade issue #76: OAuth funcional de agente externo implementado com
   OpenIddict 7.9, PKCE S256, consentimento, refresh rotativo e revogacao de
   renovacao; access token residual de ate 5 minutos no MCP, sem lookup extra de

@@ -1,5 +1,10 @@
 # Decisões do MCP de negócio e OAuth
 
+Complemento aprovado #76: a resolução de sessão/permissões sob demanda foi
+retirada. Emissão/renovação prepara o snapshot autocontido; requisições usam
+somente validação/criptografia local, sem I/O adicional de autorização.
+[Provas e custo](evidencias/issue-76-zero-io/VALIDATION.md).
+
 Continuidade da issue #76: [decisão e implementação OAuth atuais](AGENT_OAUTH.md).
 A decisão 4 e os impedimentos de protocolo abaixo registram a etapa inicial e
 foram superados pelo OpenIddict com persistência apenas de protocolo no banco

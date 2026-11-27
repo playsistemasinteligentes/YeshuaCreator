@@ -14,6 +14,7 @@ public sealed record RevokeAgentGrant(string AuthorizationId);
 // Protocol orchestration only; no SQL and no independent permission resolver.
 public sealed class AgentOAuthReceiver(AgentOAuthOptions options, ICentralAgentIdentity identities,
     IOpenIddictApplicationManager clients, IOpenIddictAuthorizationManager grants,
+    AgentApplicationPreparation applications, TimeProvider clock,
     Microsoft.Extensions.Logging.ILogger<AgentOAuthReceiver> logger)
 {
     public async Task<ClaimsPrincipal?> AuthorizeAsync(string clientId, IEnumerable<string> requestedScopes,
@@ -58,6 +59,16 @@ public sealed class AgentOAuthReceiver(AgentOAuthOptions options, ICentralAgentI
         identity.AddClaims(fresh.Claims.Where(c => !c.Type.StartsWith("oi_", StringComparison.Ordinal)));
         principal.SetAuthorizationId(id);
         principal.SetClaim("delegation_id", id);
+        try
+        {
+            var prepared = await applications.PrepareAsync(owner, clientId, id, principal.GetScopes().ToHashSet(StringComparer.Ordinal), ct);
+            principal.SetClaim(AgentApplicationCredentials.ClaimType, prepared.ProtectedValue);
+            var remaining = prepared.ExpiresAt - clock.GetUtcNow();
+            if (remaining <= TimeSpan.Zero) return null;
+            principal.SetAccessTokenLifetime(remaining);
+        }
+        catch (BusinessMcp.BusinessAccessException) { return null; }
+        catch (HttpRequestException) { return null; }
         SetDestinations(principal);
         Audit("token_issued", principal);
         return principal;

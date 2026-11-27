@@ -3,10 +3,11 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Central.BusinessMcp;
 
-public sealed class DelegatedAccess(IDelegationRepository repository, TimeProvider clock, DelegationValidationOptions? options = null)
+public sealed class DelegatedAccess(IDelegationRepository? repository, TimeProvider clock, DelegationValidationOptions? options = null)
 {
     // Signature, issuer, audience and lifetime are checked by the dedicated bearer
-    // scheme before this method. All entry points also re-read consent/revocation.
+    // scheme before this method. Agent OAuth uses only the signed snapshot.
+    // The optional repository branch is retained for the standalone legacy module.
     public async Task<DelegatedIdentity> RequireAsync(ClaimsPrincipal principal, CancellationToken ct)
     {
         string? Claim(string name) => principal.FindFirst(name)?.Value;
@@ -22,7 +23,7 @@ public sealed class DelegatedAccess(IDelegationRepository repository, TimeProvid
             return new(Claim("sub")!, tenant, Claim("client_id")!, Claim("delegation_id")!,
                 (Claim("scope") ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.Ordinal)) { Principal = principal };
         }
-        var delegation = await repository.FindAsync(Claim("delegation_id")!, ct);
+        var delegation = repository is null ? null : await repository.FindAsync(Claim("delegation_id")!, ct);
         var scopes = (Claim("scope") ?? "").Split(' ', StringSplitOptions.RemoveEmptyEntries).ToHashSet(StringComparer.Ordinal);
         if (delegation is null || delegation.Revoked || delegation.ExpiresAt <= clock.GetUtcNow()
             || delegation.Subject != Claim("sub") || delegation.TenantId != tenant
