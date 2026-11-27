@@ -3,6 +3,21 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Continuidade #76 prefixo/loader: catalogo confiavel agora aceita origem HTTPS
+  raiz ou base canonica /apps/<alias>/, preservando prefixo ao compor rotas
+  OpenAPI /yapi e getMenu. BasePath segue autenticado no JWE; sender valida
+  app/origem/prefixo localmente, sem I/O adicional nem fallback para raiz/irmao.
+  Nao ha URL do cliente, nova fonte de catalogo ou alteracao do Presenca.
+  Loader de producao permanece intacto: fixtures usam raiz explicita, cofre
+  legado sintetico e modo pyfakefs opcional/explicito para unidade no runner
+  restrito. Nao mudar HOME, permissoes reais ou sandbox para passar testes.
+  Unidade virtual nao comprova ACL/filesystem positivo real: home somente
+  leitura, /tmp inseguro e uid da raiz traduzido ainda exigem runner adequado.
+  Compose standalone so valida config, sem daemon; Windows e SQL Server real
+  seguem dependentes de infraestrutura. Evidencias/diagnostico individual em
+  docs/Central/evidencias/issue-76-prefix-loader. As limitacoes de prefixo da
+  nota anterior foram corrigidas; homologacao real/ativacao continuam pendentes.
+
 - Revisao #76 pelo gateway: suite existente agora aceita Nginx local opt-in,
   TLS efemero e destinos sinteticos, sem alterar configuracao do sistema. Proxy
   confiavel exige IP explicitamente configurado; lista vazia nao aceita forwarded

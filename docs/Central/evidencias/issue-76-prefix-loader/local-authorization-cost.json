@@ -1,0 +1,44 @@
+{
+  "runtime": "8.0.34",
+  "configuration": "Debug",
+  "processors": 2,
+  "iterationsPerBatch": 1000,
+  "batches": 5,
+  "warmups": 100,
+  "measurement": "Local CPU only, warm crypto: conventional Central JWT/policy; previous MCP RSA JWT/claims with preloaded local cache; new self-contained MCP JWT/claims and protected credential. Excludes business execution, transport, issuance and destination JWT validation common to delivery.",
+  "conventionalMicrosecondsPerOperation": 56.8307,
+  "previousWarmMcpMicrosecondsPerOperation": 241.6611,
+  "delegatedMicrosecondsPerOperation": 782.5908000000001,
+  "additionalMicrosecondsVsPreviousWarmMcp": 540.9297,
+  "additionalLocalMicroseconds": 725.7601000000001,
+  "ratio": 13.770564149306626,
+  "conventionalSamples": [
+    275.7643,
+    23.5467,
+    56.8307,
+    91.8667,
+    28.5473
+  ],
+  "previousWarmMcpSamples": [
+    1357.6408999999999,
+    144.2604,
+    191.0181,
+    390.07090000000005,
+    241.6611
+  ],
+  "delegatedSamples": [
+    1555.4128999999998,
+    817.7502,
+    729.5159,
+    782.5908000000001,
+    675.6361999999999
+  ],
+  "conventionalJwtBytes": 405,
+  "previousMcpJwtBytes": 775,
+  "mcpJwtBytes": 3155,
+  "authorizationDatabaseCalls": 0,
+  "authorizationHttpCalls": 0,
+  "remoteCacheCalls": 0,
+  "introspectionCalls": 0,
+  "note": "The new path has no repository, identity service, cache or HTTP client. The previous warm control includes an explicitly preloaded in-process cache only; old cold session resolution is excluded and is not compliant. Not a production latency/SLO benchmark."
+}

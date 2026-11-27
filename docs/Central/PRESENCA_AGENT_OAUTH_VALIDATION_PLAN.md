@@ -22,20 +22,22 @@ sessão/identidade local pelo fluxo existente: mesmo uma consulta posterior não
 torna esse preparo completamente livre de escrita. Autorizar esse efeito em
 homologação, sem provisionar vínculos ou conceder acesso automaticamente.
 
-## Impedimento arquitetural a resolver antes da exposição
+## Contrato de prefixo corrigido; configuração real pendente
 
-`TrustedBusinessCatalog.Source.BaseAddress` hoje aceita somente uma origem HTTPS
-raiz. A preparação deriva dessa origem `/yapi/getMenu`; o executor usa as rotas
-`/yapi/...` do OpenAPI. O gateway compartilha origem e publica o Presença em
-`/apps/presenca/yapi/...`; a rota raiz `/yapi` atende outro aplicativo. Portanto
-**não cadastrar a origem pública compartilhada como se fosse a origem do Presença**.
+A continuidade #76 corrigiu o catálogo e a preparação sem alterar Presença:
+`Source.BaseAddress` aceita HTTPS raiz ou `/apps/<alias>/` canônico, terminado em
+barra. Configuração candidata em homologação: `https://homologacao.example/apps/presenca/`.
+Não incluir `/yapi/` na base: ele já vem do OpenAPI. O mesmo catálogo compõe
+`/apps/presenca/yapi/getMenu` na emissão/refresh e o endpoint prefixado do Command.
+O prefixo fica vinculado no JWE, com validação local e nenhuma consulta adicional.
+Não existe fallback para `/yapi` na raiz nem reaproveitamento em prefixo irmão.
 
-Alternativas para decisão: uma origem HTTPS exclusiva de homologação que preserve
-o contrato `/yapi`, ou uma evolução arquitetural revisada do contrato de destino
-confiável para representar o prefixo de transporte. Esta entrega não escolhe nem
-implementa a segunda alternativa, não cria alias, não aceita URL do agente e
-não muda Presença. Sem uma origem compatível explicitamente autorizada, interromper
-o ensaio antes de `getMenu` e manter o catálogo de operações fechado.
+A decisão técnica não exige criar origem exclusiva/alias ou modificar Presença.
+Ainda é preciso aprovar/configurar a base HTTPS do ambiente **no catálogo
+confiável existente**, junto ao documento OpenAPI e à exposição elegível, sem
+habilitar operações implicitamente. Não cadastrar a origem pública compartilhada
+como raiz do Presença. O catálogo real segue fechado; o ensaio concluído usa
+somente Clinica/Central sintéticos, sem chamar esses aplicativos reais.
 
 O OpenAPI versionado desse ambiente também precisa conter identificador estável,
 descrição, schemas de entrada/saída completos e autenticação explícita. Não
@@ -106,6 +108,6 @@ JWT; medir latência real separadamente, sem equiparar microbenchmark a rede.
 Entregar ao operador o relatório e os efeitos de sessão observados. Revogar a
 concessão sintética e descartar tokens pelo cofre do cliente; outras limpezas ou
 alterações no ambiente exigem escopo aprovado. Falta de banco/URL/cliente/tenant,
-contrato de rota incompatível ou ausência de aprovação da operação mantém o
+configuração real de base ausente ou ausência de aprovação da operação mantém o
 ensaio real pendente. O [ensaio local de gateway](evidencias/issue-76-gateway/VALIDATION.md)
 não substitui essa aprovação nem comprova homologação do Presença.

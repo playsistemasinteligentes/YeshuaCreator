@@ -9,7 +9,7 @@ namespace Central.BusinessMcp;
 // versioned OpenAPI from an approved application's existing Swagger pipeline.
 public sealed class TrustedBusinessCatalog
 {
-    internal sealed record Entry(BusinessOperation Contract, Uri Target, string Grant, string Scope, JsonSchema Validator);
+    internal sealed record Entry(BusinessOperation Contract, Uri BaseAddress, Uri Target, string Grant, string Scope, JsonSchema Validator);
     private readonly FrozenDictionary<(string, string), Entry> entries;
 
     public sealed record Source(string Application, Uri BaseAddress, JsonElement OpenApi,
@@ -21,7 +21,7 @@ public sealed class TrustedBusinessCatalog
         foreach (var source in sources)
         {
             if (string.IsNullOrWhiteSpace(source.Application) || !source.BaseAddress.IsAbsoluteUri
-                || source.BaseAddress.Scheme != "https" || source.BaseAddress.AbsolutePath != "/"
+                || source.BaseAddress.Scheme != "https" || !ValidBasePath(source.BaseAddress)
                 || source.BaseAddress.Query != "" || source.BaseAddress.Fragment != "" || source.BaseAddress.UserInfo != "")
                 throw new ArgumentException("Invalid trusted application origin.");
             var doc = source.OpenApi;
@@ -59,11 +59,24 @@ public sealed class TrustedBusinessCatalog
                 var output = Schema(doc, operation.GetProperty("responses").GetProperty("200").GetProperty("content")
                     .GetProperty("application/json").GetProperty("schema"), false);
                 var contract = new BusinessOperation(source.Application, exposure.OperationId, description, input, output);
-                result.Add((source.Application, exposure.OperationId), new(contract, new Uri(source.BaseAddress, path.Name),
+                result.Add((source.Application, exposure.OperationId), new(contract, source.BaseAddress, new Uri(source.BaseAddress, path.Name.TrimStart('/')),
                     exposure.Grant, exposure.Scope, JsonSchema.FromText(input.GetRawText())));
             }
         }
         entries = result.ToFrozenDictionary();
+    }
+    // Trusted transport base only. OpenAPI paths already contain /yapi; preserve
+    // a gateway prefix rather than resolving an absolute path against the origin.
+    private static bool ValidBasePath(Uri address)
+    {
+        var path = address.AbsolutePath;
+        if (!path.EndsWith('/') || address.OriginalString.Contains('\\')
+            || address.OriginalString.Contains('%') || address.OriginalString.Split('/').Any(segment => segment is "." or "..")) return false;
+        var segments = path.Split('/');
+        return path == "/" || (segments.Length == 4 && segments[1] == "apps"
+            && segments.Skip(2).SkipLast(1).All(segment => segment.Length > 0
+            && segment is not ("." or "..") && segment != "yapi"
+            && segment.All(c => char.IsAsciiLetterOrDigit(c) || c is '-' or '_' or '.')));
     }
     internal IEnumerable<Entry> Entries => entries.Values;
     internal Entry? Find(string app, string operation) => entries.GetValueOrDefault((app, operation));

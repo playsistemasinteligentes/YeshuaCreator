@@ -8,6 +8,7 @@ import unittest
 from unittest.mock import patch
 
 from test_credentials import ROOT, configured, credentials
+from private_fixtures import PrivateFixtureTestCase
 
 
 class TerminalInput(io.StringIO):
@@ -26,9 +27,10 @@ class TerminalInput(io.StringIO):
         return super().readline(size)
 
 
-class SetupCredentialsTests(unittest.TestCase):
+class SetupCredentialsTests(PrivateFixtureTestCase):
     def setUp(self):
-        self.directory = tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-setup-test-")
+        super().setUp()
+        self.directory = tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-setup-test-")
         self.addCleanup(self.directory.cleanup)
         self.path = Path(self.directory.name) / "private/credentials.json"
         self.acl = patch.object(credentials, "windows_access")

@@ -11,6 +11,7 @@ cleanup() {
   rmdir -- "$temporary/existing" "$temporary/new" "$temporary"
 }
 trap cleanup EXIT
+trap 'echo "FAIL: setup fixture assertion at line $LINENO" >&2' ERR
 
 # Test only: record ownership calls instead of requiring root or changing ACLs.
 chown() { printf 'chown:%s\n' "$*" >> "$log"; }
@@ -61,8 +62,22 @@ systemctl() { printf 'systemctl\n' >> "$log"; }
 restic() { :; }
 ionice() { :; }
 ensure_directory() { printf 'directory\n' >> "$log"; }
+prepare_storage_directories() { printf 'storage-directories\n' >> "$log"; }
+flock() { [[ "$1" == /var/lock/yeshua-deploy.lock ]]; shift; "$@"; }
 configure_aliases() { printf 'aliases\n' >> "$log"; }
 fixture_python() {
+  # Model the current bootstrap's version gate and recovery-mode orchestration.
+  # Every side effect below remains a fixture; no real Python setup is executed.
+  if [[ "$1" == -c ]]; then return 0; fi
+  if [[ "$2" == */infra/backups/setup.py ]]; then
+    printf '%s\n' "$3" >> "$log"
+    if [[ "$3" == choose ]]; then printf 'new\n'; fi
+    return 0
+  fi
+  if [[ "$2" == */infra/docker/configure-build-cache.py ]]; then
+    printf 'build-cache\n' >> "$log"
+    return 0
+  fi
   if [[ "$2" == */infra/backups/backup.py ]]; then
     printf 'backup:%s\n' "$3" >> "$log"
     [[ "$3" != recovery-key || "$custody_confirmed" == yes ]]
@@ -75,7 +90,9 @@ fixture_python() {
     return
   fi
   if [[ "$2" == */infra/backups/install.py ]]; then
-    [[ "$1" == -B && "$3" == --initialize-online ]]
+    [[ "$1" == -B ]]
+    if [[ "$3" == --prepare-only ]]; then printf 'prepare-backup-tools\n' >> "$log"; return 0; fi
+    [[ "$3" == --initialize-online ]]
     printf 'install-backup\n' >> "$log"
     [[ "$backup_install_valid" == yes ]]
     return
@@ -114,14 +131,14 @@ configuration_prepared=no
 status=0
 (main) > /dev/null 2>&1 || status=$?
 [[ "$status" -eq 1 ]]
-[[ "$(tr '\n' ' ' < "$log")" == 'git init ' ]]
+[[ "$(tr '\n' ' ' < "$log")" == 'git choose init ' ]]
 
 configuration_prepared=yes
 : > "$log"
 status=0
 (main) > /dev/null 2>&1 || status=$?
 [[ "$status" -eq 1 ]]
-[[ "$(tr '\n' ' ' < "$log")" == 'git init validate ' ]]
+[[ "$(tr '\n' ' ' < "$log")" == 'git choose init validate ' ]]
 
 configuration_valid=yes
 custody_confirmed=no
@@ -129,7 +146,7 @@ custody_confirmed=no
 status=0
 (main) > /dev/null 2>&1 || status=$?
 [[ "$status" -eq 1 ]]
-[[ "$(tr '\n' ' ' < "$log")" == 'git init validate backup:configure-local backup:recovery-key ' ]]
+[[ "$(tr '\n' ' ' < "$log")" == 'git choose init validate backup:configure-repository backup:recovery-key ' ]]
 
 custody_confirmed=yes
 for scenario in fresh restored; do
@@ -138,8 +155,8 @@ for scenario in fresh restored; do
   (main) > "$temporary/result" 2>&1 || status=$?
   [[ "$status" -eq 0 ]]
   mapfile -t calls < "$log"
-  [[ "${calls[0]} ${calls[1]} ${calls[2]} ${calls[3]} ${calls[4]} ${calls[5]}" == 'git init validate backup:configure-local backup:recovery-key apt' ]]
-  [[ "${calls[-9]} ${calls[-8]} ${calls[-7]} ${calls[-6]} ${calls[-5]} ${calls[-4]} ${calls[-3]} ${calls[-2]} ${calls[-1]}" == 'deploy sql-access install-backup https aliases docker-list curl-http backup:status curl-https' ]]
+  [[ "${calls[0]} ${calls[1]} ${calls[2]} ${calls[3]} ${calls[4]} ${calls[5]} ${calls[6]}" == 'git choose init validate backup:configure-repository backup:recovery-key prepare' ]]
+  [[ "${calls[-10]} ${calls[-9]} ${calls[-8]} ${calls[-7]} ${calls[-6]} ${calls[-5]} ${calls[-4]} ${calls[-3]} ${calls[-2]} ${calls[-1]}" == 'deploy sql-access finish install-backup https aliases docker-list curl-http backup:status curl-https' ]]
   grep -F 'Setup concluido: aplicativos, backup e HTTPS conferidos.' "$temporary/result" >/dev/null
 done
 
@@ -217,7 +234,7 @@ rm -f -- "$temporary/result"
   }
   prepare_backup_key
 )
-[[ "$(tr '\n' ' ' < "$log")" == 'apt apt backup:configure-local backup:recovery-key ' ]]
+[[ "$(tr '\n' ' ' < "$log")" == 'apt apt backup:configure-repository backup:recovery-key ' ]]
 
 : > "$log"
 status=0

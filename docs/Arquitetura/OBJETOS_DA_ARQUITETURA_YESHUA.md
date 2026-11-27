@@ -725,3 +725,13 @@ entrega de negócio e auditoria seguem seus contratos existentes.
 Provas com interceptores EF e backends bloqueados, negativos e medição de CPU
 contra fluxo convencional/MCP anterior com cache aquecido:
 [evidências zero I/O](../Central/evidencias/issue-76-zero-io/VALIDATION.md).
+
+### Continuidade #76 — base de transporte confiável
+
+`TrustedBusinessCatalog.Source.BaseAddress` preserva a origem HTTPS raiz ou base
+canônica `/apps/<alias>/` do gateway. OpenAPI continua único contrato de operação;
+rotas `/yapi` são anexadas à mesma base usada pelo getMenu na emissão/refresh.
+`PreparedApplicationCredential.BasePath` vincula esse prefixo no JWE. O sender
+seleciona app/origem/prefixo localmente e entrega, sem resolver permissões, abrir
+sessão ou consultar estado por operação. Não há cadastro paralelo de rotas nem
+URL fornecida pelo agente. [Evidências](../Central/evidencias/issue-76-prefix-loader/VALIDATION.md).

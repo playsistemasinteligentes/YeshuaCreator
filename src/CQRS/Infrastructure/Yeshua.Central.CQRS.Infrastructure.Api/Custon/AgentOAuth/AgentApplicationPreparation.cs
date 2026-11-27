@@ -20,11 +20,13 @@ public sealed class AgentApplicationPreparation(HttpClient client, TrustedBusine
     {
         var expiration = clock.GetUtcNow().AddMinutes(5);
         var entries = new List<PreparedApplicationCredential>();
-        var targets = catalog.Entries.Select(e => (e.Contract.Application, Origin: e.Target.GetLeftPart(UriPartial.Authority)))
+        var targets = catalog.Entries.Select(e => (e.Contract.Application, BaseAddress: e.BaseAddress))
             .Distinct().Where(e => scopes.Contains(AgentOAuthOptions.ApplicationScope(e.Application))).ToArray();
         if (targets.Length > 8) throw new BusinessAccessException("delegation_snapshot_too_large");
-        foreach (var (application, origin) in targets)
+        foreach (var (application, baseAddress) in targets)
         {
+            var origin = baseAddress.GetLeftPart(UriPartial.Authority);
+            var sessionUri = new Uri(baseAddress, "yapi/getMenu");
             if (!owner.catalogos.Contains(application, StringComparer.OrdinalIgnoreCase)) throw new BusinessAccessException("operation_not_allowed");
             var claims = new List<Claim>
             {
@@ -39,8 +41,8 @@ public sealed class AgentApplicationPreparation(HttpClient client, TrustedBusine
             var entryExpiry = expiration;
             if (application != "Central")
             {
-                using var session = new HttpRequestMessage(HttpMethod.Get, origin + "/yapi/getMenu");
-                session.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Issue(claims.Concat(delegationClaims), origin + "/yapi/getMenu", expiration));
+                using var session = new HttpRequestMessage(HttpMethod.Get, sessionUri.AbsoluteUri);
+                session.Headers.Authorization = new AuthenticationHeaderValue("Bearer", Issue(claims.Concat(delegationClaims), sessionUri.AbsoluteUri, expiration));
                 using var response = await client.SendAsync(session, HttpCompletionOption.ResponseHeadersRead, ct);
                 if (!response.IsSuccessStatusCode || !response.Headers.TryGetValues("X-Yeshua-Application-Token", out var values))
                     throw new BusinessAccessException("destination_denied");
@@ -65,7 +67,7 @@ public sealed class AgentApplicationPreparation(HttpClient client, TrustedBusine
                 entryExpiry = new[] { expiration, new DateTimeOffset(DateTime.SpecifyKind(validated.ValidTo, DateTimeKind.Utc)) }.Min();
             }
             claims.AddRange(delegationClaims);
-            entries.Add(new(application, origin, Issue(claims, origin, entryExpiry), entryExpiry));
+            entries.Add(new(application, origin, Issue(claims, origin, entryExpiry), entryExpiry, baseAddress.AbsolutePath));
         }
         return credentials.Protect(owner.UserId.ToString(), owner.tenantId, clientId, grantId, entries, expiration);
     }

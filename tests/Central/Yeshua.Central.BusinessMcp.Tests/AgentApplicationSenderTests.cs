@@ -14,7 +14,7 @@ public sealed class AgentApplicationSenderTests
 {
     private const string Root = "synthetic-destination-test-root-at-least-32-bytes";
     private static AgentOAuthOptions Options() => new() { Issuer = "https://central.test/", Resource = "https://central.test/business/mcp" };
-    private static TrustedBusinessCatalog Catalog() => new([new("Clinica", new Uri("https://clinica.test/"),
+    private static TrustedBusinessCatalog Catalog(string address = "https://clinica.test/") => new([new("Clinica", new Uri(address),
         JsonDocument.Parse(BusinessMcpTests.Document).RootElement.Clone(), [new("Sample.Commands.Execute", "existing", "application:Clinica")])]);
     private static LoginOutputCommand Owner() => new() { UserId = 17, tenantId = 7, catalogos = ["Clinica"], modulos = [], email = "owner@example.test" };
     private static AgentApplicationCredentials Codec(TimeProvider? clock = null) => new(Options(), new JwtSettings { SecretKey = Root }, clock ?? TimeProvider.System);
@@ -110,20 +110,55 @@ public sealed class AgentApplicationSenderTests
         Assert.Throws<BusinessAccessException>(() => codec.Protect("17", 7, "agent", "grant",
             [new("Clinica", "https://clinica.test", new string('x', 20000), DateTimeOffset.UtcNow.AddMinutes(5))], DateTimeOffset.UtcNow.AddMinutes(5)));
     }
+    [Fact]
+    public async Task PrefixIsPreparedAndBoundWithoutOriginOrSiblingFallback()
+    {
+        using var handler = new Destination { ExpectedSessionPath = "/apps/clinica/yapi/getMenu" };
+        using var http = new HttpClient(handler); var codec = Codec();
+        var preparer = new AgentApplicationPreparation(http, Catalog("https://clinica.test/apps/clinica/"), codec,
+            new JwtSettings { SecretKey = Root }, TimeProvider.System);
+        var prepared = await preparer.PrepareAsync(Owner(), "agent", "grant", new HashSet<string>(["application:Clinica"]), default);
+        handler.AllowExchange = false;
+        var sender = new AgentApplicationSender(http, codec); var identity = Identity(prepared.ProtectedValue);
+        foreach (var path in new[] { "/yapi/synthetic", "/apps/central/yapi/synthetic", "/apps/clinica-other/yapi/synthetic", "/apps/clinica/yapi-other/synthetic" })
+            await Assert.ThrowsAsync<BusinessAccessException>(() => sender.SendAsync(identity, "Clinica", "existing",
+                new(HttpMethod.Post, "https://clinica.test" + path), default));
+        Assert.Equal(0, handler.Commands);
+        using var accepted = await sender.SendAsync(identity, "Clinica", "existing", new(HttpMethod.Post, "https://clinica.test/apps/clinica/yapi/synthetic"), default);
+        Assert.Equal(HttpStatusCode.OK, accepted.StatusCode);
+        Assert.Equal(1, handler.Exchanges); Assert.Equal(1, handler.Commands);
+    }
+    [Theory]
+    [InlineData("https://clinica.test/apps/clinica")]
+    [InlineData("https://clinica.test/apps/clinica/yapi/")]
+    [InlineData("https://clinica.test/apps//clinica/")]
+    [InlineData("https://clinica.test/apps/other/../clinica/")]
+    [InlineData("https://clinica.test/apps/%63linica/")]
+    [InlineData("https://clinica.test/apps/clinica/?query=1")]
+    [InlineData("https://clinica.test/apps/clinica/#fragment")]
+    [InlineData("https://user@clinica.test/apps/clinica/")]
+    [InlineData("http://clinica.test/apps/clinica/")]
+    [InlineData("https://clinica.test/operational/")]
+    public void PrefixConfigurationFailsClosedForNonCanonicalBases(string address) =>
+        Assert.Throws<ArgumentException>(() => Catalog(address));
+
     private sealed class Destination : HttpMessageHandler
     {
         internal int Exchanges, Commands;
         internal bool AllowOperation = true;
         internal bool AllowExchange = true;
         internal int ReturnedTenant = 7;
+        internal string ExpectedSessionPath = "/yapi/getMenu";
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
             var parser = new JwtSecurityTokenHandler { MapInboundClaims = false };
             var principal = parser.ValidateToken(request.Headers.Authorization!.Parameter!, new TokenValidationParameters
             { ValidateIssuer = false, ValidateAudience = false, ValidateLifetime = true, IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)) }, out var token);
-            if (request.RequestUri!.AbsolutePath == "/yapi/getMenu")
+            if (request.RequestUri!.AbsolutePath.EndsWith("/yapi/getMenu", StringComparison.Ordinal))
             {
                 if (!AllowExchange) throw new InvalidOperationException("Authorization HTTP is forbidden after issuance.");
+                Assert.Equal(ExpectedSessionPath, request.RequestUri.AbsolutePath);
+                Assert.Equal("https://clinica.test" + ExpectedSessionPath, ((JwtSecurityToken)token).Audiences.Single());
                 Exchanges++;
                 Assert.Equal("17", principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 Assert.Equal("Central", principal.FindFirst("tokenOrigin")?.Value);

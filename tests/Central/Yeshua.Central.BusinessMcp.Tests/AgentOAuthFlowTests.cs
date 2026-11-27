@@ -166,12 +166,13 @@ public sealed partial class AgentOAuthFlowTests
         var evidence = new
         {
             scenario = "Actual OAuth code/PKCE -> official MCP client -> mapped app. Grant revoked and renewal denied, then authorization backends disabled before the first MCP request.",
-            transport = host.Gateway is null ? "in-memory" : "TLS/Nginx/HTTP for both OAuth/MCP and synthetic application delivery",
+            transport = host.Gateway is null ? "in-memory" : "TLS/Nginx/HTTP with /apps/clinica/ prefix for session preparation and business delivery",
             databaseCommandsDuringConsentAndIssuance = commandsAfterIssuance - databaseCommandsBeforeIssuance,
             databaseCommandsDuringRevocationAndDeniedRenewal = commands - commandsAfterIssuance,
             priorDatabaseCommands = commands, databaseCommandsOnBusinessRequests = host.Probe.DatabaseCommands - commands,
             databaseConnectionsOpenedOnBusinessRequests = host.Probe.ConnectionOpens - opens,
             priorCentralIdentityReads = 1, centralIdentityReadsOnBusinessRequests = host.Identity.ResolveCalls - 1,
+            preparedBasePath = host.Destination.BasePath,
             priorSessionExchanges = 1, sessionExchangesOnBusinessRequests = host.Destination.SessionExchanges - 1,
             actualBusinessDeliveries = host.Destination.Calls, localApplicationIdentity = 99,
             forbiddenIoWouldThrow = true, revocationBlocksRenewal = true, issuedJwtRemainsValidWithinFiveMinutes = true
@@ -428,15 +429,16 @@ public sealed partial class AgentOAuthFlowTests
         public int LocalUserId = 99;
         public string? SessionFailure;
         public string Application = "Central";
+        public string BasePath = "/";
         public Task<HttpResponseMessage> ReceiveAsync(HttpRequestMessage request, CancellationToken ct) => SendAsync(request, ct);
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
             var handler = new JwtSecurityTokenHandler();
             var principal = handler.ValidateToken(request.Headers.Authorization!.Parameter!, new TokenValidationParameters
             { ValidateIssuer = false, ValidateAudience = true,
-                ValidAudience = request.RequestUri!.AbsolutePath == "/yapi/getMenu" ? "https://destination.test/yapi/getMenu" : "https://destination.test",
+                ValidAudience = request.RequestUri!.AbsolutePath.EndsWith("/yapi/getMenu", StringComparison.Ordinal) ? "https://destination.test" + BasePath + "yapi/getMenu" : "https://destination.test",
                 ValidateLifetime = true, ClockSkew = TimeSpan.Zero, IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)) }, out _);
-            if (request.RequestUri.AbsolutePath == "/yapi/getMenu")
+            if (request.RequestUri.AbsolutePath.EndsWith("/yapi/getMenu", StringComparison.Ordinal))
             {
                 SessionExchanges++;
                 if (ForbidSessions) throw new InvalidOperationException("Session exchange is forbidden after issuance.");
@@ -503,11 +505,11 @@ public sealed partial class AgentOAuthFlowTests
             builder.Services.AddSingleton(new JwtSettings { SecretKey = Root });
             if (mcp)
             {
-                var catalogue = executableFixture ? new TrustedBusinessCatalog([new(fixtureApplication, new Uri("https://destination.test/"),
+                var catalogue = executableFixture ? new TrustedBusinessCatalog([new(fixtureApplication, new Uri("https://destination.test" + (fixtureApplication == "Clinica" ? "/apps/clinica/" : "/apps/central/")),
                     Json(BusinessMcpTests.Document), [new("Sample.Commands.Execute", "existing-domain-policy", AgentOAuthOptions.ApplicationScope(fixtureApplication))])]) : new TrustedBusinessCatalog([]);
                 builder.Services.AddCentralBusinessMcp(new(new Uri(Resource), new Uri(Issuer)), catalogue);
             }
-            var destination = new Destination { Application = fixtureApplication };
+            var destination = new Destination { Application = fixtureApplication, BasePath = fixtureApplication == "Clinica" ? "/apps/clinica/" : "/apps/central/" };
             IsolatedNginxGateway? gateway = null;
             HttpClient DestinationClient() => gateway?.Client() ?? new HttpClient(destination);
             if (executableFixture) builder.Services.AddTransient<AgentApplicationPreparation>(sp => new AgentApplicationPreparation(DestinationClient(),
@@ -535,6 +537,7 @@ public sealed partial class AgentOAuthFlowTests
                 // into this synthetic destination. No real application is started.
                 async Task DeliverSynthetic(HttpContext http)
                 {
+                    Assert.Equal(destination.BasePath.TrimEnd('/') + "/yapi", http.Request.Headers["X-Forwarded-Prefix"].ToString());
                     using var request = new HttpRequestMessage(new HttpMethod(http.Request.Method), "https://destination.test" + http.Request.Path);
                     foreach (var header in http.Request.Headers) request.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
                     using var response = await destination.ReceiveAsync(request, http.RequestAborted);

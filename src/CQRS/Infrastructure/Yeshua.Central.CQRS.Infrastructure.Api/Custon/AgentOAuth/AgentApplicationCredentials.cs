@@ -6,7 +6,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Central.AgentOAuth;
 
-public sealed record PreparedApplicationCredential(string Application, string Origin, string Token, DateTimeOffset ExpiresAt);
+public sealed record PreparedApplicationCredential(string Application, string Origin, string Token, DateTimeOffset ExpiresAt, string BasePath = "/");
 public sealed record PreparedApplicationCredentials(string ProtectedValue, DateTimeOffset ExpiresAt);
 
 // Self-contained part of the signed MCP access token. Destination bearer tokens
@@ -57,7 +57,7 @@ public sealed class AgentApplicationCredentials
         if (value.Length > 12288) throw new BusinessAccessException("delegation_snapshot_too_large");
         return new(value, expiration);
     }
-    public string Select(DelegatedIdentity identity, string application, string origin)
+    public string Select(DelegatedIdentity identity, string application, string origin, string requestPath = "/yapi/")
     {
         var outer = identity.Principal;
         if (outer is null || !identity.Scopes.Contains(AgentOAuthOptions.ApplicationScope(application)))
@@ -77,7 +77,8 @@ public sealed class AgentApplicationCredentials
                 || snapshot.FindFirst("delegation_id")?.Value != identity.DelegationId)
                 throw new BusinessAccessException("invalid_token");
             var entries = JsonSerializer.Deserialize<PreparedApplicationCredential[]>(snapshot.FindFirst(EntriesClaim)!.Value)!;
-            var entry = entries.SingleOrDefault(e => e.Application == application && e.Origin == origin);
+            var entry = entries.SingleOrDefault(e => e.Application == application && e.Origin == origin
+                && requestPath.StartsWith(e.BasePath + "yapi/", StringComparison.Ordinal));
             if (entry is null || entry.ExpiresAt <= clock.GetUtcNow()) throw new BusinessAccessException("destination_not_prepared");
             return entry.Token;
         }

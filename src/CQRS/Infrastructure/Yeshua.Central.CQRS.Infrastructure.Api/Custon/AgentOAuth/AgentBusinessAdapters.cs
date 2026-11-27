@@ -29,7 +29,7 @@ public sealed class AgentApplicationSender(HttpClient client, AgentApplicationCr
         HttpRequestMessage request, CancellationToken ct)
     {
         var origin = request.RequestUri!.GetLeftPart(UriPartial.Authority);
-        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", credentials.Select(identity, application, origin));
+        request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", credentials.Select(identity, application, origin, request.RequestUri.AbsolutePath));
         return client.SendAsync(request, HttpCompletionOption.ResponseHeadersRead, ct);
     }
 }

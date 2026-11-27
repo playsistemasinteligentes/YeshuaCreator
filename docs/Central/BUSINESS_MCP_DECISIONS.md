@@ -2,8 +2,9 @@
 
 Revisão subsequente: [ensaio TLS/Nginx isolado](evidencias/issue-76-gateway/VALIDATION.md)
 e [roteiro proposto com Presença](PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md).
-Catálogo real permanece fechado; o contrato de origem raiz exige decisão antes
-de usar o prefixo compartilhado do gateway.
+Catálogo real permanece fechado. A [continuidade prefixo/loader](evidencias/issue-76-prefix-loader/VALIDATION.md)
+corrigiu o contrato para aceitar a base canônica `/apps/<alias>/` e vinculá-la no
+JWE, preservando zero I/O por requisição. Configuração/aceite reais continuam pendentes.
 
 Complemento aprovado #76: a resolução de sessão/permissões sob demanda foi
 retirada. Emissão/renovação prepara o snapshot autocontido; requisições usam

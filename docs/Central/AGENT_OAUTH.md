@@ -8,7 +8,11 @@ verificada aberta em rascunho. Base desta continuidade:
 
 Complemento aprovado da #76: permissões e delegação são resolvidas somente na
 emissão/renovação. A primeira operação também não consulta banco, Central,
-cache remoto ou introspecção para autorizar. Revisão com Nginx real isolado, correções e regressões em
+cache remoto ou introspecção para autorizar. Continuidade atual: [prefixos e diagnóstico do loader](evidencias/issue-76-prefix-loader/VALIDATION.md).
+O catálogo já preserva a base confiável `/apps/<alias>/` em sessão/execução,
+sem alterar o Presença ou consultar autorização por requisição.
+
+Revisão com Nginx real isolado, correções e regressões em
 [evidências de gateway](evidencias/issue-76-gateway/VALIDATION.md); roteiro real
 pendente de aprovação em [Presença](PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md).
 Prova instrumentada e custos em
@@ -113,7 +117,7 @@ refresh, depois da resolução das permissões atuais e da verificação da conc
 Reutiliza `getMenu` para mapear identidade Central/local, valida a resposta e
 prepara uma credencial assinada por destino, sem fallback Admin. Para a própria
 Central, a identidade já é a do titular. Titular/tenant/cliente/concessão seguem
-na credencial e na auditoria. O mesmo catálogo confiável fornece app/origem;
+na credencial e na auditoria. O mesmo catálogo confiável fornece app/origem e base de transporte;
 não há outra configuração de rotas ou URL fornecida pelo cliente.
 
 As credenciais preparadas ficam em `application_credentials`, parte protegida
@@ -162,9 +166,16 @@ com `large_client_header_buffers 4 32k` nos templates, e nega acima do limite.
 A API conserva seu limite total de 32 KiB. Revalidar o tamanho concreto dos tokens
 e demais headers na homologação antes de ativar; não há
 fallback para lookup externo quando o token não cabe. O catálogo real continua
-fechado. O contrato atual de origem/rota/getMenu deve apontar de fato ao app
-correto, inclusive diante dos prefixes do gateway; essa integração real ainda
-não foi homologada. Não foram improvisados aliases ou novas rotas nesta continuidade.
+fechado. `TrustedBusinessCatalog.Source.BaseAddress` aceita HTTPS raiz ou a base canônica
+`https://<gateway>/apps/<alias>/`, com barra final, sem `/yapi` duplicado. As rotas
+OpenAPI `/yapi/...` são anexadas como relativas a essa base; `getMenu` usa a mesma
+base durante emissão/refresh. Não há outro cadastro de rotas. O JWE vincula
+`BasePath` à credencial do app/origem; o sender exige correspondência local com
+`BasePath + "yapi/"` antes de entregar. Tentativas de raiz, irmão ou prefixo parcial
+não usam a credencial nem causam lookup/fallback. Query/fragment/userinfo,
+HTTP, encoding/traversal, barras duplicadas e bases não canônicas são recusados.
+Tokens antigos sem BasePath continuam limitados à raiz (`/`). O ensaio sintético
+prefixado está aprovado; nenhuma origem/operação real do Presença foi cadastrada.
 
 ## Revogação mínima e janela residual
 
@@ -248,7 +259,10 @@ de recurso e `offline_access` não é anunciado no desafio MCP.
 
 Sem SQL Server/homologação externa configurados, sem operação real, sem merge ou
 deploy. Há testes reais do protocolo e store SQLite, DDL SQL Server gerado e
-testes dos repositories convencionais com fixtures. A regressão ampla do loader
-privado teve erros ambientais; os detalhes e resultados estão nas evidências.
+testes dos repositories convencionais com fixtures. A regressão ampla original do loader privado teve 26 erros ambientais. A
+continuidade isola as fixtures e aprova unidade em filesystem virtual explícito,
+Compose parser e negativas físicas, sem alterar o loader. Integração positiva com
+permissões reais e testes Windows ainda exigem runners adequados; não confundir
+aprovação virtual com homologação física. [Diagnóstico individual](evidencias/issue-76-prefix-loader/LOADER_DIAGNOSIS.md).
 A [delegação entre usuários humanos (#77)](tarefas/DELEGACAO_HUMANA_77.md) permanece
 somente planejada e não bloqueia este fluxo.

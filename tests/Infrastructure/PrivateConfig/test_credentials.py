@@ -6,12 +6,15 @@ import json
 import os
 from pathlib import Path
 import tempfile
+import sys
+from private_fixtures import PrivateFixtureTestCase
 import unittest
 from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[3]
 spec = importlib.util.spec_from_file_location("credentials", ROOT / "infra/private/credentials.py")
 credentials = importlib.util.module_from_spec(spec)
+sys.modules[spec.name] = credentials
 spec.loader.exec_module(credentials)
 
 
@@ -24,11 +27,11 @@ def configured():
     return fill(document)
 
 
-class CredentialsTests(unittest.TestCase):
+class CredentialsTests(PrivateFixtureTestCase):
     def test_mcp_deploy_requires_explicit_private_opt_in_and_exports_only_fixed_paths(self):
         document = configured()
         for config in ({}, {"Deploy": {"Enabled": False}}, {"Deploy": {"Enabled": True}}):
-            with patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+            with patch.object(type(Path("/")), "exists", lambda path: path.name == "providers.json"), \
                  patch.object(credentials, "read_json", return_value=config):
                 enabled = config.get("Deploy", {}).get("Enabled", False)
                 result = credentials.environment(document, Path("/private"), "shared")
@@ -45,7 +48,7 @@ class CredentialsTests(unittest.TestCase):
 
     def test_mcp_deploy_rejects_implicit_truthy_configuration(self):
         for value in (None, True, [], {"Enabled": "true"}, {"Enabled": 1}, {"Enabled": True, "Destination": "root@other-host"}):
-            with patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+            with patch.object(type(Path("/")), "exists", lambda path: path.name == "providers.json"), \
                  patch.object(credentials, "read_json", return_value={"Deploy": value}):
                 with self.assertRaises(credentials.ConfigurationError):
                     credentials.environment(configured(), Path("/private"), "shared")
@@ -115,7 +118,7 @@ class CredentialsTests(unittest.TestCase):
             "Enabled": True, "PublishPullRequests": True, "AllowNetwork": True,
             "GitHub": {"UserName": "agpsi0001-lgtm", "Email": "agpsi0001@gmail.com", "Token": "fixture-git-token"},
         }}
-        with patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+        with patch.object(type(Path("/")), "exists", lambda path: path.name == "providers.json"), \
              patch.object(credentials, "read_json", return_value=config):
             result = credentials.environment(configured(), Path("/private"), "shared")
             self.assertEqual("agpsi0001-lgtm", result["YESHUA_AGENT_GIT_USERNAME"])
@@ -137,7 +140,7 @@ class CredentialsTests(unittest.TestCase):
             invalid = copy.deepcopy(valid)
             invalid["AgentDevelopment"]["GitHub"][key] = ""
             with self.subTest(missing=key), \
-                 patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+                 patch.object(type(Path("/")), "exists", lambda path: path.name == "providers.json"), \
                  patch.object(credentials, "read_json", return_value=invalid):
                 with self.assertRaises(credentials.ConfigurationError) as error:
                     credentials.environment(configured(), Path("/private"), "shared")
@@ -146,7 +149,7 @@ class CredentialsTests(unittest.TestCase):
             invalid = copy.deepcopy(valid)
             invalid["AgentDevelopment"][name] = value
             with self.subTest(flag=name, value=value), \
-                 patch.object(Path, "exists", lambda path: path.name == "providers.json"), \
+                 patch.object(type(Path("/")), "exists", lambda path: path.name == "providers.json"), \
                  patch.object(credentials, "read_json", return_value=invalid):
                 with self.assertRaises(credentials.ConfigurationError):
                     credentials.environment(configured(), Path("/private"), "shared")
@@ -158,7 +161,7 @@ class CredentialsTests(unittest.TestCase):
         self.assertEqual("false", result["YESHUA_AGENT_ALLOW_WORKSPACE_WRITE"])
 
     def test_tunnel_configuration_uses_private_provider_file_only_for_shared(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory)
             providers = root / "shared/OperationalAgent/integracoes/providers.json"
             credentials.write_new_json(providers, {"McpTunnel": {"Id": "tunnel_fixture", "ApiKey": "fixture-tunnel-key"}})
@@ -168,7 +171,7 @@ class CredentialsTests(unittest.TestCase):
             self.assertEqual("", credentials.environment(configured(), root, "central")["YESHUA_MCP_TUNNEL_API_KEY"])
 
     def test_partial_tunnel_configuration_is_rejected_without_exposing_key(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory)
             providers = root / "shared/OperationalAgent/integracoes/providers.json"
             credentials.write_new_json(providers, {"McpTunnel": {"ApiKey": "do-not-display"}})
@@ -193,7 +196,7 @@ class CredentialsTests(unittest.TestCase):
         config = {"ProcessingScope": "test", "Codex": {"Model": "configured-codex", "TimeoutSeconds": 600},
                   "Transcription": {"ApiKey": "fixture-audio-key", "Model": "configured-audio"}}
         document["Apps"]["Clinica"].update(config)
-        with patch.object(Path, "exists", return_value=False), \
+        with patch.object(type(Path("/")), "exists", return_value=False), \
              patch.object(credentials, "read_json", side_effect=AssertionError("No separate Clinica provider file")):
             result = credentials.environment(document, Path("/private"), "shared")
             self.assertEqual("fixture-audio-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
@@ -259,7 +262,7 @@ class CredentialsTests(unittest.TestCase):
     def test_clinica_general_credentials_are_authoritative_even_when_old_file_exists(self):
         document = configured()
         document["Apps"]["Clinica"]["Transcription"]["ApiKey"] = "main-file-key"
-        with patch.object(Path, "exists", lambda path: path.name == "codex-executor.json"), \
+        with patch.object(type(Path("/")), "exists", lambda path: path.name == "codex-executor.json"), \
              patch.object(credentials, "read_json", side_effect=AssertionError("Obsolete provider must not be read")):
             result = credentials.environment(document, Path("/private"), "clinica")
         self.assertEqual("main-file-key", result["CLINICA_TRANSCRIPTION_API_KEY"])
@@ -302,7 +305,7 @@ class CredentialsTests(unittest.TestCase):
             credentials.exports(document, Path("/private"), "gateway")
 
     def test_existing_vault_is_not_hidden_by_an_empty_new_directory(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory)
             legacy = root / "old-vault"
             legacy.mkdir()
@@ -317,7 +320,7 @@ class CredentialsTests(unittest.TestCase):
                 self.assertEqual(str(legacy), result["YESHUA_MEMORIAS_PRIVATE_ROOT"])
 
     def test_youtube_bootstrap_is_app_owned_and_can_be_partial(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory)
             bootstrap = root / "apps/Memorias/integracoes/youtube/bootstrap.json"
             credentials.write_new_json(bootstrap, {"ClientSecret": "fixture-secret", "ConfigurationAdminTenantId": 10})
@@ -329,7 +332,7 @@ class CredentialsTests(unittest.TestCase):
             self.assertEqual("", credentials.environment(configured(), root, "central")["YESHUA_MEMORIAS_YOUTUBE_CLIENT_SECRET"])
 
     def test_invalid_youtube_protection_key_is_rejected_without_replacement(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory)
             bootstrap = root / "apps/Memorias/integracoes/youtube/bootstrap.json"
             credentials.write_new_json(bootstrap, {"EncryptionKey": "fixture-not-a-protection-key"})
@@ -339,7 +342,7 @@ class CredentialsTests(unittest.TestCase):
             self.assertEqual(before, bootstrap.read_bytes())
 
     def test_read_is_non_mutating_and_existing_file_is_never_overwritten(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             path = Path(directory) / "private" / "credentials.json"
             credentials.write_new_json(path, configured())
             before = path.read_bytes()
@@ -353,7 +356,7 @@ class CredentialsTests(unittest.TestCase):
 
     @unittest.skipUnless(os.name == "nt", "Windows ACL test")
     def test_real_windows_acl(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             path = Path(directory) / "restricted" / "credentials.json"
             credentials.write_new_json(path, configured())
             self.assertEqual(1, credentials.read_json(path)["SchemaVersion"])
@@ -380,7 +383,7 @@ class CredentialsTests(unittest.TestCase):
             credentials.from_containers(template, services)
 
 
-class UnifiedInitializationTests(unittest.TestCase):
+class UnifiedInitializationTests(PrivateFixtureTestCase):
     def run_init(self, path, *options):
         stdout, stderr = io.StringIO(), io.StringIO()
         with patch.object(credentials.sys, "argv", ["credentials.py", "init", "--file", str(path), *options]):
@@ -389,7 +392,7 @@ class UnifiedInitializationTests(unittest.TestCase):
         return result, stdout.getvalue(), stderr.getvalue()
 
     def test_new_environment_stops_until_credentials_are_completed(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             path = Path(directory) / "private/credentials.json"
             with patch.object(credentials, "windows_access"):
                 self.assertEqual(0, self.run_init(path)[0])
@@ -401,7 +404,7 @@ class UnifiedInitializationTests(unittest.TestCase):
                 self.assertFalse((path.parent / "apps/Memorias/accounts").exists())
 
     def test_restored_environment_and_youtube_files_are_reused_unchanged(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory) / "private"
             path = root / "credentials.json"
             with patch.object(credentials, "windows_access"):
@@ -423,7 +426,7 @@ class UnifiedInitializationTests(unittest.TestCase):
                 self.assertTrue((root / "apps/APS.ADM").is_dir())
 
     def test_import_cannot_replace_a_restored_configuration(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             path = Path(directory) / "private/credentials.json"
             with patch.object(credentials, "windows_access"):
                 credentials.write_new_json(path, configured())
@@ -434,7 +437,7 @@ class UnifiedInitializationTests(unittest.TestCase):
                 self.assertEqual(before, path.read_bytes())
 
     def test_missing_explicit_youtube_directory_is_not_recreated(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             root = Path(directory)
             missing = root / "missing-youtube"
             document = configured()
@@ -444,7 +447,7 @@ class UnifiedInitializationTests(unittest.TestCase):
             self.assertFalse(missing.exists())
 
     def test_existing_file_cannot_be_replaced_by_a_runtime_directory(self):
-        with tempfile.TemporaryDirectory(dir=Path.home(), prefix=".yeshua-config-test-") as directory:
+        with tempfile.TemporaryDirectory(dir=self.fixture_root, prefix=".yeshua-config-test-") as directory:
             collision = Path(directory) / "Fiscal"
             collision.write_bytes(b"fixture-existing-data")
             with self.assertRaises(credentials.ConfigurationError):
