@@ -44,8 +44,10 @@ public sealed class AgentApplicationPreparation(HttpClient client, TrustedBusine
                 using var response = await client.SendAsync(session, HttpCompletionOption.ResponseHeadersRead, ct);
                 if (!response.IsSuccessStatusCode || !response.Headers.TryGetValues("X-Yeshua-Application-Token", out var values))
                     throw new BusinessAccessException("destination_denied");
+                var tokens = values.ToArray();
+                if (tokens.Length != 1 || string.IsNullOrWhiteSpace(tokens[0])) throw new BusinessAccessException("destination_denied");
                 var handler = new JwtSecurityTokenHandler { MapInboundClaims = false };
-                var principal = handler.ValidateToken(values.Single(), new TokenValidationParameters
+                var principal = handler.ValidateToken(tokens[0], new TokenValidationParameters
                 {
                     ValidateIssuer = false, ValidateAudience = false, ValidateLifetime = true, ClockSkew = TimeSpan.Zero,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwt.SecretKey)),

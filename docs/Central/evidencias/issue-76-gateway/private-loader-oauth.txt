@@ -1,0 +1,8 @@
+test_disabled_by_default_and_only_uses_existing_private_document (test_agent_oauth_credentials.AgentOAuthCredentialsTests.test_disabled_by_default_and_only_uses_existing_private_document) ... ok
+test_profile_survives_environment_roundtrip_without_new_secret_source (test_agent_oauth_credentials.AgentOAuthCredentialsTests.test_profile_survives_environment_roundtrip_without_new_secret_source) ... ok
+test_rejects_truthy_enable_and_unconfigured_enabled_server (test_agent_oauth_credentials.AgentOAuthCredentialsTests.test_rejects_truthy_enable_and_unconfigured_enabled_server) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.011s
+
+OK

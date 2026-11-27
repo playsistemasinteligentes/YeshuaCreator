@@ -26,7 +26,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Yeshua.Central.BusinessMcp.Tests;
 
-public sealed class AgentOAuthFlowTests
+public sealed partial class AgentOAuthFlowTests
 {
     private const string Issuer = "https://central.test/";
     private const string Resource = "https://central.test/business/mcp";
@@ -134,6 +134,7 @@ public sealed class AgentOAuthFlowTests
         var tokens = await host.Exchange(DecodeQuery(consent.Headers.Location!)["code"]);
         Assert.True(tokens.TryGetProperty("access_token", out var access), tokens.GetRawText());
         Assert.Equal(1, host.Identity.ResolveCalls); Assert.Equal(1, host.Destination.SessionExchanges);
+        var commandsAfterIssuance = host.Probe.DatabaseCommands;
         Assert.True(host.Probe.DatabaseCommands > databaseCommandsBeforeIssuance); // Prove the DB interceptor is active during issuance.
         var issued = new JwtSecurityTokenHandler().ReadJwtToken(access.GetString());
         var grant = issued.Claims.Single(c => c.Type == "delegation_id").Value;
@@ -165,7 +166,9 @@ public sealed class AgentOAuthFlowTests
         var evidence = new
         {
             scenario = "Actual OAuth code/PKCE -> official MCP client -> mapped app. Grant revoked and renewal denied, then authorization backends disabled before the first MCP request.",
-            databaseCommandsDuringConsentAndIssuance = commands - databaseCommandsBeforeIssuance,
+            transport = host.Gateway is null ? "in-memory" : "TLS/Nginx/HTTP for both OAuth/MCP and synthetic application delivery",
+            databaseCommandsDuringConsentAndIssuance = commandsAfterIssuance - databaseCommandsBeforeIssuance,
+            databaseCommandsDuringRevocationAndDeniedRenewal = commands - commandsAfterIssuance,
             priorDatabaseCommands = commands, databaseCommandsOnBusinessRequests = host.Probe.DatabaseCommands - commands,
             databaseConnectionsOpenedOnBusinessRequests = host.Probe.ConnectionOpens - opens,
             priorCentralIdentityReads = 1, centralIdentityReadsOnBusinessRequests = host.Identity.ResolveCalls - 1,
@@ -423,7 +426,9 @@ public sealed class AgentOAuthFlowTests
         public int Calls, SessionExchanges;
         public bool Allowed = true, ForbidSessions, DenySession;
         public int LocalUserId = 99;
+        public string? SessionFailure;
         public string Application = "Central";
+        public Task<HttpResponseMessage> ReceiveAsync(HttpRequestMessage request, CancellationToken ct) => SendAsync(request, ct);
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
         {
             var handler = new JwtSecurityTokenHandler();
@@ -437,15 +442,18 @@ public sealed class AgentOAuthFlowTests
                 if (ForbidSessions) throw new InvalidOperationException("Session exchange is forbidden after issuance.");
                 Assert.Equal("17", principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
                 Assert.Equal("7", principal.FindFirst("tenantId")?.Value);
+                if (SessionFailure == "timeout") throw new TaskCanceledException("Synthetic destination preparation timeout.");
                 if (DenySession) return Task.FromResult(new HttpResponseMessage(HttpStatusCode.Forbidden));
                 var appClaims = new Claim[] { new(ClaimTypes.NameIdentifier, LocalUserId.ToString()), new("tenantId", "7"), new("application", Application),
                     new("tokenOrigin", "Application"), new(ClaimTypes.Role, "Admin") };
                 var response = new HttpResponseMessage(HttpStatusCode.OK);
                 response.Headers.Add("X-Yeshua-Application-Token", new JwtSecurityTokenHandler().WriteToken(new JwtSecurityToken(
-                    claims: appClaims, expires: DateTime.UtcNow.AddMinutes(10), signingCredentials: new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Root)), SecurityAlgorithms.HmacSha256))));
+                    claims: appClaims, expires: DateTime.UtcNow.AddMinutes(SessionFailure == "expired" ? -1 : 10), signingCredentials: new(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(SessionFailure == "signature" ? Root + "wrong" : Root)), SecurityAlgorithms.HmacSha256))));
+                if (SessionFailure == "multiple") response.Headers.Add("X-Yeshua-Application-Token", "synthetic-second-value");
                 return Task.FromResult(response);
             }
             Calls++;
+            Assert.True(request.Headers.Contains("traceparent"));
             Assert.Equal(Application == "Central" ? "17" : LocalUserId.ToString(), principal.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             Assert.Equal("17", principal.FindFirst("owner_sub")?.Value);
             Assert.Equal("7", principal.FindFirst("tenantId")?.Value);
@@ -477,12 +485,17 @@ public sealed class AgentOAuthFlowTests
             Probe.Forbidden = true; Identity.ForbidReads = true; Destination.ForbidSessions = true;
             await connection.CloseAsync();
         }
-        public HttpClient Client() { var client = App.GetTestClient(); client.BaseAddress = new Uri(Issuer); return client; }
-        public static async Task<Host> Start(bool mcp = false, string? databasePath = null, bool executableFixture = false, string fixtureApplication = "Central")
+        public IsolatedNginxGateway? Gateway;
+        public HttpClient Client() { var client = Gateway?.Client() ?? App.GetTestClient(); client.BaseAddress = new Uri(Issuer); return client; }
+        public static async Task<Host> Start(bool mcp = false, string? databasePath = null, bool executableFixture = false, string fixtureApplication = "Central", string? trustedProxy = "127.0.0.1")
         {
             var connection = new SqliteConnection("Data Source=" + (databasePath ?? ":memory:")); await connection.OpenAsync();
-            var builder = WebApplication.CreateBuilder(); builder.WebHost.UseTestServer(); builder.Logging.ClearProviders();
-            var options = new AgentOAuthOptions { Enabled = true, Issuer = Issuer, Resource = Resource, SigningPrivateKeyPem = SigningPem,
+            var builder = WebApplication.CreateBuilder();
+            var nginx = Environment.GetEnvironmentVariable("YESHUA_TEST_NGINX");
+            if (string.IsNullOrWhiteSpace(nginx)) builder.WebHost.UseTestServer();
+            else builder.WebHost.ConfigureKestrel(server => server.Listen(IPAddress.Loopback, 0));
+            builder.Logging.ClearProviders();
+            var options = new AgentOAuthOptions { Enabled = true, Issuer = Issuer, Resource = Resource, SigningPrivateKeyPem = SigningPem, KnownProxies = trustedProxy is null ? [] : [trustedProxy],
                 Clients = [new() { ClientId = "test-agent", DisplayName = "Synthetic agent", RedirectUris = [Callback], Applications = ["Central", "Clinica"] }] };
             var probe = new AuthorizationIoProbe();
             builder.Services.AddCentralAgentOAuth(options, Root, db => db.UseSqlite(connection)
@@ -495,9 +508,11 @@ public sealed class AgentOAuthFlowTests
                 builder.Services.AddCentralBusinessMcp(new(new Uri(Resource), new Uri(Issuer)), catalogue);
             }
             var destination = new Destination { Application = fixtureApplication };
-            if (executableFixture) builder.Services.AddTransient<AgentApplicationPreparation>(sp => new AgentApplicationPreparation(new HttpClient(destination),
+            IsolatedNginxGateway? gateway = null;
+            HttpClient DestinationClient() => gateway?.Client() ?? new HttpClient(destination);
+            if (executableFixture) builder.Services.AddTransient<AgentApplicationPreparation>(sp => new AgentApplicationPreparation(DestinationClient(),
                 sp.GetRequiredService<TrustedBusinessCatalog>(), sp.GetRequiredService<AgentApplicationCredentials>(), sp.GetRequiredService<JwtSettings>(), TimeProvider.System));
-            if (executableFixture) builder.Services.AddScoped<IApplicationDelegationSender>(sp => new AgentApplicationSender(new HttpClient(destination),
+            if (executableFixture) builder.Services.AddScoped<IApplicationDelegationSender>(sp => new AgentApplicationSender(DestinationClient(),
                 sp.GetRequiredService<AgentApplicationCredentials>()));
             var identity = new Identity(); builder.Services.AddSingleton<ICentralAgentIdentity>(identity);
             builder.Services.AddAuthentication("conventional").AddJwtBearer("conventional", bearer => bearer.TokenValidationParameters = new()
@@ -505,14 +520,49 @@ public sealed class AgentOAuthFlowTests
             var app = builder.Build();
             using (var scope = app.Services.CreateScope()) await scope.ServiceProvider.GetRequiredService<AgentOAuthDbContext>().Database.EnsureCreatedAsync();
             await AgentOAuthRegistration.ProvisionClientsAsync(app.Services);
+            app.UseForwardedHeaders();
             app.UseAuthentication(); app.UseAuthorization(); app.MapCentralAgentOAuth();
+            // Synthetic diagnostics only. Production never maps this route.
+            app.MapGet("/yapi/gateway-probe", (HttpContext http) => Results.Json(new {
+                scheme = http.Request.Scheme, host = http.Request.Host.Value,
+                forwardedPrefix = http.Request.Headers["X-Forwarded-Prefix"].ToString(),
+                correlation = http.Request.Headers["X-Correlation-ID"].ToString(),
+                traceparent = http.Request.Headers["traceparent"].ToString(),
+                authorizationPresent = http.Request.Headers.ContainsKey("Authorization") }));
+            if (executableFixture && !string.IsNullOrWhiteSpace(nginx))
+            {
+                // The actual sender and getMenu preparation traverse TLS/Nginx/HTTP
+                // into this synthetic destination. No real application is started.
+                async Task DeliverSynthetic(HttpContext http)
+                {
+                    using var request = new HttpRequestMessage(new HttpMethod(http.Request.Method), "https://destination.test" + http.Request.Path);
+                    foreach (var header in http.Request.Headers) request.Headers.TryAddWithoutValidation(header.Key, header.Value.ToArray());
+                    using var response = await destination.ReceiveAsync(request, http.RequestAborted);
+                    http.Response.StatusCode = (int)response.StatusCode;
+                    foreach (var header in response.Headers) http.Response.Headers[header.Key] = header.Value.ToArray();
+                    if (response.Content is not null)
+                    {
+                        http.Response.ContentType = response.Content.Headers.ContentType?.ToString();
+                        await response.Content.CopyToAsync(http.Response.Body, http.RequestAborted);
+                    }
+                }
+                app.MapGet("/yapi/getMenu", DeliverSynthetic);
+                app.MapPost("/yapi/Sample/Execute", DeliverSynthetic);
+            }
             if (mcp) app.MapCentralBusinessMcp();
             else app.MapGet("/business/mcp", (HttpContext http) => Results.Json(new { owner = http.User.FindFirst("sub")?.Value,
                 tenant = http.User.FindFirst("tenantId")?.Value, client = http.User.FindFirst("client_id")?.Value }))
                 .RequireAuthorization(AgentOAuthOptions.ResourcePolicy);
-            await app.StartAsync(); return new(app, connection, identity, destination, probe);
+            await app.StartAsync();
+            var host = new Host(app, connection, identity, destination, probe);
+            if (!string.IsNullOrWhiteSpace(nginx))
+            {
+                try { host.Gateway = gateway = await IsolatedNginxGateway.Start(nginx, app.Urls.Single()); }
+                catch { await host.DisposeAsync(); throw; }
+            }
+            return host;
         }
-        public async Task<HttpResponseMessage> Consent(HttpClient client, Dictionary<string, string> fields, string decision = "allow")
+        public async Task<HttpResponseMessage> Consent(HttpClient client, Dictionary<string, string> fields, string decision = "allow", string username = "owner@example.test", string password = "synthetic-password")
         {
             using var page = await client.GetAsync("/oauth/authorize?" + Query(fields));
             var html = await page.Content.ReadAsStringAsync();
@@ -525,7 +575,7 @@ public sealed class AgentOAuthFlowTests
                 client.DefaultRequestHeaders.Add("Cookie", cookies.First().Split(';')[0]);
             }
             var form = new Dictionary<string, string>(fields) { ["__RequestVerificationToken"] = WebUtility.HtmlDecode(csrf),
-                ["username"] = "owner@example.test", ["password"] = "synthetic-password", ["decision"] = decision };
+                ["username"] = username, ["password"] = password, ["decision"] = decision };
             return await client.PostAsync("/oauth/authorize", new FormUrlEncodedContent(form));
         }
         public Dictionary<string, string> ExchangeFields(string code) => new() { ["grant_type"] = "authorization_code", ["client_id"] = "test-agent",
@@ -534,6 +584,6 @@ public sealed class AgentOAuthFlowTests
         public Task<JsonElement> Refresh(string refresh) => PostToken(new() { ["grant_type"] = "refresh_token", ["client_id"] = "test-agent", ["refresh_token"] = refresh, ["resource"] = Resource });
         public async Task<JsonElement> PostToken(Dictionary<string, string> fields)
         { using var client = Client(); using var response = await client.PostAsync("/oauth/token", new FormUrlEncodedContent(fields)); return Json(await response.Content.ReadAsStringAsync()); }
-        public async ValueTask DisposeAsync() { await App.DisposeAsync(); await connection.DisposeAsync(); }
+        public async ValueTask DisposeAsync() { if (Gateway is not null) await Gateway.DisposeAsync(); await App.DisposeAsync(); await connection.DisposeAsync(); }
     }
 }

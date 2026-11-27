@@ -19,7 +19,7 @@ using Yeshua.OperationalIntelligence.Api.Repositories;
 namespace Yeshua.OperationalIntelligence.Api.Tests;
 
 [TestClass]
-public sealed class McpCompatibilityTests
+public sealed partial class McpCompatibilityTests
 {
     [TestMethod]
     public async Task OfficialClientDiscoversTheCompleteProductionCatalogWithoutQueryingData()

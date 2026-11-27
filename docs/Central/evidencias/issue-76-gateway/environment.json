@@ -1,0 +1,11 @@
+{
+  "collectedAtUtc": "2026-11-27T21:59:14.200615+00:00",
+  "package": "nginx",
+  "version": "1.22.1-9+deb12u9",
+  "source": "https://deb.debian.org/debian/pool/main/n/nginx/nginx_1.22.1-9+deb12u9_amd64.deb",
+  "sha256": "4e7b52f8b31f26d77ffb5c427c41e36223e81b047242ecfa8dc1d7f939734885",
+  "verifiedAgainst": "https://deb.debian.org/debian/dists/bookworm/main/binary-amd64/Packages.gz",
+  "installedSystemWide": false,
+  "executedAsRoot": false,
+  "sqlTestConfigured": false
+}

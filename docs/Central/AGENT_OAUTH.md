@@ -8,7 +8,10 @@ verificada aberta em rascunho. Base desta continuidade:
 
 Complemento aprovado da #76: permissões e delegação são resolvidas somente na
 emissão/renovação. A primeira operação também não consulta banco, Central,
-cache remoto ou introspecção para autorizar. Prova instrumentada e custos em
+cache remoto ou introspecção para autorizar. Revisão com Nginx real isolado, correções e regressões em
+[evidências de gateway](evidencias/issue-76-gateway/VALIDATION.md); roteiro real
+pendente de aprovação em [Presença](PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md).
+Prova instrumentada e custos em
 [evidências zero I/O](evidencias/issue-76-zero-io/VALIDATION.md).
 
 Implementação funcional local de authorization code/PKCE, consentimento,
@@ -154,7 +157,10 @@ máximo junto com a janela preparada de cinco minutos; o prazo do access token
 
 A parte protegida tem limite de 12 KiB e até oito destinos distintos. Excesso
 é negado; o cliente deve pedir um conjunto menor de aplicativos. O JWT cresce:
-validar os limites de headers do gateway na homologação antes de ativar; não há
+o ensaio isolado confirma uma linha de bearer sintético assinado maior que 20 KiB
+com `large_client_header_buffers 4 32k` nos templates, e nega acima do limite.
+A API conserva seu limite total de 32 KiB. Revalidar o tamanho concreto dos tokens
+e demais headers na homologação antes de ativar; não há
 fallback para lookup externo quando o token não cabe. O catálogo real continua
 fechado. O contrato atual de origem/rota/getMenu deve apontar de fato ao app
 correto, inclusive diante dos prefixes do gateway; essa integração real ainda
@@ -213,12 +219,16 @@ Preparação em ambiente autorizado, depois de revisar perfil/backup:
    somente exporta DDL e não abre conexão ao banco. Nenhuma dessas ações foi
    executada com credenciais reais nesta tarefa.
 3. Habilitar HTTPS e, se houver terminação TLS no gateway, configurar os IPs
-   exatos em `KnownProxies`. Só `X-Forwarded-Proto`, de proxies conhecidos, é
-   processado; não confiar em headers de qualquer origem nem desabilitar HTTPS.
+   exatos em `KnownProxies`. Só `X-Forwarded-Proto`, de proxies explicitamente conhecidos, é
+   processado. Defaults implícitos de rede/loopback são removidos; com lista vazia,
+   processamento forwarded fica desligado. Não confiar em qualquer origem nem
+   desabilitar HTTPS.
 4. Revisar/ativar o template `15-agent-oauth.conf.disabled` no gateway aprovado.
    Ele inclui somente os endpoints OAuth/discovery e o recurso de negócio;
    não altera `/operational/mcp`. O template está desativado e não foi recarregado.
-   Este executor não tem Nginx/Docker para validar a sintaxe em runtime.
+   A suíte opt-in validou `nginx -t`, TLS e proxy de verdade com Nginx extraído
+   em `/tmp`, sem instalação global ou reload. Docker/Compose e configuração
+   efetiva do servidor continuam sem validação neste executor.
 5. Homologar com conta/tenant de teste existentes e cliente pré-registrado:
    discovery -> negar/autorizar -> code/PKCE -> MCP -> renovar -> revogar ->
    renovação negada, além das negativas e compatibilidade do login convencional.

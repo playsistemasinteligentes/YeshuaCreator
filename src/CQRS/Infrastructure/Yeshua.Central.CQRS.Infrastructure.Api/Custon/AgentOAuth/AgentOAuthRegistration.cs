@@ -23,8 +23,12 @@ public static class AgentOAuthRegistration
         services.AddSingleton(options);
         services.Configure<ForwardedHeadersOptions>(forwarding =>
         {
-            forwarding.ForwardedHeaders = ForwardedHeaders.XForwardedProto;
+            forwarding.ForwardedHeaders = options.KnownProxies.Count == 0
+                ? ForwardedHeaders.None : ForwardedHeaders.XForwardedProto;
             forwarding.ForwardLimit = 1;
+            // Trust only the configured gateway, including in local installations.
+            forwarding.KnownNetworks.Clear();
+            forwarding.KnownProxies.Clear();
             foreach (var proxy in options.KnownProxies) forwarding.KnownProxies.Add(System.Net.IPAddress.Parse(proxy));
         });
         services.AddScoped<CentralLoginSessionReader>();

@@ -3,6 +3,18 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Revisao #76 pelo gateway: suite existente agora aceita Nginx local opt-in,
+  TLS efemero e destinos sinteticos, sem alterar configuracao do sistema. Proxy
+  confiavel exige IP explicitamente configurado; lista vazia nao aceita forwarded
+  headers. Gateway admite linha de JWT ate 32 KiB, sujeito tambem ao limite total
+  da API. Falha de sessao/assinatura/timeout na emissao nega no protocolo, sem
+  fallback por operacao. Origem HTTPS raiz exigida pelo catalogo ainda nao
+  representa /apps/presenca/yapi: decidir origem exclusiva ou evolucao revisada
+  antes de expor Presenca; nenhum alias/app alterado nesta tarefa. Evidencias em
+  docs/Central/evidencias/issue-76-gateway e roteiro proposto em
+  docs/Central/PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md. Sem homologacao real,
+  segredos reais, delegacao humana, merge ou deploy.
+
 - Complemento aprovado #76: zero I/O ADICIONAL de autorizacao/delegacao em
   requisicoes, inclusive primeira chamada e apos reinicio. A preparacao getMenu
   e a leitura atual de identidade/permissoes ocorrem apenas no code exchange e

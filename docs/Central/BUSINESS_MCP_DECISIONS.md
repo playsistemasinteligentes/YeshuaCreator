@@ -1,5 +1,10 @@
 # Decisões do MCP de negócio e OAuth
 
+Revisão subsequente: [ensaio TLS/Nginx isolado](evidencias/issue-76-gateway/VALIDATION.md)
+e [roteiro proposto com Presença](PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md).
+Catálogo real permanece fechado; o contrato de origem raiz exige decisão antes
+de usar o prefixo compartilhado do gateway.
+
 Complemento aprovado #76: a resolução de sessão/permissões sob demanda foi
 retirada. Emissão/renovação prepara o snapshot autocontido; requisições usam
 somente validação/criptografia local, sem I/O adicional de autorização.

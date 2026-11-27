@@ -3,7 +3,9 @@
 Complemento aprovado #76: **zero I/O adicional por requisição para autorização
 e delegação**, inclusive primeira chamada; resolução somente na emissão/renovação
 e JWT assinado autocontido. [Evidências atuais](../evidencias/issue-76-zero-io/VALIDATION.md).
-Não há nova implementação paralela ou delegação humana.
+Não há nova implementação paralela ou delegação humana. A revisão seguinte
+valida TLS/Nginx local com a mesma suíte: [evidências de gateway](../evidencias/issue-76-gateway/VALIDATION.md).
+[Plano de validação com Presença](../PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md), ainda não executado.
 
 Atualização da issue #76: protocolo funcional implementado sobre OpenIddict,
 reutilizando a resolução convencional de permissões. Esta primeira descrição é

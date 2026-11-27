@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\OperationalIntelligence\Yeshua.OperationalIntelligence.Api\Yeshua.OperationalIntelligence.Api.csproj" />
+    <Compile Include="../../Central/Yeshua.Central.BusinessMcp.Tests/IsolatedNginxGateway.cs" Link="Gateway/IsolatedNginxGateway.cs" />
     <None Update="Fixtures\*.cjs" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
 

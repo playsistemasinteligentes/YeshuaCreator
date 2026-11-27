@@ -69,13 +69,15 @@ public sealed class AgentOAuthReceiver(AgentOAuthOptions options, ICentralAgentI
         }
         catch (BusinessMcp.BusinessAccessException) { return null; }
         catch (HttpRequestException) { return null; }
+        catch (Microsoft.IdentityModel.Tokens.SecurityTokenException) { return null; }
+        catch (TaskCanceledException) when (!ct.IsCancellationRequested) { return null; }
         SetDestinations(principal);
         Audit("token_issued", principal);
         return principal;
     }
     public async Task<bool> RevokeAsync(RevokeAgentGrant command, int owner, int tenant, CancellationToken ct)
     {
-        if (owner <= 0 || tenant <= 0 || command.AuthorizationId.Length > 100) return false;
+        if (owner <= 0 || tenant <= 0 || string.IsNullOrWhiteSpace(command.AuthorizationId) || command.AuthorizationId.Length > 100) return false;
         var grant = await grants.FindByIdAsync(command.AuthorizationId, ct);
         if (grant is null || !await Owned(grant, owner, tenant, ct)) return false;
         if (await grants.GetStatusAsync(grant, ct) == Statuses.Revoked) return true;
