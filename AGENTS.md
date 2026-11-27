@@ -3,6 +3,20 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Atualizacao do operador #76: nao existe SQL Server separado de homologacao.
+  Nao criar infraestrutura separada nem bloquear conclusao local por sua ausencia.
+  Homologacao futura sera na base de producao destinada a testes, somente apos
+  confirmar instancia/base exatas, tenant, ator, cliente e escopo de operacoes
+  e efeitos de sessao/protocolo. Nenhum acesso real, nem preflight/SELECT, antes
+  dessa confirmacao. Nao presumir base descartavel ou autorizar outro tenant.
+  Esta ordem nao permite DDL, migration, deploy, merge ou operacao real; suites
+  sinteticas/descartaveis nao devem ser redirecionadas a essa base. Prova de
+  bloqueio de dependencias permanece local, nunca interromper servicos de
+  producao para prova zero I/O. Roteiro vigente em
+  docs/Central/PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md; requisitos anteriores de
+  prover SQL Server isolado foram substituidos, demais limites de cobertura
+  filesystem/Windows permanecem explicitos.
+
 - Continuidade #76 prefixo/loader: catalogo confiavel agora aceita origem HTTPS
   raiz ou base canonica /apps/<alias>/, preservando prefixo ao compor rotas
   OpenAPI /yapi e getMenu. BasePath segue autenticado no JWE; sender valida

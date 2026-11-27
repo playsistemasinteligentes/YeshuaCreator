@@ -159,6 +159,15 @@ de CPU ou SLO. O token já emitido conserva janela residual máxima de cinco min
 
 ## Bloqueios reais restantes e ação do operador
 
+**Atualização posterior do operador:** o item 1 abaixo registra o diagnóstico
+histórico do executor. A exigência de disponibilizar SQL Server isolado/descartável
+foi substituída: não criar infraestrutura, concluir as verificações locais e
+preparar homologação futura na base de produção destinada a testes. Antes de
+qualquer acesso real confirmar base, tenant e escopo conforme o
+[roteiro vigente](../../PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md). Nenhum acesso,
+DDL, deploy, merge ou operação real autorizado nesta ordem. A ausência de servidor
+separado não é bloqueio de conclusão local; a cobertura SQL real segue pendente.
+
 1. **SQL Server/homologação:** `YESHUA_TEST_SQL` ausente; sem Docker/Podman/daemon,
    socket, `sqlcmd` ou `/opt/mssql/bin/sqlservr`. [Preflight sem segredos](environment.json).
    Não há conexão/tenant/cliente de homologação disponibilizados. O Compose

@@ -257,6 +257,12 @@ de recurso e `offline_access` não é anunciado no desafio MCP.
 
 ## Limites desta entrega
 
+Diretriz posterior do operador: não criar SQL Server separado de homologação;
+sua ausência não bloqueia a conclusão local. A homologação futura será na base
+de produção destinada a testes, após confirmar identificação exata, tenant e
+escopo **antes de qualquer acesso real**. Esta ordem não autoriza acesso, DDL,
+deploy, merge ou operações reais. [Roteiro vigente](PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md).
+
 Sem SQL Server/homologação externa configurados, sem operação real, sem merge ou
 deploy. Há testes reais do protocolo e store SQLite, DDL SQL Server gerado e
 testes dos repositories convencionais com fixtures. A regressão ampla original do loader privado teve 26 erros ambientais. A

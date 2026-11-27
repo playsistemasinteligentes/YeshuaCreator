@@ -1,0 +1,14 @@
+{
+  "base": "eb4d0f097e419cca76d157ce654912f2dd55dc9c",
+  "files": [
+    "AGENTS.md",
+    "docs/Central/AGENT_OAUTH.md",
+    "docs/Central/PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md",
+    "docs/Central/evidencias/issue-76-operator-scope/VALIDATION.md",
+    "docs/Central/evidencias/issue-76-operator-scope/files.json",
+    "docs/Central/evidencias/issue-76-operator-scope/loader-local.txt",
+    "docs/Central/evidencias/issue-76-operator-scope/loader-shell.txt",
+    "docs/Central/evidencias/issue-76-operator-scope/setup-shell.txt",
+    "docs/Central/evidencias/issue-76-prefix-loader/VALIDATION.md"
+  ]
+}
