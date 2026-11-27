@@ -1,0 +1,27 @@
+{
+  "base": "eb20c50ad50be21b2bc6d36825df2953f98fa616",
+  "files": [
+    "AGENTS.md",
+    "YeshuaCreator.sln",
+    "docs/Arquitetura/OBJETOS_DA_ARQUITETURA_YESHUA.md",
+    "docs/Central/BUSINESS_MCP_DECISIONS.md",
+    "docs/Central/evidencias/business-mcp/VALIDATION.md",
+    "docs/Central/evidencias/business-mcp/business-mcp.trx",
+    "docs/Central/evidencias/business-mcp/engine.trx",
+    "docs/Central/evidencias/business-mcp/files.json",
+    "docs/Central/evidencias/business-mcp/operational-mcp.trx",
+    "docs/Central/tarefas/MCP_CENTRAL_NEGOCIO.md",
+    "docs/Central/tarefas/OAUTH_AGENTES_EXTERNOS.md",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/BusinessMcpReceiver.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/BusinessMcpTransport.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/Contracts.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/DelegatedAccess.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/TrustedBusinessCatalog.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj",
+    "src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureAPIEndpointsMigration.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/BusinessMcpTests.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/BusinessMcpTransportTests.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/Yeshua.Central.BusinessMcp.Tests.csproj",
+    "tests/Engine/Yeshua.Engine.Tests/BusinessCommandContractGenerationTests.cs"
+  ]
+}

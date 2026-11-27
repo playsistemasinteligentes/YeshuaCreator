@@ -655,3 +655,24 @@ Antes de aceitar um novo conceito arquitetural, responder:
 10. Como sera validado?
 
 Se a resposta nao for clara, registrar como `pendencia` antes de implementar.
+
+## Adaptador MCP de negócio e delegação externa
+
+O MCP de negócio é transporte sobre os Commands HTTP existentes, com receiver
+na API Central; não é novo domínio, runner, gerador de contratos ou acesso SQL.
+O catálogo confiável é um adaptador de OpenAPI e da autorização existente, sem
+inferir exposição de operações a partir do menu, Swagger ou papel Admin.
+
+| Objeto de adaptação | Responsabilidade e limite |
+| --- | --- |
+| `TrustedBusinessCatalog` | Snapshot fechado de operações revisadas e schemas derivados de OpenAPI; resolve verbo/rota sem entrada de URL do agente. |
+| `BusinessMcpReceiver` | Coordena descoberta/execução, valida parâmetros e autorização, exige auditoria e preserva correlação. |
+| `DelegatedAccess` | Confere consentimento ativo por usuário/tenant/cliente após autenticação dedicada do resource server. Não emite tokens. |
+| `IBusinessPermissionReader` | Porta para os repositories de identidade/perfis/grants atuais da Central. Sem implementação permissiva padrão. |
+| `IDelegationRepository` | Porta de leitura de consentimento/revogação persistente; a implementação real depende da especificação no Studio. |
+| `IApplicationDelegationSender` | Fronteira de credencial de destino com autorização própria e identidade preservada; proíbe repasse do bearer MCP e redirects/retries implícitos. |
+| `IBusinessAuditWriter` | Intenção/resultado com IDs operacionais e correlação, sem payloads ou credenciais. |
+
+Esse incremento é opt-in, não registrado no host de produção, e não conclui o
+servidor OAuth. Decisões e critérios restantes em
+[BUSINESS_MCP_DECISIONS.md](../Central/BUSINESS_MCP_DECISIONS.md).

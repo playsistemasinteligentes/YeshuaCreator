@@ -3,6 +3,20 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- MCP de negocio/OAuth externo em 2026-11-27: incremento opt-in em
+  Central.Api/Custon/BusinessMcp, sem registro no Program nem exposicao real.
+  OpenAPI continua a fonte unica de schemas; o gerador de endpoints acrescenta
+  identidade estavel app/grupo/subgrupo/Command, descricao e resposta tipada.
+  Visibilidade HTTP nao concede exposicao a agentes: falta projetar a relacao
+  entre operacao e grant delegavel da Central e implementar adapters persistentes.
+  Resource server usa scheme proprio com issuer/audience/validade e consulta
+  delegacao por usuario/tenant/cliente; JWT legado/Admin nao serve como delegacao.
+  Token MCP nunca deve ser repassado ao destino, que reautoriza a operacao.
+  Authorization code/PKCE, consentimento, revogacao persistente e credencial de
+  destino ainda pendentes; nao anunciar OAuth completo nem ativar externamente.
+  MCP administrativo preservado. Decisoes, descritores e limites em
+  docs/Central/BUSINESS_MCP_DECISIONS.md. Sem deploy ou operacoes reais.
+
 - Esclarecimento do operador em 2026-11-25 para esta preparacao: commitar,
   enviar ao GitHub e integrar as correcoes na main estao autorizados. A ordem
   "sem publicar" neste trabalho impede o DEPLOY, que o operador executara ou
