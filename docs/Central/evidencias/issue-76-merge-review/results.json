@@ -1,0 +1,40 @@
+{
+  "central": {
+    "total": 117,
+    "passed": 117,
+    "failed": 0,
+    "notExecuted": 0
+  },
+  "engine": {
+    "total": 69,
+    "passed": 69,
+    "failed": 0,
+    "notExecuted": 0
+  },
+  "operational": {
+    "total": 13,
+    "passed": 13,
+    "failed": 0,
+    "notExecuted": 0
+  },
+  "loader": {
+    "total": 91,
+    "passed": 85,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 6,
+    "mode": "explicit virtual unit filesystem, Compose parser, physical negative guards"
+  },
+  "shell": {
+    "private-config-loader": 0,
+    "unified-setup": 0
+  },
+  "commands": [
+    "YESHUA_TEST_NGINX=/tmp/yeshua-nginx-76/root/usr/sbin/nginx dotnet test tests/Central/Yeshua.Central.BusinessMcp.Tests/Yeshua.Central.BusinessMcp.Tests.csproj --no-restore --logger 'trx;LogFileName=central-review.trx' --results-directory /tmp/issue76-merge-review --verbosity quiet",
+    "dotnet test tests/Engine/Yeshua.Engine.Tests/Yeshua.Engine.Tests.csproj --no-restore --logger 'trx;LogFileName=engine-review.trx' --results-directory /tmp/issue76-merge-review --verbosity quiet",
+    "YESHUA_TEST_NGINX=/tmp/yeshua-nginx-76/root/usr/sbin/nginx dotnet test tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests/Yeshua.OperationalIntelligence.Api.Tests.csproj --no-restore --filter 'FullyQualifiedName~McpCompatibilityTests|FullyQualifiedName~McpOutputContractTests' --logger 'trx;LogFileName=operational-review.trx' --results-directory /tmp/issue76-merge-review --verbosity quiet",
+    "YESHUA_PRIVATE_TEST_FILESYSTEM=virtual YESHUA_TEST_COMPOSE=/tmp/yeshua-76-compose/docker-compose /tmp/yeshua-76-python/bin/python -m unittest discover -s tests/Infrastructure/PrivateConfig -v",
+    "bash tests/Infrastructure/PrivateConfig/private-config-loader.test.sh",
+    "bash tests/Infrastructure/PrivateConfig/unified-setup.test.sh"
+  ]
+}
