@@ -1,0 +1,32 @@
+{
+  "base": "e16cdb332cc5829a8330b3101473532523c29082",
+  "branch": "codex/task-85374af22c2449068d7c25b90bb3122e",
+  "existingPr": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/75",
+  "files": [
+    "AGENTS.md",
+    "docs/Arquitetura/OBJETOS_DA_ARQUITETURA_YESHUA.md",
+    "docs/Central/AGENT_OAUTH.md",
+    "docs/Central/BUSINESS_MCP_DECISIONS.md",
+    "docs/Central/evidencias/issue-76-zero-io/COST.md",
+    "docs/Central/evidencias/issue-76-zero-io/VALIDATION.md",
+    "docs/Central/evidencias/issue-76-zero-io/central-agent-zero-io.trx",
+    "docs/Central/evidencias/issue-76-zero-io/files.json",
+    "docs/Central/evidencias/issue-76-zero-io/issue76.json",
+    "docs/Central/evidencias/issue-76-zero-io/local-authorization-cost.json",
+    "docs/Central/evidencias/issue-76-zero-io/operational-mcp.trx",
+    "docs/Central/evidencias/issue-76-zero-io/pr75.json",
+    "docs/Central/evidencias/issue-76-zero-io/zero-authorization-io.json",
+    "docs/Central/tarefas/OAUTH_AGENTES_EXTERNOS.md",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentApplicationCredentials.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentApplicationPreparation.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentBusinessAdapters.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentOAuthReceiver.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentOAuthRegistration.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/BusinessMcpTransport.cs",
+    "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/DelegatedAccess.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/AgentApplicationSenderTests.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/AgentOAuthFlowTests.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/AuthorizationIoProbe.cs",
+    "tests/Central/Yeshua.Central.BusinessMcp.Tests/LocalAuthorizationCostTests.cs"
+  ]
+}

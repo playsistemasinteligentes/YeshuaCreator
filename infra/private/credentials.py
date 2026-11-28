@@ -358,7 +358,7 @@ def environment(document, root, target, include_shared=False):
 
     central_keys = ("CENTRAL_UPLOAD_SIGNING_KEY", "CENTRAL_TRANSCRIPTION_PROVIDER", "CENTRAL_TRANSCRIPTION_API_KEY",
                     "CENTRAL_TRANSCRIPTION_MODEL", "CENTRAL_TRANSCRIPTION_BASE_URL",
-                    "CENTRAL_GROQ_API_KEY", "CENTRAL_GROQ_MODEL", "CENTRAL_GROQ_BASE_URL", "YESHUA_BILLING_SANDBOX_ENABLED")
+                    "CENTRAL_GROQ_API_KEY", "CENTRAL_GROQ_MODEL", "CENTRAL_GROQ_BASE_URL", "YESHUA_BILLING_SANDBOX_ENABLED", "YESHUA_CENTRAL_AGENT_OAUTH_JSON")
     result.update({key: "" for key in central_keys})
     if target in ("central", "shared", "all") or include_shared:
         # Upload tokens have a separate purpose/key; the private JWT root remains stable on rebuild.
@@ -368,6 +368,18 @@ def environment(document, root, target, include_shared=False):
         if sandbox not in ("true", "false"):
             raise ConfigurationError("Apps.Central.Billing.SandboxEnabled deve ser true ou false.")
         result["YESHUA_BILLING_SANDBOX_ENABLED"] = sandbox
+        agent = document.get("Apps", {}).get("Central", {}).get("AgentOAuth", {"Enabled": False})
+        if not isinstance(agent, dict) or type(agent.get("Enabled", False)) is not bool:
+            raise ConfigurationError("Apps.Central.AgentOAuth.Enabled deve ser booleano.")
+        if set(agent) - {"Enabled", "Issuer", "Resource", "SigningPrivateKeyPem", "Clients", "KnownProxies"}:
+            raise ConfigurationError("Apps.Central.AgentOAuth contem propriedades desconhecidas.")
+        if agent.get("Enabled", False):
+            for name in ("Issuer", "Resource", "SigningPrivateKeyPem"):
+                if not isinstance(agent.get(name), str) or not agent[name].strip():
+                    raise ConfigurationError("Apps.Central.AgentOAuth." + name + " obrigatorio.")
+            if not isinstance(agent.get("Clients"), list) or not agent["Clients"]:
+                raise ConfigurationError("Apps.Central.AgentOAuth.Clients explicito obrigatorio.")
+        result["YESHUA_CENTRAL_AGENT_OAUTH_JSON"] = json.dumps(agent, ensure_ascii=True, separators=(",", ":"))
         # Shared profile is optional. Preserve the installed provider profile without copying credentials.
         profile = document.get("Shared", {}).get("Transcription") or document.get("Apps", {}).get("Clinica", {}).get("Transcription", {})
         result.update({

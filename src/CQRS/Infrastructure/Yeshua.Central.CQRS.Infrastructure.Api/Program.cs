@@ -4,6 +4,11 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
+using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
+using Central.AgentOAuth;
+using Central.BusinessMcp;
+using Central.Repository.AgentOAuth;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders();
@@ -41,6 +46,19 @@ Migrations.DependenceInjectionCuston.MapDependenceInjection(builder);
 var jwtSettings = new JwtSettings();
 builder.Configuration.Bind("JwtSettings", jwtSettings);
 builder.Services.AddSingleton(jwtSettings);
+var agentOAuthJson = builder.Configuration["AgentOAuth:ProfileJson"];
+var agentOAuth = string.IsNullOrWhiteSpace(agentOAuthJson) ? null
+    : JsonSerializer.Deserialize<AgentOAuthOptions>(agentOAuthJson);
+if (agentOAuth?.Enabled == true)
+{
+    builder.Logging.AddFilter("OpenIddict", LogLevel.Warning);
+    var centralWriteConnection = builder.Configuration["MyConfig:WriteConectionString"];
+    if (string.IsNullOrWhiteSpace(centralWriteConnection)) throw new InvalidOperationException("Agent OAuth requires the existing Central write connection.");
+    builder.Services.AddCentralAgentOAuth(agentOAuth, jwtSettings.SecretKey, db => db.UseSqlServer(centralWriteConnection));
+    // Keep the existing business catalogue closed until its separate exposure
+    // mapping is reviewed. OAuth does not manufacture public business operations.
+    builder.Services.AddCentralBusinessMcp(new(new Uri(agentOAuth.Resource), new Uri(agentOAuth.Issuer)), new TrustedBusinessCatalog([]));
+}
 builder.Services
     .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -102,7 +120,19 @@ builder.Services.AddAuthorization(options =>
 });
 
 var app = builder.Build();
+if (args.Contains("--agent-oauth-schema", StringComparer.Ordinal))
+{
+    using var scope = app.Services.CreateScope();
+    Console.Write(scope.ServiceProvider.GetRequiredService<AgentOAuthDbContext>().Database.GenerateCreateScript());
+    return;
+}
+if (args.Contains("--agent-oauth-register-clients", StringComparer.Ordinal))
+{
+    await AgentOAuthRegistration.ProvisionClientsAsync(app.Services);
+    return;
+}
 
+if (agentOAuth?.Enabled == true) app.UseForwardedHeaders();
 app.UseResponseCompression();
 app.UseCors();
 app.UseSwagger();
@@ -112,5 +142,11 @@ app.UseAuthorization();
 
 API.Migrations.Endpoints.MapEndpoints(app);
 API.Migrations.EndpointsCuston.MapEndpoints(app);
+
+if (agentOAuth?.Enabled == true)
+{
+    app.MapCentralAgentOAuth();
+    app.MapCentralBusinessMcp();
+}
 
 app.Run();

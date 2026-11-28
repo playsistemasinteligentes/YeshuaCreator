@@ -46,33 +46,11 @@ protected partial Task<State<LoginOutputCommand>> CustomActionHookAsync(State<Lo
     if (user == null || user.senha != comand.password)
         throw new ReceiverException<LoginOutputCommand>(Error("Login invalido.", default));
 
-    _executionContext.SetTenantId(user.tenantid);
-
-    var tenant = _repReadTenant.FirstById(user.tenantid, true);
-    if (tenant == null)
+    var session = new Command.Authentication.CentralLoginSessionReader(
+        _repReadyUser, _repReadTenant, _repReadTenantApplication, _financeiro, _executionContext).Resolve(user);
+    if (session is null)
         throw new ReceiverException<LoginOutputCommand>(Error("Tenant do usuario nao encontrado.", default));
-
-    var now = DateTime.UtcNow;
-    var catalogs = new[] { "Central" }
-        .Concat(_repReadTenantApplication.GetAllByTenantID(user.tenantid)
-            .Where(application => application.validuntil >= now)
-            .Select(application => application.applicationkey))
-        .Where(catalog => !string.IsNullOrWhiteSpace(catalog))
-        .Distinct(StringComparer.OrdinalIgnoreCase)
-        .ToList();
-
-    state = Success("Login valido", new LoginOutputCommand
-    {
-        modulos = new List<string>(),
-        catalogos = catalogs,
-        tenantId = user.tenantid,
-        email = user.email,
-        UserId = user.id,
-        tenantDocument = tenant.cnpjcpf,
-        tenantName = tenant.nome,
-        userName = user.nome
-        , UsageRights = Dominio.Commercial.UsageRightClaims.Write(_financeiro.ReadRights(user.tenantid))
-    });
+    state = Success("Login valido", session);
     return Task.FromResult(state);
 }
     }

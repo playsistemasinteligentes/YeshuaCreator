@@ -1,0 +1,8 @@
+{
+  "number": 77,
+  "title": "Central: projetar delegação entre usuários humanos",
+  "body": "Prioridade posterior; somente projeto, não implementar nesta fase. Reutilizar modelo de concessões de agentes externos quando adequado. Usuário autentica com suas próprias credenciais. Avaliar proposta do operador de concatenar permissões na emissão do token, comparando com contexto separado; preservar origem de cada concessão, tenant, auditoria, restrições e revogação, evitar elevação por composição de permissões e delegação transitiva. Definir modelo, ciclo de vida, impacto de desempenho, testes e UX. Submeter decisão antes de implementar. Não bloquear OAuth externo.",
+  "state": "open",
+  "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/issues/77",
+  "checkedAtUtc": "2026-11-27T20:18:07.103078+00:00"
+}

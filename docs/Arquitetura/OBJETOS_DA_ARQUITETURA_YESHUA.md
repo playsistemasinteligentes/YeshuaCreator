@@ -655,3 +655,83 @@ Antes de aceitar um novo conceito arquitetural, responder:
 10. Como sera validado?
 
 Se a resposta nao for clara, registrar como `pendencia` antes de implementar.
+
+## Adaptador MCP de negócio e delegação externa
+
+O MCP de negócio é transporte sobre os Commands HTTP existentes, com receiver
+na API Central; não é novo domínio, runner, gerador de contratos ou acesso SQL.
+O catálogo confiável é um adaptador de OpenAPI e da autorização existente, sem
+inferir exposição de operações a partir do menu, Swagger ou papel Admin.
+
+| Objeto de adaptação | Responsabilidade e limite |
+| --- | --- |
+| `TrustedBusinessCatalog` | Snapshot fechado de operações revisadas e schemas derivados de OpenAPI; resolve verbo/rota sem entrada de URL do agente. |
+| `BusinessMcpReceiver` | Coordena descoberta/execução, valida parâmetros e autorização, exige auditoria e preserva correlação. |
+| `DelegatedAccess` | Confere consentimento ativo por usuário/tenant/cliente após autenticação dedicada do resource server. Não emite tokens. |
+| `IBusinessPermissionReader` | Porta para os repositories de identidade/perfis/grants atuais da Central. Sem implementação permissiva padrão. |
+| `IDelegationRepository` | Porta de leitura de consentimento/revogação persistente; a implementação real depende da especificação no Studio. |
+| `IApplicationDelegationSender` | Fronteira de credencial de destino com autorização própria e identidade preservada; proíbe repasse do bearer MCP e redirects/retries implícitos. |
+| `IBusinessAuditWriter` | Intenção/resultado com IDs operacionais e correlação, sem payloads ou credenciais. |
+
+Esse incremento é opt-in, não registrado no host de produção, e não conclui o
+servidor OAuth. Decisões e critérios restantes em
+[BUSINESS_MCP_DECISIONS.md](../Central/BUSINESS_MCP_DECISIONS.md).
+
+
+### Continuidade #76: protocolo OAuth de agente externo
+
+`AgentOAuthReceiver` coordena consentimento, emissão/renovação e revogação por
+meio dos managers oficiais do OpenIddict. O store oficial EF Core contém apenas
+clientes, autorizações, scopes e tokens de protocolo no mesmo banco da Central.
+Essa integração de infraestrutura é uma exceção explícita à geração de tabelas
+pela DSL: evita implementar criptografia/protocolo/stores próprios. Não contém
+usuários, tenants, perfis ou permissões de negócio e não usa ASP.NET Identity.
+SQL continua fora dos receivers; DDL/cadastro de cliente são ações explícitas.
+
+`CentralLoginSessionReader` reúne a resolução convencional já existente, usada
+por login e OAuth: repositories atuais, catálogo vigente do tenant e direitos de
+uso. Scopes OAuth somente restringem essa autoridade. `AgentApplicationSender`
+reutiliza getMenu para identidade local e conserva titular/cliente/concessão;
+não repassa tokens MCP nem adiciona papel Admin. Revogação mínima bloqueia
+renovação e aceita a janela residual documentada de cinco minutos no recurso.
+
+Somente `external_agent` é implementado. A #77 permanece documento de projeto,
+sem união de permissões ou delegação humana/transitiva. Detalhes e evidências em
+[AGENT_OAUTH.md](../Central/AGENT_OAUTH.md).
+
+
+### Complemento aprovado #76: snapshot autocontido e zero I/O de autorização
+
+A troca existente de sessão (`getMenu`) e a leitura das permissões atuais passam
+para emissão/code exchange e renovação, não para a primeira operação. Não há
+sessão de autorização em cache nem cache remoto a consultar nas requisições.
+
+`AgentApplicationPreparation` prepara credenciais curtas somente para os destinos
+do catálogo confiável e scopes efetivos. `AgentApplicationCredentials` protege
+o conjunto em JWE padrão dentro do JWT MCP assinado, vinculando identidade,
+tenant, cliente, concessão, origem/audience e prazo. Não é novo repository,
+emissor de permissões ou transporte: usa as mesmas chaves privadas/policies e
+as bibliotecas JWT já presentes. Impede que o agente extraia o bearer do app.
+`AgentApplicationSender` apenas valida/abre esse snapshot local e entrega o
+Command, sem leitor de identidade, grant store, cache, introspecção ou getMenu.
+
+No perfil OAuth, bearer e `DelegatedAccess` usam chaves/claims locais; o esquema
+isolado com Authority remoto e leitor de revogação por requisição não é
+registrado. Nenhum fallback pode reintroduzir I/O quando um snapshot é inválido,
+ausente, grande demais ou expirado. Revogação é conferida na emissão/renovação;
+a janela residual de tokens emitidos é curta e explícita. I/O normal do domínio,
+entrega de negócio e auditoria seguem seus contratos existentes.
+
+Provas com interceptores EF e backends bloqueados, negativos e medição de CPU
+contra fluxo convencional/MCP anterior com cache aquecido:
+[evidências zero I/O](../Central/evidencias/issue-76-zero-io/VALIDATION.md).
+
+### Continuidade #76 — base de transporte confiável
+
+`TrustedBusinessCatalog.Source.BaseAddress` preserva a origem HTTPS raiz ou base
+canônica `/apps/<alias>/` do gateway. OpenAPI continua único contrato de operação;
+rotas `/yapi` são anexadas à mesma base usada pelo getMenu na emissão/refresh.
+`PreparedApplicationCredential.BasePath` vincula esse prefixo no JWE. O sender
+seleciona app/origem/prefixo localmente e entrega, sem resolver permissões, abrir
+sessão ou consultar estado por operação. Não há cadastro paralelo de rotas nem
+URL fornecida pelo agente. [Evidências](../Central/evidencias/issue-76-prefix-loader/VALIDATION.md).

@@ -1,0 +1,726 @@
+{
+  "checkedAtUtc": "2026-11-27T23:59:45.267100+00:00",
+  "pr": {
+    "html_url": "https://github.com/playsistemasinteligentes/YeshuaCreator/pull/75",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "mergeable": true,
+    "mergeable_state": "clean"
+  },
+  "head": "25c39991ae385d0750158d1ea3a9a5100b647615",
+  "branch": "codex/task-85374af22c2449068d7c25b90bb3122e",
+  "main": "eb20c50ad50be21b2bc6d36825df2953f98fa616",
+  "mainProtected": false,
+  "mainRules": [],
+  "status": "pending",
+  "statuses": [],
+  "checks": [],
+  "reviews": [],
+  "files": [
+    {
+      "filename": "AGENTS.md",
+      "status": "modified",
+      "additions": 88,
+      "deletions": 0
+    },
+    {
+      "filename": "YeshuaCreator.sln",
+      "status": "modified",
+      "additions": 18,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Arquitetura/OBJETOS_DA_ARQUITETURA_YESHUA.md",
+      "status": "modified",
+      "additions": 80,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/AGENT_OAUTH.md",
+      "status": "added",
+      "additions": 274,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/BUSINESS_MCP_DECISIONS.md",
+      "status": "added",
+      "additions": 55,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md",
+      "status": "added",
+      "additions": 152,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/business-mcp/VALIDATION.md",
+      "status": "added",
+      "additions": 72,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/business-mcp/business-mcp.trx",
+      "status": "added",
+      "additions": 823,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/business-mcp/engine.trx",
+      "status": "added",
+      "additions": 434,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/business-mcp/files.json",
+      "status": "added",
+      "additions": 27,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/business-mcp/operational-mcp.trx",
+      "status": "added",
+      "additions": 92,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/VALIDATION.md",
+      "status": "added",
+      "additions": 206,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/central-gateway.trx",
+      "status": "added",
+      "additions": 1212,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/central-gateway.txt",
+      "status": "added",
+      "additions": 10,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/environment.json",
+      "status": "added",
+      "additions": 11,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/files.json",
+      "status": "added",
+      "additions": 36,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/issue76.json",
+      "status": "added",
+      "additions": 8,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/local-authorization-cost.json",
+      "status": "added",
+      "additions": 44,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/operational-gateway.trx",
+      "status": "added",
+      "additions": 98,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/operational-gateway.txt",
+      "status": "added",
+      "additions": 9,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/pr75.json",
+      "status": "added",
+      "additions": 12,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/private-loader-oauth.txt",
+      "status": "added",
+      "additions": 8,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/private-loader-shell.txt",
+      "status": "added",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/private-loader.txt",
+      "status": "added",
+      "additions": 459,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-gateway/zero-authorization-io.json",
+      "status": "added",
+      "additions": 18,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-operator-scope/VALIDATION.md",
+      "status": "added",
+      "additions": 79,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-operator-scope/files.json",
+      "status": "added",
+      "additions": 14,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-operator-scope/loader-local.txt",
+      "status": "added",
+      "additions": 96,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-operator-scope/loader-shell.txt",
+      "status": "added",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-operator-scope/setup-shell.txt",
+      "status": "added",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/LOADER_DIAGNOSIS.md",
+      "status": "added",
+      "additions": 33,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/VALIDATION.md",
+      "status": "added",
+      "additions": 198,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/central-prefix.trx",
+      "status": "added",
+      "additions": 1278,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/central-prefix.txt",
+      "status": "added",
+      "additions": 13,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/compose-tool.json",
+      "status": "added",
+      "additions": 7,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/environment.json",
+      "status": "added",
+      "additions": 15,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/files.json",
+      "status": "added",
+      "additions": 41,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/loader-baseline.txt",
+      "status": "added",
+      "additions": 459,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/loader-diagnosis.json",
+      "status": "added",
+      "additions": 200,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/loader-final.txt",
+      "status": "added",
+      "additions": 96,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/loader-shell.txt",
+      "status": "added",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/local-authorization-cost.json",
+      "status": "added",
+      "additions": 44,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/operational-regression.trx",
+      "status": "added",
+      "additions": 98,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/operational-regression.txt",
+      "status": "added",
+      "additions": 9,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/pr75.json",
+      "status": "added",
+      "additions": 12,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/setup-shell.txt",
+      "status": "added",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-prefix-loader/zero-authorization-io.json",
+      "status": "added",
+      "additions": 19,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/COST.md",
+      "status": "added",
+      "additions": 26,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/VALIDATION.md",
+      "status": "added",
+      "additions": 168,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/central-agent-zero-io.trx",
+      "status": "added",
+      "additions": 1140,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/files.json",
+      "status": "added",
+      "additions": 32,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/issue76.json",
+      "status": "added",
+      "additions": 9,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/local-authorization-cost.json",
+      "status": "added",
+      "additions": 44,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/operational-mcp.trx",
+      "status": "added",
+      "additions": 92,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/pr75.json",
+      "status": "added",
+      "additions": 14,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76-zero-io/zero-authorization-io.json",
+      "status": "added",
+      "additions": 16,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/VALIDATION.md",
+      "status": "added",
+      "additions": 113,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/central-agent-oauth.trx",
+      "status": "added",
+      "additions": 1003,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/files.json",
+      "status": "added",
+      "additions": 49,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/issue76.json",
+      "status": "added",
+      "additions": 8,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/issue77.json",
+      "status": "added",
+      "additions": 8,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/operational-mcp.trx",
+      "status": "added",
+      "additions": 92,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/pr75.json",
+      "status": "added",
+      "additions": 13,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/private-oauth-tests.txt",
+      "status": "added",
+      "additions": 8,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/evidencias/issue-76/private-regression.txt",
+      "status": "added",
+      "additions": 216,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/tarefas/DELEGACAO_HUMANA_77.md",
+      "status": "added",
+      "additions": 55,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/tarefas/MCP_CENTRAL_NEGOCIO.md",
+      "status": "added",
+      "additions": 101,
+      "deletions": 0
+    },
+    {
+      "filename": "docs/Central/tarefas/OAUTH_AGENTES_EXTERNOS.md",
+      "status": "added",
+      "additions": 116,
+      "deletions": 0
+    },
+    {
+      "filename": "infra/Central/AgentOAuth/001-openiddict.sql",
+      "status": "added",
+      "additions": 106,
+      "deletions": 0
+    },
+    {
+      "filename": "infra/Central/DockerCompose/docker-compose.yml",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "infra/Shared/DockerCompose/nginx/conf.d/10-http.conf",
+      "status": "modified",
+      "additions": 3,
+      "deletions": 0
+    },
+    {
+      "filename": "infra/Shared/DockerCompose/nginx/conf.d/20-https.conf.disabled",
+      "status": "modified",
+      "additions": 6,
+      "deletions": 0
+    },
+    {
+      "filename": "infra/Shared/DockerCompose/nginx/routes/15-agent-oauth.conf.disabled",
+      "status": "added",
+      "additions": 14,
+      "deletions": 0
+    },
+    {
+      "filename": "infra/private/credentials.example.json",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1
+    },
+    {
+      "filename": "infra/private/credentials.py",
+      "status": "modified",
+      "additions": 13,
+      "deletions": 1
+    },
+    {
+      "filename": "src/CQRS/Application/Yeshua.Central.CQRS.Application.Command/Authentication/CentralLoginSessionReader.cs",
+      "status": "added",
+      "additions": 39,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Application/Yeshua.Central.CQRS.Application.Command/Receivers/Custon/UseCases/Y/Contas/LoginHandler.cs",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 26
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentApplicationCredentials.cs",
+      "status": "added",
+      "additions": 88,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentApplicationPreparation.cs",
+      "status": "added",
+      "additions": 77,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentBusinessAdapters.cs",
+      "status": "added",
+      "additions": 35,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentOAuthEndpoints.cs",
+      "status": "added",
+      "additions": 107,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentOAuthOptions.cs",
+      "status": "added",
+      "additions": 74,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentOAuthReceiver.cs",
+      "status": "added",
+      "additions": 148,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/AgentOAuthRegistration.cs",
+      "status": "added",
+      "additions": 147,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/AgentOAuth/CentralAgentIdentity.cs",
+      "status": "added",
+      "additions": 24,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/BusinessMcpReceiver.cs",
+      "status": "added",
+      "additions": 140,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/BusinessMcpTransport.cs",
+      "status": "added",
+      "additions": 140,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/Contracts.cs",
+      "status": "added",
+      "additions": 47,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/DelegatedAccess.cs",
+      "status": "added",
+      "additions": 54,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/BusinessMcp/TrustedBusinessCatalog.cs",
+      "status": "added",
+      "additions": 156,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Program.cs",
+      "status": "modified",
+      "additions": 36,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 1
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.RepositoryWrite/AgentOAuth/AgentOAuthDbContext.cs",
+      "status": "added",
+      "additions": 14,
+      "deletions": 0
+    },
+    {
+      "filename": "src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.RepositoryWrite/Yeshua.Central.CQRS.Infrastructure.RepositoryWrite.csproj",
+      "status": "modified",
+      "additions": 2,
+      "deletions": 0
+    },
+    {
+      "filename": "src/Engine/Yeshua.Engine/Dominio/Schemas/CQRS/SourceCodeInfraestructureAPIEndpointsMigration.cs",
+      "status": "modified",
+      "additions": 10,
+      "deletions": 4
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/AgentApplicationSenderTests.cs",
+      "status": "added",
+      "additions": 189,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/AgentGatewayTests.cs",
+      "status": "added",
+      "additions": 150,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/AgentOAuthFlowTests.cs",
+      "status": "added",
+      "additions": 592,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/AuthorizationIoProbe.cs",
+      "status": "added",
+      "additions": 44,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/BusinessMcpTests.cs",
+      "status": "added",
+      "additions": 261,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/BusinessMcpTransportTests.cs",
+      "status": "added",
+      "additions": 213,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/CentralLoginSessionTests.cs",
+      "status": "added",
+      "additions": 79,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/IsolatedNginxGateway.cs",
+      "status": "added",
+      "additions": 117,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/LocalAuthorizationCostTests.cs",
+      "status": "added",
+      "additions": 141,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Central/Yeshua.Central.BusinessMcp.Tests/Yeshua.Central.BusinessMcp.Tests.csproj",
+      "status": "added",
+      "additions": 13,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Engine/Yeshua.Engine.Tests/BusinessCommandContractGenerationTests.cs",
+      "status": "added",
+      "additions": 42,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/README.md",
+      "status": "added",
+      "additions": 68,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/private_fixtures.py",
+      "status": "added",
+      "additions": 52,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/requirements-test.txt",
+      "status": "added",
+      "additions": 1,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/test_agent_oauth_credentials.py",
+      "status": "added",
+      "additions": 32,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/test_credentials.py",
+      "status": "modified",
+      "additions": 24,
+      "deletions": 21
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/test_fixture_security.py",
+      "status": "added",
+      "additions": 64,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/test_setup_credentials.py",
+      "status": "modified",
+      "additions": 4,
+      "deletions": 2
+    },
+    {
+      "filename": "tests/Infrastructure/PrivateConfig/unified-setup.test.sh",
+      "status": "modified",
+      "additions": 24,
+      "deletions": 7
+    },
+    {
+      "filename": "tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests/McpCompatibilityTests.cs",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 1
+    },
+    {
+      "filename": "tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests/McpGatewayTests.cs",
+      "status": "added",
+      "additions": 44,
+      "deletions": 0
+    },
+    {
+      "filename": "tests/OperationalIntelligence/Yeshua.OperationalIntelligence.Api.Tests/Yeshua.OperationalIntelligence.Api.Tests.csproj",
+      "status": "modified",
+      "additions": 1,
+      "deletions": 0
+    }
+  ],
+  "localHeadAtReview": "25c39991ae385d0750158d1ea3a9a5100b647615",
+  "scopeFilesMatchLocal": true
+}

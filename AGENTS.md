@@ -3,6 +3,94 @@
 Este arquivo e a memoria viva do projeto YeshuaCreator / Engenharia Yeshua.
 Refinar este documento sempre que uma decisao arquitetural importante ficar mais clara.
 
+- Atualizacao do operador #76: nao existe SQL Server separado de homologacao.
+  Nao criar infraestrutura separada nem bloquear conclusao local por sua ausencia.
+  Homologacao futura sera na base de producao destinada a testes, somente apos
+  confirmar instancia/base exatas, tenant, ator, cliente e escopo de operacoes
+  e efeitos de sessao/protocolo. Nenhum acesso real, nem preflight/SELECT, antes
+  dessa confirmacao. Nao presumir base descartavel ou autorizar outro tenant.
+  Esta ordem nao permite DDL, migration, deploy, merge ou operacao real; suites
+  sinteticas/descartaveis nao devem ser redirecionadas a essa base. Prova de
+  bloqueio de dependencias permanece local, nunca interromper servicos de
+  producao para prova zero I/O. Roteiro vigente em
+  docs/Central/PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md; requisitos anteriores de
+  prover SQL Server isolado foram substituidos, demais limites de cobertura
+  filesystem/Windows permanecem explicitos.
+
+- Continuidade #76 prefixo/loader: catalogo confiavel agora aceita origem HTTPS
+  raiz ou base canonica /apps/<alias>/, preservando prefixo ao compor rotas
+  OpenAPI /yapi e getMenu. BasePath segue autenticado no JWE; sender valida
+  app/origem/prefixo localmente, sem I/O adicional nem fallback para raiz/irmao.
+  Nao ha URL do cliente, nova fonte de catalogo ou alteracao do Presenca.
+  Loader de producao permanece intacto: fixtures usam raiz explicita, cofre
+  legado sintetico e modo pyfakefs opcional/explicito para unidade no runner
+  restrito. Nao mudar HOME, permissoes reais ou sandbox para passar testes.
+  Unidade virtual nao comprova ACL/filesystem positivo real: home somente
+  leitura, /tmp inseguro e uid da raiz traduzido ainda exigem runner adequado.
+  Compose standalone so valida config, sem daemon; Windows e SQL Server real
+  seguem dependentes de infraestrutura. Evidencias/diagnostico individual em
+  docs/Central/evidencias/issue-76-prefix-loader. As limitacoes de prefixo da
+  nota anterior foram corrigidas; homologacao real/ativacao continuam pendentes.
+
+- Revisao #76 pelo gateway: suite existente agora aceita Nginx local opt-in,
+  TLS efemero e destinos sinteticos, sem alterar configuracao do sistema. Proxy
+  confiavel exige IP explicitamente configurado; lista vazia nao aceita forwarded
+  headers. Gateway admite linha de JWT ate 32 KiB, sujeito tambem ao limite total
+  da API. Falha de sessao/assinatura/timeout na emissao nega no protocolo, sem
+  fallback por operacao. Origem HTTPS raiz exigida pelo catalogo ainda nao
+  representa /apps/presenca/yapi: decidir origem exclusiva ou evolucao revisada
+  antes de expor Presenca; nenhum alias/app alterado nesta tarefa. Evidencias em
+  docs/Central/evidencias/issue-76-gateway e roteiro proposto em
+  docs/Central/PRESENCA_AGENT_OAUTH_VALIDATION_PLAN.md. Sem homologacao real,
+  segredos reais, delegacao humana, merge ou deploy.
+
+- Complemento aprovado #76: zero I/O ADICIONAL de autorizacao/delegacao em
+  requisicoes, inclusive primeira chamada e apos reinicio. A preparacao getMenu
+  e a leitura atual de identidade/permissoes ocorrem apenas no code exchange e
+  refresh. JWT MCP assinado autocontido leva credenciais de destino ja emitidas
+  em parte protegida JWE, vinculada a titular/tenant/cliente/concessao/app/origem.
+  Sender so abre/valida localmente e entrega o Command; sem repository, cache,
+  introspeccao, renovacao ou sessao sob demanda. Chaves locais derivam do mesmo
+  arquivo privado. Perfil OAuth nao registra leitor de grants por requisicao
+  nem esquema Authority remoto. Falha/expiracao/ausencia nega sem fallback.
+  Revogacao impede novas emissoes/renovacoes da concessao, com janela residual
+  de ate cinco minutos, sem prometer revogacao instantanea. I/O de negocio e
+  validacoes existentes permanecem. Prova com banco/identidade/sessoes bloqueados
+  apos emissao e comparacao de CPU local em docs/Central/evidencias/issue-76-zero-io.
+  Esta regra substitui a sessao/cache sob demanda descrita na etapa anterior.
+  Mesma branch/PR #75; sem delegacao humana, merge ou deploy.
+
+- Continuidade issue #76: OAuth funcional de agente externo implementado com
+  OpenIddict 7.9, PKCE S256, consentimento, refresh rotativo e revogacao de
+  renovacao; access token residual de ate 5 minutos no MCP, sem lookup extra de
+  concessao por operacao. Login convencional e OAuth usam CentralLoginSessionReader
+  com os mesmos repositories, catalogos vigentes e direitos; perfis/grants nao
+  passaram a ter outro resolvedor. Quatro tabelas oficiais de protocolo EF no
+  banco Central sao excecao especifica de infraestrutura OAuth, sem ASP.NET
+  Identity, usuarios/perfis paralelos ou SQL em receivers. DDL e registro de
+  clientes sao explicitos; nao executam em startup. Perfil AgentOAuth desativado
+  por padrao no credentials.json unico; RSA privada no mesmo perfil, criptografia
+  derivada da raiz JWT existente. APIs preservam policies/dominio e a troca
+  getMenu existente; bearer MCP nunca e repassado. Catalogo real de operacoes
+  continua fechado. Issue #77 e somente plano, sem delegacao entre humanos.
+  Reutilizada branch/PR #75; sem merge/deploy. Runbook e limites atuais em
+  docs/Central/AGENT_OAUTH.md e evidencias em docs/Central/evidencias/issue-76.
+  O registro seguinte e historico da etapa inicial, anterior a essa continuidade.
+
+- MCP de negocio/OAuth externo em 2026-11-27: incremento opt-in em
+  Central.Api/Custon/BusinessMcp, sem registro no Program nem exposicao real.
+  OpenAPI continua a fonte unica de schemas; o gerador de endpoints acrescenta
+  identidade estavel app/grupo/subgrupo/Command, descricao e resposta tipada.
+  Visibilidade HTTP nao concede exposicao a agentes: falta projetar a relacao
+  entre operacao e grant delegavel da Central e implementar adapters persistentes.
+  Resource server usa scheme proprio com issuer/audience/validade e consulta
+  delegacao por usuario/tenant/cliente; JWT legado/Admin nao serve como delegacao.
+  Token MCP nunca deve ser repassado ao destino, que reautoriza a operacao.
+  Authorization code/PKCE, consentimento, revogacao persistente e credencial de
+  destino ainda pendentes; nao anunciar OAuth completo nem ativar externamente.
+  MCP administrativo preservado. Decisoes, descritores e limites em
+  docs/Central/BUSINESS_MCP_DECISIONS.md. Sem deploy ou operacoes reais.
+
 - Esclarecimento do operador em 2026-11-25 para esta preparacao: commitar,
   enviar ao GitHub e integrar as correcoes na main estao autorizados. A ordem
   "sem publicar" neste trabalho impede o DEPLOY, que o operador executara ou

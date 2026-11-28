@@ -1,0 +1,10 @@
+Test run for /workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+WARNING: Overwriting results file: /workspace/tasks/85374af22c2449068d7c25b90bb3122e/docs/Central/evidencias/issue-76-gateway/central-gateway.trx
+Results File: /workspace/tasks/85374af22c2449068d7c25b90bb3122e/docs/Central/evidencias/issue-76-gateway/central-gateway.trx
+
+Passed!  - Failed:     0, Passed:   106, Skipped:     0, Total:   106, Duration: 34 s - Yeshua.Central.BusinessMcp.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.

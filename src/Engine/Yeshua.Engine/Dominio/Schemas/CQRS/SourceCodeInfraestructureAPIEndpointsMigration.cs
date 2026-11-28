@@ -573,18 +573,24 @@ namespace Dominio.Schemas.CQRS
 
                         setResultHttp(sb, "result.Data");
 
+                        // Swagger remains the single schema producer for ordinary Commands
+                        // and agent discovery. A stable name is identity, never a grant.
+                        var operationId = $"{_applicationName}.{group.Name.SourceType()}.{subGroup.Name.SourceType()}.{useCase.Name.SourceType()}";
+                        sb.AppendLine($"}}).WithName({System.Text.Json.JsonSerializer.Serialize(operationId)})");
+                        sb.AppendLine($".WithDescription({System.Text.Json.JsonSerializer.Serialize(useCase.Description ?? string.Empty)})");
+                        sb.AppendLine($".Produces<{CQRSParam.I.NameSpaceCommandCommandsUseCases}.{useCase.Name.SourceType()}OutputCommand>(StatusCodes.Status200OK)");
                         if (hasFormFileInput)
                         {
-                            sb.AppendLine("}).DisableAntiforgery()");
+                            sb.AppendLine(".DisableAntiforgery()");
                             sb.AppendLine($".Accepts<{inputCommandType}>(\"multipart/form-data\")");
                         }
 
                         if (useCase.Authorization == Authorization.Free)
-                            sb.AppendLine(hasFormFileInput ? ";" : "});");
+                            sb.AppendLine(";");
                         else if (useCase.Authorization == Authorization.ApplicationEntry)
-                            sb.AppendLine(hasFormFileInput ? ".RequireAuthorization(\"ApplicationEntry\");" : "}).RequireAuthorization(\"ApplicationEntry\");");
+                            sb.AppendLine(".RequireAuthorization(\"ApplicationEntry\");");
                         else
-                            sb.AppendLine(hasFormFileInput ? ".RequireAuthorization();" : "}).RequireAuthorization();");
+                            sb.AppendLine(".RequireAuthorization();");
 
                         sb.AppendLine("");
                         sb.AppendLine("");

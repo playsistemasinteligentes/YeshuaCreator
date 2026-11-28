@@ -1,0 +1,1 @@
+PASS: one setup verifies HTTP and backup, reports HTTPS pending on certificate/HTTPS failure, and completes HTTPS on retry; required failures stop completion; existing directories unchanged.

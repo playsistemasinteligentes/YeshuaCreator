@@ -1,0 +1,1140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3fb7416c-4b75-4ca3-a179-020ce62fe451" name="@f21d95599625 2026-11-27 20:46:32" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-27T20:46:32.1988083+00:00" queuing="2026-11-27T20:46:32.1988084+00:00" start="2026-11-27T20:46:27.3953186+00:00" finish="2026-11-27T20:46:44.6143292+00:00" />
+  <TestSettings name="default" id="252839f7-4e65-4a6b-a33a-16ab88f8e0e0">
+    <Deployment runDeploymentRoot="_f21d95599625_2026-11-27_20_46_32" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="4760b4f6-60e7-4db0-b1a1-3ad12ca060e5" testId="0425ce36-32bf-fe62-e4b7-1fe67bc99bf9" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;client&quot;)" computerName="f21d95599625" duration="00:00:00.0021879" startTime="2026-11-27T20:46:34.7612907+00:00" endTime="2026-11-27T20:46:34.7627016+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4760b4f6-60e7-4db0-b1a1-3ad12ca060e5" />
+    <UnitTestResult executionId="30109d05-0a6f-4a2c-9a84-27c86957fcec" testId="a67734b9-2f3e-2b0d-1098-7b79780330df" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;anonymous&quot;)" computerName="f21d95599625" duration="00:00:00.0003221" startTime="2026-11-27T20:46:34.6677157+00:00" endTime="2026-11-27T20:46:34.6678697+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30109d05-0a6f-4a2c-9a84-27c86957fcec" />
+    <UnitTestResult executionId="6cf076ce-59f2-4303-ad2c-6ecb3eb2e60e" testId="a643573a-2334-151c-1a39-81966e0be0f6" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.SessionExchangeHappensOnlyDuringIssuanceAndWorksWithoutCacheAfterRestart" computerName="f21d95599625" duration="00:00:00.0091997" startTime="2026-11-27T20:46:34.7927742+00:00" endTime="2026-11-27T20:46:34.8017922+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6cf076ce-59f2-4303-ad2c-6ecb3eb2e60e" />
+    <UnitTestResult executionId="c267c70d-c3e4-46e3-a58f-8b25d4ef2859" testId="3304d87d-062b-89ef-43d5-447d2443216a" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;owner&quot;)" computerName="f21d95599625" duration="00:00:00.0433316" startTime="2026-11-27T20:46:34.7091202+00:00" endTime="2026-11-27T20:46:34.7525005+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c267c70d-c3e4-46e3-a58f-8b25d4ef2859" />
+    <UnitTestResult executionId="085bcc0b-4826-4482-9a23-39d7f84bdf0b" testId="c3192192-dabe-e0b2-996b-627f5dd3f1b4" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 403, outcome: &quot;destination_denied&quot;)" computerName="f21d95599625" duration="00:00:00.0055965" startTime="2026-11-27T20:46:34.6157037+00:00" endTime="2026-11-27T20:46:34.6158584+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="085bcc0b-4826-4482-9a23-39d7f84bdf0b" />
+    <UnitTestResult executionId="27a515d1-baf2-493e-b7ca-ea394e25fc33" testId="c0c9e860-a2c9-e4fa-9d33-5164a7fa81b9" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;administrative&quot;)" computerName="f21d95599625" duration="00:00:00.0003482" startTime="2026-11-27T20:46:34.6681111+00:00" endTime="2026-11-27T20:46:34.6682352+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="27a515d1-baf2-493e-b7ca-ea394e25fc33" />
+    <UnitTestResult executionId="69520b69-98e0-400a-8a31-7cc08acfcadc" testId="46bc2d5d-effa-2891-6e55-1cfbdb8d10ce" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;18&quot;, tenant: 7, client: &quot;synthetic-client&quot;, kind: &quot;delegated&quot;)" computerName="f21d95599625" duration="00:00:00.0017355" startTime="2026-11-27T20:46:34.5738338+00:00" endTime="2026-11-27T20:46:34.5765809+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="69520b69-98e0-400a-8a31-7cc08acfcadc" />
+    <UnitTestResult executionId="5ce2b0ff-9c5e-4a48-a79f-f19e009de8fd" testId="1b0e8afd-8469-09f3-f7c8-d0fb05a65ae1" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{}]}&quot;)" computerName="f21d95599625" duration="00:00:00.0049578" startTime="2026-11-27T20:46:34.6531371+00:00" endTime="2026-11-27T20:46:34.6586048+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5ce2b0ff-9c5e-4a48-a79f-f19e009de8fd" />
+    <UnitTestResult executionId="4fbd4e00-ae43-48d4-97a5-9e9cf6b74168" testId="d7d3adb4-840e-91a7-c3e6-f4cf1f893857" testName="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests.ConventionalLoginAndOAuthUseTheSameRepositoriesAndCatalogueResolution" computerName="f21d95599625" duration="00:00:00.0723749" startTime="2026-11-27T20:46:30.0808059+00:00" endTime="2026-11-27T20:46:30.1486720+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="4fbd4e00-ae43-48d4-97a5-9e9cf6b74168" />
+    <UnitTestResult executionId="859e398f-f179-438d-b58a-c3af495de87e" testId="43b1904e-a5b2-3249-0011-482f6051268e" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;tenant&quot;)" computerName="f21d95599625" duration="00:00:00.0009987" startTime="2026-11-27T20:46:34.7609217+00:00" endTime="2026-11-27T20:46:34.7610749+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="859e398f-f179-438d-b58a-c3af495de87e" />
+    <UnitTestResult executionId="05029f56-7cbd-461b-afa7-60986a0a00c6" testId="ceff5cfa-6eb8-e468-d241-0011b31f6d9d" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-client&quot;)" computerName="f21d95599625" duration="00:00:00.1321562" startTime="2026-11-27T20:46:35.0449549+00:00" endTime="2026-11-27T20:46:35.1772924+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="05029f56-7cbd-461b-afa7-60986a0a00c6" />
+    <UnitTestResult executionId="16ac97e9-5cf1-40eb-ac3c-0249fa3426b8" testId="80c2eb33-6e3b-b093-d4d5-69ef71c47b06" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-verifier&quot;)" computerName="f21d95599625" duration="00:00:00.1301927" startTime="2026-11-27T20:46:35.1800838+00:00" endTime="2026-11-27T20:46:35.3095379+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="16ac97e9-5cf1-40eb-ac3c-0249fa3426b8" />
+    <UnitTestResult executionId="bdd16c91-bd59-4db1-b18d-fb62954c4fdd" testId="49f89cfd-338e-0511-9b96-362d236becf8" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.MetadataAdvertisesOnlyTheConfiguredResourceAndIssuer" computerName="f21d95599625" duration="00:00:00.9928800" startTime="2026-11-27T20:46:28.7832187+00:00" endTime="2026-11-27T20:46:29.8048468+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bdd16c91-bd59-4db1-b18d-fb62954c4fdd" />
+    <UnitTestResult executionId="3ea05526-bc66-4df8-a6e5-a864b7a6c43a" testId="2be95d40-659e-a277-84ec-165138c1f911" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}],\&quot;ten&quot;···)" computerName="f21d95599625" duration="00:00:00.0019413" startTime="2026-11-27T20:46:34.6477887+00:00" endTime="2026-11-27T20:46:34.6488167+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ea05526-bc66-4df8-a6e5-a864b7a6c43a" />
+    <UnitTestResult executionId="c4d4e922-6324-42ea-bd2b-b2176c0d525f" testId="6a759b89-e648-22d5-0baf-1772a25f785c" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 429, outcome: &quot;rate_limited&quot;)" computerName="f21d95599625" duration="00:00:00.0013561" startTime="2026-11-27T20:46:34.6258044+00:00" endTime="2026-11-27T20:46:34.6275160+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c4d4e922-6324-42ea-bd2b-b2176c0d525f" />
+    <UnitTestResult executionId="e6daa618-9893-4367-a2bd-5dd1291c09e1" testId="a2155916-3ea8-14a1-3775-486e06daede0" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnknownOrInternalOperationsAreNotExecutable(operation: &quot;https://evil.test&quot;)" computerName="f21d95599625" duration="00:00:00.0009987" startTime="2026-11-27T20:46:34.6811143+00:00" endTime="2026-11-27T20:46:34.6824250+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e6daa618-9893-4367-a2bd-5dd1291c09e1" />
+    <UnitTestResult executionId="92ba05b3-8dc0-4a03-89f8-1b6b3a7dd82a" testId="9efef7b9-9d80-11b1-1773-a97f17c39a92" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.RevocationAndPermissionRemovalApplyToAlreadyAuthenticatedCalls" computerName="f21d95599625" duration="00:00:00.0043333" startTime="2026-11-27T20:46:34.7031398+00:00" endTime="2026-11-27T20:46:34.7077894+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="92ba05b3-8dc0-4a03-89f8-1b6b3a7dd82a" />
+    <UnitTestResult executionId="196127e5-bbb2-4cd0-9cdb-32bac472816a" testId="e022fa41-f7a1-56f9-d883-c87d39ba1946" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.OldRefreshAndAuthorizationCodesCannotBeReused" computerName="f21d95599625" duration="00:00:00.3263155" startTime="2026-11-27T20:46:37.9168088+00:00" endTime="2026-11-27T20:46:38.2418773+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="196127e5-bbb2-4cd0-9cdb-32bac472816a" />
+    <UnitTestResult executionId="8552cc22-e6ae-4e99-85f4-13f34e47c302" testId="fc0261fb-cf8a-25d0-acb7-7eda268404c1" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;missing-scope&quot;)" computerName="f21d95599625" duration="00:00:00.0004103" startTime="2026-11-27T20:46:34.7665648+00:00" endTime="2026-11-27T20:46:34.7667067+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8552cc22-e6ae-4e99-85f4-13f34e47c302" />
+    <UnitTestResult executionId="0d1a7458-8529-4717-8f79-3f7bc45ea76b" testId="a0d190b1-a7b2-e746-0165-0cece430833e" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;grant&quot;)" computerName="f21d95599625" duration="00:00:00.0012875" startTime="2026-11-27T20:46:34.7638136+00:00" endTime="2026-11-27T20:46:34.7642100+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0d1a7458-8529-4717-8f79-3f7bc45ea76b" />
+    <UnitTestResult executionId="82073b53-4ba4-4daa-a5bf-204d120f938a" testId="dde2c84f-abc8-2632-981f-9c0726ad8017" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;tampered&quot;)" computerName="f21d95599625" duration="00:00:00.0036012" startTime="2026-11-27T20:46:34.7687606+00:00" endTime="2026-11-27T20:46:34.7705702+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="82073b53-4ba4-4daa-a5bf-204d120f938a" />
+    <UnitTestResult executionId="a1696275-82ed-4ce9-9ee2-be96ba23d532" testId="a883d6b1-a01b-de8f-91c9-85a68d712af3" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.TimeoutOrAdapterFailureHasUnknownOutcomeWithoutRetryOrPrivateDetails(timeout: True)" computerName="f21d95599625" duration="00:00:00.0036534" startTime="2026-11-27T20:46:34.6827866+00:00" endTime="2026-11-27T20:46:34.6876080+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a1696275-82ed-4ce9-9ee2-be96ba23d532" />
+    <UnitTestResult executionId="96aa700d-1b77-4293-9273-50864b35de21" testId="9c150d6d-2e96-c5be-b63d-ef4674c3adc6" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;application&quot;)" computerName="f21d95599625" duration="00:00:00.0009361" startTime="2026-11-27T20:46:34.7681961+00:00" endTime="2026-11-27T20:46:34.7683272+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="96aa700d-1b77-4293-9273-50864b35de21" />
+    <UnitTestResult executionId="1b36c505-674f-4acf-a114-424c4483f5d6" testId="182f7d56-61cb-83c6-3ae2-90a72225ef4d" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;17&quot;, tenant: 7, client: &quot;other-client&quot;, kind: &quot;delegated&quot;)" computerName="f21d95599625" duration="00:00:00.0031756" startTime="2026-11-27T20:46:34.5787282+00:00" endTime="2026-11-27T20:46:34.5808934+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1b36c505-674f-4acf-a114-424c4483f5d6" />
+    <UnitTestResult executionId="3c2142fe-008c-4696-9e5a-587fd5cac562" testId="11dd82e6-d024-c7f1-235a-b6f1ba0f3071" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:0,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}]}&quot;)" computerName="f21d95599625" duration="00:00:00.0042673" startTime="2026-11-27T20:46:34.6356768+00:00" endTime="2026-11-27T20:46:34.6390141+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3c2142fe-008c-4696-9e5a-587fd5cac562" />
+    <UnitTestResult executionId="71a072e1-28aa-4a6b-b9c2-cb8a8689cd58" testId="670de877-89a6-190f-adbd-714b6c0d6fe2" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.AnotherOwnerOrTenantCannotRevokeConsent(owner: 18, tenant: 7)" computerName="f21d95599625" duration="00:00:00.2081865" startTime="2026-11-27T20:46:35.6267184+00:00" endTime="2026-11-27T20:46:35.8347597+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71a072e1-28aa-4a6b-b9c2-cb8a8689cd58" />
+    <UnitTestResult executionId="986f9d8d-5b16-468b-8cd7-393a201b529a" testId="80563906-b331-fa47-3025-fba22ecb015a" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnknownOrInternalOperationsAreNotExecutable(operation: &quot;internal&quot;)" computerName="f21d95599625" duration="00:00:00.0015925" startTime="2026-11-27T20:46:34.6798217+00:00" endTime="2026-11-27T20:46:34.6806078+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="986f9d8d-5b16-468b-8cd7-393a201b529a" />
+    <UnitTestResult executionId="42d1d477-f325-49cb-b0eb-08164c322fd9" testId="f67bf249-df99-16a9-e313-ec885c8fc2a7" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 202, outcome: &quot;accepted&quot;)" computerName="f21d95599625" duration="00:00:00.0085374" startTime="2026-11-27T20:46:34.5961213+00:00" endTime="2026-11-27T20:46:34.6117417+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="42d1d477-f325-49cb-b0eb-08164c322fd9" />
+    <UnitTestResult executionId="1ada5ea0-7891-468c-b6e5-27c3b3e4d039" testId="11116e21-a3a4-1eb2-32f2-d1797d819233" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;unknown-redirect&quot;)" computerName="f21d95599625" duration="00:00:00.1435120" startTime="2026-11-27T20:46:35.8351070+00:00" endTime="2026-11-27T20:46:35.9790311+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1ada5ea0-7891-468c-b6e5-27c3b3e4d039" />
+    <UnitTestResult executionId="46c43721-3133-41f9-8604-7f398737a8a7" testId="655fb512-336d-466f-1998-d66989aa801a" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;missing&quot;)" computerName="f21d95599625" duration="00:00:00.0391469" startTime="2026-11-27T20:46:32.2921043+00:00" endTime="2026-11-27T20:46:32.3318898+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46c43721-3133-41f9-8604-7f398737a8a7" />
+    <UnitTestResult executionId="3d2624dc-a1b2-4f3d-9d19-4dc6b710387b" testId="45696d85-526e-7fe0-0485-7602785b18f7" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;issuer&quot;)" computerName="f21d95599625" duration="00:00:01.3094636" startTime="2026-11-27T20:46:29.8731187+00:00" endTime="2026-11-27T20:46:31.1407199+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3d2624dc-a1b2-4f3d-9d19-4dc6b710387b" />
+    <UnitTestResult executionId="373001ed-b6e6-4572-8ceb-cc45a5bd710d" testId="eb677a8b-68ae-1d69-e4b5-b40a4d82ea8f" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 302, outcome: &quot;destination_failed&quot;)" computerName="f21d95599625" duration="00:00:00.0134332" startTime="2026-11-27T20:46:34.6161215+00:00" endTime="2026-11-27T20:46:34.6236278+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="373001ed-b6e6-4572-8ceb-cc45a5bd710d" />
+    <UnitTestResult executionId="3f993315-5ec6-4cb5-abae-b023e551ee09" testId="32638495-d58a-15cd-6d90-f81ec2362f16" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.DiscoveryAndChallengesUseFixedIssuerAndResource" computerName="f21d95599625" duration="00:00:00.1055233" startTime="2026-11-27T20:46:36.1915813+00:00" endTime="2026-11-27T20:46:36.2972709+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3f993315-5ec6-4cb5-abae-b023e551ee09" />
+    <UnitTestResult executionId="c2eaf988-a34e-435a-adfc-1e88985f3e26" testId="c802c4b3-2f60-8994-d3ea-716c5f9b8f60" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;tenant&quot;)" computerName="f21d95599625" duration="00:00:00.0427749" startTime="2026-11-27T20:46:32.2467828+00:00" endTime="2026-11-27T20:46:32.2917196+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c2eaf988-a34e-435a-adfc-1e88985f3e26" />
+    <UnitTestResult executionId="95de1b77-d1dd-406c-93bb-b75588d30048" testId="cf5217a8-4960-448d-6b36-0afc3af39b43" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens(scenario: &quot;expired&quot;)" computerName="f21d95599625" duration="00:00:00.0531502" startTime="2026-11-27T20:46:37.0542459+00:00" endTime="2026-11-27T20:46:37.1081068+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="95de1b77-d1dd-406c-93bb-b75588d30048" />
+    <UnitTestResult executionId="042c8ea1-d866-46f2-98a9-cc0f58379653" testId="df471722-75a2-72d2-703b-f2d56c4248be" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;external-ref&quot;)" computerName="f21d95599625" duration="00:00:00.0003490" startTime="2026-11-27T20:46:34.6648234+00:00" endTime="2026-11-27T20:46:34.6649494+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="042c8ea1-d866-46f2-98a9-cc0f58379653" />
+    <UnitTestResult executionId="64741a05-7511-4f1a-98a9-0e39bf280108" testId="996565ad-5e95-e00e-2e00-c1187067d5f5" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;origin&quot;)" computerName="f21d95599625" duration="00:00:00.0070637" startTime="2026-11-27T20:46:34.7528502+00:00" endTime="2026-11-27T20:46:34.7605767+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64741a05-7511-4f1a-98a9-0e39bf280108" />
+    <UnitTestResult executionId="3ba2c2d0-ae4d-4de6-a217-944fa8ef391d" testId="37a004e6-a90b-1381-9c7a-403c5b71598f" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;expired&quot;)" computerName="f21d95599625" duration="00:00:00.0530077" startTime="2026-11-27T20:46:32.3395279+00:00" endTime="2026-11-27T20:46:32.3970443+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3ba2c2d0-ae4d-4de6-a217-944fa8ef391d" />
+    <UnitTestResult executionId="fdb3ee00-8918-49d1-b86b-28cbbdb0bf67" testId="4c008a6d-94ae-989f-db60-6252ff4a8075" testName="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests.DeletedOwnerAndExpiredApplicationsNeverReappearAtRenewal" computerName="f21d95599625" duration="00:00:00.1898572" startTime="2026-11-27T20:46:29.8733552+00:00" endTime="2026-11-27T20:46:30.0424355+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fdb3ee00-8918-49d1-b86b-28cbbdb0bf67" />
+    <UnitTestResult executionId="9d4a8fc8-afb9-4cf3-ade5-6da06ec3f479" testId="c171d430-1fdc-49ec-8b90-bf686cfc1c93" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;unknown-scope&quot;)" computerName="f21d95599625" duration="00:00:00.1082675" startTime="2026-11-27T20:46:36.0298629+00:00" endTime="2026-11-27T20:46:36.1386674+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9d4a8fc8-afb9-4cf3-ade5-6da06ec3f479" />
+    <UnitTestResult executionId="a7965d72-133a-4e7c-9136-9f4c4463cdb2" testId="01bff89c-5ab8-3737-040d-0c8fb52f97e9" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.FirstAndRepeatedMcpRequestsHaveZeroAuthorizationIoEvenWithBackendsOffline" computerName="f21d95599625" duration="00:00:00.1938124" startTime="2026-11-27T20:46:38.6931215+00:00" endTime="2026-11-27T20:46:38.8858897+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7965d72-133a-4e7c-9136-9f4c4463cdb2" />
+    <UnitTestResult executionId="a5d42b30-e557-4515-be02-21a8cc7a0fe4" testId="1f1e0c81-2b86-87de-dc84-771eb6f92cac" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.RefreshPreparesFreshApplicationIdentityBeforeAnyBusinessRequest" computerName="f21d95599625" duration="00:00:00.1487547" startTime="2026-11-27T20:46:37.3351457+00:00" endTime="2026-11-27T20:46:37.4841038+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a5d42b30-e557-4515-be02-21a8cc7a0fe4" />
+    <UnitTestResult executionId="30caf042-944d-4c1c-9696-a3eb1e226cc5" testId="f0040727-f3c5-49bd-1eaf-83a8b8231b33" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;17&quot;, tenant: 7, client: &quot;synthetic-client&quot;, kind: &quot;autonomous&quot;)" computerName="f21d95599625" duration="00:00:00.0045923" startTime="2026-11-27T20:46:34.5672372+00:00" endTime="2026-11-27T20:46:34.5703917+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="30caf042-944d-4c1c-9696-a3eb1e226cc5" />
+    <UnitTestResult executionId="8352eb9a-1534-424d-9aac-c33b5b941d26" testId="1aa37875-fc22-002a-8528-14c0e88d51ba" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 500, outcome: &quot;destination_failed&quot;)" computerName="f21d95599625" duration="00:00:00.0032461" startTime="2026-11-27T20:46:34.6245098+00:00" endTime="2026-11-27T20:46:34.6253404+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8352eb9a-1534-424d-9aac-c33b5b941d26" />
+    <UnitTestResult executionId="ac1cbf10-c0c5-4ca5-8109-4886c6105c40" testId="15a6d42b-889f-4957-0b85-3a2919d0c5a3" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.ExpiredConsentAndScopeEscalationAreRejected" computerName="f21d95599625" duration="00:00:00.0037629" startTime="2026-11-27T20:46:34.6989482+00:00" endTime="2026-11-27T20:46:34.6993469+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ac1cbf10-c0c5-4ca5-8109-4886c6105c40" />
+    <UnitTestResult executionId="7a2b524e-fe4b-494b-a3a1-821180854f5f" testId="cb294a16-fb02-9642-eecb-847b6a69029c" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnknownOrInternalOperationsAreNotExecutable(operation: &quot;Sample.Commands.Execute/../../admin&quot;)" computerName="f21d95599625" duration="00:00:00.0016927" startTime="2026-11-27T20:46:34.6766728+00:00" endTime="2026-11-27T20:46:34.6786967+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a2b524e-fe4b-494b-a3a1-821180854f5f" />
+    <UnitTestResult executionId="41c5a43b-478e-4a9a-b806-dc5b60b918a3" testId="603f99e3-a4ae-1011-827b-ae59e6551d59" testName="Yeshua.Central.BusinessMcp.Tests.LocalAuthorizationCostTests.MeasureLocalAuthorizationComparedWithConventionalJwtValidation" computerName="f21d95599625" duration="00:00:05.4975714" startTime="2026-11-27T20:46:39.0028627+00:00" endTime="2026-11-27T20:46:44.5023628+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="41c5a43b-478e-4a9a-b806-dc5b60b918a3">
+      <Output>
+        <StdOut>{
+  "runtime": "8.0.34",
+  "configuration": "Debug",
+  "processors": 2,
+  "iterationsPerBatch": 1000,
+  "batches": 5,
+  "warmups": 100,
+  "measurement": "Local CPU only, warm crypto: conventional Central JWT/policy; previous MCP RSA JWT/claims with preloaded local cache; new self-contained MCP JWT/claims and protected credential. Excludes business execution, transport, issuance and destination JWT validation common to delivery.",
+  "conventionalMicrosecondsPerOperation": 53.075900000000004,
+  "previousWarmMcpMicrosecondsPerOperation": 169.05870000000002,
+  "delegatedMicrosecondsPerOperation": 805.8135,
+  "additionalMicrosecondsVsPreviousWarmMcp": 636.7547999999999,
+  "additionalLocalMicroseconds": 752.7375999999999,
+  "ratio": 15.182286122326705,
+  "conventionalSamples": [
+    44.384800000000006,
+    53.075900000000004,
+    70.30080000000001,
+    76.4412,
+    43.1217
+  ],
+  "previousWarmMcpSamples": [
+    192.2212,
+    130.2625,
+    169.05870000000002,
+    144.91989999999998,
+    179.39370000000002
+  ],
+  "delegatedSamples": [
+    526.1306,
+    1073.0121000000001,
+    805.8135,
+    926.7355,
+    590.3251
+  ],
+  "conventionalJwtBytes": 405,
+  "previousMcpJwtBytes": 775,
+  "mcpJwtBytes": 3099,
+  "authorizationDatabaseCalls": 0,
+  "authorizationHttpCalls": 0,
+  "remoteCacheCalls": 0,
+  "introspectionCalls": 0,
+  "note": "The new path has no repository, identity service, cache or HTTP client. The previous warm control includes an explicitly preloaded in-process cache only; old cold session resolution is excluded and is not compliant. Not a production latency/SLO benchmark."
+}</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f7b03869-740e-4946-93a6-4f4d2c156f8e" testId="ced5e972-df2c-8477-fcfb-364a27d558d9" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.ExpiredCredentialDeniesLocallyWithoutRefreshingOrSending" computerName="f21d95599625" duration="00:00:00.0025501" startTime="2026-11-27T20:46:34.7909563+00:00" endTime="2026-11-27T20:46:34.7921228+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f7b03869-740e-4946-93a6-4f4d2c156f8e" />
+    <UnitTestResult executionId="f3b94719-b65c-41f9-bf44-6b67eb1e939c" testId="e61fe890-5fbd-ea98-3a06-d583fdb12382" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.EmptyExposureDoesNotPublishEverySwaggerEndpoint" computerName="f21d95599625" duration="00:00:00.0005361" startTime="2026-11-27T20:46:34.6885896+00:00" endTime="2026-11-27T20:46:34.6893719+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f3b94719-b65c-41f9-bf44-6b67eb1e939c" />
+    <UnitTestResult executionId="7ee32e22-7169-4c94-a5dd-90ef468d08b6" testId="5de7452b-7bfd-8ba2-8987-4b689aff3aa1" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.RefreshCannotExpandTheScopesOfConsent" computerName="f21d95599625" duration="00:00:00.1078238" startTime="2026-11-27T20:46:37.2270535+00:00" endTime="2026-11-27T20:46:37.3348014+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7ee32e22-7169-4c94-a5dd-90ef468d08b6" />
+    <UnitTestResult executionId="f05c24f7-3dff-40ff-8249-f8c4457a610e" testId="781b529d-8416-fc2e-6a22-26ea7604d39d" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;identity-input&quot;)" computerName="f21d95599625" duration="00:00:00.0025125" startTime="2026-11-27T20:46:34.6651634+00:00" endTime="2026-11-27T20:46:34.6658288+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f05c24f7-3dff-40ff-8249-f8c4457a610e" />
+    <UnitTestResult executionId="a0d7f66b-988a-4ef9-b59d-8b29b618c2f9" testId="df821745-e682-882b-d3c1-ceec6060bd2a" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.IssuanceRejectsWrongTenantFromExistingSessionExchange" computerName="f21d95599625" duration="00:00:00.0145974" startTime="2026-11-27T20:46:34.7713718+00:00" endTime="2026-11-27T20:46:34.7855843+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0d7f66b-988a-4ef9-b59d-8b29b618c2f9" />
+    <UnitTestResult executionId="9e44013e-97e8-4739-8bef-4d8d56146f43" testId="76a5344a-9523-ad40-9759-4e148e38cb90" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}],\&quot;url&quot;···)" computerName="f21d95599625" duration="00:00:00.0025241" startTime="2026-11-27T20:46:34.6297403+00:00" endTime="2026-11-27T20:46:34.6306402+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9e44013e-97e8-4739-8bef-4d8d56146f43" />
+    <UnitTestResult executionId="c414bcbe-ee50-4ce0-bf80-e2b31da653e7" testId="e8de9c5d-b63e-cbdc-f975-b6fe09d98d17" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;missing-snapshot&quot;)" computerName="f21d95599625" duration="00:00:00.0004293" startTime="2026-11-27T20:46:34.7708450+00:00" endTime="2026-11-27T20:46:34.7710522+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c414bcbe-ee50-4ce0-bf80-e2b31da653e7" />
+    <UnitTestResult executionId="ab725b67-a405-473d-a527-3654cd84d7d0" testId="b518db0a-4268-f80a-ebbe-b662637578f6" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CurrentAccessRemovalPreventsRefreshAndDoesNotCreateAnotherUser" computerName="f21d95599625" duration="00:00:00.1298740" startTime="2026-11-27T20:46:36.4768002+00:00" endTime="2026-11-27T20:46:36.6071520+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ab725b67-a405-473d-a527-3654cd84d7d0" />
+    <UnitTestResult executionId="7a3de624-19ba-4a51-bcec-613691eec968" testId="5d142c53-dd1d-75b2-16a8-519cc8ed7dca" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;audience&quot;)" computerName="f21d95599625" duration="00:00:00.0751349" startTime="2026-11-27T20:46:32.4679594+00:00" endTime="2026-11-27T20:46:32.5412634+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7a3de624-19ba-4a51-bcec-613691eec968" />
+    <UnitTestResult executionId="7528ce65-116f-45dc-a8bb-4d3e42352224" testId="72a21b56-2796-284e-b873-638bc96ae377" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ForeignBrowserOriginIsRejectedBeforeMcpDispatch" computerName="f21d95599625" duration="00:00:00.0373766" startTime="2026-11-27T20:46:34.5243917+00:00" endTime="2026-11-27T20:46:34.5626654+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7528ce65-116f-45dc-a8bb-4d3e42352224" />
+    <UnitTestResult executionId="61e3cfe7-5d44-4a97-962b-c397bedc1e90" testId="65157ffa-c851-7e9b-c00b-0db47e8f82fa" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens(scenario: &quot;audience&quot;)" computerName="f21d95599625" duration="00:00:00.0553324" startTime="2026-11-27T20:46:36.9987255+00:00" endTime="2026-11-27T20:46:37.0539586+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61e3cfe7-5d44-4a97-962b-c397bedc1e90" />
+    <UnitTestResult executionId="509555d5-135f-4d47-b712-a25b482cb79b" testId="b45b2fed-9879-9bc3-aeea-7f2388b7b54f" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ConsentCannotGrantAnApplicationTheOwnerDoesNotHave" computerName="f21d95599625" duration="00:00:00.1185395" startTime="2026-11-27T20:46:37.1084455+00:00" endTime="2026-11-27T20:46:37.2265880+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="509555d5-135f-4d47-b712-a25b482cb79b" />
+    <UnitTestResult executionId="00dea0f3-b6b7-4e39-ac26-2af50c561634" testId="5192c963-cc9f-5a1a-a93e-2f05cd7db9cf" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;client&quot;)" computerName="f21d95599625" duration="00:00:00.0668644" startTime="2026-11-27T20:46:32.3974976+00:00" endTime="2026-11-27T20:46:32.4675591+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="00dea0f3-b6b7-4e39-ac26-2af50c561634" />
+    <UnitTestResult executionId="591086d8-8442-40f5-bbfc-0d490e2f1784" testId="7e20cf00-4d4b-df16-687e-09c374904e10" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;pkce-plain&quot;)" computerName="f21d95599625" duration="00:00:00.0501329" startTime="2026-11-27T20:46:35.9793611+00:00" endTime="2026-11-27T20:46:36.0296273+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="591086d8-8442-40f5-bbfc-0d490e2f1784" />
+    <UnitTestResult executionId="9a50809e-ee6e-47e0-b201-d7d3dfeb5a86" testId="7099499f-06d5-429d-a152-3683f9396bc7" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:\&quot;2\&quot;,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}]}&quot;)" computerName="f21d95599625" duration="00:00:00.0014149" startTime="2026-11-27T20:46:34.6525201+00:00" endTime="2026-11-27T20:46:34.6527221+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9a50809e-ee6e-47e0-b201-d7d3dfeb5a86" />
+    <UnitTestResult executionId="c4f0b2f3-9c1c-4dc9-9660-b922fb07de42" testId="e6d6592b-b911-44a0-1f5d-87e86cf92cdb" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.AnotherOwnerOrTenantCannotRevokeConsent(owner: 17, tenant: 8)" computerName="f21d95599625" duration="00:00:00.2158959" startTime="2026-11-27T20:46:35.4089588+00:00" endTime="2026-11-27T20:46:35.6254386+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c4f0b2f3-9c1c-4dc9-9660-b922fb07de42" />
+    <UnitTestResult executionId="f44260a5-4daf-41e4-84bb-ef6e1999078a" testId="28d4e06f-b259-3957-a16d-2976e1838039" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;legacy&quot;)" computerName="f21d95599625" duration="00:00:00.0777794" startTime="2026-11-27T20:46:32.1742432+00:00" endTime="2026-11-27T20:46:32.2460482+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f44260a5-4daf-41e4-84bb-ef6e1999078a" />
+    <UnitTestResult executionId="61cae5b8-a42a-447d-82df-de4f0c89af65" testId="e7e373bd-629a-5214-55fe-542d6c0411cc" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 409, outcome: &quot;conflict&quot;)" computerName="f21d95599625" duration="00:00:00.0110677" startTime="2026-11-27T20:46:34.5852273+00:00" endTime="2026-11-27T20:46:34.5957333+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="61cae5b8-a42a-447d-82df-de4f0c89af65" />
+    <UnitTestResult executionId="eea96982-8c63-4e0f-9fd8-e79f13df74b8" testId="9bd9cdcf-3769-84df-3b21-58e63a68a30a" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnavailableAuditPreventsBusinessSideEffect" computerName="f21d95599625" duration="00:00:00.0021798" startTime="2026-11-27T20:46:34.6906907+00:00" endTime="2026-11-27T20:46:34.6920207+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eea96982-8c63-4e0f-9fd8-e79f13df74b8" />
+    <UnitTestResult executionId="045bb736-ffeb-4b20-8536-ec7f4d3748dd" testId="ed52451a-c849-f24b-ca65-84d92f9d3719" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;missing-id&quot;)" computerName="f21d95599625" duration="00:00:00.0045327" startTime="2026-11-27T20:46:34.6590421+00:00" endTime="2026-11-27T20:46:34.6636111+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="045bb736-ffeb-4b20-8536-ec7f4d3748dd" />
+    <UnitTestResult executionId="991a6766-f6bd-45ac-a923-6533b4914e84" testId="c52aeb59-e1fe-db04-d4f6-4b10b2c9871f" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens(scenario: &quot;type&quot;)" computerName="f21d95599625" duration="00:00:00.0686962" startTime="2026-11-27T20:46:36.9297864+00:00" endTime="2026-11-27T20:46:36.9980238+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="991a6766-f6bd-45ac-a923-6533b4914e84" />
+    <UnitTestResult executionId="58216821-1bfb-47c2-81c2-1459cc0c95c8" testId="3671ba27-a187-6ded-26d7-79837c3372ff" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.DestinationSessionDeniedDuringEmissionCannotBeDeferredUntilBusinessExecution" computerName="f21d95599625" duration="00:00:00.1130001" startTime="2026-11-27T20:46:38.8864332+00:00" endTime="2026-11-27T20:46:39.0000362+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58216821-1bfb-47c2-81c2-1459cc0c95c8" />
+    <UnitTestResult executionId="13301e0d-f01b-4100-a2b4-6fdf3b8b807f" testId="92695795-e076-985f-6646-2d4317364c76" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.SqlServerDdlContainsOnlyTheFourProtocolTables" computerName="f21d95599625" duration="00:00:00.2362491" startTime="2026-11-27T20:46:38.3360321+00:00" endTime="2026-11-27T20:46:38.5702176+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="13301e0d-f01b-4100-a2b4-6fdf3b8b807f" />
+    <UnitTestResult executionId="e2dc3544-8455-4e95-a38b-1415aa670a5b" testId="60e37569-fd1e-be32-d85b-66580eb9cd99" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;signature&quot;)" computerName="f21d95599625" duration="00:00:01.0249359" startTime="2026-11-27T20:46:31.1414105+00:00" endTime="2026-11-27T20:46:32.1737632+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e2dc3544-8455-4e95-a38b-1415aa670a5b" />
+    <UnitTestResult executionId="6f0c11a0-5751-43d9-8130-689b86938b92" testId="3a46aaee-a1df-a737-5211-efcde1ff64eb" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[]}&quot;)" computerName="f21d95599625" duration="00:00:00.0067942" startTime="2026-11-27T20:46:34.6394281+00:00" endTime="2026-11-27T20:46:34.6466115+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f0c11a0-5751-43d9-8130-689b86938b92" />
+    <UnitTestResult executionId="fb1c0919-f329-4d56-a4cc-2fd7526ff29e" testId="0549cc42-226c-9ef8-8a8e-c3bc9ec3ed31" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.OfficialClientDiscoversAndExecutesAgainstAnIndependentlyAuthorizedDestination" computerName="f21d95599625" duration="00:00:01.8945123" startTime="2026-11-27T20:46:32.5424468+00:00" endTime="2026-11-27T20:46:34.4389494+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fb1c0919-f329-4d56-a4cc-2fd7526ff29e" />
+    <UnitTestResult executionId="5a6188de-c6b0-4d2c-ba26-5ca59a447441" testId="64f9fc46-bf28-e220-cacd-c5bd3f3fc1b4" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DiscoveryAndExecutionUseTrustedContractAndKeepIdentity" computerName="f21d95599625" duration="00:00:00.0090493" startTime="2026-11-27T20:46:34.6720224+00:00" endTime="2026-11-27T20:46:34.6759920+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a6188de-c6b0-4d2c-ba26-5ca59a447441" />
+    <UnitTestResult executionId="c9cf2d97-efbf-4171-b2bc-6e541b75b0a5" testId="a094f081-8ac3-c29f-abad-7064a45016b9" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InsufficientScopeHidesOperationsAndBlocksExecution" computerName="f21d95599625" duration="00:00:00.0025585" startTime="2026-11-27T20:46:34.6925617+00:00" endTime="2026-11-27T20:46:34.6953117+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c9cf2d97-efbf-4171-b2bc-6e541b75b0a5" />
+    <UnitTestResult executionId="f706d25c-15a5-4621-99bb-817f8001eb55" testId="c045200c-db15-0c33-cc93-e7a3e73a91e4" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.OAuthToOfficialMcpToApplicationAdapterReauthorizesWithDistinctCredential" computerName="f21d95599625" duration="00:00:00.1865887" startTime="2026-11-27T20:46:37.4866164+00:00" endTime="2026-11-27T20:46:37.6716868+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f706d25c-15a5-4621-99bb-817f8001eb55" />
+    <UnitTestResult executionId="26d68b85-9416-4e4f-9550-4c487db402e3" testId="85c1a0e5-6db1-7186-edab-f1d291e1596f" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ToolBoundaryRejectsUrlArgumentsAndNullApplication" computerName="f21d95599625" duration="00:00:00.0849017" startTime="2026-11-27T20:46:34.4393690+00:00" endTime="2026-11-27T20:46:34.5239871+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="26d68b85-9416-4e4f-9550-4c487db402e3" />
+    <UnitTestResult executionId="94e7a5ff-1a70-44a9-b7e0-8642024add0e" testId="89385400-690e-35a9-a6ab-4d9da1795c58" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-redirect&quot;)" computerName="f21d95599625" duration="00:00:03.9074007" startTime="2026-11-27T20:46:31.1364432+00:00" endTime="2026-11-27T20:46:35.0446372+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="94e7a5ff-1a70-44a9-b7e0-8642024add0e" />
+    <UnitTestResult executionId="d600be62-4b28-4d6e-b727-afeb3e09ee77" testId="bae70fe1-c310-c0b1-489a-f69a47dfbb2c" testName="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests.InvalidConventionalCredentialsAndCrossTenantRenewalAreDenied" computerName="f21d95599625" duration="00:00:00.0332700" startTime="2026-11-27T20:46:30.0447953+00:00" endTime="2026-11-27T20:46:30.0753659+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d600be62-4b28-4d6e-b727-afeb3e09ee77" />
+    <UnitTestResult executionId="0756ca4d-a972-4bd2-b965-2452e1f96c6f" testId="95111b93-c918-b1e2-bb21-e7494bdd9e3f" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;internal&quot;)" computerName="f21d95599625" duration="00:00:00.0004933" startTime="2026-11-27T20:46:34.6642848+00:00" endTime="2026-11-27T20:46:34.6644124+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0756ca4d-a972-4bd2-b965-2452e1f96c6f" />
+    <UnitTestResult executionId="401f011d-7cfe-40a8-b86a-1eebc6d06bc7" testId="3c9b1a47-6019-c4ff-ab53-109b1e545d21" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;internal\&quot;}&quot;···)" computerName="f21d95599625" duration="00:00:00.0029453" startTime="2026-11-27T20:46:34.6310199+00:00" endTime="2026-11-27T20:46:34.6342743+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="401f011d-7cfe-40a8-b86a-1eebc6d06bc7" />
+    <UnitTestResult executionId="3679d64c-3dfb-4862-b622-d1afa6be9499" testId="2344ebd2-563b-ad65-bf10-10964541a91c" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeCannotBeRedeemedAfterItsOwnerChangesTenant" computerName="f21d95599625" duration="00:00:00.1187786" startTime="2026-11-27T20:46:38.5710602+00:00" endTime="2026-11-27T20:46:38.6908315+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3679d64c-3dfb-4862-b622-d1afa6be9499" />
+    <UnitTestResult executionId="ad03d6f4-99ca-4ad5-9ec6-025a796dcbdc" testId="0424725f-4311-da99-d152-f47a41ae8de7" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.OAuthIssuedTokenConnectsToTheExistingOfficialBusinessMcpTransport" computerName="f21d95599625" duration="00:00:00.2423017" startTime="2026-11-27T20:46:37.6720449+00:00" endTime="2026-11-27T20:46:37.9146353+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad03d6f4-99ca-4ad5-9ec6-025a796dcbdc" />
+    <UnitTestResult executionId="9c5e806d-2acf-40ae-b4d5-7235bf3f58ac" testId="442b8655-29be-0d21-e524-3bfbc01c76a1" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.WrongDestinationSchemaIsNotReturnedToAgent" computerName="f21d95599625" duration="00:00:00.0027807" startTime="2026-11-27T20:46:34.7018315+00:00" endTime="2026-11-27T20:46:34.7025555+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9c5e806d-2acf-40ae-b4d5-7235bf3f58ac" />
+    <UnitTestResult executionId="c70006a3-dea8-4a01-9620-ad944f1c5119" testId="a76b274a-3100-ed12-e500-4801f502f5a6" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-resource&quot;)" computerName="f21d95599625" duration="00:00:00.1002403" startTime="2026-11-27T20:46:35.3099905+00:00" endTime="2026-11-27T20:46:35.4082768+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c70006a3-dea8-4a01-9620-ad944f1c5119" />
+    <UnitTestResult executionId="2e44ef17-9cd5-49f2-af62-1f6016f5c5be" testId="f9aaf121-19ff-e17b-6d51-bedd2d7b40ff" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;missing-resource&quot;)" computerName="f21d95599625" duration="00:00:00.0527684" startTime="2026-11-27T20:46:36.1389217+00:00" endTime="2026-11-27T20:46:36.1912167+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2e44ef17-9cd5-49f2-af62-1f6016f5c5be" />
+    <UnitTestResult executionId="d083d263-ecdf-4dbf-b050-d78e7145e5f0" testId="9059462d-915b-8a73-061a-b82f54c6ffb4" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.TimeoutOrAdapterFailureHasUnknownOutcomeWithoutRetryOrPrivateDetails(timeout: False)" computerName="f21d95599625" duration="00:00:00.0017396" startTime="2026-11-27T20:46:34.6878826+00:00" endTime="2026-11-27T20:46:34.6880388+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d083d263-ecdf-4dbf-b050-d78e7145e5f0" />
+    <UnitTestResult executionId="6f0a4f46-b97e-4d03-9243-eed81e150adc" testId="cf5e5cd6-260c-395e-f67c-7b470aa89ecc" testName="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.OversizedSelfContainedSnapshotIsRejectedInsteadOfCreatingLookupFallback" computerName="f21d95599625" duration="00:00:00.0042253" startTime="2026-11-27T20:46:34.7859628+00:00" endTime="2026-11-27T20:46:34.7905832+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6f0a4f46-b97e-4d03-9243-eed81e150adc" />
+    <UnitTestResult executionId="642964e3-d1b8-485c-a595-c0082ce423d3" testId="d6b4cda6-cb6f-b828-6b0f-ece87c253f95" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.StartupFailsWithoutMandatorySecurityAdapters" computerName="f21d95599625" duration="00:00:00.0195863" startTime="2026-11-27T20:46:29.8681231+00:00" endTime="2026-11-27T20:46:29.8682742+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="642964e3-d1b8-485c-a595-c0082ce423d3" />
+    <UnitTestResult executionId="9497ab41-9df6-4219-b921-08d38e75164f" testId="518c33d2-60f9-9f96-e1ed-e00877694bef" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ProtocolPersistenceSurvivesRestartAndDoesNotStoreClientTokensOrPasswordInCleartext" computerName="f21d95599625" duration="00:00:00.3212199" startTime="2026-11-27T20:46:36.6075536+00:00" endTime="2026-11-27T20:46:36.9294113+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9497ab41-9df6-4219-b921-08d38e75164f" />
+    <UnitTestResult executionId="8adb1599-3915-4170-94f3-1d6a5f1fd18e" testId="edd52fc6-1eec-6926-c1a9-f4adfd95f18d" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;17&quot;, tenant: 8, client: &quot;synthetic-client&quot;, kind: &quot;delegated&quot;)" computerName="f21d95599625" duration="00:00:00.0012793" startTime="2026-11-27T20:46:34.5709277+00:00" endTime="2026-11-27T20:46:34.5735549+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8adb1599-3915-4170-94f3-1d6a5f1fd18e" />
+    <UnitTestResult executionId="3517894e-5f4a-4c73-b720-9b968399a478" testId="07f571ac-2e41-8f95-8f86-5fa6aae531c6" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.AuthorizationCodePkceRefreshRotationAndOwnerRevocationWorkWithPersistentProtocolStore" computerName="f21d95599625" duration="00:00:00.1783540" startTime="2026-11-27T20:46:36.3003930+00:00" endTime="2026-11-27T20:46:36.4760947+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3517894e-5f4a-4c73-b720-9b968399a478" />
+    <UnitTestResult executionId="5a8468f4-fb9a-4272-a9d3-cdb01edfd5ed" testId="fb99e64f-5a14-4325-456f-4fda9de6997a" testName="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ConsentRequiresCsrfAndExplicitDecision" computerName="f21d95599625" duration="00:00:00.0913616" startTime="2026-11-27T20:46:38.2421677+00:00" endTime="2026-11-27T20:46:38.3357124+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5a8468f4-fb9a-4272-a9d3-cdb01edfd5ed" />
+    <UnitTestResult executionId="88e99786-d0cd-4387-8f31-ffc64fbfa961" testId="4e1a5ffe-b45b-b6a5-420d-4115abe21c1b" testName="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;query&quot;)" computerName="f21d95599625" duration="00:00:00.0005220" startTime="2026-11-27T20:46:34.6639020+00:00" endTime="2026-11-27T20:46:34.6640350+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="88e99786-d0cd-4387-8f31-ffc64fbfa961" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;17&quot;, tenant: 7, client: &quot;other-client&quot;, kind: &quot;delegated&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="182f7d56-61cb-83c6-3ae2-90a72225ef4d">
+      <Execution id="1b36c505-674f-4acf-a114-424c4483f5d6" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DelegationCannotChangeSubjectTenantClientOrIdentityKind" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;grant&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a0d190b1-a7b2-e746-0165-0cece430833e">
+      <Execution id="0d1a7458-8529-4717-8f79-3f7bc45ea76b" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.AuthorizationCodePkceRefreshRotationAndOwnerRevocationWorkWithPersistentProtocolStore" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="07f571ac-2e41-8f95-8f86-5fa6aae531c6">
+      <Execution id="3517894e-5f4a-4c73-b720-9b968399a478" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="AuthorizationCodePkceRefreshRotationAndOwnerRevocationWorkWithPersistentProtocolStore" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests.DeletedOwnerAndExpiredApplicationsNeverReappearAtRenewal" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="4c008a6d-94ae-989f-db60-6252ff4a8075">
+      <Execution id="fdb3ee00-8918-49d1-b86b-28cbbdb0bf67" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests" name="DeletedOwnerAndExpiredApplicationsNeverReappearAtRenewal" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.AnotherOwnerOrTenantCannotRevokeConsent(owner: 18, tenant: 7)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="670de877-89a6-190f-adbd-714b6c0d6fe2">
+      <Execution id="71a072e1-28aa-4a6b-b9c2-cb8a8689cd58" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="AnotherOwnerOrTenantCannotRevokeConsent" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}],\&quot;url&quot;···)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="76a5344a-9523-ad40-9759-4e148e38cb90">
+      <Execution id="9e44013e-97e8-4739-8bef-4d8d56146f43" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 500, outcome: &quot;destination_failed&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="1aa37875-fc22-002a-8528-14c0e88d51ba">
+      <Execution id="8352eb9a-1534-424d-9aac-c33b5b941d26" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;origin&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="996565ad-5e95-e00e-2e00-c1187067d5f5">
+      <Execution id="64741a05-7511-4f1a-98a9-0e39bf280108" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-resource&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a76b274a-3100-ed12-e500-4801f502f5a6">
+      <Execution id="c70006a3-dea8-4a01-9620-ad944f1c5119" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="CodeIsBoundToPkceClientResourceAndRedirect" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DiscoveryAndExecutionUseTrustedContractAndKeepIdentity" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="64f9fc46-bf28-e220-cacd-c5bd3f3fc1b4">
+      <Execution id="5a6188de-c6b0-4d2c-ba26-5ca59a447441" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DiscoveryAndExecutionUseTrustedContractAndKeepIdentity" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests.ConventionalLoginAndOAuthUseTheSameRepositoriesAndCatalogueResolution" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="d7d3adb4-840e-91a7-c3e6-f4cf1f893857">
+      <Execution id="4fbd4e00-ae43-48d4-97a5-9e9cf6b74168" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests" name="ConventionalLoginAndOAuthUseTheSameRepositoriesAndCatalogueResolution" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.AnotherOwnerOrTenantCannotRevokeConsent(owner: 17, tenant: 8)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="e6d6592b-b911-44a0-1f5d-87e86cf92cdb">
+      <Execution id="c4f0b2f3-9c1c-4dc9-9660-b922fb07de42" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="AnotherOwnerOrTenantCannotRevokeConsent" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;missing&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="655fb512-336d-466f-1998-d66989aa801a">
+      <Execution id="46c43721-3133-41f9-8604-7f398737a8a7" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;query&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="4e1a5ffe-b45b-b6a5-420d-4115abe21c1b">
+      <Execution id="88e99786-d0cd-4387-8f31-ffc64fbfa961" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests.InvalidConventionalCredentialsAndCrossTenantRenewalAreDenied" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="bae70fe1-c310-c0b1-489a-f69a47dfbb2c">
+      <Execution id="d600be62-4b28-4d6e-b727-afeb3e09ee77" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.CentralLoginSessionTests" name="InvalidConventionalCredentialsAndCrossTenantRenewalAreDenied" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;legacy&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="28d4e06f-b259-3957-a16d-2976e1838039">
+      <Execution id="f44260a5-4daf-41e4-84bb-ef6e1999078a" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;owner&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="3304d87d-062b-89ef-43d5-447d2443216a">
+      <Execution id="c267c70d-c3e4-46e3-a58f-8b25d4ef2859" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens(scenario: &quot;expired&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="cf5217a8-4960-448d-6b36-0afc3af39b43">
+      <Execution id="95de1b77-d1dd-406c-93bb-b75588d30048" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;tenant&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="43b1904e-a5b2-3249-0011-482f6051268e">
+      <Execution id="859e398f-f179-438d-b58a-c3af495de87e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.SqlServerDdlContainsOnlyTheFourProtocolTables" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="92695795-e076-985f-6646-2d4317364c76">
+      <Execution id="13301e0d-f01b-4100-a2b4-6fdf3b8b807f" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="SqlServerDdlContainsOnlyTheFourProtocolTables" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.ExpiredCredentialDeniesLocallyWithoutRefreshingOrSending" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="ced5e972-df2c-8477-fcfb-364a27d558d9">
+      <Execution id="f7b03869-740e-4946-93a6-4f4d2c156f8e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="ExpiredCredentialDeniesLocallyWithoutRefreshingOrSending" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;17&quot;, tenant: 8, client: &quot;synthetic-client&quot;, kind: &quot;delegated&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="edd52fc6-1eec-6926-c1a9-f4adfd95f18d">
+      <Execution id="8adb1599-3915-4170-94f3-1d6a5f1fd18e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DelegationCannotChangeSubjectTenantClientOrIdentityKind" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;application&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="9c150d6d-2e96-c5be-b63d-ef4674c3adc6">
+      <Execution id="96aa700d-1b77-4293-9273-50864b35de21" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;pkce-plain&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="7e20cf00-4d4b-df16-687e-09c374904e10">
+      <Execution id="591086d8-8442-40f5-bbfc-0d490e2f1784" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="InvalidAuthorizationNeverAuthenticatesOwner" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;audience&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="5d142c53-dd1d-75b2-16a8-519cc8ed7dca">
+      <Execution id="7a3de624-19ba-4a51-bcec-613691eec968" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;missing-scope&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="fc0261fb-cf8a-25d0-acb7-7eda268404c1">
+      <Execution id="8552cc22-e6ae-4e99-85f4-13f34e47c302" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;issuer&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="45696d85-526e-7fe0-0485-7602785b18f7">
+      <Execution id="3d2624dc-a1b2-4f3d-9d19-4dc6b710387b" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{}]}&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="1b0e8afd-8469-09f3-f7c8-d0fb05a65ae1">
+      <Execution id="5ce2b0ff-9c5e-4a48-a79f-f19e009de8fd" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.TimeoutOrAdapterFailureHasUnknownOutcomeWithoutRetryOrPrivateDetails(timeout: False)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="9059462d-915b-8a73-061a-b82f54c6ffb4">
+      <Execution id="d083d263-ecdf-4dbf-b050-d78e7145e5f0" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="TimeoutOrAdapterFailureHasUnknownOutcomeWithoutRetryOrPrivateDetails" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;internal\&quot;}&quot;···)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="3c9b1a47-6019-c4ff-ab53-109b1e545d21">
+      <Execution id="401f011d-7cfe-40a8-b86a-1eebc6d06bc7" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;anonymous&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a67734b9-2f3e-2b0d-1098-7b79780330df">
+      <Execution id="30109d05-0a6f-4a2c-9a84-27c86957fcec" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:0,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}]}&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="11dd82e6-d024-c7f1-235a-b6f1ba0f3071">
+      <Execution id="3c2142fe-008c-4696-9e5a-587fd5cac562" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;missing-resource&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="f9aaf121-19ff-e17b-6d51-bedd2d7b40ff">
+      <Execution id="2e44ef17-9cd5-49f2-af62-1f6016f5c5be" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="InvalidAuthorizationNeverAuthenticatesOwner" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.MetadataAdvertisesOnlyTheConfiguredResourceAndIssuer" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="49f89cfd-338e-0511-9b96-362d236becf8">
+      <Execution id="bdd16c91-bd59-4db1-b18d-fb62954c4fdd" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="MetadataAdvertisesOnlyTheConfiguredResourceAndIssuer" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.RefreshCannotExpandTheScopesOfConsent" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="5de7452b-7bfd-8ba2-8987-4b689aff3aa1">
+      <Execution id="7ee32e22-7169-4c94-a5dd-90ef468d08b6" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="RefreshCannotExpandTheScopesOfConsent" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;tenant&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="c802c4b3-2f60-8994-d3ea-716c5f9b8f60">
+      <Execution id="c2eaf988-a34e-435a-adfc-1e88985f3e26" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens(scenario: &quot;type&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="c52aeb59-e1fe-db04-d4f6-4b10b2c9871f">
+      <Execution id="991a6766-f6bd-45ac-a923-6533b4914e84" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ConsentRequiresCsrfAndExplicitDecision" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="fb99e64f-5a14-4325-456f-4fda9de6997a">
+      <Execution id="5a8468f4-fb9a-4272-a9d3-cdb01edfd5ed" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="ConsentRequiresCsrfAndExplicitDecision" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens(scenario: &quot;audience&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="65157ffa-c851-7e9b-c00b-0db47e8f82fa">
+      <Execution id="61e3cfe7-5d44-4a97-962b-c397bedc1e90" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="ResourceRejectsExpiredTokensOtherAudiencesAndNonAccessTokens" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnknownOrInternalOperationsAreNotExecutable(operation: &quot;Sample.Commands.Execute/../../admin&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="cb294a16-fb02-9642-eecb-847b6a69029c">
+      <Execution id="7a2b524e-fe4b-494b-a3a1-821180854f5f" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="UnknownOrInternalOperationsAreNotExecutable" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.StartupFailsWithoutMandatorySecurityAdapters" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="d6b4cda6-cb6f-b828-6b0f-ece87c253f95">
+      <Execution id="642964e3-d1b8-485c-a595-c0082ce423d3" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="StartupFailsWithoutMandatorySecurityAdapters" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.OversizedSelfContainedSnapshotIsRejectedInsteadOfCreatingLookupFallback" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="cf5e5cd6-260c-395e-f67c-7b470aa89ecc">
+      <Execution id="6f0a4f46-b97e-4d03-9243-eed81e150adc" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="OversizedSelfContainedSnapshotIsRejectedInsteadOfCreatingLookupFallback" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.OfficialClientDiscoversAndExecutesAgainstAnIndependentlyAuthorizedDestination" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="0549cc42-226c-9ef8-8a8e-c3bc9ec3ed31">
+      <Execution id="fb1c0919-f329-4d56-a4cc-2fd7526ff29e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="OfficialClientDiscoversAndExecutesAgainstAnIndependentlyAuthorizedDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:\&quot;2\&quot;,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}]}&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="7099499f-06d5-429d-a152-3683f9396bc7">
+      <Execution id="9a50809e-ee6e-47e0-b201-d7d3dfeb5a86" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 403, outcome: &quot;destination_denied&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="c3192192-dabe-e0b2-996b-627f5dd3f1b4">
+      <Execution id="085bcc0b-4826-4482-9a23-39d7f84bdf0b" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[]}&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="3a46aaee-a1df-a737-5211-efcde1ff64eb">
+      <Execution id="6f0c11a0-5751-43d9-8130-689b86938b92" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.OldRefreshAndAuthorizationCodesCannotBeReused" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="e022fa41-f7a1-56f9-d883-c87d39ba1946">
+      <Execution id="196127e5-bbb2-4cd0-9cdb-32bac472816a" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="OldRefreshAndAuthorizationCodesCannotBeReused" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.FirstAndRepeatedMcpRequestsHaveZeroAuthorizationIoEvenWithBackendsOffline" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="01bff89c-5ab8-3737-040d-0c8fb52f97e9">
+      <Execution id="a7965d72-133a-4e7c-9136-9f4c4463cdb2" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="FirstAndRepeatedMcpRequestsHaveZeroAuthorizationIoEvenWithBackendsOffline" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;18&quot;, tenant: 7, client: &quot;synthetic-client&quot;, kind: &quot;delegated&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="46bc2d5d-effa-2891-6e55-1cfbdb8d10ce">
+      <Execution id="69520b69-98e0-400a-8a31-7cc08acfcadc" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DelegationCannotChangeSubjectTenantClientOrIdentityKind" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.TimeoutOrAdapterFailureHasUnknownOutcomeWithoutRetryOrPrivateDetails(timeout: True)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a883d6b1-a01b-de8f-91c9-85a68d712af3">
+      <Execution id="a1696275-82ed-4ce9-9ee2-be96ba23d532" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="TimeoutOrAdapterFailureHasUnknownOutcomeWithoutRetryOrPrivateDetails" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnavailableAuditPreventsBusinessSideEffect" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="9bd9cdcf-3769-84df-3b21-58e63a68a30a">
+      <Execution id="eea96982-8c63-4e0f-9fd8-e79f13df74b8" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="UnavailableAuditPreventsBusinessSideEffect" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-client&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="ceff5cfa-6eb8-e468-d241-0011b31f6d9d">
+      <Execution id="05029f56-7cbd-461b-afa7-60986a0a00c6" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="CodeIsBoundToPkceClientResourceAndRedirect" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DelegationCannotChangeSubjectTenantClientOrIdentityKind(sub: &quot;17&quot;, tenant: 7, client: &quot;synthetic-client&quot;, kind: &quot;autonomous&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="f0040727-f3c5-49bd-1eaf-83a8b8231b33">
+      <Execution id="30caf042-944d-4c1c-9696-a3eb1e226cc5" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DelegationCannotChangeSubjectTenantClientOrIdentityKind" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.OAuthIssuedTokenConnectsToTheExistingOfficialBusinessMcpTransport" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="0424725f-4311-da99-d152-f47a41ae8de7">
+      <Execution id="ad03d6f4-99ca-4ad5-9ec6-025a796dcbdc" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="OAuthIssuedTokenConnectsToTheExistingOfficialBusinessMcpTransport" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 409, outcome: &quot;conflict&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="e7e373bd-629a-5214-55fe-542d6c0411cc">
+      <Execution id="61cae5b8-a42a-447d-82df-de4f0c89af65" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;internal&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="95111b93-c918-b1e2-bb21-e7494bdd9e3f">
+      <Execution id="0756ca4d-a972-4bd2-b965-2452e1f96c6f" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.SessionExchangeHappensOnlyDuringIssuanceAndWorksWithoutCacheAfterRestart" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a643573a-2334-151c-1a39-81966e0be0f6">
+      <Execution id="6cf076ce-59f2-4303-ad2c-6ecb3eb2e60e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="SessionExchangeHappensOnlyDuringIssuanceAndWorksWithoutCacheAfterRestart" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.DestinationSessionDeniedDuringEmissionCannotBeDeferredUntilBusinessExecution" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="3671ba27-a187-6ded-26d7-79837c3372ff">
+      <Execution id="58216821-1bfb-47c2-81c2-1459cc0c95c8" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="DestinationSessionDeniedDuringEmissionCannotBeDeferredUntilBusinessExecution" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InvalidParametersNeverReachDestination(input: &quot;{\&quot;quantity\&quot;:2,\&quot;items\&quot;:[{\&quot;kind\&quot;:\&quot;A\&quot;}],\&quot;ten&quot;···)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="2be95d40-659e-a277-84ec-165138c1f911">
+      <Execution id="3ea05526-bc66-4df8-a6e5-a864b7a6c43a" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InvalidParametersNeverReachDestination" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ConsentCannotGrantAnApplicationTheOwnerDoesNotHave" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="b45b2fed-9879-9bc3-aeea-7f2388b7b54f">
+      <Execution id="509555d5-135f-4d47-b712-a25b482cb79b" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="ConsentCannotGrantAnApplicationTheOwnerDoesNotHave" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.InsufficientScopeHidesOperationsAndBlocksExecution" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a094f081-8ac3-c29f-abad-7064a45016b9">
+      <Execution id="c9cf2d97-efbf-4171-b2bc-6e541b75b0a5" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="InsufficientScopeHidesOperationsAndBlocksExecution" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ToolBoundaryRejectsUrlArgumentsAndNullApplication" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="85c1a0e5-6db1-7186-edab-f1d291e1596f">
+      <Execution id="26d68b85-9416-4e4f-9550-4c487db402e3" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ToolBoundaryRejectsUrlArgumentsAndNullApplication" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 302, outcome: &quot;destination_failed&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="eb677a8b-68ae-1d69-e4b5-b40a4d82ea8f">
+      <Execution id="373001ed-b6e6-4572-8ceb-cc45a5bd710d" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;client&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="5192c963-cc9f-5a1a-a93e-2f05cd7db9cf">
+      <Execution id="00dea0f3-b6b7-4e39-ac26-2af50c561634" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;missing-id&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="ed52451a-c849-f24b-ca65-84d92f9d3719">
+      <Execution id="045bb736-ffeb-4b20-8536-ec7f4d3748dd" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;missing-snapshot&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="e8de9c5d-b63e-cbdc-f975-b6fe09d98d17">
+      <Execution id="c414bcbe-ee50-4ce0-bf80-e2b31da653e7" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.RefreshPreparesFreshApplicationIdentityBeforeAnyBusinessRequest" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="1f1e0c81-2b86-87de-dc84-771eb6f92cac">
+      <Execution id="a5d42b30-e557-4515-be02-21a8cc7a0fe4" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="RefreshPreparesFreshApplicationIdentityBeforeAnyBusinessRequest" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeCannotBeRedeemedAfterItsOwnerChangesTenant" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="2344ebd2-563b-ad65-bf10-10964541a91c">
+      <Execution id="3679d64c-3dfb-4862-b622-d1afa6be9499" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="CodeCannotBeRedeemedAfterItsOwnerChangesTenant" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-verifier&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="80c2eb33-6e3b-b093-d4d5-69ef71c47b06">
+      <Execution id="16ac97e9-5cf1-40eb-ac3c-0249fa3426b8" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="CodeIsBoundToPkceClientResourceAndRedirect" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 202, outcome: &quot;accepted&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="f67bf249-df99-16a9-e313-ec885c8fc2a7">
+      <Execution id="42d1d477-f325-49cb-b0eb-08164c322fd9" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;client&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="0425ce36-32bf-fe62-e4b7-1fe67bc99bf9">
+      <Execution id="4760b4f6-60e7-4db0-b1a1-3ad12ca060e5" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.LocalAuthorizationCostTests.MeasureLocalAuthorizationComparedWithConventionalJwtValidation" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="603f99e3-a4ae-1011-827b-ae59e6551d59">
+      <Execution id="41c5a43b-478e-4a9a-b806-dc5b60b918a3" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.LocalAuthorizationCostTests" name="MeasureLocalAuthorizationComparedWithConventionalJwtValidation" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;unknown-redirect&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="11116e21-a3a4-1eb2-32f2-d1797d819233">
+      <Execution id="1ada5ea0-7891-468c-b6e5-27c3b3e4d039" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="InvalidAuthorizationNeverAuthenticatesOwner" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;administrative&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="c0c9e860-a2c9-e4fa-9d33-5164a7fa81b9">
+      <Execution id="27a515d1-baf2-493e-b7ca-ea394e25fc33" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.ProtocolPersistenceSurvivesRestartAndDoesNotStoreClientTokensOrPasswordInCleartext" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="518c33d2-60f9-9f96-e1ed-e00877694bef">
+      <Execution id="9497ab41-9df6-4219-b921-08d38e75164f" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="ProtocolPersistenceSurvivesRestartAndDoesNotStoreClientTokensOrPasswordInCleartext" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;identity-input&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="781b529d-8416-fc2e-6a22-26ea7604d39d">
+      <Execution id="f05c24f7-3dff-40ff-8249-f8c4457a610e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CurrentAccessRemovalPreventsRefreshAndDoesNotCreateAnotherUser" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="b518db0a-4268-f80a-ebbe-b662637578f6">
+      <Execution id="ab725b67-a405-473d-a527-3654cd84d7d0" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="CurrentAccessRemovalPreventsRefreshAndDoesNotCreateAnotherUser" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion(status: 429, outcome: &quot;rate_limited&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="6a759b89-e648-22d5-0baf-1772a25f785c">
+      <Execution id="c4d4e922-6324-42ea-bd2b-b2176c0d525f" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="DestinationErrorsAndAsyncAcceptanceAreNotReportedAsCompletion" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ForeignBrowserOriginIsRejectedBeforeMcpDispatch" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="72a21b56-2796-284e-b873-638bc96ae377">
+      <Execution id="7528ce65-116f-45dc-a8bb-4d3e42352224" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ForeignBrowserOriginIsRejectedBeforeMcpDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand(scenario: &quot;tampered&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="dde2c84f-abc8-2632-981f-9c0726ad8017">
+      <Execution id="82073b53-4ba4-4daa-a5bf-204d120f938a" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="InvalidSnapshotsNeverFetchIdentityOpenSessionOrDeliverCommand" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;signature&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="60e37569-fd1e-be32-d85b-66580eb9cd99">
+      <Execution id="e2dc3544-8455-4e95-a38b-1415aa670a5b" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.EmptyExposureDoesNotPublishEverySwaggerEndpoint" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="e61fe890-5fbd-ea98-3a06-d583fdb12382">
+      <Execution id="f3b94719-b65c-41f9-bf44-6b67eb1e939c" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="EmptyExposureDoesNotPublishEverySwaggerEndpoint" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnknownOrInternalOperationsAreNotExecutable(operation: &quot;https://evil.test&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="a2155916-3ea8-14a1-3775-486e06daede0">
+      <Execution id="e6daa618-9893-4367-a2bd-5dd1291c09e1" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="UnknownOrInternalOperationsAreNotExecutable" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.CodeIsBoundToPkceClientResourceAndRedirect(scenario: &quot;wrong-redirect&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="89385400-690e-35a9-a6ab-4d9da1795c58">
+      <Execution id="94e7a5ff-1a70-44a9-b7e0-8642024add0e" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="CodeIsBoundToPkceClientResourceAndRedirect" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.OAuthToOfficialMcpToApplicationAdapterReauthorizesWithDistinctCredential" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="c045200c-db15-0c33-cc93-e7a3e73a91e4">
+      <Execution id="f706d25c-15a5-4621-99bb-817f8001eb55" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="OAuthToOfficialMcpToApplicationAdapterReauthorizesWithDistinctCredential" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.RevocationAndPermissionRemovalApplyToAlreadyAuthenticatedCalls" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="9efef7b9-9d80-11b1-1773-a97f17c39a92">
+      <Execution id="92ba05b3-8dc0-4a03-89f8-1b6b3a7dd82a" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="RevocationAndPermissionRemovalApplyToAlreadyAuthenticatedCalls" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests.IssuanceRejectsWrongTenantFromExistingSessionExchange" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="df821745-e682-882b-d3c1-ceec6060bd2a">
+      <Execution id="a0d7f66b-988a-4ef9-b59d-8b29b618c2f9" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentApplicationSenderTests" name="IssuanceRejectsWrongTenantFromExistingSessionExchange" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.IneligibleCatalogEntriesFailClosed(scenario: &quot;external-ref&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="df471722-75a2-72d2-703b-f2d56c4248be">
+      <Execution id="042c8ea1-d866-46f2-98a9-cc0f58379653" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="IneligibleCatalogEntriesFailClosed" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.InvalidAuthorizationNeverAuthenticatesOwner(scenario: &quot;unknown-scope&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="c171d430-1fdc-49ec-8b90-bf686cfc1c93">
+      <Execution id="9d4a8fc8-afb9-4cf3-ade5-6da06ec3f479" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="InvalidAuthorizationNeverAuthenticatesOwner" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.UnknownOrInternalOperationsAreNotExecutable(operation: &quot;internal&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="80563906-b331-fa47-3025-fba22ecb015a">
+      <Execution id="986f9d8d-5b16-468b-8cd7-393a201b529a" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="UnknownOrInternalOperationsAreNotExecutable" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests.ResourceServerRejectsInvalidTokensBeforeDispatch(scenario: &quot;expired&quot;)" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="37a004e6-a90b-1381-9c7a-403c5b71598f">
+      <Execution id="3ba2c2d0-ae4d-4de6-a217-944fa8ef391d" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTransportTests" name="ResourceServerRejectsInvalidTokensBeforeDispatch" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.WrongDestinationSchemaIsNotReturnedToAgent" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="442b8655-29be-0d21-e524-3bfbc01c76a1">
+      <Execution id="9c5e806d-2acf-40ae-b4d5-7235bf3f58ac" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="WrongDestinationSchemaIsNotReturnedToAgent" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests.ExpiredConsentAndScopeEscalationAreRejected" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="15a6d42b-889f-4957-0b85-3a2919d0c5a3">
+      <Execution id="ac1cbf10-c0c5-4ca5-8109-4886c6105c40" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.BusinessMcpTests" name="ExpiredConsentAndScopeEscalationAreRejected" />
+    </UnitTest>
+    <UnitTest name="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests.DiscoveryAndChallengesUseFixedIssuerAndResource" storage="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/central/yeshua.central.businessmcp.tests/bin/debug/net8.0/yeshua.central.businessmcp.tests.dll" id="32638495-d58a-15cd-6d90-f81ec2362f16">
+      <Execution id="3f993315-5ec6-4cb5-abae-b023e551ee09" />
+      <TestMethod codeBase="/workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="Yeshua.Central.BusinessMcp.Tests.AgentOAuthFlowTests" name="DiscoveryAndChallengesUseFixedIssuerAndResource" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="0425ce36-32bf-fe62-e4b7-1fe67bc99bf9" executionId="4760b4f6-60e7-4db0-b1a1-3ad12ca060e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a67734b9-2f3e-2b0d-1098-7b79780330df" executionId="30109d05-0a6f-4a2c-9a84-27c86957fcec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a643573a-2334-151c-1a39-81966e0be0f6" executionId="6cf076ce-59f2-4303-ad2c-6ecb3eb2e60e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3304d87d-062b-89ef-43d5-447d2443216a" executionId="c267c70d-c3e4-46e3-a58f-8b25d4ef2859" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3192192-dabe-e0b2-996b-627f5dd3f1b4" executionId="085bcc0b-4826-4482-9a23-39d7f84bdf0b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c0c9e860-a2c9-e4fa-9d33-5164a7fa81b9" executionId="27a515d1-baf2-493e-b7ca-ea394e25fc33" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="46bc2d5d-effa-2891-6e55-1cfbdb8d10ce" executionId="69520b69-98e0-400a-8a31-7cc08acfcadc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b0e8afd-8469-09f3-f7c8-d0fb05a65ae1" executionId="5ce2b0ff-9c5e-4a48-a79f-f19e009de8fd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d7d3adb4-840e-91a7-c3e6-f4cf1f893857" executionId="4fbd4e00-ae43-48d4-97a5-9e9cf6b74168" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="43b1904e-a5b2-3249-0011-482f6051268e" executionId="859e398f-f179-438d-b58a-c3af495de87e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ceff5cfa-6eb8-e468-d241-0011b31f6d9d" executionId="05029f56-7cbd-461b-afa7-60986a0a00c6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80c2eb33-6e3b-b093-d4d5-69ef71c47b06" executionId="16ac97e9-5cf1-40eb-ac3c-0249fa3426b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="49f89cfd-338e-0511-9b96-362d236becf8" executionId="bdd16c91-bd59-4db1-b18d-fb62954c4fdd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2be95d40-659e-a277-84ec-165138c1f911" executionId="3ea05526-bc66-4df8-a6e5-a864b7a6c43a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6a759b89-e648-22d5-0baf-1772a25f785c" executionId="c4d4e922-6324-42ea-bd2b-b2176c0d525f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a2155916-3ea8-14a1-3775-486e06daede0" executionId="e6daa618-9893-4367-a2bd-5dd1291c09e1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9efef7b9-9d80-11b1-1773-a97f17c39a92" executionId="92ba05b3-8dc0-4a03-89f8-1b6b3a7dd82a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e022fa41-f7a1-56f9-d883-c87d39ba1946" executionId="196127e5-bbb2-4cd0-9cdb-32bac472816a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fc0261fb-cf8a-25d0-acb7-7eda268404c1" executionId="8552cc22-e6ae-4e99-85f4-13f34e47c302" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a0d190b1-a7b2-e746-0165-0cece430833e" executionId="0d1a7458-8529-4717-8f79-3f7bc45ea76b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dde2c84f-abc8-2632-981f-9c0726ad8017" executionId="82073b53-4ba4-4daa-a5bf-204d120f938a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a883d6b1-a01b-de8f-91c9-85a68d712af3" executionId="a1696275-82ed-4ce9-9ee2-be96ba23d532" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9c150d6d-2e96-c5be-b63d-ef4674c3adc6" executionId="96aa700d-1b77-4293-9273-50864b35de21" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="182f7d56-61cb-83c6-3ae2-90a72225ef4d" executionId="1b36c505-674f-4acf-a114-424c4483f5d6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="11dd82e6-d024-c7f1-235a-b6f1ba0f3071" executionId="3c2142fe-008c-4696-9e5a-587fd5cac562" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="670de877-89a6-190f-adbd-714b6c0d6fe2" executionId="71a072e1-28aa-4a6b-b9c2-cb8a8689cd58" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80563906-b331-fa47-3025-fba22ecb015a" executionId="986f9d8d-5b16-468b-8cd7-393a201b529a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f67bf249-df99-16a9-e313-ec885c8fc2a7" executionId="42d1d477-f325-49cb-b0eb-08164c322fd9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="11116e21-a3a4-1eb2-32f2-d1797d819233" executionId="1ada5ea0-7891-468c-b6e5-27c3b3e4d039" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="655fb512-336d-466f-1998-d66989aa801a" executionId="46c43721-3133-41f9-8604-7f398737a8a7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="45696d85-526e-7fe0-0485-7602785b18f7" executionId="3d2624dc-a1b2-4f3d-9d19-4dc6b710387b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="eb677a8b-68ae-1d69-e4b5-b40a4d82ea8f" executionId="373001ed-b6e6-4572-8ceb-cc45a5bd710d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="32638495-d58a-15cd-6d90-f81ec2362f16" executionId="3f993315-5ec6-4cb5-abae-b023e551ee09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c802c4b3-2f60-8994-d3ea-716c5f9b8f60" executionId="c2eaf988-a34e-435a-adfc-1e88985f3e26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf5217a8-4960-448d-6b36-0afc3af39b43" executionId="95de1b77-d1dd-406c-93bb-b75588d30048" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df471722-75a2-72d2-703b-f2d56c4248be" executionId="042c8ea1-d866-46f2-98a9-cc0f58379653" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="996565ad-5e95-e00e-2e00-c1187067d5f5" executionId="64741a05-7511-4f1a-98a9-0e39bf280108" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37a004e6-a90b-1381-9c7a-403c5b71598f" executionId="3ba2c2d0-ae4d-4de6-a217-944fa8ef391d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4c008a6d-94ae-989f-db60-6252ff4a8075" executionId="fdb3ee00-8918-49d1-b86b-28cbbdb0bf67" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c171d430-1fdc-49ec-8b90-bf686cfc1c93" executionId="9d4a8fc8-afb9-4cf3-ade5-6da06ec3f479" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="01bff89c-5ab8-3737-040d-0c8fb52f97e9" executionId="a7965d72-133a-4e7c-9136-9f4c4463cdb2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1f1e0c81-2b86-87de-dc84-771eb6f92cac" executionId="a5d42b30-e557-4515-be02-21a8cc7a0fe4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f0040727-f3c5-49bd-1eaf-83a8b8231b33" executionId="30caf042-944d-4c1c-9696-a3eb1e226cc5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1aa37875-fc22-002a-8528-14c0e88d51ba" executionId="8352eb9a-1534-424d-9aac-c33b5b941d26" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="15a6d42b-889f-4957-0b85-3a2919d0c5a3" executionId="ac1cbf10-c0c5-4ca5-8109-4886c6105c40" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cb294a16-fb02-9642-eecb-847b6a69029c" executionId="7a2b524e-fe4b-494b-a3a1-821180854f5f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="603f99e3-a4ae-1011-827b-ae59e6551d59" executionId="41c5a43b-478e-4a9a-b806-dc5b60b918a3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ced5e972-df2c-8477-fcfb-364a27d558d9" executionId="f7b03869-740e-4946-93a6-4f4d2c156f8e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e61fe890-5fbd-ea98-3a06-d583fdb12382" executionId="f3b94719-b65c-41f9-bf44-6b67eb1e939c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5de7452b-7bfd-8ba2-8987-4b689aff3aa1" executionId="7ee32e22-7169-4c94-a5dd-90ef468d08b6" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="781b529d-8416-fc2e-6a22-26ea7604d39d" executionId="f05c24f7-3dff-40ff-8249-f8c4457a610e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="df821745-e682-882b-d3c1-ceec6060bd2a" executionId="a0d7f66b-988a-4ef9-b59d-8b29b618c2f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="76a5344a-9523-ad40-9759-4e148e38cb90" executionId="9e44013e-97e8-4739-8bef-4d8d56146f43" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e8de9c5d-b63e-cbdc-f975-b6fe09d98d17" executionId="c414bcbe-ee50-4ce0-bf80-e2b31da653e7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b518db0a-4268-f80a-ebbe-b662637578f6" executionId="ab725b67-a405-473d-a527-3654cd84d7d0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5d142c53-dd1d-75b2-16a8-519cc8ed7dca" executionId="7a3de624-19ba-4a51-bcec-613691eec968" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="72a21b56-2796-284e-b873-638bc96ae377" executionId="7528ce65-116f-45dc-a8bb-4d3e42352224" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="65157ffa-c851-7e9b-c00b-0db47e8f82fa" executionId="61e3cfe7-5d44-4a97-962b-c397bedc1e90" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b45b2fed-9879-9bc3-aeea-7f2388b7b54f" executionId="509555d5-135f-4d47-b712-a25b482cb79b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="5192c963-cc9f-5a1a-a93e-2f05cd7db9cf" executionId="00dea0f3-b6b7-4e39-ac26-2af50c561634" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7e20cf00-4d4b-df16-687e-09c374904e10" executionId="591086d8-8442-40f5-bbfc-0d490e2f1784" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7099499f-06d5-429d-a152-3683f9396bc7" executionId="9a50809e-ee6e-47e0-b201-d7d3dfeb5a86" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e6d6592b-b911-44a0-1f5d-87e86cf92cdb" executionId="c4f0b2f3-9c1c-4dc9-9660-b922fb07de42" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="28d4e06f-b259-3957-a16d-2976e1838039" executionId="f44260a5-4daf-41e4-84bb-ef6e1999078a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e7e373bd-629a-5214-55fe-542d6c0411cc" executionId="61cae5b8-a42a-447d-82df-de4f0c89af65" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9bd9cdcf-3769-84df-3b21-58e63a68a30a" executionId="eea96982-8c63-4e0f-9fd8-e79f13df74b8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed52451a-c849-f24b-ca65-84d92f9d3719" executionId="045bb736-ffeb-4b20-8536-ec7f4d3748dd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c52aeb59-e1fe-db04-d4f6-4b10b2c9871f" executionId="991a6766-f6bd-45ac-a923-6533b4914e84" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3671ba27-a187-6ded-26d7-79837c3372ff" executionId="58216821-1bfb-47c2-81c2-1459cc0c95c8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="92695795-e076-985f-6646-2d4317364c76" executionId="13301e0d-f01b-4100-a2b4-6fdf3b8b807f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="60e37569-fd1e-be32-d85b-66580eb9cd99" executionId="e2dc3544-8455-4e95-a38b-1415aa670a5b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a46aaee-a1df-a737-5211-efcde1ff64eb" executionId="6f0c11a0-5751-43d9-8130-689b86938b92" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0549cc42-226c-9ef8-8a8e-c3bc9ec3ed31" executionId="fb1c0919-f329-4d56-a4cc-2fd7526ff29e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64f9fc46-bf28-e220-cacd-c5bd3f3fc1b4" executionId="5a6188de-c6b0-4d2c-ba26-5ca59a447441" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a094f081-8ac3-c29f-abad-7064a45016b9" executionId="c9cf2d97-efbf-4171-b2bc-6e541b75b0a5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c045200c-db15-0c33-cc93-e7a3e73a91e4" executionId="f706d25c-15a5-4621-99bb-817f8001eb55" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="85c1a0e5-6db1-7186-edab-f1d291e1596f" executionId="26d68b85-9416-4e4f-9550-4c487db402e3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="89385400-690e-35a9-a6ab-4d9da1795c58" executionId="94e7a5ff-1a70-44a9-b7e0-8642024add0e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bae70fe1-c310-c0b1-489a-f69a47dfbb2c" executionId="d600be62-4b28-4d6e-b727-afeb3e09ee77" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="95111b93-c918-b1e2-bb21-e7494bdd9e3f" executionId="0756ca4d-a972-4bd2-b965-2452e1f96c6f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3c9b1a47-6019-c4ff-ab53-109b1e545d21" executionId="401f011d-7cfe-40a8-b86a-1eebc6d06bc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2344ebd2-563b-ad65-bf10-10964541a91c" executionId="3679d64c-3dfb-4862-b622-d1afa6be9499" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0424725f-4311-da99-d152-f47a41ae8de7" executionId="ad03d6f4-99ca-4ad5-9ec6-025a796dcbdc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="442b8655-29be-0d21-e524-3bfbc01c76a1" executionId="9c5e806d-2acf-40ae-b4d5-7235bf3f58ac" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a76b274a-3100-ed12-e500-4801f502f5a6" executionId="c70006a3-dea8-4a01-9620-ad944f1c5119" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f9aaf121-19ff-e17b-6d51-bedd2d7b40ff" executionId="2e44ef17-9cd5-49f2-af62-1f6016f5c5be" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9059462d-915b-8a73-061a-b82f54c6ffb4" executionId="d083d263-ecdf-4dbf-b050-d78e7145e5f0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="cf5e5cd6-260c-395e-f67c-7b470aa89ecc" executionId="6f0a4f46-b97e-4d03-9243-eed81e150adc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d6b4cda6-cb6f-b828-6b0f-ece87c253f95" executionId="642964e3-d1b8-485c-a595-c0082ce423d3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="518c33d2-60f9-9f96-e1ed-e00877694bef" executionId="9497ab41-9df6-4219-b921-08d38e75164f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="edd52fc6-1eec-6926-c1a9-f4adfd95f18d" executionId="8adb1599-3915-4170-94f3-1d6a5f1fd18e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="07f571ac-2e41-8f95-8f86-5fa6aae531c6" executionId="3517894e-5f4a-4c73-b720-9b968399a478" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fb99e64f-5a14-4325-456f-4fda9de6997a" executionId="5a8468f4-fb9a-4272-a9d3-cdb01edfd5ed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4e1a5ffe-b45b-b6a5-420d-4115abe21c1b" executionId="88e99786-d0cd-4387-8f31-ffc64fbfa961" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="94" executed="94" passed="94" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 8.0.34)
+[xUnit.net 00:00:00.19]   Discovering: Yeshua.Central.BusinessMcp.Tests
+[xUnit.net 00:00:00.30]   Discovered:  Yeshua.Central.BusinessMcp.Tests
+[xUnit.net 00:00:00.40]   Starting:    Yeshua.Central.BusinessMcp.Tests
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {d9d17139-d0fe-474a-9b8f-69a1eac77aaa} with creation date 2026-11-27 20:46:29Z, activation date 2026-11-27 20:46:29Z, and expiration date 2027-02-25 20:46:29Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {d9d17139-d0fe-474a-9b8f-69a1eac77aaa} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {636f3057-6a7d-4ab9-8880-c0cc0327012d} with creation date 2026-11-27 20:46:29Z, activation date 2026-11-27 20:46:29Z, and expiration date 2027-02-25 20:46:29Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {636f3057-6a7d-4ab9-8880-c0cc0327012d} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost/.well-known/oauth-protected-resource/business/mcp - - -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: GET /.well-known/oauth-protected-resource/business/mcp'
+info: Microsoft.AspNetCore.Http.Result.JsonResult[3]
+      Writing value of type '&lt;&gt;f__AnonymousType1`4' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: GET /.well-known/oauth-protected-resource/business/mcp'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost/.well-known/oauth-protected-resource/business/mcp - 200 - application/json;+charset=utf-8 223.7728ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {76b15dce-74e6-4cf6-b674-4dd7f6044b8c} with creation date 2026-11-27 20:46:29Z, activation date 2026-11-27 20:46:29Z, and expiration date 2027-02-25 20:46:29Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {76b15dce-74e6-4cf6-b674-4dd7f6044b8c} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {a660eb74-434e-408f-9fa4-40533458e003} with creation date 2026-11-27 20:46:29Z, activation date 2026-11-27 20:46:29Z, and expiration date 2027-02-25 20:46:29Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {a660eb74-434e-408f-9fa4-40533458e003} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[1]
+      Failed to validate the token.
+      Microsoft.IdentityModel.Tokens.SecurityTokenInvalidIssuerException: IDX10205: Issuer validation failed. Issuer: 'https://other-issuer.test/'. Did not match: validationParameters.ValidIssuer: 'https://identity.test/' or validationParameters.ValidIssuers: 'null' or validationParameters.ConfigurationManager.CurrentConfiguration.Issuer: 'https://identity.test/'. For more details, see https://aka.ms/IdentityModel/issuer-validation.
+         at Microsoft.IdentityModel.Tokens.Validators.ValidateIssuerAsync(String issuer, SecurityToken securityToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10205: Issuer validation failed. Issuer: 'https://other-issuer.test/'. Did not match: validationParameters.ValidIssuer: 'https://identity.test/' or validationParameters.ValidIssuers: 'null' or validationParameters.ConfigurationManager.CurrentConfiguration.Issuer: 'https://identity.test/'. For more details, see https://aka.ms/IdentityModel/issuer-validation.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10205: Issuer validation failed. Issuer: 'https://other-issuer.test/'. Did not match: validationParameters.ValidIssuer: 'https://identity.test/' or validationParameters.ValidIssuers: 'null' or validationParameters.ConfigurationManager.CurrentConfiguration.Issuer: 'https://identity.test/'. For more details, see https://aka.ms/IdentityModel/issuer-validation.
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 71.7918ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {773b33fc-c9ec-4e4c-a68c-92382807629e} with creation date 2026-11-27 20:46:31Z, activation date 2026-11-27 20:46:31Z, and expiration date 2027-02-25 20:46:31Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {773b33fc-c9ec-4e4c-a68c-92382807629e} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {d5a998ba-d3df-4a4c-a925-18ebcfb0ab05} with creation date 2026-11-27 20:46:31Z, activation date 2026-11-27 20:46:31Z, and expiration date 2027-02-25 20:46:31Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {d5a998ba-d3df-4a4c-a925-18ebcfb0ab05} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[1]
+      Failed to validate the token.
+      Microsoft.IdentityModel.Tokens.SecurityTokenSignatureKeyNotFoundException: IDX10517: Signature validation failed. The token's kid is missing. Keys tried: 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey, KeyId: '', InternalId: '6H2qgkKC5hZRWBZPjVrzSzD2OO_esfP_ygyavAshdWw'. , KeyId: \n'.
+      Number of keys in TokenValidationParameters: '0'.
+      Number of keys in Configuration: '1'.
+      Exceptions caught:
+       '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'.
+      token: '[PII of type 'Microsoft.IdentityModel.JsonWebTokens.JsonWebToken' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. See https://aka.ms/IDX10503 for details.
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateSignature(JsonWebToken jwtToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateSignatureAndIssuerSecurityKey(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10517: Signature validation failed. The token's kid is missing. Keys tried: 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey, KeyId: '', InternalId: '6H2qgkKC5hZRWBZPjVrzSzD2OO_esfP_ygyavAshdWw'. , KeyId: \n'.
+      Number of keys in TokenValidationParameters: '0'.
+      Number of keys in Configuration: '1'.
+      Exceptions caught:
+       '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'.
+      token: '[PII of type 'Microsoft.IdentityModel.JsonWebTokens.JsonWebToken' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. See https://aka.ms/IDX10503 for details.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10517: Signature validation failed. The token's kid is missing. Keys tried: 'Microsoft.IdentityModel.Tokens.SymmetricSecurityKey, KeyId: '', InternalId: '6H2qgkKC5hZRWBZPjVrzSzD2OO_esfP_ygyavAshdWw'. , KeyId: \n'.
+      Number of keys in TokenValidationParameters: '0'.
+      Number of keys in Configuration: '1'.
+      Exceptions caught:
+       '[PII of type 'System.String' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'.
+      token: '[PII of type 'Microsoft.IdentityModel.JsonWebTokens.JsonWebToken' is hidden. For more details, see https://aka.ms/IdentityModel/PII.]'. See https://aka.ms/IDX10503 for details.
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 10.7388ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {bd06c34e-08ab-4655-a85d-048fc14604ec} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {bd06c34e-08ab-4655-a85d-048fc14604ec} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {30a62e19-19fc-4338-afe3-bf04245cae60} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {30a62e19-19fc-4338-afe3-bf04245cae60} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 16.8638ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {533cbad3-cfc8-4563-a2fc-15f40cd8b1b9} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {533cbad3-cfc8-4563-a2fc-15f40cd8b1b9} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {4510e3db-26fc-4753-8ed5-f8e7b79f0e92} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {4510e3db-26fc-4753-8ed5-f8e7b79f0e92} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 7.2084ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {80edc38c-ff9f-4566-801f-bdcd270406af} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {80edc38c-ff9f-4566-801f-bdcd270406af} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {6b82377f-be82-4008-b2c5-4de3508b559d} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {6b82377f-be82-4008-b2c5-4de3508b559d} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 4.1987ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {0f2853f0-78ff-4153-9f1d-5e13a68ba64a} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {0f2853f0-78ff-4153-9f1d-5e13a68ba64a} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {3c14191a-08c3-423e-9b82-9d19db4f4324} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {3c14191a-08c3-423e-9b82-9d19db4f4324} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[1]
+      Failed to validate the token.
+      Microsoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '11/27/2026 20:36:32', Current time (UTC): '11/27/2026 20:46:32'.
+         at Microsoft.IdentityModel.Tokens.ValidatorUtilities.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+         at Microsoft.IdentityModel.Tokens.Validators.ValidateLifetime(Nullable`1 notBefore, Nullable`1 expires, SecurityToken securityToken, TokenValidationParameters validationParameters)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '11/27/2026 20:36:32', Current time (UTC): '11/27/2026 20:46:32'.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '11/27/2026 20:36:32', Current time (UTC): '11/27/2026 20:46:32'.
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 11.1861ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {aa547b4d-a36a-4f8d-b7d0-8599973296cf} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {aa547b4d-a36a-4f8d-b7d0-8599973296cf} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {0a853591-3deb-4239-9c1a-3845abf4e7ea} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {0a853591-3deb-4239-9c1a-3845abf4e7ea} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 7.6844ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {fddc1df1-7c5e-47a5-a89f-00fcf1aa090c} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {fddc1df1-7c5e-47a5-a89f-00fcf1aa090c} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {8cdbb6d8-20fd-42fa-ba36-650a062d2d56} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {8cdbb6d8-20fd-42fa-ba36-650a062d2d56} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[1]
+      Failed to validate the token.
+      Microsoft.IdentityModel.Tokens.SecurityTokenInvalidAudienceException: IDX10214: Audience validation failed. See https://aka.ms/identitymodel/app-context-switches
+         at Microsoft.IdentityModel.Tokens.Validators.ValidateAudience(IEnumerable`1 audiences, SecurityToken securityToken, TokenValidationParameters validationParameters)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateTokenPayloadAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+         at Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateJWSAsync(JsonWebToken jsonWebToken, TokenValidationParameters validationParameters, BaseConfiguration configuration)
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10214: Audience validation failed. See https://aka.ms/identitymodel/app-context-switches
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: IDX10214: Audience validation failed. See https://aka.ms/identitymodel/app-context-switches
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 11.5188ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {d5bc455a-4aa4-4889-98ad-bd5442e6c79f} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {d5bc455a-4aa4-4889-98ad-bd5442e6c79f} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {4b9d2b16-41bb-404b-a232-ccbf3c874ef5} with creation date 2026-11-27 20:46:32Z, activation date 2026-11-27 20:46:32Z, and expiration date 2027-02-25 20:46:32Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {4b9d2b16-41bb-404b-a232-ccbf3c874ef5} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'server/discover' request handler called.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'server/discover' request handler completed in 27.0357ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 293.7483ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/list' request handler called.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/list' request handler completed in 12.7623ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 31.4727ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler called.
+info: ModelContextProtocol.Server.McpServer[2065726448]
+      "yeshua_business_applications" completed. IsError = False.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler completed in 149.7933ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 165.0438ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler called.
+info: ModelContextProtocol.Server.McpServer[2065726448]
+      "yeshua_business_operations" completed. IsError = False.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler completed in 36.7414ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 40.7380ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler called.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://sample.test/yapi/Sample/Execute - application/json;+charset=utf-8 37
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /yapi/Sample/Execute'
+info: Microsoft.AspNetCore.Http.Result.JsonResult[3]
+      Writing value of type '&lt;&gt;f__AnonymousType6`1' as Json.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /yapi/Sample/Execute'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://sample.test/yapi/Sample/Execute - 200 - application/json;+charset=utf-8 7.7384ms
+info: ModelContextProtocol.Server.McpServer[2065726448]
+      "yeshua_business_execute" completed. IsError = False.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler completed in 261.7041ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 934.5705ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler called.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://sample.test/yapi/Sample/Execute - application/json;+charset=utf-8 37
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'HTTP: POST /yapi/Sample/Execute'
+info: Microsoft.AspNetCore.Http.Result.ForbidResult[1]
+      Executing ChallengeResult with authentication schemes ().
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[13]
+      AuthenticationScheme: destination was forbidden.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'HTTP: POST /yapi/Sample/Execute'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://sample.test/yapi/Sample/Execute - 403 - - 17.4260ms
+info: ModelContextProtocol.Server.McpServer[2065726448]
+      "yeshua_business_execute" completed. IsError = True.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler completed in 23.2559ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 25.0216ms
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[7]
+      CentralBusinessDelegation was not authenticated. Failure message: invalid_token
+info: Microsoft.AspNetCore.Authorization.DefaultAuthorizationService[2]
+      Authorization failed. These requirements were not met:
+      DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+info: Microsoft.AspNetCore.Authentication.JwtBearer.JwtBearerHandler[12]
+      AuthenticationScheme: CentralBusinessDelegation was challenged.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 401 - - 2.4244ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {e8d5bc4d-04a7-40cc-826d-26cfa9a85a5c} with creation date 2026-11-27 20:46:34Z, activation date 2026-11-27 20:46:34Z, and expiration date 2027-02-25 20:46:34Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {e8d5bc4d-04a7-40cc-826d-26cfa9a85a5c} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {05f795d1-310e-44b0-a8af-479cb82a1882} with creation date 2026-11-27 20:46:34Z, activation date 2026-11-27 20:46:34Z, and expiration date 2027-02-25 20:46:34Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {05f795d1-310e-44b0-a8af-479cb82a1882} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'server/discover' request handler called.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'server/discover' request handler completed in 5.015ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 11.3356ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler called.
+info: ModelContextProtocol.Server.McpServer[2065726448]
+      "yeshua_business_execute" completed. IsError = True.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler completed in 6.0848ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 13.1643ms
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST https://central.test/business/mcp - application/json -
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: ModelContextProtocol.Server.McpServer[570385771]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler called.
+info: ModelContextProtocol.Server.McpServer[2065726448]
+      "yeshua_business_operations" completed. IsError = True.
+info: ModelContextProtocol.Server.McpServer[1867955179]
+      Server (yeshua-business 1.0.0), Client (testhost 15.0.0.0) method 'tools/call' request handler completed in 6.0331ms.
+info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'MCP Streamable HTTP | HTTP: POST /business/mcp/'
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST https://central.test/business/mcp - 200 - text/event-stream 12.1279ms
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {da27a723-e80a-4b74-b783-d2f052c6deaa} with creation date 2026-11-27 20:46:34Z, activation date 2026-11-27 20:46:34Z, and expiration date 2027-02-25 20:46:34Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {da27a723-e80a-4b74-b783-d2f052c6deaa} may be persisted to storage in unencrypted form.
+warn: Microsoft.AspNetCore.DataProtection.Repositories.EphemeralXmlRepository[50]
+      Using an in-memory repository. Keys will not be persisted to storage.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[59]
+      Neither user profile nor HKLM registry available. Using an ephemeral key repository. Protected data will be unavailable when application exits.
+info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {2dab6131-6afb-4c8c-8e48-941333e6cb5e} with creation date 2026-11-27 20:46:34Z, activation date 2026-11-27 20:46:34Z, and expiration date 2027-02-25 20:46:34Z.
+warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {2dab6131-6afb-4c8c-8e48-941333e6cb5e} may be persisted to storage in unencrypted form.
+info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost/business/mcp - application/json;+charset=utf-8 2
+info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost/business/mcp - 403 - - 5.5848ms
+[xUnit.net 00:00:16.21]   Finished:    Yeshua.Central.BusinessMcp.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

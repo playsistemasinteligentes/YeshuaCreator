@@ -1,0 +1,25 @@
+{
+  "base": "25c39991ae385d0750158d1ea3a9a5100b647615",
+  "files": [
+    "docs/Central/evidencias/business-mcp/business-mcp.trx",
+    "docs/Central/evidencias/issue-76-gateway/central-gateway.trx",
+    "docs/Central/evidencias/issue-76-merge-review/PR_DESCRIPTION.md",
+    "docs/Central/evidencias/issue-76-merge-review/VALIDATION.md",
+    "docs/Central/evidencias/issue-76-merge-review/central.trx",
+    "docs/Central/evidencias/issue-76-merge-review/central.txt",
+    "docs/Central/evidencias/issue-76-merge-review/engine.trx",
+    "docs/Central/evidencias/issue-76-merge-review/engine.txt",
+    "docs/Central/evidencias/issue-76-merge-review/files.json",
+    "docs/Central/evidencias/issue-76-merge-review/loader-local.txt",
+    "docs/Central/evidencias/issue-76-merge-review/loader-shell.txt",
+    "docs/Central/evidencias/issue-76-merge-review/operational.trx",
+    "docs/Central/evidencias/issue-76-merge-review/operational.txt",
+    "docs/Central/evidencias/issue-76-merge-review/remote-final.json",
+    "docs/Central/evidencias/issue-76-merge-review/remote.json",
+    "docs/Central/evidencias/issue-76-merge-review/results.json",
+    "docs/Central/evidencias/issue-76-merge-review/setup-shell.txt",
+    "docs/Central/evidencias/issue-76-prefix-loader/central-prefix.trx",
+    "docs/Central/evidencias/issue-76-zero-io/central-agent-zero-io.trx",
+    "docs/Central/evidencias/issue-76/central-agent-oauth.trx"
+  ]
+}

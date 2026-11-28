@@ -1,0 +1,1 @@
+PASS: loader preserves special characters, clears stale values, stops on failure and provisions SQL only during setup.

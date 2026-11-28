@@ -1,0 +1,19 @@
+{
+  "scenario": "Actual OAuth code/PKCE -\u003E official MCP client -\u003E mapped app. Grant revoked and renewal denied, then authorization backends disabled before the first MCP request.",
+  "transport": "TLS/Nginx/HTTP with /apps/clinica/ prefix for session preparation and business delivery",
+  "databaseCommandsDuringConsentAndIssuance": 10,
+  "databaseCommandsDuringRevocationAndDeniedRenewal": 4,
+  "priorDatabaseCommands": 28,
+  "databaseCommandsOnBusinessRequests": 0,
+  "databaseConnectionsOpenedOnBusinessRequests": 0,
+  "priorCentralIdentityReads": 1,
+  "centralIdentityReadsOnBusinessRequests": 0,
+  "preparedBasePath": "/apps/clinica/",
+  "priorSessionExchanges": 1,
+  "sessionExchangesOnBusinessRequests": 0,
+  "actualBusinessDeliveries": 4,
+  "localApplicationIdentity": 99,
+  "forbiddenIoWouldThrow": true,
+  "revocationBlocksRenewal": true,
+  "issuedJwtRemainsValidWithinFiveMinutes": true
+}

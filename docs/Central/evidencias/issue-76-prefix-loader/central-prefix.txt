@@ -1,0 +1,13 @@
+/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/EndPoints.cs(28,25): warning CS8601: Possible null reference assignment. [/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj]
+/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/EndPoints.cs(29,28): warning CS8601: Possible null reference assignment. [/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj]
+/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/EndPoints.cs(29,60): warning CS8601: Possible null reference assignment. [/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj]
+/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Custon/EndPoints.cs(29,94): warning CS8601: Possible null reference assignment. [/workspace/tasks/85374af22c2449068d7c25b90bb3122e/src/CQRS/Infrastructure/Yeshua.Central.CQRS.Infrastructure.Api/Yeshua.Central.CQRS.Infrastructure.Api.csproj]
+Test run for /workspace/tasks/85374af22c2449068d7c25b90bb3122e/tests/Central/Yeshua.Central.BusinessMcp.Tests/bin/Debug/net8.0/Yeshua.Central.BusinessMcp.Tests.dll (.NETCoreApp,Version=v8.0)
+VSTest version 17.11.2 (x64)
+
+Starting test execution, please wait...
+A total of 1 test files matched the specified pattern.
+Results File: /workspace/tasks/85374af22c2449068d7c25b90bb3122e/docs/Central/evidencias/issue-76-prefix-loader/central-prefix.trx
+
+Passed!  - Failed:     0, Passed:   117, Skipped:     0, Total:   117, Duration: 1 m 3 s - Yeshua.Central.BusinessMcp.Tests.dll (net8.0)
+VSTEST_ARTIFACTS_DIRECTORY environment variable was not found, falling back to a user-private temporary directory. This is most likely caused by an outdated Microsoft.NET.Test.Sdk package reference in the test project.
